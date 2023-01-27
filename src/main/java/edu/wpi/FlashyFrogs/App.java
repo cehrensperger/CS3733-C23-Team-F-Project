@@ -1,7 +1,7 @@
-package edu.wpi.teamname;
+package edu.wpi.FlashyFrogs;
 
-import edu.wpi.teamname.navigation.Navigation;
-import edu.wpi.teamname.navigation.Screen;
+import edu.wpi.FlashyFrogs.navigation.Navigation;
+import edu.wpi.FlashyFrogs.navigation.Screen;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
