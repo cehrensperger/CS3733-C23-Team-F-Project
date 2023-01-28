@@ -1,8 +1,5 @@
 package edu.wpi.FlashyFrogs;
 
-// import static edu.wpi.FlashyFrogs.Database.ORM.Map.Edge.*;
-// import static edu.wpi.FlashyFrogs.Database.ORM.Map.Node.*;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.*;
@@ -11,8 +8,6 @@ import lombok.NonNull;
 public class Fdb {
 
   static Connection connection; // database connection
-
-  // static MapCSVParser parser;
 
   public static void main(String[] args)
       throws SQLException, ClassNotFoundException, InvocationTargetException,
