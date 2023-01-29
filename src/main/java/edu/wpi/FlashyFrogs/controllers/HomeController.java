@@ -7,12 +7,12 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class HomeController {
 
-  @FXML private BorderPane rootPane;
+  @FXML private StackPane rootPane;
   @FXML private MFXButton serviceRequestsButton;
   @FXML private MFXButton mapDataEditorButton;
   @FXML private MFXButton pathfindingButton;
@@ -43,5 +43,17 @@ public class HomeController {
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
     //
+  }
+
+  public void handleSecurityMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("SecurityService");
+  }
+
+  public void handleTransportMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Transport");
+  }
+
+  public void handleSanitationMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("SanitationService");
   }
 }

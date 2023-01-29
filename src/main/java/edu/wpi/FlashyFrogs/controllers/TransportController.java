@@ -14,7 +14,7 @@ import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class TransportController {
+public class TransportController extends ServiceRequestController {
   @FXML MFXTextField firstNameTextfield; // ID of the first name text field
   @FXML MFXTextField lastNameTextfield;
   @FXML MFXTextField middleNameTextfield;
