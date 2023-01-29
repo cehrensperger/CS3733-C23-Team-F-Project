@@ -8,7 +8,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "ServiceRequest")
 public class ServiceRequest {
-  @Id @Getter @Setter @GeneratedValue long id;
+  @Basic @Id @Getter @Setter @GeneratedValue long id;
   @Basic @Getter @Setter String status;
   @Basic @Getter @Setter String empName;
   @Basic @Getter @Setter String empDept;

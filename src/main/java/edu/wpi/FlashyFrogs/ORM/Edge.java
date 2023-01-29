@@ -9,5 +9,4 @@ import lombok.Setter;
 public class Edge {
   @Id @Getter @Setter String nodeID1;
   @Id @Getter @Setter String nodeID2;
-  //  @Getter @Setter String
 }
