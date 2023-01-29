@@ -41,7 +41,7 @@ public class HomeController extends ServiceRequestController {
   }
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
-    //
+    Fapp.setScene("PathFinding");
   }
 
   public void handleSecurityMenuItem(ActionEvent actionEvent) throws IOException {
