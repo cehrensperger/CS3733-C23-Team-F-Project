@@ -7,6 +7,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "Edge")
 public class Edge {
-  @Id @Getter @Setter String nodeID1;
-  @Id @Getter @Setter String nodeID2;
+  @Id @ManyToOne @Getter @Setter Node nodeID1;
+  @Id @ManyToOne @Getter @Setter Node nodeID2;
 }
