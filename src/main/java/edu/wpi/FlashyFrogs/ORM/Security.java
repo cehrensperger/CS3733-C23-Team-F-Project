@@ -13,10 +13,5 @@ public class Security {
   @Basic @Getter @Setter String incidentReport;
   @Basic @Getter @Setter String location;
 
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic
-  @Id
-  @Getter
-  @Setter
-  BigInteger srID;
+  @Basic @Id @Getter @Setter BigInteger srID;
 }

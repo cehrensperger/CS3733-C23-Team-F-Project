@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs;
 
+import edu.wpi.FlashyFrogs.ORM.*;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.*;
@@ -15,9 +16,6 @@ public class Fdb {
   public static void main(String[] args)
       throws SQLException, ClassNotFoundException, InvocationTargetException,
           IllegalAccessException {
-    // dbInit();
-    // tableInit();
-    // insertFromCSV();
 
     final StandardServiceRegistry registry =
         new StandardServiceRegistryBuilder()
@@ -28,6 +26,17 @@ public class Fdb {
       SessionFactory factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
       Session session = factory.openSession();
       Transaction transaction = session.beginTransaction();
+
+      Node node = new Node();
+      node.setId("11");
+      node.setBuilding("Unity Hall");
+      node.setFloor("L1");
+      node.setXCoord(10);
+      node.setYCoord(10);
+
+      session.save(node);
+      transaction.commit();
+
       session.close();
       factory.close();
     } catch (Exception ex) {

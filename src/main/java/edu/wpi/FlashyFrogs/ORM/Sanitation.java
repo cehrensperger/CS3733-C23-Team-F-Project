@@ -10,10 +10,5 @@ public class Sanitation {
   @Basic @Getter @Setter String type;
   @Basic @Getter @Setter String location;
 
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic
-  @Id
-  @Getter
-  @Setter
-  int srID;
+  @Basic @Id @Getter @Setter int srID;
 }

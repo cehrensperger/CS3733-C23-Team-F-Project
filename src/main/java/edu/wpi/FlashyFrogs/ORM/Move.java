@@ -8,19 +8,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "Move")
 public class Move {
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  @Getter
-  @Setter
-  String nodeID;
+  @Id @Getter @Setter String nodeID;
 
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  @Getter
-  @Setter
-  String longName;
+  @Id @Getter @Setter String longName;
 
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Temporal(TemporalType.TIMESTAMP)
   @Id
   @Getter

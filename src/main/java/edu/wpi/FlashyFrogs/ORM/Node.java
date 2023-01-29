@@ -7,11 +7,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "Node")
 public class Node {
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  @Getter
-  @Setter
-  String id;
+  @Id @Getter @Setter String id;
 
   @Basic @Getter @Setter int xCoord;
   @Basic @Getter @Setter int yCoord;
