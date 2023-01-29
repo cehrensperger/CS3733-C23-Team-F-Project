@@ -1,14 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.wpi.FlashyFrogs.controllers.TransportController"
-            prefHeight="400.0" prefWidth="600.0">
+  This file is available and licensed under the following license:
 
-</AnchorPane>
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.TransportController">
+    <children>
+        <AnchorPane id="clickHereButton" accessibleRole="BUTTON" maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+            <children>
+                <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="402.0" layoutY="359.0" onAction="#clearButtonClicked" text="Clear" />
+                <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="462.0" layoutY="359.0" onAction="#submitButtonClicked" text="Submit" />
+                <Text layoutX="120.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation Form" wrappingWidth="414.29498291015625">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Text>
+                <Text layoutX="16.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Information" wrappingWidth="225.33673095703125">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text layoutX="17.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <Text layoutX="16.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information" wrappingWidth="225.33673095703125">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text layoutX="17.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <MFXDatePicker fx:id="dateOfBirthDatePicker" layoutX="426.0" layoutY="107.0" prefHeight="50.0" prefWidth="158.0" promptText="Date of Birth" />
+                <MFXTextField fx:id="middleNameTextfield" layoutX="269.0" layoutY="107.0" prefHeight="50.0" prefWidth="152.0" promptText="Middle Name (optional)" />
+                <MFXTextField fx:id="lastNameTextfield" layoutX="148.0" layoutY="107.0" prefHeight="50.0" prefWidth="114.0" promptText="Last Name" />
+                <MFXTextField fx:id="firstNameTextfield" layoutX="15.0" layoutY="107.0" prefHeight="50.0" prefWidth="126.0" promptText="First Name " />
+                <MFXComboBox fx:id="currentLocationComboBox" layoutX="15.0" layoutY="166.0" prefHeight="40.0" prefWidth="158.0" promptText="Current Location" />
+                <MFXComboBox fx:id="newLocationComboBox" layoutX="190.0" layoutY="166.0" prefHeight="40.0" prefWidth="158.0" promptText="New Location" />
+                <MFXDatePicker fx:id="dateOfTransportDatePicker" layoutX="366.0" layoutY="168.0" prefHeight="38.0" prefWidth="218.0" promptText="Date of Transport" />
+                <MFXTextField fx:id="firstNameTextfield2" layoutX="15.0" layoutY="271.0" prefHeight="51.0" prefWidth="114.0" promptText="First Name" />
+                <MFXTextField fx:id="lastNameTextfield2" layoutX="137.0" layoutY="271.0" prefHeight="51.0" prefWidth="126.0" promptText="Last Name" />
+                <MFXTextField fx:id="middleNameTextfield2" layoutX="274.0" layoutY="271.0" prefHeight="51.0" prefWidth="152.0" promptText="Middle Name (optional)" />
+                <MFXComboBox fx:id="departmentComboBox" layoutX="437.0" layoutY="271.0" prefHeight="50.0" prefWidth="145.0" promptText="Department" />
+                <MFXButton fx:id="backButton" layoutX="534.0" layoutY="359.0" onAction="#backButtonClicked" text="Back" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

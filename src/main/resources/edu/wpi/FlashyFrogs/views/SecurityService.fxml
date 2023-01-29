@@ -1,14 +1,176 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.wpi.FlashyFrogs.controllers.SecurityServiceController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SecurityServiceController">
+   <children>
+      <BorderPane prefHeight="400.0" prefWidth="600.0">
+         <top>
+            <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Form" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="8.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Text>
+         </top>
+         <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="600.0">
+                     <children>
+                        <Text fx:id="incidentReportText" strokeType="OUTSIDE" strokeWidth="0.0" text="Incident Report:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TextField fx:id="incidentReportEntry" alignment="TOP_LEFT" prefHeight="90.0" prefWidth="580.0">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Text fx:id="descriptionOfIncidentText" strokeType="OUTSIDE" strokeWidth="0.0" text="Description of Incident:">
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <HBox prefHeight="45.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="70.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="locationEntry" alignment="TOP_LEFT" prefHeight="100.0" prefWidth="190.0">
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="5.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Text fx:id="locationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Location">
+                                       <VBox.margin>
+                                          <Insets left="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <MFXDatePicker fx:id="dateEntry" prefHeight="0.0" />
+                                    <Text fx:id="dateText" strokeType="OUTSIDE" strokeWidth="0.0" text="Date">
+                                       <VBox.margin>
+                                          <Insets left="5.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="timeEntry" alignment="TOP_LEFT" prefHeight="41.0" prefWidth="190.0">
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Text fx:id="timeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Time 00:00 AM/PM" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Text fx:id="employeeInformationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:">
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <HBox prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="42.0" prefWidth="150.0">
+                                 <children>
+                                    <TextField fx:id="firstEntry" alignment="TOP_LEFT">
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="5.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Text fx:id="firstText" strokeType="OUTSIDE" strokeWidth="0.0" text="First">
+                                       <VBox.margin>
+                                          <Insets left="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="40.0" prefWidth="150.0">
+                                 <children>
+                                    <TextField fx:id="middleEntry" alignment="TOP_LEFT">
+                                       <VBox.margin>
+                                          <Insets right="5.0" />
+                                       </VBox.margin></TextField>
+                                    <Text fx:id="middleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Middle" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="150.0">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <children>
+                                    <TextField fx:id="lastEntry" alignment="TOP_LEFT">
+                                       <VBox.margin>
+                                          <Insets right="5.0" />
+                                       </VBox.margin></TextField>
+                                    <Text fx:id="lastText" strokeType="OUTSIDE" strokeWidth="0.0" text="Last" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="150.0">
+                                 <children>
+                                    <TextField fx:id="departmentEntry" alignment="TOP_LEFT">
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin></TextField>
+                                    <Text fx:id="departmentText" strokeType="OUTSIDE" strokeWidth="0.0" text="Department" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                           <children>
+                              <MFXButton fx:id="clearButton" onAction="#handleButtonClear" prefHeight="27.0" prefWidth="100.0" text="Clear" />
+                              <MFXButton fx:id="submitButton" onAction="#handleButtonSubmit" prefWidth="100.0" text="Submit">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </MFXButton>
+                              <MFXButton fx:id="homeButton" onAction="#handleHomeButton" prefWidth="100.0" text="Back" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </children>
 </AnchorPane>
