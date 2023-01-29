@@ -2,9 +2,11 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.awt.*;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -15,11 +17,18 @@ public class HomeController {
   @FXML private MFXButton mapDataEditorButton;
   @FXML private MFXButton pathfindingButton;
   @FXML private MFXButton exitButton;
+  @FXML private MenuItem closeMenuItem;
 
   Stage stage;
 
   @FXML
   public void handleExitButton(ActionEvent event) throws IOException {
+    stage = (Stage) rootPane.getScene().getWindow();
+    stage.close();
+  }
+
+  @FXML
+  public void handleClose(ActionEvent event) throws IOException {
     stage = (Stage) rootPane.getScene().getWindow();
     stage.close();
   }
