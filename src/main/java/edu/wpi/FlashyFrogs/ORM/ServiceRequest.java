@@ -5,7 +5,9 @@ import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@MappedSuperclass
+@Entity
+@Table(name = "ServiceRequest")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ServiceRequest {
   @Basic @Id @Getter @Setter @GeneratedValue long id;
   @Basic @Getter @Setter String status;

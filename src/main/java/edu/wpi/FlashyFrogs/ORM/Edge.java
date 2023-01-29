@@ -7,13 +7,15 @@ import lombok.Setter;
 @Entity
 @Table(name = "Edge")
 public class Edge {
-  @Column(name = "node1ID")
+  @Id
+  @JoinColumn(name = "node1id")
   @ManyToOne
   @Getter
   @Setter
   Node node1;
 
-  @Column(name = "node2ID")
+  @Id
+  @JoinColumn(name = "node2id")
   @ManyToOne
   @Getter
   @Setter
