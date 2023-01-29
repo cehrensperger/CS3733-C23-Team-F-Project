@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.SessionFactory;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 @AllArgsConstructor
 public class PathFinder {
@@ -28,8 +30,23 @@ public class PathFinder {
     }
 
     private List<Edge> aStar(@NonNull Node start, @NonNull Node end) {
+        PriorityQueue<NodeWrapper> openList = new PriorityQueue<>();
+        List<NodeWrapper> closedlist = new LinkedList<>();
 
-        //
+        openList.add(new NodeWrapper(start, 0));
+
+        // while open list is not empty
+        while (!openList.isEmpty()) {
+            NodeWrapper q = openList.poll();
+            // generate children of q and add them to openList
+            // for each child
+            // if goal then stop
+            // else compute g and h
+            // set f to g + h
+            // if node is already on the open list with lower f then skip
+            // if node is on closed list with lower f then skip else add to open list
+            closedlist.add(q);
+        }
         return null;
     }
 
@@ -40,13 +57,28 @@ public class PathFinder {
     }
 
     private class NodeWrapper implements Comparable<NodeWrapper> {
-        double cost;
+        Node node;
+        Node parent;
+        double g;
+        double h;
+        double f;
+
+        NodeWrapper(@NonNull Node node, @NonNull double cost) {
+            this.node = node;
+            this.parent = null;
+            this.f = cost;
+        }
+
+        NodeWrapper(@NonNull Node startNode, @NonNull Node endNode) {
+            node = endNode;
+            cost = euclideanDistance(startNode.getXCoord(), endNode.getYCoord(), endNode.getYCoord(), endNode.getYCoord());
+        }
 
         @Override
-        public int compareTo(NodeWrapper node) {
-            if(cost==node.cost)
+        public int compareTo(NodeWrapper nodeWrapper) {
+            if(f==nodeWrapper.f)
                 return 0;
-            else if(cost>node.cost)
+            else if(f>nodeWrapper.f)
                 return 1;
             else
                 return -1;
