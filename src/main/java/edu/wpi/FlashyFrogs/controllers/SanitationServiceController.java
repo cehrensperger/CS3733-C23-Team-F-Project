@@ -82,6 +82,7 @@ public class SanitationServiceController extends ServiceRequestController {
     sanitationServiceData.setEmployeeFirstName(firstName.getText());
     sanitationServiceData.setEmployeeLastName(lastName.getText());
     sanitationServiceData.setEmployeeMiddleName(middleName.getText());
+
     System.out.println(sanitationServiceData);
   }
 
