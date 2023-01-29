@@ -2,7 +2,7 @@ package edu.wpi.FlashyFrogs;
 
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import edu.wpi.FlashyFrogs.ORM.locationName;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.SessionFactory;
@@ -22,7 +22,7 @@ public class PathFinder {
      * @return the path (as a list) between the two locations, or null if it could not find a path
      * @throws NullPointerException if the path between the two locations couldn't be found
      */
-    public List<Edge> findPath(@NonNull locationName start, @NonNull locationName end) {
+    public List<Edge> findPath(@NonNull LocationName start, @NonNull LocationName end) {
         // Query location names and return nodes to send to aStar function
         return null;
     }
