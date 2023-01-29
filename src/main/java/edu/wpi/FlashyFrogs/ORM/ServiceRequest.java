@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "ServiceRequest")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ServiceRequest {
-  @Id @Getter @Setter int id;
-
+  @Basic @Id @Getter @Setter @GeneratedValue long id;
   @Basic @Getter @Setter String status;
   @Basic @Getter @Setter String empName;
   @Basic @Getter @Setter String empDept;

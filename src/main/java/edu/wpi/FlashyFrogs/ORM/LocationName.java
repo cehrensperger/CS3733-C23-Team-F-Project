@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "locationName")
-public class locationName {
+@Table(name = "LocationName")
+public class LocationName {
   @Id @Getter @Setter String longName;
 
   @Basic @Getter @Setter String shortName;

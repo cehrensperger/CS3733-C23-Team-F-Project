@@ -7,7 +7,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "InternalTransport")
-public class InternalTransport {
+@PrimaryKeyJoinColumn(name = "service_request_id")
+public class InternalTransport extends ServiceRequest {
   @Getter @Setter String patientName;
   @Getter @Setter String oldLoc;
   @Getter @Setter String newLoc;
@@ -16,6 +17,4 @@ public class InternalTransport {
   @Getter
   @Setter
   Date dateOfBirth;
-
-  @Id @Getter @Setter int srID;
 }
