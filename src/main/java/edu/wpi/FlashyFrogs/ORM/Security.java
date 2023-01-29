@@ -8,7 +8,7 @@ import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "Security")
-public class Security {
+public class Security extends ServiceRequest{
   @Basic @Getter @Setter String incidentReport;
   @Basic @Getter @Setter String location;
 

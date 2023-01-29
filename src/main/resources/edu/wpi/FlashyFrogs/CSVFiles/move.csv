@@ -1,0 +1,46 @@
+﻿nodeID,longName
+CCONF001L1,Anesthesia Conf Floor L1
+CCONF002L1,Medical Records Conference Room Floor L1
+CCONF003L1,Abrams Conference Room
+CDEPT002L1,Day Surgery Family Waiting Floor L1
+CDEPT003L1,Day Surgery Family Waiting Exit Floor L1
+CDEPT004L1,Medical Records Film Library Floor L1
+CHALL001L1,Hallway 1 Floor L1
+CHALL002L1,Hallway 2 Floor L1
+CHALL003L1,Hallway 3 Floor L1
+CHALL004L1,Hallway 4 Floor L1
+CHALL005L1,Hallway 5 Floor L1
+CHALL006L1,Hallway 6 Floor L1
+CHALL007L1,Hallway 7 Floor L1
+CHALL008L1,Hallway 8 Floor L1
+CHALL009L1,Hallway 9 Floor L1
+CHALL010L1,Hallway 10 Floor L1
+CHALL011L1,Hallway 11 Floor L1
+CHALL012L1,Hallway 12 Floor L1
+CHALL013L1,Hallway 13 Floor L1
+CHALL014L1,Hallway 14 Floor L1
+CHALL015L1,Hallway 15 Floor L1
+CLABS001L1,Outpatient Fluoroscopy Floor L1
+CLABS002L1,Pre-Op PACU Floor L1
+CLABS003L1,Nuclear Medicine Floor L1
+CLABS004L1,Ultrasound Floor L1
+CLABS005L1,CSIR MRI Floor L1
+CREST001L1,Restroom L Elevator Floor L1
+CREST002L1,Restroom M Elevator Floor L1
+CREST003L1,Restroom K Elevator Floor L1
+CREST004L1,Restroom H Elevator Floor L1
+CRETL001L1,Vending Machine 1 L1
+CSERV001L1,Volunteers Floor L1
+GELEV00QL1,Elevator Q MapNode 7 Floor L1
+GEXIT001L1,Fenwood Road Exit MapNode 1 Floor L1
+GHALL002L1,Hallway MapNode 2 Floor L1
+GHALL003L1,Hallway MapNode 3 Floor L1
+GHALL004L1,Hallway MapNode 4 Floor L1
+GHALL005L1,Hallway MapNode 5 Floor L1
+GHALL006L1,Hallway MapNode 6 Floor L1
+GSTAI008L1,Stairs MapNode 8 Floor L1
+WELEV00HL1,Elevator H Floor L1
+WELEV00JL1,Elevator J Floor L1
+WELEV00KL1,Elevator K Floor L1
+WELEV00LL1,Elevator L Floor L1
+WELEV00ML1,Elevator M Floor L1

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "Sanitation")
-public class Sanitation {
+public class Sanitation extends ServiceRequest{
   @Basic @Getter @Setter String type;
   @Basic @Getter @Setter String location;
 
