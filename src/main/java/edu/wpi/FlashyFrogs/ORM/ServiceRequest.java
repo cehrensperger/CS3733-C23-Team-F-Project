@@ -1,15 +1,26 @@
 package edu.wpi.FlashyFrogs.ORM;
 
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
+import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.*;
 
+@Entity
+@Table(name = "ServiceRequest")
 public class ServiceRequest {
-    @Getter @Setter int id;
-    @Getter @Setter String status;
-    @Getter @Setter String empName;
-    @Temporal(TemporalType.DATE) @Getter @Setter String empDept;
-    @Getter @Setter Date dateOfIncident;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Getter
+  @Setter
+  int id;
+
+  @Basic @Getter @Setter String status;
+  @Basic @Getter @Setter String empName;
+  @Basic @Getter @Setter String empDept;
+
+  @Basic
+  @Temporal(TemporalType.TIMESTAMP)
+  @Getter
+  @Setter
+  Date dateOfIncident;
 }

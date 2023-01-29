@@ -1,11 +1,29 @@
 package edu.wpi.FlashyFrogs.ORM;
 
+import jakarta.persistence.*;
+import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.*;
 
+@Entity
+@Table(name = "Move")
 public class Move {
-    @Getter @Setter String nodeID;
-    @Getter @Setter String longName;
-    @Getter @Setter Date moveDate;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Getter
+  @Setter
+  String nodeID;
+
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Getter
+  @Setter
+  String longName;
+
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Temporal(TemporalType.TIMESTAMP)
+  @Id
+  @Getter
+  @Setter
+  Date moveDate;
 }

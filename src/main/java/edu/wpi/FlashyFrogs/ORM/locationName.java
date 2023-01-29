@@ -1,10 +1,18 @@
 package edu.wpi.FlashyFrogs.ORM;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
+@Table(name = "locationName")
 public class locationName {
-    @Getter @Setter String longName;
-    @Getter @Setter String shortName;
-    @Getter @Setter String locationType;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Getter
+  @Setter
+  String longName;
+
+  @Basic @Getter @Setter String shortName;
+  @Basic @Getter @Setter String locationType;
 }

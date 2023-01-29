@@ -4,6 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.*;
 import lombok.NonNull;
+import org.hibernate.*;
+import org.hibernate.boot.*;
+import org.hibernate.boot.registry.*;
 
 public class Fdb {
 
@@ -12,9 +15,26 @@ public class Fdb {
   public static void main(String[] args)
       throws SQLException, ClassNotFoundException, InvocationTargetException,
           IllegalAccessException {
-    dbInit();
-    tableInit();
+    // dbInit();
+    // tableInit();
     // insertFromCSV();
+
+    final StandardServiceRegistry registry =
+        new StandardServiceRegistryBuilder()
+            .configure() // configures settings from hibernate.cfg.xml
+            .build();
+
+    try {
+      SessionFactory factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+      Session session = factory.openSession();
+      Transaction transaction = session.beginTransaction();
+      session.close();
+      factory.close();
+    } catch (Exception ex) {
+      System.out.println(ex.getMessage());
+      ex.printStackTrace();
+      StandardServiceRegistryBuilder.destroy(registry);
+    }
   }
 
   /**
@@ -50,56 +70,56 @@ public class Fdb {
    *
    * @throws SQLException if an sql error occurs
    */
-  @NonNull
-  public static void tableInit() throws SQLException {
-    Statement stmt = connection.createStatement(); // begin statement
-    if (tableExists("edge")) {
-      stmt.execute("drop table edge"); // drop existing tables to be repopulated
-    }
-    if (tableExists("node")) {
-      stmt.execute("drop table node"); // drop existing tables to be repopulated
-    }
-    if (tableExists("move")) {
-      stmt.execute("drop table move"); // drop existing tables to be repopulated
-    }
-    if (tableExists("locationname")) {
-      stmt.execute("drop table locationname"); // drop existing tables to be repopulated
-    }
-
-    // create new node and edge tables
-    stmt.execute(
-        "Create table node(\n"
-            + "id char(100) primary key,\n"
-            + "xcoord int not null,\n"
-            + "ycoord int not null,\n"
-            + "floor char(100) not null,\n"
-            + "building varchar(100) not null);");
-
-    stmt.execute(
-        "Create table edge(\n"
-            + "nodeID_1 char(100),\n"
-            + "nodeID_2 char(100),\n"
-            + "foreign key(nodeID_1) references node(id),\n"
-            + "foreign key(nodeID_2) references node(id),\n"
-            + "primary key(nodeID_1, nodeID_2));");
-
-    stmt.execute(
-        "Create table locationName (\n"
-            + "longName char(100) primary key,\n"
-            + "shortName char(100) not null,\n"
-            + "locationType char(4) not null);");
-
-    stmt.execute(
-        "Create table move(\n"
-            + "nodeID char(100),\n"
-            + "longName char(100),\n"
-            + "moveDate date,\n"
-            + "foreign key(nodeID) references node(id),\n"
-            + "foreign key(longName) references locationName(longName),\n"
-            + "primary key(nodeID, longName, moveDate));");
-
-    stmt.close();
-  }
+  //  @NonNull
+  //  public static void tableInit() throws SQLException {
+  //    Statement stmt = connection.createStatement(); // begin statement
+  //    if (tableExists("edge")) {
+  //      stmt.execute("drop table edge"); // drop existing tables to be repopulated
+  //    }
+  //    if (tableExists("node")) {
+  //      stmt.execute("drop table node"); // drop existing tables to be repopulated
+  //    }
+  //    if (tableExists("move")) {
+  //      stmt.execute("drop table move"); // drop existing tables to be repopulated
+  //    }
+  //    if (tableExists("locationname")) {
+  //      stmt.execute("drop table locationname"); // drop existing tables to be repopulated
+  //    }
+  //
+  //    // create new node and edge tables
+  //    stmt.execute(
+  //        "Create table node(\n"
+  //            + "id char(100) primary key,\n"
+  //            + "xcoord int not null,\n"
+  //            + "ycoord int not null,\n"
+  //            + "floor char(100) not null,\n"
+  //            + "building varchar(100) not null);");
+  //
+  //    stmt.execute(
+  //        "Create table edge(\n"
+  //            + "nodeID_1 char(100),\n"
+  //            + "nodeID_2 char(100),\n"
+  //            + "foreign key(nodeID_1) references node(id),\n"
+  //            + "foreign key(nodeID_2) references node(id),\n"
+  //            + "primary key(nodeID_1, nodeID_2));");
+  //
+  //    stmt.execute(
+  //        "Create table locationName (\n"
+  //            + "longName char(100) primary key,\n"
+  //            + "shortName char(100) not null,\n"
+  //            + "locationType char(4) not null);");
+  //
+  //    stmt.execute(
+  //        "Create table move(\n"
+  //            + "nodeID char(100),\n"
+  //            + "longName char(100),\n"
+  //            + "moveDate date,\n"
+  //            + "foreign key(nodeID) references node(id),\n"
+  //            + "foreign key(longName) references locationName(longName),\n"
+  //            + "primary key(nodeID, longName, moveDate));");
+  //
+  //    stmt.close();
+  //  }
 
   //  @NonNull
   //    public static MapCSVParser insertFromCSV() {

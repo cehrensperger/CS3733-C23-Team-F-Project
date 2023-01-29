@@ -1,15 +1,21 @@
 package edu.wpi.FlashyFrogs.ORM;
 
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
+import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.*;
 
+@Entity
+@Table(name = "InternalTransport")
 public class InternalTransport {
-    @Getter @Setter String patientName;
-    @Getter @Setter String oldLoc;
-    @Getter @Setter String newLoc;
-    @Temporal(TemporalType.DATE) @Getter @Setter Date dateOfBirth;
-    @Getter @Setter int srID;
+  @Getter @Setter String patientName;
+  @Getter @Setter String oldLoc;
+  @Getter @Setter String newLoc;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Getter
+  @Setter
+  Date dateOfBirth;
+
+  @Id @Getter @Setter int srID;
 }

@@ -22,6 +22,15 @@
 
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create</property>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Edge"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Move"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.locationName"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.ServiceRequest"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Security"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Sanitation"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.InternalTransport"/>
+
 
         <!-- Names the annotated entity class -->
     </session-factory>
