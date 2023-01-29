@@ -96,7 +96,7 @@ public class TransportController {
   }
 
   public void backButtonClicked(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("RequestsHome");
   }
 
   /**

@@ -23,7 +23,10 @@ public class SanitationServiceController {
   @FXML MFXTextField firstName;
   @FXML MFXTextField lastName;
   @FXML MFXTextField middleName;
+  @FXML MFXTextField timeEntry;
   @FXML MFXComboBox departmentDropDown;
+
+  @FXML MFXComboBox urgencyEntry;
   private Connection connection = null; // connection to database
   private SanitationServiceData sanitationServiceData;
 
@@ -35,7 +38,7 @@ public class SanitationServiceController {
     }
 
     sanitationServiceData = new SanitationServiceData();
-
+    urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     requestTypeDropDown.getItems().addAll("Mopping", "Sweeping", "Vacuuming");
     locationDropDown.getItems().addAll("room 1", "room 2", "public space 1", "public space 2");
 
@@ -59,6 +62,8 @@ public class SanitationServiceController {
     lastName.clear();
     middleName.clear();
     departmentDropDown.clear();
+    timeEntry.clear();
+    urgencyEntry.clear();
   }
 
   /**
