@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "InternalTransport")
-public class InternalTransport {
+public class InternalTransport extends ServiceRequest{
   @Getter @Setter String patientName;
   @Getter @Setter String oldLoc;
   @Getter @Setter String newLoc;

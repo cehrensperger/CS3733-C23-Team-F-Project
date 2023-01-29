@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "ServiceRequest")
+@MappedSuperclass
 public class ServiceRequest {
   @Basic @Id @Getter @Setter @GeneratedValue long id;
   @Basic @Getter @Setter String status;
