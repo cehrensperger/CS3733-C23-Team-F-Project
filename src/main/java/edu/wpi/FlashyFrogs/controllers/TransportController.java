@@ -96,7 +96,7 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void backButtonClicked(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("RequestsHome");
   }
 
   /**

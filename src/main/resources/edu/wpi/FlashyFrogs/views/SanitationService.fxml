@@ -37,98 +37,85 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SanitationServiceController">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form" textAlignment="CENTER" wrappingWidth="639.71875">
          <font>
             <Font size="36.0" />
          </font>
+         <VBox.margin>
+            <Insets top="8.0" />
+         </VBox.margin>
       </Text>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Incident:" wrappingWidth="88.00004882812493">
          <font>
-            <Font size="18.0" />
+            <Font size="24.0" />
          </font>
+         <VBox.margin>
+            <Insets left="10.0" />
+         </VBox.margin>
       </Text>
       <HBox spacing="10.0">
          <children>
-            <MFXComboBox fx:id="requestTypeDropDown" prefHeight="40.0" prefWidth="132.0" promptText="Request Type" />
-            <MFXComboBox fx:id="locationDropDown" prefHeight="40.0" prefWidth="132.0" promptText="Location" />
-            <MFXDatePicker fx:id="date" promptText="Date" />
+            <MFXComboBox fx:id="requestTypeDropDown" prefHeight="49.0" prefWidth="207.0" promptText="Request Type" />
+            <MFXComboBox fx:id="locationDropDown" prefHeight="52.0" prefWidth="206.0" promptText="Location" />
+            <MFXDatePicker fx:id="date" floatMode="INLINE" prefHeight="27.0" prefWidth="194.0" promptText="Date" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <MFXTextField fx:id="timeEntry" prefHeight="51.0" prefWidth="205.0" promptText="Time 00:00 AM/PM">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </MFXTextField>
+            <MFXComboBox fx:id="urgencyEntry" prefHeight="51.0" prefWidth="204.0" promptText="Urgency">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </MFXComboBox>
+         </children>
       </HBox>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:">
          <font>
-            <Font size="18.0" />
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+         <VBox.margin>
+            <Insets left="10.0" />
+         </VBox.margin>
+         <font>
+            <Font size="16.0" />
          </font>
       </Text>
       <HBox spacing="10.0">
          <children>
-            <MFXTextField fx:id="firstName" prefHeight="49.0" prefWidth="146.0" promptText="First name" />
-            <MFXTextField fx:id="middleName" prefHeight="49.0" prefWidth="148.0" promptText="Middle name (optional)" />
-            <MFXTextField fx:id="lastName" prefHeight="49.0" prefWidth="147.0" promptText="Last name" />
-            <MFXComboBox fx:id="departmentDropDown" prefHeight="40.0" prefWidth="132.0" promptText="Department" />
+            <MFXTextField fx:id="firstName" prefHeight="49.0" prefWidth="146.0" promptText="First" />
+            <MFXTextField fx:id="middleName" prefHeight="49.0" prefWidth="148.0" promptText="Middle" />
+            <MFXTextField fx:id="lastName" prefHeight="49.0" prefWidth="147.0" promptText="Last" />
+            <MFXComboBox fx:id="departmentDropDown" prefHeight="51.0" prefWidth="158.0" promptText="Department" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </HBox>
-      <HBox spacing="10.0">
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="177.0" prefWidth="640.0" spacing="10.0">
          <children>
-            <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#clearButtonClicked" text="clear" />
-            <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#submitButtonClicked" text="submit" />
-            <MFXButton fx:id="backButton" onAction="#backButtonClicked" text="back" />
+            <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#clearButtonClicked" prefWidth="100.0" text="clear" />
+            <MFXButton fx:id="backButton" onAction="#backButtonClicked" prefWidth="100.0" text="back" />
+            <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#submitButtonClicked" prefWidth="100.0" text="submit" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
