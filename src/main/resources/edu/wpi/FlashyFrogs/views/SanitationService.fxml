@@ -52,7 +52,7 @@
             <Insets top="8.0" />
          </VBox.margin>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Incident:" wrappingWidth="88.00004882812493">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Incident:" wrappingWidth="188.00004882812493">
          <font>
             <Font size="24.0" />
          </font>
