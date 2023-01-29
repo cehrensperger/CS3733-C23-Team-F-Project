@@ -5,8 +5,6 @@ import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table(name = "ServiceRequest")
 @MappedSuperclass
 public class ServiceRequest {
   @Basic @Id @Getter @Setter @GeneratedValue long id;
