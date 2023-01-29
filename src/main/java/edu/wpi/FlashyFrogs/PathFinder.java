@@ -5,16 +5,74 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.PriorityQueue;
 
 @AllArgsConstructor
 public class PathFinder {
     @NonNull
     final private SessionFactory sessionFactory;
+
+    /**
+     * Converts a String location name to the LocationName object associated with it.
+     * MAY return Null if no location has that name
+     * @param locationName the string location name to find the LocationName object of
+     * @param session the session to execute the query on
+     * @return the LocationName object associated with the queried name
+     */
+    private LocationName longNameToLocation(@NonNull String locationName, @NonNull Session session) {
+        return session.get(LocationName.class, locationName); // Query the session for the name
+    }
+
+    /**
+     * converts a location name to a Node by looking for the latest Node that has the given location name.
+     * Returns null if no result could be found
+     * @param name the location name to query for
+     * @param session the session to run the query on
+     * @return the found node, or null
+     */
+    private Node locationToNode(@NonNull LocationName name, @NonNull Session session) {
+        // Create a query that selects the first node from the move where the location is the location
+        // orders by descending date (first at top) and limits it to one, so we only get one.
+        // Then casts to a Node, sets the parameter location (to prevent injection)
+        // Get unique result will either return the result, or null if there was none
+        return session.createQuery(
+                """
+SELECT node
+FROM Move
+where location = :location
+ORDER BY moveDate DESC
+LIMIT 1
+""",
+                Node.class).setParameter("location", name).uniqueResult();
+    }
+
+    /**
+     * Gets the neighbors of a Node, by means of their edges
+     * @param node the node to get the neighbors of
+     * @param session the session to use to get the results
+     * @return the Set of Nodes that represent the Edges of a given Node
+     */
+    @NonNull
+    private Set<Node> getNeighbors(@NonNull Node node, @NonNull Session session) {
+        // Gets the Set of Nodes that represents the union (combination with no duplicates)
+        // of Nodes that this Node starts or ends. Select the opposite end in both cases.
+        // Sets the parameter, and gets the result list as well
+        return new HashSet<>(session.createQuery("""
+SELECT node1
+FROM Edge
+WHERE node2 = :node
+UNION
+SELECT node2
+FROM Edge
+WHERE node1 = :node
+""", Node.class).setParameter("node", node).getResultList());
+    }
 
     /**
      * Public method to find the path between two locations.
