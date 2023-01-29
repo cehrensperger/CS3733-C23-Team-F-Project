@@ -38,4 +38,18 @@ public class PathFinder {
         int dy = y1 - y2;
         return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
     }
+
+    private class NodeWrapper implements Comparable<NodeWrapper> {
+        double cost;
+
+        @Override
+        public int compareTo(NodeWrapper node) {
+            if(cost==node.cost)
+                return 0;
+            else if(cost>node.cost)
+                return 1;
+            else
+                return -1;
+        }
+    }
 }
