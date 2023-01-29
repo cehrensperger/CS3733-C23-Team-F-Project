@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.controllers;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.SecurityServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -17,32 +18,27 @@ public class SecurityServiceController {
   @FXML private Text securityServiceText;
   @FXML private Text incidentReportText;
   @FXML private TextField incidentReportEntry;
-  @FXML private Text descriptionOfIncidentText;
   @FXML private TextField locationEntry;
   @FXML private MFXDatePicker dateEntry;
   @FXML private TextField timeEntry;
-  @FXML private Text locationText;
-  @FXML private Text dateText;
-  @FXML private Text timeText;
   @FXML private Text employeeInformationText;
   @FXML private Text nameText;
   @FXML private TextField firstEntry;
   @FXML private TextField middleEntry;
   @FXML private TextField lastEntry;
-  @FXML private TextField departmentEntry;
-  @FXML private Text firstText;
-  @FXML private Text middleText;
-  @FXML private Text lastText;
-  @FXML private Text departmentText;
   @FXML private MFXButton clearButton;
   @FXML private MFXButton submitButton;
   @FXML private MFXButton homeButton;
+  @FXML private MFXComboBox urgencyEntry;
+  @FXML private MFXComboBox departmentEntry;
 
   private SecurityServiceData securityServiceData;
 
   /** initializes when app starts */
   public void initialize() {
 
+    urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    departmentEntry.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
     securityServiceData = new SecurityServiceData();
   }
 
@@ -61,6 +57,7 @@ public class SecurityServiceController {
     middleEntry.clear();
     lastEntry.clear();
     departmentEntry.clear();
+    urgencyEntry.clear();
   }
 
   /**
@@ -95,6 +92,6 @@ public class SecurityServiceController {
    */
   @FXML
   public void handleHomeButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("RequestsHome");
   }
 }

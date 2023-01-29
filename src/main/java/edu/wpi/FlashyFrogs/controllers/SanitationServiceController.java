@@ -87,7 +87,7 @@ public class SanitationServiceController {
    * @throws IOException
    */
   public void backButtonClicked(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("RequestsHome");
   }
 
   /**
