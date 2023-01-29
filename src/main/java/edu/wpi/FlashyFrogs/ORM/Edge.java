@@ -20,4 +20,12 @@ public class Edge {
   @Getter
   @Setter
   Node node2;
+
+  /*
+  Create equals method
+  */
+
+  /*
+  create hashcode method
+  */
 }
