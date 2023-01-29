@@ -15,7 +15,7 @@ public class Main {
 
     final StandardServiceRegistry registry =
         new StandardServiceRegistryBuilder()
-            .configure() // configures settings from hibernate.cfg.xml
+            .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
             .build();
     try {
       SessionFactory factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
