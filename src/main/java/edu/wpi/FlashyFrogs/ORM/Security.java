@@ -13,5 +13,5 @@ public class Security {
   @Basic @Getter @Setter String incidentReport;
   @Basic @Getter @Setter String location;
 
-  @Basic @Id @Getter @Setter BigInteger srID;
+  @Basic @Id @Getter @Setter @GeneratedValue long srID;
 }

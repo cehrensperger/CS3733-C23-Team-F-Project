@@ -9,9 +9,7 @@ import lombok.Setter;
 @Table(name = "Move")
 public class Move {
   @Id @Getter @Setter String nodeID;
-
   @Id @Getter @Setter String longName;
-
   @Temporal(TemporalType.TIMESTAMP)
   @Id
   @Getter

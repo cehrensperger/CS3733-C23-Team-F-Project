@@ -17,5 +17,5 @@ public class InternalTransport {
   @Setter
   Date dateOfBirth;
 
-  @Id @Getter @Setter int srID;
+  @Basic @Id @Getter @Setter @GeneratedValue long srID;
 }

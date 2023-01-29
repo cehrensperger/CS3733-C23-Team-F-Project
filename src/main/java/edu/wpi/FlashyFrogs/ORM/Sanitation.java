@@ -10,5 +10,5 @@ public class Sanitation {
   @Basic @Getter @Setter String type;
   @Basic @Getter @Setter String location;
 
-  @Basic @Id @Getter @Setter int srID;
+  @Basic @Id @Getter @Setter @GeneratedValue long srID;
 }

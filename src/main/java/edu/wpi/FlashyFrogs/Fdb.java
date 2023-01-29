@@ -27,15 +27,21 @@ public class Fdb {
       Session session = factory.openSession();
       Transaction transaction = session.beginTransaction();
 
-      Node node = new Node();
-      node.setId("11");
-      node.setBuilding("Unity Hall");
-      node.setFloor("L1");
-      node.setXCoord(10);
-      node.setYCoord(10);
-
-      session.save(node);
-      transaction.commit();
+      // place object into db example
+      //      Node node = new Node();
+      //      node.setId("13");
+      //      node.setBuilding("Unity Hall");
+      //      node.setFloor("L1");
+      //      node.setXCoord(10);
+      //      node.setYCoord(10);
+      //      session.persist(node);
+      //      transaction.commit();
+      //
+      //      // update an object in the db example
+      //      transaction = session.beginTransaction();
+      //      node.setYCoord(20);
+      //      session.merge(node);
+      //      transaction.commit();
 
       session.close();
       factory.close();
