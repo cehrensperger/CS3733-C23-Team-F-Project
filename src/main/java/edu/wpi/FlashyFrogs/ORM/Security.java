@@ -8,9 +8,8 @@ import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "Security")
-public class Security extends ServiceRequest{
+@PrimaryKeyJoinColumn(name = "service_request_id")
+public class Security extends ServiceRequest {
   @Basic @Getter @Setter String incidentReport;
   @Basic @Getter @Setter String location;
-
-  @Basic @Id @Getter @Setter @GeneratedValue long srID;
 }
