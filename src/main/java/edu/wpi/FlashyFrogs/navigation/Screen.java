@@ -1,8 +1,8 @@
 package edu.wpi.FlashyFrogs.navigation;
 
 public enum Screen {
-  ROOT("views/Root.fxml"),
-  HOME("views/Home.fxml"),
+  ROOT("views/RequestsHome.fxml"),
+  HOME("views/RequestsHome.fxml"),
   SERVICE_REQUEST("views/ServiceRequest.fxml");
 
   private final String filename;

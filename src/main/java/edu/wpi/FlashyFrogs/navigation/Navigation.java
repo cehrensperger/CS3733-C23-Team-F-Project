@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.navigation;
 
-import edu.wpi.FlashyFrogs.App;
+import edu.wpi.FlashyFrogs.Fapp;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 
@@ -10,10 +10,10 @@ public class Navigation {
     final String filename = screen.getFilename();
 
     try {
-      final var resource = App.class.getResource(filename);
+      final var resource = Fapp.class.getResource(filename);
       final FXMLLoader loader = new FXMLLoader(resource);
 
-      App.getRootPane().setCenter(loader.load());
+      Fapp.getRootPane().setCenter(loader.load());
     } catch (IOException | NullPointerException e) {
       e.printStackTrace();
     }
