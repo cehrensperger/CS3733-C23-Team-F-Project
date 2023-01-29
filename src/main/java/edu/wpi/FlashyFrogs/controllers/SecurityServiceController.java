@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
-public class SecurityServiceController {
+public class SecurityServiceController extends ServiceRequestController {
 
   @FXML private AnchorPane rootPane;
   @FXML private Text securityServiceText;

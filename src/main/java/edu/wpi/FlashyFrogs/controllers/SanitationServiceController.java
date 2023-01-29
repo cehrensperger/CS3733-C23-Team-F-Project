@@ -13,7 +13,7 @@ import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class SanitationServiceController {
+public class SanitationServiceController extends ServiceRequestController {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
