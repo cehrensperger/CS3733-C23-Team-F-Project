@@ -62,7 +62,7 @@
                         <Font size="14.0" />
                     </font>
                 </Text>
-                <Text layoutX="16.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information" wrappingWidth="225.33673095703125">
+                <Text layoutX="18.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information" wrappingWidth="351.33673095703125">
                     <font>
                         <Font size="24.0" />
                     </font>
