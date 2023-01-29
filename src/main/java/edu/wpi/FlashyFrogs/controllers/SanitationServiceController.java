@@ -1,6 +1,8 @@
 package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.Main;
+import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.SanitationServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -12,6 +14,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class SanitationServiceController extends ServiceRequestController {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML
@@ -82,8 +86,19 @@ public class SanitationServiceController extends ServiceRequestController {
     sanitationServiceData.setEmployeeFirstName(firstName.getText());
     sanitationServiceData.setEmployeeLastName(lastName.getText());
     sanitationServiceData.setEmployeeMiddleName(middleName.getText());
-
+    addSanitationRequest(locationDropDown.getText(), requestTypeDropDown.getText());
     System.out.println(sanitationServiceData);
+  }
+
+  private void addSanitationRequest(String location, String type) {
+    Session session = Main.getFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+    Sanitation sanitationRequest = new Sanitation();
+    sanitationRequest.setLocation(location);
+    sanitationRequest.setType(type);
+
+    session.persist(sanitationRequest);
+    transaction.commit();
   }
 
   /**
