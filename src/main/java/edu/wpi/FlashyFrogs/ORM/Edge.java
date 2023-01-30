@@ -21,9 +21,10 @@ public class Edge {
   @Setter
   Node node2;
 
-  /*
-  Create equals method
-  */
+  public boolean equals(Edge edge) {
+    return (this.getNode1().getId().equals(edge.getNode1().getId())
+        && this.getNode2().getId().equals(edge.getNode2().getId()));
+  }
 
   /*
   create hashcode method
