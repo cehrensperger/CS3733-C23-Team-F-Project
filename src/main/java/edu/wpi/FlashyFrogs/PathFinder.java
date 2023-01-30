@@ -1,6 +1,5 @@
 package edu.wpi.FlashyFrogs;
 
-import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import lombok.AllArgsConstructor;
@@ -124,13 +123,13 @@ public class PathFinder {
 
                 for (NodeWrapper open : openList) {
                     if (open.node.equals(child.node) && open.f < child.f) {
-                        break NODE_LOOP;
+                        continue NODE_LOOP;
                     }
                 }
 
                 for (NodeWrapper closed : closedlist) {
                     if (closed.node.equals(child.node) && closed.f < child.f) {
-                        break NODE_LOOP;
+                        continue NODE_LOOP;
                     }
                 }
                 openList.add(child);
@@ -162,7 +161,7 @@ public class PathFinder {
             this.parent = parent;
         }
 
-        NodeWrapper(@NonNull Node node, NodeWrapper parent, @NonNull double cost) {
+        NodeWrapper(@NonNull Node node, NodeWrapper parent, double cost) {
             this.node = node;
             this.parent = parent;
             this.f = cost;
