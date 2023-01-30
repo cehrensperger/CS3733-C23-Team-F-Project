@@ -2,12 +2,11 @@ plugins {
     id 'application'
     id 'java'
     id 'jacoco'
-    id 'com.diffplug.gradle.spotless' version '3.27.1'
+    id 'com.diffplug.spotless' version '6.14.0'
     id "io.freefair.lombok" version "6.6.1"
     id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 mainClassName = 'edu.wpi.FlashyFrogs.Main'
-
 repositories {
     mavenCentral()
     jcenter()
@@ -48,24 +47,38 @@ dependencies {
 
     testImplementation(
             "org.testfx:testfx-core:4.0.16-alpha",
-            'org.junit.jupiter:junit-jupiter:5.6.0',
+            'org.junit.jupiter:junit-jupiter-api:5.8.1',
             'org.testfx:testfx-junit5:4.0.16-alpha',
 //            'com.oracle.ojdbc:ojdbc10:19.3.0.0',
+    )
+
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     )
 
     String javaFxVersion = "19"
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'linux'
+    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac-aarch64'
     implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'linux'
+    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'mac-aarch64'
     implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'linux'
+    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'mac-aarch64'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
+    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac-aarch64'
+    testImplementation(
+            "org.testfx:testfx-core:4.0.16-alpha",
+            'org.junit.jupiter:junit-jupiter:5.6.0',
+            'org.testfx:testfx-junit5:4.0.16-alpha',
+//            'com.oracle.ojdbc:ojdbc10:19.3.0.0',
+    )
 }
 
 
