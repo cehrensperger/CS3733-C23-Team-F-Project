@@ -19,7 +19,7 @@ public class LocationName {
     this.longName = longName;
   }
 
-  public LocationName(String thelongName, LocationType thelocationType, String theShortName){
+  public LocationName(String thelongName, LocationType thelocationType, String theShortName) {
     this.longName = thelongName;
     this.locationType = thelocationType;
     this.shortName = theShortName;

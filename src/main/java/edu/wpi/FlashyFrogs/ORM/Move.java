@@ -36,6 +36,7 @@ public class Move {
     this.location = location;
     this.moveDate = date;
   }
+
   @Override
   @NonNull
   public boolean equals(Object other) {

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 @AllArgsConstructor
 public class PathFinder {
@@ -53,23 +52,30 @@ public class PathFinder {
 
   /**
    * Returns the location associated with a given Node, or null if none could be found
+   *
    * @param node the node to lookup
    * @param session the session to use in the lookup
    * @return the location that was found
    */
   private LocationName nodeToLocation(@NonNull Node node, @NonNull Session session) {
-    // Create a query that selects the first location from the move where the location is the location, orders
+    // Create a query that selects the first location from the move where the location is the
+    // location, orders
     // by descending date (first at top) and limits to one, so we only get one.
     // Then casts to LocationName, sets the parameter location (to prevent injection)
-    // Gets a unique result, which will return either the singular result found or null if there was none
-    return session.createQuery("""
+    // Gets a unique result, which will return either the singular result found or null if there was
+    // none
+    return session
+        .createQuery(
+            """
                                           SELECT LocationName
                                           FROM Move
                                           WHERE Node = :node
                                           ORDER BY moveDate DESC
                                           LIMIT 1
                                           """,
-            LocationName.class).setParameter("node", node).uniqueResult();
+            LocationName.class)
+        .setParameter("node", node)
+        .uniqueResult();
   }
 
   /**
@@ -106,7 +112,8 @@ public class PathFinder {
    * @param start the start location to find. Will find the Node most recently associated with this
    * @param end the end location to find. Will find the Node most recently associated with this
    * @return the path (as a list) between the two locations, or null if it could not find a path
-   * @throws NullPointerException if the lookup for a location (or node associated with the location) fails
+   * @throws NullPointerException if the lookup for a location (or node associated with the
+   *     location) fails
    */
   public List<Node> findPath(@NonNull String start, @NonNull String end) {
     // Get the session to use for this

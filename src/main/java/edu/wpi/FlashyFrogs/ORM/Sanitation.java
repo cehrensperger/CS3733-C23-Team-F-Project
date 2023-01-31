@@ -19,7 +19,7 @@ public class Sanitation extends ServiceRequest {
     this.id = id;
   }
 
-  public Sanitation(String theLocation, String theType, long theId){
+  public Sanitation(String theLocation, String theType, long theId) {
     this.location = theLocation;
     this.type = theType;
     this.id = theId;

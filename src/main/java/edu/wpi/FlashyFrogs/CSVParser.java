@@ -1,27 +1,25 @@
 package edu.wpi.FlashyFrogs;
 
+import static java.lang.Number.*;
+
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.Instant;
 import java.util.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
-import static java.lang.Number.*;
-
 public class CSVParser {
 
   public void CSVParser(SessionFactory sf) {}
 
-  public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile) throws FileNotFoundException {
+  public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile)
+      throws FileNotFoundException {
     try {
       Session session = Main.factory.openSession();
       Transaction transaction = session.beginTransaction();
@@ -44,7 +42,13 @@ public class CSVParser {
       while (nodeFileScanner.hasNextLine()) {
         fields = nodeFileScanner.nextLine().split(",");
 
-        Node node = new Node(fields[0], fields[1], Node.Floor.valueOf(fields[2]), Integer.parseInt(fields[3]), Integer.parseInt(fields[4]));
+        Node node =
+            new Node(
+                fields[0],
+                fields[1],
+                Node.Floor.valueOf(fields[2]),
+                Integer.parseInt(fields[3]),
+                Integer.parseInt(fields[4]));
         nodes.put(fields[0], node);
         session.persist(node);
       }
@@ -57,20 +61,22 @@ public class CSVParser {
       while (locationFileScanner.hasNextLine()) {
         fields = nodeFileScanner.nextLine().split(",");
 
-        LocationName location = new LocationName(fields[0], LocationName.LocationType.valueOf(fields[1]), fields[2]);
+        LocationName location =
+            new LocationName(fields[0], LocationName.LocationType.valueOf(fields[1]), fields[2]);
         locations.put(fields[0], location);
         session.persist(location);
       }
       while (moveFileScanner.hasNextLine()) {
         fields = nodeFileScanner.nextLine().split(",");
 
-        Move move = new Move(nodes.get(fields[0]), locations.get(fields[1]), Date.from());
+        Move move =
+            new Move(nodes.get(fields[0]), locations.get(fields[1]), Date.from(Instant.now()));
         session.persist(move);
       }
       transaction.commit();
       session.close();
 
-    } catch(FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       System.out.println("Use a valid filepath.");
     }
   }
