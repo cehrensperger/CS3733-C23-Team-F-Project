@@ -7,8 +7,6 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-import edu.wpi.FlashyFrogs.ORM.locationName;
 import org.hibernate.SessionFactory;
 
 public class CSVParser {
