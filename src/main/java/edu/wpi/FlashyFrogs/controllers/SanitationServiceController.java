@@ -17,7 +17,7 @@ import javafx.fxml.FXML;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class SanitationServiceController  {
+public class SanitationServiceController {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
@@ -94,16 +94,19 @@ public class SanitationServiceController  {
     sanitationServiceData.setEmployeeFirstName(firstName.getText());
     sanitationServiceData.setEmployeeLastName(lastName.getText());
     sanitationServiceData.setEmployeeMiddleName(middleName.getText());
-    addSanitationRequest(locationDropDown.getText(), requestTypeDropDown.getText());
+    addSanitationRequest(sanitationServiceData);
     System.out.println(sanitationServiceData);
   }
 
-  private void addSanitationRequest(String location, String type) {
+  private void addSanitationRequest(SanitationServiceData sd) {
     Session session = Main.getFactory().openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(location);
-    sanitationRequest.setType(type);
+    sanitationRequest.setLocation(sd.getLocationInfo());
+    sanitationRequest.setType(sd.getRequestType());
+    sanitationRequest.setEmpFirstName(sd.getEmployeeFirstName());
+    sanitationRequest.setEmpMiddleName(sd.getEmployeeMiddleName());
+    sanitationRequest.setEmpLastName(sd.getEmployeeLastName());
 
     session.persist(sanitationRequest);
     transaction.commit();
@@ -121,7 +124,7 @@ public class SanitationServiceController  {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    //Fapp.setScene("AllSanitationRequest");
+    // Fapp.setScene("AllSanitationRequest");
   }
 
   /**

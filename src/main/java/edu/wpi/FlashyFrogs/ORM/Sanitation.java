@@ -10,8 +10,9 @@ import lombok.Setter;
     name = "service_request_id",
     foreignKey = @ForeignKey(name = "service_request_id_fk"))
 public class Sanitation extends ServiceRequest {
-  @Basic @Getter @Setter String type;
-  @Basic @Getter @Setter String location;
+  @Basic @Getter @Setter String sanitationType; // should be enum
+  @Basic @Getter @Setter String location; // should be enum
+  @Basic @Getter @Setter String urgency; // should be enum
 
   public Sanitation() {}
 

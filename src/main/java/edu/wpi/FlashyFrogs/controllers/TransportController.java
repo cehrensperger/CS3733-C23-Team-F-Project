@@ -35,7 +35,6 @@ public class TransportController {
   @FXML private MFXComboBox department2;
   @FXML private MFXButton allButton;
 
-
   private Connection connection = null; // connection to database
 
   private SubmitInfo submitInfo;
@@ -78,7 +77,7 @@ public class TransportController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    //Fapp.setScene("AllTransport");
+    // Fapp.setScene("AllTransport");
   }
 
   public void submitButtonClicked(ActionEvent actionEvent) throws IOException {

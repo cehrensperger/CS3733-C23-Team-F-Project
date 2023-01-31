@@ -25,8 +25,8 @@ public class AllRequestsController {
   public void initialize() {
     System.out.println("initializing");
     typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-    empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-    submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("empName"));
+    empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
+    submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("subDate"));
     submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("notes"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
