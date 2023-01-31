@@ -47,4 +47,10 @@ public class Edge {
   public int hashCode() {
     return Objects.hash(this.node1, this.node2);
   }
+
+//  @Override
+//  @NonNull
+//  public String toString() {
+//    return
+//  }
 }

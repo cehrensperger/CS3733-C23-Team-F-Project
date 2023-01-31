@@ -55,4 +55,9 @@ public class Node {
     Node other = (Node) obj;
     return this.getId().equals(other.getId());
   }
+
+  @Override
+  public String toString() {
+    return this.id;
+  }
 }

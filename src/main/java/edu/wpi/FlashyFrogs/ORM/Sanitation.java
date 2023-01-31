@@ -14,13 +14,14 @@ public class Sanitation extends ServiceRequest {
   @Basic @Getter @Setter String location; // should be enum
   @Basic @Getter @Setter String urgency; // should be enum
 
-  public Sanitation() {}
-
-  public Sanitation(long id) {
-    this.id = id;
+  public Sanitation() {
+    super();
   }
 
+  public Sanitation(long id) {this.id = id;}
+
   public Sanitation(String theLocation, String theType, long theId) {
+    super();
     this.location = theLocation;
     this.type = theType;
     this.id = theId;
