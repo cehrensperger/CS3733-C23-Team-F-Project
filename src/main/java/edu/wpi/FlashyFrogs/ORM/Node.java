@@ -21,11 +21,11 @@ public class Node {
   }
 
   public Node (String theId, String theBuilding, Floor theFloor, int theXCoord, int theYCoord) {
-    id = theId;
-    building = theBuilding;
-    floor = theFloor;
-    xCoord = theXCoord;
-    yCoord = theYCoord;
+    this.id = theId;
+    this.building = theBuilding;
+    this.floor = theFloor;
+    this.xCoord = theXCoord;
+    this.yCoord = theYCoord;
   }
 
   /** Enumerated type for the possible floors we can create */

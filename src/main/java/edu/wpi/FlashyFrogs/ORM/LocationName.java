@@ -19,6 +19,12 @@ public class LocationName {
     this.longName = longName;
   }
 
+  public LocationName(String thelongName, LocationType thelocationType, String theShortName){
+    this.longName = thelongName;
+    this.locationType = thelocationType;
+    this.shortName = theShortName;
+  }
+
   /** Enumerated type for the type of location we can create */
   public enum LocationType {
     HALL("HALL"),
