@@ -18,31 +18,16 @@ public class RequestsHomeController extends ServiceRequestController {
   @FXML private MFXButton securityServicesButton;
   @FXML private MFXButton exitButton;
   @FXML private MFXButton backButton;
+  @FXML private MFXButton allRequestsButton;
 
   Stage stage;
 
   /** Initialize controller by FXML Loader. */
   @FXML
   public void initialize() {
-    System.out.println("I am from HomeController.");
-
-    //    submit.setOnMouseClicked(event -> {});
-  }
-
-  /**
-   * FXML Injected Method that handles the submit button.
-   *
-   * @param event The event that triggered the method.
-   */
-  @FXML
-  private void handleButtonSubmit(ActionEvent event) {
-    /*
-     1. Get the text the user input
-     2. Validate it against the correct information
-     3. Display to the user whether their input was correct or not
-    */
 
   }
+
 
   @FXML
   public void handleSecurityServiceButton(ActionEvent actionEvent) throws IOException {
@@ -69,5 +54,10 @@ public class RequestsHomeController extends ServiceRequestController {
   @FXML
   public void handleBackButton(ActionEvent event) throws IOException {
     Fapp.setScene("Home");
+  }
+
+  @FXML
+  public void handleAllRequestsButton(ActionEvent event) throws IOException {
+    Fapp.setScene("AllRequests");
   }
 }
