@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -8,18 +9,50 @@ import lombok.Setter;
 @Entity
 @Table(name = "LocationName")
 public class LocationName {
-  @Id @Getter @Setter String longName;
+  @Id
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String longName;
 
-  @Basic @Getter @Setter String shortName;
-  @Basic @Getter LocationType locationType;
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String shortName;
 
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  LocationType locationType; // why is this mad at me but node is not????
+
+  /** Creates a new LocationName with empty fields */
   public LocationName() {}
 
-  public LocationName(String longName) {
+  /**
+   * Creates a new LocationName with the given primary key (unnecessary)
+   *
+   * @param longName the String to be used in the longName field
+   */
+  public LocationName(@NonNull String longName) {
     this.longName = longName;
   }
 
-  public LocationName(String thelongName, LocationType thelocationType, String theShortName) {
+  /**
+   * Creates a new LocationName with the given fields
+   *
+   * @param thelongName the String to be used in the longName field
+   * @param thelocationType the LocationType to be used in the locationType field
+   * @param theShortName the String to be used in the shortName field
+   */
+  public LocationName(
+      @NonNull String thelongName,
+      @NonNull LocationType thelocationType,
+      @NonNull String theShortName) {
     this.longName = thelongName;
     this.locationType = thelocationType;
     this.shortName = theShortName;
@@ -51,6 +84,39 @@ public class LocationName {
     }
   }
 
+  /**
+   * Overrides the default equals method with one that compares equality of primary keys
+   *
+   * @param obj the LocationName object to compare primary keys against
+   * @return boolean whether the primary keys are equal or not
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (this.getClass() != obj.getClass()) return false;
+    LocationName other = (LocationName) obj;
+    return this.longName.equals(other.getLongName());
+  }
+
+  /**
+   * Overrides the default hashCode method with one that uses the longName and locationType of the
+   * object
+   *
+   * @return the new hashcode
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.longName, this.locationType.name());
+  }
+
+  /**
+   * Overrides the default toString method with one that returns the longName of the object
+   *
+   * @return the longName of the object
+   */
+  @Override
+  @NonNull
   public String toString() {
     return this.longName;
   }

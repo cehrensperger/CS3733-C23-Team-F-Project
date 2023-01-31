@@ -19,7 +19,6 @@ public class EdgeTest {
     Edge testEdge1 = new Edge(node1, node2);
     Edge testEdge2 = new Edge(node1, node2);
     Edge testEdge3 = new Edge(node2, node3);
-
     assertTrue(testEdge1.equals(testEdge2));
     assertFalse(testEdge1.equals(testEdge3));
   }

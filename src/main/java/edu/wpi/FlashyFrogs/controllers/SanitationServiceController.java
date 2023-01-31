@@ -11,8 +11,6 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.Instant;
 import java.util.Date;
 import javafx.event.ActionEvent;
@@ -43,10 +41,6 @@ public class SanitationServiceController extends ServiceRequestController {
 
   /** Method run when controller is initializes */
   public void initialize() {
-    // if connection is successful
-    if (this.connectToDB()) {
-      this.createTable();
-    }
 
     sanitationServiceData = new SanitationServiceData();
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
@@ -64,8 +58,6 @@ public class SanitationServiceController extends ServiceRequestController {
    * @throws IOException
    */
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    System.out.println("clear button was clicked");
-    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
     requestTypeDropDown.clear();
     locationDropDown.clear();
     date.clear();
@@ -101,8 +93,8 @@ public class SanitationServiceController extends ServiceRequestController {
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(locationDropDown.getText());
-    sanitationRequest.setType("Sanitation");
+    sanitationRequest.setLocation(Sanitation.Location.valueOf(locationDropDown.getText()));
+    sanitationRequest.setType(Sanitation.SanitationType.valueOf("mopping")); //CHANGE THIS TO A FIELD IG IG IG
     sanitationRequest.setEmpFirstName(firstName.getText());
     sanitationRequest.setEmpMiddleName(middleName.getText());
     sanitationRequest.setEmpLastName(lastName.getText());
@@ -118,8 +110,8 @@ public class SanitationServiceController extends ServiceRequestController {
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(sd.getLocationInfo());
-    sanitationRequest.setType(sd.getRequestType());
+    sanitationRequest.setLocation(Sanitation.Location.valueOf(sd.getLocationInfo()));
+    sanitationRequest.setType(Sanitation.SanitationType.valueOf(sd.getRequestType()));
     sanitationRequest.setEmpFirstName(sd.getEmployeeFirstName());
     sanitationRequest.setEmpMiddleName(sd.getEmployeeMiddleName());
     sanitationRequest.setEmpLastName(sd.getEmployeeLastName());
@@ -148,96 +140,56 @@ public class SanitationServiceController extends ServiceRequestController {
   }
 
   /**
-   * Generates connection to server on localhost at default port (1521) be aware of the username and
-   * password when testing
-   *
-   * @return True when connection is successful, False when failed
-   */
-  private boolean connectToDB() {
-
-    //    try {
-    //      Class.forName(
-    //          "org.apache.derby.jdbc.ClientDriver"); // Check that proper driver is packaged for
-    // Apache
-    //      // Derby
-    //    } catch (Exception e) {
-    //      e.printStackTrace();
-    //      System.out.println("NO DRIVER");
-    //      return false;
-    //    }
-    //    try {
-    //      // create Connection at specified URL
-    //      this.connection =
-    //          DriverManager.getConnection(
-    //              "jdbc:derby://localhost:1527/testDB;create=true",
-    //              "app",
-    //              "derbypass"); // This will change for each team as their DB is developed
-    //      if (this.connection != null) {
-    //        System.out.println("Connected to the database!");
-    //      } else {
-    //        System.out.println("Failed to make connection!");
-    //      }
-    //    } catch (SQLException e) {
-    //      System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-    //      return false;
-    //    } catch (Exception e) {
-    //      e.printStackTrace();
-    //      return false;
-    //    }
-
-    // connection successful, return true
-    return true;
-  }
-
-  /**
    * generates a table to store button click information
    *
    * @return true when table is successfully created or already exists, false otherwise
    */
-  private boolean createTable() {
-
-    boolean table_exists = false;
-
-    if (this.connection != null) {
-      String createQuery =
-          "CREATE TABLE APP.buttonClicks("
-              + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-              + "btn_name VARCHAR(50), "
-              + "time_stamp TIMESTAMP NOT NULL, "
-              + "PRIMARY KEY(id) )";
-      try {
-        Statement statement = this.connection.createStatement();
-        statement.execute(createQuery);
-
-        table_exists = true;
-      } catch (SQLException e) {
-        // Error code 955 is "name is already used by an existing object", so this table name
-        // already exists
-        if (e.getErrorCode() == 955 || e.getMessage().contains("already exists"))
-          table_exists = true;
-        else e.printStackTrace();
-      }
-    }
-    return table_exists;
-  }
-
-  /**
-   * Stores button click data to database
-   *
-   * @return true if data is stored successfully, false otherwise
-   */
-  private boolean logData() {
-    if (connection != null) {
-      String writeQuery =
-          "INSERT INTO APP.buttonClicks(btn_name, time_stamp) VALUES ( 'ClickButton', CURRENT_TIMESTAMP ) ";
-      try {
-        Statement statement = this.connection.createStatement();
-        statement.execute(writeQuery);
-        return true;
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-    return false;
-  }
+  //  private boolean createTable() {
+  //
+  //    boolean table_exists = false;
+  //
+  //    if (this.connection != null) {
+  //      String createQuery =
+  //          "CREATE TABLE APP.buttonClicks("
+  //              + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY
+  // 1), "
+  //              + "btn_name VARCHAR(50), "
+  //              + "time_stamp TIMESTAMP NOT NULL, "
+  //              + "PRIMARY KEY(id) )";
+  //      try {
+  //        Statement statement = this.connection.createStatement();
+  //        statement.execute(createQuery);
+  //
+  //        table_exists = true;
+  //      } catch (SQLException e) {
+  //        // Error code 955 is "name is already used by an existing object", so this table name
+  //        // already exists
+  //        if (e.getErrorCode() == 955 || e.getMessage().contains("already exists"))
+  //          table_exists = true;
+  //        else e.printStackTrace();
+  //      }
+  //    }
+  //    return table_exists;
+  //  }
+  //
+  //  /**
+  //   * Stores button click data to database
+  //   *
+  //   * @return true if data is stored successfully, false otherwise
+  //   */
+  //  private boolean logData() {
+  //    if (connection != null) {
+  //      String writeQuery =
+  //          "INSERT INTO APP.buttonClicks(btn_name, time_stamp) VALUES ( 'ClickButton',
+  // CURRENT_TIMESTAMP ) ";
+  //      try {
+  //        Statement statement = this.connection.createStatement();
+  //        statement.execute(writeQuery);
+  //        return true;
+  //      } catch (SQLException e) {
+  //        e.printStackTrace();
+  //      }
+  //    }
+  //    return false;
+  //  }
 }
