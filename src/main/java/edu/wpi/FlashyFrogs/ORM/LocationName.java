@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -51,6 +52,41 @@ public class LocationName {
     }
   }
 
+  /**
+   * Overrides the default equals method with one that compares equality of primary keys
+   *
+   * @param obj the LocationName object to compare primary keys against
+   * @return boolean whether the primary keys are equal or not
+   */
+  @Override
+  @NonNull
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (this.getClass() != obj.getClass()) return false;
+    LocationName other = (LocationName) obj;
+    return this.longName.equals(other.getLongName());
+  }
+
+  /**
+   * Overrides the default hashCode method with one that uses the longName and locationType of the
+   * object
+   *
+   * @return the new hashcode
+   */
+  @Override
+  @NonNull
+  public int hashCode() {
+    return Objects.hash(this.longName, this.locationType.name());
+  }
+
+  /**
+   * Overrides the default toString method with one that returns the longName of the object
+   *
+   * @return the longName of the object
+   */
+  @Override
+  @NonNull
   public String toString() {
     return this.longName;
   }

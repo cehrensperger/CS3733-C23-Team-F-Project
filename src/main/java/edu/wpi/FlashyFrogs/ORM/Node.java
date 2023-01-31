@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -49,13 +50,41 @@ public class Node {
     }
   }
 
+  /**
+   * Overrides the default equals method with one that compares primary keys
+   *
+   * @param obj the node object to compare to
+   * @return boolean whether the primary keys are the same or not
+   */
   @Override
+  @NonNull
   public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (this.getClass() != obj.getClass()) return false;
     Node other = (Node) obj;
-    return this.getId().equals(other.getId());
+    return this.id.equals(other.getId());
   }
 
+  /**
+   * Overrides the default hashCode method with one that uses the id, xcoord, and ycoord of the node
+   * object
+   *
+   * @return the new hashcode
+   */
   @Override
+  @NonNull
+  public int hashCode() {
+    return Objects.hash(this.id, this.xCoord, this.yCoord);
+  }
+
+  /**
+   * Overrides the default toString method with one that returns the id of the Node object
+   *
+   * @return the id of the Node object
+   */
+  @Override
+  @NonNull
   public String toString() {
     return this.id;
   }

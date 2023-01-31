@@ -17,7 +17,9 @@ public class Sanitation extends ServiceRequest {
     super();
   }
 
-  public Sanitation(long id) {this.id = id;}
+  public Sanitation(long id) {
+    this.id = id;
+  }
 
   public Sanitation(String theLocation, String theType, long theId) {
     super();
