@@ -3,13 +3,10 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,13 +20,13 @@ import org.hibernate.Transaction;
 
 public class AllRequestsController {
   @FXML
-  private TableColumn<ServiceRequest, String> typeCol,
+  protected TableColumn<ServiceRequest, String> typeCol,
       empLastNameCol,
       submissionDateCol,
       submissionTimeCol,
       statusCol;
 
-  @FXML private TableView tableView;
+  @FXML protected TableView tableView;
   @FXML private MFXButton back;
 
   @FXML
@@ -50,7 +47,7 @@ public class AllRequestsController {
     // Sanitation sanitationRequest = new Sanitation();
 
     List<ServiceRequest> objects =
-        session.createQuery("SELECT s FROM Sanitation s", ServiceRequest.class).getResultList();
+        session.createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class).getResultList();
     System.out.println(objects.size());
     System.out.println(FXCollections.observableList(objects).size());
     tableView.setItems(FXCollections.observableList(objects));
@@ -61,16 +58,17 @@ public class AllRequestsController {
           @Override
           public void handle(TableColumn.CellEditEvent<ServiceRequest, String> t) {
 
-            Session session = factory.openSession();
-            Transaction transaction = session.beginTransaction();
+            Session editSession = factory.openSession();
+            Transaction transaction = editSession.beginTransaction();
 
-            Sanitation sanitation =
-                ((Sanitation) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-            sanitation.setStatus(ServiceRequest.Status.valueOf((t.getNewValue())));
+            ServiceRequest serviceRequest =
+                (t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            serviceRequest.setStatus(ServiceRequest.Status.valueOf((t.getNewValue())));
 
-            session.merge(sanitation);
-            session.persist(sanitation);
+            editSession.merge(serviceRequest);
+            // editSession.persist(serviceRequest);
             transaction.commit();
+            editSession.close();
           }
         });
 

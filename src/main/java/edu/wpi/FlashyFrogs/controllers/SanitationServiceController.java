@@ -110,7 +110,7 @@ public class SanitationServiceController extends ServiceRequestController {
 
     session.persist(sanitationRequest);
     transaction.commit();
-
+    session.close();
     System.out.println(sanitationServiceData);
   }
 
@@ -127,6 +127,7 @@ public class SanitationServiceController extends ServiceRequestController {
 
     session.persist(sanitationRequest);
     transaction.commit();
+    session.close();
     System.out.println("submitted");
   }
 

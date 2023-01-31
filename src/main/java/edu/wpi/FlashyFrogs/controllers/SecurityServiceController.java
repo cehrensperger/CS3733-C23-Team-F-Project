@@ -1,16 +1,23 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.SecurityServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class SecurityServiceController extends ServiceRequestController {
 
@@ -91,6 +98,20 @@ public class SecurityServiceController extends ServiceRequestController {
         incidentReport, location, date, time, first, middle, last, department);
     System.out.println(securityServiceData.getInfo());
 
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    Security securityRequest = new Security();
+    securityRequest.setLocation(locationEntry.getText());
+    securityRequest.setType("Security");
+    securityRequest.setEmpFirstName(firstEntry.getText());
+    securityRequest.setEmpMiddleName(middleEntry.getText());
+    securityRequest.setEmpLastName(lastEntry.getText());
+    securityRequest.setDateOfSubmission(Date.from(Instant.now()));
+
+    session.persist(securityRequest);
+    transaction.commit();
+    session.close();
+    // System.out.println(sanitationServiceData);
     // SecurityServiceData data = new SecurityServiceData();
   }
 
