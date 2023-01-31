@@ -12,18 +12,14 @@ import org.hibernate.SessionFactory;
 
 public class CSVParser {
 
-  public static void main(String args[]) throws FileNotFoundException {
-    readFiles();
-  }
-
   public void CSVParser(SessionFactory sf) {}
 
-  public static void readFiles() throws FileNotFoundException {
+  public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile) throws FileNotFoundException {
     try {
-      File nodeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
-      File edgeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv");
-      File locationFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
-      File moveFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
+      nodeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
+      edgeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv");
+      locationFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
+      moveFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
       Scanner nodeFileScanner = new Scanner(nodeFile);
       Scanner edgeFileScanner = new Scanner(edgeFile);
       Scanner locationFileScanner = new Scanner(locationFile);
@@ -44,6 +40,8 @@ public class CSVParser {
         //maybe skip the first line, which happens to outline the type of data instead of being data...
         new Move();
       }
+    } catch(FileNotFoundException e) {
+      System.out.println("Use a valid filepath.");
     }
   }
 }
