@@ -9,7 +9,6 @@ import lombok.Setter;
 @Table(name = "Node")
 public class Node {
   @Id @Getter @Setter String id;
-
   @Basic @Getter @Setter int xCoord;
   @Basic @Getter @Setter int yCoord;
   @Basic @Getter @Setter Floor floor;
@@ -19,6 +18,14 @@ public class Node {
 
   public Node(String id) {
     this.id = id;
+  }
+
+  public Node (String theId, String theBuilding, Floor theFloor, int theXCoord, int theYCoord) {
+    this.setId(theId);
+    this.setBuilding(theBuilding);
+    this.setFloor(theFloor);
+    this.setXCoord(theXCoord);
+    this.setYCoord(theYCoord);
   }
 
   /** Enumerated type for the possible floors we can create */
