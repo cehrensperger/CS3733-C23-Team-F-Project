@@ -64,11 +64,23 @@ public class DBTableController implements Initializable {
     Move move = new Move(node, locationName, Date.from(Instant.now()));
     System.out.println(move);
     // add info to the table
-    moveTable.getItems().add(move);
+    createTable();
     // add to database
     session.beginTransaction();
     session.persist(move);
     session.getTransaction().commit();
     session.close();
+  }
+
+  public void createTable() {
+    // open session
+    Session ses = factory.openSession();
+    List<Move> objects =
+        ses.createQuery("SELECT s FROM Move s", Move.class)
+            .getResultList(); // select everything from move table and add to list
+    ObservableList<Move> observableList =
+        FXCollections.observableList(objects); // convert list to ObservableList
+    ses.close();
+    moveTable.getItems().addAll(observableList); // add every item in observable list to moveTable
   }
 }
