@@ -50,4 +50,8 @@ public class LocationName {
       this.name = name; // The name to provide
     }
   }
+
+  public String toString() {
+    return this.longName;
+  }
 }
