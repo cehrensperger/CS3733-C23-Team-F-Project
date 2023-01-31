@@ -162,8 +162,8 @@
                   <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Sanitation Requests" />
                </children>
             </HBox>
-            <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#clearButtonClicked" prefWidth="100.0" text="clear" />
-            <MFXButton fx:id="backButton" onAction="#backButtonClicked" prefWidth="100.0" text="back" />
+            <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#handleClear" prefWidth="100.0" text="clear" />
+            <MFXButton fx:id="backButton" onAction="#handleBack" prefWidth="100.0" text="back" />
             <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#handleSubmit" prefWidth="100.0" text="submit" />
          </children>
          <padding>

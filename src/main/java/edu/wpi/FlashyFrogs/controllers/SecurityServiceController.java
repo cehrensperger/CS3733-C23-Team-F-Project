@@ -12,7 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
-public class SecurityServiceController {
+public class SecurityServiceController extends ServiceRequestController {
 
   @FXML private AnchorPane rootPane;
   @FXML private Text securityServiceText;
@@ -54,7 +54,7 @@ public class SecurityServiceController {
    * @param event when the user clicks the clear button
    * @throws IOException
    */
-  public void handleButtonClear(ActionEvent event) throws IOException {
+  public void handleClear(ActionEvent event) throws IOException {
     incidentReportEntry.clear();
     locationEntry.clear();
     dateEntry.clear();
@@ -76,7 +76,7 @@ public class SecurityServiceController {
    * @param event the submit button is clicked
    * @throws IOException
    */
-  public void handleButtonSubmit(ActionEvent event) throws IOException {
+  public void handleSubmit(ActionEvent event) throws IOException {
 
     String incidentReport = incidentReportEntry.getText();
     String location = locationEntry.getText();
@@ -101,7 +101,7 @@ public class SecurityServiceController {
    * @throws IOException
    */
   @FXML
-  public void handleHomeButton(ActionEvent actionEvent) throws IOException {
+  public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
   }
 

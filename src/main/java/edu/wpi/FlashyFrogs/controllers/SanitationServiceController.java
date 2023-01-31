@@ -20,7 +20,7 @@ import javafx.fxml.FXML;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class SanitationServiceController {
+public class SanitationServiceController extends ServiceRequestController {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
@@ -63,7 +63,7 @@ public class SanitationServiceController {
    * @param actionEvent event that triggered method
    * @throws IOException
    */
-  public void clearButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleClear(ActionEvent actionEvent) throws IOException {
     System.out.println("clear button was clicked");
     System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
     requestTypeDropDown.clear();
@@ -90,13 +90,13 @@ public class SanitationServiceController {
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     //    System.out.println("Submit button was clicked");
     //    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
-    sanitationServiceData.setDateInfo(date.getText());
-    sanitationServiceData.setLocationInfo(locationDropDown.getText());
-    sanitationServiceData.setRequestType(requestTypeDropDown.getText());
-    sanitationServiceData.setEmployeeDepartment(departmentDropDown.getText());
-    sanitationServiceData.setEmployeeFirstName(firstName.getText());
-    sanitationServiceData.setEmployeeLastName(lastName.getText());
-    sanitationServiceData.setEmployeeMiddleName(middleName.getText());
+    //    sanitationServiceData.setDateInfo(date.getText());
+    //    sanitationServiceData.setLocationInfo(locationDropDown.getText());
+    //    sanitationServiceData.setRequestType(requestTypeDropDown.getText());
+    //    sanitationServiceData.setEmployeeDepartment(departmentDropDown.getText());
+    //    sanitationServiceData.setEmployeeFirstName(firstName.getText());
+    //    sanitationServiceData.setEmployeeLastName(lastName.getText());
+    //    sanitationServiceData.setEmployeeMiddleName(middleName.getText());
 
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
@@ -136,7 +136,7 @@ public class SanitationServiceController {
    * @param actionEvent event that triggered method
    * @throws IOException
    */
-  public void backButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
   }
 

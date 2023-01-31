@@ -45,8 +45,8 @@
     <children>
         <AnchorPane id="clickHereButton" accessibleRole="BUTTON" maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
             <children>
-                <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="460.0" layoutY="559.0" onAction="#clearButtonClicked" prefWidth="100.0" text="Clear" />
-                <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="686.0" layoutY="559.0" onAction="#submitButtonClicked" prefWidth="100.0" text="Submit" />
+                <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="460.0" layoutY="559.0" onAction="#handleClear" prefWidth="100.0" text="Clear" />
+                <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="686.0" layoutY="559.0" onAction="#handleSubmit" prefWidth="100.0" text="Submit" />
                 <Text layoutX="100.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation Form" textAlignment="CENTER" wrappingWidth="600.0">
                     <font>
                         <Font size="36.0" />
@@ -83,7 +83,7 @@
                 <MFXTextField fx:id="lastNameTextfield2" layoutX="400.0" layoutY="271.0" prefHeight="51.0" prefWidth="190.0" promptText="Last" />
                 <MFXTextField fx:id="middleNameTextfield2" layoutX="205.0" layoutY="271.0" prefHeight="51.0" prefWidth="190.0" promptText="Middle" />
                 <MFXComboBox fx:id="departmentComboBox" layoutX="597.0" layoutY="272.0" prefHeight="50.0" prefWidth="190.0" promptText="Department" />
-                <MFXButton fx:id="backButton" layoutX="574.0" layoutY="559.0" onAction="#backButtonClicked" prefWidth="100.0" text="Back" />
+                <MFXButton fx:id="backButton" layoutX="574.0" layoutY="559.0" onAction="#handleBack" prefWidth="100.0" text="Back" />
             <Text layoutX="18.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Employee">
                <font>
                   <Font size="24.0" />

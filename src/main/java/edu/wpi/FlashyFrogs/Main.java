@@ -11,9 +11,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class Main {
 
   static final StandardServiceRegistry registry =
-          new StandardServiceRegistryBuilder()
-                  .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
-                  .build();
+      new StandardServiceRegistryBuilder()
+          .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
+          .build();
 
   public static final SessionFactory factory =
       new MetadataSources(registry).buildMetadata().buildSessionFactory();
@@ -23,7 +23,7 @@ public class Main {
     File edgeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv");
     File moveFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
     File locationFile =
-            new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
+        new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
 
     CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile);
 

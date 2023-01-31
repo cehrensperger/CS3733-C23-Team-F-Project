@@ -38,7 +38,7 @@ public class ServiceRequest {
   Date dateOfSubmission;
 
   public ServiceRequest() {
-    this.status = ServiceRequest.Status.valueOf("blank");
+    this.status = ServiceRequest.Status.BLANK;
   }
 
   /** Enumerated type for the possible statuses we can create */

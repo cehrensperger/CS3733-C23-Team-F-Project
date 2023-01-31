@@ -14,7 +14,7 @@ import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class TransportController {
+public class TransportController extends ServiceRequestController {
   @FXML MFXTextField firstNameTextfield; // ID of the first name text field
   @FXML MFXTextField lastNameTextfield;
   @FXML MFXTextField middleNameTextfield;
@@ -55,7 +55,7 @@ public class TransportController {
     departmentComboBox.getItems().addAll("Cardiology", "Radiology", "Trauma Unit");
   }
 
-  public void clearButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleClear(ActionEvent actionEvent) throws IOException {
     System.out.println("clear button was clicked");
     System.out.println(this.logData() ? "Data logged" : "Data was not logged");
     firstNameTextfield.clear();
@@ -81,7 +81,7 @@ public class TransportController {
     Fapp.setScene("AllTransport");
   }
 
-  public void submitButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleSubmit(ActionEvent actionEvent) throws IOException {
     System.out.println("Submit Button was Clicked");
     System.out.println(this.logData() ? "Data logged" : "Data was not logged");
     submitInfo.setPatientFirstName(firstNameTextfield.getText());
@@ -110,7 +110,7 @@ public class TransportController {
     System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
   }
 
-  public void backButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
   }
 
