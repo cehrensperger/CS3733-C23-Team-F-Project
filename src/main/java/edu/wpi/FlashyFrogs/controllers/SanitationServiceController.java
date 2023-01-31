@@ -124,7 +124,9 @@ public class SanitationServiceController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    // Fapp.setScene("AllSanitationRequest");
+
+    Fapp.setScene("AllSanitationRequest");
+
   }
 
   /**

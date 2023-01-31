@@ -107,6 +107,8 @@ public class SecurityServiceController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    // Fapp.setScene("AllSecurityService");
+
+    Fapp.setScene("AllSecurityService");
+
   }
 }
