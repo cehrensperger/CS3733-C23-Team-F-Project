@@ -18,7 +18,7 @@
         <property name="connection.password">QZsMCabe9faRjyhHQphIYHRnLI0no3N7</property>
         <property name="connection.autocommit">true</property>
 
-        <property name="default_schema">public</property>
+        <property name="default_schema">test</property>
 
         <property name="connection.pool_size">1</property>
 

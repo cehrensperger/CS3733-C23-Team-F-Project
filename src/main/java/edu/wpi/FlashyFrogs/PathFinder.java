@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 @AllArgsConstructor
 public class PathFinder {
@@ -51,6 +52,27 @@ public class PathFinder {
   }
 
   /**
+   * Returns the location associated with a given Node, or null if none could be found
+   * @param node the node to lookup
+   * @param session the session to use in the lookup
+   * @return the location that was found
+   */
+  private LocationName nodeToLocation(@NonNull Node node, @NonNull Session session) {
+    // Create a query that selects the first location from the move where the location is the location, orders
+    // by descending date (first at top) and limits to one, so we only get one.
+    // Then casts to LocationName, sets the parameter location (to prevent injection)
+    // Gets a unique result, which will return either the singular result found or null if there was none
+    return session.createQuery("""
+                                          SELECT LocationName
+                                          FROM Move
+                                          WHERE Node = :node
+                                          ORDER BY moveDate DESC
+                                          LIMIT 1
+                                          """,
+            LocationName.class).setParameter("node", node).uniqueResult();
+  }
+
+  /**
    * Gets the neighbors of a Node, by means of their edges
    *
    * @param node the node to get the neighbors of
@@ -81,22 +103,32 @@ public class PathFinder {
   /**
    * Public method to find the path between two locations.
    *
-   * @param start the start node to find
-   * @param end the end node to find
+   * @param start the start location to find. Will find the Node most recently associated with this
+   * @param end the end location to find. Will find the Node most recently associated with this
    * @return the path (as a list) between the two locations, or null if it could not find a path
-   * @throws NullPointerException if the path between the two locations couldn't be found
+   * @throws NullPointerException if the lookup for a location (or node associated with the location) fails
    */
-  public List<Node> findPath(@NonNull LocationName start, @NonNull LocationName end) {
+  public List<Node> findPath(@NonNull String start, @NonNull String end) {
+    // Get the session to use for this
     Session session = sessionFactory.openSession();
-    // Query location names and return nodes to send to aStar function
-    Node startNode = locationToNode(start, session);
-    Node endNode = locationToNode(end, session);
 
+    // Begin a transaction to get what we need
+    Transaction transaction = session.beginTransaction();
+
+    // Query location names and return nodes to send to aStar function
+    Node startNode = locationToNode(longNameToLocation(start, session), session);
+    Node endNode = locationToNode(longNameToLocation(end, session), session);
+
+    // Find the path with A*
     List<Node> path = aStar(startNode, endNode, session);
 
+    // Commit the transaction now that we're done with the algorithm
+    transaction.commit();
+
+    // Close the session
     session.close();
 
-    return path;
+    return path; // Return the path
   }
 
   private List<Node> aStar(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
@@ -155,19 +187,19 @@ public class PathFinder {
     return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
   }
 
-  private class NodeWrapper implements Comparable<NodeWrapper> {
+  private static class NodeWrapper implements Comparable<NodeWrapper> {
     Node node;
     NodeWrapper parent;
     double g;
     double h;
     double f;
 
-    NodeWrapper(@NonNull Node node, NodeWrapper parent) {
+    private NodeWrapper(@NonNull Node node, NodeWrapper parent) {
       this.node = node;
       this.parent = parent;
     }
 
-    NodeWrapper(@NonNull Node node, NodeWrapper parent, double cost) {
+    private NodeWrapper(@NonNull Node node, NodeWrapper parent, double cost) {
       this.node = node;
       this.parent = parent;
       this.f = cost;
@@ -175,9 +207,7 @@ public class PathFinder {
 
     @Override
     public int compareTo(NodeWrapper nodeWrapper) {
-      if (f == nodeWrapper.f) return 0;
-      else if (f > nodeWrapper.f) return 1;
-      else return -1;
+      return Double.compare(f, nodeWrapper.f);
     }
   }
 }
