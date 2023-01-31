@@ -1,11 +1,10 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "Sanitation")
@@ -20,8 +19,12 @@ public class Sanitation extends ServiceRequest {
   @Setter
   SanitationType type;
 
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter Location location;
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  Location location;
 
   public Sanitation() {}
 
@@ -29,8 +32,21 @@ public class Sanitation extends ServiceRequest {
     this.id = id;
   }
 
-
-  public Sanitation(@NonNull SanitationType theType, long theId, @NonNull String empFirstName, @NonNull String empMiddleName, @NonNull String empLastName, @NonNull String assignedEmpFirstName, @NonNull String assignedEmpMiddleName, @NonNull String assignedEmpLastName, @NonNull EmpDept empDept, @NonNull EmpDept assignedEmpDept, @NonNull Date dateOfIncident, @NonNull Date dateOfSubmission, @NonNull Urgency urgency, @NonNull Location location) {
+  public Sanitation(
+      @NonNull SanitationType theType,
+      long theId,
+      @NonNull String empFirstName,
+      @NonNull String empMiddleName,
+      @NonNull String empLastName,
+      @NonNull String assignedEmpFirstName,
+      @NonNull String assignedEmpMiddleName,
+      @NonNull String assignedEmpLastName,
+      @NonNull EmpDept empDept,
+      @NonNull EmpDept assignedEmpDept,
+      @NonNull Date dateOfIncident,
+      @NonNull Date dateOfSubmission,
+      @NonNull Urgency urgency,
+      @NonNull Location location) {
     this.type = theType;
     this.id = theId;
     this.empFirstName = empFirstName;
@@ -47,7 +63,6 @@ public class Sanitation extends ServiceRequest {
     this.urgency = urgency;
     this.location = location;
   }
-
 
   /** Enumerated type for the possible types we can create */
   public enum SanitationType {
@@ -85,7 +100,4 @@ public class Sanitation extends ServiceRequest {
       Location = location; // The floor to create
     }
   }
-
-
-
 }

@@ -25,13 +25,12 @@ public class Edge {
   @Setter
   Node node2;
 
-  /**
-   * Creates a new Edge with empty fields
-   */
+  /** Creates a new Edge with empty fields */
   public Edge() {}
 
   /**
    * Creates a new Edge with the specified fields
+   *
    * @param node1 the Node to be used in the first Node field
    * @param node2 the Node to be used in the second Node field
    */

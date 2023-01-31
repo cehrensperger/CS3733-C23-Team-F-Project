@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.Main;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.SanitationServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -12,8 +11,6 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.Instant;
 import java.util.Date;
 import javafx.event.ActionEvent;
@@ -45,7 +42,6 @@ public class SanitationServiceController extends ServiceRequestController {
   /** Method run when controller is initializes */
   public void initialize() {
 
-
     sanitationServiceData = new SanitationServiceData();
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     requestTypeDropDown.getItems().addAll("Mopping", "Sweeping", "Vacuuming");
@@ -61,7 +57,6 @@ public class SanitationServiceController extends ServiceRequestController {
    * @param actionEvent event that triggered method
    * @throws IOException
    */
-
   public void handleClear(ActionEvent actionEvent) throws IOException {
     requestTypeDropDown.clear();
     locationDropDown.clear();
@@ -98,8 +93,8 @@ public class SanitationServiceController extends ServiceRequestController {
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(locationDropDown.getText());
-    sanitationRequest.setType("Sanitation");
+    sanitationRequest.setLocation(Sanitation.Location.valueOf(locationDropDown.getText()));
+    sanitationRequest.setType(Sanitation.SanitationType.valueOf("mopping")); //CHANGE THIS TO A FIELD IG IG IG
     sanitationRequest.setEmpFirstName(firstName.getText());
     sanitationRequest.setEmpMiddleName(middleName.getText());
     sanitationRequest.setEmpLastName(lastName.getText());
@@ -115,8 +110,8 @@ public class SanitationServiceController extends ServiceRequestController {
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(sd.getLocationInfo());
-    sanitationRequest.setType(sd.getRequestType());
+    sanitationRequest.setLocation(Sanitation.Location.valueOf(sd.getLocationInfo()));
+    sanitationRequest.setType(Sanitation.SanitationType.valueOf(sd.getRequestType()));
     sanitationRequest.setEmpFirstName(sd.getEmployeeFirstName());
     sanitationRequest.setEmpMiddleName(sd.getEmployeeMiddleName());
     sanitationRequest.setEmpLastName(sd.getEmployeeLastName());

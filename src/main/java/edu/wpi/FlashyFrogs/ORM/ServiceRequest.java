@@ -10,28 +10,76 @@ import lombok.Setter;
 @Table(name = "ServiceRequest")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ServiceRequest {
-  @Basic @Id @Column(nullable = false)
-  @NonNull @Getter @Setter @GeneratedValue long id;
-  @Basic  @Column(nullable = false)
-  @NonNull@Getter @Setter Status status;
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String empFirstName;
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String empMiddleName;
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String empLastName;
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter EmpDept empDept;
+  @Basic
+  @Id
+  @Column(nullable = false)
+  @Getter
+  @Setter
+  @GeneratedValue
+  long id;
 
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String assignedEmpFirstName;
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String assignedEmpMiddleName;
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String assignedEmpLastName;
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  Status status;
 
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter EmpDept assignedEmpDept;
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String empFirstName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String empMiddleName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String empLastName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  EmpDept empDept;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String assignedEmpFirstName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String assignedEmpMiddleName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String assignedEmpLastName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  EmpDept assignedEmpDept;
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
@@ -49,9 +97,12 @@ public class ServiceRequest {
   @Setter
   Date dateOfSubmission;
 
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter Urgency urgency;
-
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  Urgency urgency;
 
   /** Enumerated type for the possible statuses we can create */
   public enum Status {
@@ -138,7 +189,9 @@ public class ServiceRequest {
   }
 
   /**
-   * Overrides the default toString method with one that returns the type of service request that it is, concatenated with its id
+   * Overrides the default toString method with one that returns the type of service request that it
+   * is, concatenated with its id
+   *
    * @return the className and id separated by an underscore
    */
   @Override
