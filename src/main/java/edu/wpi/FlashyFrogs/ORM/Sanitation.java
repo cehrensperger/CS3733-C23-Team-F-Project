@@ -12,4 +12,10 @@ import lombok.Setter;
 public class Sanitation extends ServiceRequest {
   @Basic @Getter @Setter String type;
   @Basic @Getter @Setter String location;
+
+  public Sanitation() {}
+
+  public Sanitation(long id) {
+    this.id = id;
+  }
 }

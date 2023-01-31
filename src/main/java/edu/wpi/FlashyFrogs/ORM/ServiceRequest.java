@@ -19,4 +19,10 @@ public class ServiceRequest {
   @Getter
   @Setter
   Date dateOfIncident;
+
+  @Basic
+  @Temporal(TemporalType.TIMESTAMP)
+  @Getter
+  @Setter
+  Date dateOfSubmission;
 }
