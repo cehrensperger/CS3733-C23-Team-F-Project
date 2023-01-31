@@ -2,9 +2,12 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.Main.factory;
 
+import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.Date;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -30,6 +34,7 @@ public class DBTableController implements Initializable {
   public TextField txtID;
   public TextField txtLongName;
   public Button btnadd;
+  @FXML private MFXButton back;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -82,5 +87,9 @@ public class DBTableController implements Initializable {
         FXCollections.observableList(objects); // convert list to ObservableList
     ses.close();
     moveTable.getItems().addAll(observableList); // add every item in observable list to moveTable
+  }
+
+  public void handleBackButton(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Home");
   }
 }
