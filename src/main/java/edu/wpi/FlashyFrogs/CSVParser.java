@@ -14,12 +14,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class CSVParser {
+  static Session session = Main.factory.openSession();
+  static Transaction transaction = session.beginTransaction();
 
   public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile)
       throws FileNotFoundException {
     try {
-      Session session = Main.factory.openSession();
-      Transaction transaction = session.beginTransaction();
+
       Map<String, Node> nodes = new HashMap<>();
       Map<String, LocationName> locations = new HashMap<>();
       String[] fields;
@@ -77,6 +78,8 @@ public class CSVParser {
 
     } catch (FileNotFoundException e) {
       System.out.println("Use a valid filepath.");
+      transaction.commit();
+      session.close();
     }
   }
 }
