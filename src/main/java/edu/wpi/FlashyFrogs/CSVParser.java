@@ -11,12 +11,9 @@ import java.io.FileNotFoundException;
 import java.time.Instant;
 import java.util.*;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class CSVParser {
-
-  public void CSVParser(SessionFactory sf) {}
 
   public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile)
       throws FileNotFoundException {
@@ -45,34 +42,35 @@ public class CSVParser {
         Node node =
             new Node(
                 fields[0],
-                fields[1],
-                Node.Floor.valueOf(fields[2]),
-                Integer.parseInt(fields[3]),
-                Integer.parseInt(fields[4]));
+                fields[4],
+                Node.Floor.valueOf(fields[3]),
+                Integer.parseInt(fields[1]),
+                Integer.parseInt(fields[2]));
         nodes.put(fields[0], node);
         session.persist(node);
       }
       while (edgeFileScanner.hasNextLine()) {
-        fields = nodeFileScanner.nextLine().split(",");
+        fields = edgeFileScanner.nextLine().split(",");
 
         Edge edge = new Edge(nodes.get(fields[0]), nodes.get(fields[1]));
         session.persist(edge);
       }
       while (locationFileScanner.hasNextLine()) {
-        fields = nodeFileScanner.nextLine().split(",");
+        fields = locationFileScanner.nextLine().split(",");
 
         LocationName location =
-            new LocationName(fields[0], LocationName.LocationType.valueOf(fields[1]), fields[2]);
-        locations.put(fields[0], location);
+            new LocationName(fields[1], LocationName.LocationType.valueOf(fields[0]), fields[2]);
+        locations.put(fields[1], location);
         session.persist(location);
       }
       while (moveFileScanner.hasNextLine()) {
-        fields = nodeFileScanner.nextLine().split(",");
+        fields = moveFileScanner.nextLine().split(",");
 
         Move move =
             new Move(nodes.get(fields[0]), locations.get(fields[1]), Date.from(Instant.now()));
         session.persist(move);
       }
+
       transaction.commit();
       session.close();
 
