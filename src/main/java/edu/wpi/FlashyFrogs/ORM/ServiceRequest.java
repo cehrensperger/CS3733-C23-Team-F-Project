@@ -5,6 +5,7 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "ServiceRequest")
@@ -12,6 +13,7 @@ import lombok.Setter;
 public class ServiceRequest {
   @Basic
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Column(nullable = false)
   @Getter
   @Setter
@@ -167,7 +169,6 @@ public class ServiceRequest {
    * @return boolean whether the primary keys are equal or not
    */
   @Override
-  @NonNull
   public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null) return false;
@@ -183,7 +184,6 @@ public class ServiceRequest {
    * @return the new hashcode
    */
   @Override
-  @NonNull
   public int hashCode() {
     return Objects.hash(this.id, this.dateOfSubmission);
   }

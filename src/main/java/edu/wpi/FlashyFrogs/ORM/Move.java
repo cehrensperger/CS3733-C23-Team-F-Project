@@ -5,11 +5,13 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Move")
 public class Move {
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Getter
   @Setter
   @JoinColumn(name = "node_id", foreignKey = @ForeignKey(name = "node_id_fk"), nullable = false)
@@ -18,6 +20,7 @@ public class Move {
   Node node;
 
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Getter
   @Setter
   @JoinColumn(
@@ -30,6 +33,7 @@ public class Move {
 
   @Temporal(TemporalType.TIMESTAMP)
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Column(nullable = false)
   @NonNull
   @Getter
