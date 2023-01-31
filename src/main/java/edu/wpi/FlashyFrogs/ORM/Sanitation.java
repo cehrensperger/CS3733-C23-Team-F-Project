@@ -19,22 +19,38 @@ public class Sanitation extends ServiceRequest {
   @Setter
   SanitationType type;
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
-  Location location;
+  @JoinColumn(
+      name = "location",
+      foreignKey = @ForeignKey(name = "location_name_fk"),
+      nullable = false)
+  @NonNull
+  @ManyToOne
+  LocationName location;
 
+  /** Creates a new Sanitation with a generated id */
   public Sanitation() {}
 
-  public Sanitation(long id) {
-    this.id = id;
-  }
-
+  /**
+   * Creates a new Sanitation with a generated id and the specified fields
+   *
+   * @param location the LocationName to use in the location field
+   * @param theType the SanitationType to use in the type field
+   * @param empFirstName the String to use in the empFirstName field
+   * @param empMiddleName the String to use in the empMiddleName field
+   * @param empLastName the String to use in the empLastName field
+   * @param assignedEmpFirstName the String to use in the assignedEmpFirstName field
+   * @param assignedEmpMiddleName the String to use in the assignedEmpMiddleName field
+   * @param assignedEmpLastName the String to use in the assignedEmpLastName field
+   * @param empDept the EmpDept to use in the empDept field
+   * @param assignedEmpDept the EmpDept to use in the assignedEmpDept field
+   * @param dateOfIncident the Date to use in the dateOfIncident field
+   * @param dateOfSubmission the Date to use in the dateOfSubmission field
+   * @param urgency the Urgency to use in the urgency field
+   */
   public Sanitation(
       @NonNull SanitationType theType,
-      long theId,
       @NonNull String empFirstName,
       @NonNull String empMiddleName,
       @NonNull String empLastName,
@@ -46,9 +62,8 @@ public class Sanitation extends ServiceRequest {
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,
-      @NonNull Location location) {
+      @NonNull LocationName location) {
     this.type = theType;
-    this.id = theId;
     this.empFirstName = empFirstName;
     this.empMiddleName = empMiddleName;
     this.empLastName = empLastName;
@@ -70,7 +85,7 @@ public class Sanitation extends ServiceRequest {
     SWEEPING("sweeping"),
     VACUUMING("vacuuming");
 
-    @NonNull public final String SanitationType; // Number backing for the Floor
+    @NonNull public final String SanitationType;
 
     /**
      * Creates a new status with the given String backing
@@ -78,26 +93,7 @@ public class Sanitation extends ServiceRequest {
      * @param type the type to create. Must not be null
      */
     SanitationType(@NonNull String type) {
-      SanitationType = type; // The floor to create
-    }
-  }
-
-  /** Enumerated type for the possible locations we can create */
-  public enum Location {
-    ROOM_1("room 1"),
-    ROOM_2("room 2"),
-    PUBLIC_SPACE_1("public space 1"),
-    PUBLIC_SPACE_2("public space 2");
-
-    @NonNull public final String Location; // Number backing for the Floor
-
-    /**
-     * Creates a new status with the given String backing
-     *
-     * @param location the location to create. Must not be null
-     */
-    Location(@NonNull String location) {
-      Location = location; // The floor to create
+      SanitationType = type;
     }
   }
 }

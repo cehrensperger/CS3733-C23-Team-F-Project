@@ -37,19 +37,19 @@ public class DBTableController implements Initializable {
     colId.setCellValueFactory(new PropertyValueFactory<>("node"));
     colLongName.setCellValueFactory(new PropertyValueFactory<>("location"));
     colTimestamp.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
-    //open session
+    // open session
     Session ses = factory.openSession();
-    List<Move> objects = ses.createQuery("SELECT s FROM Move s", Move.class).getResultList(); //select everything from move table and add to list
-    ObservableList<Move> observableList = FXCollections.observableList(objects);//convert list to ObservableList
+    List<Move> objects =
+        ses.createQuery("SELECT s FROM Move s", Move.class)
+            .getResultList(); // select everything from move table and add to list
+    ObservableList<Move> observableList =
+        FXCollections.observableList(objects); // convert list to ObservableList
     ses.close();
-    moveTable.getItems().addAll(observableList);//add every item in observable list to moveTable
+    moveTable.getItems().addAll(observableList); // add every item in observable list to moveTable
   }
 
-
   /**
-   *
-   * @param actionEvent
-   * adds a new move object to the Tableview and Database from the input from UI
+   * @param actionEvent adds a new move object to the Tableview and Database from the input from UI
    * @throws Exception
    */
   @FXML

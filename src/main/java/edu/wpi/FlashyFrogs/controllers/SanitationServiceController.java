@@ -93,7 +93,7 @@ public class SanitationServiceController extends ServiceRequestController {
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(Sanitation.Location.valueOf(locationDropDown.getText()));
+    sanitationRequest.setLocation(null); // MAKE THIS A LOCATIONNAME OBJECT
     sanitationRequest.setType(
         Sanitation.SanitationType.valueOf("mopping")); // CHANGE THIS TO A FIELD IG IG IG
     sanitationRequest.setEmpFirstName(firstName.getText());
@@ -111,7 +111,7 @@ public class SanitationServiceController extends ServiceRequestController {
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(Sanitation.Location.valueOf(sd.getLocationInfo()));
+    sanitationRequest.setLocation(null);
     sanitationRequest.setType(Sanitation.SanitationType.valueOf(sd.getRequestType()));
     sanitationRequest.setEmpFirstName(sd.getEmployeeFirstName());
     sanitationRequest.setEmpMiddleName(sd.getEmployeeMiddleName());

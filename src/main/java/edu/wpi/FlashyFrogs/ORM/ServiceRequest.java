@@ -110,7 +110,7 @@ public class ServiceRequest {
     PROCESSING("processing"),
     DONE("done");
 
-    @NonNull public final String status; // Number backing for the Floor
+    @NonNull public final String status;
 
     /**
      * Creates a new status with the given String backing
@@ -118,7 +118,7 @@ public class ServiceRequest {
      * @param statusVal the status to create. Must not be null
      */
     Status(@NonNull String statusVal) {
-      status = statusVal; // The floor to create
+      status = statusVal;
     }
   }
 
@@ -129,7 +129,7 @@ public class ServiceRequest {
     RADIOLOGY("radiology"),
     MAINTENANCE("maintenance");
 
-    @NonNull public final String EmpDept; // Number backing for the Floor
+    @NonNull public final String EmpDept;
 
     /**
      * Creates a new status with the given String backing
@@ -137,7 +137,7 @@ public class ServiceRequest {
      * @param dept the dept to create. Must not be null
      */
     EmpDept(@NonNull String dept) {
-      EmpDept = dept; // The floor to create
+      EmpDept = dept;
     }
   }
 
@@ -147,7 +147,7 @@ public class ServiceRequest {
     MODERATELY_URGENT("moderately urgent"),
     NOT_URGENT("not urgent");
 
-    @NonNull public final String Urgency; // Number backing for the Floor
+    @NonNull public final String Urgency;
 
     /**
      * Creates a new status with the given String backing
@@ -155,7 +155,7 @@ public class ServiceRequest {
      * @param urgency the urgency to create. Must not be null
      */
     Urgency(@NonNull String urgency) {
-      Urgency = urgency; // The floor to create
+      Urgency = urgency;
     }
   }
 
