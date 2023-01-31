@@ -1,8 +1,8 @@
 package edu.wpi.FlashyFrogs;
 
+import edu.wpi.FlashyFrogs.ORM.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -25,7 +25,8 @@ public class Main {
     try {
       factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
       Session session = factory.openSession();
-      Transaction transaction = session.beginTransaction();
+      // Transaction transaction = session.beginTransaction();
+
       session.close();
     } catch (Exception ex) {
       System.out.println(ex.getMessage());
