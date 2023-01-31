@@ -12,4 +12,16 @@ import lombok.Setter;
 public class Security extends ServiceRequest {
   @Basic @Getter @Setter String incidentReport;
   @Basic @Getter @Setter String location;
+
+  public Security() {}
+
+  public Security(long id) {
+    this.id = id;
+  }
+
+  public Security(String theIncidentReport, String theLocation, long theId){
+    this.incidentReport = theIncidentReport;
+    this.location = theLocation;
+    this.id = theId;
+  }
 }

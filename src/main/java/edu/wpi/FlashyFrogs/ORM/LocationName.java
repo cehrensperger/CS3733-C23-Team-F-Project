@@ -13,6 +13,18 @@ public class LocationName {
   @Basic @Getter @Setter String shortName;
   @Basic @Getter LocationType locationType;
 
+  public LocationName() {}
+
+  public LocationName(String longName) {
+    this.longName = longName;
+  }
+
+  public LocationName(String thelongName, LocationType thelocationType, String theShortName){
+    this.longName = thelongName;
+    this.locationType = thelocationType;
+    this.shortName = theShortName;
+  }
+
   /** Enumerated type for the type of location we can create */
   public enum LocationType {
     HALL("HALL"),

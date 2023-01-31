@@ -19,4 +19,18 @@ public class InternalTransport extends ServiceRequest {
   @Getter
   @Setter
   Date dateOfBirth;
+
+  public InternalTransport() {}
+
+  public InternalTransport(long id) {
+    this.id = id;
+  }
+
+  public InternalTransport(Date theDOB, String theNewLoc, String theOldLoc, String thePatientName, long theId){
+    this.dateOfBirth = theDOB;
+    this.newLoc = theNewLoc;
+    this.oldLoc = theOldLoc;
+    this.patientName = thePatientName;
+    id = theId;
+  }
 }
