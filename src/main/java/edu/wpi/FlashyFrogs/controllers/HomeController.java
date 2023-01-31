@@ -33,7 +33,7 @@ public class HomeController {
   }
 
   public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("MoveEditor");
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {

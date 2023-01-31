@@ -102,7 +102,10 @@ public class SecurityServiceController extends ServiceRequestController {
     Transaction transaction = session.beginTransaction();
     Security securityRequest = new Security();
     securityRequest.setLocation(locationEntry.getText());
-    // securityRequest("Security");
+
+    //    securityRequest.setType(Sanitation.SanitationType.valueOf("Security")); //security no
+    // longer has a type, to get "Security" do Class.simpleName()
+
     securityRequest.setEmpFirstName(firstEntry.getText());
     securityRequest.setEmpMiddleName(middleEntry.getText());
     securityRequest.setEmpLastName(lastEntry.getText());

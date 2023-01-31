@@ -26,16 +26,29 @@ public class Security extends ServiceRequest {
   @Setter
   String location;
 
+  /** Creates a new Security object with a generated id */
   public Security() {}
 
-  public Security(long id) {
-    this.id = id;
-  }
-
+  /**
+   * Creates a new Security with a generated id and the specified fields
+   *
+   * @param theIncidentReport the String to use in the incidentReport field
+   * @param theLocation the LocationName to use in the location field
+   * @param empFirstName the String to use in the empFirstName field
+   * @param empMiddleName the String to use in the empMiddleName field
+   * @param empLastName the String to use in the empLastName field
+   * @param assignedEmpFirstName the String to use in the assignedEmpFirstName field
+   * @param assignedEmpMiddleName the String to use in the assignedEmpMiddleName field
+   * @param assignedEmpLastName the String to use in the assignedEmpLastName field
+   * @param empDept the EmpDept to use in the empDept field
+   * @param assignedEmpDept the EmpDept to use in the assignedEmpDept field
+   * @param dateOfIncident the Date to use in the dateOfIncident field
+   * @param dateOfSubmission the Date to use in the dateOfSubmission field
+   * @param urgency the Urgency to use in the urgency field
+   */
   public Security(
       @NonNull String theIncidentReport,
       @NonNull String theLocation,
-      long theId,
       @NonNull String empFirstName,
       @NonNull String empMiddleName,
       @NonNull String empLastName,
@@ -49,7 +62,6 @@ public class Security extends ServiceRequest {
       @NonNull Urgency urgency) {
     this.incidentReport = theIncidentReport;
     this.location = theLocation;
-    this.id = theId;
     this.empFirstName = empFirstName;
     this.empMiddleName = empMiddleName;
     this.empLastName = empLastName;
