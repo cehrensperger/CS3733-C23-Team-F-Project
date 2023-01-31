@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs;
 
+import edu.wpi.FlashyFrogs.ORM.Node;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -58,5 +59,13 @@ public class PathFinderTest {
     @AfterEach
     public void teardownSession() {
         testSession.close(); // Close the session
+    }
+
+    /**
+     * Tests for a line of nodes, ensures that the algorithm reaches the end
+     */
+    @Test
+    public void testLineOfNodes() {
+        Node nodeOne = new Node();
     }
 }

@@ -112,18 +112,12 @@ public class PathFinder {
     // Get the session to use for this
     Session session = sessionFactory.openSession();
 
-    // Begin a transaction to get what we need
-    Transaction transaction = session.beginTransaction();
-
     // Query location names and return nodes to send to aStar function
     Node startNode = locationToNode(longNameToLocation(start, session), session);
     Node endNode = locationToNode(longNameToLocation(end, session), session);
 
     // Find the path with A*
     List<Node> path = aStar(startNode, endNode, session);
-
-    // Commit the transaction now that we're done with the algorithm
-    transaction.commit();
 
     // Close the session
     session.close();
