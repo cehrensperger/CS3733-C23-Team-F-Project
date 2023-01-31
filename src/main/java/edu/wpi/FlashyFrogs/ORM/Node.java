@@ -15,7 +15,6 @@ public class Node {
   @Basic @Getter @Setter String building;
 
   public Node() {}
-
   public Node(String id) {
     this.id = id;
   }
