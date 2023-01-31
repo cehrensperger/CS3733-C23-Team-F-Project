@@ -1,6 +1,9 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.SubmitInfo;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -11,8 +14,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
+import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class TransportController extends ServiceRequestController {
   @FXML MFXTextField firstNameTextfield; // ID of the first name text field
@@ -97,6 +104,20 @@ public class TransportController extends ServiceRequestController {
     submitInfo.setEmployeeDepartment(departmentComboBox.getText());
     System.out.println(submitInfo.getDOB());
     System.out.println(submitInfo.getPatientMiddleName());
+
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    InternalTransport transportRequest = new InternalTransport();
+    // securityRequest.setLocation(locationEntry.getText());
+    transportRequest.setType("Transport");
+    transportRequest.setEmpFirstName(firstNameTextfield.getText());
+    transportRequest.setEmpMiddleName(middleNameTextfield.getText());
+    transportRequest.setEmpLastName(lastNameTextfield.getText());
+    transportRequest.setDateOfSubmission(Date.from(Instant.now()));
+
+    session.persist(transportRequest);
+    transaction.commit();
+    session.close();
   }
 
   /**

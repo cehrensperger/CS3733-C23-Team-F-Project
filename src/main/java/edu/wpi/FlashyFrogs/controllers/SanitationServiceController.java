@@ -102,7 +102,7 @@ public class SanitationServiceController extends ServiceRequestController {
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
     sanitationRequest.setLocation(locationDropDown.getText());
-    sanitationRequest.setType(requestTypeDropDown.getText());
+    sanitationRequest.setType("Sanitation");
     sanitationRequest.setEmpFirstName(firstName.getText());
     sanitationRequest.setEmpMiddleName(middleName.getText());
     sanitationRequest.setEmpLastName(lastName.getText());
