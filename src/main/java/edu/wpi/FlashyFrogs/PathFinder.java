@@ -135,7 +135,7 @@ public class PathFinder {
     PriorityQueue<NodeWrapper> openList = new PriorityQueue<>();
     List<NodeWrapper> closedlist = new LinkedList<>();
 
-    openList.add(new NodeWrapper(start, null, 0));
+    openList.add(new NodeWrapper(start, null));
 
     // while open list is not empty
     while (!openList.isEmpty()) {
@@ -197,12 +197,9 @@ public class PathFinder {
     private NodeWrapper(@NonNull Node node, NodeWrapper parent) {
       this.node = node;
       this.parent = parent;
-    }
-
-    private NodeWrapper(@NonNull Node node, NodeWrapper parent, double cost) {
-      this.node = node;
-      this.parent = parent;
-      this.f = cost;
+      this.f = 0;
+      this.g = 0;
+      this.h = 0;
     }
 
     @Override
