@@ -13,7 +13,7 @@ public class ServiceRequest {
   @Basic @Id @Column(nullable = false)
   @NonNull @Getter @Setter @GeneratedValue long id;
   @Basic  @Column(nullable = false)
-  @NonNull@Getter @Setter Status status; // should be enum
+  @NonNull@Getter @Setter Status status;
   @Basic @Column(nullable = false)
   @NonNull @Getter @Setter String empFirstName;
   @Basic @Column(nullable = false)
@@ -21,10 +21,7 @@ public class ServiceRequest {
   @Basic @Column(nullable = false)
   @NonNull @Getter @Setter String empLastName;
   @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String empDept; // should be enum
-
-  @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String type; // should be enum
+  @NonNull @Getter @Setter EmpDept empDept;
 
   @Basic @Column(nullable = false)
   @NonNull @Getter @Setter String assignedEmpFirstName;
@@ -34,7 +31,7 @@ public class ServiceRequest {
   @NonNull @Getter @Setter String assignedEmpLastName;
 
   @Basic @Column(nullable = false)
-  @NonNull @Getter @Setter String assignedEmpDept; // should be enum
+  @NonNull @Getter @Setter EmpDept assignedEmpDept;
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
@@ -52,6 +49,9 @@ public class ServiceRequest {
   @Setter
   Date dateOfSubmission;
 
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter Urgency urgency;
+
 
   /** Enumerated type for the possible statuses we can create */
   public enum Status {
@@ -68,6 +68,43 @@ public class ServiceRequest {
      */
     Status(@NonNull String statusVal) {
       status = statusVal; // The floor to create
+    }
+  }
+
+  /** Enumerated type for the possible departments we can create */
+  public enum EmpDept {
+    NURSING("nursing"),
+    CARDIOLOGY("cardiology"),
+    RADIOLOGY("radiology"),
+    MAINTENANCE("maintenance");
+
+    @NonNull public final String EmpDept; // Number backing for the Floor
+
+    /**
+     * Creates a new status with the given String backing
+     *
+     * @param dept the dept to create. Must not be null
+     */
+    EmpDept(@NonNull String dept) {
+      EmpDept = dept; // The floor to create
+    }
+  }
+
+  /** Enumerated type for the possible urgencies we can create */
+  public enum Urgency {
+    VERY_URGENT("very urgent"),
+    MODERATELY_URGENT("moderately urgent"),
+    NOT_URGENT("not urgent");
+
+    @NonNull public final String Urgency; // Number backing for the Floor
+
+    /**
+     * Creates a new status with the given String backing
+     *
+     * @param urgency the urgency to create. Must not be null
+     */
+    Urgency(@NonNull String urgency) {
+      Urgency = urgency; // The floor to create
     }
   }
 

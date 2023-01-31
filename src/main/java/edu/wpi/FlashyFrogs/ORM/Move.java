@@ -89,6 +89,6 @@ public class Move {
   @Override
   @NonNull
   public String toString() {
-    return this.node.getId() + "_" + this.location.getLongName();
+    return this.node.getId() + "_" + this.location.getLongName() + "_" + this.moveDate;
   }
 }

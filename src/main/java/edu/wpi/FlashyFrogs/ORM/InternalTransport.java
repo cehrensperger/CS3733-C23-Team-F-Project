@@ -46,16 +46,28 @@ public class InternalTransport extends ServiceRequest {
     this.id = id;
   }
 
-  public InternalTransport( // needs to include super class values
+  public InternalTransport(
       @NonNull Date theDOB,
       @NonNull String theNewLoc,
       @NonNull String theOldLoc,
       @NonNull String thePatientName,
-      long theId) {
+      long theId, @NonNull String empFirstName, @NonNull String empMiddleName, @NonNull String empLastName, @NonNull String assignedEmpFirstName, @NonNull String assignedEmpMiddleName, @NonNull String assignedEmpLastName, @NonNull EmpDept empDept, @NonNull EmpDept assignedEmpDept, @NonNull Date dateOfIncident, @NonNull Date dateOfSubmission, @NonNull Urgency urgency) {
     this.dateOfBirth = theDOB;
     this.newLoc = theNewLoc;
     this.oldLoc = theOldLoc;
     this.patientName = thePatientName;
-    id = theId;
+    this.id = theId;
+    this.empFirstName = empFirstName;
+    this.empMiddleName = empMiddleName;
+    this.empLastName = empLastName;
+    this.empDept = empDept;
+    this.assignedEmpFirstName = assignedEmpFirstName;
+    this.assignedEmpMiddleName = assignedEmpMiddleName;
+    this.assignedEmpLastName = assignedEmpLastName;
+    this.assignedEmpDept = assignedEmpDept;
+    this.dateOfIncident = dateOfIncident;
+    this.dateOfSubmission = dateOfSubmission;
+    this.status = Status.BLANK;
+    this.urgency = urgency;
   }
 }

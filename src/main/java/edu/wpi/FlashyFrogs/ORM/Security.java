@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Security")
 @PrimaryKeyJoinColumn(
@@ -34,9 +36,22 @@ public class Security extends ServiceRequest {
   public Security(
       @NonNull String theIncidentReport,
       @NonNull String theLocation,
-      long theId) { // needs to also take in super class fields
+      long theId, @NonNull String empFirstName, @NonNull String empMiddleName, @NonNull String empLastName, @NonNull String assignedEmpFirstName, @NonNull String assignedEmpMiddleName, @NonNull String assignedEmpLastName, @NonNull EmpDept empDept, @NonNull EmpDept assignedEmpDept, @NonNull Date dateOfIncident, @NonNull Date dateOfSubmission, @NonNull Urgency urgency)
+  {
     this.incidentReport = theIncidentReport;
     this.location = theLocation;
     this.id = theId;
+    this.empFirstName = empFirstName;
+    this.empMiddleName = empMiddleName;
+    this.empLastName = empLastName;
+    this.empDept = empDept;
+    this.assignedEmpFirstName = assignedEmpFirstName;
+    this.assignedEmpMiddleName = assignedEmpMiddleName;
+    this.assignedEmpLastName = assignedEmpLastName;
+    this.assignedEmpDept = assignedEmpDept;
+    this.dateOfIncident = dateOfIncident;
+    this.dateOfSubmission = dateOfSubmission;
+    this.status = Status.BLANK;
+    this.urgency = urgency;
   }
 }

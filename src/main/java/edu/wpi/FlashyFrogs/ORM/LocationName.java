@@ -27,6 +27,7 @@ public class LocationName {
   @Column(nullable = false)
   @NonNull
   @Getter
+  @Setter
   LocationType locationType; // why is this mad at me but node is not????
 
   /** Creates a new LocationName with empty fields */
