@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs;
 
 import edu.wpi.FlashyFrogs.ORM.Edge;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import java.io.File;
