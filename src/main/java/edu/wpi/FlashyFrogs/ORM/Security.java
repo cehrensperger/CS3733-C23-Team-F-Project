@@ -18,4 +18,10 @@ public class Security extends ServiceRequest {
   public Security(long id) {
     this.id = id;
   }
+
+  public Security(String theIncidentReport, String theLocation, long theId) {
+    this.incidentReport = theIncidentReport;
+    this.location = theLocation;
+    this.id = theId;
+  }
 }

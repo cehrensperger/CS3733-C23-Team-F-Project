@@ -109,6 +109,5 @@ public class SecurityServiceController {
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
 
     Fapp.setScene("AllSecurityService");
-
   }
 }

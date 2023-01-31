@@ -110,6 +110,7 @@ public class SanitationServiceController {
 
     session.persist(sanitationRequest);
     transaction.commit();
+    System.out.println("submitted");
   }
 
   /**
@@ -126,7 +127,6 @@ public class SanitationServiceController {
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
 
     Fapp.setScene("AllSanitationRequest");
-
   }
 
   /**

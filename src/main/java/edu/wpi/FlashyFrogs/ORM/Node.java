@@ -21,11 +21,12 @@ public class Node {
   }
 
   public Node(String theId, String theBuilding, Floor theFloor, int theXCoord, int theYCoord) {
-    id = theId;
-    building = theBuilding;
-    floor = theFloor;
-    xCoord = theXCoord;
-    yCoord = theYCoord;
+
+    this.id = theId;
+    this.building = theBuilding;
+    this.floor = theFloor;
+    this.xCoord = theXCoord;
+    this.yCoord = theYCoord;
   }
 
   /** Enumerated type for the possible floors we can create */
@@ -47,5 +48,11 @@ public class Node {
     Floor(@NonNull String floor) {
       floorNum = floor; // The floor to create
     }
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    Node other = (Node) obj;
+    return this.getId().equals(other.getId());
   }
 }

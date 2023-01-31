@@ -79,7 +79,6 @@ public class TransportController {
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
 
     Fapp.setScene("AllTransport");
-
   }
 
   public void submitButtonClicked(ActionEvent actionEvent) throws IOException {
