@@ -51,7 +51,7 @@ public class Node {
 
   @Override
   public boolean equals(Object obj) {
-    Node other = (Node)obj;
+    Node other = (Node) obj;
     return this.getId().equals(other.getId());
   }
 }

@@ -1,17 +1,9 @@
 package edu.wpi.FlashyFrogs;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.time.Instant;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -19,6 +11,14 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.*;
+
+import java.time.Instant;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for the PathFinder class, tests to ensure that it finds a valid path, and that it always
@@ -72,7 +72,7 @@ public class PathFinderTest {
 
   /** Tests for a line of nodes, ensures that the algorithm reaches the end */
   @Test
-  public void testLineOfNodes() {
+  public void lineOfNodesTest() {
     // Line of nodes A->E, moving apart in Y-Coord
     Node nodeOne = new Node("a", "building", Node.Floor.L1, 0, 0);
     Node nodeTwo = new Node("b", "building", Node.Floor.L1, 0, 1);
@@ -123,25 +123,25 @@ public class PathFinderTest {
 
     PathFinder pathFinder = new PathFinder(sessionFactory);
     assertEquals(
-        expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
+            expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
 
     // Transaction to delete everything
     Transaction deleteTransaction = testSession.beginTransaction();
 
     // Delete everything
-    testSession.remove(nodeOne);
-    testSession.remove(nodeTwo);
     testSession.remove(oneToTwo);
-    testSession.remove(nodeThree);
     testSession.remove(twoToThree);
-    testSession.remove(nodeFour);
     testSession.remove(threeToFour);
-    testSession.remove(nodeFive);
     testSession.remove(fourToFive);
-    testSession.remove(startName);
-    testSession.remove(endName);
     testSession.remove(startMove);
     testSession.remove(endMove);
+    testSession.remove(startName);
+    testSession.remove(endName);
+    testSession.remove(nodeOne);
+    testSession.remove(nodeTwo);
+    testSession.remove(nodeThree);
+    testSession.remove(nodeFour);
+    testSession.remove(nodeFive);
 
     // Commit the deletion
     deleteTransaction.commit();
