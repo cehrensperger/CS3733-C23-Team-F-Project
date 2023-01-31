@@ -8,25 +8,34 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "Edge")
-// @IdClass(EdgePK.class)
 public class Edge {
   @Id
-  @JoinColumn(name = "node1_id", foreignKey = @ForeignKey(name = "node1_id_fk"))
+  @JoinColumn(name = "node1_id", foreignKey = @ForeignKey(name = "node1_id_fk"), nullable = false)
+  @NonNull
   @ManyToOne
   @Getter
   @Setter
   Node node1;
 
   @Id
-  @JoinColumn(name = "node2_id", foreignKey = @ForeignKey(name = "node2_id_fk"))
+  @JoinColumn(name = "node2_id", foreignKey = @ForeignKey(name = "node2_id_fk"), nullable = false)
+  @NonNull
   @ManyToOne
   @Getter
   @Setter
   Node node2;
 
+  /**
+   * Creates a new Edge with empty fields
+   */
   public Edge() {}
 
-  public Edge(Node node1, Node node2) {
+  /**
+   * Creates a new Edge with the specified fields
+   * @param node1 the Node to be used in the first Node field
+   * @param node2 the Node to be used in the second Node field
+   */
+  public Edge(@NonNull Node node1, @NonNull Node node2) {
     this.node1 = node1;
     this.node2 = node2;
   }
@@ -34,11 +43,10 @@ public class Edge {
   /**
    * overrides the default equals method with a new method that compares primary keys
    *
-   * @param other the edge object to compare primary keys against
+   * @param obj the edge object to compare primary keys against
    * @return boolean whether the edges have the same primary keys or not
    */
   @Override
-  @NonNull
   public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null) return false;
@@ -54,7 +62,6 @@ public class Edge {
    * @return the hashcode of the edge
    */
   @Override
-  @NonNull
   public int hashCode() {
     return Objects.hash(this.node1, this.node2);
   }

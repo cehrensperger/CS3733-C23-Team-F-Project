@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class RequestsHomeController extends ServiceRequestController {
+public class RequestsHomeController {
 
   @FXML private BorderPane rootPane;
   @FXML private Text homeText;

@@ -3,7 +3,7 @@ package edu.wpi.FlashyFrogs.navigation;
 public enum Screen {
   ROOT("views/RequestsHome.fxml"),
   HOME("views/RequestsHome.fxml"),
-  SERVICE_REQUEST("views/ServiceRequest.fxml"),
+  SERVICE_REQUEST("views/AllServiceRequests.fxml"),
   SANITATION_PAGE("views/SanitationService.fxml"),
   SECURITY_PAGE("views/SecurityService.fxml"),
   TRANSPORT_PAGE("views/Transport.fxml");

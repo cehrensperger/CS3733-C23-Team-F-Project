@@ -10,26 +10,48 @@ import lombok.Setter;
 @Table(name = "ServiceRequest")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ServiceRequest {
-  @Basic @Id @Getter @Setter @GeneratedValue long id;
-  @Basic @Getter @Setter Status status;
-  @Basic @Getter @Setter String empName;
-  @Basic @Getter @Setter String empDept;
+  @Basic @Id @Column(nullable = false)
+  @NonNull @Getter @Setter @GeneratedValue long id;
+  @Basic  @Column(nullable = false)
+  @NonNull@Getter @Setter Status status; // should be enum
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String empFirstName;
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String empMiddleName;
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String empLastName;
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String empDept; // should be enum
+
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String type; // should be enum
+
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String assignedEmpFirstName;
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String assignedEmpMiddleName;
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String assignedEmpLastName;
+
+  @Basic @Column(nullable = false)
+  @NonNull @Getter @Setter String assignedEmpDept; // should be enum
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
+  @Column(nullable = false)
+  @NonNull
   @Getter
   @Setter
   Date dateOfIncident;
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
+  @Column(nullable = false)
+  @NonNull
   @Getter
   @Setter
   Date dateOfSubmission;
 
-  public ServiceRequest() {
-    this.status = ServiceRequest.Status.valueOf("BLANK");
-  }
 
   /** Enumerated type for the possible statuses we can create */
   public enum Status {

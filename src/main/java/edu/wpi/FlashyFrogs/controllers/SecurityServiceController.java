@@ -1,36 +1,48 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.SecurityServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class SecurityServiceController extends ServiceRequestController {
 
   @FXML private AnchorPane rootPane;
   @FXML private Text securityServiceText;
   @FXML private Text incidentReportText;
-  @FXML private TextField incidentReportEntry;
-  @FXML private TextField locationEntry;
+  @FXML private MFXTextField incidentReportEntry;
+  @FXML private MFXTextField locationEntry;
   @FXML private MFXDatePicker dateEntry;
-  @FXML private TextField timeEntry;
+  @FXML private MFXTextField timeEntry;
   @FXML private Text employeeInformationText;
   @FXML private Text nameText;
-  @FXML private TextField firstEntry;
-  @FXML private TextField middleEntry;
-  @FXML private TextField lastEntry;
+  @FXML private MFXTextField firstEntry;
+  @FXML private MFXTextField middleEntry;
+  @FXML private MFXTextField lastEntry;
   @FXML private MFXButton clearButton;
   @FXML private MFXButton submitButton;
   @FXML private MFXButton homeButton;
+  @FXML private MFXButton allButton;
   @FXML private MFXComboBox urgencyEntry;
   @FXML private MFXComboBox departmentEntry;
+  @FXML private MFXTextField first2;
+  @FXML private MFXTextField middle2;
+  @FXML private MFXTextField last2;
+  @FXML private MFXComboBox department2;
 
   private SecurityServiceData securityServiceData;
 
@@ -39,6 +51,7 @@ public class SecurityServiceController extends ServiceRequestController {
 
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     departmentEntry.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
+    department2.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
     securityServiceData = new SecurityServiceData();
   }
 
@@ -48,7 +61,7 @@ public class SecurityServiceController extends ServiceRequestController {
    * @param event when the user clicks the clear button
    * @throws IOException
    */
-  public void handleButtonClear(ActionEvent event) throws IOException {
+  public void handleClear(ActionEvent event) throws IOException {
     incidentReportEntry.clear();
     locationEntry.clear();
     dateEntry.clear();
@@ -58,6 +71,10 @@ public class SecurityServiceController extends ServiceRequestController {
     lastEntry.clear();
     departmentEntry.clear();
     urgencyEntry.clear();
+    first2.clear();
+    middle2.clear();
+    last2.clear();
+    department2.clear();
   }
 
   /**
@@ -66,7 +83,7 @@ public class SecurityServiceController extends ServiceRequestController {
    * @param event the submit button is clicked
    * @throws IOException
    */
-  public void handleButtonSubmit(ActionEvent event) throws IOException {
+  public void handleSubmit(ActionEvent event) throws IOException {
 
     String incidentReport = incidentReportEntry.getText();
     String location = locationEntry.getText();
@@ -81,6 +98,20 @@ public class SecurityServiceController extends ServiceRequestController {
         incidentReport, location, date, time, first, middle, last, department);
     System.out.println(securityServiceData.getInfo());
 
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    Security securityRequest = new Security();
+    securityRequest.setLocation(locationEntry.getText());
+    securityRequest.setType("Security");
+    securityRequest.setEmpFirstName(firstEntry.getText());
+    securityRequest.setEmpMiddleName(middleEntry.getText());
+    securityRequest.setEmpLastName(lastEntry.getText());
+    securityRequest.setDateOfSubmission(Date.from(Instant.now()));
+
+    session.persist(securityRequest);
+    transaction.commit();
+    session.close();
+    // System.out.println(sanitationServiceData);
     // SecurityServiceData data = new SecurityServiceData();
   }
 
@@ -91,7 +122,13 @@ public class SecurityServiceController extends ServiceRequestController {
    * @throws IOException
    */
   @FXML
-  public void handleHomeButton(ActionEvent actionEvent) throws IOException {
+  public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
+  }
+
+  @FXML
+  public void handleAllButton(ActionEvent actionEvent) throws IOException {
+
+    Fapp.setScene("AllSecurityService");
   }
 }

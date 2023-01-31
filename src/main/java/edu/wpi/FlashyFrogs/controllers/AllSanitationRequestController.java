@@ -12,26 +12,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class AllRequestsController {
-  @FXML
-  protected TableColumn<ServiceRequest, String> typeCol,
-      empLastNameCol,
-      submissionDateCol,
-      submissionTimeCol,
-      statusCol;
+public class AllSanitationRequestController extends AllRequestsController {
 
-  @FXML protected TableView tableView;
   @FXML private MFXButton back;
 
-  @FXML
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("SanitationService");
   }
 
   public void initialize() {
@@ -47,7 +38,7 @@ public class AllRequestsController {
     // Sanitation sanitationRequest = new Sanitation();
 
     List<ServiceRequest> objects =
-        session.createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class).getResultList();
+        session.createQuery("SELECT s FROM Sanitation s", ServiceRequest.class).getResultList();
     System.out.println(objects.size());
     System.out.println(FXCollections.observableList(objects).size());
     tableView.setItems(FXCollections.observableList(objects));

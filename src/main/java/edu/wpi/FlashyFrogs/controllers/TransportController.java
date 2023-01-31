@@ -1,6 +1,9 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.SubmitInfo;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -11,8 +14,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
+import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class TransportController extends ServiceRequestController {
   @FXML MFXTextField firstNameTextfield; // ID of the first name text field
@@ -29,6 +36,11 @@ public class TransportController extends ServiceRequestController {
   @FXML MFXButton clearButton;
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
+  @FXML private MFXTextField first2;
+  @FXML private MFXTextField middle2;
+  @FXML private MFXTextField last2;
+  @FXML private MFXComboBox department2;
+  @FXML private MFXButton allButton;
 
   private Connection connection = null; // connection to database
 
@@ -50,7 +62,7 @@ public class TransportController extends ServiceRequestController {
     departmentComboBox.getItems().addAll("Cardiology", "Radiology", "Trauma Unit");
   }
 
-  public void clearButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleClear(ActionEvent actionEvent) throws IOException {
     System.out.println("clear button was clicked");
     System.out.println(this.logData() ? "Data logged" : "Data was not logged");
     firstNameTextfield.clear();
@@ -64,9 +76,19 @@ public class TransportController extends ServiceRequestController {
     lastNameTextfield2.clear();
     middleNameTextfield2.clear();
     departmentComboBox.clear();
+    first2.clear();
+    middle2.clear();
+    last2.clear();
+    department2.clear();
   }
 
-  public void submitButtonClicked(ActionEvent actionEvent) throws IOException {
+  @FXML
+  public void handleAllButton(ActionEvent actionEvent) throws IOException {
+
+    Fapp.setScene("AllTransport");
+  }
+
+  public void handleSubmit(ActionEvent actionEvent) throws IOException {
     System.out.println("Submit Button was Clicked");
     System.out.println(this.logData() ? "Data logged" : "Data was not logged");
     submitInfo.setPatientFirstName(firstNameTextfield.getText());
@@ -82,6 +104,20 @@ public class TransportController extends ServiceRequestController {
     submitInfo.setEmployeeDepartment(departmentComboBox.getText());
     System.out.println(submitInfo.getDOB());
     System.out.println(submitInfo.getPatientMiddleName());
+
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    InternalTransport transportRequest = new InternalTransport();
+    // securityRequest.setLocation(locationEntry.getText());
+    transportRequest.setType("Transport");
+    transportRequest.setEmpFirstName(firstNameTextfield.getText());
+    transportRequest.setEmpMiddleName(middleNameTextfield.getText());
+    transportRequest.setEmpLastName(lastNameTextfield.getText());
+    transportRequest.setDateOfSubmission(Date.from(Instant.now()));
+
+    session.persist(transportRequest);
+    transaction.commit();
+    session.close();
   }
 
   /**
@@ -95,7 +131,7 @@ public class TransportController extends ServiceRequestController {
     System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
   }
 
-  public void backButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
   }
 

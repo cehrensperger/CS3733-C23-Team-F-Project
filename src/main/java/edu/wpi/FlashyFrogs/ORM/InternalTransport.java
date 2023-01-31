@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.ORM;
 import jakarta.persistence.*;
 import java.util.*;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -11,26 +12,46 @@ import lombok.Setter;
     name = "service_request_id",
     foreignKey = @ForeignKey(name = "service_request_id_fk"))
 public class InternalTransport extends ServiceRequest {
-  @Getter @Setter String patientName;
-  @Getter @Setter String oldLoc;
-  @Getter @Setter String newLoc;
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String patientName;
 
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String oldLoc;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String newLoc;
+
+  @Column(nullable = false)
+  @NonNull
   @Temporal(TemporalType.TIMESTAMP)
   @Getter
   @Setter
   Date dateOfBirth;
 
-  public InternalTransport() {
-    super();
-  }
+  public InternalTransport() {}
 
   public InternalTransport(long id) {
     this.id = id;
   }
 
-  public InternalTransport(
-      Date theDOB, String theNewLoc, String theOldLoc, String thePatientName, long theId) {
-    super();
+  public InternalTransport( // needs to include super class values
+      @NonNull Date theDOB,
+      @NonNull String theNewLoc,
+      @NonNull String theOldLoc,
+      @NonNull String thePatientName,
+      long theId) {
     this.dateOfBirth = theDOB;
     this.newLoc = theNewLoc;
     this.oldLoc = theOldLoc;

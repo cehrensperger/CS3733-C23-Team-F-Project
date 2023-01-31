@@ -28,6 +28,7 @@ public class PathFindingController {
   }
 
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
-    //
+    String startPath = start.getText();
+    String endPath = end.getText();
   }
 }

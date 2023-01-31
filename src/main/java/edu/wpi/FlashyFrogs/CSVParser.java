@@ -37,6 +37,7 @@ public class CSVParser {
       moveFileScanner.nextLine();
 
       while (nodeFileScanner.hasNextLine()) {
+
         fields = nodeFileScanner.nextLine().split(",");
 
         Node node =

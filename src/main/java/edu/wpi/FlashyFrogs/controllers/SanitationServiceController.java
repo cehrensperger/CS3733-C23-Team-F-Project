@@ -1,5 +1,7 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.Main;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
@@ -10,6 +12,10 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.Instant;
+import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.hibernate.Session;
@@ -27,17 +33,18 @@ public class SanitationServiceController extends ServiceRequestController {
   @FXML MFXTextField middleName;
   @FXML MFXTextField timeEntry;
   @FXML MFXComboBox departmentDropDown;
-
   @FXML MFXComboBox urgencyEntry;
+  @FXML private MFXTextField first2;
+  @FXML private MFXTextField middle2;
+  @FXML private MFXTextField last2;
+  @FXML private MFXComboBox department2;
+  @FXML private MFXButton allButton;
   private Connection connection = null; // connection to database
   private SanitationServiceData sanitationServiceData;
 
   /** Method run when controller is initializes */
   public void initialize() {
-    // if connection is successful
-    //    if (this.connectToDB()) {
-    //      this.createTable();
-    //    }
+
 
     sanitationServiceData = new SanitationServiceData();
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
@@ -54,9 +61,8 @@ public class SanitationServiceController extends ServiceRequestController {
    * @param actionEvent event that triggered method
    * @throws IOException
    */
-  public void clearButtonClicked(ActionEvent actionEvent) throws IOException {
-    //    System.out.println("clear button was clicked");
-    //    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
+
+  public void handleClear(ActionEvent actionEvent) throws IOException {
     requestTypeDropDown.clear();
     locationDropDown.clear();
     date.clear();
@@ -66,6 +72,10 @@ public class SanitationServiceController extends ServiceRequestController {
     departmentDropDown.clear();
     timeEntry.clear();
     urgencyEntry.clear();
+    first2.clear();
+    middle2.clear();
+    last2.clear();
+    department2.clear();
   }
 
   /**
@@ -74,29 +84,48 @@ public class SanitationServiceController extends ServiceRequestController {
    * @param actionEvent event that triggered method
    * @throws IOException
    */
-  public void submitButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleSubmit(ActionEvent actionEvent) throws IOException {
     //    System.out.println("Submit button was clicked");
     //    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
-    sanitationServiceData.setDateInfo(date.getText());
-    sanitationServiceData.setLocationInfo(locationDropDown.getText());
-    sanitationServiceData.setRequestType(requestTypeDropDown.getText());
-    sanitationServiceData.setEmployeeDepartment(departmentDropDown.getText());
-    sanitationServiceData.setEmployeeFirstName(firstName.getText());
-    sanitationServiceData.setEmployeeLastName(lastName.getText());
-    sanitationServiceData.setEmployeeMiddleName(middleName.getText());
-    addSanitationRequest(locationDropDown.getText(), requestTypeDropDown.getText());
-    System.out.println(sanitationServiceData);
-  }
+    //    sanitationServiceData.setDateInfo(date.getText());
+    //    sanitationServiceData.setLocationInfo(locationDropDown.getText());
+    //    sanitationServiceData.setRequestType(requestTypeDropDown.getText());
+    //    sanitationServiceData.setEmployeeDepartment(departmentDropDown.getText());
+    //    sanitationServiceData.setEmployeeFirstName(firstName.getText());
+    //    sanitationServiceData.setEmployeeLastName(lastName.getText());
+    //    sanitationServiceData.setEmployeeMiddleName(middleName.getText());
 
-  private void addSanitationRequest(String location, String type) {
-    Session session = Main.factory.openSession();
+    Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(location);
-    sanitationRequest.setType(type);
+    sanitationRequest.setLocation(locationDropDown.getText());
+    sanitationRequest.setType("Sanitation");
+    sanitationRequest.setEmpFirstName(firstName.getText());
+    sanitationRequest.setEmpMiddleName(middleName.getText());
+    sanitationRequest.setEmpLastName(lastName.getText());
+    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
 
     session.persist(sanitationRequest);
     transaction.commit();
+    session.close();
+    System.out.println(sanitationServiceData);
+  }
+
+  private void addSanitationRequest(SanitationServiceData sd) {
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    Sanitation sanitationRequest = new Sanitation();
+    sanitationRequest.setLocation(sd.getLocationInfo());
+    sanitationRequest.setType(sd.getRequestType());
+    sanitationRequest.setEmpFirstName(sd.getEmployeeFirstName());
+    sanitationRequest.setEmpMiddleName(sd.getEmployeeMiddleName());
+    sanitationRequest.setEmpLastName(sd.getEmployeeLastName());
+    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
+
+    session.persist(sanitationRequest);
+    transaction.commit();
+    session.close();
+    System.out.println("submitted");
   }
 
   /**
@@ -105,8 +134,14 @@ public class SanitationServiceController extends ServiceRequestController {
    * @param actionEvent event that triggered method
    * @throws IOException
    */
-  public void backButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
+  }
+
+  @FXML
+  public void handleAllButton(ActionEvent actionEvent) throws IOException {
+
+    Fapp.setScene("AllSanitationRequest");
   }
 
   /**

@@ -24,17 +24,15 @@ public class EdgeTest {
     assertFalse(testEdge1.equals(testEdge3));
   }
 
-  /**
-   * This is a perfect test. Nothing to see here
-   */
+  /** This is a perfect test. Nothing to see here */
   @Test
-  public void testHashCode(){
+  public void testHashCode() {
     Node node1 = new Node("Test", "0", Node.Floor.ONE, 0, 0);
     Node node2 = new Node("Other Test", "0", Node.Floor.ONE, 1, 0);
     Edge testEdge1 = new Edge(node1, node2);
     assertDoesNotThrow(
-            () -> {
-                int hash = testEdge1.hashCode();
-            });
+        () -> {
+          int hash = testEdge1.hashCode();
+        });
   }
 }

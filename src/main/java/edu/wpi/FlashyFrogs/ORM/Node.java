@@ -9,19 +9,67 @@ import lombok.Setter;
 @Entity
 @Table(name = "Node")
 public class Node {
-  @Id @Getter @Setter String id;
-  @Basic @Getter @Setter int xCoord;
-  @Basic @Getter @Setter int yCoord;
-  @Basic @Getter @Setter Floor floor;
-  @Basic @Getter @Setter String building;
+  @Id
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String id;
 
+  @Basic
+  @Column(nullable = false)
+  @Getter
+  @Setter
+  int xCoord;
+
+  @Basic
+  @Column(nullable = false)
+  @Getter
+  @Setter
+  int yCoord;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  Floor floor;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String building;
+
+  /** Creates a new Node with empty fields */
   public Node() {}
 
-  public Node(String id) {
+  /**
+   * Creates a new Node with the given primary key (unnecessary)
+   *
+   * @param id the String to be used as the id
+   */
+  public Node(@NonNull String id) {
     this.id = id;
   }
 
-  public Node(String theId, String theBuilding, Floor theFloor, int theXCoord, int theYCoord) {
+  /**
+   * Creates a new Node with the given fields
+   *
+   * @param theId the String to be used in the id field
+   * @param theBuilding the String to be used in the building field
+   * @param theFloor the Floor Enumeration to be used in the floor field
+   * @param theXCoord the int to be used in the xCoord field
+   * @param theYCoord the int to be used in the yCoord field
+   */
+  public Node(
+      @NonNull String theId,
+      @NonNull String theBuilding,
+      @NonNull Floor theFloor,
+      int theXCoord,
+      int theYCoord) {
+
     this.id = theId;
     this.building = theBuilding;
     this.floor = theFloor;
@@ -57,7 +105,6 @@ public class Node {
    * @return boolean whether the primary keys are the same or not
    */
   @Override
-  @NonNull
   public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null) return false;
@@ -73,7 +120,6 @@ public class Node {
    * @return the new hashcode
    */
   @Override
-  @NonNull
   public int hashCode() {
     return Objects.hash(this.id, this.xCoord, this.yCoord);
   }

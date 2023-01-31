@@ -12,26 +12,41 @@ public class Move {
   @Id
   @Getter
   @Setter
-  @JoinColumn(name = "node_id", foreignKey = @ForeignKey(name = "node_id_fk"))
+  @JoinColumn(name = "node_id", foreignKey = @ForeignKey(name = "node_id_fk"), nullable = false)
+  @NonNull
   @ManyToOne
   Node node;
 
   @Id
   @Getter
   @Setter
-  @JoinColumn(name = "longName", foreignKey = @ForeignKey(name = "location_name_fk"))
+  @JoinColumn(
+      name = "longName",
+      foreignKey = @ForeignKey(name = "location_name_fk"),
+      nullable = false)
+  @NonNull
   @ManyToOne
   LocationName location;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Id
+  @Column(nullable = false)
+  @NonNull
   @Getter
   @Setter
   Date moveDate;
 
+  /** Creates a new Move with empty fields */
   public Move() {}
 
-  public Move(Node node, LocationName location, Date date) {
+  /**
+   * Creates a new Move with the given fields
+   *
+   * @param node the Node to be used in the node field
+   * @param location the LocationName to be used in the location field
+   * @param date the Date to be used in the moveDate field
+   */
+  public Move(@NonNull Node node, @NonNull LocationName location, @NonNull Date date) {
     this.node = node;
     this.location = location;
     this.moveDate = date;
@@ -44,7 +59,6 @@ public class Move {
    * @return boolean whether the primary keys are equal or not
    */
   @Override
-  @NonNull
   public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null) return false;
@@ -62,7 +76,6 @@ public class Move {
    * @return the new hashcode
    */
   @Override
-  @NonNull
   public int hashCode() {
     return Objects.hash(this.node, this.location, this.moveDate);
   }
