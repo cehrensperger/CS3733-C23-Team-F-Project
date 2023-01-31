@@ -48,4 +48,10 @@ public class Node {
       floorNum = floor; // The floor to create
     }
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    Node other = (Node)obj;
+    return this.getId().equals(other.getId());
+  }
 }

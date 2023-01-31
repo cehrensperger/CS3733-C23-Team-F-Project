@@ -33,8 +33,7 @@ public class ServiceRequest {
     PROCESSING("processing"),
     DONE("done");
 
-    @NonNull
-    public final String status; // Number backing for the Floor
+    @NonNull public final String status; // Number backing for the Floor
 
     /**
      * Creates a new floor with the given String backing
