@@ -15,6 +15,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.hibernate.Session;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 public class AllRequestsController {
   @FXML
   private TableColumn<ServiceRequest, String> typeCol,
@@ -39,7 +41,7 @@ public class AllRequestsController {
     submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-    Session session = Main.getFactory().openSession();
+    Session session = factory.openSession();
     // Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
 

@@ -19,6 +19,8 @@ import javafx.fxml.FXML;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 public class SanitationServiceController {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML
   @FXML MFXButton submitButton;
@@ -96,12 +98,25 @@ public class SanitationServiceController {
     sanitationServiceData.setEmployeeFirstName(firstName.getText());
     sanitationServiceData.setEmployeeLastName(lastName.getText());
     sanitationServiceData.setEmployeeMiddleName(middleName.getText());
-    addSanitationRequest(sanitationServiceData);
+
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    Sanitation sanitationRequest = new Sanitation();
+    sanitationRequest.setLocation(locationDropDown.getText());
+    sanitationRequest.setType(requestTypeDropDown.getText());
+    sanitationRequest.setEmpFirstName(firstName.getText());
+    sanitationRequest.setEmpMiddleName(middleName.getText());
+    sanitationRequest.setEmpLastName(lastName.getText());
+    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
+
+    session.persist(sanitationRequest);
+    transaction.commit();
+
     System.out.println(sanitationServiceData);
   }
 
   private void addSanitationRequest(SanitationServiceData sd) {
-    Session session = Main.getFactory().openSession();
+    Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
     sanitationRequest.setLocation(sd.getLocationInfo());
