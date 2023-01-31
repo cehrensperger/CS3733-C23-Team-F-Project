@@ -30,7 +30,7 @@ public class CSVParser {
       }
       while (locationFileScanner.hasNextLine()) {
         //maybe skip the first line, which happens to outline the type of data instead of being data...
-        new locationName();
+        new LocationName();
       }
       while (moveFileScanner.hasNextLine()) {
         //maybe skip the first line, which happens to outline the type of data instead of being data...
