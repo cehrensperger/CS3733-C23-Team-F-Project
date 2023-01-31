@@ -11,7 +11,7 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ServiceRequest {
   @Basic @Id @Getter @Setter @GeneratedValue long id;
-  @Basic @Getter @Setter String status;
+  @Basic @Getter @Setter Status status;
   @Basic @Getter @Setter String empName;
   @Basic @Getter @Setter String empDept;
 
@@ -27,6 +27,10 @@ public class ServiceRequest {
   @Setter
   Date dateOfSubmission;
 
+  public ServiceRequest() {
+    this.status = ServiceRequest.Status.valueOf("blank");
+  }
+
   /** Enumerated type for the possible statuses we can create */
   public enum Status {
     BLANK("blank"),
@@ -38,7 +42,7 @@ public class ServiceRequest {
     /**
      * Creates a new floor with the given String backing
      *
-     * @param floor the floor to create. Must not be null
+     * @param statusVal the status to create. Must not be null
      */
     Status(@NonNull String statusVal) {
       status = statusVal; // The floor to create
