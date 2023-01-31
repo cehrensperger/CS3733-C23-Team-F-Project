@@ -123,12 +123,26 @@ public class PathFinder {
     // Create a transaction so that nothing happens while reading occurs
     Transaction transaction = session.beginTransaction();
 
-    // Query location names and return nodes to send to aStar function
-    Node startNode = locationToNode(longNameToLocation(start, session), session);
-    Node endNode = locationToNode(longNameToLocation(end, session), session);
+    List<Node> path;
 
-    // Find the path with A*
-    List<Node> path = aStar(startNode, endNode, session);
+    try {
+      // Query location names and return nodes to send to aStar function
+      Node startNode = locationToNode(longNameToLocation(start, session), session);
+      Node endNode = locationToNode(longNameToLocation(end, session), session);
+
+      // Find the path with A*
+      path = aStar(startNode, endNode, session);
+    } catch (
+        NullPointerException
+            error) { // Catch failures, so we can close the transaction no matter what
+      // End the transaction
+      transaction.rollback();
+
+      // Close the session
+      session.close();
+
+      throw error;
+    }
 
     // Commit the transaction
     transaction.commit();
