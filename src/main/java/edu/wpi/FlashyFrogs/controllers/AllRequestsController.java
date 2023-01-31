@@ -1,10 +1,14 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.Main;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import java.io.IOException;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,8 +24,13 @@ public class AllRequestsController {
       statusCol;
 
   @FXML private TableView tableView;
+  @FXML private MFXButton back;
 
   @FXML
+  public void handleBackButton(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("RequestsHome");
+  }
+
   public void initialize() {
     System.out.println("initializing");
     typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
