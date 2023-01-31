@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
+import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.hibernate.Session;
@@ -107,6 +109,7 @@ public class SanitationServiceController {
     sanitationRequest.setEmpFirstName(sd.getEmployeeFirstName());
     sanitationRequest.setEmpMiddleName(sd.getEmployeeMiddleName());
     sanitationRequest.setEmpLastName(sd.getEmployeeLastName());
+    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
 
     session.persist(sanitationRequest);
     transaction.commit();

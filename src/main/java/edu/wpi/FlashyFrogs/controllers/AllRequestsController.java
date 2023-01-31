@@ -26,8 +26,8 @@ public class AllRequestsController {
     System.out.println("initializing");
     typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
-    submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("subDate"));
-    submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("notes"));
+    submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
+    submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
     Session session = Main.getFactory().openSession();
