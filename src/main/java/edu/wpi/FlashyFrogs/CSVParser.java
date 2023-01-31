@@ -16,10 +16,6 @@ public class CSVParser {
 
   public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile) throws FileNotFoundException {
     try {
-      nodeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
-      edgeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv");
-      locationFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
-      moveFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
       Scanner nodeFileScanner = new Scanner(nodeFile);
       Scanner edgeFileScanner = new Scanner(edgeFile);
       Scanner locationFileScanner = new Scanner(locationFile);
