@@ -8,13 +8,18 @@ import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class AllRequestsController {
   @FXML
@@ -42,12 +47,33 @@ public class AllRequestsController {
 
     Session session = factory.openSession();
     // Transaction transaction = session.beginTransaction();
-    Sanitation sanitationRequest = new Sanitation();
+    // Sanitation sanitationRequest = new Sanitation();
 
     List<ServiceRequest> objects =
         session.createQuery("SELECT s FROM Sanitation s", ServiceRequest.class).getResultList();
     System.out.println(objects.size());
     System.out.println(FXCollections.observableList(objects).size());
     tableView.setItems(FXCollections.observableList(objects));
+    tableView.setEditable(true);
+    statusCol.setCellFactory(ComboBoxTableCell.forTableColumn("BLANK", "PROCESSING", "DONE"));
+    statusCol.setOnEditCommit(
+        new EventHandler<TableColumn.CellEditEvent<ServiceRequest, String>>() {
+          @Override
+          public void handle(TableColumn.CellEditEvent<ServiceRequest, String> t) {
+
+            Session session = factory.openSession();
+            Transaction transaction = session.beginTransaction();
+
+            Sanitation sanitation =
+                ((Sanitation) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            sanitation.setStatus(ServiceRequest.Status.valueOf((t.getNewValue())));
+
+            session.merge(sanitation);
+            session.persist(sanitation);
+            transaction.commit();
+          }
+        });
+
+    session.close();
   }
 }
