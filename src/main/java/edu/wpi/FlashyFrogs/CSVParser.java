@@ -11,12 +11,9 @@ import java.io.FileNotFoundException;
 import java.time.Instant;
 import java.util.*;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class CSVParser {
-
-  public void CSVParser(SessionFactory sf) {}
 
   public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile)
       throws FileNotFoundException {
@@ -63,7 +60,7 @@ public class CSVParser {
 
         LocationName location =
             new LocationName(fields[1], LocationName.LocationType.valueOf(fields[0]), fields[2]);
-        locations.put(fields[0], location);
+        locations.put(fields[1], location);
         session.persist(location);
       }
       while (moveFileScanner.hasNextLine()) {
@@ -73,6 +70,7 @@ public class CSVParser {
             new Move(nodes.get(fields[0]), locations.get(fields[1]), Date.from(Instant.now()));
         session.persist(move);
       }
+
       transaction.commit();
       session.close();
 
