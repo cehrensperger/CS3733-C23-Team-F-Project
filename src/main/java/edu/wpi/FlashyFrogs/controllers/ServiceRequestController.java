@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class ServiceRequestController {
+public abstract class ServiceRequestController {
 
   // @FXML MFXButton backButton;
   @FXML private Pane rootPane;
@@ -20,4 +20,6 @@ public class ServiceRequestController {
     stage = (Stage) rootPane.getScene().getWindow();
     stage.close();
   }
+
+  // abstract void handleSubmit(ActionEvent event) throws IOException;
 }
