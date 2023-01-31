@@ -11,11 +11,11 @@ public class Main {
 
   public static void main(String[] args) {
 
-    App.launch(App.class, args);
+    // App.launch(App.class, args);
 
     final StandardServiceRegistry registry =
         new StandardServiceRegistryBuilder()
-            .configure() // configures settings from hibernate.cfg.xml
+            .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
             .build();
     try {
       SessionFactory factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
