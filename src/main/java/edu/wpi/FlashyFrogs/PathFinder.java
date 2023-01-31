@@ -125,6 +125,13 @@ public class PathFinder {
     return path; // Return the path
   }
 
+  /**
+   * Private method to find the path between two locations.
+   *
+   * @param start the start node
+   * @param end the end node
+   * @return the path (as a list) between the two nodes, or null if it could not find a path
+   */
   private List<Node> aStar(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
     PriorityQueue<NodeWrapper> openList = new PriorityQueue<>();
     List<NodeWrapper> closedlist = new LinkedList<>();
@@ -171,6 +178,13 @@ public class PathFinder {
     return null;
   }
 
+  /**
+   * Private method to find the distance between two nodes
+   *
+   * @param node1 first node
+   * @param node2 second node
+   * @return distance between the two nodes
+   */
   private double euclideanDistance(@NonNull Node node1, @NonNull Node node2) {
     int x1 = node1.getXCoord();
     int x2 = node2.getXCoord();
@@ -181,6 +195,7 @@ public class PathFinder {
     return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
   }
 
+
   private static class NodeWrapper implements Comparable<NodeWrapper> {
     Node node;
     NodeWrapper parent;
@@ -188,6 +203,12 @@ public class PathFinder {
     double h;
     double f;
 
+    /**
+     * Generates a node wrapper that contains a node with values to calculate cost
+     *
+     * @param node the node to wrap
+     * @param parent the parent node
+     */
     private NodeWrapper(@NonNull Node node, NodeWrapper parent) {
       this.node = node;
       this.parent = parent;
