@@ -8,8 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class Main {
 
-  public static SessionFactory getFactory()
-  {
+  public static SessionFactory getFactory() {
     return factory;
   }
 
@@ -17,7 +16,7 @@ public class Main {
       new StandardServiceRegistryBuilder()
           .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
           .build();
-   static final SessionFactory factory =
+  static final SessionFactory factory =
       new MetadataSources(registry).buildMetadata().buildSessionFactory();
 
   public static void main(String[] args) {

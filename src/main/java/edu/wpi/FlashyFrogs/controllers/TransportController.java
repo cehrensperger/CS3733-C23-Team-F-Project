@@ -35,7 +35,6 @@ public class TransportController {
   @FXML private MFXComboBox department2;
   @FXML private MFXButton allButton;
 
-
   private Connection connection = null; // connection to database
 
   private SubmitInfo submitInfo;

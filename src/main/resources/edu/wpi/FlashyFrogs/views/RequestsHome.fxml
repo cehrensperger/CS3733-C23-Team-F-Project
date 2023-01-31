@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.RequestsHomeController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.RequestsHomeController">
    <center>
       <HBox alignment="CENTER" prefHeight="245.0" prefWidth="600.0" spacing="12.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="200.0">
+            <VBox prefHeight="200.0" prefWidth="250.0">
                <children>
                   <MFXButton fx:id="allRequestsButton" onAction="#handleAllRequestsButton" text="All Service Requests">
                      <VBox.margin>
@@ -18,21 +18,21 @@
                      </VBox.margin>
                   </MFXButton>
                </children></VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="300.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="184.0" prefWidth="200.0">
+                  <VBox alignment="CENTER" prefHeight="600.0" prefWidth="275.0">
                      <children>
-                        <MFXButton fx:id="internalPatientTransportationButton" alignment="CENTER" onAction="#handleInternalPatientTransportationButton" prefWidth="220.0" text="Internal Patient Transportation">
+                        <MFXButton fx:id="internalPatientTransportationButton" alignment="CENTER" onAction="#handleInternalPatientTransportationButton" prefWidth="275.0" text="Internal Patient Transportation">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </MFXButton>
-                        <MFXButton fx:id="sanitationServicesButton" onAction="#handleSanitationServiceButton" prefWidth="220.0" text="Sanitation Services">
+                        <MFXButton fx:id="sanitationServicesButton" onAction="#handleSanitationServiceButton" prefWidth="275.0" text="Sanitation Services">
                            <VBox.margin>
                               <Insets top="50.0" />
                            </VBox.margin>
                         </MFXButton>
-                        <MFXButton fx:id="securityServicesButton" onAction="#handleSecurityServiceButton" prefWidth="220.0" text="Security Services">
+                        <MFXButton fx:id="securityServicesButton" onAction="#handleSecurityServiceButton" prefWidth="275.0" text="Security Services">
                            <VBox.margin>
                               <Insets top="50.0" />
                            </VBox.margin>
@@ -41,7 +41,7 @@
                   </VBox>
                </children>
             </HBox>
-            <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="200.0">
+            <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="250.0">
                <children>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="70.0" prefWidth="182.0">
                      <children>

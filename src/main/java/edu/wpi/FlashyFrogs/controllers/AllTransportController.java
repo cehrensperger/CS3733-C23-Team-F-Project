@@ -1,4 +1,3 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-public class AllTransportController {
-}
+public class AllTransportController {}

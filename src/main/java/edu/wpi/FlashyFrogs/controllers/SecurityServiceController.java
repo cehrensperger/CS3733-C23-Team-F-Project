@@ -5,16 +5,14 @@ import edu.wpi.FlashyFrogs.SecurityServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
-import java.io.IOException;
-
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
-public class SecurityServiceController  {
+public class SecurityServiceController {
 
   @FXML private AnchorPane rootPane;
   @FXML private Text securityServiceText;
@@ -38,8 +36,6 @@ public class SecurityServiceController  {
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
   @FXML private MFXComboBox department2;
-
-
 
   private SecurityServiceData securityServiceData;
 

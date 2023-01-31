@@ -24,10 +24,7 @@ public class RequestsHomeController extends ServiceRequestController {
 
   /** Initialize controller by FXML Loader. */
   @FXML
-  public void initialize() {
-
-  }
-
+  public void initialize() {}
 
   @FXML
   public void handleSecurityServiceButton(ActionEvent actionEvent) throws IOException {
