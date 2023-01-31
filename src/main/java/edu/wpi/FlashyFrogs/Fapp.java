@@ -1,22 +1,21 @@
 package edu.wpi.FlashyFrogs;
 
-import edu.wpi.FlashyFrogs.navigation.Navigation;
-import edu.wpi.FlashyFrogs.navigation.Screen;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class App extends Application {
+public class Fapp extends Application {
 
   @Setter @Getter private static Stage primaryStage;
-  @Setter @Getter private static BorderPane rootPane;
+  @Setter @Getter private static StackPane rootPane;
 
   @Override
   public void init() {
@@ -26,18 +25,28 @@ public class App extends Application {
   @Override
   public void start(Stage primaryStage) throws IOException {
     /* primaryStage is generally only used if one of your components require the stage to display */
-    App.primaryStage = primaryStage;
+    Fapp.primaryStage = primaryStage;
 
-    final FXMLLoader loader = new FXMLLoader(App.class.getResource("views/Root.fxml"));
-    final BorderPane root = loader.load();
+    final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Home.fxml"));
+    final StackPane root = loader.load();
 
-    App.rootPane = root;
+    Fapp.rootPane = root;
 
     final Scene scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.show();
 
-    Navigation.navigate(Screen.HOME);
+    // Navigation.navigate(Screen.HOME);
+  }
+
+  public static void setScene(String sceneName) throws IOException {
+    Parent root = FXMLLoader.load(Fapp.class.getResource("views/" + sceneName + ".fxml"));
+    // Scene scene = new Scene(root);
+    Scene scene = new Scene(root, 600, 400);
+
+    primaryStage.setScene(scene);
+    primaryStage.setMaximized(false);
+    primaryStage.show();
   }
 
   @Override

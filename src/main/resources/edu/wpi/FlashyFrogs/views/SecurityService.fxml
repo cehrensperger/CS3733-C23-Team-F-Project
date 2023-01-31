@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SecurityServiceController">
+   <children>
+      <BorderPane prefHeight="400.0" prefWidth="600.0">
+         <top>
+            <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Form" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="8.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+         </top>
+         <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="600.0">
+                     <children>
+                        <Text fx:id="incidentReportText" strokeType="OUTSIDE" strokeWidth="0.0" text="Incident Report:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Text>
+                        <MFXTextField fx:id="incidentReportEntry" prefHeight="70.0" prefWidth="580.0" promptText="Description Of Incident">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </MFXTextField>
+                        <HBox prefHeight="45.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="70.0" prefWidth="200.0">
+                                 <children>
+                                    <MFXTextField fx:id="locationEntry" prefHeight="34.0" prefWidth="184.0" promptText="Location">
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <MFXDatePicker fx:id="dateEntry" floatMode="INLINE" prefHeight="50.0" prefWidth="199.0" promptText="Date">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin></MFXDatePicker>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <MFXTextField fx:id="timeEntry" prefHeight="51.0" prefWidth="205.0" promptText="Time 00:00 AM/PM">
+                                       <VBox.margin>
+                                          <Insets right="10.0" top="5.0" />
+                                       </VBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <MFXComboBox fx:id="urgencyEntry" prefHeight="78.0" prefWidth="184.0" promptText="Urgency:">
+                           <VBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </VBox.margin>
+                        </MFXComboBox>
+                        <Text fx:id="employeeInformationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:">
+                           <VBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <HBox prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="42.0" prefWidth="150.0">
+                                 <children>
+                                    <MFXTextField fx:id="firstEntry" prefHeight="30.0" prefWidth="135.0" promptText="First">
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="5.0" />
+                                       </VBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="40.0" prefWidth="150.0">
+                                 <children>
+                                    <MFXTextField fx:id="middleEntry" prefHeight="51.0" prefWidth="230.0" promptText="Middle">
+                                       <VBox.margin>
+                                          <Insets right="5.0" />
+                                       </VBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="150.0">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <children>
+                                    <MFXTextField fx:id="lastEntry" prefHeight="51.0" prefWidth="166.0" promptText="Last">
+                                       <VBox.margin>
+                                          <Insets right="5.0" />
+                                       </VBox.margin>
+                                    </MFXTextField>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="150.0">
+                                 <children>
+                                    <MFXComboBox fx:id="departmentEntry" prefHeight="57.0" prefWidth="140.0" promptText="Department">
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
+                                    </MFXComboBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="89.0" prefWidth="600.0">
+                           <children>
+                              <MFXButton fx:id="clearButton" onAction="#handleButtonClear" prefHeight="27.0" prefWidth="100.0" text="Clear">
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin></MFXButton>
+                              <MFXButton fx:id="homeButton" onAction="#handleHomeButton" prefWidth="100.0" text="Back">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin></MFXButton>
+                              <MFXButton fx:id="submitButton" onAction="#handleButtonSubmit" prefWidth="100.0" text="Submit">
+                                 <HBox.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </MFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
