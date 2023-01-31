@@ -76,7 +76,7 @@ public class SanitationServiceController extends ServiceRequestController {
    * @param actionEvent event that triggered method
    * @throws IOException
    */
-  public void submitButtonClicked(ActionEvent actionEvent) throws IOException {
+  public void handleSubmit(ActionEvent actionEvent) throws IOException {
     //    System.out.println("Submit button was clicked");
     //    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
     sanitationServiceData.setDateInfo(date.getText());

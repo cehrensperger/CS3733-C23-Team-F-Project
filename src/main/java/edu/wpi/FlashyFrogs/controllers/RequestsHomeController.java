@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class RequestsHomeController extends ServiceRequestController {
+public class RequestsHomeController {
 
   @FXML private BorderPane rootPane;
   @FXML private Text homeText;
@@ -24,10 +24,7 @@ public class RequestsHomeController extends ServiceRequestController {
 
   /** Initialize controller by FXML Loader. */
   @FXML
-  public void initialize() {
-
-  }
-
+  public void initialize() {}
 
   @FXML
   public void handleSecurityServiceButton(ActionEvent actionEvent) throws IOException {

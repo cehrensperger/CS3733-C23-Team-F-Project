@@ -9,7 +9,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class HomeController extends ServiceRequestController {
+public class HomeController {
 
   @FXML private StackPane rootPane;
   @FXML private MFXButton serviceRequestsButton;
