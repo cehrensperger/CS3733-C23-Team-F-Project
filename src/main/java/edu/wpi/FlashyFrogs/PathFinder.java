@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 @AllArgsConstructor
 public class PathFinder {
@@ -119,12 +120,18 @@ public class PathFinder {
     // Get the session to use for this
     Session session = sessionFactory.openSession();
 
+    // Create a transaction so that nothing happens while reading occurs
+    Transaction transaction = session.beginTransaction();
+
     // Query location names and return nodes to send to aStar function
     Node startNode = locationToNode(longNameToLocation(start, session), session);
     Node endNode = locationToNode(longNameToLocation(end, session), session);
 
     // Find the path with A*
     List<Node> path = aStar(startNode, endNode, session);
+
+    // Commit the transaction
+    transaction.commit();
 
     // Close the session
     session.close();

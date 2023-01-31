@@ -1,9 +1,15 @@
 package edu.wpi.FlashyFrogs;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import java.time.Instant;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,13 +17,6 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.*;
-
-import java.time.Instant;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for the PathFinder class, tests to ensure that it finds a valid path, and that it always
@@ -65,6 +64,14 @@ public class PathFinderTest {
   /** Teardown method, closes the session */
   @AfterEach
   public void teardownSession() {
+    Transaction deleteTransaction = testSession.beginTransaction(); // Clearing transaction
+    testSession.createMutationQuery("DELETE FROM Edge").executeUpdate(); // Drop edge
+    testSession.createMutationQuery("DELETE FROM Move").executeUpdate(); // Drop move
+    testSession.createMutationQuery("DELETE FROM LocationName").executeUpdate(); // Drop location
+    testSession.createMutationQuery("DELETE FROM Node").executeUpdate(); // Drop node
+
+    deleteTransaction.commit(); // Commit the transaction
+
     testSession.close(); // Close the session
   }
 
@@ -121,27 +128,6 @@ public class PathFinderTest {
 
     PathFinder pathFinder = new PathFinder(sessionFactory);
     assertEquals(
-            expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
-
-    // Transaction to delete everything
-    Transaction deleteTransaction = testSession.beginTransaction();
-
-    // Delete everything
-    testSession.remove(oneToTwo);
-    testSession.remove(twoToThree);
-    testSession.remove(threeToFour);
-    testSession.remove(fourToFive);
-    testSession.remove(startMove);
-    testSession.remove(endMove);
-    testSession.remove(startName);
-    testSession.remove(endName);
-    testSession.remove(nodeOne);
-    testSession.remove(nodeTwo);
-    testSession.remove(nodeThree);
-    testSession.remove(nodeFour);
-    testSession.remove(nodeFive);
-
-    // Commit the deletion
-    deleteTransaction.commit();
+        expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
   }
 }
