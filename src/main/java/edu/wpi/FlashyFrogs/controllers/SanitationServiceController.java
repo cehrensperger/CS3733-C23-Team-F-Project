@@ -1,7 +1,8 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.Main;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.SanitationServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -18,8 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import static edu.wpi.FlashyFrogs.Main.factory;
 
 public class SanitationServiceController {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML

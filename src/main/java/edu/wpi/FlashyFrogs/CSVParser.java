@@ -18,7 +18,7 @@ public class CSVParser {
   public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile)
       throws FileNotFoundException {
     try {
-      Session session = Main.getFactory().openSession();
+      Session session = Main.factory.openSession();
       Transaction transaction = session.beginTransaction();
       Map<String, Node> nodes = new HashMap<>();
       Map<String, LocationName> locations = new HashMap<>();

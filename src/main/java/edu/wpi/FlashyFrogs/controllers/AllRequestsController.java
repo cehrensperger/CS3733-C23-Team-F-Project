@@ -1,7 +1,8 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.Main;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -14,8 +15,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.hibernate.Session;
-
-import static edu.wpi.FlashyFrogs.Main.factory;
 
 public class AllRequestsController {
   @FXML

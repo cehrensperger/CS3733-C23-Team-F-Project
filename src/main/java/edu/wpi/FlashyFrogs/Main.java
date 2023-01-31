@@ -15,10 +15,8 @@ public class Main {
           .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
           .build();
 
-  public final static SessionFactory factory =
+  public static final SessionFactory factory =
       new MetadataSources(registry).buildMetadata().buildSessionFactory();
-
-
 
   public static void main(String[] args) throws FileNotFoundException {
     File nodeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
