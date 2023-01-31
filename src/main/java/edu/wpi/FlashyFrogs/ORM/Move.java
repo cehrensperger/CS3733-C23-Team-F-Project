@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.ORM;
 import jakarta.persistence.*;
 import java.util.*;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -28,13 +29,29 @@ public class Move {
   @Setter
   Date moveDate;
 
-  public boolean equals(Move move) {
-    return (this.getNode().getId().equals(move.getNode().getId())
-        && this.getLocation().getLongName().equals(move.getLocation().getLongName())
+  public Move() {}
+
+  public Move(Node node, LocationName location, Date date) {
+    this.node = node;
+    this.location = location;
+    this.moveDate = date;
+  }
+
+  @Override
+  @NonNull
+  public boolean equals(Object other) {
+    if (this == other) return true;
+    if (other == null) return false;
+    if (this.getClass() != other.getClass()) return false;
+    Move move = (Move) other;
+    return (this.getNode().equals(move.getNode())
+        && this.getLocation().equals(move.getLocation())
         && this.getMoveDate().compareTo(move.getMoveDate()) == 0);
   }
 
-  /*
-  create hashcode method
-  */
+  @Override
+  @NonNull
+  public int hashCode() {
+    return Objects.hash(this.node, this.location, this.moveDate);
+  }
 }

@@ -19,4 +19,10 @@ public class InternalTransport extends ServiceRequest {
   @Getter
   @Setter
   Date dateOfBirth;
+
+  public InternalTransport() {}
+
+  public InternalTransport(long id) {
+    this.id = id;
+  }
 }

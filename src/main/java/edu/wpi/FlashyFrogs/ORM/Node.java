@@ -15,6 +15,12 @@ public class Node {
   @Basic @Getter @Setter Floor floor;
   @Basic @Getter @Setter String building;
 
+  public Node() {}
+
+  public Node(String id) {
+    this.id = id;
+  }
+
   /** Enumerated type for the possible floors we can create */
   public enum Floor {
     L2("L2"),
