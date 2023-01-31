@@ -109,7 +109,8 @@ public class TransportController extends ServiceRequestController {
     Transaction transaction = session.beginTransaction();
     InternalTransport transportRequest = new InternalTransport();
     // securityRequest.setLocation(locationEntry.getText());
-    transportRequest.setType("Transport");
+    // transportRequest.setType("Transport");
+
     transportRequest.setEmpFirstName(firstNameTextfield.getText());
     transportRequest.setEmpMiddleName(middleNameTextfield.getText());
     transportRequest.setEmpLastName(lastNameTextfield.getText());

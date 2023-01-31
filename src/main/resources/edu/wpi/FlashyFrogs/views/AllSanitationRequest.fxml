@@ -15,9 +15,8 @@
             <columns>
                 <TableColumn fx:id="typeCol" prefWidth="129.59995114803314" text="Service Request Type" />
                 <TableColumn fx:id="empLastNameCol" prefWidth="129.59995114803314" text="Employee Last Name" />
-                <TableColumn fx:id="submissionDateCol" prefWidth="129.59995114803314" text="Date of Submission" />
-                <TableColumn fx:id="submissionTimeCol" prefWidth="119.59994506835938" text="Time of Submission" />
-                <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="90.39999389648438" text="Status" />
+                <TableColumn fx:id="submissionDateCol" prefWidth="176.4000244140625" text="Date and Time of Submission" />
+                <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="81.19998168945312" text="Status" />
             </columns>
         </TableView>
     </center>

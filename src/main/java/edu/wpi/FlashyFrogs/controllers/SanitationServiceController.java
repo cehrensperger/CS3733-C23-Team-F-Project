@@ -94,7 +94,9 @@ public class SanitationServiceController extends ServiceRequestController {
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
     sanitationRequest.setLocation(Sanitation.Location.valueOf(locationDropDown.getText()));
-    sanitationRequest.setType(Sanitation.SanitationType.valueOf("mopping")); //CHANGE THIS TO A FIELD IG IG IG
+    sanitationRequest.setType(
+        Sanitation.SanitationType.valueOf(
+            requestTypeDropDown.getText())); // CHANGE THIS TO A FIELD IG IG IG
     sanitationRequest.setEmpFirstName(firstName.getText());
     sanitationRequest.setEmpMiddleName(middleName.getText());
     sanitationRequest.setEmpLastName(lastName.getText());

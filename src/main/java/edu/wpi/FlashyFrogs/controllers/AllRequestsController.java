@@ -23,7 +23,6 @@ public class AllRequestsController {
   protected TableColumn<ServiceRequest, String> typeCol,
       empLastNameCol,
       submissionDateCol,
-      submissionTimeCol,
       statusCol;
 
   @FXML protected TableView tableView;
@@ -39,7 +38,7 @@ public class AllRequestsController {
     typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empLastName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
-    submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
+    // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
     Session session = factory.openSession();

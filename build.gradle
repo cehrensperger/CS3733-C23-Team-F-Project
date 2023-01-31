@@ -86,13 +86,13 @@ test {
     useJUnitPlatform()
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs "src/main/resources"
-        }
-    }
-}
+//sourceSets {
+//    main {
+//        resources {
+//            srcDirs "src/main/resources"
+//        }
+//    }
+//}
 
 jar {
     from {
