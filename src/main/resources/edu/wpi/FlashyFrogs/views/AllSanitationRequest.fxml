@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AllSanitationRequestController">
+    <top>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All Sanitation Service Requests" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+    </top>
+    <center>
+        <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="typeCol" prefWidth="129.59995114803314" text="Service Request Type" />
+                <TableColumn fx:id="empLastNameCol" prefWidth="129.59995114803314" text="Employee Last Name" />
+                <TableColumn fx:id="submissionDateCol" prefWidth="129.59995114803314" text="Date of Submission" />
+                <TableColumn fx:id="submissionTimeCol" prefWidth="119.59994506835938" text="Time of Submission" />
+                <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="90.39999389648438" text="Status" />
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>
