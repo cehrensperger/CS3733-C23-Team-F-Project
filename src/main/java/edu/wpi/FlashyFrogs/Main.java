@@ -12,7 +12,7 @@ public class Main {
 
   static final StandardServiceRegistry registry =
       new StandardServiceRegistryBuilder()
-          .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
+          .configure("edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
           .build();
 
   public static final SessionFactory factory =
