@@ -17,7 +17,7 @@ import javafx.fxml.FXML;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class SanitationServiceController extends ServiceRequestController {
+public class SanitationServiceController  {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
@@ -29,8 +29,12 @@ public class SanitationServiceController extends ServiceRequestController {
   @FXML MFXTextField middleName;
   @FXML MFXTextField timeEntry;
   @FXML MFXComboBox departmentDropDown;
-
   @FXML MFXComboBox urgencyEntry;
+  @FXML private MFXTextField first2;
+  @FXML private MFXTextField middle2;
+  @FXML private MFXTextField last2;
+  @FXML private MFXComboBox department2;
+  @FXML private MFXButton allButton;
   private Connection connection = null; // connection to database
   private SanitationServiceData sanitationServiceData;
 
@@ -68,6 +72,10 @@ public class SanitationServiceController extends ServiceRequestController {
     departmentDropDown.clear();
     timeEntry.clear();
     urgencyEntry.clear();
+    first2.clear();
+    middle2.clear();
+    last2.clear();
+    department2.clear();
   }
 
   /**
@@ -109,6 +117,11 @@ public class SanitationServiceController extends ServiceRequestController {
    */
   public void backButtonClicked(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
+  }
+
+  @FXML
+  public void handleAllButton(ActionEvent actionEvent) throws IOException {
+    //Fapp.setScene("AllSanitationRequest");
   }
 
   /**

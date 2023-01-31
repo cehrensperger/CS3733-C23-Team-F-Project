@@ -20,7 +20,7 @@ public class Node {
     this.id = id;
   }
 
-  public Node (String theId, String theBuilding, Floor theFloor, int theXCoord, int theYCoord) {
+  public Node(String theId, String theBuilding, Floor theFloor, int theXCoord, int theYCoord) {
     id = theId;
     building = theBuilding;
     floor = theFloor;

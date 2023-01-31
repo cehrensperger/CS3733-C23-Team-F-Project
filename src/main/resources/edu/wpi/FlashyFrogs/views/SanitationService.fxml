@@ -42,9 +42,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SanitationServiceController">
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SanitationServiceController">
   <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form" textAlignment="CENTER" wrappingWidth="639.71875">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form" textAlignment="CENTER" wrappingWidth="799.71875">
          <font>
             <Font size="36.0" />
          </font>
@@ -100,19 +100,68 @@
             <Font size="16.0" />
          </font>
       </Text>
-      <HBox spacing="10.0">
+      <HBox spacing="5.0">
          <children>
-            <MFXTextField fx:id="firstName" prefHeight="49.0" prefWidth="146.0" promptText="First" />
-            <MFXTextField fx:id="middleName" prefHeight="49.0" prefWidth="148.0" promptText="Middle" />
-            <MFXTextField fx:id="lastName" prefHeight="49.0" prefWidth="147.0" promptText="Last" />
-            <MFXComboBox fx:id="departmentDropDown" prefHeight="51.0" prefWidth="158.0" promptText="Department" />
+            <MFXTextField fx:id="firstName" prefHeight="49.0" prefWidth="200.0" promptText="First" />
+            <MFXTextField fx:id="middleName" prefHeight="49.0" prefWidth="200.0" promptText="Middle" />
+            <MFXTextField fx:id="lastName" prefHeight="49.0" prefWidth="204.0" promptText="Last" />
+            <MFXComboBox fx:id="departmentDropDown" borderGap="5.0" prefHeight="51.0" prefWidth="200.0" promptText="Department" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </HBox>
-      <HBox alignment="BOTTOM_RIGHT" prefHeight="177.0" prefWidth="640.0" spacing="10.0">
+      <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Employee:">
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <HBox prefHeight="50.0" prefWidth="800.0">
+               <children>
+                  <MFXTextField fx:id="first2" prefHeight="50.0" prefWidth="200.0" promptText="First">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+                  <MFXTextField fx:id="middle2" prefWidth="200.0" promptText="Middle">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+                  <MFXTextField fx:id="last2" prefWidth="200.0" promptText="Last">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+                  <MFXComboBox fx:id="department2" prefHeight="50.0" prefWidth="200.0" promptText="Department">
+                     <HBox.margin>
+                        <Insets left="5.0" right="10.0" />
+                     </HBox.margin>
+                  </MFXComboBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="221.0" prefWidth="800.0" spacing="10.0">
+         <children>
+            <HBox alignment="BOTTOM_LEFT" prefHeight="129.0" prefWidth="450.0">
+               <children>
+                  <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Sanitation Requests" />
+               </children>
+            </HBox>
             <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#clearButtonClicked" prefWidth="100.0" text="clear" />
             <MFXButton fx:id="backButton" onAction="#backButtonClicked" prefWidth="100.0" text="back" />
             <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#handleSubmit" prefWidth="100.0" text="submit" />

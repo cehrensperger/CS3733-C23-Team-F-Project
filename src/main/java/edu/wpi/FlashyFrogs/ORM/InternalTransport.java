@@ -26,7 +26,8 @@ public class InternalTransport extends ServiceRequest {
     this.id = id;
   }
 
-  public InternalTransport(Date theDOB, String theNewLoc, String theOldLoc, String thePatientName, long theId){
+  public InternalTransport(
+      Date theDOB, String theNewLoc, String theOldLoc, String thePatientName, long theId) {
     dateOfBirth = theDOB;
     newLoc = theNewLoc;
     oldLoc = theOldLoc;

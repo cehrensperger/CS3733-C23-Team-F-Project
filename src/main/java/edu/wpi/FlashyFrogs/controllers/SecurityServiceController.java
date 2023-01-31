@@ -6,31 +6,40 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import java.io.IOException;
+
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
-public class SecurityServiceController extends ServiceRequestController {
+public class SecurityServiceController  {
 
   @FXML private AnchorPane rootPane;
   @FXML private Text securityServiceText;
   @FXML private Text incidentReportText;
-  @FXML private TextField incidentReportEntry;
-  @FXML private TextField locationEntry;
+  @FXML private MFXTextField incidentReportEntry;
+  @FXML private MFXTextField locationEntry;
   @FXML private MFXDatePicker dateEntry;
-  @FXML private TextField timeEntry;
+  @FXML private MFXTextField timeEntry;
   @FXML private Text employeeInformationText;
   @FXML private Text nameText;
-  @FXML private TextField firstEntry;
-  @FXML private TextField middleEntry;
-  @FXML private TextField lastEntry;
+  @FXML private MFXTextField firstEntry;
+  @FXML private MFXTextField middleEntry;
+  @FXML private MFXTextField lastEntry;
   @FXML private MFXButton clearButton;
   @FXML private MFXButton submitButton;
   @FXML private MFXButton homeButton;
+  @FXML private MFXButton allButton;
   @FXML private MFXComboBox urgencyEntry;
   @FXML private MFXComboBox departmentEntry;
+  @FXML private MFXTextField first2;
+  @FXML private MFXTextField middle2;
+  @FXML private MFXTextField last2;
+  @FXML private MFXComboBox department2;
+
+
 
   private SecurityServiceData securityServiceData;
 
@@ -39,6 +48,7 @@ public class SecurityServiceController extends ServiceRequestController {
 
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     departmentEntry.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
+    department2.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
     securityServiceData = new SecurityServiceData();
   }
 
@@ -58,6 +68,10 @@ public class SecurityServiceController extends ServiceRequestController {
     lastEntry.clear();
     departmentEntry.clear();
     urgencyEntry.clear();
+    first2.clear();
+    middle2.clear();
+    last2.clear();
+    department2.clear();
   }
 
   /**
@@ -93,5 +107,10 @@ public class SecurityServiceController extends ServiceRequestController {
   @FXML
   public void handleHomeButton(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
+  }
+
+  @FXML
+  public void handleAllButton(ActionEvent actionEvent) throws IOException {
+    //Fapp.setScene("AllSecurityService");
   }
 }

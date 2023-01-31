@@ -14,7 +14,7 @@ import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class TransportController extends ServiceRequestController {
+public class TransportController {
   @FXML MFXTextField firstNameTextfield; // ID of the first name text field
   @FXML MFXTextField lastNameTextfield;
   @FXML MFXTextField middleNameTextfield;
@@ -29,6 +29,12 @@ public class TransportController extends ServiceRequestController {
   @FXML MFXButton clearButton;
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
+  @FXML private MFXTextField first2;
+  @FXML private MFXTextField middle2;
+  @FXML private MFXTextField last2;
+  @FXML private MFXComboBox department2;
+  @FXML private MFXButton allButton;
+
 
   private Connection connection = null; // connection to database
 
@@ -64,6 +70,15 @@ public class TransportController extends ServiceRequestController {
     lastNameTextfield2.clear();
     middleNameTextfield2.clear();
     departmentComboBox.clear();
+    first2.clear();
+    middle2.clear();
+    last2.clear();
+    department2.clear();
+  }
+
+  @FXML
+  public void handleAllButton(ActionEvent actionEvent) throws IOException {
+    //Fapp.setScene("AllTransport");
   }
 
   public void submitButtonClicked(ActionEvent actionEvent) throws IOException {

@@ -41,13 +41,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.TransportController">
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.TransportController">
     <children>
         <AnchorPane id="clickHereButton" accessibleRole="BUTTON" maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
             <children>
-                <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="263.0" layoutY="359.0" onAction="#clearButtonClicked" prefWidth="100.0" text="Clear" />
-                <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="486.0" layoutY="359.0" onAction="#submitButtonClicked" prefWidth="100.0" text="Submit" />
-                <Text layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation Form" textAlignment="CENTER" wrappingWidth="600.0">
+                <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="460.0" layoutY="559.0" onAction="#clearButtonClicked" prefWidth="100.0" text="Clear" />
+                <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" layoutX="686.0" layoutY="559.0" onAction="#submitButtonClicked" prefWidth="100.0" text="Submit" />
+                <Text layoutX="100.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation Form" textAlignment="CENTER" wrappingWidth="600.0">
                     <font>
                         <Font size="36.0" />
                     </font>
@@ -57,7 +57,7 @@
                         <Font size="24.0" />
                     </font>
                 </Text>
-                <Text layoutX="17.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                <Text layoutX="17.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -67,23 +67,38 @@
                         <Font size="24.0" />
                     </font>
                 </Text>
-                <Text layoutX="17.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                <Text layoutX="17.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="16.0" />
                     </font>
                 </Text>
-                <MFXDatePicker fx:id="dateOfBirthDatePicker" layoutX="426.0" layoutY="107.0" prefHeight="50.0" prefWidth="158.0" promptText="Date of Birth" />
-                <MFXTextField fx:id="middleNameTextfield" layoutX="269.0" layoutY="107.0" prefHeight="50.0" prefWidth="152.0" promptText="Middle Name (optional)" />
-                <MFXTextField fx:id="lastNameTextfield" layoutX="149.0" layoutY="107.0" prefHeight="38.0" prefWidth="114.0" promptText="Last Name" />
-                <MFXTextField fx:id="firstNameTextfield" layoutX="17.0" layoutY="107.0" prefHeight="50.0" prefWidth="126.0" promptText="First Name " />
-                <MFXComboBox fx:id="currentLocationComboBox" layoutX="15.0" layoutY="166.0" prefHeight="42.0" prefWidth="179.0" promptText="Current Location" />
-                <MFXComboBox fx:id="newLocationComboBox" layoutX="197.0" layoutY="166.0" prefHeight="42.0" prefWidth="179.0" promptText="New Location" />
-                <MFXDatePicker fx:id="dateOfTransportDatePicker" layoutX="383.0" layoutY="168.0" prefHeight="38.0" prefWidth="201.0" promptText="Date of Transport" />
-                <MFXTextField fx:id="firstNameTextfield2" layoutX="17.0" layoutY="271.0" prefHeight="51.0" prefWidth="138.0" promptText="First" />
-                <MFXTextField fx:id="lastNameTextfield2" layoutX="300.0" layoutY="271.0" prefHeight="51.0" prefWidth="132.0" promptText="Last" />
-                <MFXTextField fx:id="middleNameTextfield2" layoutX="163.0" layoutY="271.0" prefHeight="51.0" prefWidth="132.0" promptText="Middle" />
-                <MFXComboBox fx:id="departmentComboBox" layoutX="437.0" layoutY="271.0" prefHeight="50.0" prefWidth="145.0" promptText="Department" />
-                <MFXButton fx:id="backButton" layoutX="376.0" layoutY="359.0" onAction="#backButtonClicked" prefWidth="100.0" text="Back" />
+                <MFXDatePicker fx:id="dateOfBirthDatePicker" layoutX="598.0" layoutY="107.0" prefHeight="50.0" prefWidth="190.0" promptText="Date of Birth" />
+                <MFXTextField fx:id="middleNameTextfield" layoutX="401.0" layoutY="107.0" prefHeight="50.0" prefWidth="190.0" promptText="Middle Name (optional)" />
+                <MFXTextField fx:id="lastNameTextfield" layoutX="206.0" layoutY="107.0" prefHeight="38.0" prefWidth="190.0" promptText="Last Name" />
+                <MFXTextField fx:id="firstNameTextfield" layoutX="11.0" layoutY="107.0" prefHeight="50.0" prefWidth="190.0" promptText="First Name " />
+                <MFXComboBox fx:id="currentLocationComboBox" layoutX="11.0" layoutY="166.0" prefHeight="42.0" prefWidth="255.0" promptText="Current Location" />
+                <MFXComboBox fx:id="newLocationComboBox" layoutX="274.0" layoutY="166.0" prefHeight="42.0" prefWidth="254.0" promptText="New Location" />
+                <MFXDatePicker fx:id="dateOfTransportDatePicker" layoutX="532.0" layoutY="168.0" prefHeight="38.0" prefWidth="254.0" promptText="Date of Transport" />
+                <MFXTextField fx:id="firstNameTextfield2" layoutX="10.0" layoutY="271.0" prefHeight="51.0" prefWidth="190.0" promptText="First" />
+                <MFXTextField fx:id="lastNameTextfield2" layoutX="400.0" layoutY="271.0" prefHeight="51.0" prefWidth="190.0" promptText="Last" />
+                <MFXTextField fx:id="middleNameTextfield2" layoutX="205.0" layoutY="271.0" prefHeight="51.0" prefWidth="190.0" promptText="Middle" />
+                <MFXComboBox fx:id="departmentComboBox" layoutX="597.0" layoutY="272.0" prefHeight="50.0" prefWidth="190.0" promptText="Department" />
+                <MFXButton fx:id="backButton" layoutX="574.0" layoutY="559.0" onAction="#backButtonClicked" prefWidth="100.0" text="Back" />
+            <Text layoutX="18.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Employee">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Text layoutX="18.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <MFXTextField fx:id="first2" layoutX="11.0" layoutY="391.0" prefWidth="190.0" promptText="First" />
+            <MFXTextField fx:id="middle2" layoutX="205.0" layoutY="391.0" prefWidth="190.0" promptText="Middle" />
+            <MFXTextField fx:id="last2" layoutX="401.0" layoutY="391.0" prefWidth="190.0" promptText="Last" />
+            <MFXComboBox fx:id="department2" layoutX="598.0" layoutY="391.0" prefHeight="50.0" prefWidth="190.0" promptText="Department" />
+            <MFXButton fx:id="allButton" layoutX="17.0" layoutY="560.0" onAction="#handleAllButton" prefWidth="275.0" text="All Internal Patient Transportation Forms" />
             </children>
         </AnchorPane>
     </children>
