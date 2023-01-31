@@ -202,7 +202,6 @@ public class PathFinder {
     return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
   }
 
-
   private static class NodeWrapper implements Comparable<NodeWrapper> {
     Node node;
     NodeWrapper parent;

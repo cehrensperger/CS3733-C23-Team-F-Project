@@ -10,6 +10,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -30,6 +32,7 @@ public class PathFinderTest {
   private static StandardServiceRegistry
       serviceRegistry; // Service registry associated with the factory
   private Session testSession; // Session to be used for each individual test
+  private Set<Object> databaseObjects;
 
   /**
    * Setup method to be run before all tests that creates the session factory and service registry
