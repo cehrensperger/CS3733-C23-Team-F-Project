@@ -13,13 +13,14 @@ public class Sanitation extends ServiceRequest {
   @Basic @Getter @Setter String type;
   @Basic @Getter @Setter String location;
 
-  public Sanitation() {}
-
-  public Sanitation(long id) {
-    this.id = id;
+  public Sanitation() {
+    super();
   }
 
+  public Sanitation(long id) {this.id = id;}
+
   public Sanitation(String theLocation, String theType, long theId) {
+    super();
     this.location = theLocation;
     this.type = theType;
     this.id = theId;
