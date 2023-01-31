@@ -8,14 +8,14 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.PathFindingController">
    <children>
-      <MFXTextField fx:id="start" floatMode="DISABLED" layoutX="136.0" layoutY="52.0" prefHeight="59.0" prefWidth="328.0" promptText="Start:" />
-      <MFXTextField fx:id="end" alignment="TOP_LEFT" floatMode="DISABLED" layoutX="136.0" layoutY="121.0" prefHeight="59.0" prefWidth="328.0" promptText="End:" />
-      <Text fx:id="pathText" layoutX="143.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Path:" wrappingWidth="321.0">
+      <MFXTextField fx:id="start" floatMode="DISABLED" layoutX="236.0" layoutY="51.0" prefHeight="59.0" prefWidth="328.0" promptText="Start:" />
+      <MFXTextField fx:id="end" alignment="TOP_LEFT" floatMode="DISABLED" layoutX="236.0" layoutY="121.0" prefHeight="59.0" prefWidth="328.0" promptText="End:" />
+      <Text fx:id="pathText" layoutX="240.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Path:" wrappingWidth="321.0">
          <font>
             <Font size="18.0" />
          </font></Text>
-      <MFXButton fx:id="getPath" layoutX="486.0" layoutY="361.0" onAction="#handleGetPath" prefWidth="100.0" text="Get Path" />
-      <MFXButton fx:id="clearButton" layoutX="265.0" layoutY="361.0" onAction="#handleButtonClear" prefWidth="100.0" text="Clear" />
-      <MFXButton fx:id="backButton" layoutX="377.0" layoutY="361.0" onAction="#handleBackButton" prefWidth="100.0" text="Back" />
+      <MFXButton fx:id="getPath" layoutX="686.0" layoutY="559.0" onAction="#handleGetPath" prefWidth="100.0" text="Get Path" />
+      <MFXButton fx:id="clearButton" layoutX="461.0" layoutY="559.0" onAction="#handleButtonClear" prefWidth="100.0" text="Clear" />
+      <MFXButton fx:id="backButton" layoutX="575.0" layoutY="559.0" onAction="#handleBackButton" prefWidth="100.0" text="Back" />
    </children>
 </AnchorPane>
