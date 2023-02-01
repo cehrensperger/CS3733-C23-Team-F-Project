@@ -77,7 +77,6 @@ public class DBTableController implements Initializable {
   public TextField lnTxtLongName;
   public TextField lnTxtShortName;
   public TextField lnTxtLocationType;
-
   // checkers
   private String checkNodeID;
   private String checkLongName;
