@@ -16,8 +16,8 @@ import org.hibernate.Transaction;
 
 public class CSVParser {
 
-  public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile,
-                               SessionFactory sessionFactory)
+  public static void readFiles(
+      File nodeFile, File edgeFile, File locationFile, File moveFile, SessionFactory sessionFactory)
       throws FileNotFoundException {
     Session session = sessionFactory.openSession();
     Transaction transaction = session.beginTransaction();
