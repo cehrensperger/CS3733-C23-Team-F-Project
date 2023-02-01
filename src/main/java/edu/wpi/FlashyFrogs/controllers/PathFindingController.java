@@ -37,10 +37,16 @@ public class PathFindingController {
     // session.find(LocationName.class, start.getText());
     LocationName startPath = session.find(LocationName.class, start.getText());
     LocationName endPath = session.find(LocationName.class, end.getText());
-    //    Transaction transaction = session.beginTransaction();
-    PathFinder pathFinder = new PathFinder(factory);
 
-    pathText.setText("Path:\n" + pathFinder.findPath(startPath, endPath).toString());
+    // String startPath = start.getText();
+    // String endPath = end.getText();
+    // Transaction transaction = session.beginTransaction();
+    PathFinder pathFinder = new PathFinder(factory);
+    try {
+      pathText.setText("Path:\n" + pathFinder.findPath(startPath, endPath).toString());
+    } catch (NullPointerException e) {
+      System.out.println("Error: No data in database");
+    }
 
     // = pathFinder.findPath(startPath, endPath);
     //    transaction.commit();
