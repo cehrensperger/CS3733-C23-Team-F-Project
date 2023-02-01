@@ -6,10 +6,15 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -440,7 +445,7 @@ public class PathFinderTest {
 
     // Commit to DB
     Transaction commitTransaction = testSession.beginTransaction();
-    ; // Start the transaction
+    // Start the transaction
     testSession.persist(root);
     testSession.persist(one);
     testSession.persist(two);
@@ -598,6 +603,14 @@ public class PathFinderTest {
     Node bottomChain3 = new Node("bottomChain3", "b", Node.Floor.L2, -1, -100);
     Edge bottomChain2ToBottomChain3 = new Edge(bottomChain2, bottomChain3);
 
+    // Location names
+    LocationName startLocation = new LocationName("start", LocationName.LocationType.INFO, "s");
+    LocationName endLocation = new LocationName("end", LocationName.LocationType.INFO, "e");
+
+    // Moves
+    Move startMove = new Move(root, startLocation, new Date());
+    Move endMove = new Move(target, endLocation, new Date());
+
     // Commit to DB
     Transaction commitTransaction = testSession.beginTransaction(); // Create the transaction
     testSession.persist(root);
@@ -605,6 +618,177 @@ public class PathFinderTest {
     testSession.persist(rootToUpper);
     testSession.persist(upperDecoy);
     testSession.persist(upperToUpperDecoy);
+    testSession.persist(upper2);
+    testSession.persist(upperToUpper2);
+    testSession.persist(upper2Decoy);
+    testSession.persist(upper2ToUpper2Decoy);
+    testSession.persist(target);
+    testSession.persist(upper2ToTarget);
+    testSession.persist(upperBranchTwo);
+    testSession.persist(rootToUpperBranch2);
+    testSession.persist(longerUpperLoop);
+    testSession.persist(rootToLongerUpperLoop);
+    testSession.persist(longerUpperLoop2);
+    testSession.persist(longerUpperLoopToLongerUpperLoop2);
+    testSession.persist(longerUpperLoop3);
+    testSession.persist(longerUpperLoop3);
+    testSession.persist(longerUpperLoop2ToLongerUpperLoop3);
+    testSession.persist(extraNode);
+    testSession.persist(longerUpperLoop3ToExtraNode);
+    testSession.persist(longerUpperLoop3ToTarget);
+    testSession.persist(extraNodeToRoot);
+    testSession.persist(leftBad);
+    testSession.persist(rootToLeftBad);
+    testSession.persist(leftFork);
+    testSession.persist(rootToLeftFork);
+    testSession.persist(leftBadToTarget);
+    testSession.persist(rightBad);
+    testSession.persist(rootToRightBad);
+    testSession.persist(right2);
+    testSession.persist(rightBadToRight2);
+    testSession.persist(right2ToExtraNode);
+    testSession.persist(rightEnd);
+    testSession.persist(right2ToRightEnd);
+    testSession.persist(rightEndToTarget);
+    testSession.persist(bottomToNowhere);
+    testSession.persist(rootToBottomToNowhere);
+    testSession.persist(bottomToNowhere2);
+    testSession.persist(rootToBottomToNowhere2);
+    testSession.persist(bottomChain);
+    testSession.persist(rootToBottomChain);
+    testSession.persist(bottomChain2);
+    testSession.persist(bottomChainToBottomChain2);
+    testSession.persist(bottomChain3);
+    testSession.persist(bottomChain2ToBottomChain3);
+    testSession.persist(startLocation);
+    testSession.persist(endLocation);
+    testSession.persist(startMove);
+    testSession.persist(endMove);
     commitTransaction.commit();
+
+    List<Node> expectedResult = new LinkedList<>();
+    expectedResult.add(root);
+    expectedResult.add(upper);
+    expectedResult.add(upper2);
+    expectedResult.add(target);
+
+    // Check that the path finder finds the right path
+    PathFinder pathFinder = new PathFinder(sessionFactory);
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
+  }
+
+  /**
+   * Tests a series of tests where random start and end locations are picked in the actual map (read
+   * from the CSV Parser), and then the paths are validate to *make sense*
+   *
+   * @return dynamic tests according to the above. These use random seeded the same way every time
+   *     so they are repeatable
+   */
+  @TestFactory
+  public Stream<DynamicTest> testRandomPathsInMap() {
+    // Create a random generator
+    Random randomGenerator = new Random();
+    randomGenerator.setSeed(1); // Seed random the same way every time
+
+    // Read in the CSVs from the path finder
+    try {
+      CSVParser.readFiles(
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv"),
+          sessionFactory);
+    } catch (FileNotFoundException fileError) {
+      fail(fileError); // If we get a file error, just fail with that as the reasoning
+    }
+
+    // Tests 1->10
+    return IntStream.range(1, 2)
+        .mapToObj(
+            testNumber ->
+                DynamicTest.dynamicTest(
+                    "Map Test " + testNumber,
+                    () -> {
+                      Transaction transaction = testSession.beginTransaction();
+                      List<LocationName> locationList =
+                          testSession
+                              .createQuery("FROM LocationName", LocationName.class)
+                              .getResultList();
+
+                      transaction.commit();
+
+                      // Get a random number of nodes to skip to get a random one
+                      long randomNumberToSkip = randomGenerator.nextLong(locationList.size());
+
+                      // Get a random location
+                      LocationName startLocation =
+                          locationList.stream().skip(randomNumberToSkip).findFirst().orElseThrow();
+
+                      // Get a random location
+                      LocationName endLocation =
+                          locationList.stream()
+                              .skip(
+                                  randomGenerator.nextLong(
+                                      randomNumberToSkip + 1, locationList.size()))
+                              .findFirst()
+                              .orElseThrow();
+
+                      // Create the path finder
+                      PathFinder pathFinder = new PathFinder(sessionFactory);
+
+                      // Find the path between the nodes
+                      List<Node> result =
+                          pathFinder.findPath(
+                              startLocation.getLongName(), endLocation.getLongName());
+
+                      // Transaction to get
+                      transaction = testSession.beginTransaction();
+
+                      // Get the start location, ensure the first node is that
+                      assertEquals(
+                          startLocation,
+                          testSession
+                              .createQuery(
+                                  "SELECT location FROM Move " + "WHERE node = :node",
+                                  LocationName.class)
+                              .setParameter("node", result.get(0))
+                              .uniqueResult());
+
+                      // Get the end location, ensure that the first node is that
+                      assertEquals(
+                          endLocation,
+                          testSession
+                              .createQuery(
+                                  "SELECT location FROM Move " + "WHERE node = :node",
+                                  LocationName.class)
+                              .setParameter("node", result.get(result.size() - 1))
+                              .uniqueResult());
+
+                      // Now check that each node actually has a connection
+                      Node lastNode = null; // Last node, start it as null
+                      for (Node node : result) { // For each node
+                        // If the last node isn't null, check that there's a connection between it
+                        // and this node
+                        if (lastNode != null) {
+                          // Assert that we have an Edge connecting the provided Node in either
+                          // direction
+                          assertNotNull(
+                              testSession
+                                  .createQuery(
+                                      "FROM Edge WHERE "
+                                          + "(node1 = :firstNode AND node2 = :secondNode) OR "
+                                          + "(node2 = :secondNode AND node1 = :firstNode)",
+                                      Edge.class)
+                                  .setParameter("firstNode", node)
+                                  .setParameter("secondNode", lastNode));
+                        }
+
+                        lastNode = node; // Increment the node
+                      }
+
+                      transaction.commit();
+                    }));
   }
 }
