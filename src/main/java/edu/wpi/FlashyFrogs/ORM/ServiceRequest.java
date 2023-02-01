@@ -106,6 +106,14 @@ public class ServiceRequest {
   @Setter
   Urgency urgency;
 
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String requestType;
+
+
   /** Enumerated type for the possible statuses we can create */
   public enum Status {
     BLANK("blank"),
