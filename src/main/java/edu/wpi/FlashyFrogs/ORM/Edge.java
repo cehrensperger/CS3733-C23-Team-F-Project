@@ -11,19 +11,18 @@ import org.hibernate.annotations.Cascade;
 @Table(name = "Edge")
 public class Edge {
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.ALL)
-  @JoinColumn(name = "node1_id", foreignKey = @ForeignKey(name = "node1_id_fk"), nullable = false)
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+  @JoinColumn(name = "node1_id", nullable = false, foreignKey = @ForeignKey(name = "node1_id_fk"))
+  @ManyToOne(cascade = CascadeType.ALL)
   @NonNull
-  @ManyToOne
   @Getter
   @Setter
   Node node1;
 
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.ALL)
-  @JoinColumn(name = "node2_id", foreignKey = @ForeignKey(name = "node2_id_fk"), nullable = false)
+  @JoinColumn(name = "node2_id", nullable = false, foreignKey = @ForeignKey(name = "node2_id_fk"))
   @NonNull
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @Getter
   @Setter
   Node node2;
