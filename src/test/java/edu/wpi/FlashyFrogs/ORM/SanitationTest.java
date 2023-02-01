@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-//Creates iteration of Sanitation
+// Creates iteration of Sanitation
 public class SanitationTest {
   Sanitation testSan =
       new Sanitation(
@@ -25,9 +25,7 @@ public class SanitationTest {
           ServiceRequest.Urgency.MODERATELY_URGENT,
           new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"));
 
-  /**
-   * Reset testSan after each test
-   */
+  /** Reset testSan after each test */
   @BeforeEach
   @AfterEach
   public void resetTestSanitation() {
@@ -46,18 +44,14 @@ public class SanitationTest {
     testSan.setLocation(new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"));
   }
 
-  /**
-   * Tests setter for sanitationType
-   */
+  /** Tests setter for sanitationType */
   @Test
   void setType() {
     testSan.setType(Sanitation.SanitationType.SWEEPING);
     assertEquals(Sanitation.SanitationType.SWEEPING, testSan.getType());
   }
 
-  /**
-   * Tests setter for empFirstName
-   */
+  /** Tests setter for empFirstName */
   @Test
   void setEmpFirstName() {
     String newEmpFirstName = "Greg";
@@ -65,9 +59,7 @@ public class SanitationTest {
     assertEquals(newEmpFirstName, testSan.getEmpFirstName());
   }
 
-  /**
-   * Tests setter for empMiddleName
-   */
+  /** Tests setter for empMiddleName */
   @Test
   void setEmpMiddleName() {
     String newEmpMiddleName = "Grag";
@@ -75,9 +67,7 @@ public class SanitationTest {
     assertEquals(newEmpMiddleName, testSan.getEmpMiddleName());
   }
 
-  /**
-   * Tests setter for empLastName
-   */
+  /** Tests setter for empLastName */
   @Test
   void setEmpLastName() {
     String newEmpLastName = "Gregson";
@@ -85,9 +75,7 @@ public class SanitationTest {
     assertEquals(newEmpLastName, testSan.getEmpLastName());
   }
 
-  /**
-   * Tests setter for assignedEmpFirstName
-   */
+  /** Tests setter for assignedEmpFirstName */
   @Test
   void setAssignedEmpFirstName() {
     String newAssignedEmpFirstName = "William";
@@ -95,9 +83,7 @@ public class SanitationTest {
     assertEquals(newAssignedEmpFirstName, testSan.getAssignedEmpFirstName());
   }
 
-  /**
-   * Tests setter for assignedEmpMiddleName
-   */
+  /** Tests setter for assignedEmpMiddleName */
   @Test
   void setAssignedEmpMiddleName() {
     String newAssignedEmpMiddleName = "Martin";
@@ -105,9 +91,7 @@ public class SanitationTest {
     assertEquals(newAssignedEmpMiddleName, testSan.getAssignedEmpMiddleName());
   }
 
-  /**
-   * Tests setter for assignedEmpLastName
-   */
+  /** Tests setter for assignedEmpLastName */
   @Test
   void setAssignedEmpLastName() {
     String newAssignedEmpLastName = "Joel";
@@ -115,27 +99,21 @@ public class SanitationTest {
     assertEquals(newAssignedEmpLastName, testSan.getAssignedEmpLastName());
   }
 
-  /**
-   * Tests setter for empDept
-   */
+  /** Tests setter for empDept */
   @Test
   void setEmpDept() {
     testSan.setEmpDept(ServiceRequest.EmpDept.NURSING);
     assertEquals(ServiceRequest.EmpDept.NURSING, testSan.getEmpDept());
   }
 
-  /**
-   * Tests setter for assignedEmpDept
-   */
+  /** Tests setter for assignedEmpDept */
   @Test
   void setAssignedEmpDept() {
     testSan.setAssignedEmpDept(ServiceRequest.EmpDept.RADIOLOGY);
     assertEquals(ServiceRequest.EmpDept.RADIOLOGY, testSan.getAssignedEmpDept());
   }
 
-  /**
-   * Tests setter for dateOfIncident
-   */
+  /** Tests setter for dateOfIncident */
   @Test
   void setDateOfIncident() {
     Date newDOI = new Date(2002 - 01 - 17);
@@ -143,9 +121,7 @@ public class SanitationTest {
     assertEquals(newDOI, testSan.getDateOfIncident());
   }
 
-  /**
-   * Tests setter for dateOfSubmission
-   */
+  /** Tests setter for dateOfSubmission */
   @Test
   void setDateOfSubmission() {
     Date newDOS = new Date(2002 - 01 - 17);
@@ -153,18 +129,14 @@ public class SanitationTest {
     assertEquals(newDOS, testSan.getDateOfSubmission());
   }
 
-  /**
-   * Tests setter for urgency
-   */
+  /** Tests setter for urgency */
   @Test
   void setUrgency() {
     testSan.setUrgency(ServiceRequest.Urgency.NOT_URGENT);
     assertEquals(ServiceRequest.Urgency.NOT_URGENT, testSan.getUrgency());
   }
 
-  /**
-   * Tests setter for location
-   */
+  /** Tests setter for location */
   @Test
   void setLocation() {
     LocationName newLoc =
@@ -173,9 +145,7 @@ public class SanitationTest {
     assertEquals(newLoc, testSan.getLocation());
   }
 
-  /**
-   * Tests if the equals in Sanitation.java correctly compares two Sanitation objects
-   */
+  /** Tests if the equals in Sanitation.java correctly compares two Sanitation objects */
   @Test
   void testEquals() {
     Sanitation otherSan =
@@ -196,9 +166,7 @@ public class SanitationTest {
     assertTrue(testSan.equals(otherSan));
   }
 
-  /**
-   * Tests to see that HashCode changes when attributes that determine HashCode changes
-   */
+  /** Tests to see that HashCode changes when attributes that determine HashCode changes */
   @Test
   void testHashCode() {
     int originalHash = testSan.hashCode();
@@ -207,9 +175,7 @@ public class SanitationTest {
     assertNotEquals(testSan.hashCode(), originalHash);
   }
 
-  /**
-   * Checks to see if toString makes a string in the same format specified in Sanitation.java
-   */
+  /** Checks to see if toString makes a string in the same format specified in Sanitation.java */
   @Test
   void testToString() {
     String sanToString = testSan.toString();

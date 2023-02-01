@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class InternalTransportTest {
 
-  //Creates iteration of InternalTransportTest
+  // Creates iteration of InternalTransportTest
   InternalTransport testIntTransp =
       new InternalTransport(
           new Date(2002 - 10 - 02),
@@ -28,9 +28,7 @@ public class InternalTransportTest {
           new Date(2023 - 02 - 01),
           ServiceRequest.Urgency.MODERATELY_URGENT);
 
-  /**
-   * Reset testInternalTransport after each test
-   */
+  /** Reset testInternalTransport after each test */
   @BeforeEach
   @AfterEach
   public void resetTestInternalTransport() {
@@ -53,9 +51,7 @@ public class InternalTransportTest {
     testIntTransp.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
   }
 
-  /**
-   * Tests setter for dateOfBirth
-   */
+  /** Tests setter for dateOfBirth */
   @Test
   void setDateOfBirth() {
     Date newDate = new Date(2002 - 01 - 17);
@@ -63,9 +59,7 @@ public class InternalTransportTest {
     assertEquals(newDate, testIntTransp.getDateOfBirth());
   }
 
-  /**
-   * Tests setter for newLoc
-   */
+  /** Tests setter for newLoc */
   @Test
   void setNewLoc() {
     LocationName newerLoc =
@@ -74,9 +68,7 @@ public class InternalTransportTest {
     assertEquals(newerLoc, testIntTransp.getNewLoc());
   }
 
-  /**
-   * Tests setter for oldLoc
-   */
+  /** Tests setter for oldLoc */
   @Test
   void setOldLoc() {
     LocationName newOldLoc =
@@ -85,9 +77,7 @@ public class InternalTransportTest {
     assertEquals(newOldLoc, testIntTransp.getOldLoc());
   }
 
-  /**
-   * Tests setter for patientName
-   */
+  /** Tests setter for patientName */
   @Test
   void setPatientName() {
     String newPatientName = "Jimboo Jones";
@@ -95,9 +85,7 @@ public class InternalTransportTest {
     assertEquals(newPatientName, testIntTransp.getPatientName());
   }
 
-  /**
-   * Tests setter for empFirstName
-   */
+  /** Tests setter for empFirstName */
   @Test
   void setEmpFirstName() {
     String newEmpFirstName = "Greg";
@@ -105,9 +93,7 @@ public class InternalTransportTest {
     assertEquals(newEmpFirstName, testIntTransp.getEmpFirstName());
   }
 
-  /**
-   * Tests setter for empMiddleName
-   */
+  /** Tests setter for empMiddleName */
   @Test
   void setEmpMiddleName() {
     String newEmpMiddleName = "Grag";
@@ -115,9 +101,7 @@ public class InternalTransportTest {
     assertEquals(newEmpMiddleName, testIntTransp.getEmpMiddleName());
   }
 
-  /**
-   * Tests setter for empLastName
-   */
+  /** Tests setter for empLastName */
   @Test
   void setEmpLastName() {
     String newEmpLastName = "Gregson";
@@ -125,9 +109,7 @@ public class InternalTransportTest {
     assertEquals(newEmpLastName, testIntTransp.getEmpLastName());
   }
 
-  /**
-   * Tests setter for assignedEmpFirstName
-   */
+  /** Tests setter for assignedEmpFirstName */
   @Test
   void setAssignedEmpFirstName() {
     String newAssignedEmpFirstName = "William";
@@ -135,9 +117,7 @@ public class InternalTransportTest {
     assertEquals(newAssignedEmpFirstName, testIntTransp.getAssignedEmpFirstName());
   }
 
-  /**
-   * Tests setter for assignedEmpMiddleName
-   */
+  /** Tests setter for assignedEmpMiddleName */
   @Test
   void setAssignedEmpMiddleName() {
     String newAssignedEmpMiddleName = "Martin";
@@ -145,9 +125,7 @@ public class InternalTransportTest {
     assertEquals(newAssignedEmpMiddleName, testIntTransp.getAssignedEmpMiddleName());
   }
 
-  /**
-   * Tests setter for assignedEmpLastName
-   */
+  /** Tests setter for assignedEmpLastName */
   @Test
   void setAssignedEmpLastName() {
     String newAssignedEmpLastName = "Joel";
@@ -155,27 +133,21 @@ public class InternalTransportTest {
     assertEquals(newAssignedEmpLastName, testIntTransp.getAssignedEmpLastName());
   }
 
-  /**
-   * Tests setter for empDept
-   */
+  /** Tests setter for empDept */
   @Test
   void setEmpDept() {
     testIntTransp.setEmpDept(ServiceRequest.EmpDept.NURSING);
     assertEquals(ServiceRequest.EmpDept.NURSING, testIntTransp.getEmpDept());
   }
 
-  /**
-   * Tests setter for assignedEmpDept
-   */
+  /** Tests setter for assignedEmpDept */
   @Test
   void setAssignedEmpDept() {
     testIntTransp.setAssignedEmpDept(ServiceRequest.EmpDept.RADIOLOGY);
     assertEquals(ServiceRequest.EmpDept.RADIOLOGY, testIntTransp.getAssignedEmpDept());
   }
 
-  /**
-   * Tests setter for dateOfIncident
-   */
+  /** Tests setter for dateOfIncident */
   @Test
   void setDateOfIncident() {
     Date newDOI = new Date(2002 - 01 - 17);
@@ -183,9 +155,7 @@ public class InternalTransportTest {
     assertEquals(newDOI, testIntTransp.getDateOfIncident());
   }
 
-  /**
-   * Tests setter for dateOfSubmission
-   */
+  /** Tests setter for dateOfSubmission */
   @Test
   void setDateOfSubmission() {
     Date newDOS = new Date(2002 - 01 - 17);
@@ -193,9 +163,7 @@ public class InternalTransportTest {
     assertEquals(newDOS, testIntTransp.getDateOfSubmission());
   }
 
-  /**
-   * Tests setter for urgency
-   */
+  /** Tests setter for urgency */
   @Test
   void setUrgency() {
     testIntTransp.setUrgency(ServiceRequest.Urgency.NOT_URGENT);
@@ -203,7 +171,8 @@ public class InternalTransportTest {
   }
 
   /**
-   * Tests if the equals in InternalTransportTest.java correctly compares two InternalTransportTest objects
+   * Tests if the equals in InternalTransportTest.java correctly compares two InternalTransportTest
+   * objects
    */
   @Test
   void testEquals() {
@@ -227,9 +196,7 @@ public class InternalTransportTest {
     assertTrue(testIntTransp.equals(otherIntTransport));
   }
 
-  /**
-   * Tests to see that HashCode changes when attributes that determine HashCode changes
-   */
+  /** Tests to see that HashCode changes when attributes that determine HashCode changes */
   @Test
   void testHashCode() {
     int originalHash = testIntTransp.hashCode();
@@ -239,7 +206,8 @@ public class InternalTransportTest {
   }
 
   /**
-   * Checks to see if toString makes a string in the same format specified in InternalTransportTest.java
+   * Checks to see if toString makes a string in the same format specified in
+   * InternalTransportTest.java
    */
   @Test
   void testToString() {

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class SecurityTest {
 
-  //Creates iteration of LocationName
+  // Creates iteration of LocationName
   Security testSecurity =
       new Security(
           "Incident Report",
@@ -26,9 +26,7 @@ public class SecurityTest {
           new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT);
 
-  /**
-   * Reset testSecurity after each test
-   */
+  /** Reset testSecurity after each test */
   @BeforeEach
   @AfterEach
   public void resetTestSecurity() {
@@ -48,18 +46,14 @@ public class SecurityTest {
     testSecurity.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
   }
 
-  /**
-   * Tests setter for incidentReport
-   */
+  /** Tests setter for incidentReport */
   @Test
   void setIncidentReport() {
     testSecurity.setIncidentReport("Something Else");
     assertEquals("Something Else", testSecurity.getIncidentReport());
   }
 
-  /**
-   * Tests setter for empFirstName
-   */
+  /** Tests setter for empFirstName */
   @Test
   void setEmpFirstName() {
     String newEmpFirstName = "Greg";
@@ -67,9 +61,7 @@ public class SecurityTest {
     assertEquals(newEmpFirstName, testSecurity.getEmpFirstName());
   }
 
-  /**
-   * Tests setter for empMiddleName
-   */
+  /** Tests setter for empMiddleName */
   @Test
   void setEmpMiddleName() {
     String newEmpMiddleName = "Grag";
@@ -77,9 +69,7 @@ public class SecurityTest {
     assertEquals(newEmpMiddleName, testSecurity.getEmpMiddleName());
   }
 
-  /**
-   * Tests setter for empLastName
-   */
+  /** Tests setter for empLastName */
   @Test
   void setEmpLastName() {
     String newEmpLastName = "Gregson";
@@ -87,9 +77,7 @@ public class SecurityTest {
     assertEquals(newEmpLastName, testSecurity.getEmpLastName());
   }
 
-  /**
-   * Tests setter for assignedEmpFirstName
-   */
+  /** Tests setter for assignedEmpFirstName */
   @Test
   void setAssignedEmpFirstName() {
     String newAssignedEmpFirstName = "William";
@@ -97,9 +85,7 @@ public class SecurityTest {
     assertEquals(newAssignedEmpFirstName, testSecurity.getAssignedEmpFirstName());
   }
 
-  /**
-   * Tests setter for assignedEmpMiddleName
-   */
+  /** Tests setter for assignedEmpMiddleName */
   @Test
   void setAssignedEmpMiddleName() {
     String newAssignedEmpMiddleName = "Martin";
@@ -107,9 +93,7 @@ public class SecurityTest {
     assertEquals(newAssignedEmpMiddleName, testSecurity.getAssignedEmpMiddleName());
   }
 
-  /**
-   * Tests setter for assignedEmpLastName
-   */
+  /** Tests setter for assignedEmpLastName */
   @Test
   void setAssignedEmpLastName() {
     String newAssignedEmpLastName = "Joel";
@@ -117,27 +101,21 @@ public class SecurityTest {
     assertEquals(newAssignedEmpLastName, testSecurity.getAssignedEmpLastName());
   }
 
-  /**
-   * Tests setter for empDept
-   */
+  /** Tests setter for empDept */
   @Test
   void setEmpDept() {
     testSecurity.setEmpDept(ServiceRequest.EmpDept.NURSING);
     assertEquals(ServiceRequest.EmpDept.NURSING, testSecurity.getEmpDept());
   }
 
-  /**
-   * Tests setter for assignedEmpDept
-   */
+  /** Tests setter for assignedEmpDept */
   @Test
   void setAssignedEmpDept() {
     testSecurity.setAssignedEmpDept(ServiceRequest.EmpDept.RADIOLOGY);
     assertEquals(ServiceRequest.EmpDept.RADIOLOGY, testSecurity.getAssignedEmpDept());
   }
 
-  /**
-   * Tests setter for dateOfIncident
-   */
+  /** Tests setter for dateOfIncident */
   @Test
   void setDateOfIncident() {
     Date newDOI = new Date(2002 - 1 - 17);
@@ -145,9 +123,7 @@ public class SecurityTest {
     assertEquals(newDOI, testSecurity.getDateOfIncident());
   }
 
-  /**
-   * Tests setter for dateOfSubmission
-   */
+  /** Tests setter for dateOfSubmission */
   @Test
   void setDateOfSubmission() {
     Date newDOS = new Date(2002 - 1 - 17);
@@ -155,18 +131,14 @@ public class SecurityTest {
     assertEquals(newDOS, testSecurity.getDateOfSubmission());
   }
 
-  /**
-   * Tests setter for urgency
-   */
+  /** Tests setter for urgency */
   @Test
   void setUrgency() {
     testSecurity.setUrgency(ServiceRequest.Urgency.NOT_URGENT);
     assertEquals(ServiceRequest.Urgency.NOT_URGENT, testSecurity.getUrgency());
   }
 
-  /**
-   * Tests setter for location
-   */
+  /** Tests setter for location */
   @Test
   void testSetLocation() {
     LocationName newLoc =
@@ -175,9 +147,7 @@ public class SecurityTest {
     assertEquals(newLoc, testSecurity.getLocation());
   }
 
-  /**
-   * Tests setter for incidentReport
-   */
+  /** Tests setter for incidentReport */
   @Test
   void testSetIncidentReport() {
     String newIncRep = "New Report";
@@ -185,9 +155,7 @@ public class SecurityTest {
     assertEquals(newIncRep, testSecurity.getIncidentReport());
   }
 
-  /**
-   * Tests if the equals in Security.java correctly compares two Security objects
-   */
+  /** Tests if the equals in Security.java correctly compares two Security objects */
   @Test
   void testEquals() {
     Security otherSec =
@@ -208,9 +176,7 @@ public class SecurityTest {
     assertTrue(testSecurity.equals(otherSec));
   }
 
-  /**
-   * Tests to see that HashCode changes when attributes that determine HashCode changes
-   */
+  /** Tests to see that HashCode changes when attributes that determine HashCode changes */
   @Test
   void testHashCode() {
     int originalHash = testSecurity.hashCode();
@@ -219,9 +185,7 @@ public class SecurityTest {
     assertNotEquals(testSecurity.hashCode(), originalHash);
   }
 
-  /**
-   * Checks to see if toString makes a string in the same format specified in Security.java
-   */
+  /** Checks to see if toString makes a string in the same format specified in Security.java */
   @Test
   void testToString() {
     String sanToString = testSecurity.toString();

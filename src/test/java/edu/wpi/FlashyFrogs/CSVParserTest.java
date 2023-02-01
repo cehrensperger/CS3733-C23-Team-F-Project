@@ -53,7 +53,7 @@ public class CSVParserTest {
     try {
       assertDoesNotThrow(
           () -> {
-            CSVParser.readFiles(nodeFile, edgeFile, moveFile, locationFile, Main.factory);
+            CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile, Main.factory);
           });
     } catch (Exception e) {
       fail();
