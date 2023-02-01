@@ -11,7 +11,7 @@ import org.hibernate.annotations.Cascade;
 @Table(name = "Node")
 public class Node {
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.ALL)
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @Column(nullable = false)
   @NonNull
   @Getter
