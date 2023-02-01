@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.SplitPane?>
@@ -10,10 +11,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.DBTableController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.DBTableController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -27,7 +29,7 @@
                   </TableView>
                </content>
                <content>
-                  <TableView fx:id="nodeTable" prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="nodeTable" prefHeight="511.0" prefWidth="800.0">
                     <columns>
                       <TableColumn fx:id="nodeId" prefWidth="75.0" text="ID" />
                       <TableColumn fx:id="nodeX" prefWidth="75.0" text="XCoord" />
@@ -114,4 +116,15 @@
         </tabs>
       </TabPane>
    </center>
+   <bottom>
+      <HBox prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <MFXButton fx:id="back" onAction="#handleBackButton" prefWidth="100.0" text="Back">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" top="10.0" />
+               </HBox.margin>
+            </MFXButton>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
