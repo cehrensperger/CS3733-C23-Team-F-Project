@@ -11,7 +11,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
@@ -29,7 +28,7 @@
                   </TableView>
                </content>
                <content>
-                  <TableView fx:id="nodeTable" prefHeight="511.0" prefWidth="800.0">
+                  <TableView fx:id="nodeTable" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="nodeId" prefWidth="75.0" text="ID" />
                       <TableColumn fx:id="nodeX" prefWidth="75.0" text="XCoord" />
@@ -116,15 +115,4 @@
         </tabs>
       </TabPane>
    </center>
-   <bottom>
-      <HBox prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <MFXButton fx:id="back" onAction="#handleBackButton" prefWidth="100.0" text="Back">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" top="10.0" />
-               </HBox.margin>
-            </MFXButton>
-         </children>
-      </HBox>
-   </bottom>
 </BorderPane>

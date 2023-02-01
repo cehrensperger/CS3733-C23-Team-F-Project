@@ -51,6 +51,12 @@ public class DBTableController implements Initializable {
   public TableColumn<LocationName, String> lnLongName;
   public TableColumn<LocationName, String> lnShortName;
   public TableColumn<LocationName, LocationName.LocationType> lnLocationType;
+  public TableColumn<Move, Node> colId;
+  public TableColumn<Move, LocationName> colLongName;
+  public TableColumn<Move, Date> colTimestamp;
+  public TextField txtID;
+  public TextField txtLongName;
+  public Button btnadd;
   @FXML private MFXButton back;
 
   @Override
