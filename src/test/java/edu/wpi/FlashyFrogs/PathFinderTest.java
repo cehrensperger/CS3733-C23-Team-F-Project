@@ -616,7 +616,6 @@ public class PathFinderTest {
                 DynamicTest.dynamicTest(
                     "Node List To Location " + testNumber,
                     () -> {
-                      setupSessionAndTransaction();
                       PathFinder pathFinder =
                           new PathFinder(sessionFactory); // Create the path finder
 
@@ -648,6 +647,7 @@ public class PathFinderTest {
                       assertEquals(locations, result);
 
                       teardownSession();
+                      setupSessionAndTransaction();
                     }));
   }
 }

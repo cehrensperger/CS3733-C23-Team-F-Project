@@ -68,9 +68,9 @@ public class PathFinder {
     return session
         .createQuery(
             """
-                                          SELECT LocationName
+                                          SELECT location
                                           FROM Move
-                                          WHERE Node = :node
+                                          WHERE node = :node
                                           ORDER BY moveDate DESC
                                           LIMIT 1""",
             LocationName.class)
