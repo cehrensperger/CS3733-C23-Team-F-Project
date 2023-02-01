@@ -30,7 +30,9 @@ public class Sanitation extends ServiceRequest {
   LocationName location;
 
   /** Creates a new Sanitation with a generated id */
-  public Sanitation() {this.requestType = "Sanitation";}
+  public Sanitation() {
+    this.requestType = "Sanitation";
+  }
 
   /**
    * Creates a new Sanitation with a generated id and the specified fields

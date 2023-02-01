@@ -22,15 +22,17 @@ public class Security extends ServiceRequest {
   @Getter
   @Setter
   @JoinColumn(
-          name = "location",
-          foreignKey = @ForeignKey(name = "location_name_fk"),
-          nullable = false)
+      name = "location",
+      foreignKey = @ForeignKey(name = "location_name_fk"),
+      nullable = false)
   @NonNull
   @ManyToOne
   LocationName location;
 
   /** Creates a new Security object with a generated id */
-  public Security() { this.requestType = "Security"; }
+  public Security() {
+    this.requestType = "Security";
+  }
 
   /**
    * Creates a new Security with a generated id and the specified fields

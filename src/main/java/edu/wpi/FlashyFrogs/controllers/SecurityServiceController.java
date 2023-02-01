@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.SecurityServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -101,7 +102,7 @@ public class SecurityServiceController extends ServiceRequestController {
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Security securityRequest = new Security();
-    securityRequest.setLocation(locationEntry.getText());
+    securityRequest.setLocation(session.find(LocationName.class, locationEntry.getText()));
 
     //    securityRequest.setType(Sanitation.SanitationType.valueOf("Security")); //security no
     // longer has a type, to get "Security" do Class.simpleName()

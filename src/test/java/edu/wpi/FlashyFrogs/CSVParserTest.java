@@ -19,13 +19,13 @@ public class CSVParserTest {
       serviceRegistry; // Service registry associated with the factory
   private static Session testSession; // Session to be used for each individual test
 
-  static File nodeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
+  static File nodeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
   static File testNodeFile =
       new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/testNodes.csv");
-  static File edgeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv");
-  static File moveFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
+  static File edgeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv");
+  static File moveFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
   static File locationFile =
-      new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
+      new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
   static File emptyFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/emptyFile.csv");
 
   @BeforeEach
@@ -73,9 +73,7 @@ public class CSVParserTest {
     }
   }
 
-  /**
-   * tests to ensure that the correct objects are inserted into the database
-   */
+  /** tests to ensure that the correct objects are inserted into the database */
   @Test
   public void insertTest() {
     try {
