@@ -44,7 +44,9 @@ public class InternalTransport extends ServiceRequest {
   Date dateOfBirth;
 
   /** Creates a new InternalTransport with a generated id */
-  public InternalTransport() {this.requestType = "InternalTransport";}
+  public InternalTransport() {
+    this.requestType = "InternalTransport";
+  }
 
   /**
    * Creates a new InternalTransport with a generated id and the specified fields
