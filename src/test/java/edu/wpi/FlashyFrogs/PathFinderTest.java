@@ -1,9 +1,17 @@
 package edu.wpi.FlashyFrogs;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,15 +19,6 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.*;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.time.Instant;
-import java.util.*;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for the PathFinder class, tests to ensure that it finds a valid path, and that it always
