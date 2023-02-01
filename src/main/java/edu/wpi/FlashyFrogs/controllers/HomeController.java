@@ -17,6 +17,7 @@ public class HomeController {
   @FXML private MFXButton pathfindingButton;
   @FXML private MFXButton exitButton;
   @FXML private MenuItem closeMenuItem;
+  @FXML private MenuItem loadMapMenuItem;
 
   Stage stage;
 
@@ -54,5 +55,9 @@ public class HomeController {
 
   public void handleSanitationMenuItem(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("SanitationService");
+  }
+
+  public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("LoadMapPage");
   }
 }
