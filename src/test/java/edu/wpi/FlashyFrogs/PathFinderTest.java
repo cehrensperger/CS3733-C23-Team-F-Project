@@ -59,7 +59,7 @@ public class PathFinderTest {
 
   /** Setup method, sets up the session before each test */
   @BeforeEach
-  public void setupSessionAndTransaction() {
+  public void setupSession() {
     testSession = sessionFactory.openSession(); // Open a session
   }
 
@@ -828,7 +828,7 @@ public class PathFinderTest {
                       assertEquals(locations, result);
 
                       teardownSession();
-                      setupSessionAndTransaction();
+                      setupSession();
                     }));
   }
 

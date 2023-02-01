@@ -48,15 +48,6 @@ public class Node {
   public Node() {}
 
   /**
-   * Creates a new Node with the given primary key (unnecessary)
-   *
-   * @param id the String to be used as the id
-   */
-  public Node(@NonNull String id) {
-    this.id = id;
-  }
-
-  /**
    * Creates a new Node with the given fields
    *
    * @param theId the String to be used in the id field

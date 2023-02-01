@@ -32,8 +32,8 @@ public class EdgeTest {
     Node testNode3 = new Node("Another Test", "0", Node.Floor.ONE, 2, 0);
     Edge testEdge2 = new Edge(testNode1, testNode2);
     Edge testEdge3 = new Edge(testNode2, testNode3);
-    assertTrue(testEdge.equals(testEdge2));
-    assertFalse(testEdge.equals(testEdge3));
+    assertEquals(testEdge, testEdge2);
+    assertNotEquals(testEdge, testEdge3);
   }
 
   /** Tests to see that HashCode changes when attributes that determine HashCode changes */
@@ -66,5 +66,17 @@ public class EdgeTest {
     Node newNode = new Node("New ID", "New Building", Node.Floor.L2, 0, 0);
     testEdge.setNode2(newNode);
     assertEquals(newNode, testEdge.getNode2());
+  }
+
+  /** Test setters with the blank edge constructor */
+  @Test
+  public void blankEdgeTest() {
+    // Create a blank edge, set its fields
+    Edge blankEdge = new Edge();
+    blankEdge.setNode1(testNode1);
+    blankEdge.setNode2(testNode2);
+
+    // Test that a filled in edge is equal to the blank edge
+    assertEquals(new Edge(testNode1, testNode2), blankEdge);
   }
 }

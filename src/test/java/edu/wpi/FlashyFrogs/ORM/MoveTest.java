@@ -14,7 +14,7 @@ public class MoveTest {
       new Move(
           new Node("Test", "Building", Node.Floor.L2, 0, 0),
           new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
-          new Date(2023 - 01 - 31));
+          new Date(2023 - 1 - 31));
 
   /** Reset testMove after each test */
   @BeforeEach
@@ -22,7 +22,7 @@ public class MoveTest {
   public void resetTestMove() {
     testMove.setNode(new Node("Test", "Building", Node.Floor.L2, 0, 0));
     testMove.setLocation(new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"));
-    testMove.setMoveDate(new Date(2023 - 01 - 31));
+    testMove.setMoveDate(new Date(2023 - 1 - 31));
   }
 
   /** Tests if the equals in Move.java correctly compares two Move objects */
@@ -32,8 +32,8 @@ public class MoveTest {
         new Move(
             new Node("Test", "Building", Node.Floor.L2, 0, 0),
             new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
-            new Date(2023 - 01 - 31));
-    assertTrue(testMove.equals(otherTestMove));
+            new Date(2023 - 1 - 31));
+    assertEquals(testMove, otherTestMove);
   }
 
   /** Tests to see that HashCode changes when attributes that determine HashCode changes */
@@ -43,7 +43,7 @@ public class MoveTest {
     testMove.setNode(new Node("OtherTest", "SecondBuilding", Node.Floor.G, 0, 10));
     testMove.setLocation(
         new LocationName("DifferentLong", LocationName.LocationType.DEPT, "NewShort"));
-    testMove.setMoveDate(new Date(2023 - 02 - 01));
+    testMove.setMoveDate(new Date(2023 - 2 - 1));
     assertNotEquals(testMove.hashCode(), originalHash);
   }
 
@@ -79,8 +79,33 @@ public class MoveTest {
   /** Tests setter for moveDate */
   @Test
   void setMoveDate() {
-    Date newDate = new Date(2003 - 06 - 23);
+    Date newDate = new Date(2003 - 6 - 23);
     testMove.setMoveDate(newDate);
     assertEquals(newDate, testMove.getMoveDate());
+  }
+
+  /**
+   * Tests that the empty constructor with the setters is equa to the filled constructor without
+   * them
+   */
+  @Test
+  public void emptyConstructorTest() {
+    // Test node
+    Node testNode = new Node("a", "b", Node.Floor.L2, 0, 0);
+
+    // Location name
+    LocationName locationName = new LocationName("a", LocationName.LocationType.SERV, "b");
+
+    // Test date
+    Date testDate = new Date();
+
+    // Create a move with the parameters done through setters
+    Move emptyMove = new Move();
+    emptyMove.setLocation(locationName);
+    emptyMove.setMoveDate(testDate);
+    emptyMove.setNode(testNode);
+
+    // Assert that a basic move is equal to the filled node
+    assertEquals(new Move(testNode, locationName, testDate), emptyMove);
   }
 }
