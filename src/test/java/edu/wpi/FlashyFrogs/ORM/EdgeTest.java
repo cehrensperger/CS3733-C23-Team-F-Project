@@ -8,14 +8,12 @@ import org.junit.jupiter.api.Test;
 
 public class EdgeTest {
 
-  //Create Test Edge using Test Nodes
+  // Create Test Edge using Test Nodes
   Node testNode1 = new Node("Test", "Building", Node.Floor.L2, 0, 1);
   Node testNode2 = new Node("Other Test", "Building", Node.Floor.L2, 0, 1);
   Edge testEdge = new Edge(testNode1, testNode2);
 
-  /**
-   * Reset testEdge after each test
-   */
+  /** Reset testEdge after each test */
   @BeforeEach
   @AfterEach
   public void resetTestEdge() {
@@ -47,18 +45,14 @@ public class EdgeTest {
     assertNotEquals(testEdge.hashCode(), originalHash);
   }
 
-  /**
-   * Checks to see if toString makes a string in the same format specified in Edge.java
-   */
+  /** Checks to see if toString makes a string in the same format specified in Edge.java */
   @Test
   void testToString() {
     String stringEdge = testEdge.toString();
     assertEquals(stringEdge, testEdge.getNode1().getId() + "_" + testEdge.getNode2());
   }
 
-  /**
-   * Tests setter for Node1
-   */
+  /** Tests setter for Node1 */
   @Test
   void setNode1() {
     Node newNode = new Node("New ID", "New Building", Node.Floor.L2, 0, 0);
@@ -66,9 +60,7 @@ public class EdgeTest {
     assertEquals(newNode, testEdge.getNode1());
   }
 
-  /**
-   * Tests setter for Node2
-   */
+  /** Tests setter for Node2 */
   @Test
   void setNode2() {
     Node newNode = new Node("New ID", "New Building", Node.Floor.L2, 0, 0);
