@@ -14,6 +14,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+/**
+ * Class that provides utilities
+ */
 public class CSVParser {
 
   public static void readFiles(
