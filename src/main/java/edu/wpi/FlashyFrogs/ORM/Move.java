@@ -70,7 +70,7 @@ public class Move {
   }
 
   /**
-   * Overrides the defaul hashCode method with one that uses the node, location, and date of the
+   * Overrides the default hashCode method with one that uses the node, location, and date of the
    * move object
    *
    * @return the new hashcode
