@@ -67,6 +67,7 @@ public class DBTableController implements Initializable {
   public TextField txtID;
   public TextField txtLongName;
   public Button btnadd;
+  public Button backbutton;
   @FXML private MFXButton back;
   // Update Buttons
   public Button nodeUpdateID;
