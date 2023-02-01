@@ -24,7 +24,7 @@ public class Security extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  String location;
+  LocationName location;
 
   /** Creates a new Security object with a generated id */
   public Security() {}
@@ -48,7 +48,7 @@ public class Security extends ServiceRequest {
    */
   public Security(
       @NonNull String theIncidentReport,
-      @NonNull String theLocation,
+      @NonNull LocationName theLocation,
       @NonNull String empFirstName,
       @NonNull String empMiddleName,
       @NonNull String empLastName,
