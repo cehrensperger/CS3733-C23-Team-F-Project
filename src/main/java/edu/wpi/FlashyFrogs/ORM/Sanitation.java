@@ -30,7 +30,7 @@ public class Sanitation extends ServiceRequest {
   LocationName location;
 
   /** Creates a new Sanitation with a generated id */
-  public Sanitation() {}
+  public Sanitation() {this.requestType = "Sanitation";}
 
   /**
    * Creates a new Sanitation with a generated id and the specified fields
@@ -77,6 +77,7 @@ public class Sanitation extends ServiceRequest {
     this.status = Status.BLANK;
     this.urgency = urgency;
     this.location = location;
+    this.requestType = "Sanitation";
   }
 
   /** Enumerated type for the possible types we can create */

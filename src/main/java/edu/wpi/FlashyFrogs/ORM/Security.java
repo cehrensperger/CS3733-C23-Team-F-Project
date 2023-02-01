@@ -19,15 +19,18 @@ public class Security extends ServiceRequest {
   @Setter
   String incidentReport;
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
+  @JoinColumn(
+          name = "location",
+          foreignKey = @ForeignKey(name = "location_name_fk"),
+          nullable = false)
+  @NonNull
+  @ManyToOne
   LocationName location;
 
   /** Creates a new Security object with a generated id */
-  public Security() {}
+  public Security() { this.requestType = "Security"; }
 
   /**
    * Creates a new Security with a generated id and the specified fields
@@ -74,5 +77,6 @@ public class Security extends ServiceRequest {
     this.dateOfSubmission = dateOfSubmission;
     this.status = Status.BLANK;
     this.urgency = urgency;
+    this.requestType = "Security";
   }
 }
