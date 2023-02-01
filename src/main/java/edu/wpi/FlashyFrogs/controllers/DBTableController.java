@@ -88,6 +88,7 @@ public class DBTableController implements Initializable {
     moveColId.setCellValueFactory(new PropertyValueFactory<>("node"));
     moveColLongName.setCellValueFactory(new PropertyValueFactory<>("location"));
     moveColTimestamp.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
+
     // set collumns Node
     nodeId.setCellValueFactory(new PropertyValueFactory<>("id"));
     nodeX.setCellValueFactory(new PropertyValueFactory<>("xCoord"));
