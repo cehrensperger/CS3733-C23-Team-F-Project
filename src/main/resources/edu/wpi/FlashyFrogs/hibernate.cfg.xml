@@ -28,7 +28,9 @@
         <property name="show_sql">false</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">update</property>
+
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
         <mapping class="edu.wpi.FlashyFrogs.ORM.Edge"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Move"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.ServiceRequest"/>

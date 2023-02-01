@@ -34,15 +34,6 @@ public class LocationName {
   public LocationName() {}
 
   /**
-   * Creates a new LocationName with the given primary key (unnecessary)
-   *
-   * @param longName the String to be used in the longName field
-   */
-  public LocationName(@NonNull String longName) {
-    this.longName = longName;
-  }
-
-  /**
    * Creates a new LocationName with the given fields
    *
    * @param thelongName the String to be used in the longName field

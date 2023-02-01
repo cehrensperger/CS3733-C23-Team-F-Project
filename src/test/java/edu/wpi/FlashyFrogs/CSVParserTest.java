@@ -9,7 +9,9 @@ import java.util.Scanner;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.*;
 
 public class CSVParserTest {
@@ -18,6 +20,30 @@ public class CSVParserTest {
   private static StandardServiceRegistry
       serviceRegistry; // Service registry associated with the factory
   private static Session testSession; // Session to be used for each individual test
+
+  /**
+   * Setup method to be run before all tests that creates the session factory and service registry
+   */
+  @BeforeAll
+  public static void setupSessionFactory() {
+    // Create the service registry we will use
+    serviceRegistry =
+        new StandardServiceRegistryBuilder()
+            .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
+            .build();
+
+    // Create the session factory from that
+    sessionFactory = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
+  }
+
+  /**
+   * Teardown method to be run after all tests. Cleans up the service registry and session factory
+   */
+  @AfterAll
+  public static void closeSessionFactory() {
+    sessionFactory.close(); // Close the session factory
+    serviceRegistry.close(); // Close the service registry
+  }
 
   static File nodeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
   static File testNodeFile =
@@ -30,7 +56,7 @@ public class CSVParserTest {
 
   @BeforeEach
   public void setup() {
-    testSession = Main.factory.openSession();
+    testSession = sessionFactory.openSession();
   }
 
   @AfterEach
@@ -52,9 +78,7 @@ public class CSVParserTest {
   public void readFilesTest() {
     try {
       assertDoesNotThrow(
-          () -> {
-            CSVParser.readFiles(nodeFile, edgeFile, moveFile, locationFile, Main.factory);
-          });
+          () -> CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile, Main.factory));
     } catch (Exception e) {
       fail();
     }
@@ -65,9 +89,7 @@ public class CSVParserTest {
   public void readEmptyFilesTest() {
     try {
       assertDoesNotThrow(
-          () -> {
-            CSVParser.readFiles(emptyFile, emptyFile, emptyFile, emptyFile, Main.factory);
-          });
+          () -> CSVParser.readFiles(emptyFile, emptyFile, emptyFile, emptyFile, Main.factory));
     } catch (Exception e) {
       fail();
     }
@@ -97,5 +119,15 @@ public class CSVParserTest {
     } catch (FileNotFoundException e) {
       fail();
     }
+  }
+
+  /** Tests that if the files aren't found, an exception is thrown */
+  @Test
+  public void testFileNotFoundException() {
+    assertThrows(
+        Exception.class,
+        () ->
+            CSVParser.readFiles(
+                new File(""), new File(""), new File(""), new File(""), sessionFactory));
   }
 }

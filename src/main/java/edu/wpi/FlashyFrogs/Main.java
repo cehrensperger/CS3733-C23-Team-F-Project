@@ -18,12 +18,6 @@ public class Main {
       new MetadataSources(registry).buildMetadata().buildSessionFactory();
 
   public static void main(String[] args) throws FileNotFoundException {
-    //    File nodeFile = new File("src/main/resources/CSVFiles/L1Nodes.csv");
-    //    File edgeFile = new File("src/main/resources/CSVFiles/L1Edges.csv");
-    //    File moveFile = new File("src/main/resources/CSVFiles/move.csv");
-    //    File locationFile = new File("src/main/resources/CSVFiles/locationName.csv");
-    //
-    //    CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile, factory);
 
     Fapp.launch(Fapp.class, args);
     factory.close();

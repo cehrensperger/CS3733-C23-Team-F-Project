@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.Main;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
@@ -24,7 +25,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class DBTableController implements Initializable {
   // Move Table Stuff
@@ -42,6 +45,13 @@ public class DBTableController implements Initializable {
   public TableColumn nodeY;
   public TableColumn<Node, Node.Floor> nodeFloor;
   public TableColumn<Node, String> nodeBuilding;
+  // Node TextBoxes
+  public TextField nodeTxtID;
+  public TextField nodeTxtX;
+  public TextField nodeTxtY;
+  public TextField nodeTxtFloor;
+  public TextField nodeTxtBuilding;
+
   // Edge Table Stuff
   public TableView<Edge> edgeTable;
   public TableColumn<Edge, Node> edgeNode1;
@@ -58,6 +68,19 @@ public class DBTableController implements Initializable {
   public TextField txtLongName;
   public Button btnadd;
   @FXML private MFXButton back;
+  // Update Buttons
+  public Button nodeUpdateID;
+  public Button nodeUpdate;
+  public Button lnSubmitBtn;
+  public Button lnSubmitLongNameBtn;
+  // Location Name TxtFields
+  public TextField lnTxtLongName;
+  public TextField lnTxtShortName;
+  public TextField lnTxtLocationType;
+
+  // checkers
+  private String checkNodeID;
+  private String checkLongName;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -91,7 +114,7 @@ public class DBTableController implements Initializable {
    * @throws Exception
    */
   @FXML
-  public void addMove(javafx.event.ActionEvent actionEvent) throws Exception {
+  private void addMove(javafx.event.ActionEvent actionEvent) throws Exception {
     Session session = factory.openSession();
     String colID = moveTxtID.getText();
     String colLongName = moveTxtLongName.getText();
@@ -111,7 +134,95 @@ public class DBTableController implements Initializable {
     createMoveTable();
   }
 
-  public void createMoveTable() {
+  @FXML
+  private void nodeRowClicked(MouseEvent event) {
+    Node clickedNode = nodeTable.getSelectionModel().getSelectedItem();
+    nodeTxtID.setText(String.valueOf(clickedNode.getId()));
+    checkNodeID = String.valueOf(clickedNode.getId());
+    nodeTxtX.setText(String.valueOf(clickedNode.getXCoord()));
+    nodeTxtY.setText(String.valueOf(clickedNode.getYCoord()));
+    nodeTxtFloor.setText(String.valueOf(clickedNode.getFloor()));
+    nodeTxtBuilding.setText(String.valueOf(clickedNode.getBuilding()));
+  }
+
+  /**
+   * When a row is clicked on take the values of the row and paste it into the textFields
+   *
+   * @param event
+   */
+  @FXML
+  private void lnRowClicked(MouseEvent event) {
+    LocationName clickedLocationName = locationTable.getSelectionModel().getSelectedItem();
+    checkLongName = String.valueOf(clickedLocationName.getLongName());
+    lnTxtLongName.setText(String.valueOf(clickedLocationName.getLongName()));
+    lnTxtShortName.setText(String.valueOf(clickedLocationName.getShortName()));
+    lnTxtLocationType.setText(String.valueOf(clickedLocationName.getLocationType()));
+  }
+
+  @FXML
+  private void updateID(ActionEvent event) {
+    if (checkNodeID != nodeTxtID.getText()) {
+      Session session = Main.factory.openSession();
+      Transaction transaction = session.beginTransaction();
+
+      String id = checkNodeID;
+      String newID = nodeTxtID.getText();
+      Node node = session.find(Node.class, id);
+
+      Node newNode =
+          new Node(newID, node.getBuilding(), node.getFloor(), node.getXCoord(), node.getYCoord());
+      session.persist(newNode);
+      transaction.commit();
+
+      transaction = session.beginTransaction();
+
+      List<Edge> edges1 =
+          session
+              .createQuery("Select e From Edge e Where node1 = :node", Edge.class)
+              .setParameter("node", node)
+              .getResultList();
+      List<Edge> edges2 =
+          session
+              .createQuery("Select e From Edge e Where node2 = :node", Edge.class)
+              .setParameter("node", node)
+              .getResultList();
+      List<Move> moves =
+          session
+              .createQuery("Select m From Move m Where node = :node", Move.class)
+              .setParameter("node", node)
+              .getResultList();
+
+      if (edges1.size() != 0) {
+        for (int i = 0; i < edges1.size(); i++) {
+          Edge edge = new Edge(newNode, edges1.get(i).getNode2());
+          session.persist(edge);
+          session.remove(edges1.get(i));
+        }
+      }
+      if (edges2.size() != 0) {
+        for (int i = 0; i < edges2.size(); i++) {
+          Edge edge = new Edge(edges2.get(i).getNode1(), newNode);
+          session.persist(edge);
+          session.remove(edges2.get(i));
+        }
+      }
+      if (moves.size() != 0) {
+        for (int i = 0; i < moves.size(); i++) {
+          Move move = new Move(newNode, moves.get(i).getLocation(), moves.get(i).getMoveDate());
+          session.persist(move);
+          session.remove(moves.get(i));
+        }
+      }
+      transaction.commit();
+      transaction = session.beginTransaction();
+      session.remove(node);
+      transaction.commit();
+      session.close();
+    }
+    createNodeTable();
+  }
+
+  private void createMoveTable() {
     // open session
     Session ses = factory.openSession();
     List<Move> moveObjects =
@@ -120,12 +231,13 @@ public class DBTableController implements Initializable {
     ObservableList<Move> moveObservableList =
         FXCollections.observableList(moveObjects); // convert list to ObservableList
     ses.close();
+    moveTable.getItems().clear();
     moveTable
         .getItems()
         .addAll(moveObservableList); // add every item in observable list to moveTable
   }
 
-  public void createNodeTable() {
+  private void createNodeTable() {
     // open session
     Session ses = factory.openSession();
     List<Node> nodeObjects =
@@ -134,12 +246,13 @@ public class DBTableController implements Initializable {
     ObservableList<Node> nodeObservableList =
         FXCollections.observableList(nodeObjects); // convert list to ObservableList
     ses.close();
+    nodeTable.getItems().clear();
     nodeTable
         .getItems()
         .addAll(nodeObservableList); // add every item in observable list to moveTable
   }
 
-  public void createEdgeTable() {
+  private void createEdgeTable() {
     // open session
     Session ses = factory.openSession();
     List<Edge> edgeObjects =
@@ -148,12 +261,13 @@ public class DBTableController implements Initializable {
     ObservableList<Edge> edgeObservableList =
         FXCollections.observableList(edgeObjects); // convert list to ObservableList
     ses.close();
+    edgeTable.getItems().clear();
     edgeTable
         .getItems()
         .addAll(edgeObservableList); // add every item in observable list to moveTable
   }
 
-  public void createLnTable() {
+  private void createLnTable() {
     // open session
     Session ses = factory.openSession();
     List<LocationName> lnObjects =
@@ -162,6 +276,7 @@ public class DBTableController implements Initializable {
     ObservableList<LocationName> lnObservableList =
         FXCollections.observableList(lnObjects); // convert list to ObservableList
     ses.close();
+    locationTable.getItems().clear();
     locationTable
         .getItems()
         .addAll(lnObservableList); // add every item in observable list to moveTable
@@ -169,5 +284,62 @@ public class DBTableController implements Initializable {
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Home");
+  }
+
+  public void nodeUpdate(ActionEvent actionEvent) {
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    Node node = session.find(Node.class, checkNodeID);
+    node.setXCoord(Integer.parseInt(nodeTxtX.getText()));
+    node.setYCoord(Integer.parseInt(nodeTxtY.getText()));
+    node.setBuilding(nodeBuilding.getText());
+    node.setFloor(Node.Floor.valueOf(nodeTxtFloor.getText()));
+    session.merge(node);
+    transaction.commit();
+    session.close();
+    createNodeTable();
+  }
+
+  public void submitLongName(ActionEvent actionEvent) {
+    Session session = Main.factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    LocationName location = session.find(LocationName.class, checkLongName);
+    List<Move> moves =
+        session
+            .createQuery("Select m From Move m Where location = :location", Move.class)
+            .setParameter("location", location)
+            .getResultList();
+
+    LocationName newLocation =
+        new LocationName(
+            lnTxtLongName.getText(), location.getLocationType(), location.getShortName());
+    session.persist(newLocation);
+    transaction.commit();
+    transaction = session.beginTransaction();
+    if (moves.size() != 0) {
+      for (int i = 0; i < moves.size(); i++) {
+        Move move = new Move(moves.get(i).getNode(), newLocation, moves.get(i).getMoveDate());
+        session.persist(move);
+        session.remove(moves.get(i));
+      }
+    }
+    transaction.commit();
+    transaction = session.beginTransaction();
+    session.remove(location);
+    transaction.commit();
+    session.close();
+    createLnTable();
+  }
+
+  public void lnUpdate(ActionEvent actionEvent) {
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    LocationName locationName = session.find(LocationName.class, checkLongName);
+    locationName.setLocationType(LocationName.LocationType.valueOf(lnTxtLocationType.getText()));
+    locationName.setShortName(lnTxtShortName.getText());
+    session.merge(locationName);
+    transaction.commit();
+    session.close();
+    createLnTable();
   }
 }
