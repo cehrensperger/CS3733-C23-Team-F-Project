@@ -5,6 +5,7 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "ServiceRequest")
@@ -12,6 +13,7 @@ import lombok.Setter;
 public class ServiceRequest {
   @Basic
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Column(nullable = false)
   @Getter
   @Setter
@@ -110,7 +112,7 @@ public class ServiceRequest {
     PROCESSING("processing"),
     DONE("done");
 
-    @NonNull public final String status; // Number backing for the Floor
+    @NonNull public final String status;
 
     /**
      * Creates a new status with the given String backing
@@ -118,7 +120,7 @@ public class ServiceRequest {
      * @param statusVal the status to create. Must not be null
      */
     Status(@NonNull String statusVal) {
-      status = statusVal; // The floor to create
+      status = statusVal;
     }
   }
 
@@ -129,7 +131,7 @@ public class ServiceRequest {
     RADIOLOGY("radiology"),
     MAINTENANCE("maintenance");
 
-    @NonNull public final String EmpDept; // Number backing for the Floor
+    @NonNull public final String EmpDept;
 
     /**
      * Creates a new status with the given String backing
@@ -137,7 +139,7 @@ public class ServiceRequest {
      * @param dept the dept to create. Must not be null
      */
     EmpDept(@NonNull String dept) {
-      EmpDept = dept; // The floor to create
+      EmpDept = dept;
     }
   }
 
@@ -147,7 +149,7 @@ public class ServiceRequest {
     MODERATELY_URGENT("moderately urgent"),
     NOT_URGENT("not urgent");
 
-    @NonNull public final String Urgency; // Number backing for the Floor
+    @NonNull public final String Urgency;
 
     /**
      * Creates a new status with the given String backing
@@ -155,7 +157,7 @@ public class ServiceRequest {
      * @param urgency the urgency to create. Must not be null
      */
     Urgency(@NonNull String urgency) {
-      Urgency = urgency; // The floor to create
+      Urgency = urgency;
     }
   }
 
@@ -167,7 +169,6 @@ public class ServiceRequest {
    * @return boolean whether the primary keys are equal or not
    */
   @Override
-  @NonNull
   public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null) return false;
@@ -183,7 +184,6 @@ public class ServiceRequest {
    * @return the new hashcode
    */
   @Override
-  @NonNull
   public int hashCode() {
     return Objects.hash(this.id, this.dateOfSubmission);
   }

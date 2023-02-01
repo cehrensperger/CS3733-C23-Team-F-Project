@@ -5,11 +5,13 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "LocationName")
 public class LocationName {
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Column(nullable = false)
   @NonNull
   @Getter

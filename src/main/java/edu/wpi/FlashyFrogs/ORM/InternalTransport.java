@@ -19,19 +19,22 @@ public class InternalTransport extends ServiceRequest {
   @Setter
   String patientName;
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
-  String oldLoc;
+  @JoinColumn(
+      name = "oldLoc",
+      foreignKey = @ForeignKey(name = "location_name1_fk"),
+      nullable = false)
+  @NonNull
+  @ManyToOne
+  LocationName oldLoc;
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
-  String newLoc;
+  @JoinColumn(name = "newLoc", foreignKey = @ForeignKey(name = "location_name2_fk"))
+  @NonNull
+  @ManyToOne
+  LocationName newLoc;
 
   @Column(nullable = false)
   @NonNull
@@ -40,18 +43,33 @@ public class InternalTransport extends ServiceRequest {
   @Setter
   Date dateOfBirth;
 
+  /** Creates a new InternalTransport with a generated id */
   public InternalTransport() {}
 
-  public InternalTransport(long id) {
-    this.id = id;
-  }
-
+  /**
+   * Creates a new InternalTransport with a generated id and the specified fields
+   *
+   * @param theDOB the Date to use in the DOB field
+   * @param theNewLoc the LocationName to use in the newLoc field
+   * @param theOldLoc the LocationName to use in the oldLoc field
+   * @param thePatientName the String to use in the patientName field
+   * @param empFirstName the String to use in the empFirstName field
+   * @param empMiddleName the String to use in the empMiddleName field
+   * @param empLastName the String to use in the empLastName field
+   * @param assignedEmpFirstName the String to use in the assignedEmpFirstName field
+   * @param assignedEmpMiddleName the String to use in the assignedEmpMiddleName field
+   * @param assignedEmpLastName the String to use in the assignedEmpLastName field
+   * @param empDept the EmpDept to use in the empDept field
+   * @param assignedEmpDept the EmpDept to use in the assignedEmpDept field
+   * @param dateOfIncident the Date to use in the dateOfIncident field
+   * @param dateOfSubmission the Date to use in the dateOfSubmission field
+   * @param urgency the Urgency to use in the urgency field
+   */
   public InternalTransport(
       @NonNull Date theDOB,
-      @NonNull String theNewLoc,
-      @NonNull String theOldLoc,
+      @NonNull LocationName theNewLoc,
+      @NonNull LocationName theOldLoc,
       @NonNull String thePatientName,
-      long theId,
       @NonNull String empFirstName,
       @NonNull String empMiddleName,
       @NonNull String empLastName,
@@ -67,7 +85,6 @@ public class InternalTransport extends ServiceRequest {
     this.newLoc = theNewLoc;
     this.oldLoc = theOldLoc;
     this.patientName = thePatientName;
-    this.id = theId;
     this.empFirstName = empFirstName;
     this.empMiddleName = empMiddleName;
     this.empLastName = empLastName;

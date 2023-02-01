@@ -29,8 +29,6 @@ public class Main {
 
     Fapp.launch(Fapp.class, args);
     factory.close();
-
-    // App.launch(App.class, args);
-
+    registry.close();
   }
 }

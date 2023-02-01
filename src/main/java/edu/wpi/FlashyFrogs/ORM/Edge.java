@@ -5,11 +5,13 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Edge")
 public class Edge {
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @JoinColumn(name = "node1_id", foreignKey = @ForeignKey(name = "node1_id_fk"), nullable = false)
   @NonNull
   @ManyToOne
@@ -18,6 +20,7 @@ public class Edge {
   Node node1;
 
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @JoinColumn(name = "node2_id", foreignKey = @ForeignKey(name = "node2_id_fk"), nullable = false)
   @NonNull
   @ManyToOne
