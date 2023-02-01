@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.PathFinder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -35,22 +34,24 @@ public class PathFindingController {
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
     Session session = factory.openSession();
     // session.find(LocationName.class, start.getText());
-    LocationName startPath = session.find(LocationName.class, start.getText());
-    LocationName endPath = session.find(LocationName.class, end.getText());
+    // LocationName startPath = session.find(LocationName.class, start.getText());
+    // LocationName endPath = session.find(LocationName.class, end.getText());
 
-    // String startPath = start.getText();
-    // String endPath = end.getText();
+    String startPath = start.getText();
+    String endPath = end.getText();
     // Transaction transaction = session.beginTransaction();
     PathFinder pathFinder = new PathFinder(factory);
+
     try {
-      pathText.setText("Path:\n" + pathFinder.findPath(startPath, endPath).toString());
+      pathText.setText(
+          "Path:\n"
+              + pathFinder.nodeListToLocation(pathFinder.findPath(startPath, endPath), session));
     } catch (NullPointerException e) {
       System.out.println("Error: No data in database");
     }
 
     // = pathFinder.findPath(startPath, endPath);
     //    transaction.commit();
-    //    session.close();
-
+    session.close();
   }
 }

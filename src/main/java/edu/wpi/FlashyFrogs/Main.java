@@ -26,7 +26,7 @@ public class Main {
 
     CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile, factory);
 
-    //    Fapp.launch(Fapp.class, args);
+    Fapp.launch(Fapp.class, args);
     factory.close();
     registry.close();
   }
