@@ -68,24 +68,23 @@ public class PathFinder {
     return session
         .createQuery(
             """
-                                          SELECT LocationName
+                                          SELECT location
                                           FROM Move
-                                          WHERE Node = :node
+                                          WHERE node = :node
                                           ORDER BY moveDate DESC
-                                          LIMIT 1
-                                          """,
+                                          LIMIT 1""",
             LocationName.class)
         .setParameter("node", node)
         .uniqueResult();
   }
 
   /**
-   *
    * @param nodes list of nodes to lookup
    * @param session the session to use in the lookup
    * @return list of locations that were found
    */
-  public List<LocationName> nodeListToLocation(@NonNull List<Node> nodes, @NonNull Session session) {
+  public List<LocationName> nodeListToLocation(
+      @NonNull List<Node> nodes, @NonNull Session session) {
     List<LocationName> locations = new ArrayList<>();
     for (Node node : nodes) {
       locations.add(nodeToLocation(node, session));
@@ -175,12 +174,14 @@ public class PathFinder {
    * @return the path (as a list) between the two nodes, or null if it could not find a path
    */
   private List<Node> aStar(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
-    PriorityQueue<NodeWrapper> openList = new PriorityQueue<>(); // create priority queue for nodes to search
-    List<NodeWrapper> closedlist = new LinkedList<>(); // create list for nodes that have been visited
+    PriorityQueue<NodeWrapper> openList =
+        new PriorityQueue<>(); // create priority queue for nodes to search
+    List<NodeWrapper> closedlist =
+        new LinkedList<>(); // create list for nodes that have been visited
 
     openList.add(new NodeWrapper(start, null)); // add start node to open list
 
-    while (!openList.isEmpty()) {     // while open list is not empty
+    while (!openList.isEmpty()) { // while open list is not empty
       NodeWrapper q = openList.poll(); // get node with the lowest estimated cost
 
       if (q.node.equals(end)) { // if the current node is the goal
@@ -198,7 +199,8 @@ public class PathFinder {
       for (Node node : getNeighbors(q.node, session)) { // get the neighbors of the current node
         NodeWrapper child = new NodeWrapper(node, q); // create node wrapper out of current node
         child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start
-        child.h = euclideanDistance(child.node, end); // calculate the lowest possible distance to end
+        child.h =
+            euclideanDistance(child.node, end); // calculate the lowest possible distance to end
         child.f = child.g + child.h;
 
         for (NodeWrapper open : openList) { // check if node is on open list with a lower cost
@@ -258,7 +260,6 @@ public class PathFinder {
     }
 
     /**
-     *
      * @param nodeWrapper the object to be compared.
      * @return the comparison of node costs
      */

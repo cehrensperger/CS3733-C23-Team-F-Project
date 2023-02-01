@@ -1,20 +1,9 @@
 package edu.wpi.FlashyFrogs;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.time.Instant;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -22,6 +11,15 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for the PathFinder class, tests to ensure that it finds a valid path, and that it always
@@ -789,6 +787,49 @@ public class PathFinderTest {
                       }
 
                       transaction.commit();
+                    }));
+  }
+
+  @TestFactory
+  public Stream<DynamicTest> testNodeListToLocation() {
+    return IntStream.range(1, 10)
+        .mapToObj(
+            testNumber ->
+                DynamicTest.dynamicTest(
+                    "Node List To Location " + testNumber,
+                    () -> {
+                      PathFinder pathFinder =
+                          new PathFinder(sessionFactory); // Create the path finder
+
+                      // Create a random generator
+                      Random randomGenerator = new Random();
+                      randomGenerator.setSeed(1); // Seed random the same way every time
+
+                      List<Node> nodes = new ArrayList<>();
+                      List<LocationName> locations = new ArrayList<>();
+
+                      Transaction commitTransaction =
+                          testSession.beginTransaction(); // Create the transaction
+                      for (int i = 0; i < 10; i++) {
+                        Node node = Utils.generateRandomNode(randomGenerator);
+                        LocationName location = Utils.generateRandomLocation(randomGenerator);
+                        Move move = new Move(node, location, new Date());
+
+                        nodes.add(node);
+                        locations.add(location);
+
+                        testSession.persist(node);
+                        testSession.persist(location);
+                        testSession.persist(move);
+                      }
+                      commitTransaction.commit();
+
+                      List<LocationName> result = pathFinder.nodeListToLocation(nodes, testSession);
+
+                      assertEquals(locations, result);
+
+                      teardownSession();
+                      setupSessionAndTransaction();
                     }));
   }
 }
