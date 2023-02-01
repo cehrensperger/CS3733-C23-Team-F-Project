@@ -9,12 +9,16 @@ import org.junit.jupiter.api.Test;
 
 public class MoveTest {
 
+  //Creates iteration of move
   Move testMove =
       new Move(
           new Node("Test", "Building", Node.Floor.L2, 0, 0),
           new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
           new Date(2023 - 01 - 31));
 
+  /**
+   * Reset testMove after each test
+   */
   @BeforeEach
   @AfterEach
   public void resetTestMove() {
@@ -23,6 +27,9 @@ public class MoveTest {
     testMove.setMoveDate(new Date(2023 - 01 - 31));
   }
 
+  /**
+   * Tests if the equals in Move.java correctly compares two Move objects
+   */
   @Test
   void testEquals() {
     Move otherTestMove =
@@ -33,6 +40,9 @@ public class MoveTest {
     assertTrue(testMove.equals(otherTestMove));
   }
 
+  /**
+   * Tests to see that HashCode changes when attributes that determine HashCode changes
+   */
   @Test
   void testHashCode() {
     int originalHash = testMove.hashCode();
@@ -43,6 +53,9 @@ public class MoveTest {
     assertNotEquals(testMove.hashCode(), originalHash);
   }
 
+  /**
+   * Checks to see if toString makes a string in the same format specified in Move.java
+   */
   @Test
   void testToString() {
     String stringMove = testMove.toString();
@@ -55,6 +68,9 @@ public class MoveTest {
             + testMove.getMoveDate());
   }
 
+  /**
+   * Tests setter for Node
+   */
   @Test
   void setNode() {
     Node newNode = new Node("NewNode", "NewBuilding", Node.Floor.G, 10, 10);
@@ -62,6 +78,9 @@ public class MoveTest {
     assertEquals(newNode, testMove.getNode());
   }
 
+  /**
+   * Tests setter for location
+   */
   @Test
   void setLocation() {
     LocationName newLoc = new LocationName("NewLong", LocationName.LocationType.ELEV, "NewShort");
@@ -69,6 +88,9 @@ public class MoveTest {
     assertEquals(newLoc, testMove.getLocation());
   }
 
+  /**
+   * Tests setter for moveDate
+   */
   @Test
   void setMoveDate() {
     Date newDate = new Date(2003 - 06 - 23);
