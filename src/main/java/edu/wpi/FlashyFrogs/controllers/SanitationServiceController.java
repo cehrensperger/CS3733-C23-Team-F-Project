@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.hibernate.Session;
@@ -55,14 +56,10 @@ public class SanitationServiceController extends ServiceRequestController {
 
     Session session = factory.openSession();
 
-    List<LocationName> objects =
-        session
-            .createQuery("SELECT longName FROM LocationName", LocationName.class)
-            .getResultList();
-
-    for (LocationName name : objects) {
-      locationDropDown.getItems().add(name.getLongName());
-    }
+    List<String> objects =
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    session.close();
+    locationDropDown.setItems(FXCollections.observableList(objects));
 
     department2.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
   }
@@ -96,42 +93,36 @@ public class SanitationServiceController extends ServiceRequestController {
    * @throws IOException
    */
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    //    System.out.println("Submit button was clicked");
-    //    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
-    //    sanitationServiceData.setDateInfo(date.getText());
-    //    sanitationServiceData.setLocationInfo(locationDropDown.getText());
-    //    sanitationServiceData.setRequestType(requestTypeDropDown.getText());
-    //    sanitationServiceData.setEmployeeDepartment(departmentDropDown.getText());
-    //    sanitationServiceData.setEmployeeFirstName(firstName.getText());
-    //    sanitationServiceData.setEmployeeLastName(lastName.getText());
-    //    sanitationServiceData.setEmployeeMiddleName(middleName.getText());
 
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
 
+    String[] parts = {};
+    String departmentEnumString = departmentDropDown.getText().toUpperCase();
+
+    parts = urgencyEntry.getText().toUpperCase().split(" ");
+    String urgencyEnumString = parts[0] + "_" + parts[1];
+    // TODO: handle empty case and close session!!!!!
+
+    String departmentEnumString2 = department2.getText().toUpperCase();
+
+    String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
+
     Sanitation sanitationRequest =
         new Sanitation(
-            Sanitation.SanitationType.valueOf(requestTypeDropDown.getText()),
+            Sanitation.SanitationType.valueOf(requestTypeEnumString),
             firstName.getText(),
             middleName.getText(),
             lastName.getText(),
             first2.getText(),
             middle2.getText(),
             last2.getText(),
-            ServiceRequest.EmpDept.valueOf(departmentDropDown.getText()),
-            ServiceRequest.EmpDept.valueOf(department2.getText()),
+            ServiceRequest.EmpDept.valueOf(departmentEnumString),
+            ServiceRequest.EmpDept.valueOf(departmentEnumString2),
             new Date(),
             Date.from(Instant.now()),
-            ServiceRequest.Urgency.valueOf(urgencyEntry.getText()),
+            ServiceRequest.Urgency.valueOf(urgencyEnumString),
             session.find(LocationName.class, locationDropDown.getText()));
-
-    //    sanitationRequest.setLocation(null); // MAKE THIS A LOCATIONNAME OBJECT
-    //
-    //
-    //    sanitationRequest.setEmpFirstName(firstName.getText());
-    //    sanitationRequest.setEmpMiddleName(middleName.getText());
-    //    sanitationRequest.setEmpLastName(lastName.getText());
-    //    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
 
     session.persist(sanitationRequest);
     transaction.commit();

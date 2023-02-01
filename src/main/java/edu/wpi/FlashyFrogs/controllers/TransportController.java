@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.SubmitInfo;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -14,12 +13,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
-import java.util.Date;
+import java.util.List;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 public class TransportController extends ServiceRequestController {
   @FXML MFXTextField firstNameTextfield; // ID of the first name text field
@@ -55,16 +53,18 @@ public class TransportController extends ServiceRequestController {
 
     submitInfo = new SubmitInfo();
 
-    currentLocationComboBox
-        .getItems()
-        .addAll("Intensive Care Unit", "Emergency Room", "Operating Room");
+    Session session = factory.openSession();
+    List<String> objects =
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+
+    newLocationComboBox.setItems(FXCollections.observableList(objects));
+    session.close();
+
     newLocationComboBox.getItems().addAll("Intesive Care Unit", "Emergency Room", "Operating Room");
     departmentComboBox.getItems().addAll("Cardiology", "Radiology", "Trauma Unit");
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    System.out.println("clear button was clicked");
-    System.out.println(this.logData() ? "Data logged" : "Data was not logged");
     firstNameTextfield.clear();
     lastNameTextfield.clear();
     middleNameTextfield.clear();
@@ -89,8 +89,8 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    System.out.println("Submit Button was Clicked");
-    System.out.println(this.logData() ? "Data logged" : "Data was not logged");
+    //    System.out.println("Submit Button was Clicked");
+    //    System.out.println(this.logData() ? "Data logged" : "Data was not logged");
     submitInfo.setPatientFirstName(firstNameTextfield.getText());
     submitInfo.setPatientLastName(lastNameTextfield.getText());
     submitInfo.setPatientMiddleName(middleNameTextfield.getText());
@@ -105,22 +105,28 @@ public class TransportController extends ServiceRequestController {
     System.out.println(submitInfo.getDOB());
     System.out.println(submitInfo.getPatientMiddleName());
 
-    Session session = factory.openSession();
-    Transaction transaction = session.beginTransaction();
-    InternalTransport transportRequest = new InternalTransport();
+    //    Session session = factory.openSession();
+    //    Transaction transaction = session.beginTransaction();
+    //    InternalTransport transportRequest =
+    //        new InternalTransport(
+    //            //            new Date(),
+    //            //            session.find(LocationName.class, newLocationComboBox.getText()),
+    //            //            session.find(LocationName.class, currentLocationComboBox.getText()),
+    //
+    //            );
     // securityRequest.setLocation(locationEntry.getText());
 
     //    transportRequest.setType("Transport");//transport no
     //    // longer has a type, to get "Transport" do Class.simpleName()
 
-    transportRequest.setEmpFirstName(firstNameTextfield.getText());
-    transportRequest.setEmpMiddleName(middleNameTextfield.getText());
-    transportRequest.setEmpLastName(lastNameTextfield.getText());
-    transportRequest.setDateOfSubmission(Date.from(Instant.now()));
-
-    session.persist(transportRequest);
-    transaction.commit();
-    session.close();
+    //    transportRequest.setEmpFirstName(firstNameTextfield.getText());
+    //    transportRequest.setEmpMiddleName(middleNameTextfield.getText());
+    //    transportRequest.setEmpLastName(lastNameTextfield.getText());
+    //    transportRequest.setDateOfSubmission(Date.from(Instant.now()));
+    //
+    //    session.persist(transportRequest);
+    //    transaction.commit();
+    //    session.close();
   }
 
   /**
@@ -129,10 +135,10 @@ public class TransportController extends ServiceRequestController {
    * @param actionEvent event that triggered method
    * @throws IOException
    */
-  public void buttonClicked(ActionEvent actionEvent) throws IOException {
-    System.out.println("Button was clicked");
-    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
-  }
+  //  public void buttonClicked(ActionEvent actionEvent) throws IOException {
+  //    System.out.println("Button was clicked");
+  //    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
+  //  }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
@@ -216,18 +222,19 @@ public class TransportController extends ServiceRequestController {
    *
    * @return true if data is stored successfully, false otherwise
    */
-  private boolean logData() {
-    if (connection != null) {
-      String writeQuery =
-          "INSERT INTO APP.buttonClicks(btn_name, time_stamp) VALUES ( 'ClickButton', CURRENT_TIMESTAMP ) ";
-      try {
-        Statement statement = this.connection.createStatement();
-        statement.execute(writeQuery);
-        return true;
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-    return false;
-  }
+  //  private boolean logData() {
+  //    if (connection != null) {
+  //      String writeQuery =
+  //          "INSERT INTO APP.buttonClicks(btn_name, time_stamp) VALUES ( 'ClickButton',
+  // CURRENT_TIMESTAMP ) ";
+  //      try {
+  //        Statement statement = this.connection.createStatement();
+  //        statement.execute(writeQuery);
+  //        return true;
+  //      } catch (SQLException e) {
+  //        e.printStackTrace();
+  //      }
+  //    }
+  //    return false;
+  //  }
 }

@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.Security;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.SecurityServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -100,16 +101,33 @@ public class SecurityServiceController extends ServiceRequestController {
 
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
-    Security securityRequest = new Security();
-    securityRequest.setLocation(locationEntry.getText());
+    String[] parts = urgencyEntry.getText().toUpperCase().split(" ");
+    String urgencyEnumString = parts[0] + "_" + parts[1];
+    Security securityRequest =
+        new Security(
+            incidentReport,
+            location,
+            first,
+            middle,
+            last,
+            first2.getText(),
+            middle2.getText(),
+            last2.getText(),
+            ServiceRequest.EmpDept.valueOf(department.toUpperCase()),
+            ServiceRequest.EmpDept.valueOf(department2.getText().toUpperCase()),
+            new Date(),
+            Date.from(Instant.now()),
+            ServiceRequest.Urgency.valueOf(urgencyEnumString));
+
+    // securityRequest.setLocation(locationEntry.getText());
 
     //    securityRequest.setType(Sanitation.SanitationType.valueOf("Security")); //security no
     // longer has a type, to get "Security" do Class.simpleName()
 
-    securityRequest.setEmpFirstName(firstEntry.getText());
-    securityRequest.setEmpMiddleName(middleEntry.getText());
-    securityRequest.setEmpLastName(lastEntry.getText());
-    securityRequest.setDateOfSubmission(Date.from(Instant.now()));
+    //    securityRequest.setEmpFirstName(firstEntry.getText());
+    //    securityRequest.setEmpMiddleName(middleEntry.getText());
+    //    securityRequest.setEmpLastName(lastEntry.getText());
+    //    securityRequest.setDateOfSubmission(Date.from(Instant.now()));
 
     session.persist(securityRequest);
     transaction.commit();

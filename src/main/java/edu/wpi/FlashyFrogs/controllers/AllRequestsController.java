@@ -7,6 +7,8 @@ import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,15 +17,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class AllRequestsController {
-  @FXML
-  protected TableColumn<ServiceRequest, String> typeCol,
-      empLastNameCol,
-      submissionDateCol,
-      statusCol;
+  @FXML protected TableColumn<ServiceRequest, String> typeCol;
+  @FXML protected TableColumn<ServiceRequest, String> empLastNameCol;
+  @FXML protected TableColumn<ServiceRequest, String> submissionDateCol;
+  @FXML protected TableColumn<ServiceRequest, String> statusCol;
 
   @FXML protected TableView tableView;
   @FXML private MFXButton back;
@@ -35,7 +37,14 @@ public class AllRequestsController {
 
   public void initialize() {
     System.out.println("initializing");
-    typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+    typeCol.setCellValueFactory(
+        new Callback<
+            TableColumn.CellDataFeatures<ServiceRequest, String>, ObservableValue<String>>() {
+          public ObservableValue<String> call(
+              TableColumn.CellDataFeatures<ServiceRequest, String> p) {
+            return new SimpleStringProperty(p.getValue().toString());
+          }
+        });
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empLastName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
     // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
