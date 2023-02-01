@@ -18,54 +18,53 @@
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
             <Tab text="Node">
-                <content>
-                    <TableView prefHeight="200.0" prefWidth="200.0">
-                        <columns>
-                            <TableColumn prefWidth="75.0" text="C1"/>
-                            <TableColumn prefWidth="75.0" text="C2"/>
-                        </columns>
-                    </TableView>
-                </content>
-                <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0">
-                  <items>
+               <content>
+                  <TableView prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                  </TableView>
+               </content>
+               <content>
+                  <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0">
+                    <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                          <children>
+                           <children>
                               <VBox layoutX="-1.0" prefHeight="567.0" prefWidth="237.0">
-                                  <children>
-                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID"/>
-                                      <TextField fx:id="nodeTxtID" prefHeight="25.0" prefWidth="197.0"/>
-                                      <Button fx:id="nodeUpdateID" mnemonicParsing="false" onAction="#updateID"
-                                              prefHeight="25.0" prefWidth="235.0" text="Update ID"/>
-                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="XCoord"/>
-                                      <TextField fx:id="nodeTxtX"/>
-                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YCoord"/>
-                                      <TextField fx:id="nodeTxtY"/>
-                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Floor"/>
-                                      <TextField fx:id="nodeTxtFloor"/>
-                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Building"/>
-                                      <TextField fx:id="nodeTxtBuilding"/>
-                                      <Button fx:id="nodeUpdate" mnemonicParsing="false" onAction="#nodeUpdate"
-                                              prefHeight="25.0" prefWidth="237.0" text="Update "/>
-                                  </children>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
+                                    <TextField fx:id="nodeTxtID" prefHeight="25.0" prefWidth="197.0" />
+                                    <Button fx:id="nodeUpdateID" mnemonicParsing="false" onAction="#updateID" prefHeight="25.0" prefWidth="235.0" text="Update ID" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="XCoord" />
+                                    <TextField fx:id="nodeTxtX" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YCoord" />
+                                    <TextField fx:id="nodeTxtY" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Floor" />
+                                    <TextField fx:id="nodeTxtFloor" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Building" />
+                                    <TextField fx:id="nodeTxtBuilding" />
+                                    <Button fx:id="nodeUpdate" mnemonicParsing="false" onAction="#nodeUpdate" prefHeight="25.0" prefWidth="237.0" text="Update " />
+                                 </children>
                               </VBox>
-                          </children>
-                      </AnchorPane>
+                           </children>
+                        </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                          <children>
-                              <TableView fx:id="nodeTable" editable="true" onMouseClicked="#nodeRowClicked"
-                                         prefHeight="571.0" prefWidth="558.0">
-                                  <columns>
-                                      <TableColumn fx:id="nodeId" prefWidth="75.0" text="ID"/>
-                                      <TableColumn fx:id="nodeX" prefWidth="75.0" text="XCoord"/>
-                                      <TableColumn fx:id="nodeY" prefWidth="75.0" text="YCoord"/>
-                                      <TableColumn fx:id="nodeFloor" prefWidth="75.0" text="Floor"/>
-                                      <TableColumn fx:id="nodeBuilding" prefWidth="75.0" text="Building"/>
-                                  </columns>
+                           <children>
+                              <TableView fx:id="nodeTable" editable="true" onMouseClicked="#nodeRowClicked" prefHeight="571.0" prefWidth="558.0">
+                                <columns>
+                                  <TableColumn fx:id="nodeId" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="nodeX" prefWidth="75.0" text="XCoord" />
+                                    <TableColumn fx:id="nodeY" prefWidth="75.0" text="YCoord" />
+                                    <TableColumn fx:id="nodeFloor" prefWidth="75.0" text="Floor" />
+                                    <TableColumn fx:id="nodeBuilding" prefWidth="75.0" text="Building" />
+                                </columns>
                               </TableView>
-                          </children>
-                      </AnchorPane>
-                  </items>
-                </SplitPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </content>
             </Tab>
           <Tab text="Edge">
                <content>
