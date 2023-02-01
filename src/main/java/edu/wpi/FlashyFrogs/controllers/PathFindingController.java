@@ -1,12 +1,17 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.Main.factory;
+
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.PathFinder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
+import org.hibernate.Session;
 
 public class PathFindingController {
 
@@ -28,7 +33,18 @@ public class PathFindingController {
   }
 
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
-    String startPath = start.getText();
-    String endPath = end.getText();
+    Session session = factory.openSession();
+    // session.find(LocationName.class, start.getText());
+    LocationName startPath = session.find(LocationName.class, start.getText());
+    LocationName endPath = session.find(LocationName.class, end.getText());
+    //    Transaction transaction = session.beginTransaction();
+    PathFinder pathFinder = new PathFinder(factory);
+
+    pathText.setText("Path:\n" + pathFinder.findPath(startPath, endPath).toString());
+
+    // = pathFinder.findPath(startPath, endPath);
+    //    transaction.commit();
+    //    session.close();
+
   }
 }
