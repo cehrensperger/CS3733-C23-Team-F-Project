@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 @AllArgsConstructor
 public class PathFinder {
@@ -51,6 +52,47 @@ public class PathFinder {
   }
 
   /**
+   * Returns the location associated with a given Node, or null if none could be found
+   *
+   * @param node the node to lookup
+   * @param session the session to use in the lookup
+   * @return the location that was found
+   */
+  private LocationName nodeToLocation(@NonNull Node node, @NonNull Session session) {
+    // Create a query that selects the first location from the move where the location is the
+    // location, orders
+    // by descending date (first at top) and limits to one, so we only get one.
+    // Then casts to LocationName, sets the parameter location (to prevent injection)
+    // Gets a unique result, which will return either the singular result found or null if there was
+    // none
+    return session
+        .createQuery(
+            """
+                                          SELECT location
+                                          FROM Move
+                                          WHERE node = :node
+                                          ORDER BY moveDate DESC
+                                          LIMIT 1""",
+            LocationName.class)
+        .setParameter("node", node)
+        .uniqueResult();
+  }
+
+  /**
+   * @param nodes list of nodes to lookup
+   * @param session the session to use in the lookup
+   * @return list of locations that were found
+   */
+  public List<LocationName> nodeListToLocation(
+      @NonNull List<Node> nodes, @NonNull Session session) {
+    List<LocationName> locations = new ArrayList<>();
+    for (Node node : nodes) {
+      locations.add(nodeToLocation(node, session));
+    }
+    return locations;
+  }
+
+  /**
    * Gets the neighbors of a Node, by means of their edges
    *
    * @param node the node to get the neighbors of
@@ -81,59 +123,93 @@ public class PathFinder {
   /**
    * Public method to find the path between two locations.
    *
-   * @param start the start node to find
-   * @param end the end node to find
+   * @param start the start location to find. Will find the Node most recently associated with this
+   * @param end the end location to find. Will find the Node most recently associated with this
    * @return the path (as a list) between the two locations, or null if it could not find a path
-   * @throws NullPointerException if the path between the two locations couldn't be found
+   * @throws NullPointerException if the lookup for a location (or node associated with the
+   *     location) fails
    */
-  public List<Node> findPath(@NonNull LocationName start, @NonNull LocationName end) {
+  public List<Node> findPath(@NonNull String start, @NonNull String end) {
+    // Get the session to use for this
     Session session = sessionFactory.openSession();
-    // Query location names and return nodes to send to aStar function
-    Node startNode = locationToNode(start, session);
-    Node endNode = locationToNode(end, session);
 
-    List<Node> path = aStar(startNode, endNode, session);
+    // Create a transaction so that nothing happens while reading occurs
+    Transaction transaction = session.beginTransaction();
 
+    List<Node> path;
+
+    try {
+      // Query location names and return nodes to send to aStar function
+      Node startNode = locationToNode(longNameToLocation(start, session), session);
+      Node endNode = locationToNode(longNameToLocation(end, session), session);
+
+      // Find the path with A*
+      path = aStar(startNode, endNode, session);
+    } catch (
+        NullPointerException
+            error) { // Catch failures, so we can close the transaction no matter what
+      // End the transaction
+      transaction.rollback();
+
+      // Close the session
+      session.close();
+
+      throw error;
+    }
+
+    // Commit the transaction
+    transaction.commit();
+
+    // Close the session
     session.close();
 
-    return path;
+    return path; // Return the path
   }
 
+  /**
+   * Private method to find the path between two locations.
+   *
+   * @param start the start node
+   * @param end the end node
+   * @return the path (as a list) between the two nodes, or null if it could not find a path
+   */
   private List<Node> aStar(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
-    PriorityQueue<NodeWrapper> openList = new PriorityQueue<>();
-    List<NodeWrapper> closedlist = new LinkedList<>();
+    PriorityQueue<NodeWrapper> openList =
+        new PriorityQueue<>(); // create priority queue for nodes to search
+    List<NodeWrapper> closedlist =
+        new LinkedList<>(); // create list for nodes that have been visited
 
-    openList.add(new NodeWrapper(start, null, 0));
+    openList.add(new NodeWrapper(start, null)); // add start node to open list
 
-    // while open list is not empty
-    while (!openList.isEmpty()) {
-      NodeWrapper q = openList.poll();
+    while (!openList.isEmpty()) { // while open list is not empty
+      NodeWrapper q = openList.poll(); // get node with the lowest estimated cost
 
-      if (q.node.equals(end)) {
-        List<Node> path = new LinkedList<>();
-        path.add(q.node);
-        while (!q.node.equals(start)) {
+      if (q.node.equals(end)) { // if the current node is the goal
+        List<Node> path = new LinkedList<>(); // create list of nodes to represent the path
+        path.add(q.node); // add the end node
+        while (!q.node.equals(start)) { // follow the path backwards and add nodes in reverse order
           q = q.parent;
           path.add(q.node);
         }
-        Collections.reverse(path);
+        Collections.reverse(path); // reverse the path so that it is in the correct order
         return path;
       }
 
       NODE_LOOP:
-      for (Node node : getNeighbors(q.node, session)) {
-        NodeWrapper child = new NodeWrapper(node, q);
-        child.g = q.g + euclideanDistance(child.node, q.node);
-        child.h = euclideanDistance(child.node, end);
+      for (Node node : getNeighbors(q.node, session)) { // get the neighbors of the current node
+        NodeWrapper child = new NodeWrapper(node, q); // create node wrapper out of current node
+        child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start
+        child.h =
+            euclideanDistance(child.node, end); // calculate the lowest possible distance to end
         child.f = child.g + child.h;
 
-        for (NodeWrapper open : openList) {
+        for (NodeWrapper open : openList) { // check if node is on open list with a lower cost
           if (open.node.equals(child.node) && open.f < child.f) {
             continue NODE_LOOP;
           }
         }
 
-        for (NodeWrapper closed : closedlist) {
+        for (NodeWrapper closed : closedlist) { // check is node is on closed list ith lower cost
           if (closed.node.equals(child.node) && closed.f < child.f) {
             continue NODE_LOOP;
           }
@@ -145,6 +221,13 @@ public class PathFinder {
     return null;
   }
 
+  /**
+   * Private method to find the distance between two nodes
+   *
+   * @param node1 first node
+   * @param node2 second node
+   * @return distance between the two nodes
+   */
   private double euclideanDistance(@NonNull Node node1, @NonNull Node node2) {
     int x1 = node1.getXCoord();
     int x2 = node2.getXCoord();
@@ -155,29 +238,34 @@ public class PathFinder {
     return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
   }
 
-  private class NodeWrapper implements Comparable<NodeWrapper> {
+  private static class NodeWrapper implements Comparable<NodeWrapper> {
     Node node;
     NodeWrapper parent;
     double g;
     double h;
     double f;
 
-    NodeWrapper(@NonNull Node node, NodeWrapper parent) {
+    /**
+     * Generates a node wrapper that contains a node with values to calculate cost
+     *
+     * @param node the node to wrap
+     * @param parent the parent node
+     */
+    private NodeWrapper(@NonNull Node node, NodeWrapper parent) {
       this.node = node;
       this.parent = parent;
+      this.f = 0;
+      this.g = 0;
+      this.h = 0;
     }
 
-    NodeWrapper(@NonNull Node node, NodeWrapper parent, double cost) {
-      this.node = node;
-      this.parent = parent;
-      this.f = cost;
-    }
-
+    /**
+     * @param nodeWrapper the object to be compared.
+     * @return the comparison of node costs
+     */
     @Override
     public int compareTo(NodeWrapper nodeWrapper) {
-      if (f == nodeWrapper.f) return 0;
-      else if (f > nodeWrapper.f) return 1;
-      else return -1;
+      return Double.compare(f, nodeWrapper.f);
     }
   }
 }

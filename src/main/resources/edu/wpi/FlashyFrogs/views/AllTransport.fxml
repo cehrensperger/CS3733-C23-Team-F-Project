@@ -23,15 +23,7 @@
    <top>
       <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <MFXButton fx:id="back" onAction="#handleBackButton" prefWidth="100.0" text="Back">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" top="10.0" />
-                     </HBox.margin>
-                  </MFXButton>
-               </children>
-            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All Internal Patient Transportation Service Requests">
                <font>
                   <Font size="25.0" />
@@ -41,4 +33,15 @@
          </children>
       </HBox>
    </top>
+   <bottom>
+      <HBox prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <MFXButton fx:id="back" onAction="#handleBackButton" prefWidth="100.0" text="Back">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" top="10.0" />
+               </HBox.margin>
+            </MFXButton>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>

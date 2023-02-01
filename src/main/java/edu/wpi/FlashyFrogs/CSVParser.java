@@ -11,31 +11,32 @@ import java.io.FileNotFoundException;
 import java.time.Instant;
 import java.util.*;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class CSVParser {
-  static Session session = Main.factory.openSession();
-  static Transaction transaction = session.beginTransaction();
 
-  public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile)
+  public static void readFiles(
+      File nodeFile, File edgeFile, File locationFile, File moveFile, SessionFactory factory)
       throws FileNotFoundException {
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+    Map<String, Node> nodes = new HashMap<>();
+    Map<String, LocationName> locations = new HashMap<>();
+    String[] fields;
+
     try {
-
-      Map<String, Node> nodes = new HashMap<>();
-      Map<String, LocationName> locations = new HashMap<>();
-      String[] fields;
-
       Scanner nodeFileScanner = new Scanner(nodeFile);
-      nodeFileScanner.nextLine();
+      if (nodeFileScanner.hasNextLine()) nodeFileScanner.nextLine();
 
       Scanner edgeFileScanner = new Scanner(edgeFile);
-      edgeFileScanner.nextLine();
+      if (edgeFileScanner.hasNextLine()) edgeFileScanner.nextLine();
 
       Scanner locationFileScanner = new Scanner(locationFile);
-      locationFileScanner.nextLine();
+      if (locationFileScanner.hasNextLine()) locationFileScanner.nextLine();
 
       Scanner moveFileScanner = new Scanner(moveFile);
-      moveFileScanner.nextLine();
+      if (moveFileScanner.hasNextLine()) moveFileScanner.nextLine();
 
       while (nodeFileScanner.hasNextLine()) {
 
@@ -73,13 +74,14 @@ public class CSVParser {
         session.persist(move);
       }
 
-      transaction.commit();
+    } catch (Exception error) {
+      transaction.rollback();
       session.close();
 
-    } catch (FileNotFoundException e) {
-      System.out.println("Use a valid filepath.");
-      transaction.commit();
-      session.close();
+      throw error;
     }
+
+    transaction.commit();
+    session.close();
   }
 }

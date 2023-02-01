@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.SecurityServiceData;
@@ -13,6 +14,8 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
@@ -26,7 +29,7 @@ public class SecurityServiceController extends ServiceRequestController {
   @FXML private Text securityServiceText;
   @FXML private Text incidentReportText;
   @FXML private MFXTextField incidentReportEntry;
-  @FXML private MFXTextField locationEntry;
+  @FXML private MFXComboBox locationEntry;
   @FXML private MFXDatePicker dateEntry;
   @FXML private MFXTextField timeEntry;
   @FXML private Text employeeInformationText;
@@ -54,6 +57,13 @@ public class SecurityServiceController extends ServiceRequestController {
     departmentEntry.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
     department2.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
     securityServiceData = new SecurityServiceData();
+
+    Session session = factory.openSession();
+
+    List<String> objects =
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    session.close();
+    locationEntry.setItems(FXCollections.observableList(objects));
   }
 
   /**
@@ -106,7 +116,7 @@ public class SecurityServiceController extends ServiceRequestController {
     Security securityRequest =
         new Security(
             incidentReport,
-            location,
+            session.find(LocationName.class, location),
             first,
             middle,
             last,
