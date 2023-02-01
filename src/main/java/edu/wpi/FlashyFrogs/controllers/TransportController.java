@@ -58,10 +58,12 @@ public class TransportController extends ServiceRequestController {
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
     newLocationComboBox.setItems(FXCollections.observableList(objects));
+    currentLocationComboBox.setItems(FXCollections.observableList(objects));
     session.close();
 
     newLocationComboBox.getItems().addAll("Intesive Care Unit", "Emergency Room", "Operating Room");
     departmentComboBox.getItems().addAll("Cardiology", "Radiology", "Trauma Unit");
+    department2.getItems().addAll("Cardiology", "Radiology", "Trauma Unit");
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
