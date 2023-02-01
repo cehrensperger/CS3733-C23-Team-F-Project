@@ -4,10 +4,6 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.Instant;
@@ -15,13 +11,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /** Class that provides utilities for importing CSV Files and uploading them to the Database */
 public class CSVParser {
 
   /**
-   * Static method that reads files from the CSVs and uploads them to the database. Will either succesfully upload
-   * everything to the database OR nothing
+   * Static method that reads files from the CSVs and uploads them to the database. Will either
+   * succesfully upload everything to the database OR nothing
    *
    * @param nodeFile the node file
    * @param edgeFile the edge file
@@ -43,21 +42,23 @@ public class CSVParser {
     // Location name string to LocationName mapping
     Map<String, LocationName> locations = new HashMap<>();
 
-
     String[] fields; // Fields for each line
 
     try { // Try-catch to ensure atomcitiy with respect to the DB
       Scanner nodeFileScanner = new Scanner(nodeFile); // Scanner for the node file
-      if (nodeFileScanner.hasNextLine()) nodeFileScanner.nextLine(); // Skip the header line if there is one
+      if (nodeFileScanner.hasNextLine())
+        nodeFileScanner.nextLine(); // Skip the header line if there is one
 
       Scanner edgeFileScanner = new Scanner(edgeFile); // Edge file
       if (edgeFileScanner.hasNextLine()) edgeFileScanner.nextLine(); // Skip header if there is one
 
       Scanner locationFileScanner = new Scanner(locationFile); // Location file
-      if (locationFileScanner.hasNextLine()) locationFileScanner.nextLine(); // Skip the header if there is one
+      if (locationFileScanner.hasNextLine())
+        locationFileScanner.nextLine(); // Skip the header if there is one
 
       Scanner moveFileScanner = new Scanner(moveFile); // Move file
-      if (moveFileScanner.hasNextLine()) moveFileScanner.nextLine(); // Skip the header if there is one
+      if (moveFileScanner.hasNextLine())
+        moveFileScanner.nextLine(); // Skip the header if there is one
 
       // While there are new nodes
       while (nodeFileScanner.hasNextLine()) {

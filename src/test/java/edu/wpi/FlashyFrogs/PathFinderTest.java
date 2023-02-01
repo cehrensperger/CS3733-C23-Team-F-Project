@@ -831,4 +831,52 @@ public class PathFinderTest {
                       setupSessionAndTransaction();
                     }));
   }
+
+  /** Test for having one Node that refers to itself is ignored and results in a valid path */
+  @Test
+  public void SelfReferentialTest() {
+    // Create the nodes
+    Node startNode = new Node("a", "b", Node.Floor.L2, 0, 0);
+    Node middleNode = new Node("b", "b", Node.Floor.L2, 1, 0);
+    Node endNode = new Node("c", "b", Node.Floor.L2, 2, 0);
+
+    // Edges
+    Edge startToMiddle = new Edge(startNode, middleNode);
+    Edge middleToItself = new Edge(middleNode, middleNode); // Self-referential
+    Edge middleToEnd = new Edge(middleNode, endNode);
+
+    // Locations
+    LocationName startLocation = new LocationName("start", LocationName.LocationType.INFO, "s");
+    LocationName endLocation = new LocationName("end", LocationName.LocationType.ELEV, "e");
+
+    // Moves
+    Move startMove = new Move(startNode, startLocation, new Date());
+    Move endMove = new Move(endNode, endLocation, new Date());
+
+    // Transaction to commit data
+    Transaction commitTransaction = testSession.beginTransaction();
+    testSession.persist(startNode);
+    testSession.persist(middleNode);
+    testSession.persist(endNode);
+    testSession.persist(startToMiddle);
+    testSession.persist(middleToItself);
+    testSession.persist(middleToEnd);
+    testSession.persist(startLocation);
+    testSession.persist(endLocation);
+    testSession.persist(startMove);
+    testSession.persist(endMove);
+    commitTransaction.commit();
+
+    // Create the expected result, start, middle, end
+    List<Node> expectedResult = new LinkedList<>();
+    expectedResult.add(startNode);
+    expectedResult.add(middleNode);
+    expectedResult.add(endNode);
+
+    // Check that the result is expected
+    PathFinder pathFinder = new PathFinder(sessionFactory);
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
+  }
 }
