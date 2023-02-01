@@ -41,11 +41,11 @@ public class PathFinder {
     return session
         .createQuery(
             """
-                        SELECT node
-                        FROM Move
-                        where location = :location
-                        ORDER BY moveDate DESC
-                        LIMIT 1""",
+                                SELECT node
+                                FROM Move
+                                where location = :location
+                                ORDER BY moveDate DESC
+                                LIMIT 1""",
             Node.class)
         .setParameter("location", name)
         .uniqueResult();
@@ -68,11 +68,11 @@ public class PathFinder {
     return session
         .createQuery(
             """
-                                          SELECT location
-                                          FROM Move
-                                          WHERE node = :node
-                                          ORDER BY moveDate DESC
-                                          LIMIT 1""",
+                                SELECT location
+                                FROM Move
+                                WHERE node = :node
+                                ORDER BY moveDate DESC
+                                LIMIT 1""",
             LocationName.class)
         .setParameter("node", node)
         .uniqueResult();
@@ -108,13 +108,13 @@ public class PathFinder {
         session
             .createQuery(
                 """
-                SELECT node1
-                FROM Edge
-                WHERE node2 = :node
-                UNION
-                SELECT node2
-                FROM Edge
-                WHERE node1 = :node""",
+                                        SELECT node1
+                                        FROM Edge
+                                        WHERE node2 = :node
+                                        UNION
+                                        SELECT node2
+                                        FROM Edge
+                                        WHERE node1 = :node""",
                 Node.class)
             .setParameter("node", node)
             .getResultList());
@@ -176,13 +176,22 @@ public class PathFinder {
   private List<Node> aStar(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
     PriorityQueue<NodeWrapper> openList =
         new PriorityQueue<>(); // create priority queue for nodes to search
-    List<NodeWrapper> closedlist =
+    List<NodeWrapper> closedList =
         new LinkedList<>(); // create list for nodes that have been visited
 
     openList.add(new NodeWrapper(start, null)); // add start node to open list
 
+    NODE_CHECK:
     while (!openList.isEmpty()) { // while open list is not empty
       NodeWrapper q = openList.poll(); // get node with the lowest estimated cost
+
+      for (NodeWrapper closed : closedList) {
+        if (closed.node.equals(q.node)) {
+          continue NODE_CHECK;
+        }
+      }
+
+      System.out.println("Checking node: " + q);
 
       if (q.node.equals(end)) { // if the current node is the goal
         List<Node> path = new LinkedList<>(); // create list of nodes to represent the path
@@ -209,14 +218,14 @@ public class PathFinder {
           }
         }
 
-        for (NodeWrapper closed : closedlist) { // check is node is on closed list ith lower cost
+        for (NodeWrapper closed : closedList) { // check is node is on closed list ith lower cost
           if (closed.node.equals(child.node) && closed.f < child.f) {
             continue NODE_LOOP;
           }
         }
         openList.add(child);
       }
-      closedlist.add(q);
+      closedList.add(q);
     }
     return null;
   }
