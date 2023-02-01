@@ -11,13 +11,15 @@ import java.io.FileNotFoundException;
 import java.time.Instant;
 import java.util.*;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class CSVParser {
 
-  public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile)
+  public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile,
+                               SessionFactory sessionFactory)
       throws FileNotFoundException {
-    Session session = Main.factory.openSession();
+    Session session = sessionFactory.openSession();
     Transaction transaction = session.beginTransaction();
     Map<String, Node> nodes = new HashMap<>();
     Map<String, LocationName> locations = new HashMap<>();
