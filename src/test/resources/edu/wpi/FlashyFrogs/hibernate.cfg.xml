@@ -18,7 +18,7 @@
         <property name="connection.password">QZsMCabe9faRjyhHQphIYHRnLI0no3N7</property>
         <property name="connection.autocommit">false</property>
 
-        <property name="default_schema">public</property>
+        <property name="default_schema">test</property>
 
         <property name="connection.pool_size">1</property>
 
@@ -28,17 +28,15 @@
         <property name="show_sql">false</property>
 
         <!-- Drop and re-create the database schema on startup -->
-
-        <property name="hibernate.hbm2ddl.auto">update</property>
-
+        <property name="hbm2ddl.auto">create-drop</property>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Edge"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Move"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.ServiceRequest"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Security"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Sanitation"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.InternalTransport"/>
-        <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
-        <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
 
 
         <!-- Names the annotated entity class -->

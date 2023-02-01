@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.LoadMapPageController">
+   <center>
+      <MFXButton fx:id="loadFileButton" onAction="#handleLoadFileButton" text="Choose File" BorderPane.alignment="CENTER" />
+   </center>
+   <bottom>
+      <MFXButton fx:id="loadFilesButton" onAction="#handleLoadFilesButton" text="Load Files" BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+      <MFXButton fx:id="backButton" onAction="#handleBackButton" text="Back" BorderPane.alignment="CENTER" />
+   </top>
+   <left>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Click Choose File and add a file" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Do this four times for each csv" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Must be in the order:" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nodes, Edges, LocationNames, Moves" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="If the wrong files are chosen" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="or are chosen in the wrong order" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="you must click the back button and try again" />
+         </children>
+      </VBox>
+   </left>
+</BorderPane>
