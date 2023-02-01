@@ -15,20 +15,19 @@ public class Main {
 
   static final StandardServiceRegistry registry =
       new StandardServiceRegistryBuilder()
-          .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
+          .configure("edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
           .build();
 
   public static SessionFactory factory =
       new MetadataSources(registry).buildMetadata().buildSessionFactory();
 
   public static void main(String[] args) throws FileNotFoundException {
-    File nodeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
-    File edgeFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv");
-    File moveFile = new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
-    File locationFile =
-        new File("src/main/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
+    File nodeFile = new File("ssrc/main/resources/CSVFiles/L1Nodes.csv");
+    File edgeFile = new File("src/main/resources/CSVFiles/L1Edges.csv");
+    File moveFile = new File("src/main/resources/CSVFiles/move.csv");
+    File locationFile = new File("src/main/resources/CSVFiles/locationName.csv");
 
-    CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile);
+    CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile, factory);
 
     Session session = Main.factory.openSession();
     Transaction transaction = session.beginTransaction();

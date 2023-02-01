@@ -30,7 +30,7 @@ public class AllSecurityServiceController extends AllRequestsController {
     typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
-    submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
+    // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
     Session session = factory.openSession();

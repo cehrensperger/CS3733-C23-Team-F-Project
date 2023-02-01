@@ -3,7 +3,9 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.SanitationServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.hibernate.Session;
@@ -45,10 +48,23 @@ public class SanitationServiceController extends ServiceRequestController {
     sanitationServiceData = new SanitationServiceData();
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     requestTypeDropDown.getItems().addAll("Mopping", "Sweeping", "Vacuuming");
-    locationDropDown.getItems().addAll("room 1", "room 2", "public space 1", "public space 2");
+    // locationDropDown.getItems().addAll("room 1", "room 2", "public space 1", "public space 2");
 
     // I don't really know what to put here
     departmentDropDown.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
+
+    Session session = factory.openSession();
+
+    List<LocationName> objects =
+        session
+            .createQuery("SELECT longName FROM LocationName", LocationName.class)
+            .getResultList();
+
+    for (LocationName name : objects) {
+      locationDropDown.getItems().add(name.getLongName());
+    }
+
+    department2.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
   }
 
   /**
@@ -92,14 +108,30 @@ public class SanitationServiceController extends ServiceRequestController {
 
     Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
-    Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(null); // MAKE THIS A LOCATIONNAME OBJECT
-    sanitationRequest.setType(
-        Sanitation.SanitationType.valueOf("mopping")); // CHANGE THIS TO A FIELD IG IG IG
-    sanitationRequest.setEmpFirstName(firstName.getText());
-    sanitationRequest.setEmpMiddleName(middleName.getText());
-    sanitationRequest.setEmpLastName(lastName.getText());
-    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
+
+    Sanitation sanitationRequest =
+        new Sanitation(
+            Sanitation.SanitationType.valueOf(requestTypeDropDown.getText()),
+            firstName.getText(),
+            middleName.getText(),
+            lastName.getText(),
+            first2.getText(),
+            middle2.getText(),
+            last2.getText(),
+            ServiceRequest.EmpDept.valueOf(departmentDropDown.getText()),
+            ServiceRequest.EmpDept.valueOf(department2.getText()),
+            new Date(),
+            Date.from(Instant.now()),
+            ServiceRequest.Urgency.valueOf(urgencyEntry.getText()),
+            session.find(LocationName.class, locationDropDown.getText()));
+
+    //    sanitationRequest.setLocation(null); // MAKE THIS A LOCATIONNAME OBJECT
+    //
+    //
+    //    sanitationRequest.setEmpFirstName(firstName.getText());
+    //    sanitationRequest.setEmpMiddleName(middleName.getText());
+    //    sanitationRequest.setEmpLastName(lastName.getText());
+    //    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
 
     session.persist(sanitationRequest);
     transaction.commit();

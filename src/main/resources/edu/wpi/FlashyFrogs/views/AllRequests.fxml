@@ -15,9 +15,8 @@
         <columns>
           <TableColumn fx:id="typeCol" editable="false" prefWidth="129.59995114803314" text="Service Request Type" />
             <TableColumn fx:id="empLastNameCol" editable="false" prefWidth="129.59995114803314" text="Employee Last Name" />
-            <TableColumn fx:id="submissionDateCol" editable="false" prefWidth="129.59995114803314" text="Date of Submission" />
-            <TableColumn fx:id="submissionTimeCol" editable="false" prefWidth="119.59994506835938" text="Time of Submission" />
-            <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="90.39999389648438" text="Status" />
+            <TableColumn fx:id="submissionDateCol" editable="false" prefWidth="190.39996337890625" text="Date and Time of Submission" />
+            <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="87.60006713867188" text="Status" />
         </columns>
       </TableView>
    </center>

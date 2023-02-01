@@ -16,10 +16,10 @@ import org.hibernate.Transaction;
 
 public class CSVParser {
 
-  public static void readFiles(File nodeFile, File edgeFile, File locationFile, File moveFile,
-                               SessionFactory sessionFactory)
+  public static void readFiles(
+      File nodeFile, File edgeFile, File locationFile, File moveFile, SessionFactory factory)
       throws FileNotFoundException {
-    Session session = sessionFactory.openSession();
+    Session session = factory.openSession();
     Transaction transaction = session.beginTransaction();
     Map<String, Node> nodes = new HashMap<>();
     Map<String, LocationName> locations = new HashMap<>();
@@ -27,16 +27,16 @@ public class CSVParser {
 
     try {
       Scanner nodeFileScanner = new Scanner(nodeFile);
-      nodeFileScanner.nextLine();
+      if (nodeFileScanner.hasNextLine()) nodeFileScanner.nextLine();
 
       Scanner edgeFileScanner = new Scanner(edgeFile);
-      edgeFileScanner.nextLine();
+      if (edgeFileScanner.hasNextLine()) edgeFileScanner.nextLine();
 
       Scanner locationFileScanner = new Scanner(locationFile);
-      locationFileScanner.nextLine();
+      if (locationFileScanner.hasNextLine()) locationFileScanner.nextLine();
 
       Scanner moveFileScanner = new Scanner(moveFile);
-      moveFileScanner.nextLine();
+      if (moveFileScanner.hasNextLine()) moveFileScanner.nextLine();
 
       while (nodeFileScanner.hasNextLine()) {
 
