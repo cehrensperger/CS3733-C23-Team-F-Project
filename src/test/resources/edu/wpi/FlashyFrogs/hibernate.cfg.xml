@@ -13,9 +13,9 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://wpi-softeng-postgres-db.coyfss2f91ba.us-east-1.rds.amazonaws.com:2112/dbf</property>
+        <property name="connection.url">jdbc:postgresql://database.cs.wpi.edu:5432/teamfdb</property>
         <property name="connection.username">teamf</property>
-        <property name="connection.password">QZsMCabe9faRjyhHQphIYHRnLI0no3N7</property>
+        <property name="connection.password">teamf60</property>
         <property name="connection.autocommit">false</property>
 
         <property name="default_schema">test</property>
