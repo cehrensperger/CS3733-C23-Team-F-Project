@@ -63,6 +63,7 @@
                     <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleClose" text="Close" />
                         <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#handleLoadMapMenuItem" text="Load Map" />
                       <MenuItem fx:id="loadFeedbackMenuItem" mnemonicParsing="false" onAction="#handleFeedbackMenuItem" text="Feedback Form" />
+                      <MenuItem fx:id="logoutMenuItem" mnemonicParsing="false" onAction="#handleLogOut" text="Sign Out" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="Service Requests">

@@ -19,6 +19,7 @@ public class HomeController {
   @FXML private MenuItem closeMenuItem;
   @FXML private MenuItem loadMapMenuItem;
   @FXML private MenuItem loadFeedbackMenuItem;
+  @FXML private MenuItem logoutMenuItem;
 
   Stage stage;
 
@@ -64,5 +65,9 @@ public class HomeController {
 
   public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Feedback");
+  }
+
+  public void handleLogOut(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Login");
   }
 }
