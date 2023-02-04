@@ -1,76 +1,54 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
-import java.util.*;
+import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-@Table(name = "InternalTransport")
+@Table(name = "ComputerService")
 @PrimaryKeyJoinColumn(
     name = "service_request_id",
     foreignKey = @ForeignKey(name = "service_request_id_fk"))
-public class InternalTransport extends ServiceRequest {
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  String patientFirstName;
+public class ComputerService extends ServiceRequest {
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String patientMiddleName;
+  String deviceType;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String patientLastName;
+  String model;
 
-  @Getter
-  @Setter
-  @JoinColumn(
-      name = "oldLoc",
-      foreignKey = @ForeignKey(name = "location_name1_fk"),
-      nullable = false)
-  @NonNull
-  @ManyToOne
-  LocationName oldLoc;
-
-  @Getter
-  @Setter
-  @JoinColumn(name = "newLoc", foreignKey = @ForeignKey(name = "location_name2_fk"))
-  @NonNull
-  @ManyToOne
-  LocationName newLoc;
-
+  @Basic
   @Column(nullable = false)
   @NonNull
-  @Temporal(TemporalType.TIMESTAMP)
   @Getter
   @Setter
-  Date dateOfBirth;
+  ServiceType serviceType;
 
-  /** Creates a new InternalTransport with a generated id */
-  public InternalTransport() {
-    this.requestType = "InternalTransport";
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String issue;
+
+  /** Creates a new ComputerService with a generated id */
+  public ComputerService() {
+    this.requestType = "ComputerService";
   }
 
   /**
-   * Creates a new InternalTransport with a generated id and the specified fields
+   * Creates a new ComputerService with a generated id and the specified fields
    *
-   * @param theDOB the Date to use in the DOB field
-   * @param theNewLoc the LocationName to use in the newLoc field
-   * @param theOldLoc the LocationName to use in the oldLoc field
-   * @param thePatientFirstName the String to use in the patientFirstName field
-   * @param thePatientMiddleName the String to use in the patientMiddleName field
-   * @param thePatientLastName the String to use in the patientlastName field
    * @param empFirstName the String to use in the empFirstName field
    * @param empMiddleName the String to use in the empMiddleName field
    * @param empLastName the String to use in the empLastName field
@@ -82,14 +60,12 @@ public class InternalTransport extends ServiceRequest {
    * @param dateOfIncident the Date to use in the dateOfIncident field
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
+   * @param issue the String to use in the issue field
+   * @param model the String to use in the issue field
+   * @param deviceType the String to use in the deviceType field
+   * @param serviceType the ServiceType to use in the serviceType field
    */
-  public InternalTransport(
-      @NonNull Date theDOB,
-      @NonNull LocationName theNewLoc,
-      @NonNull LocationName theOldLoc,
-      @NonNull String thePatientFirstName,
-      @NonNull String thePatientMiddleName,
-      @NonNull String thePatientLastName,
+  public ComputerService(
       @NonNull String empFirstName,
       @NonNull String empMiddleName,
       @NonNull String empLastName,
@@ -100,13 +76,11 @@ public class InternalTransport extends ServiceRequest {
       @NonNull EmpDept assignedEmpDept,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
-      @NonNull Urgency urgency) {
-    this.dateOfBirth = theDOB;
-    this.newLoc = theNewLoc;
-    this.oldLoc = theOldLoc;
-    this.patientFirstName = thePatientFirstName;
-    this.patientMiddleName = thePatientMiddleName;
-    this.patientLastName = thePatientLastName;
+      @NonNull Urgency urgency,
+      @NonNull String deviceType,
+      @NonNull String model,
+      @NonNull String issue,
+      @NonNull ServiceType serviceType) {
     this.empFirstName = empFirstName;
     this.empMiddleName = empMiddleName;
     this.empLastName = empLastName;
@@ -119,6 +93,29 @@ public class InternalTransport extends ServiceRequest {
     this.dateOfSubmission = dateOfSubmission;
     this.status = Status.BLANK;
     this.urgency = urgency;
-    this.requestType = "InternalTransport";
+    this.requestType = "ComputerService";
+    this.deviceType = deviceType;
+    this.model = model;
+    this.issue = issue;
+    this.serviceType = serviceType;
+  }
+
+  /** Enumerated type for the possible serviceTypes we can create */
+  public enum ServiceType {
+    HARDWARE_REPAIR("hardware repair"),
+    SOFTWARE_REPAIR("software repair"),
+    CONNECTION_ISSUE("connection issue"),
+    MISC("miscellaneous");
+
+    @NonNull public final String ServiceType;
+
+    /**
+     * Creates a new serviceType with the given String backing
+     *
+     * @param serviceType the serviceType to create. Must not be null
+     */
+    ServiceType(@NonNull String serviceType) {
+      ServiceType = serviceType;
+    }
   }
 }
