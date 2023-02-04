@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -17,7 +18,7 @@ public class LoginController {
   @FXML private MFXButton clear;
   @FXML private MenuItem newUserMenuItem;
   @FXML private MFXTextField username;
-  @FXML private MFXTextField password;
+  @FXML private MFXPasswordField password;
 
   public void loginButton(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Home");
