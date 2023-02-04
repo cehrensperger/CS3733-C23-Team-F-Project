@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -11,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AllRequestsController">
    <center>
-      <TableView fx:id="tableView" prefHeight="200.0" prefWidth="792.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableView" prefHeight="411.0" prefWidth="700.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="typeCol" editable="false" prefWidth="129.59995114803314" text="Service Request Type" />
             <TableColumn fx:id="empLastNameCol" editable="false" prefWidth="129.59995114803314" text="Employee Last Name" />
@@ -34,14 +33,6 @@
       </HBox>
    </top>
    <bottom>
-      <HBox prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <MFXButton fx:id="back" onAction="#handleBackButton" prefWidth="100.0" text="Back">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" top="10.0" />
-               </HBox.margin>
-            </MFXButton>
-         </children>
-      </HBox>
+      <MFXButton fx:id="back" onAction="#handleBackButton" prefWidth="100.0" text="Back" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
