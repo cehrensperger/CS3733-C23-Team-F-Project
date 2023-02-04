@@ -1,9 +1,10 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.CSVParser;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.FileData;
-import edu.wpi.FlashyFrogs.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,7 +35,7 @@ public class LoadMapPageController {
   }
 
   public void handleLoadFilesButton(ActionEvent actionEvent) {
-    Session session = Main.factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction deleteTransaction = session.beginTransaction(); // Clearing transaction
 
     session.createMutationQuery("DELETE FROM Edge").executeUpdate(); // Drop edge
@@ -48,7 +49,8 @@ public class LoadMapPageController {
       System.out.println("Correct num of files!");
       List<File> files = fileData.getFiles();
       try {
-        CSVParser.readFiles(files.get(0), files.get(1), files.get(2), files.get(3), Main.factory);
+        CSVParser.readFiles(
+            files.get(0), files.get(1), files.get(2), files.get(3), CONNECTION.getSessionFactory());
       } catch (FileNotFoundException e) {
         throw new RuntimeException(e);
       }
