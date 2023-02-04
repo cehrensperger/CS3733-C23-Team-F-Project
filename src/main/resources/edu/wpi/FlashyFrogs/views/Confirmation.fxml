@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.ConfirmationController">
+   <children>
+      <BorderPane prefHeight="600.0" prefWidth="800.0">
+         <center>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thank you for your feedback!" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+         </center>
+         <bottom>
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXButton fx:id="home" onAction="#homeButton" prefWidth="100.0" text="Home">
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="10.0" />
+                     </HBox.margin>
+                  </MFXButton>
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
