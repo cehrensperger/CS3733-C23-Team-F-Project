@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
@@ -54,7 +54,7 @@ public class SanitationServiceController extends ServiceRequestController {
     // I don't really know what to put here
     departmentDropDown.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
 
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
@@ -94,7 +94,7 @@ public class SanitationServiceController extends ServiceRequestController {
    */
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
     String[] parts = {};
@@ -131,7 +131,7 @@ public class SanitationServiceController extends ServiceRequestController {
   }
 
   private void addSanitationRequest(SanitationServiceData sd) {
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
     Sanitation sanitationRequest = new Sanitation();
     sanitationRequest.setLocation(null);

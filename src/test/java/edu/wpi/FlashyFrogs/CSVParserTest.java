@@ -78,7 +78,7 @@ public class CSVParserTest {
   public void readFilesTest() {
     try {
       assertDoesNotThrow(
-          () -> CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile, Main.factory));
+          () -> CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile, sessionFactory));
     } catch (Exception e) {
       fail();
     }
@@ -89,7 +89,7 @@ public class CSVParserTest {
   public void readEmptyFilesTest() {
     try {
       assertDoesNotThrow(
-          () -> CSVParser.readFiles(emptyFile, emptyFile, emptyFile, emptyFile, Main.factory));
+          () -> CSVParser.readFiles(emptyFile, emptyFile, emptyFile, emptyFile, sessionFactory));
     } catch (Exception e) {
       fail();
     }
@@ -99,7 +99,7 @@ public class CSVParserTest {
   @Test
   public void insertTest() {
     try {
-      CSVParser.readFiles(testNodeFile, emptyFile, emptyFile, emptyFile, Main.factory);
+      CSVParser.readFiles(testNodeFile, emptyFile, emptyFile, emptyFile, sessionFactory);
     } catch (FileNotFoundException e) {
       fail();
     }
