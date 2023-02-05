@@ -5,6 +5,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
 
 <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
    <children>
@@ -17,6 +20,12 @@
             <Insets />
          </VBox.margin>
       </HBox>
-      <HBox fx:id="editorBox" alignment="CENTER" VBox.vgrow="ALWAYS" />
+      <HBox fx:id="editorBox" alignment="CENTER" VBox.vgrow="ALWAYS">
+         <TableView fx:id="locationTable" prefHeight="400.0" prefWidth="206.0" BorderPane.alignment="CENTER">
+            <columns>
+               <TableColumn fx:id="longName" prefWidth="205.0" text="Long Name" />
+            </columns>
+         </TableView>
+      </HBox>
    </children>
 </VBox>

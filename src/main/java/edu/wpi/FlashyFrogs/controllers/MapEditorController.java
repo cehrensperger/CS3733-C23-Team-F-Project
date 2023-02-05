@@ -1,17 +1,28 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
+import org.hibernate.Session;
+
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 public class MapEditorController {
@@ -19,10 +30,19 @@ public class MapEditorController {
   @FXML private HBox editorBox; // Editor box, map is appended to this on startup
   private MapController mapController; // Controller for the map
 
+  @FXML
+  private TableView<LocationName> locationTable;
+  @FXML
+  private TableColumn<LocationName, String> longName;
+
   /** Initializes the map editor, adds the map onto it */
   @SneakyThrows
   @FXML
   private void initialize() {
+    longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
+
+    createLocationNameTable();
+
     // Load the map loader
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(getClass().getResource("../views/Map.fxml")));
@@ -82,5 +102,14 @@ public class MapEditorController {
     floorSelector
         .valueProperty()
         .addListener((observable, oldValue, newValue) -> mapController.setFloor(newValue));
+  }
+
+  private void createLocationNameTable() {
+    Session session = CONNECTION.getSessionFactory().openSession();
+    List<LocationName> longNames =
+        session.createQuery("SELECT s FROM LocationName s", LocationName.class).getResultList();
+    ObservableList<LocationName> longNamesObservableList = FXCollections.observableList(longNames);
+    session.close();
+    locationTable.getItems().addAll(longNamesObservableList);
   }
 }
