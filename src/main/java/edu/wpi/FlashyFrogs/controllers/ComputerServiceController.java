@@ -1,3 +1,7 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-public class ComputerServiceController {}
+import javafx.fxml.FXML;
+
+public class ComputerServiceController {
+
+}

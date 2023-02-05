@@ -10,14 +10,13 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.RollbackException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -88,68 +87,67 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    Session session = factory.openSession();
-    Transaction transaction = session.beginTransaction();
-
-    try {
-      String[] parts = {};
-      String departmentEnumString = departmentComboBox.getText().toUpperCase();
-      String departmentEnumString2 = department2.getText().toUpperCase();
-      parts = urgencyEntry.getText().toUpperCase().split(" ");
-      String urgencyEnumString = parts[0] + "_" + parts[1];
-
-      if (firstEntry.getText().equals("")
-              || middleEntry.getText().equals("")
-              || lastEntry.getText().equals("")
-              || first2.getText().equals("")
-              || middle2.getText().equals("")
-              || last2.getText().equals("")
-              || department2.getText().equals("")
-              || departmentEntry.getText().equals("")
-              || dateEntry.getText().equals("")
-              || locationEntry.getText().equals("")
-              || incidentReportEntry.getText().equals("")) {
-        throw new NullPointerException();
-      }
-
-
-      Date dateOfIncident =
-              Date.from(dateEntry.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-      Security securityRequest = new Security();
-      securityRequest.setEmpFirstName(firstEntry.getText());
-      securityRequest.setEmpMiddleName(middleEntry.getText());
-      securityRequest.setEmpLastName(lastEntry.getText());
-      securityRequest.setAssignedEmpFirstName(first2.getText());
-      securityRequest.setAssignedEmpMiddleName(middle2.getText());
-      securityRequest.setAssignedEmpLastName(last2.getText());
-      securityRequest.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
-      securityRequest.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
-      securityRequest.setDateOfIncident(dateOfIncident);
-      securityRequest.setDateOfSubmission(Date.from(Instant.now()));
-      securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyEnumString));
-      securityRequest.setLocation(session.find(LocationName.class, locationEntry.getText()));
-      securityRequest.setIncidentReport(incidentReportEntry.getText());
-
-      try {
-        session.persist(securityRequest);
-        transaction.commit();
-        session.close();
-        handleClear(actionEvent);
-        errorMessage.setTextFill(Paint.valueOf("#44ff00"));
-        errorMessage.setText("Successfully submitted.");
-      } catch (RollbackException exception) {
-        session.clear();
-        errorMessage.setTextFill(Paint.valueOf("#ff0000"));
-        errorMessage.setText("Please fill all fields.");
-        session.close();
-      }
-    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
-      session.clear();
-      errorMessage.setTextFill(Paint.valueOf("#ff0000"));
-      errorMessage.setText("Please fill all fields.");
-      session.close();
-    }
+//    Session session = factory.openSession();
+//    Transaction transaction = session.beginTransaction();
+//
+//    try {
+//      String[] parts = {};
+//      String departmentEnumString = departmentComboBox.getText().toUpperCase();
+//      String departmentEnumString2 = department2.getText().toUpperCase();
+//      parts = urgencyEntry.getText().toUpperCase().split(" ");
+//      String urgencyEnumString = parts[0] + "_" + parts[1];
+//
+//      if (firstEntry.getText().equals("")
+//          || middleEntry.getText().equals("")
+//          || lastEntry.getText().equals("")
+//          || first2.getText().equals("")
+//          || middle2.getText().equals("")
+//          || last2.getText().equals("")
+//          || department2.getText().equals("")
+//          || departmentEntry.getText().equals("")
+//          || dateEntry.getText().equals("")
+//          || locationEntry.getText().equals("")
+//          || incidentReportEntry.getText().equals("")) {
+//        throw new NullPointerException();
+//      }
+//
+//      Date dateOfIncident =
+//          Date.from(dateEntry.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//
+//      Security securityRequest = new Security();
+//      securityRequest.setEmpFirstName(firstEntry.getText());
+//      securityRequest.setEmpMiddleName(middleEntry.getText());
+//      securityRequest.setEmpLastName(lastEntry.getText());
+//      securityRequest.setAssignedEmpFirstName(first2.getText());
+//      securityRequest.setAssignedEmpMiddleName(middle2.getText());
+//      securityRequest.setAssignedEmpLastName(last2.getText());
+//      securityRequest.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
+//      securityRequest.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
+//      securityRequest.setDateOfIncident(dateOfIncident);
+//      securityRequest.setDateOfSubmission(Date.from(Instant.now()));
+//      securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyEnumString));
+//      securityRequest.setLocation(session.find(LocationName.class, locationEntry.getText()));
+//      securityRequest.setIncidentReport(incidentReportEntry.getText());
+//
+//      try {
+//        session.persist(securityRequest);
+//        transaction.commit();
+//        session.close();
+//        handleClear(actionEvent);
+//        errorMessage.setTextFill(Paint.valueOf("#44ff00"));
+//        errorMessage.setText("Successfully submitted.");
+//      } catch (RollbackException exception) {
+//        session.clear();
+//        errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+//        errorMessage.setText("Please fill all fields.");
+//        session.close();
+//      }
+//    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+//      session.clear();
+//      errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+//      errorMessage.setText("Please fill all fields.");
+//      session.close();
+//    }
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
