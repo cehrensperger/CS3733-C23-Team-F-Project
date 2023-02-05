@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -9,9 +12,6 @@
    <center>
       <MFXButton fx:id="loadFileButton" onAction="#handleLoadFileButton" text="Choose File" BorderPane.alignment="CENTER" />
    </center>
-   <bottom>
-      <MFXButton fx:id="loadFilesButton" onAction="#handleLoadFilesButton" text="Load Files" BorderPane.alignment="CENTER" />
-   </bottom>
    <top>
       <MFXButton fx:id="backButton" onAction="#handleBackButton" text="Back" BorderPane.alignment="CENTER" />
    </top>
@@ -28,4 +28,18 @@
          </children>
       </VBox>
    </left>
+   <right>
+      <MFXButton fx:id="loadFilesButton" onAction="#handleLoadFilesButton" text="Load Files" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <Accordion BorderPane.alignment="CENTER">
+        <panes>
+          <TitledPane animated="false" text="Help">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </bottom>
 </BorderPane>
