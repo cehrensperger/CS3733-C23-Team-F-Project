@@ -26,68 +26,13 @@ public class PathFinder {
   }
 
   /**
-   * converts a location name to a Node by looking for the latest Node that has the given location
-   * name. Returns null if no result could be found
-   *
-   * @param name the location name to query for
-   * @param session the session to run the query on
-   * @return the found node, or null
-   */
-  private Node locationToNode(@NonNull LocationName name, @NonNull Session session) {
-    // Create a query that selects the first node from the move where the location is the location
-    // orders by descending date (first at top) and limits it to one, so we only get one.
-    // Then casts to a Node, sets the parameter location (to prevent injection)
-    // Get unique result will either return the result, or null if there was none
-    return session
-        .createQuery(
-            """
-                                SELECT node
-                                FROM Move
-                                where location = :location
-                                ORDER BY moveDate DESC
-                                LIMIT 1""",
-            Node.class)
-        .setParameter("location", name)
-        .uniqueResult();
-  }
-
-  /**
-   * Returns the location associated with a given Node, or null if none could be found
-   *
-   * @param node the node to lookup
-   * @param session the session to use in the lookup
-   * @return the location that was found
-   */
-  private LocationName nodeToLocation(@NonNull Node node, @NonNull Session session) {
-    // Create a query that selects the first location from the move where the location is the
-    // location, orders
-    // by descending date (first at top) and limits to one, so we only get one.
-    // Then casts to LocationName, sets the parameter location (to prevent injection)
-    // Gets a unique result, which will return either the singular result found or null if there was
-    // none
-    return session
-        .createQuery(
-            """
-                                SELECT location
-                                FROM Move
-                                WHERE node = :node
-                                ORDER BY moveDate DESC
-                                LIMIT 1""",
-            LocationName.class)
-        .setParameter("node", node)
-        .uniqueResult();
-  }
-
-  /**
    * @param nodes list of nodes to lookup
-   * @param session the session to use in the lookup
    * @return list of locations that were found
    */
-  public List<LocationName> nodeListToLocation(
-      @NonNull List<Node> nodes, @NonNull Session session) {
+  public List<LocationName> nodeListToLocation(@NonNull List<Node> nodes) {
     List<LocationName> locations = new ArrayList<>();
     for (Node node : nodes) {
-      locations.add(nodeToLocation(node, session));
+      locations.add(node.getCurrentLocation());
     }
     return locations;
   }
@@ -140,16 +85,27 @@ public class PathFinder {
 
     try {
       // Query location names and return nodes to send to aStar function
-      Node startNode = locationToNode(longNameToLocation(start, session), session);
-      Node endNode = locationToNode(longNameToLocation(end, session), session);
+      LocationName startLocation = longNameToLocation(start, session);
+      LocationName endLocation = longNameToLocation(end, session);
+
+      transaction.commit();
+
+      session.close();
+
+      Node startNode = startLocation.getCurrentNode();
+      Node endNode = endLocation.getCurrentNode();
+
+      session = sessionFactory.openSession();
+      transaction = session.beginTransaction();
 
       // Find the path with A*
       path = aStar(startNode, endNode, session);
     } catch (
         NullPointerException
             error) { // Catch failures, so we can close the transaction no matter what
-      // End the transaction
-      transaction.rollback();
+      if (transaction.isActive()) {
+        transaction.rollback();
+      }
 
       // Close the session
       session.close();

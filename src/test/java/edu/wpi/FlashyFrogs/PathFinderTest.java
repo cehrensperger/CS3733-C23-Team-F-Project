@@ -821,7 +821,7 @@ public class PathFinderTest {
                       }
                       commitTransaction.commit();
 
-                      List<LocationName> result = pathFinder.nodeListToLocation(nodes, testSession);
+                      List<LocationName> result = pathFinder.nodeListToLocation(nodes);
 
                       assertEquals(locations, result);
 
