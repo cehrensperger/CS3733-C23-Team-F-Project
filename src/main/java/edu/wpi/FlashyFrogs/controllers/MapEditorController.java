@@ -1,5 +1,7 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -7,7 +9,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,18 +23,15 @@ import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
-
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 public class MapEditorController {
   public MFXComboBox<Node.Floor> floorSelector;
   @FXML private HBox editorBox; // Editor box, map is appended to this on startup
   private MapController mapController; // Controller for the map
+  @FXML private TableView<LocationName> locationTable; // Attribute for the location table
 
   @FXML
-  private TableView<LocationName> locationTable;
-  @FXML
-  private TableColumn<LocationName, String> longName;
+  private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
 
   /** Initializes the map editor, adds the map onto it */
   @SneakyThrows
@@ -64,7 +62,7 @@ public class MapEditorController {
                     // If we're no longer hovering and the pop over exists, delete it. We will
                     // either create a new one
                     // or, keep it deleted
-                    if (popOver.get() != null && !popOver.get().isFocused()) {
+                    if (popOver.get() != null && (!popOver.get().isFocused() || newValue)) {
                       popOver.get().hide(); // Hide it
                       popOver.set(null); // And delete it (set it to null)
                     }

@@ -9,9 +9,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
+<VBox alignment="TOP_RIGHT" spacing="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
    <children>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
+      <HBox alignment="CENTER_RIGHT" spacing="25.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Floor:" />
             <MFXComboBox fx:id="floorSelector" alignment="TOP_RIGHT" editable="false" promptText="Floor" />
@@ -20,10 +20,10 @@
             <Insets />
          </VBox.margin>
       </HBox>
-      <HBox fx:id="editorBox" alignment="CENTER" VBox.vgrow="ALWAYS">
-         <TableView fx:id="locationTable" prefHeight="400.0" prefWidth="206.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="editorBox" alignment="CENTER" VBox.vgrow="ALWAYS" spacing="30">
+         <TableView fx:id="locationTable" BorderPane.alignment="CENTER">
             <columns>
-               <TableColumn fx:id="longName" prefWidth="205.0" text="Long Name" />
+               <TableColumn fx:id="longName" text="Long Name" />
             </columns>
          </TableView>
       </HBox>
