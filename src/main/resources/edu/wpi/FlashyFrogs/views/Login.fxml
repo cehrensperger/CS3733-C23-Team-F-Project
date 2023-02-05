@@ -13,14 +13,23 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.LoginController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="800.0">
          <center>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+                     <font>
+                        <Font size="64.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="100.0" top="8.0" />
+                     </VBox.margin>
+                  </Text>
                   <MFXTextField fx:id="username" prefWidth="300.0" promptText="Username:">
                      <VBox.margin>
                         <Insets bottom="10.0" />
@@ -39,6 +48,9 @@
                               <Insets top="10.0" />
                            </HBox.margin></MFXButton>
                      </children>
+                     <opaqueInsets>
+                        <Insets bottom="300.0" />
+                     </opaqueInsets>
                   </HBox>
                </children>
             </VBox>
