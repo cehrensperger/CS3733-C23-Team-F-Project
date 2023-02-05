@@ -136,6 +136,62 @@ public class Node {
    * to a location the least in the past but NOT in the future. Also ensures that the provided
    * location is not representing something else more currently
    *
+   * @param session the session to use for the lookup
+   * @return either the location this node is storing, or null if there is none
+   */
+  public LocationName getCurrentLocation(@NonNull Session session) {
+    // Try getting the location first. This gets the most recent location that is the node and not
+    // in the future
+    // sorts by move date, and then limits by one. Unique result ensures that this either gets the
+    // one result,
+    // or null
+    LocationName location =
+        session
+            .createQuery(
+                """
+                                        SELECT location
+                                        FROM Move
+                                        WHERE node = :node AND moveDate <= current timestamp
+                                        ORDER BY moveDate DESC
+                                        LIMIT 1
+                                        """,
+                LocationName.class)
+            .setParameter("node", this)
+            .uniqueResult();
+
+    // If the location isn't null
+    if (location != null) {
+      // Get the node most recently associated with this location
+      Node locationNode =
+          session
+              .createQuery(
+                  """
+                                            SELECT node
+                                            FROM Move
+                                            WHERE location = :location AND moveDate <= current timestamp
+                                            ORDER BY moveDate DESC
+                                            LIMIT 1
+                                            """,
+                  Node.class)
+              .setParameter("location", location)
+              .uniqueResult();
+
+      // If that locations most recent node is this
+      if (locationNode.equals(this)) {
+        return location; // Return the location
+      }
+    }
+
+    // Otherwise, just return null
+    return null;
+  }
+
+  /**
+   * Looks up the current location associated with this Node in the database, potentially returning
+   * null if that is not available. Defines the current location as the move associating this node
+   * to a location the least in the past but NOT in the future. Also ensures that the provided
+   * location is not representing something else more currently
+   *
    * @return either the location this node is storing, or null if there is none
    */
   public LocationName getCurrentLocation() {
@@ -143,50 +199,7 @@ public class Node {
     // exceptions that
     // may occur
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
-      // Try getting the location first. This gets the most recent location that is the node and not
-      // in the future
-      // sorts by move date, and then limits by one. Unique result ensures that this either gets the
-      // one result,
-      // or null
-      LocationName location =
-          connection
-              .createQuery(
-                  """
-SELECT location
-FROM Move
-WHERE node = :node AND moveDate <= current timestamp
-ORDER BY moveDate DESC
-LIMIT 1
-""",
-                  LocationName.class)
-              .setParameter("node", this)
-              .uniqueResult();
-
-      // If the location isn't null
-      if (location != null) {
-        // Get the node most recently associated with this location
-        Node locationNode =
-            connection
-                .createQuery(
-                    """
-SELECT node
-FROM Move
-WHERE location = :location AND moveDate <= current timestamp
-ORDER BY moveDate DESC
-LIMIT 1
-""",
-                    Node.class)
-                .setParameter("location", location)
-                .uniqueResult();
-
-        // If that locations most recent node is this
-        if (locationNode.equals(this)) {
-          return location; // Return the location
-        }
-      }
-
-      // Otherwise, just return null
-      return null;
+      return getCurrentLocation(connection);
     }
   }
 }
