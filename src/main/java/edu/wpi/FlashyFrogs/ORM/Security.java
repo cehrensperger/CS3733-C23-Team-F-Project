@@ -31,6 +31,7 @@ public class Security extends ServiceRequest {
 
   /** Creates a new Security object with a generated id */
   public Security() {
+    this.status = Status.BLANK;
     this.requestType = "Security";
   }
 

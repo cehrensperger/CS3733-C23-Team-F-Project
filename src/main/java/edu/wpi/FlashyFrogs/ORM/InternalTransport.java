@@ -59,6 +59,7 @@ public class InternalTransport extends ServiceRequest {
 
   /** Creates a new InternalTransport with a generated id */
   public InternalTransport() {
+    this.status = Status.BLANK;
     this.requestType = "InternalTransport";
   }
 

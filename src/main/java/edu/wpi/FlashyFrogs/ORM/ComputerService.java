@@ -43,6 +43,7 @@ public class ComputerService extends ServiceRequest {
 
   /** Creates a new ComputerService with a generated id */
   public ComputerService() {
+    this.status = Status.BLANK;
     this.requestType = "ComputerService";
   }
 

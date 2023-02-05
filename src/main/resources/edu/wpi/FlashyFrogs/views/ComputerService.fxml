@@ -36,16 +36,16 @@
                   </Text>
                   <HBox prefHeight="30.0" prefWidth="200.0">
                      <children>
-                        <MFXComboBox fx:id="urgencyEntry21" prefHeight="50.0" prefWidth="264.0" promptText="Device Type:">
+                        <MFXComboBox fx:id="deviceType" prefHeight="50.0" prefWidth="264.0" promptText="Device Type:">
                            <HBox.margin>
                               <Insets left="10.0" right="5.0" />
                            </HBox.margin>
                         </MFXComboBox>
-                        <MFXTextField fx:id="middle21" prefHeight="49.0" prefWidth="265.0" promptText="Device Model">
+                        <MFXTextField fx:id="deviceModel" prefHeight="49.0" prefWidth="265.0" promptText="Device Model">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></MFXTextField>
-                        <MFXComboBox fx:id="urgencyEntry22" prefHeight="49.0" prefWidth="256.0" promptText="Type of Accommodation:">
+                        <MFXComboBox fx:id="accommodationType" prefHeight="49.0" prefWidth="256.0" promptText="Type of Accommodation:">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
@@ -54,12 +54,12 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <MFXTextField fx:id="middle211" prefHeight="74.0" prefWidth="523.0" promptText="Device Model">
+                        <MFXTextField fx:id="issueDescription" prefHeight="74.0" prefWidth="528.0" promptText="Issue Description">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" top="10.0" />
                            </HBox.margin>
                         </MFXTextField>
-                        <MFXComboBox fx:id="urgencyEntry221" prefHeight="76.0" prefWidth="254.0" promptText="Urgency">
+                        <MFXComboBox fx:id="urgencyEntry" prefHeight="76.0" prefWidth="254.0" promptText="Urgency">
                            <HBox.margin>
                               <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
                            </HBox.margin>

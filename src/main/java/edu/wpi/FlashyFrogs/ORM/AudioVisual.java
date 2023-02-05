@@ -51,8 +51,16 @@ public class AudioVisual extends ServiceRequest {
   @Setter
   AccommodationType accommodationType;
 
+  @Column(nullable = false)
+  @NonNull
+  @Temporal(TemporalType.TIMESTAMP)
+  @Getter
+  @Setter
+  Date dateOfBirth;
+
   /** Creates a new AudioVisual with a generated id */
   public AudioVisual() {
+    this.status = Status.BLANK;
     this.requestType = "AudioVisual";
   }
   /**
@@ -74,6 +82,7 @@ public class AudioVisual extends ServiceRequest {
    * @param patientMiddleName the String to use in the patientMiddleName field
    * @param patientLastName the String to use in the patientLastName field
    * @param location the LocationName to use in the location field
+   * @param dateOfBirth the Date to use in the dateOfBirth field
    */
   public AudioVisual(
       @NonNull String empFirstName,
@@ -91,7 +100,8 @@ public class AudioVisual extends ServiceRequest {
       @NonNull String patientFirstName,
       @NonNull String patientMiddleName,
       @NonNull String patientLastName,
-      @NonNull LocationName location) {
+      @NonNull LocationName location,
+      @NonNull Date dateOfBirth) {
     this.empFirstName = empFirstName;
     this.empMiddleName = empMiddleName;
     this.empLastName = empLastName;
@@ -110,6 +120,7 @@ public class AudioVisual extends ServiceRequest {
     this.patientFirstName = patientFirstName;
     this.patientMiddleName = patientMiddleName;
     this.patientLastName = patientLastName;
+    this.dateOfBirth = dateOfBirth;
   }
 
   public enum AccommodationType {

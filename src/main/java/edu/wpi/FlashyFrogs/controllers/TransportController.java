@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -46,10 +45,6 @@ public class TransportController extends ServiceRequestController {
 
   /** Method run when controller is initializes */
   public void initialize() {
-    // if connection is successful
-    //    if (this.connectToDB()) {
-    //      this.createTable();
-    //    }
 
     submitInfo = new SubmitInfo();
 
@@ -103,41 +98,7 @@ public class TransportController extends ServiceRequestController {
     submitInfo.setEmployeeDepartment(departmentComboBox.getText());
     System.out.println(submitInfo.getDOB());
     System.out.println(submitInfo.getPatientMiddleName());
-
-    //    Session session = factory.openSession();
-    //    Transaction transaction = session.beginTransaction();
-    //    InternalTransport transportRequest =
-    //        new InternalTransport(
-    //            //            new Date(),
-    //            //            session.find(LocationName.class, newLocationComboBox.getText()),
-    //            //            session.find(LocationName.class, currentLocationComboBox.getText()),
-    //
-    //            );
-    // securityRequest.setLocation(locationEntry.getText());
-
-    //    transportRequest.setType("Transport");//transport no
-    //    // longer has a type, to get "Transport" do Class.simpleName()
-
-    //    transportRequest.setEmpFirstName(firstNameTextfield.getText());
-    //    transportRequest.setEmpMiddleName(middleNameTextfield.getText());
-    //    transportRequest.setEmpLastName(lastNameTextfield.getText());
-    //    transportRequest.setDateOfSubmission(Date.from(Instant.now()));
-    //
-    //    session.persist(transportRequest);
-    //    transaction.commit();
-    //    session.close();
   }
-
-  /**
-   * When the button is clicked, the method will log the data in the terminal and database
-   *
-   * @param actionEvent event that triggered method
-   * @throws IOException
-   */
-  //  public void buttonClicked(ActionEvent actionEvent) throws IOException {
-  //    System.out.println("Button was clicked");
-  //    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
-  //  }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
@@ -183,57 +144,4 @@ public class TransportController extends ServiceRequestController {
     // connection successful, return true
     return true;
   }
-
-  /**
-   * generates a table to store button click information
-   *
-   * @return true when table is successfully created or already exists, false otherwise
-   */
-  private boolean createTable() {
-
-    boolean table_exists = false;
-
-    if (this.connection != null) {
-      String createQuery =
-          "CREATE TABLE APP.buttonClicks("
-              + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-              + "btn_name VARCHAR(50), "
-              + "time_stamp TIMESTAMP NOT NULL, "
-              + "PRIMARY KEY(id) )";
-      try {
-        Statement statement = this.connection.createStatement();
-        statement.execute(createQuery);
-
-        table_exists = true;
-      } catch (SQLException e) {
-        // Error code 955 is "name is already used by an existing object", so this table name
-        // already exists
-        if (e.getErrorCode() == 955 || e.getMessage().contains("already exists"))
-          table_exists = true;
-        else e.printStackTrace();
-      }
-    }
-    return table_exists;
-  }
-
-  /**
-   * Stores button click data to database
-   *
-   * @return true if data is stored successfully, false otherwise
-   */
-  //  private boolean logData() {
-  //    if (connection != null) {
-  //      String writeQuery =
-  //          "INSERT INTO APP.buttonClicks(btn_name, time_stamp) VALUES ( 'ClickButton',
-  // CURRENT_TIMESTAMP ) ";
-  //      try {
-  //        Statement statement = this.connection.createStatement();
-  //        statement.execute(writeQuery);
-  //        return true;
-  //      } catch (SQLException e) {
-  //        e.printStackTrace();
-  //      }
-  //    }
-  //    return false;
-  //  }
 }

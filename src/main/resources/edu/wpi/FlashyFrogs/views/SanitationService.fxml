@@ -70,14 +70,14 @@
             <Insets left="10.0" />
          </VBox.margin>
       </Text>
-      <HBox spacing="10.0">
+      <HBox spacing="5.0">
          <children>
             <MFXComboBox fx:id="requestTypeDropDown" prefHeight="49.0" prefWidth="207.0" promptText="Request Type" />
             <MFXComboBox fx:id="locationDropDown" prefHeight="52.0" prefWidth="206.0" promptText="Location" />
             <MFXDatePicker fx:id="date" floatMode="INLINE" prefHeight="27.0" prefWidth="215.0" promptText="Date" />
             <MFXComboBox fx:id="urgencyEntry" prefHeight="51.0" prefWidth="204.0" promptText="Urgency">
                <HBox.margin>
-                  <Insets right="10.0" />
+                  <Insets />
                </HBox.margin>
             </MFXComboBox>
          </children>

@@ -6,7 +6,6 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.SanitationServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -22,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Paint;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -44,11 +44,9 @@ public class SanitationServiceController extends ServiceRequestController {
   @FXML private MFXButton allButton;
   @FXML Label errorMessage;
   private Connection connection = null; // connection to database
-  private SanitationServiceData sanitationServiceData;
 
   /** Method run when controller is initializes */
   public void initialize() {
-    sanitationServiceData = new SanitationServiceData();
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     requestTypeDropDown.getItems().addAll("Mopping", "Sweeping", "Vacuuming");
     // locationDropDown.getItems().addAll("room 1", "room 2", "public space 1", "public space 2");
@@ -67,7 +65,7 @@ public class SanitationServiceController extends ServiceRequestController {
   }
 
   /**
-   * clears all fields and drop downs
+   * clears all fields and drop-downs
    *
    * @param actionEvent event that triggered method
    * @throws IOException
@@ -143,34 +141,21 @@ public class SanitationServiceController extends ServiceRequestController {
         session.persist(sanitationRequest);
         transaction.commit();
         session.close();
-        Fapp.setScene("RequestsHome");
+        handleClear(actionEvent);
+        errorMessage.setTextFill(Paint.valueOf("#44ff00"));
+        errorMessage.setText("Successfully submitted.");
       } catch (RollbackException exception) {
         session.clear();
+        errorMessage.setTextFill(Paint.valueOf("#ff0000"));
         errorMessage.setText("Please fill all fields.");
         session.close();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
+      errorMessage.setTextFill(Paint.valueOf("#ff0000"));
       errorMessage.setText("Please fill all fields.");
       session.close();
     }
-  }
-
-  private void addSanitationRequest(SanitationServiceData sd) {
-    Session session = factory.openSession();
-    Transaction transaction = session.beginTransaction();
-    Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(null);
-    sanitationRequest.setType(Sanitation.SanitationType.valueOf(sd.getRequestType()));
-    sanitationRequest.setEmpFirstName(sd.getEmployeeFirstName());
-    sanitationRequest.setEmpMiddleName(sd.getEmployeeMiddleName());
-    sanitationRequest.setEmpLastName(sd.getEmployeeLastName());
-    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
-
-    session.persist(sanitationRequest);
-    transaction.commit();
-    session.close();
-    System.out.println("submitted");
   }
 
   /**
