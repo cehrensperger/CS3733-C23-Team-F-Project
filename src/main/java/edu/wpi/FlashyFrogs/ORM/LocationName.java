@@ -1,10 +1,12 @@
 package edu.wpi.FlashyFrogs.ORM;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.Session;
 
 @Entity
 @Table(name = "LocationName")
@@ -110,5 +112,62 @@ public class LocationName {
   @NonNull
   public String toString() {
     return this.longName;
+  }
+
+  /**
+   * Gets the node that this location is currently in (defined as the least in the past, but NOT in
+   * the future), or null if there is none
+   *
+   * @return the Node this location is stored in, or null if there is none
+   */
+  public Node getCurrentNode() {
+    // Create a connection. This syntax auto-closes the connection when we're done, and throws an
+    // exception if
+    // anything goes wrong
+    try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      // use the connection to create a query that gets the most recent result that's not in the
+      // future for
+      // this location, limiting by one to get the single most recent result. Returns null if there
+      // is no
+      // result
+      Node node =
+          connection
+              .createQuery(
+                  """
+SELECT node
+FROM Move
+WHERE location = :location AND moveDate <= current timestamp
+ORDER BY moveDate DESC
+LIMIT 1
+""",
+                  Node.class)
+              .setParameter("location", this)
+              .uniqueResult();
+
+      // if the node isn't null
+      if (node != null) {
+        // Check the move it has most recently
+        LocationName nodeLocation =
+            connection
+                .createQuery(
+                    """
+SELECT location
+FROM Move
+WHERE node = :node AND moveDate <= current timestamp
+ORDER BY moveDate DESC
+LIMIT 1
+""",
+                    LocationName.class)
+                .setParameter("node", node)
+                .uniqueResult();
+
+        // If that is this
+        if (nodeLocation.equals(this)) {
+          return node; // Then this location is associated with the node
+        }
+      }
+
+      return null; // Otherwise, it's not, return null
+    }
   }
 }
