@@ -1,40 +1,77 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import edu.wpi.FlashyFrogs.CSVParser;
-import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.FileData;
-import edu.wpi.FlashyFrogs.Main;
+import edu.wpi.FlashyFrogs.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class LoadMapPageController {
-  @FXML private MFXButton loadFileButton;
+  @FXML private MFXButton chooseNodesButton;
+  @FXML private MFXButton chooseEdgesButton;
+  @FXML private MFXButton chooseLocationsButton;
+  @FXML private MFXButton chooseMovesButton;
   @FXML private MFXButton backButton;
+
+  @FXML private Label nodesFileLabel;
+  @FXML private Label edgesFileLabel;
+  @FXML private Label locationsFileLabel;
+  @FXML private Label movesFileLabel;
+
   FileData fileData;
 
   public void initialize() {
     fileData = new FileData();
   }
 
-  public void handleLoadFileButton(javafx.event.ActionEvent actionEvent) {
+  public void handleChooseNodes(javafx.event.ActionEvent actionEvent) {
 
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Open Resource File");
     fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
     File selectedFile = fileChooser.showOpenDialog(null);
-    fileData.addFile(selectedFile);
+    fileData.setNodesFile(selectedFile);
+    nodesFileLabel.setText(selectedFile.getName());
+  }
+
+  public void handleChooseEdges(javafx.event.ActionEvent actionEvent) {
+
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open Resource File");
+    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+    File selectedFile = fileChooser.showOpenDialog(null);
+    fileData.setEdgesFile(selectedFile);
+    edgesFileLabel.setText(selectedFile.getName());
+  }
+
+  public void handleChooseLocations(javafx.event.ActionEvent actionEvent) {
+
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open Resource File");
+    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+    File selectedFile = fileChooser.showOpenDialog(null);
+    fileData.setLocationsFile(selectedFile);
+    locationsFileLabel.setText(selectedFile.getName());
+  }
+
+  public void handleChooseMoves(javafx.event.ActionEvent actionEvent) {
+
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open Resource File");
+    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+    File selectedFile = fileChooser.showOpenDialog(null);
+    fileData.setMovesFile(selectedFile);
+    movesFileLabel.setText(selectedFile.getName());
   }
 
   public void handleLoadFilesButton(ActionEvent actionEvent) {
-    Session session = Main.factory.openSession();
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
     Transaction deleteTransaction = session.beginTransaction(); // Clearing transaction
 
     session.createMutationQuery("DELETE FROM Edge").executeUpdate(); // Drop edge
@@ -44,11 +81,16 @@ public class LoadMapPageController {
 
     deleteTransaction.commit(); // Commit the transaction
     session.close();
-    if (fileData.correctNumOfFiles()) {
+    if (fileData.allFilesChosen()) {
       System.out.println("Correct num of files!");
-      List<File> files = fileData.getFiles();
+
       try {
-        CSVParser.readFiles(files.get(0), files.get(1), files.get(2), files.get(3), Main.factory);
+        CSVParser.readFiles(
+            fileData.getNodesFile(),
+            fileData.getEdgesFile(),
+            fileData.getLocationsFile(),
+            fileData.getMovesFile(),
+            DBConnection.CONNECTION.getSessionFactory());
       } catch (FileNotFoundException e) {
         throw new RuntimeException(e);
       }

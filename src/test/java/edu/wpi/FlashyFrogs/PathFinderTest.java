@@ -13,11 +13,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.*;
 
 /**
@@ -27,10 +23,6 @@ import org.junit.jupiter.api.*;
  * database
  */
 public class PathFinderTest {
-  private static SessionFactory
-      sessionFactory; // Session factory to be created before all tests have run
-  private static StandardServiceRegistry
-      serviceRegistry; // Service registry associated with the factory
   private Session testSession; // Session to be used for each individual test
 
   /**
@@ -38,14 +30,8 @@ public class PathFinderTest {
    */
   @BeforeAll
   public static void setupSessionFactory() {
-    // Create the service registry we will use
-    serviceRegistry =
-        new StandardServiceRegistryBuilder()
-            .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
-            .build();
-
-    // Create the session factory from that
-    sessionFactory = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
+    // Create the DB connection
+    DBConnection.CONNECTION.connect();
   }
 
   /**
@@ -53,14 +39,13 @@ public class PathFinderTest {
    */
   @AfterAll
   public static void closeSessionFactory() {
-    sessionFactory.close(); // Close the session factory
-    serviceRegistry.close(); // Close the service registry
+    DBConnection.CONNECTION.disconnect();
   }
 
   /** Setup method, sets up the session before each test */
   @BeforeEach
   public void setupSession() {
-    testSession = sessionFactory.openSession(); // Open a session
+    testSession = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
   }
 
   /** Teardown method, closes the session and cleans up the tables */
@@ -81,7 +66,8 @@ public class PathFinderTest {
   /** Tests that a start location does not exist throws a NullPointerException */
   @Test
   public void startLocationDoesNotExistTest() {
-    PathFinder pathFinder = new PathFinder(sessionFactory); // Create the path finder
+    PathFinder pathFinder =
+        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
 
     assertThrows(
         NullPointerException.class,
@@ -109,7 +95,8 @@ public class PathFinderTest {
     testSession.persist(startMove); // Persist the start move
     commitTransaction.commit(); // Commit the changes
 
-    PathFinder pathFinder = new PathFinder(sessionFactory); // Create the path finder
+    PathFinder pathFinder =
+        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
 
     // Assert that the second node results in an exception
     assertThrows(NullPointerException.class, () -> pathFinder.findPath("start", "doesnotexist)"));
@@ -131,7 +118,8 @@ public class PathFinderTest {
     testSession.persist(endLocation);
     commitTransaction.commit(); // Commit the transaction
 
-    PathFinder pathFinder = new PathFinder(sessionFactory); // Create the path finder
+    PathFinder pathFinder =
+        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
 
     // Assert that finding the path throws an exception
     assertThrows(
@@ -160,7 +148,8 @@ public class PathFinderTest {
     testSession.persist(startToStartNode);
     commitTransaction.commit(); // Commit the transaction
 
-    PathFinder pathFinder = new PathFinder(sessionFactory); // Create the path finder
+    PathFinder pathFinder =
+        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
 
     // Assert that finding the path throws an exception
     assertThrows(
@@ -193,7 +182,8 @@ public class PathFinderTest {
     testSession.persist(endLocationToNode);
     commitTransaction.commit(); // Commit the transaction
 
-    PathFinder pathFinder = new PathFinder(sessionFactory); // Create the path finder
+    PathFinder pathFinder =
+        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
 
     // Assert the path returns null
     assertNull(pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
@@ -252,7 +242,7 @@ public class PathFinderTest {
     expectedResult.add(nodeFive);
 
     // Find the path and validate it
-    PathFinder pathFinder = new PathFinder(sessionFactory);
+    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
     assertEquals(
         expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
   }
@@ -326,7 +316,8 @@ public class PathFinderTest {
     expectedResult.add(realEnd); // To real end
 
     // Create the PathFinder
-    PathFinder pathFinder = new PathFinder(sessionFactory); // Create the path finder
+    PathFinder pathFinder =
+        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
     assertEquals(
         expectedResult,
         pathFinder.findPath(start.getLongName(), end.getLongName())); // Check the path
@@ -367,7 +358,7 @@ public class PathFinderTest {
     expectedResult.add(endNode);
 
     // Assert that the path is valid
-    PathFinder pathFinder = new PathFinder(sessionFactory);
+    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
     assertEquals(
         expectedResult,
         pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
@@ -379,7 +370,9 @@ public class PathFinderTest {
    */
   @Test
   public void takesLatestDatabaseStateTest() {
-    PathFinder pathFinder = new PathFinder(sessionFactory); // Create the path finder right away
+    PathFinder pathFinder =
+        new PathFinder(
+            DBConnection.CONNECTION.getSessionFactory()); // Create the path finder right away
 
     // Nodes
     Node start = new Node("start", "b", Node.Floor.G, 0, 0);
@@ -464,7 +457,7 @@ public class PathFinderTest {
     expectedResult.add(target);
 
     // Create the pathfinder and check the path
-    PathFinder pathFinder = new PathFinder(sessionFactory);
+    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
     assertEquals(
         expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
   }
@@ -528,7 +521,9 @@ public class PathFinderTest {
     resultList.add(leftMiddle);
     resultList.add(endNode);
 
-    PathFinder pathFinder = new PathFinder(sessionFactory); // Create the path finder to use
+    PathFinder pathFinder =
+        new PathFinder(
+            DBConnection.CONNECTION.getSessionFactory()); // Create the path finder to use
     assertEquals(
         resultList,
         pathFinder.findPath(startName.getLongName(), endName.getLongName())); // Find the path
@@ -670,7 +665,7 @@ public class PathFinderTest {
     expectedResult.add(target);
 
     // Check that the path finder finds the right path
-    PathFinder pathFinder = new PathFinder(sessionFactory);
+    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
     assertEquals(
         expectedResult,
         pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
@@ -696,7 +691,7 @@ public class PathFinderTest {
           new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv"),
           new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv"),
           new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv"),
-          sessionFactory);
+          DBConnection.CONNECTION.getSessionFactory());
     } catch (FileNotFoundException fileError) {
       fail(fileError); // If we get a file error, just fail with that as the reasoning
     }
@@ -733,7 +728,8 @@ public class PathFinderTest {
                               .orElseThrow();
 
                       // Create the path finder
-                      PathFinder pathFinder = new PathFinder(sessionFactory);
+                      PathFinder pathFinder =
+                          new PathFinder(DBConnection.CONNECTION.getSessionFactory());
 
                       // Find the path between the nodes
                       List<Node> result =
@@ -798,7 +794,9 @@ public class PathFinderTest {
                     "Node List To Location " + testNumber,
                     () -> {
                       PathFinder pathFinder =
-                          new PathFinder(sessionFactory); // Create the path finder
+                          new PathFinder(
+                              DBConnection.CONNECTION
+                                  .getSessionFactory()); // Create the path finder
 
                       // Create a random generator
                       Random randomGenerator = new Random();
@@ -874,7 +872,7 @@ public class PathFinderTest {
     expectedResult.add(endNode);
 
     // Check that the result is expected
-    PathFinder pathFinder = new PathFinder(sessionFactory);
+    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
     assertEquals(
         expectedResult,
         pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
