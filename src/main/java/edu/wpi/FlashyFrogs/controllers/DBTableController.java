@@ -66,7 +66,7 @@ public class DBTableController implements Initializable {
   public TableColumn<Move, Date> colTimestamp;
   public TextField txtID;
   public TextField txtLongName;
-  public Button btnadd;
+
   public Button backbutton;
   @FXML private MFXButton back;
   // Update Buttons

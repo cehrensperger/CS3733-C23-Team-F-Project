@@ -1,174 +1,243 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
-  All rights reserved. Use is subject to license terms.
-
-  This file is available and licensed under the following license:
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions
-  are met:
-
-  - Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in
-    the documentation and/or other materials provided with the distribution.
-  - Neither the name of Oracle Corporation nor the names of its
-    contributors may be used to endorse or promote products derived
-    from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SanitationServiceController">
-  <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form" textAlignment="CENTER" wrappingWidth="799.71875">
-         <font>
-            <Font size="36.0" />
-         </font>
-         <VBox.margin>
-            <Insets top="8.0" />
-         </VBox.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Incident:" wrappingWidth="188.00004882812493">
-         <font>
-            <Font size="24.0" />
-         </font>
-         <VBox.margin>
-            <Insets left="10.0" />
-         </VBox.margin>
-      </Text>
-      <HBox spacing="10.0">
-         <children>
-            <MFXComboBox fx:id="requestTypeDropDown" prefHeight="49.0" prefWidth="207.0" promptText="Request Type" />
-            <MFXComboBox fx:id="locationDropDown" prefHeight="52.0" prefWidth="206.0" promptText="Location" />
-            <MFXDatePicker fx:id="date" floatMode="INLINE" prefHeight="27.0" prefWidth="194.0" promptText="Date" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <MFXTextField fx:id="timeEntry" prefHeight="51.0" prefWidth="205.0" promptText="Time 00:00 AM/PM">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </MFXTextField>
-            <MFXComboBox fx:id="urgencyEntry" prefHeight="51.0" prefWidth="204.0" promptText="Urgency">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </MFXComboBox>
-         </children>
-      </HBox>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:">
-         <font>
-            <Font size="24.0" />
-         </font>
-         <VBox.margin>
-            <Insets left="10.0" top="10.0" />
-         </VBox.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-         <VBox.margin>
-            <Insets left="10.0" />
-         </VBox.margin>
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <HBox spacing="5.0">
-         <children>
-            <MFXTextField fx:id="firstName" prefHeight="49.0" prefWidth="200.0" promptText="First" />
-            <MFXTextField fx:id="middleName" prefHeight="49.0" prefWidth="200.0" promptText="Middle" />
-            <MFXTextField fx:id="lastName" prefHeight="49.0" prefWidth="204.0" promptText="Last" />
-            <MFXComboBox fx:id="departmentDropDown" borderGap="5.0" prefHeight="51.0" prefWidth="200.0" promptText="Department" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-      <VBox prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Employee:">
-               <VBox.margin>
-                  <Insets left="10.0" top="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-               <VBox.margin>
-                  <Insets left="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Text>
-            <HBox prefHeight="50.0" prefWidth="800.0">
-               <children>
-                  <MFXTextField fx:id="first2" prefHeight="50.0" prefWidth="200.0" promptText="First">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </MFXTextField>
-                  <MFXTextField fx:id="middle2" prefWidth="200.0" promptText="Middle">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </MFXTextField>
-                  <MFXTextField fx:id="last2" prefWidth="200.0" promptText="Last">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </MFXTextField>
-                  <MFXComboBox fx:id="department2" prefHeight="50.0" prefWidth="200.0" promptText="Department">
-                     <HBox.margin>
-                        <Insets left="5.0" right="10.0" />
-                     </HBox.margin>
-                  </MFXComboBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      <HBox alignment="BOTTOM_RIGHT" prefHeight="221.0" prefWidth="800.0" spacing="10.0">
-         <children>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="129.0" prefWidth="450.0">
-               <children>
-                  <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Sanitation Requests" />
-               </children>
-            </HBox>
-            <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#handleClear" prefWidth="100.0" text="clear" />
-            <MFXButton fx:id="backButton" onAction="#handleBack" prefWidth="100.0" text="back" />
-            <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#handleSubmit" prefWidth="100.0" text="submit" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-  </children>
-</VBox>
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SanitationServiceController">
+    <top>
+        <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets top="8.0" />
+            </BorderPane.margin>
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Text>
+    </top>
+    <center>
+        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="200.0" prefWidth="800.0">
+                    <children>
+                        <Text fx:id="incidentReportText" strokeType="OUTSIDE" strokeWidth="0.0" text="Incident:" wrappingWidth="306.7578125">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="10.0" top="5.0" />
+                            </VBox.margin>
+                        </Text>
+                        <HBox prefHeight="45.0" prefWidth="200.0">
+                            <children>
+                                <VBox prefHeight="56.0" prefWidth="265.0">
+                                    <children>
+                                        <MFXComboBox fx:id="requestTypeDropDown" prefHeight="78.0" prefWidth="265.0" promptText="Request Type">
+                                            <VBox.margin>
+                                                <Insets left="10.0" right="5.0" top="5.0" />
+                                            </VBox.margin>
+                                        </MFXComboBox>
+                                    </children>
+                                </VBox>
+                                <VBox prefHeight="56.0" prefWidth="265.0">
+                                    <HBox.margin>
+                                        <Insets right="5.0" />
+                                    </HBox.margin>
+                                    <children>
+                                        <MFXComboBox fx:id="locationDropDown" prefHeight="76.0" prefWidth="265.0" promptText="Location">
+                                            <VBox.margin>
+                                                <Insets top="5.0" />
+                                            </VBox.margin>
+                                        </MFXComboBox>
+                                    </children>
+                                </VBox>
+                                <VBox prefHeight="50.0" prefWidth="265.0">
+                                    <children>
+                                        <MFXDatePicker fx:id="date" floatMode="INLINE" prefHeight="50.0" prefWidth="281.0" promptText="Date">
+                                            <VBox.margin>
+                                                <Insets top="5.0" />
+                                            </VBox.margin>
+                                        </MFXDatePicker>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                  <HBox prefHeight="51.0" prefWidth="800.0">
+                     <children>
+                        <MFXTextField fx:id="timeEntry" prefHeight="51.0" prefWidth="250.0" promptText="Time 00:00 AM/PM">
+                           <HBox.margin>
+                              <Insets left="10.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </MFXTextField>
+                        <MFXComboBox fx:id="urgencyEntry" prefHeight="50.0" prefWidth="265.0" promptText="Urgency">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </MFXComboBox>
+                     </children>
+                  </HBox>
+                        <Text fx:id="employeeInformationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:" wrappingWidth="369.02734375">
+                            <VBox.margin>
+                                <Insets left="10.0" top="10.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+                            <VBox.margin>
+                                <Insets left="10.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Text>
+                        <HBox prefHeight="50.0" prefWidth="200.0">
+                            <children>
+                                <VBox prefHeight="42.0" prefWidth="200.0">
+                                    <children>
+                                        <MFXTextField fx:id="firstName" prefHeight="30.0" prefWidth="200.0" promptText="First">
+                                            <VBox.margin>
+                                                <Insets left="10.0" right="5.0" />
+                                            </VBox.margin>
+                                        </MFXTextField>
+                                    </children>
+                                </VBox>
+                                <VBox prefHeight="40.0" prefWidth="200.0">
+                                    <children>
+                                        <MFXTextField fx:id="middleName" prefHeight="51.0" prefWidth="200.0" promptText="Middle">
+                                            <VBox.margin>
+                                                <Insets right="5.0" />
+                                            </VBox.margin>
+                                        </MFXTextField>
+                                    </children>
+                                </VBox>
+                                <VBox prefHeight="200.0" prefWidth="200.0">
+                                    <HBox.margin>
+                                        <Insets />
+                                    </HBox.margin>
+                                    <children>
+                                        <MFXTextField fx:id="lastName" prefHeight="51.0" prefWidth="200.0" promptText="Last">
+                                            <VBox.margin>
+                                                <Insets right="5.0" />
+                                            </VBox.margin>
+                                        </MFXTextField>
+                                    </children>
+                                </VBox>
+                                <VBox prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <MFXComboBox fx:id="departmentDropDown" prefHeight="51.0" prefWidth="210.0" promptText="Department">
+                                            <VBox.margin>
+                                                <Insets right="10.0" />
+                                            </VBox.margin>
+                                        </MFXComboBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <VBox prefHeight="117.0" prefWidth="800.0">
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Employee:" wrappingWidth="275.61328125">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+                                    <VBox.margin>
+                                        <Insets left="10.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Text>
+                                <HBox prefHeight="30.0" prefWidth="200.0">
+                                    <children>
+                                        <MFXTextField fx:id="first2" prefHeight="51.0" prefWidth="200.0" promptText="First">
+                                            <HBox.margin>
+                                                <Insets left="10.0" right="5.0" />
+                                            </HBox.margin>
+                                        </MFXTextField>
+                                        <MFXTextField fx:id="middle2" prefHeight="51.0" prefWidth="200.0" promptText="Middle" />
+                                        <MFXTextField fx:id="last2" prefHeight="51.0" prefWidth="200.0" promptText="Last">
+                                            <HBox.margin>
+                                                <Insets left="5.0" />
+                                            </HBox.margin>
+                                        </MFXTextField>
+                                        <MFXComboBox fx:id="department2" prefHeight="56.0" prefWidth="200.0" promptText="Department">
+                                            <HBox.margin>
+                                                <Insets left="5.0" right="10.0" />
+                                            </HBox.margin>
+                                        </MFXComboBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <HBox alignment="BOTTOM_RIGHT" prefHeight="215.0" prefWidth="800.0">
+                            <children>
+                                <HBox alignment="BOTTOM_LEFT" prefHeight="47.0" prefWidth="470.0">
+                                    <children>
+                                        <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Sanitation Requests" />
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets bottom="10.0" left="10.0" />
+                                    </HBox.margin>
+                                </HBox>
+                                <MFXButton fx:id="clearButton" onAction="#handleClear" prefHeight="27.0" prefWidth="100.0" text="Clear">
+                                    <HBox.margin>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </HBox.margin>
+                                </MFXButton>
+                                <MFXButton fx:id="homeButton" onAction="#handleBack" prefWidth="100.0" text="Back">
+                                    <HBox.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </HBox.margin>
+                                </MFXButton>
+                                <MFXButton fx:id="submitButton" onAction="#handleSubmit" prefWidth="100.0" text="Submit">
+                                    <HBox.margin>
+                                        <Insets bottom="10.0" right="10.0" top="10.0" />
+                                    </HBox.margin>
+                                </MFXButton>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </center>
+   <bottom>
+      <Accordion BorderPane.alignment="CENTER">
+        <panes>
+          <TitledPane animated="false" text="Help">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="188.0" prefWidth="798.0">
+                     <children>
+                        <Text layoutX="11.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Type - The type of sanitation needed" />
+                        <Text layoutX="11.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location, Date, and Time - Provide the location, date, and time of the incident" />
+                        <Text layoutX="10.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Urgency - The urgency of the request" />
+                        <Text layoutX="10.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Sanitation Requests - Brings the user to a page to view all previously submitted sanitation request forms" />
+                        <Text layoutX="10.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information - Enter the first name, middle name, last name, and department of the employee submitting the form" />
+                        <Text layoutX="10.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Information - Enter the first name, middle name, last name, and department of the employee being assigned the request" />
+                        <Text layoutX="10.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clear - Clears all of the text fields on the page" />
+                        <Text layoutX="10.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Back - Brings the user back to the service requests home page" />
+                        <Text layoutX="10.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submit - Submits the request" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </bottom>
+</BorderPane>

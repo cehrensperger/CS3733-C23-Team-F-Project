@@ -5,6 +5,9 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -210,4 +213,26 @@
          </children>
       </HBox>
    </center>
+   <bottom>
+      <Accordion BorderPane.alignment="CENTER">
+        <panes>
+          <TitledPane animated="false" text="Help">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="179.0" prefWidth="798.0">
+                     <children>
+                        <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description of Incident - Describe the incident needing security" />
+                        <Text layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location, Date, and Time - Provide the location, date, and time of the indicent" />
+                        <Text layoutX="14.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Urgency - Provide the urgency of the situation needing service" />
+                        <Text layoutX="14.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information - Provide the first name, middle name, last name, and department of the employee filling out the form" />
+                        <Text layoutX="14.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Employee Information - Provide the first name, middle name, last name, and department of the employee being assigned the request" />
+                        <Text layoutX="14.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clear - Clears all of the fields on the form" />
+                        <Text layoutX="14.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Back - Brings the user back to the service requests page" />
+                        <Text layoutX="14.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submit - Submits the service requests" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </bottom>
 </BorderPane>

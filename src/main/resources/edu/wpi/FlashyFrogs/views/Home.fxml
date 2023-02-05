@@ -59,7 +59,10 @@
                      <children>
                         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="260.0">
                            <children>
-                                    <MFXButton fx:id="exitButton" alignment="CENTER" onAction="#handleExitButton" prefWidth="100.0" text="Exit" />
+                                    <MFXButton fx:id="exitButton" alignment="CENTER" onAction="#handleExitButton" prefWidth="100.0" text="Exit">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" right="10.0" />
+                                 </HBox.margin></MFXButton>
                            </children>
                         </HBox>
                      </children></VBox>
