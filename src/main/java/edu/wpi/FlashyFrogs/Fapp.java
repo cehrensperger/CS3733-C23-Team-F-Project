@@ -28,7 +28,7 @@ public class Fapp extends Application {
     Fapp.primaryStage = primaryStage;
 
     final FXMLLoader loader =
-        new FXMLLoader(Fapp.class.getResource("views/AudioVisualService.fxml"));
+        new FXMLLoader(Fapp.class.getResource("views/AllAudioVisualRequest.fxml"));
     final BorderPane root = loader.load();
 
     Fapp.rootPane = root;

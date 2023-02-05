@@ -70,10 +70,6 @@ public class AudioVisualController extends ServiceRequestController {
     locationEntry.setItems(FXCollections.observableList(objects));
   }
 
-  public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    // Fapp.setScene("AllAudioVisualRequest");
-  }
-
   public void handleClear(ActionEvent actionEvent) throws IOException {
     patientFirst.clear();
     patientMiddle.clear();
@@ -94,6 +90,10 @@ public class AudioVisualController extends ServiceRequestController {
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
+  }
+
+  public void handleAllButton(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("AllAudioVisualRequest");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
