@@ -15,6 +15,7 @@ public class HomeController {
   @FXML private MFXButton serviceRequestsButton;
   @FXML private MFXButton mapDataEditorButton;
   @FXML private MFXButton pathfindingButton;
+  @FXML private MFXButton question;
   @FXML private MFXButton exitButton;
   @FXML private MenuItem closeMenuItem;
   @FXML private MenuItem loadMapMenuItem;
@@ -27,6 +28,9 @@ public class HomeController {
     stage = (Stage) rootPane.getScene().getWindow();
     stage.close();
   }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {}
 
   @FXML
   public void handleClose(ActionEvent event) throws IOException {
