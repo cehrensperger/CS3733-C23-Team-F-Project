@@ -86,13 +86,10 @@ public class TransportController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-
     Fapp.setScene("AllTransport");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    //    System.out.println("Submit Button was Clicked");
-    //    System.out.println(this.logData() ? "Data logged" : "Data was not logged");
     submitInfo.setPatientFirstName(firstNameTextfield.getText());
     submitInfo.setPatientLastName(lastNameTextfield.getText());
     submitInfo.setPatientMiddleName(middleNameTextfield.getText());

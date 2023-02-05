@@ -18,7 +18,7 @@ public class ComputerService extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  String deviceType;
+  DeviceType deviceType;
 
   @Basic
   @Column(nullable = false)
@@ -77,7 +77,7 @@ public class ComputerService extends ServiceRequest {
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,
-      @NonNull String deviceType,
+      @NonNull DeviceType deviceType,
       @NonNull String model,
       @NonNull String issue,
       @NonNull ServiceType serviceType) {
@@ -116,6 +116,25 @@ public class ComputerService extends ServiceRequest {
      */
     ServiceType(@NonNull String serviceType) {
       ServiceType = serviceType;
+    }
+  }
+
+  /** Enumerated type for the possible DeviceTypes we can create */
+  public enum DeviceType {
+    KIOSK("kiosk"),
+    LAPTOP("laptop"),
+    DESKTOP("desktop"),
+    PERSONAL("personal");
+
+    @NonNull public final String DeviceType;
+
+    /**
+     * Creates a new DeviceType with the given String backing
+     *
+     * @param deviceType the DeviceType to create. Must not be null
+     */
+    DeviceType(@NonNull String deviceType) {
+      DeviceType = deviceType;
     }
   }
 }

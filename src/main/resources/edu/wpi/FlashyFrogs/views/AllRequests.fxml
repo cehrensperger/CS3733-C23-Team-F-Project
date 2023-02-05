@@ -13,7 +13,7 @@
    <center>
       <TableView fx:id="tableView" prefHeight="200.0" prefWidth="792.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="typeCol" editable="false" prefWidth="129.59995114803314" text="Service Request Type" />
+          <TableColumn fx:id="typeCol" editable="false" prefWidth="129.59995114803314" text="Service Request ID" />
             <TableColumn fx:id="empLastNameCol" editable="false" prefWidth="129.59995114803314" text="Employee Last Name" />
             <TableColumn fx:id="submissionDateCol" editable="false" prefWidth="190.39996337890625" text="Date and Time of Submission" />
             <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="87.60006713867188" text="Status" />

@@ -142,6 +142,7 @@ public class SecurityServiceController extends ServiceRequestController {
     session.persist(securityRequest);
     transaction.commit();
     session.close();
+    Fapp.setScene("RequestsHome");
     // System.out.println(sanitationServiceData);
     // SecurityServiceData data = new SecurityServiceData();
   }
