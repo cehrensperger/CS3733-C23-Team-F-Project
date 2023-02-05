@@ -5,7 +5,6 @@ import static edu.wpi.FlashyFrogs.Main.factory;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -99,24 +98,29 @@ public class TransportController extends ServiceRequestController {
       String urgencyEnumString = parts[0] + "_" + parts[1];
 
       if (firstNameTextfield.getText().equals("")
-              || middleNameTextfield.getText().equals("")
-              || lastNameTextfield.getText().equals("")
-              || first2.getText().equals("")
-              || middle2.getText().equals("")
-              || last2.getText().equals("")
-              || department2.getText().equals("")
-              || departmentComboBox.getText().equals("")
-              || dateOfTransportDatePicker.getText().equals("")
-              || dateOfBirthDatePicker.getText().equals("")
-              || currentLocationComboBox.getText().equals("")
-              || newLocationComboBox.getText().equals("")) {
+          || middleNameTextfield.getText().equals("")
+          || lastNameTextfield.getText().equals("")
+          || first2.getText().equals("")
+          || middle2.getText().equals("")
+          || last2.getText().equals("")
+          || department2.getText().equals("")
+          || departmentComboBox.getText().equals("")
+          || dateOfTransportDatePicker.getText().equals("")
+          || dateOfBirthDatePicker.getText().equals("")
+          || currentLocationComboBox.getText().equals("")
+          || newLocationComboBox.getText().equals("")) {
         throw new NullPointerException();
       }
 
       Date dateOfTransport =
-              Date.from(dateOfTransportDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+          Date.from(
+              dateOfTransportDatePicker
+                  .getValue()
+                  .atStartOfDay(ZoneId.systemDefault())
+                  .toInstant());
       Date dateOfBirth =
-              Date.from(dateOfBirthDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+          Date.from(
+              dateOfBirthDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       InternalTransport transport = new InternalTransport();
       transport.setEmpFirstName(firstNameTextfield.getText());
