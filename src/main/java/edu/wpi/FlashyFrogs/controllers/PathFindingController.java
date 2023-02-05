@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.PathFinder;
@@ -32,7 +32,7 @@ public class PathFindingController {
   }
 
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     // session.find(LocationName.class, start.getText());
     // LocationName startPath = session.find(LocationName.class, start.getText());
     // LocationName endPath = session.find(LocationName.class, end.getText());
@@ -40,12 +40,11 @@ public class PathFindingController {
     String startPath = start.getText();
     String endPath = end.getText();
     // Transaction transaction = session.beginTransaction();
-    PathFinder pathFinder = new PathFinder(factory);
+    PathFinder pathFinder = new PathFinder(CONNECTION.getSessionFactory());
 
     try {
       pathText.setText(
-          "Path:\n"
-              + pathFinder.nodeListToLocation(pathFinder.findPath(startPath, endPath), session));
+          "Path:\n" + pathFinder.nodeListToLocation(pathFinder.findPath(startPath, endPath), session));
     } catch (NullPointerException e) {
       System.out.println("Error: No data in database");
     }
