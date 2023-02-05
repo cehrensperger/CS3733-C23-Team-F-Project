@@ -29,10 +29,10 @@ public class PathFinder {
    * @param nodes list of nodes to lookup
    * @return list of locations that were found
    */
-  public List<LocationName> nodeListToLocation(@NonNull List<Node> nodes) {
+  public List<LocationName> nodeListToLocation(@NonNull List<Node> nodes, @NonNull Session session) {
     List<LocationName> locations = new ArrayList<>();
     for (Node node : nodes) {
-      locations.add(node.getCurrentLocation());
+      locations.add(node.getCurrentLocation(session));
     }
     return locations;
   }
@@ -88,15 +88,8 @@ public class PathFinder {
       LocationName startLocation = longNameToLocation(start, session);
       LocationName endLocation = longNameToLocation(end, session);
 
-      transaction.commit();
-
-      session.close();
-
-      Node startNode = startLocation.getCurrentNode();
-      Node endNode = endLocation.getCurrentNode();
-
-      session = sessionFactory.openSession();
-      transaction = session.beginTransaction();
+      Node startNode = startLocation.getCurrentNode(session);
+      Node endNode = endLocation.getCurrentNode(session);
 
       // Find the path with A*
       path = aStar(startNode, endNode, session);

@@ -44,7 +44,7 @@ public class PathFindingController {
 
     try {
       pathText.setText(
-          "Path:\n" + pathFinder.nodeListToLocation(pathFinder.findPath(startPath, endPath)));
+          "Path:\n" + pathFinder.nodeListToLocation(pathFinder.findPath(startPath, endPath), session));
     } catch (NullPointerException e) {
       System.out.println("Error: No data in database");
     }
