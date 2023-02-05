@@ -10,8 +10,10 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Comparator;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.hibernate.Session;
@@ -41,6 +43,13 @@ public class TransportController extends ServiceRequestController {
 
   private SubmitInfo submitInfo;
 
+  class StringComparator implements Comparator<String> {
+    @Override
+    public int compare(String string1, String string2) {
+      return string1.compareTo(string2);
+    }
+  }
+
   /** Method run when controller is initializes */
   public void initialize() {
     // if connection is successful
@@ -53,8 +62,10 @@ public class TransportController extends ServiceRequestController {
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
-
-    newLocationComboBox.setItems(FXCollections.observableList(objects));
+    StringComparator stringComparator = new StringComparator();
+    ObservableList<String> observableList = FXCollections.observableList(objects);
+    observableList.sort(stringComparator);
+    newLocationComboBox.setItems(observableList);
     currentLocationComboBox.setItems(FXCollections.observableList(objects));
     session.close();
 
