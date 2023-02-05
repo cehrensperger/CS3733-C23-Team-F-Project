@@ -34,9 +34,6 @@ public class SecurityServiceController extends ServiceRequestController {
   @FXML private MFXTextField incidentReportEntry;
   @FXML private MFXComboBox locationEntry;
   @FXML private MFXDatePicker dateEntry;
-  @FXML private MFXTextField timeEntry;
-  @FXML private Text employeeInformationText;
-  @FXML private Text nameText;
   @FXML private MFXTextField firstEntry;
   @FXML private MFXTextField middleEntry;
   @FXML private MFXTextField lastEntry;
@@ -77,7 +74,6 @@ public class SecurityServiceController extends ServiceRequestController {
     incidentReportEntry.clear();
     locationEntry.clear();
     dateEntry.clear();
-    timeEntry.clear();
     firstEntry.clear();
     middleEntry.clear();
     lastEntry.clear();
@@ -174,7 +170,6 @@ public class SecurityServiceController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-
     Fapp.setScene("AllSecurityService");
   }
 }

@@ -3,20 +3,27 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.Main.factory;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.SubmitInfo;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.Security;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+
+import jakarta.persistence.RollbackException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.paint.Paint;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class TransportController extends ServiceRequestController {
   @FXML MFXTextField firstNameTextfield; // ID of the first name text field
@@ -41,12 +48,8 @@ public class TransportController extends ServiceRequestController {
 
   private Connection connection = null; // connection to database
 
-  private SubmitInfo submitInfo;
-
   /** Method run when controller is initializes */
   public void initialize() {
-
-    submitInfo = new SubmitInfo();
 
     Session session = factory.openSession();
     List<String> objects =
@@ -85,19 +88,68 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    submitInfo.setPatientFirstName(firstNameTextfield.getText());
-    submitInfo.setPatientLastName(lastNameTextfield.getText());
-    submitInfo.setPatientMiddleName(middleNameTextfield.getText());
-    submitInfo.setDOB(dateOfBirthDatePicker.getText());
-    submitInfo.setCurrentLocationInfo(currentLocationComboBox.getText());
-    submitInfo.setNewLocationInfo(newLocationComboBox.getText());
-    submitInfo.setDOT(dateOfTransportDatePicker.getText()); // Date of Transport
-    submitInfo.setEmployeeFirstName(firstNameTextfield2.getText());
-    submitInfo.setEmployeeLastName(lastNameTextfield2.getText());
-    submitInfo.setEmployeeMiddleName(middleNameTextfield2.getText());
-    submitInfo.setEmployeeDepartment(departmentComboBox.getText());
-    System.out.println(submitInfo.getDOB());
-    System.out.println(submitInfo.getPatientMiddleName());
+    Session session = factory.openSession();
+    Transaction transaction = session.beginTransaction();
+
+    try {
+      String[] parts = {};
+      String departmentEnumString = departmentComboBox.getText().toUpperCase();
+      String departmentEnumString2 = department2.getText().toUpperCase();
+      parts = urgencyEntry.getText().toUpperCase().split(" ");
+      String urgencyEnumString = parts[0] + "_" + parts[1];
+
+      if (firstEntry.getText().equals("")
+              || middleEntry.getText().equals("")
+              || lastEntry.getText().equals("")
+              || first2.getText().equals("")
+              || middle2.getText().equals("")
+              || last2.getText().equals("")
+              || department2.getText().equals("")
+              || departmentEntry.getText().equals("")
+              || dateEntry.getText().equals("")
+              || locationEntry.getText().equals("")
+              || incidentReportEntry.getText().equals("")) {
+        throw new NullPointerException();
+      }
+
+
+      Date dateOfIncident =
+              Date.from(dateEntry.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+      Security securityRequest = new Security();
+      securityRequest.setEmpFirstName(firstEntry.getText());
+      securityRequest.setEmpMiddleName(middleEntry.getText());
+      securityRequest.setEmpLastName(lastEntry.getText());
+      securityRequest.setAssignedEmpFirstName(first2.getText());
+      securityRequest.setAssignedEmpMiddleName(middle2.getText());
+      securityRequest.setAssignedEmpLastName(last2.getText());
+      securityRequest.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
+      securityRequest.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
+      securityRequest.setDateOfIncident(dateOfIncident);
+      securityRequest.setDateOfSubmission(Date.from(Instant.now()));
+      securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyEnumString));
+      securityRequest.setLocation(session.find(LocationName.class, locationEntry.getText()));
+      securityRequest.setIncidentReport(incidentReportEntry.getText());
+
+      try {
+        session.persist(securityRequest);
+        transaction.commit();
+        session.close();
+        handleClear(actionEvent);
+        errorMessage.setTextFill(Paint.valueOf("#44ff00"));
+        errorMessage.setText("Successfully submitted.");
+      } catch (RollbackException exception) {
+        session.clear();
+        errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+        errorMessage.setText("Please fill all fields.");
+        session.close();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      session.clear();
+      errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+      errorMessage.setText("Please fill all fields.");
+      session.close();
+    }
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -110,38 +162,4 @@ public class TransportController extends ServiceRequestController {
    *
    * @return True when connection is successful, False when failed
    */
-  private boolean connectToDB() {
-
-    try {
-      Class.forName(
-          "org.apache.derby.jdbc.ClientDriver"); // Check that proper driver is packaged for Apache
-      // Derby
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("NO DRIVER");
-      return false;
-    }
-    try {
-      // create Connection at specified URL
-      this.connection =
-          DriverManager.getConnection(
-              "jdbc:derby://localhost:1527/testDB;create=true",
-              "app",
-              "derbypass"); // This will change for each team as their DB is developed
-      if (this.connection != null) {
-        System.out.println("Connected to the database!");
-      } else {
-        System.out.println("Failed to make connection!");
-      }
-    } catch (SQLException e) {
-      System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-      return false;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
-    }
-
-    // connection successful, return true
-    return true;
-  }
 }
