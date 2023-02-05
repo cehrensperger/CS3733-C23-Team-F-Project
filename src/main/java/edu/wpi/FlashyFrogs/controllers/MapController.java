@@ -4,6 +4,10 @@ import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
@@ -16,11 +20,6 @@ import lombok.Setter;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-
 /**
  * Controller for the Map of the hospital. Provides utilities to make it useful for classes that may
  * want to use this. Listens for additions/removals of nodes/edges/locations in order to
@@ -28,22 +27,24 @@ import java.util.function.BiConsumer;
  */
 public class MapController {
   @FXML private Group group; // Group that will be used as display in the gesture pane
-  private Node.Floor floor = null; // The floor to display on the map. Starts as null, e.g., empty map, no floor
+  private Node.Floor floor =
+      null; // The floor to display on the map. Starts as null, e.g., empty map, no floor
   private @NonNull final Map<Edge, Line> edges =
       new HashMap<>(); // Map relating edge to the line it is represented by
   private @NonNull final Map<Node, Circle> nodes =
       new HashMap<>(); // Map relating node to the circle it is represented by
 
-  // Function that will be called when a new node is drawn. This is the place to add actions onto the node  (e.g.,
+  // Function that will be called when a new node is drawn. This is the place to add actions onto
+  // the node  (e.g.,
   // on drag, on click, on hover, etc)
-  @Setter
-  private BiConsumer<Node, Circle> nodeCreation;
+  @Setter private BiConsumer<Node, Circle> nodeCreation;
 
   /**
-   * Adds a node (in the JavaFX sense, NOT the ORM/map sense) to the map. This node will be cleared when the map
-   * has a floor change
-   * @param node the node to draw. A node can be essentially any sort of scene item. This should have positioning
-   *             already set so it renders correctly
+   * Adds a node (in the JavaFX sense, NOT the ORM/map sense) to the map. This node will be cleared
+   * when the map has a floor change
+   *
+   * @param node the node to draw. A node can be essentially any sort of scene item. This should
+   *     have positioning already set so it renders correctly
    */
   public void addNode(@NonNull javafx.scene.Node node) {
     group.getChildren().add(node);
@@ -51,6 +52,7 @@ public class MapController {
 
   /**
    * Removes a node (in the JavaFX sense, NOT the ORM/map sense) from the map
+   *
    * @param node the node to remove. A node can be essentially any sort of scene item
    * @throws IllegalArgumentException if the provided node does not exist in the map
    */
