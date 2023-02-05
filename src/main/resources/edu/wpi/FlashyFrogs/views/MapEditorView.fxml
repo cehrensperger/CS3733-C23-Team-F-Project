@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
+<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
    <children>
-      <MFXComboBox alignment="TOP_RIGHT" editable="false" promptText="Floor" fx:id="floorSe  lector"/>
-      <HBox fx:id="editorBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Floor:" />
+            <MFXComboBox fx:id="floorSelector" alignment="TOP_RIGHT" editable="false" promptText="Floor" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+      <HBox fx:id="editorBox" alignment="CENTER" VBox.vgrow="ALWAYS" />
    </children>
 </VBox>
