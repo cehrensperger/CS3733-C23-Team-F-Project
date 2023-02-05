@@ -191,8 +191,6 @@ public class PathFinder {
         }
       }
 
-      System.out.println("Checking node: " + q);
-
       if (q.node.equals(end)) { // if the current node is the goal
         List<Node> path = new LinkedList<>(); // create list of nodes to represent the path
         path.add(q.node); // add the end node
