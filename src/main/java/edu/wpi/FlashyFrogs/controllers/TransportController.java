@@ -16,7 +16,7 @@ import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Comparator;
+import java.util.Comparator.*;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,7 +94,7 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
     //    try {
