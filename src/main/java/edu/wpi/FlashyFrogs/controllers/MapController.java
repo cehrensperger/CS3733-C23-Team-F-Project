@@ -104,7 +104,7 @@ public class MapController {
       List<Edge> edges =
           mapUpdateSession
               .createQuery(
-                  "FROM Edge WHERE node1.floor = :floor OR node2.floor = :floor", Edge.class)
+                  "FROM Edge WHERE node1.floor = :floor AND node2.floor = :floor", Edge.class)
               .setParameter("floor", floor)
               .getResultList();
 
