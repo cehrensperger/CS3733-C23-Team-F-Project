@@ -35,6 +35,9 @@ public class HomeController {
 
   @FXML
   public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+
     HelpController help = new HelpController();
     help.handleQHome();
 
