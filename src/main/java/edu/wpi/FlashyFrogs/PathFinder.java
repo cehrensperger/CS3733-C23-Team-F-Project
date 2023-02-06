@@ -29,7 +29,8 @@ public class PathFinder {
    * @param nodes list of nodes to lookup
    * @return list of locations that were found
    */
-  public List<LocationName> nodeListToLocation(@NonNull List<Node> nodes, @NonNull Session session) {
+  public List<LocationName> nodeListToLocation(
+      @NonNull List<Node> nodes, @NonNull Session session) {
     List<LocationName> locations = new ArrayList<>();
     for (Node node : nodes) {
       locations.add(node.getCurrentLocation(session));

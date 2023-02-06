@@ -20,23 +20,23 @@
             </Text>
             <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Text fx:id="t1" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0">
+                  <Text fx:id="e1" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Text>
-                  <Text fx:id="t2" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t3" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t4" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t5" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t6" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t7" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t8" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t9" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t10" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t11" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t12" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
-                  <Text fx:id="t13" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="585.0" />
+                  <Text fx:id="e2" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e3" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e4" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e5" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e6" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e7" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e8" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e9" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e10" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e11" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e12" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
+                  <Text fx:id="e13" strokeType="OUTSIDE" strokeWidth="0.0" text="here" wrappingWidth="585.0" />
                </children>
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
