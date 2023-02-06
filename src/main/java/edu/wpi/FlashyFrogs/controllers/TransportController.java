@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
@@ -16,8 +16,10 @@ import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Comparator;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -53,11 +55,13 @@ public class TransportController extends ServiceRequestController {
   /** Method run when controller is initializes */
   public void initialize() {
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
-
-    newLocationComboBox.setItems(FXCollections.observableList(objects));
+    StringComparator stringComparator = new StringComparator();
+    ObservableList<String> observableList = FXCollections.observableList(objects);
+    observableList.sort(stringComparator);
+    newLocationComboBox.setItems(observableList);
     currentLocationComboBox.setItems(FXCollections.observableList(objects));
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     departmentComboBox.getItems().addAll("Cardiology", "Radiology", "Trauma Unit");

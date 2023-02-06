@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -15,7 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 public class Fapp extends Application {
 
   @Setter @Getter private static Stage primaryStage;
-  @Setter @Getter private static BorderPane rootPane;
+  @Setter @Getter private static Pane rootPane;
+
 
   @Override
   public void init() {
@@ -27,9 +29,8 @@ public class Fapp extends Application {
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
 
-    final FXMLLoader loader =
-        new FXMLLoader(Fapp.class.getResource("views/AllAudioVisualRequest.fxml"));
-    final BorderPane root = loader.load();
+    final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Home.fxml"));
+    final Pane root = loader.load();
 
     Fapp.rootPane = root;
 

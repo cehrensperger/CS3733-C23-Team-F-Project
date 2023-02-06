@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
@@ -56,7 +56,7 @@ public class SecurityServiceController extends ServiceRequestController {
     departmentEntry.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
     department2.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
 
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
@@ -93,7 +93,7 @@ public class SecurityServiceController extends ServiceRequestController {
    */
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
     try {

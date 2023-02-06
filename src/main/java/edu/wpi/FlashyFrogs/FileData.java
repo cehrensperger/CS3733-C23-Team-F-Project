@@ -1,25 +1,48 @@
 package edu.wpi.FlashyFrogs;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileData {
-  private List<File> files;
+  private File nodesFile;
+  private File edgesFile;
+  private File locationsFile;
+  private File movesFile;
 
-  public FileData() {
-    this.files = new ArrayList<>();
+  public FileData() {}
+
+  public File getNodesFile() {
+    return nodesFile;
   }
 
-  public void addFile(File file) {
-    this.files.add(file);
+  public File getEdgesFile() {
+    return edgesFile;
   }
 
-  public boolean correctNumOfFiles() {
-    return files.size() == 4;
+  public File getLocationsFile() {
+    return locationsFile;
   }
 
-  public List<File> getFiles() {
-    return files;
+  public File getMovesFile() {
+    return movesFile;
+  }
+
+  public void setNodesFile(File nodesFile) {
+    this.nodesFile = nodesFile;
+  }
+
+  public void setEdgesFile(File edgesFile) {
+    this.edgesFile = edgesFile;
+  }
+
+  public void setLocationsFile(File locationsFile) {
+    this.locationsFile = locationsFile;
+  }
+
+  public void setMovesFile(File movesFile) {
+    this.movesFile = movesFile;
+  }
+
+  public boolean allFilesChosen() {
+    return nodesFile != null && edgesFile != null && locationsFile != null && movesFile != null;
   }
 }
