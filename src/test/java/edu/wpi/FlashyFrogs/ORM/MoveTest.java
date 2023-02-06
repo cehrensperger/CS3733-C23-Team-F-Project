@@ -40,7 +40,7 @@ public class MoveTest {
   @Test
   void testHashCode() {
     int originalHash = testMove.hashCode();
-    testMove.setNode(new Node("OtherTest", "SecondBuilding", Node.Floor.G, 0, 10));
+    testMove.setNode(new Node("OtherTest", "SecondBuilding", Node.Floor.L1, 0, 10));
     testMove.setLocation(
         new LocationName("DifferentLong", LocationName.LocationType.DEPT, "NewShort"));
     testMove.setMoveDate(new Date(2023 - 2 - 1));
@@ -63,7 +63,7 @@ public class MoveTest {
   /** Tests setter for Node */
   @Test
   void setNode() {
-    Node newNode = new Node("NewNode", "NewBuilding", Node.Floor.G, 10, 10);
+    Node newNode = new Node("NewNode", "NewBuilding", Node.Floor.L2, 10, 10);
     testMove.setNode(newNode);
     assertEquals(newNode, testMove.getNode());
   }
