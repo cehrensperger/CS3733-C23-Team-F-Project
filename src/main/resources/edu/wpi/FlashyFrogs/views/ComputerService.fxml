@@ -4,13 +4,14 @@
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SecurityServiceController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.ComputerServiceController">
    <top>
       <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="IT Service Request Form" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -26,6 +27,7 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="800.0">
                <children>
+                  <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="810.0" textAlignment="CENTER" />
                   <Text fx:id="incidentReportText" strokeType="OUTSIDE" strokeWidth="0.0" text="Issue:" wrappingWidth="306.7578125">
                      <font>
                         <Font size="24.0" />
@@ -169,7 +171,7 @@
                      <children>
                         <HBox alignment="BOTTOM_LEFT" prefHeight="47.0" prefWidth="470.0">
                            <children>
-                              <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Security Service Forms" />
+                              <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Computer Service Requests" />
                            </children>
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" />
