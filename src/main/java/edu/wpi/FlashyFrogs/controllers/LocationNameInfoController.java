@@ -3,12 +3,11 @@ package edu.wpi.FlashyFrogs.controllers;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.util.concurrent.atomic.AtomicReference;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import lombok.NonNull;
 import org.hibernate.Session;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class LocationNameInfoController {
   @FXML private MFXTextField locationNameField;
@@ -31,9 +30,10 @@ public class LocationNameInfoController {
         .textProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-                // Create the new location (on update cascade ☹️)
-                location.set(LocationName.updateLongName(location.get(), newValue,
-                        session)); // Save the new location as the reference
+              // Create the new location (on update cascade ☹️)
+              location.set(
+                  LocationName.updateLongName(
+                      location.get(), newValue, session)); // Save the new location as the reference
             });
 
     // Set the items for the combobox
