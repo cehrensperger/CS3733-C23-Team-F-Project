@@ -1,7 +1,8 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+// import static edu.wpi.FlashyFrogs.Main.factory;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ComputerService;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
@@ -36,11 +37,36 @@ public class ComputerServiceController extends ServiceRequestController {
   @FXML private Label errorMessage;
 
   @FXML
-  public void initialize() {}
+  public void initialize() {
+    ServiceRequest.Urgency[] urgencies = ServiceRequest.Urgency.values();
+    System.out.println(urgencies.length);
+    for (int i = 0; i < urgencies.length; i++) {
+      urgencyEntry.getItems().add(urgencies[i].toString().replace("_", " ").toLowerCase());
+    }
+
+    ComputerService.DeviceType[] deviceTypes = ComputerService.DeviceType.values();
+    System.out.println(deviceTypes.length);
+    for (int i = 0; i < deviceTypes.length; i++) {
+      deviceType.getItems().add(deviceTypes[i].toString().replace("_", " ").toLowerCase());
+    }
+
+    ComputerService.ServiceType[] serviceTypes = ComputerService.ServiceType.values();
+    System.out.println(serviceTypes.length);
+    for (int i = 0; i < serviceTypes.length; i++) {
+      accommodationType.getItems().add(serviceTypes[i].toString().replace("_", " ").toLowerCase());
+    }
+
+    ServiceRequest.EmpDept[] depts = ServiceRequest.EmpDept.values();
+    System.out.println(depts.length);
+    for (int i = 0; i < depts.length; i++) {
+      departmentEntry.getItems().add(depts[i].toString().replace("_", " ").toLowerCase());
+      department2.getItems().add(depts[i].toString().replace("_", " ").toLowerCase());
+    }
+  }
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    // Fapp.setScene("AllComputerService");
+    Fapp.setScene("AllComputerServiceRequest");
   }
 
   @FXML
@@ -62,7 +88,7 @@ public class ComputerServiceController extends ServiceRequestController {
 
   @FXML
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    Session session = factory.openSession();
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
     try {
@@ -89,12 +115,11 @@ public class ComputerServiceController extends ServiceRequestController {
 
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       String deviceTypeEnumString = deviceType.getText().toUpperCase().replace(" ", "_");
-      String serviceTypeEnumString =
-          accommodationType.getTypeSelector().toUpperCase().replace(" ", "_");
+      String serviceTypeEnumString = accommodationType.getText().toUpperCase().replace(" ", "_");
       // Date dateOfIncident =
       //        Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      ComputerService sanitationRequest =
+      ComputerService computerService =
           new ComputerService(
               firstEntry.getText(),
               middleEntry.getText(),
@@ -112,7 +137,7 @@ public class ComputerServiceController extends ServiceRequestController {
               issueDescription.getText(),
               ComputerService.ServiceType.valueOf(serviceTypeEnumString));
       try {
-        session.persist(sanitationRequest);
+        session.persist(computerService);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
