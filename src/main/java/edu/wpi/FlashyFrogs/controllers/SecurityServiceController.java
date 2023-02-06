@@ -98,7 +98,8 @@ public class SecurityServiceController extends ServiceRequestController {
 
     try {
       String[] parts = {};
-      String departmentEnumString = departmentEntry.getText().toUpperCase();
+      String departmentEnumString = departmentEntry.getText().toUpperCase().replace(" ", "_");
+      String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       parts = urgencyEntry.getText().toUpperCase().split(" ");
       String urgencyEnumString = parts[0] + "_" + parts[1];
 
@@ -115,8 +116,6 @@ public class SecurityServiceController extends ServiceRequestController {
           || incidentReportEntry.getText().equals("")) {
         throw new NullPointerException();
       }
-
-      String departmentEnumString2 = department2.getText().toUpperCase();
 
       Date dateOfIncident =
           Date.from(dateEntry.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());

@@ -28,7 +28,7 @@
             <children>
                 <VBox prefHeight="200.0" prefWidth="800.0">
                     <children>
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="828.0" textAlignment="CENTER" textFill="RED">
+                  <Label fx:id="errorMessage" alignment="CENTER" prefHeight="17.0" prefWidth="828.0" textAlignment="CENTER" textFill="RED">
                      <font>
                         <Font size="18.0" />
                      </font>

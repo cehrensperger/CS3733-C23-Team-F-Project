@@ -136,7 +136,8 @@ public class ServiceRequest {
     NURSING("nursing"),
     CARDIOLOGY("cardiology"),
     RADIOLOGY("radiology"),
-    MAINTENANCE("maintenance");
+    MAINTENANCE("maintenance"),
+    TRAUMA_UNIT("trauma unit");
 
     @NonNull public final String EmpDept;
 

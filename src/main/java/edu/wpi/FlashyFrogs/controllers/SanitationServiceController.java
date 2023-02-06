@@ -98,7 +98,8 @@ public class SanitationServiceController extends ServiceRequestController {
 
     try {
       String[] parts = {};
-      String departmentEnumString = departmentDropDown.getText().toUpperCase();
+      String departmentEnumString = departmentDropDown.getText().toUpperCase().replace(" ", "_");
+      String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       parts = urgencyEntry.getText().toUpperCase().split(" ");
       String urgencyEnumString = parts[0] + "_" + parts[1];
 
@@ -116,7 +117,6 @@ public class SanitationServiceController extends ServiceRequestController {
         throw new NullPointerException();
       }
 
-      String departmentEnumString2 = department2.getText().toUpperCase();
       String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
 
       Date dateOfIncident =

@@ -1,6 +1,9 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -74,7 +77,6 @@ public class Node {
   public enum Floor {
     L2("L2"),
     L1("L1"),
-    G("G"),
     ONE("1"),
     TWO("2"),
     THREE("3");
@@ -88,6 +90,13 @@ public class Node {
      */
     Floor(@NonNull String floor) {
       floorNum = floor; // The floor to create
+    }
+
+    public static Floor getEnum(String value) {
+      for(Floor f : Floor.values()) {
+        if (f.floorNum == value) return f;
+      }
+      return null;
     }
   }
 
