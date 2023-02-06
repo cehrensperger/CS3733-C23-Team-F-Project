@@ -63,7 +63,8 @@ public class LocationName {
     CONF("CONF"),
     EXIT("EXIT"),
     RETL("RETL"),
-    SERV("SERV");
+    SERV("SERV"),
+    BATH("BATH");
 
     @NonNull public final String name; // Name backing for the type of location this is
 
