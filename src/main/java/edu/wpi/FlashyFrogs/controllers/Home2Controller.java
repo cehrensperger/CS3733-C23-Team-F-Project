@@ -9,7 +9,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class HomeController {
+public class Home2Controller {
 
   @FXML private StackPane rootPane;
   @FXML private MFXButton serviceRequestsButton;
@@ -19,7 +19,7 @@ public class HomeController {
   @FXML private MenuItem closeMenuItem;
   @FXML private MenuItem loadMapMenuItem;
   @FXML private MenuItem loadFeedbackMenuItem;
-  @FXML private MFXButton hiddneButton;
+  @FXML private MFXButton secretButton;
 
   Stage stage;
 
@@ -68,6 +68,6 @@ public class HomeController {
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home2");
+    Fapp.setScene("Home");
   }
 }
