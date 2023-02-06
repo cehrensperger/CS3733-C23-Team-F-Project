@@ -112,6 +112,7 @@ public class LocationNameTest {
   @Test
   public void locationNotPersistedTest() {
     assertNull(testLocName.getCurrentNode()); // Assert the test loc has a null location
+    assertNull(testLocName.getCurrentNode(session)); // Assert the test loc has a null location
   }
 
   /** Tests that a location with no mapping in move does not return a node */
@@ -125,6 +126,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit
 
     assertNull(testLocation.getCurrentNode());
+    assertNull(testLocation.getCurrentNode(session));
   }
 
   /**
@@ -146,6 +148,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit
 
     assertNull(location.getCurrentNode()); // Assert the location is null
+    assertNull(location.getCurrentNode(session)); // Assert the location is null
   }
 
   /** Tests that if the correct node is remapped, null is returned */
@@ -167,6 +170,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit
 
     assertNull(theLocation.getCurrentNode()); // Assert the location is null
+    assertNull(theLocation.getCurrentNode(session)); // Assert the location is null
   }
 
   /**
@@ -196,6 +200,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit
 
     assertNull(theLocation.getCurrentNode()); // Assert the location is null
+    assertNull(theLocation.getCurrentNode(session)); // Assert the location is null
   }
 
   /** Tests that a simple mapping (one location, one node) works as expected */
@@ -213,6 +218,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit the transaction
 
     assertEquals(node, location.getCurrentNode()); // Assert the location is valid
+    assertEquals(node, location.getCurrentNode(session)); // Assert the location is valid
   }
 
   /** Tests that old mappings of the location -> a node are ignored */
@@ -234,6 +240,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit everything
 
     assertEquals(theNode, location.getCurrentNode()); // Check that the location is correct
+    assertEquals(theNode, location.getCurrentNode(session)); // Check that the location is correct
   }
 
   /** Tests that old mappings of a node -> the location are ignored */
@@ -260,6 +267,8 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit everything
 
     assertEquals(node, currentLocation.getCurrentNode()); // Assert the correct location is gotten
+    assertEquals(
+        node, currentLocation.getCurrentNode(session)); // Assert the correct location is gotten
   }
 
   /** Test for a case where the location is remapped in the future */
@@ -293,6 +302,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit the transaction
 
     assertEquals(currentNode, location.getCurrentNode()); // Assert the location is right
+    assertEquals(currentNode, location.getCurrentNode(session)); // Assert the location is right
   }
 
   /** Tests for a case where the node is remapped in the future, ignores the future locations */
@@ -321,6 +331,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit the transaction
 
     assertEquals(node, currentLocation.getCurrentNode()); // Assert the location is right
+    assertEquals(node, currentLocation.getCurrentNode(session)); // Assert the location is right
   }
 
   /**
@@ -362,5 +373,7 @@ public class LocationNameTest {
     commitTransaction.commit(); // Commit the transaction
 
     assertEquals(correctNode, correctLocation.getCurrentNode()); // Assert the location is right
+    assertEquals(
+        correctNode, correctLocation.getCurrentNode(session)); // Assert the location is right
   }
 }

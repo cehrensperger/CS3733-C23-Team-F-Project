@@ -71,7 +71,7 @@ public class CSVParser {
             new Node(
                 fields[0], // ID
                 fields[4], // Building
-                Node.Floor.valueOf(fields[3]), // Floor
+                Node.Floor.getEnum(fields[3]), // Floor
                 Integer.parseInt(fields[1]), // X-Coord
                 Integer.parseInt(fields[2])); // Y-Coord
         nodes.put(fields[0], node); // Put the node into the table with its ID

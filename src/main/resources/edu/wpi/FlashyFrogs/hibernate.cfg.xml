@@ -29,7 +29,7 @@
 
         <!-- Drop and re-create the database schema on startup -->
 
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
 
         <mapping class="edu.wpi.FlashyFrogs.ORM.Edge"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Move"/>
@@ -37,6 +37,8 @@
         <mapping class="edu.wpi.FlashyFrogs.ORM.Security"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Sanitation"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.InternalTransport"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.ComputerService"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.AudioVisual"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
 
