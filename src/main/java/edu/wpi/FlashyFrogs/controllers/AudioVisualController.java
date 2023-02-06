@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.AudioVisual;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -18,8 +19,11 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -41,6 +45,8 @@ public class AudioVisualController extends ServiceRequestController {
   @FXML private MFXTextField assignedEmpLast;
   @FXML private MFXComboBox assignedEmpDeptEntry;
   @FXML private Label errorMessage;
+
+  @FXML private MFXButton question;
 
   public void initialize() {
     ServiceRequest.EmpDept[] depts = ServiceRequest.EmpDept.values();
@@ -169,5 +175,19 @@ public class AudioVisualController extends ServiceRequestController {
       errorMessage.setText("Please fill all fields.");
       session.close();
     }
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQIT();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 }

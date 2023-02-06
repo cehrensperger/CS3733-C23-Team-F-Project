@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ComputerService;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import jakarta.persistence.RollbackException;
@@ -14,8 +15,11 @@ import java.time.Instant;
 import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -35,6 +39,8 @@ public class ComputerServiceController extends ServiceRequestController {
   @FXML private MFXTextField last2;
   @FXML private MFXComboBox department2;
   @FXML private Label errorMessage;
+
+  @FXML private MFXButton question;
 
   @FXML
   public void initialize() {
@@ -159,5 +165,19 @@ public class ComputerServiceController extends ServiceRequestController {
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQAudioVisual();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 }
