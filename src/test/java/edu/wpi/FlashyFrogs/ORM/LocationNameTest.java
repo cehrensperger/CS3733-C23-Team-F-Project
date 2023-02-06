@@ -154,7 +154,7 @@ public class LocationNameTest {
   /** Tests that if the correct node is remapped, null is returned */
   @Test
   public void nodeRemappedTest() {
-    Node thisNode = new Node("n", "g", Node.Floor.G, 99, 100); // Random node
+    Node thisNode = new Node("n", "g", Node.Floor.L2, 99, 100); // Random node
     LocationName theLocation = new LocationName("a", LocationName.LocationType.SERV, "b");
     LocationName otherLocation = new LocationName("b", LocationName.LocationType.REST, "b");
     Move oldMove = new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(1))); // Old move
@@ -308,7 +308,7 @@ public class LocationNameTest {
   /** Tests for a case where the node is remapped in the future, ignores the future locations */
   @Test
   public void nodeRemappedInFuture() {
-    Node node = new Node("n", "b", Node.Floor.G, 0, 0); // Create the node
+    Node node = new Node("n", "b", Node.Floor.THREE, 0, 0); // Create the node
     LocationName currentLocation = new LocationName("curr", LocationName.LocationType.CONF, "cur");
     LocationName futureLocation = new LocationName("fut", LocationName.LocationType.ELEV, "f");
     LocationName furtherFut = new LocationName("ff", LocationName.LocationType.SERV, "");
