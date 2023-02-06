@@ -105,7 +105,7 @@ public class MapEditorController {
   private void createLocationNameTable() {
     Session session = CONNECTION.getSessionFactory().openSession();
     List<LocationName> longNames =
-        session.createQuery("SELECT s FROM LocationName s", LocationName.class).getResultList();
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
     ObservableList<LocationName> longNamesObservableList = FXCollections.observableList(longNames);
     session.close();
     locationTable.getItems().addAll(longNamesObservableList);
