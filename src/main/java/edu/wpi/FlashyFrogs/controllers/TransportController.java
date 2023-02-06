@@ -10,13 +10,12 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.Comparator.*;
+import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -58,9 +57,9 @@ public class TransportController extends ServiceRequestController {
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
-    StringComparator stringComparator = new StringComparator();
+    // StringComparator stringComparator = new StringComparator();
     ObservableList<String> observableList = FXCollections.observableList(objects);
-    observableList.sort(stringComparator);
+    // observableList.sort(stringComparator);
     newLocationComboBox.setItems(observableList);
     currentLocationComboBox.setItems(FXCollections.observableList(objects));
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
@@ -119,30 +118,27 @@ public class TransportController extends ServiceRequestController {
         || newLocationComboBox.getText().equals("")) {
       throw new NullPointerException();
     }
-      if (firstNameTextfield.getText().equals("")
-          || middleNameTextfield.getText().equals("")
-          || lastNameTextfield.getText().equals("")
-          || first2.getText().equals("")
-          || middle2.getText().equals("")
-          || last2.getText().equals("")
-          || department2.getText().equals("")
-          || departmentComboBox.getText().equals("")
-          || dateOfTransportDatePicker.getText().equals("")
-          || dateOfBirthDatePicker.getText().equals("")
-          || currentLocationComboBox.getText().equals("")
-          || newLocationComboBox.getText().equals("")) {
-        throw new NullPointerException();
-      }
+    if (firstNameTextfield.getText().equals("")
+        || middleNameTextfield.getText().equals("")
+        || lastNameTextfield.getText().equals("")
+        || first2.getText().equals("")
+        || middle2.getText().equals("")
+        || last2.getText().equals("")
+        || department2.getText().equals("")
+        || departmentComboBox.getText().equals("")
+        || dateOfTransportDatePicker.getText().equals("")
+        || dateOfBirthDatePicker.getText().equals("")
+        || currentLocationComboBox.getText().equals("")
+        || newLocationComboBox.getText().equals("")) {
+      throw new NullPointerException();
+    }
 
-      Date dateOfTransport =
-          Date.from(
-              dateOfTransportDatePicker
-                  .getValue()
-                  .atStartOfDay(ZoneId.systemDefault())
-                  .toInstant());
-      Date dateOfBirth =
-          Date.from(
-              dateOfBirthDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    Date dateOfTransport =
+        Date.from(
+            dateOfTransportDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    Date dateOfBirth =
+        Date.from(
+            dateOfBirthDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
     InternalTransport transport = new InternalTransport();
     transport.setEmpFirstName(firstNameTextfield2.getText());
