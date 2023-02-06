@@ -1,9 +1,8 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
-
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.io.IOException;
 import java.util.List;
@@ -17,18 +16,20 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.util.Callback;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 public class MapEditorController {
-  public MFXComboBox<Node.Floor> floorSelector;
-  @FXML private HBox editorBox; // Editor box, map is appended to this on startup
+  @FXML private MFXButton cancelButton;
+  @FXML private MFXButton saveButton;
+  @FXML private MFXComboBox<Node.Floor> floorSelector;
+  @FXML private BorderPane editorBox; // Editor box, map is appended to this on startup
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
 
@@ -80,7 +81,8 @@ public class MapEditorController {
                         LocationNameInfoController controller =
                             locationNameLoader.getController(); // Get the controller
                         controller.setLocationName(
-                            row.getItem()); // Set the location name to the value
+                            row.getItem(),
+                            mapController.getMapSession()); // Set the location name to the value
 
                         tablePopOver.get().show(row); // Show the pop-over on the row
                       }
@@ -90,15 +92,18 @@ public class MapEditorController {
           }
         });
 
-    createLocationNameTable();
-
     // Load the map loader
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(getClass().getResource("../views/Map.fxml")));
 
     Pane map = mapLoader.load(); // Load the map
-    editorBox.getChildren().add(map); // Put the map loader into the editor box
+    editorBox.setCenter(map); // Put the map loader into the editor box
+
     mapController = mapLoader.getController(); // Load the map controller
+
+    createLocationNameTable(
+        mapController.getMapSession()); // Create the table using the map session
+
     AtomicReference<PopOver> mapPopOver =
         new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
@@ -133,15 +138,12 @@ public class MapEditorController {
 
                       NodeInfoController controller =
                           nodeInfoLoader.getController(); // Get the controller to use
-                      controller.setNode(node); // Set the node
+                      controller.setNode(node, mapController.getMapSession()); // Set the node
 
                       mapPopOver.get().show(circle); // Show the pop-over
                     }
                   });
         });
-
-    // Set the map to take all available space
-    HBox.setHgrow(map, Priority.ALWAYS);
 
     floorSelector
         .getItems()
@@ -153,15 +155,21 @@ public class MapEditorController {
         .addListener((observable, oldValue, newValue) -> mapController.setFloor(newValue));
   }
 
-  private void createLocationNameTable() {
-    Session session = CONNECTION.getSessionFactory().openSession();
+  /**
+   * Creates the location name table, first clearing existing entries, then updating them
+   *
+   * @param session the session to use in querying
+   */
+  private void createLocationNameTable(@NonNull Session session) {
+    locationTable.getItems().clear(); // Clear the table
+
     List<LocationName> longNames =
         session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
-    // Remove all locations that are have a node associated with them
-    ObservableList<LocationName> longNamesObservableList = FXCollections.observableList(longNames);
+    ObservableList<LocationName> longNamesObservableList =
+        FXCollections.observableList(longNames); // Create the list
 
-    session.close();
+    // Add the list to the table
     locationTable.getItems().addAll(longNamesObservableList);
   }
 }

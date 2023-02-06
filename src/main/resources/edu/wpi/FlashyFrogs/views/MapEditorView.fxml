@@ -1,31 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
-   <children>
-      <HBox alignment="CENTER_RIGHT" spacing="25.0">
+<BorderPane fx:id="editorBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
+         <top>
+            <HBox alignment="CENTER_RIGHT" spacing="25.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Floor:" />
+                  <MFXComboBox fx:id="floorSelector" alignment="TOP_RIGHT" editable="false" promptText="Floor" />
+               </children>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+            </HBox>
+         </top>
+         <left>
+            <TableView fx:id="locationTable" BorderPane.alignment="CENTER">
+               <columns>
+                  <TableColumn fx:id="longName" prefWidth="247.0" text="Long Name" />
+               </columns>
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+            </TableView>
+         </left>
+   <bottom>
+      <HBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Floor:" />
-            <MFXComboBox fx:id="floorSelector" alignment="TOP_RIGHT" editable="false" promptText="Floor" />
+            <MFXButton fx:id="cancelButton" text="Cancel" />
+            <MFXButton fx:id="saveButton" text="Save" />
          </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin>
       </HBox>
-      <HBox fx:id="editorBox" alignment="CENTER" spacing="30" VBox.vgrow="ALWAYS">
-         <TableView fx:id="locationTable" BorderPane.alignment="CENTER">
-            <columns>
-               <TableColumn fx:id="longName" prefWidth="247.0" text="Long Name" />
-            </columns>
-         </TableView>
-      </HBox>
-   </children>
-</VBox>
+   </bottom>
+</BorderPane>
