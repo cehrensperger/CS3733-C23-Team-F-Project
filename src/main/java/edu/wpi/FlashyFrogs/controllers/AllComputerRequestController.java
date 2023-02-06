@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,10 +20,11 @@ import javafx.util.Callback;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class AllAudioVisualRequestController extends AllRequestsController {
-  @FXML
+public class AllComputerRequestController extends AllRequestsController {
+  @FXML private MFXButton back;
+
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AudioVisualService");
+    Fapp.setScene("ComputerService");
   }
 
   public void initialize() {
@@ -46,7 +48,9 @@ public class AllAudioVisualRequestController extends AllRequestsController {
     // Sanitation sanitationRequest = new Sanitation();
 
     List<ServiceRequest> objects =
-        session.createQuery("SELECT s FROM AudioVisual s", ServiceRequest.class).getResultList();
+        session
+            .createQuery("SELECT s FROM ComputerService s", ServiceRequest.class)
+            .getResultList();
     System.out.println(objects.size());
     System.out.println(FXCollections.observableList(objects).size());
     tableView.setItems(FXCollections.observableList(objects));
