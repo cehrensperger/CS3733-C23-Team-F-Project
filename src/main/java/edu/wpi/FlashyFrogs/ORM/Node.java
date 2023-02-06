@@ -76,7 +76,6 @@ public class Node {
   public enum Floor {
     L2("L2"),
     L1("L1"),
-    G("G"),
     ONE("1"),
     TWO("2"),
     THREE("3");
@@ -90,6 +89,14 @@ public class Node {
      */
     Floor(@NonNull String floor) {
       floorNum = floor; // The floor to create
+    }
+
+    public static Floor getEnum(String value) {
+      for (Floor f : Floor.values()) {
+
+        if (f.floorNum.equals(value)) return f;
+      }
+      return null;
     }
   }
 

@@ -83,7 +83,7 @@ public class PathFinderTest {
     // Start location
     LocationName startLocation = new LocationName("start", LocationName.LocationType.INFO, "s");
 
-    Node startNode = new Node("s", "b", Node.Floor.G, 0, 0); // Start node
+    Node startNode = new Node("s", "b", Node.Floor.L2, 0, 0); // Start node
 
     // Create the move relating the two
     Move startMove = new Move(startNode, startLocation, new Date());
@@ -135,7 +135,7 @@ public class PathFinderTest {
     LocationName endLocation = new LocationName("end", LocationName.LocationType.INFO, "e");
 
     // Create the start node
-    Node startNode = new Node("startNode", "b", Node.Floor.G, 0, 0);
+    Node startNode = new Node("startNode", "b", Node.Floor.THREE, 0, 0);
 
     // Create a move relating the start node to the start
     Move startToStartNode = new Move(startNode, startLocation, new Date());
@@ -161,7 +161,7 @@ public class PathFinderTest {
   @Test
   public void pathDoesNotExistTest() {
     // Nodes
-    Node nodeOne = new Node("start", "something", Node.Floor.G, 0, 0);
+    Node nodeOne = new Node("start", "something", Node.Floor.TWO, 0, 0);
     Node nodeTwo = new Node("end", "something", Node.Floor.THREE, 100, 100);
 
     // Locations for the nodes
@@ -254,8 +254,8 @@ public class PathFinderTest {
   @Test
   public void picksCorrectMoveTest() {
     // Create the real start and end
-    Node realStart = new Node("realStart", "b", Node.Floor.G, 0, 0);
-    Node realEnd = new Node("realEnd", "b", Node.Floor.G, 1, 1);
+    Node realStart = new Node("realStart", "b", Node.Floor.L2, 0, 0);
+    Node realEnd = new Node("realEnd", "b", Node.Floor.L1, 1, 1);
 
     // Bad start and end
     Node badStart = new Node("badStart", "g", Node.Floor.L2, 50, 50);
@@ -375,8 +375,8 @@ public class PathFinderTest {
             DBConnection.CONNECTION.getSessionFactory()); // Create the path finder right away
 
     // Nodes
-    Node start = new Node("start", "b", Node.Floor.G, 0, 0);
-    Node end = new Node("end", "b", Node.Floor.G, 10, 10);
+    Node start = new Node("start", "b", Node.Floor.THREE, 0, 0);
+    Node end = new Node("end", "b", Node.Floor.TWO, 10, 10);
 
     // Edge from start to end
     Edge startToEndEdge = new Edge(start, end);

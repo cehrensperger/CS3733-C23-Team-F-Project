@@ -1,17 +1,18 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
-import java.util.*;
+import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-@Table(name = "InternalTransport")
+@Table(name = "AudioVisual")
 @PrimaryKeyJoinColumn(
     name = "service_request_id",
     foreignKey = @ForeignKey(name = "service_request_id_fk"))
-public class InternalTransport extends ServiceRequest {
+public class AudioVisual extends ServiceRequest {
+
   @Basic
   @Column(nullable = false)
   @NonNull
@@ -36,19 +37,19 @@ public class InternalTransport extends ServiceRequest {
   @Getter
   @Setter
   @JoinColumn(
-      name = "oldLoc",
+      name = "location",
       foreignKey = @ForeignKey(name = "location_name1_fk"),
       nullable = false)
   @NonNull
   @ManyToOne
-  LocationName oldLoc;
+  LocationName location;
 
+  @Basic
+  @Column(nullable = false)
+  @NonNull
   @Getter
   @Setter
-  @JoinColumn(name = "newLoc", foreignKey = @ForeignKey(name = "location_name2_fk"))
-  @NonNull
-  @ManyToOne
-  LocationName newLoc;
+  AccommodationType accommodationType;
 
   @Column(nullable = false)
   @NonNull
@@ -57,21 +58,14 @@ public class InternalTransport extends ServiceRequest {
   @Setter
   Date dateOfBirth;
 
-  /** Creates a new InternalTransport with a generated id */
-  public InternalTransport() {
+  /** Creates a new AudioVisual with a generated id */
+  public AudioVisual() {
     this.status = Status.BLANK;
-    this.requestType = "InternalTransport";
+    this.requestType = "AudioVisual";
   }
-
   /**
-   * Creates a new InternalTransport with a generated id and the specified fields
+   * Creates a new AudioVisual with a generated id and the specified fields
    *
-   * @param theDOB the Date to use in the DOB field
-   * @param theNewLoc the LocationName to use in the newLoc field
-   * @param theOldLoc the LocationName to use in the oldLoc field
-   * @param thePatientFirstName the String to use in the patientFirstName field
-   * @param thePatientMiddleName the String to use in the patientMiddleName field
-   * @param thePatientLastName the String to use in the patientlastName field
    * @param empFirstName the String to use in the empFirstName field
    * @param empMiddleName the String to use in the empMiddleName field
    * @param empLastName the String to use in the empLastName field
@@ -83,14 +77,14 @@ public class InternalTransport extends ServiceRequest {
    * @param dateOfIncident the Date to use in the dateOfIncident field
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
+   * @param accommodationType the AccommodationType to use in the accommodationType field
+   * @param patientFirstName the String to use in the patientFirstName field
+   * @param patientMiddleName the String to use in the patientMiddleName field
+   * @param patientLastName the String to use in the patientLastName field
+   * @param location the LocationName to use in the location field
+   * @param dateOfBirth the Date to use in the dateOfBirth field
    */
-  public InternalTransport(
-      @NonNull Date theDOB,
-      @NonNull LocationName theNewLoc,
-      @NonNull LocationName theOldLoc,
-      @NonNull String thePatientFirstName,
-      @NonNull String thePatientMiddleName,
-      @NonNull String thePatientLastName,
+  public AudioVisual(
       @NonNull String empFirstName,
       @NonNull String empMiddleName,
       @NonNull String empLastName,
@@ -101,13 +95,13 @@ public class InternalTransport extends ServiceRequest {
       @NonNull EmpDept assignedEmpDept,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
-      @NonNull Urgency urgency) {
-    this.dateOfBirth = theDOB;
-    this.newLoc = theNewLoc;
-    this.oldLoc = theOldLoc;
-    this.patientFirstName = thePatientFirstName;
-    this.patientMiddleName = thePatientMiddleName;
-    this.patientLastName = thePatientLastName;
+      @NonNull Urgency urgency,
+      @NonNull AccommodationType accommodationType,
+      @NonNull String patientFirstName,
+      @NonNull String patientMiddleName,
+      @NonNull String patientLastName,
+      @NonNull LocationName location,
+      @NonNull Date dateOfBirth) {
     this.empFirstName = empFirstName;
     this.empMiddleName = empMiddleName;
     this.empLastName = empLastName;
@@ -120,6 +114,30 @@ public class InternalTransport extends ServiceRequest {
     this.dateOfSubmission = dateOfSubmission;
     this.status = Status.BLANK;
     this.urgency = urgency;
-    this.requestType = "InternalTransport";
+    this.requestType = "AudioVisual";
+    this.accommodationType = accommodationType;
+    this.location = location;
+    this.patientFirstName = patientFirstName;
+    this.patientMiddleName = patientMiddleName;
+    this.patientLastName = patientLastName;
+    this.dateOfBirth = dateOfBirth;
+  }
+
+  public enum AccommodationType {
+    VISUAL("visual"),
+    AUDIO("audio"),
+    OTHER("other"),
+    IDK_DO_WE_NEED_MORE("idk");
+
+    @NonNull public final String AcommodationType;
+
+    /**
+     * Creates a new AcomodationType with the given String backing
+     *
+     * @param accommodationType the AcomodationType to create. Must not be null
+     */
+    AccommodationType(@NonNull String accommodationType) {
+      AcommodationType = accommodationType;
+    }
   }
 }

@@ -13,11 +13,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AllSanitationRequestController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AllComputerRequestController">
     <center>
         <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="typeCol" prefWidth="129.59995114803314" text="Service Request Type" />
+                <TableColumn fx:id="typeCol" prefWidth="129.59995114803314" text="ID" />
                 <TableColumn fx:id="empLastNameCol" prefWidth="129.59995114803314" text="Employee Last Name" />
                 <TableColumn fx:id="submissionDateCol" prefWidth="176.4000244140625" text="Date and Time of Submission" />
                 <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="81.19998168945312" text="Status" />
@@ -28,7 +28,7 @@
       <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All Sanitation Service Requests">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All Computer Service Requests">
                <font>
                   <Font size="25.0" />
                </font>

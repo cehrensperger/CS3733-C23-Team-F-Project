@@ -128,7 +128,7 @@ public class NodeTest {
   /** Tests that a node with no mapping in move does not return a location */
   @Test
   public void nodeNotMappedTest() {
-    Node testNode = new Node("a", "b", Node.Floor.G, 0, 0); // Random node
+    Node testNode = new Node("a", "b", Node.Floor.L1, 0, 0); // Random node
 
     // Commit the node
     Transaction commitTransaction = session.beginTransaction(); // Open a transaction
@@ -164,7 +164,7 @@ public class NodeTest {
   /** Tests that if the correct location is remapped, null is returned */
   @Test
   public void locationRemappedTest() {
-    Node thisNode = new Node("n", "g", Node.Floor.G, 99, 100); // Random node
+    Node thisNode = new Node("n", "g", Node.Floor.L2, 99, 100); // Random node
     Node otherNode = new Node("i", "g", Node.Floor.THREE, 10000, 99); // Bad node
     LocationName theLocation = new LocationName("a", LocationName.LocationType.SERV, "b");
     Move oldMove = new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(1))); // Old move
@@ -216,7 +216,7 @@ public class NodeTest {
   /** Tests that a simple mapping (one location, one node) works as expected */
   @Test
   public void simpleMappingTest() {
-    Node node = new Node("node", "building", Node.Floor.G, 0, 0);
+    Node node = new Node("node", "building", Node.Floor.L2, 0, 0);
     LocationName location = new LocationName("location", LocationName.LocationType.ELEV, "l");
     Move move = new Move(node, location, new Date()); // Simple location mapping for right now
 
@@ -284,7 +284,7 @@ public class NodeTest {
   /** Tests for a case where the node is remapped in the future, ignores the future locations */
   @Test
   public void nodeRemappedInFuture() {
-    Node node = new Node("n", "b", Node.Floor.G, 0, 0); // Create the node
+    Node node = new Node("n", "b", Node.Floor.THREE, 0, 0); // Create the node
     LocationName currentLocation = new LocationName("curr", LocationName.LocationType.CONF, "cur");
     LocationName futureLocation = new LocationName("fut", LocationName.LocationType.ELEV, "f");
     LocationName furtherFut = new LocationName("ff", LocationName.LocationType.SERV, "");

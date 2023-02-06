@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -40,6 +41,12 @@ public class LocationNameTest {
   public void cleanupDatabase() {
     Transaction cleanupTransaction =
         session.beginTransaction(); // Create a transaction to cleanup with
+    session.createMutationQuery("DELETE FROM AudioVisual").executeUpdate();
+    session.createMutationQuery("DELETE FROM ComputerService").executeUpdate();
+    session.createMutationQuery("DELETE FROM InternalTransport").executeUpdate();
+    session.createMutationQuery("DELETE FROM Sanitation").executeUpdate();
+    session.createMutationQuery("DELETE FROM Security ").executeUpdate();
+    session.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
     session.createMutationQuery("DELETE FROM Move").executeUpdate(); // Delete moves
     session.createMutationQuery("DELETE FROM LocationName ").executeUpdate(); // Delete locations
     session.createMutationQuery("DELETE FROM Node").executeUpdate(); // Delete nodes
@@ -154,7 +161,7 @@ public class LocationNameTest {
   /** Tests that if the correct node is remapped, null is returned */
   @Test
   public void nodeRemappedTest() {
-    Node thisNode = new Node("n", "g", Node.Floor.G, 99, 100); // Random node
+    Node thisNode = new Node("n", "g", Node.Floor.L2, 99, 100); // Random node
     LocationName theLocation = new LocationName("a", LocationName.LocationType.SERV, "b");
     LocationName otherLocation = new LocationName("b", LocationName.LocationType.REST, "b");
     Move oldMove = new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(1))); // Old move
@@ -308,7 +315,7 @@ public class LocationNameTest {
   /** Tests for a case where the node is remapped in the future, ignores the future locations */
   @Test
   public void nodeRemappedInFuture() {
-    Node node = new Node("n", "b", Node.Floor.G, 0, 0); // Create the node
+    Node node = new Node("n", "b", Node.Floor.THREE, 0, 0); // Create the node
     LocationName currentLocation = new LocationName("curr", LocationName.LocationType.CONF, "cur");
     LocationName futureLocation = new LocationName("fut", LocationName.LocationType.ELEV, "f");
     LocationName furtherFut = new LocationName("ff", LocationName.LocationType.SERV, "");
@@ -376,4 +383,77 @@ public class LocationNameTest {
     assertEquals(
         correctNode, correctLocation.getCurrentNode(session)); // Assert the location is right
   }
+
+  /**
+   * Simple test for moving a location name's long name field, no dependencies, just moves and
+   * asserts that the original node is deleted
+   */
+  @Test
+  public void simpleChangeLocationTest() {
+    // Simple location
+    LocationName originalLocation = new LocationName("test", LocationName.LocationType.SERV, "t");
+
+    session.persist(originalLocation); // Persist the location
+    LocationName.updateLongName(originalLocation, "newTest", session);
+
+    // Get the new locations
+    List<LocationName> locationNames =
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
+
+    // List of expected locations, just the renamed one
+    List<LocationName> expectedResult =
+        List.of(new LocationName("newTest", LocationName.LocationType.SERV, "t"));
+
+    // Assert that the right locations are gotten
+    assertEquals(expectedResult, locationNames);
+  }
+
+  /** Tests that other locations are not modified when the root is changed */
+  @Test
+  public void changeLocationOtherLocationsNotModifiedTest() {
+    // Locations that shouldldn't be changed
+    LocationName locationToChange =
+        new LocationName("toChange", LocationName.LocationType.BATH, "chan");
+    LocationName ignoredLocation1 =
+        new LocationName("ignore1", LocationName.LocationType.CONF, "l1");
+    LocationName ignoredLocation2 =
+        new LocationName("ignore2", LocationName.LocationType.INFO, "l2");
+  }
+
+  //  @TestFactory
+  //  public Stream<DynamicNode> changeLocationWithServiceRequestsTest() {
+  //    Random randomGenerator = new Random(1); // Random with fixed seed for the tests
+  //
+  //    return IntStream.range()
+  //  }
+  //
+  //  @TestFactory
+  //  public void changeLocationWithAllServiceRequestsTest() {
+  //
+  //  }
+  //
+  //  @TestFactory
+  //  public void changeLocationWithMovesTest() {
+  //
+  //  }
+  //
+  //  @TestFactory
+  //  public void changeLocationWithEverythingTest() {
+  //
+  //  }
+  //
+  //  @Test
+  //  public void changeLocationToAlreadyUsedNameTest() {
+  //
+  //  }
+  //
+  //  @Test
+  //  public void changeLocationRollbackTest() {
+  //
+  //  }
+  //
+  //  @Test
+  //  public void changeLocationCommitTest() {
+  //
+  //  }
 }
