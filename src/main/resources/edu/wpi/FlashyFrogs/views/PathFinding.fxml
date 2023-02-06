@@ -4,7 +4,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -63,20 +62,19 @@
                               <Insets bottom="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <Accordion>
-                          <panes>
-                            <TitledPane animated="false" text="Help">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </TitledPane>
-                          </panes>
-                        </Accordion>
+                        <Accordion />
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
          </bottom>
+         <top>
+            <MFXButton fx:id="question" onAction="#handleQ" text="?" BorderPane.alignment="TOP_RIGHT">
+               <BorderPane.margin>
+                  <Insets right="10.0" top="10.0" />
+               </BorderPane.margin>
+            </MFXButton>
+         </top>
       </BorderPane>
    </children>
 </AnchorPane>

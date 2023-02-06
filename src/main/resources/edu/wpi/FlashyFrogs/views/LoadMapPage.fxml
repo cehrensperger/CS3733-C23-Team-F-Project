@@ -72,4 +72,11 @@
          </padding>
       </HBox>
    </bottom>
+   <top>
+      <MFXButton fx:id="question" onAction="#handleQ" text="?" BorderPane.alignment="TOP_RIGHT">
+         <BorderPane.margin>
+            <Insets right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </MFXButton>
+   </top>
 </BorderPane>

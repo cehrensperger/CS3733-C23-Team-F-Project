@@ -13,16 +13,6 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SecurityServiceController">
-   <top>
-      <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Form" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets top="8.0" />
-         </BorderPane.margin>
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Text>
-   </top>
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -201,4 +191,24 @@
          </children>
       </HBox>
    </center>
+   <top>
+      <HBox alignment="TOP_CENTER" prefHeight="43.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="43.0" prefWidth="362.0" />
+            <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Form" wrappingWidth="332.7109375">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <VBox alignment="TOP_RIGHT" prefHeight="43.0" prefWidth="330.0">
+               <children>
+                  <MFXButton fx:id="question" onAction="#handleQ" text="?" />
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" top="10.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

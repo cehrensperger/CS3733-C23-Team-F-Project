@@ -9,7 +9,10 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 public class PathFindingController {
@@ -20,6 +23,7 @@ public class PathFindingController {
   @FXML private MFXButton getPath;
   @FXML private MFXButton backButton;
   @FXML private MFXButton clearButton;
+  @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Home");
@@ -53,5 +57,19 @@ public class PathFindingController {
     // = pathFinder.findPath(startPath, endPath);
     //    transaction.commit();
     session.close();
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQPathFinding();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 }
