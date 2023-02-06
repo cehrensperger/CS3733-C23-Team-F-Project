@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.AudioVisual;
@@ -63,7 +63,7 @@ public class AudioVisualController extends ServiceRequestController {
       urgencyEntry.getItems().add(urgencies[i].toString().replace("_", " ").toLowerCase());
     }
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
     session.close();
@@ -97,7 +97,7 @@ public class AudioVisualController extends ServiceRequestController {
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
     try {

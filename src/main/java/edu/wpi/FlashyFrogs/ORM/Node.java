@@ -2,9 +2,6 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
-
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -95,8 +92,8 @@ public class Node {
     }
 
     public static Floor getEnum(String value) {
-      for(Floor f : Floor.values()) {
-        if (f.floorNum == value) return f;
+      for (Floor f : Floor.values()) {
+        if (f.floorNum.equals(value)) return f;
       }
       return null;
     }

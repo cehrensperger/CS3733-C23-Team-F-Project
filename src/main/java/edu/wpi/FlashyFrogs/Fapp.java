@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,6 @@ public class Fapp extends Application {
 
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
-
 
   @Override
   public void init() {
