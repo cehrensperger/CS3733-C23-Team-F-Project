@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.controllers;
 import edu.wpi.FlashyFrogs.Fapp;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
-import java.util.Objects;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,13 +36,11 @@ public class HomeController {
   public void handleQ(ActionEvent event) throws IOException {
 
     FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
 
-    HelpController help = new HelpController();
+    HelpController help = newLoad.getController();
     help.handleQHome();
 
-    PopOver popOver =
-        new PopOver(
-            FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../views/Help.fxml"))));
     popOver.detach();
     Node node = (Node) event.getSource();
     popOver.show(node.getScene().getWindow());
