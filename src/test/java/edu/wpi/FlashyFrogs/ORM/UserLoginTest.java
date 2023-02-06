@@ -27,7 +27,7 @@ public class UserLoginTest {
   @Test
   public void testEquals() throws NoSuchAlgorithmException {
     UserLogin otherLogin = new UserLogin("testUserName", "testPassword");
-    UserLogin anotherLogin = new UserLogin("anotherUser", "anotherPassword");
+    UserLogin anotherLogin = new UserLogin("anotherUserName", "anotherPassword");
     assertEquals(testLogin, otherLogin);
     assertNotEquals(testLogin, anotherLogin);
   }
