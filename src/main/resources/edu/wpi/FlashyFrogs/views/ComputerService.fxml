@@ -47,7 +47,7 @@
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></MFXTextField>
-                        <MFXComboBox fx:id="accommodationType" prefHeight="49.0" prefWidth="256.0" promptText="Type of Accommodation:">
+                        <MFXComboBox fx:id="serviceType" prefHeight="49.0" prefWidth="256.0" promptText="Type of Service:">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
