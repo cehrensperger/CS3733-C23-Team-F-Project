@@ -158,13 +158,13 @@ public class PathFinder {
         if (q.node.getFloor() != child.node.getFloor()) {
           if (child
               .node
-              .getCurrentLocation()
+              .getCurrentLocation(session)
               .getLocationType()
               .equals(LocationName.LocationType.ELEV)) {
             child.g = q.g + 10; // cost for elevator
           } else if (child
               .node
-              .getCurrentLocation()
+              .getCurrentLocation(session)
               .getLocationType()
               .equals(LocationName.LocationType.STAI)) {
             child.g = q.g + 20; // cost for stairs
