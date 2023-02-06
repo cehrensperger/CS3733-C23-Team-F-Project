@@ -31,6 +31,7 @@ public class Sanitation extends ServiceRequest {
 
   /** Creates a new Sanitation with a generated id */
   public Sanitation() {
+    this.status = Status.BLANK;
     this.requestType = "Sanitation";
   }
 

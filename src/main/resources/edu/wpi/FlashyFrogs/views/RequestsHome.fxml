@@ -24,7 +24,7 @@
                </children></VBox>
             <HBox prefHeight="100.0" prefWidth="300.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="600.0" prefWidth="275.0">
+                  <VBox alignment="CENTER" prefHeight="600.0" prefWidth="275.0" spacing="50.0">
                      <children>
                         <MFXButton fx:id="internalPatientTransportationButton" alignment="CENTER" onAction="#handleInternalPatientTransportationButton" prefWidth="275.0" text="Internal Patient Transportation">
                            <VBox.margin>
@@ -33,14 +33,15 @@
                         </MFXButton>
                         <MFXButton fx:id="sanitationServicesButton" onAction="#handleSanitationServiceButton" prefWidth="275.0" text="Sanitation Services">
                            <VBox.margin>
-                              <Insets top="50.0" />
+                              <Insets />
                            </VBox.margin>
                         </MFXButton>
                         <MFXButton fx:id="securityServicesButton" onAction="#handleSecurityServiceButton" prefWidth="275.0" text="Security Services">
                            <VBox.margin>
-                              <Insets top="50.0" />
+                              <Insets />
                            </VBox.margin>
                         </MFXButton>
+                        <MFXButton fx:id="audioVisualButton" onAction="#handleAudioVisualButton" prefWidth="275.0" text="Audio/Visual Services" />
                      </children>
                   </VBox>
                </children>
