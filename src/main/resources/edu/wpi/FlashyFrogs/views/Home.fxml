@@ -32,7 +32,7 @@
                           <children>
                               <VBox alignment="CENTER" prefHeight="412.0" prefWidth="500.0">
                                   <children>
-                                      <MFXButton fx:id="serviceRequestsButton" alignment="CENTER" onAction="#handleServiceRequestsButton" prefWidth="220.0" text="Service Requests Page">
+                                      <MFXButton fx:id="serviceRequestsButton" alignment="CENTER" onAction="#handleServiceRequestsButton" prefWidth="220.0" text="Service Requests">
                                           <VBox.margin>
                                               <Insets />
                                           </VBox.margin>
@@ -64,7 +64,7 @@
                         <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#handleLoadMapMenuItem" text="Load Map" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Service Requests">
+                  <Menu fx:id="serviceRequestMenu" mnemonicParsing="false" text="Service Requests">
                     <items>
                       <MenuItem fx:id="transportMenuItem" mnemonicParsing="false" onAction="#handleTransportMenuItem" text="Transport" />
                         <MenuItem fx:id="sanitationMenuItem" mnemonicParsing="false" onAction="#handleSanitationMenuItem" text="Sanitation" />

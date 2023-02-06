@@ -42,6 +42,7 @@ public class Fapp extends Application {
   public static void setScene(String sceneName) throws IOException {
     Parent root = FXMLLoader.load(Fapp.class.getResource("views/" + sceneName + ".fxml"));
     Scene scene = new Scene(root);
+    scene.getStylesheets().add(Fapp.class.getResource("views/application.css").toExternalForm());
     // Scene scene = new Scene(root, 600, 400);
 
     primaryStage.setScene(scene);

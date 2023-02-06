@@ -1,3 +1,37 @@
-.button {
-    -fx-background-color: #FFFFFF;
+.root{
+    -fx-background-color:#acb4ce;
 }
+.label{
+    -fx-font-size: 20;
+    -fx-font-family: "Arial Black";
+}
+.button{
+    -fx-background-color:#7b7de6;
+    -fx-font-family:"Arial Black" ;
+    -fx-padding: 15px 5px;
+    -fx-text-alignment: center;
+    -fx-font-size: 13px;
+    -fx-border-radius:30px;
+
+
+}
+.button:hover{
+    -fx-background-color:#848cec;
+
+}
+
+.text-area{
+    -fx-background-color:#33343b;
+    -fx-border-color:#33343b ;
+}
+.table-view{
+    -fx-background-color:#acb4ce;
+
+}
+.menu-bar{
+    -fx-background-color:#7b7de6;
+}
+#serviceRequestMenu{
+    -fx-background-color:#848cec;
+}
+
