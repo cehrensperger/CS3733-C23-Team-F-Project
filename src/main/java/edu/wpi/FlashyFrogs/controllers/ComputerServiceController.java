@@ -27,7 +27,7 @@ public class ComputerServiceController extends ServiceRequestController {
 
   @FXML private MFXComboBox deviceType;
   @FXML private MFXTextField deviceModel;
-  @FXML private MFXComboBox accommodationType;
+  @FXML private MFXComboBox serviceType;
   @FXML private MFXTextField issueDescription;
   @FXML private MFXComboBox urgencyEntry;
   @FXML private MFXTextField firstEntry;
@@ -59,7 +59,7 @@ public class ComputerServiceController extends ServiceRequestController {
     ComputerService.ServiceType[] serviceTypes = ComputerService.ServiceType.values();
     System.out.println(serviceTypes.length);
     for (int i = 0; i < serviceTypes.length; i++) {
-      accommodationType.getItems().add(serviceTypes[i].toString().replace("_", " ").toLowerCase());
+      serviceType.getItems().add(serviceTypes[i].toString().replace("_", " ").toLowerCase());
     }
 
     ServiceRequest.EmpDept[] depts = ServiceRequest.EmpDept.values();
@@ -79,7 +79,7 @@ public class ComputerServiceController extends ServiceRequestController {
   public void handleClear(ActionEvent actionEvent) throws IOException {
     deviceType.clear();
     deviceModel.clear();
-    accommodationType.clear();
+    serviceType.clear();
     issueDescription.clear();
     urgencyEntry.clear();
     firstEntry.clear();
@@ -105,7 +105,7 @@ public class ComputerServiceController extends ServiceRequestController {
 
       if (deviceType.getText().equals("")
           || deviceModel.getText().equals("")
-          || accommodationType.getText().equals("")
+          || serviceType.getText().equals("")
           || issueDescription.getText().equals("")
           || urgencyEntry.getText().equals("")
           || firstEntry.getText().equals("")
@@ -121,7 +121,7 @@ public class ComputerServiceController extends ServiceRequestController {
 
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       String deviceTypeEnumString = deviceType.getText().toUpperCase().replace(" ", "_");
-      String serviceTypeEnumString = accommodationType.getText().toUpperCase().replace(" ", "_");
+      String serviceTypeEnumString = serviceType.getText().toUpperCase().replace(" ", "_");
       // Date dateOfIncident =
       //        Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
