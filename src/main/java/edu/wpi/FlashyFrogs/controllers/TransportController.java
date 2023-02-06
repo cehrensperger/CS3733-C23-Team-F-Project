@@ -57,9 +57,11 @@ public class TransportController extends ServiceRequestController {
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
-    // StringComparator stringComparator = new StringComparator();
+
+    //    StringComparator stringComparator = new StringComparator();
     ObservableList<String> observableList = FXCollections.observableList(objects);
-    // observableList.sort(stringComparator);
+    //    observableList.sort(stringComparator);
+
     newLocationComboBox.setItems(observableList);
     currentLocationComboBox.setItems(FXCollections.observableList(objects));
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");

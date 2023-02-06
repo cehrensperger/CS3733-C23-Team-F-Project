@@ -93,7 +93,9 @@ public class Node {
 
     public static Floor getEnum(String value) {
       for (Floor f : Floor.values()) {
-        if (f.floorNum == value) return f;
+
+        if (f.floorNum.equals(value)) return f;
+
       }
       return null;
     }
