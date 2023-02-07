@@ -103,10 +103,12 @@ jar {
 def codeCoverageExcludes = [
         'edu.wpi.FlashyFrogs.App',
         'edu.wpi.FlashyFrogs.Main',
-        'edu.wpi.FlashyFrogs.controllers.*',
-        'edu.wpi.FlashyFrogs.navigation.*',
         'edu.wpi.FlashyFrogs.controllers',
         'edu.wpi.FlashyFrogs.navigation',
+        'edu.wpi.FlashyFrogs.FileData',
+        'edu.wpi.FlashyFrogs.ResourceDictionary',
+        'edu.wpi.FlashyFrogs.Fapp',
+        'edu.wpi.FlashyFrogs.MapEntity',
 ]
 
 jacoco {
