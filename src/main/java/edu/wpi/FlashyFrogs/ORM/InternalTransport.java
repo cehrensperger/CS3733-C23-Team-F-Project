@@ -37,7 +37,12 @@ public class InternalTransport extends ServiceRequest {
   @Setter
   @JoinColumn(
       name = "oldLoc",
-      foreignKey = @ForeignKey(name = "location_name1_fk"),
+      foreignKey =
+          @ForeignKey(
+              name = "location_name1_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (oldLoc) REFERENCES "
+                      + "locationname(longName) ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
   @ManyToOne
@@ -45,7 +50,14 @@ public class InternalTransport extends ServiceRequest {
 
   @Getter
   @Setter
-  @JoinColumn(name = "newLoc", foreignKey = @ForeignKey(name = "location_name2_fk"))
+  @JoinColumn(
+      name = "newLoc",
+      foreignKey =
+          @ForeignKey(
+              name = "location_name2_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (newLoc) REFERENCES locationname(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
   @NonNull
   @ManyToOne
   private LocationName newLoc;

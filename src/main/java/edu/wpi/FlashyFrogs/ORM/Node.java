@@ -7,13 +7,11 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.Session;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Node")
 public class Node {
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @Column(nullable = false)
   @NonNull
   @Getter

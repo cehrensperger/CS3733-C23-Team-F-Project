@@ -26,6 +26,7 @@ import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 public class MapEditorController {
+  @FXML private MFXButton backButton;
   @FXML private MFXButton cancelButton;
   @FXML private MFXButton saveButton;
   @FXML private MFXComboBox<Node.Floor> floorSelector;
@@ -40,6 +41,28 @@ public class MapEditorController {
   @SneakyThrows
   @FXML
   private void initialize() {
+    // Exit listener
+    backButton
+        .onActionProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.exit(); // Should go back
+            });
+
+    // Cancel listener
+    cancelButton
+        .onActionProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.cancelChanges(); // Cancel changes
+              createLocationNameTable(mapController.getMapSession()); // Reload the table
+            });
+
+    // Save listener
+    saveButton
+        .onActionProperty()
+        .addListener((observable, oldValue, newValue) -> mapController.saveChanges());
+
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =

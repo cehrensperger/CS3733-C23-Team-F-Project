@@ -18,7 +18,7 @@
         <property name="connection.password">teamf60</property>
         <property name="connection.autocommit">false</property>
 
-        <property name="default_schema">test</property>
+        <property name="hibernate.default_schema">test</property>
 
         <property name="connection.pool_size">1</property>
 
@@ -39,7 +39,6 @@
         <mapping class="edu.wpi.FlashyFrogs.ORM.AudioVisual"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
-
 
         <!-- Names the annotated entity class -->
     </session-factory>
