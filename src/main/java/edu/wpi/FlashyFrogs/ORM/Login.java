@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 @Entity
-@Table(name = "ServiceRequest")
+@Table(name = "Login")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Login {
 

@@ -39,6 +39,7 @@
         <mapping class="edu.wpi.FlashyFrogs.ORM.InternalTransport"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.UserLogin"/>
 
 
         <!-- Names the annotated entity class -->

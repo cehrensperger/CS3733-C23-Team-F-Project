@@ -1,22 +1,18 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
-import java.util.List;
-
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.hibernate.Session;
-
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 public class LoginController {
 
@@ -31,15 +27,14 @@ public class LoginController {
     // TODO if already in database
     Session ses = CONNECTION.getSessionFactory().openSession();
     try {
-      //check if it's in the database
+      // check if it's in the database
       // create new UserLogin(Username, Password)
       // if (UserLogin.get(Username) != -1 && UserLogin.checkPasswordEqual(Password))
       ses.close();
     } catch (Exception e) {
       ses.close();
-      //TODO Show a popup or something
+      // TODO Show a popup or something
       throw e;
-
     }
     Fapp.setScene("Home");
     // TODO else, give "Incorrect Username or Password" popup or notification
