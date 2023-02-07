@@ -216,5 +216,15 @@ public class MapEditorController {
   }
 
   @FXML
-  private void popupMove() {}
+  private void popupMove(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/AddMove.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    AddMoveController addMove = newLoad.getController();
+    //      addMove.handleQMapEditor();
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
+  }
 }
