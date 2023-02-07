@@ -5,6 +5,7 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinder;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +31,7 @@ public class PathFindingController {
   @FXML private MFXButton backButton;
   @FXML private MFXButton clearButton;
   @FXML private AnchorPane mapPane;
+  @FXML private MFXComboBox<Node.Floor> floorSelector;
 
   private MapController mapController;
 
@@ -42,6 +44,14 @@ public class PathFindingController {
     mapPane.getChildren().add(map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
     mapController.setFloor(Node.Floor.L1);
+    floorSelector
+        .getItems()
+        .addAll(Node.Floor.values()); // Add all the floors to the floor selector
+
+    // Add a listener so that when the floor is changed, the map  controller sets the new floor
+    floorSelector
+        .valueProperty()
+        .addListener((observable, oldValue, newValue) -> mapController.setFloor(newValue));
 
     AnchorPane.setTopAnchor(map, 0.0);
     AnchorPane.setBottomAnchor(map, 0.0);
@@ -86,7 +96,6 @@ public class PathFindingController {
     // Transaction transaction = session.beginTransaction();
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
-
 
     // display path as text
     try {
