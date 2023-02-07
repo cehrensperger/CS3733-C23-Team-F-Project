@@ -155,7 +155,23 @@ public class PathFinder {
       NODE_LOOP:
       for (Node node : getNeighbors(q.node, session)) { // get the neighbors of the current node
         NodeWrapper child = new NodeWrapper(node, q); // create node wrapper out of current node
-        child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start
+        if (q.node.getFloor() != child.node.getFloor()) {
+          if (child
+              .node
+              .getCurrentLocation()
+              .getLocationType()
+              .equals(LocationName.LocationType.ELEV)) {
+            child.g = q.g + 10; // cost for elevator
+          } else if (child
+              .node
+              .getCurrentLocation()
+              .getLocationType()
+              .equals(LocationName.LocationType.STAI)) {
+            child.g = q.g + 20; // cost for stairs
+          }
+        } else {
+          child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start
+        }
         child.h =
             euclideanDistance(child.node, end); // calculate the lowest possible distance to end
         child.f = child.g + child.h;
