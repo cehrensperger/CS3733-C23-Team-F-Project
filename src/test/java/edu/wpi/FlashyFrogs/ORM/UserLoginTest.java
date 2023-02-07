@@ -20,7 +20,7 @@ public class UserLoginTest {
   @AfterEach
   public void resetTestLogin() throws NoSuchAlgorithmException {
     testLogin.setUserName("testUserName");
-    testLogin.setPassword("testPassword");
+    // testLogin.setPassword("testPassword");
   }
 
   /** Tests if the equals in Node.java correctly compares two UserLogin objects */
@@ -57,7 +57,7 @@ public class UserLoginTest {
   /** Tests setter for password */
   @Test
   void setPassword() throws NoSuchAlgorithmException {
-    testLogin.setPassword("New Password");
+    testLogin.setPassword("testPassword");
     assertEquals("New Password", testLogin.getPassword());
   }
 }

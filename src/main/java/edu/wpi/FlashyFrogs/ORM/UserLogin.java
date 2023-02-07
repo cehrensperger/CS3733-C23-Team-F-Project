@@ -29,8 +29,19 @@ public class UserLogin {
   @Getter
   String password;
 
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  byte[] salt;
+
   public void setPassword(String newPassword) throws NoSuchAlgorithmException {
-    this.password = makeSalt(newPassword);
+    System.out.println("Before Set: " + this.password);
+    MessageDigest md = MessageDigest.getInstance("SHA-512");
+    md.update(salt);
+    byte[] hashedPassword = md.digest(newPassword.getBytes(StandardCharsets.UTF_8));
+    this.password = hashedPassword.toString();
+    System.out.println("After Set: " + this.password);
   }
 
   /** Creates a new UserLogin with empty fields */
@@ -39,7 +50,16 @@ public class UserLogin {
   public UserLogin(@NonNull String theUserName, @NonNull String thePassword)
       throws NoSuchAlgorithmException {
     this.userName = theUserName;
-    this.password = makeSalt(thePassword);
+
+    // Encrypts password with salt
+    SecureRandom random = new SecureRandom();
+    salt = new byte[16];
+    random.nextBytes(salt);
+    MessageDigest md = MessageDigest.getInstance("SHA-512");
+    md.update(salt);
+    byte[] hashedPassword = md.digest(thePassword.getBytes(StandardCharsets.UTF_8));
+
+    this.password = hashedPassword.toString();
   }
 
   /**
@@ -53,8 +73,8 @@ public class UserLogin {
     if (this == obj) return true;
     if (obj == null) return false;
     if (this.getClass() != obj.getClass()) return false;
-    Node other = (Node) obj;
-    return this.userName.equals(other.getId());
+    UserLogin other = (UserLogin) obj;
+    return this.userName.equals(other.getUserName());
   }
 
   /**
@@ -77,17 +97,5 @@ public class UserLogin {
   @NonNull
   public String toString() {
     return this.userName;
-  }
-
-  public String makeSalt(String password) throws NoSuchAlgorithmException {
-    SecureRandom random = new SecureRandom();
-    byte[] salt = new byte[16];
-    random.nextBytes(salt);
-
-    MessageDigest md = MessageDigest.getInstance("SHA-512");
-    md.update(salt);
-
-    byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
-    return hashedPassword.toString();
   }
 }
