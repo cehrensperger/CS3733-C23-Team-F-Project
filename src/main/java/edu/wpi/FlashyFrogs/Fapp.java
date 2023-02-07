@@ -28,6 +28,7 @@ public class Fapp extends Application {
     Fapp.primaryStage = primaryStage;
 
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Home.fxml"));
+
     final Pane root = loader.load();
 
     Fapp.rootPane = root;

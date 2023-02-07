@@ -5,8 +5,14 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.FlashyFrogs.DBConnection;
+import edu.wpi.FlashyFrogs.Utils;
 import java.time.Instant;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -38,8 +44,19 @@ public class LocationNameTest {
   /** Cleans up the DB tables and closes the test session */
   @AfterEach
   public void cleanupDatabase() {
+    // cancel any still-running transactions
+    if (session.getTransaction().isActive()) {
+      session.getTransaction().rollback();
+    }
+
     Transaction cleanupTransaction =
         session.beginTransaction(); // Create a transaction to cleanup with
+    session.createMutationQuery("DELETE FROM AudioVisual").executeUpdate();
+    session.createMutationQuery("DELETE FROM ComputerService").executeUpdate();
+    session.createMutationQuery("DELETE FROM InternalTransport").executeUpdate();
+    session.createMutationQuery("DELETE FROM Sanitation").executeUpdate();
+    session.createMutationQuery("DELETE FROM Security ").executeUpdate();
+    session.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
     session.createMutationQuery("DELETE FROM Move").executeUpdate(); // Delete moves
     session.createMutationQuery("DELETE FROM LocationName ").executeUpdate(); // Delete locations
     session.createMutationQuery("DELETE FROM Node").executeUpdate(); // Delete nodes
@@ -154,7 +171,7 @@ public class LocationNameTest {
   /** Tests that if the correct node is remapped, null is returned */
   @Test
   public void nodeRemappedTest() {
-    Node thisNode = new Node("n", "g", Node.Floor.G, 99, 100); // Random node
+    Node thisNode = new Node("n", "g", Node.Floor.L2, 99, 100); // Random node
     LocationName theLocation = new LocationName("a", LocationName.LocationType.SERV, "b");
     LocationName otherLocation = new LocationName("b", LocationName.LocationType.REST, "b");
     Move oldMove = new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(1))); // Old move
@@ -308,7 +325,7 @@ public class LocationNameTest {
   /** Tests for a case where the node is remapped in the future, ignores the future locations */
   @Test
   public void nodeRemappedInFuture() {
-    Node node = new Node("n", "b", Node.Floor.G, 0, 0); // Create the node
+    Node node = new Node("n", "b", Node.Floor.THREE, 0, 0); // Create the node
     LocationName currentLocation = new LocationName("curr", LocationName.LocationType.CONF, "cur");
     LocationName futureLocation = new LocationName("fut", LocationName.LocationType.ELEV, "f");
     LocationName furtherFut = new LocationName("ff", LocationName.LocationType.SERV, "");
@@ -376,4 +393,266 @@ public class LocationNameTest {
     assertEquals(
         correctNode, correctLocation.getCurrentNode(session)); // Assert the location is right
   }
+
+  /**
+   * Simple test for moving a location name's long name field, no dependencies, just moves and
+   * asserts that the original node is deleted
+   */
+  @Test
+  public void simpleChangeLocationTest() {
+    Transaction transaction = session.beginTransaction(); // Begin a transaction for everything
+
+    // Simple location
+    LocationName originalLocation = new LocationName("test", LocationName.LocationType.SERV, "t");
+
+    session.persist(originalLocation); // Persist the location
+    LocationName.updateLongName(originalLocation, "newTest", session);
+
+    // Get the new locations
+    List<LocationName> locationNames =
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
+
+    // List of expected locations, just the renamed one
+    List<LocationName> expectedResult =
+        List.of(new LocationName("newTest", LocationName.LocationType.SERV, "t"));
+
+    // Assert that the right locations are gotten
+    assertEquals(expectedResult, locationNames);
+    transaction.commit(); // End the transaction now that the test is done
+  }
+
+  /** Tests that other locations are not modified when the root is changed */
+  @Test
+  public void changeLocationOtherLocationsNotModifiedTest() {
+    Transaction transaction = session.beginTransaction(); // Open a transaction to use for the test
+
+    LocationName locationToChange =
+        new LocationName("toChange", LocationName.LocationType.BATH, "chan");
+
+    // Locations that shouldn't be changed
+    LocationName ignoredLocation1 =
+        new LocationName("ignore1", LocationName.LocationType.CONF, "l1");
+    LocationName ignoredLocation2 =
+        new LocationName("ignore2", LocationName.LocationType.INFO, "l2");
+
+    // Persist everything
+    session.persist(locationToChange);
+    session.persist(ignoredLocation1);
+    session.persist(ignoredLocation2);
+
+    // Update the name on the location
+    LocationName.updateLongName(locationToChange, "new", session);
+
+    // Assert the correct things are in the db, and that the ignored locations weren't touched
+    assertEquals(
+        session.createQuery("FROM LocationName", LocationName.class).getResultList(),
+        List.of(
+            new LocationName("ignore1", LocationName.LocationType.CONF, "l1"),
+            new LocationName("ignore2", LocationName.LocationType.INFO, "l2"),
+            new LocationName("new", LocationName.LocationType.BATH, "chan")));
+
+    transaction.commit(); // Close the transaction now that the test is done
+  }
+
+  /**
+   * Tests that a location with audio visual tests propagate to the audio visual tests. Tests
+   * various numbers, and tests cases where all the requests belong to this location, and cases
+   * where some don't
+   */
+  @TestFactory
+  public Stream<DynamicNode> chanceLocationWithAudioVisualTest() {
+    Random randomGenerator = new Random(1); // Random generator for use with this test
+
+    return IntStream.range(1, 11)
+        .mapToObj(
+            testNumber ->
+                DynamicTest.dynamicTest(
+                    "Change Location Audio Visual " + testNumber,
+                    () -> {
+                      Transaction testTransaction =
+                          session.beginTransaction(); // Open a transaction for use here
+
+                      // Generate a random string for use with this node
+                      String nodeToChangeLongName = Utils.generateRandomString(1, randomGenerator);
+                      String newLongName = Utils.generateRandomString(2, randomGenerator);
+
+                      // Generate a random location type
+                      LocationName.LocationType nodeToChangeType =
+                          LocationName.LocationType.values()[
+                              randomGenerator.nextInt(
+                                  0, LocationName.LocationType.values().length)];
+
+                      // Generate a random short name
+                      String nodeToChangeShortName = Utils.generateRandomString(1, randomGenerator);
+
+                      // Create the test location
+                      LocationName testLoc =
+                          new LocationName(
+                              nodeToChangeLongName, nodeToChangeType, nodeToChangeShortName);
+
+                      session.persist(testLoc);
+
+                      List<LocationName> expectedLocations = new LinkedList<>();
+                      List<AudioVisual> expectedRequests = new LinkedList<>();
+
+                      // Generate test number AV requests
+                      for (int i = 0; i < testNumber * 2; i++) {
+                        // Generate the random info on this patient
+                        String employeeFirstName = Utils.generateRandomString(5, randomGenerator);
+                        String employeeMiddleName = Utils.generateRandomString(1, randomGenerator);
+                        String employeeLastName = Utils.generateRandomString(10, randomGenerator);
+                        String assignedEmployeeFirstName =
+                            Utils.generateRandomString(5, randomGenerator);
+                        String assignedEmployeeMiddleName =
+                            Utils.generateRandomString(1, randomGenerator);
+                        String assignedEmployeeLastName =
+                            Utils.generateRandomString(10, randomGenerator);
+                        ServiceRequest.EmpDept employeeDept =
+                            ServiceRequest.EmpDept.values()[
+                                randomGenerator.nextInt(0, ServiceRequest.EmpDept.values().length)];
+                        ServiceRequest.EmpDept assignedDept =
+                            ServiceRequest.EmpDept.values()[
+                                randomGenerator.nextInt(0, ServiceRequest.EmpDept.values().length)];
+                        Date incidentDate =
+                            Date.from(Instant.ofEpochSecond(randomGenerator.nextLong(100000)));
+                        Date submissionDate =
+                            Date.from(
+                                Instant.ofEpochSecond(randomGenerator.nextLong(100000, 900000)));
+                        ServiceRequest.Urgency urgency =
+                            ServiceRequest.Urgency.values()[
+                                randomGenerator.nextInt(0, ServiceRequest.Urgency.values().length)];
+                        AudioVisual.AccommodationType accommodation =
+                            AudioVisual.AccommodationType.values()[
+                                randomGenerator.nextInt(
+                                    0, AudioVisual.AccommodationType.values().length)];
+                        String patientFirstName = Utils.generateRandomString(5, randomGenerator);
+                        String patientMiddleName = Utils.generateRandomString(1, randomGenerator);
+                        String patientLastName = Utils.generateRandomString(10, randomGenerator);
+                        Date dateOfBirth =
+                            Date.from(Instant.ofEpochSecond(randomGenerator.nextLong(9999999)));
+
+                        if (i < testNumber) {
+                          // Create the request
+                          AudioVisual request =
+                              new AudioVisual(
+                                  employeeFirstName,
+                                  employeeMiddleName,
+                                  employeeLastName,
+                                  assignedEmployeeFirstName,
+                                  assignedEmployeeMiddleName,
+                                  assignedEmployeeLastName,
+                                  employeeDept,
+                                  assignedDept,
+                                  incidentDate,
+                                  submissionDate,
+                                  urgency,
+                                  accommodation,
+                                  patientFirstName,
+                                  patientMiddleName,
+                                  patientLastName,
+                                  testLoc,
+                                  dateOfBirth);
+                          // Save the session
+                          session.persist(request);
+
+                          expectedRequests.add(request); // Save the request
+                        } else if (testNumber >= 5) {
+                          // If we're in the second half of tests and we're creating non-location
+                          // locations
+                          LocationName otherLocation =
+                              new LocationName(
+                                  Integer.toString(i), LocationName.LocationType.BATH, "");
+                          session.persist(otherLocation);
+
+                          expectedLocations.add(otherLocation); // Save the new location
+
+                          AudioVisual request =
+                              new AudioVisual(
+                                  employeeFirstName,
+                                  employeeMiddleName,
+                                  employeeLastName,
+                                  assignedEmployeeFirstName,
+                                  assignedEmployeeMiddleName,
+                                  assignedEmployeeLastName,
+                                  employeeDept,
+                                  assignedDept,
+                                  incidentDate,
+                                  submissionDate,
+                                  urgency,
+                                  accommodation,
+                                  patientFirstName,
+                                  patientMiddleName,
+                                  patientLastName,
+                                  otherLocation,
+                                  dateOfBirth);
+
+                          // Create the non-relevant request
+                          session.persist(request);
+
+                          expectedRequests.add(request); // Save the request
+                        }
+                      }
+
+                      // Create the new location
+                      LocationName newLocation =
+                          new LocationName(newLongName, nodeToChangeType, nodeToChangeShortName);
+
+                      // Save the new location to the expected locations list
+                      expectedLocations.add(newLocation);
+
+                      // Update the location name
+                      LocationName.updateLongName(testLoc, newLongName, session);
+
+                      // Check that the locations all match
+                      assertEquals(
+                          expectedLocations,
+                          session
+                              .createQuery("FROM LocationName", LocationName.class)
+                              .getResultList());
+
+                      // Assert the requests all match
+                      assertEquals(
+                          expectedRequests,
+                          session
+                              .createQuery("FROM AudioVisual", AudioVisual.class)
+                              .getResultList());
+
+                      // For each request
+                      for (int i = 0; i < testNumber; i++) {
+                        // Assert that the location matches
+                        assertEquals(newLocation, expectedRequests.get(i).getLocation());
+                      }
+
+                      // If we're doing non-matching locations
+                      if (testNumber >= 5) {
+                        // For each one
+                        for (int i = testNumber; i < testNumber * 2; i++) {
+                          // Assert the location matches the generated one
+                          assertEquals(
+                              expectedLocations.get(i - testNumber),
+                              expectedRequests.get(i).getLocation());
+                        }
+                      }
+
+                      testTransaction.commit(); // End the transaction for the test
+                    }));
+  }
+
+  @TestFactory
+  public void changeLocationWithAllServiceRequestsTest() {}
+
+  @TestFactory
+  public void changeLocationWithMovesTest() {}
+
+  @TestFactory
+  public void changeLocationWithEverythingTest() {}
+
+  @Test
+  public void changeLocationToAlreadyUsedNameTest() {}
+
+  @Test
+  public void changeLocationRollbackTest() {}
+
+  @Test
+  public void changeLocationCommitTest() {}
 }

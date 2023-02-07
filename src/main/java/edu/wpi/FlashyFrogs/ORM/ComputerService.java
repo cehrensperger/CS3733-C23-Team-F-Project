@@ -18,33 +18,33 @@ public class ComputerService extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  DeviceType deviceType;
+  private DeviceType deviceType;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String model;
+  private String model;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  ServiceType serviceType;
+  private ServiceType serviceType;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String issue;
+  private String issue;
 
   /** Creates a new ComputerService with a generated id */
   public ComputerService() {
-    this.status = Status.BLANK;
-    this.requestType = "ComputerService";
+    super.setStatus(Status.BLANK);
+    super.setRequestType("ComputerService");
   }
 
   /**
@@ -82,19 +82,20 @@ public class ComputerService extends ServiceRequest {
       @NonNull String model,
       @NonNull String issue,
       @NonNull ServiceType serviceType) {
-    this.empFirstName = empFirstName;
-    this.empMiddleName = empMiddleName;
-    this.empLastName = empLastName;
-    this.empDept = empDept;
-    this.assignedEmpFirstName = assignedEmpFirstName;
-    this.assignedEmpMiddleName = assignedEmpMiddleName;
-    this.assignedEmpLastName = assignedEmpLastName;
-    this.assignedEmpDept = assignedEmpDept;
-    this.dateOfIncident = dateOfIncident;
-    this.dateOfSubmission = dateOfSubmission;
-    this.status = Status.BLANK;
-    this.urgency = urgency;
-    this.requestType = "ComputerService";
+    super.setEmpFirstName(empFirstName);
+    super.setEmpMiddleName(empMiddleName);
+    super.setEmpLastName(empLastName);
+    ;
+    super.setEmpDept(empDept);
+    super.setAssignedEmpFirstName(assignedEmpFirstName);
+    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
+    super.setAssignedEmpLastName(assignedEmpLastName);
+    super.setAssignedEmpDept(assignedEmpDept);
+    super.setDateOfIncident(dateOfIncident);
+    super.setDateOfSubmission(dateOfSubmission);
+    super.setStatus(Status.BLANK);
+    super.setUrgency(urgency);
+    super.setRequestType("ComputerService");
     this.deviceType = deviceType;
     this.model = model;
     this.issue = issue;

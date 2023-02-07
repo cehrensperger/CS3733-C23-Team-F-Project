@@ -17,7 +17,7 @@ public class Security extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  String incidentReport;
+  private String incidentReport;
 
   @Getter
   @Setter
@@ -27,12 +27,12 @@ public class Security extends ServiceRequest {
       nullable = false)
   @NonNull
   @ManyToOne
-  LocationName location;
+  private LocationName location;
 
   /** Creates a new Security object with a generated id */
   public Security() {
-    this.status = Status.BLANK;
-    this.requestType = "Security";
+    super.setStatus(Status.BLANK);
+    super.setRequestType("Security");
   }
 
   /**
@@ -68,18 +68,19 @@ public class Security extends ServiceRequest {
       @NonNull Urgency urgency) {
     this.incidentReport = theIncidentReport;
     this.location = theLocation;
-    this.empFirstName = empFirstName;
-    this.empMiddleName = empMiddleName;
-    this.empLastName = empLastName;
-    this.empDept = empDept;
-    this.assignedEmpFirstName = assignedEmpFirstName;
-    this.assignedEmpMiddleName = assignedEmpMiddleName;
-    this.assignedEmpLastName = assignedEmpLastName;
-    this.assignedEmpDept = assignedEmpDept;
-    this.dateOfIncident = dateOfIncident;
-    this.dateOfSubmission = dateOfSubmission;
-    this.status = Status.BLANK;
-    this.urgency = urgency;
-    this.requestType = "Security";
+    super.setEmpFirstName(empFirstName);
+    super.setEmpMiddleName(empMiddleName);
+    super.setEmpLastName(empLastName);
+    ;
+    super.setEmpDept(empDept);
+    super.setAssignedEmpFirstName(assignedEmpFirstName);
+    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
+    super.setAssignedEmpLastName(assignedEmpLastName);
+    super.setAssignedEmpDept(assignedEmpDept);
+    super.setDateOfIncident(dateOfIncident);
+    super.setDateOfSubmission(dateOfSubmission);
+    super.setStatus(Status.BLANK);
+    super.setUrgency(urgency);
+    super.setRequestType("Security");
   }
 }

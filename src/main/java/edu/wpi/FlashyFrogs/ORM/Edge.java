@@ -17,7 +17,7 @@ public class Edge {
   @NonNull
   @Getter
   @Setter
-  Node node1;
+  private Node node1;
 
   @Id
   @JoinColumn(name = "node2_id", nullable = false, foreignKey = @ForeignKey(name = "node2_id_fk"))
@@ -25,7 +25,7 @@ public class Edge {
   @ManyToOne(cascade = CascadeType.ALL)
   @Getter
   @Setter
-  Node node2;
+  private Node node2;
 
   /** Creates a new Edge with empty fields */
   public Edge() {}

@@ -6,12 +6,10 @@ import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 @AllArgsConstructor
 public class PathFinder {
-  @NonNull private final SessionFactory sessionFactory;
+  @NonNull private final Session session;
 
   /**
    * Converts a String location name to the LocationName object associated with it. MAY return Null
@@ -76,43 +74,17 @@ public class PathFinder {
    *     location) fails
    */
   public List<Node> findPath(@NonNull String start, @NonNull String end) {
-    // Get the session to use for this
-    Session session = sessionFactory.openSession();
-
-    // Create a transaction so that nothing happens while reading occurs
-    Transaction transaction = session.beginTransaction();
-
     List<Node> path;
 
-    try {
-      // Query location names and return nodes to send to aStar function
-      LocationName startLocation = longNameToLocation(start, session);
-      LocationName endLocation = longNameToLocation(end, session);
+    // Query location names and return nodes to send to aStar function
+    LocationName startLocation = longNameToLocation(start, session);
+    LocationName endLocation = longNameToLocation(end, session);
 
-      Node startNode = startLocation.getCurrentNode(session);
-      Node endNode = endLocation.getCurrentNode(session);
+    Node startNode = startLocation.getCurrentNode(session);
+    Node endNode = endLocation.getCurrentNode(session);
 
-      // Find the path with A*
-      path = aStar(startNode, endNode, session);
-    } catch (
-        NullPointerException
-            error) { // Catch failures, so we can close the transaction no matter what
-      if (transaction.isActive()) {
-        transaction.rollback();
-      }
-
-      // Close the session
-      session.close();
-
-      throw error;
-    }
-
-    // Commit the transaction
-    transaction.commit();
-
-    // Close the session
-    session.close();
-
+    // Find the path with A*
+    path = aStar(startNode, endNode, session);
     return path; // Return the path
   }
 
@@ -155,7 +127,23 @@ public class PathFinder {
       NODE_LOOP:
       for (Node node : getNeighbors(q.node, session)) { // get the neighbors of the current node
         NodeWrapper child = new NodeWrapper(node, q); // create node wrapper out of current node
-        child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start
+        if (q.node.getFloor() != child.node.getFloor()) {
+          if (child
+              .node
+              .getCurrentLocation(session)
+              .getLocationType()
+              .equals(LocationName.LocationType.ELEV)) {
+            child.g = q.g + 10; // cost for elevator
+          } else if (child
+              .node
+              .getCurrentLocation(session)
+              .getLocationType()
+              .equals(LocationName.LocationType.STAI)) {
+            child.g = q.g + 20; // cost for stairs
+          }
+        } else {
+          child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start
+        }
         child.h =
             euclideanDistance(child.node, end); // calculate the lowest possible distance to end
         child.f = child.g + child.h;

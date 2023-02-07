@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,21 +17,21 @@ public class LocationName {
   @NonNull
   @Getter
   @Setter
-  String longName;
+  private String longName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String shortName;
+  private String shortName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  LocationType locationType; // why is this mad at me but node is not????
+  private LocationType locationType; // why is this mad at me but node is not????
 
   /** Creates a new LocationName with empty fields */
   public LocationName() {}
@@ -122,21 +123,22 @@ public class LocationName {
    * @return the Node this location is stored in, or null if there is none
    */
   public Node getCurrentNode(@NonNull Session session) {
-    // use the connection to create a query that gets the most recent result that's not in the
-    // future for
-    // this location, limiting by one to get the single most recent result. Returns null if there
-    // is no
-    // result
+    //     use the connection to create a query that gets the most recent result that's not in the
+    //     future for
+    //     this location, limiting by one to get the single most recent result. Returns null if
+    // there
+    //     is no
+    //     result
     Node node =
         session
             .createQuery(
                 """
-            SELECT node
-            FROM Move
-            WHERE location = :location AND moveDate <= current timestamp
-            ORDER BY moveDate DESC
-            LIMIT 1
-            """,
+                SELECT node
+                FROM Move
+                WHERE location = :location AND moveDate <= current timestamp
+                ORDER BY moveDate DESC
+                LIMIT 1
+                """,
                 Node.class)
             .setParameter("location", this)
             .uniqueResult();
@@ -148,12 +150,12 @@ public class LocationName {
           session
               .createQuery(
                   """
-            SELECT location
-            FROM Move
-            WHERE node = :node AND moveDate <= current timestamp
-            ORDER BY moveDate DESC
-            LIMIT 1
-            """,
+                SELECT location
+                FROM Move
+                WHERE node = :node AND moveDate <= current timestamp
+                ORDER BY moveDate DESC
+                LIMIT 1
+                """,
                   LocationName.class)
               .setParameter("node", node)
               .uniqueResult();
@@ -180,5 +182,106 @@ public class LocationName {
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       return getCurrentNode(connection);
     }
+  }
+
+  /**
+   * Updates the long name for a given location. This is required (and extremely roundabout) because
+   * Hibernate does not support ON UPDATE CASCADE =( . This essentially creates a new location, sets
+   * everything that refers to the old one to refer to the new one (including this sort of copying
+   * in the case of moves), and then deletes the old location. This manages all DB interaction
+   * regarding that conversion with the provided session
+   *
+   * @param oldLocation the old location to switch. This should not be referred to after this method
+   *     has run (unless an Exception is thrown)
+   * @param longName the new long name for the location
+   * @param session the session to use for the switches
+   * @return the newly created location that things now refer to
+   */
+  public static LocationName updateLongName(
+      @NonNull LocationName oldLocation, @NonNull String longName, @NonNull Session session) {
+    LocationName newLocation =
+        new LocationName(longName, oldLocation.getLocationType(), oldLocation.getShortName());
+    session.persist(newLocation); // Persist the new location
+
+    List<AudioVisual> audioVisualRequests =
+        session
+            .createQuery("FROM AudioVisual WHERE location = :location", AudioVisual.class)
+            .setParameter("location", oldLocation)
+            .getResultList();
+
+    for (AudioVisual avRequest : audioVisualRequests) {
+      avRequest.setLocation(newLocation); // Change over the location
+      session.merge(avRequest); // Persist the changes
+    }
+
+    // Get the transport requests with the new location as the location
+    List<InternalTransport> transportRequests =
+        session
+            .createQuery(
+                "FROM InternalTransport where newLoc = :location OR oldLoc = :location",
+                InternalTransport.class)
+            .setParameter("location", oldLocation)
+            .getResultList();
+
+    // Fix the transports. In this case, we can use setters because the locations are not PK
+    // elements
+    for (InternalTransport transport : transportRequests) {
+      // If the transports new location is this location
+      if (transport.getNewLoc().equals(oldLocation)) {
+        transport.setNewLoc(newLocation); // Change it
+      }
+
+      // If the transports old location is this location
+      if (transport.getOldLoc().equals(oldLocation)) {
+        transport.setOldLoc(newLocation); // Change it
+      }
+
+      session.merge(transport); // Update the transport
+    }
+
+    // Get the list of sanitation requests to update
+    List<Sanitation> sanitationRequests =
+        session
+            .createQuery("FROM Sanitation WHERE location = :location", Sanitation.class)
+            .setParameter("location", oldLocation)
+            .getResultList();
+
+    // For each one
+    for (Sanitation sanitation : sanitationRequests) {
+      sanitation.setLocation(newLocation); // Update the location
+      session.merge(sanitation); // Save the changes
+    }
+
+    // Get the list of security requests
+    List<Security> securityRequests =
+        session
+            .createQuery("FROM Security WHERE location = :location", Security.class)
+            .setParameter("location", oldLocation)
+            .getResultList();
+
+    // For each one
+    for (Security security : securityRequests) {
+      security.setLocation(newLocation); // Update the location
+      session.merge(security); // Save the changes
+    }
+
+    // Get the list of moves associated with the old location
+    List<Move> movesToDelete =
+        session
+            .createQuery("FROM Move where location = :location", Move.class)
+            .setParameter("location", oldLocation)
+            .getResultList();
+
+    // For each location with the old move
+    for (Move moveToMove : movesToDelete) {
+      // Shallow-copy the move
+      Move newMove = new Move(moveToMove.getNode(), newLocation, moveToMove.getMoveDate());
+      session.persist(newMove); // Persist the new move
+      session.remove(moveToMove); // Delete the old move
+    }
+
+    session.remove(oldLocation); // Delete the old location
+
+    return newLocation;
   }
 }
