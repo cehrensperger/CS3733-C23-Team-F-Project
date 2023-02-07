@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,6 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
@@ -22,7 +24,7 @@
         <URL value="@application.css" />
     </stylesheets>
     <children>
-      <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true">
+      <ImageView fitHeight="600.0" fitWidth="800.0" opacity="0.25" pickOnBounds="true">
          <image>
             <Image url="@backgroundImage.png" />
          </image>
@@ -30,43 +32,16 @@
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
           <center>
               <HBox alignment="CENTER" prefHeight="245.0" prefWidth="600.0" spacing="12.0" BorderPane.alignment="CENTER">
-                  <children>
-                      <VBox prefHeight="200.0" prefWidth="300.0" />
-                      <HBox prefHeight="100.0" prefWidth="200.0">
-                          <children>
-                              <VBox alignment="CENTER" prefHeight="412.0" prefWidth="500.0">
-                                  <children>
-                                      <MFXButton fx:id="serviceRequestsButton" alignment="CENTER" onAction="#handleServiceRequestsButton" prefWidth="220.0" text="Service Requests">
-                                          <VBox.margin>
-                                              <Insets />
-                                          </VBox.margin>
-                                      </MFXButton>
-                                      <MFXButton fx:id="mapDataEditorButton" onAction="#handleMapDataEditorButton" prefWidth="220.0" text="Map Data Editor ">
-                                          <VBox.margin>
-                                              <Insets top="50.0" />
-                                          </VBox.margin>
-                                      </MFXButton>
-                                      <MFXButton fx:id="pathfindingButton" onAction="#handlePathfindingButton" prefWidth="220.0" text="Path Finding">
-                                          <VBox.margin>
-                                              <Insets top="50.0" />
-                                          </VBox.margin>
-                                      </MFXButton>
-                                  </children>
-                              </VBox>
-                          </children>
-                      </HBox>
-                      <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="300.0">
-                     <children>
-                        <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="260.0">
-                           <children>
-                                    <MFXButton fx:id="exitButton" alignment="CENTER" onAction="#handleExitButton" prefWidth="100.0" text="Exit">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" right="10.0" />
-                                 </HBox.margin></MFXButton>
-                           </children>
-                        </HBox>
-                     </children></VBox>
-                  </children>
+               <children>
+                  <TextArea blendMode="DARKEN" editable="false" prefHeight="298.0" prefWidth="445.0" text="JOIN US IN TRANSFORMING THE FUTURE OF MEDICINE&#10;&#10;With your support, Brigham and Women's Hospital is able to deliver the highest quality patient care, pursue the most innovative and promising medical research, and train the brightest medical minds to become the next generation of healthcare leaders." wrapText="true">
+                     <HBox.margin>
+                        <Insets bottom="180.0" top="130.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Arial Black" size="16.0" />
+                     </font>
+                  </TextArea>
+               </children>
               </HBox>
           </center>
          <top>
@@ -111,8 +86,38 @@
             </Accordion>
          </bottom>
          <left>
-            <MFXButton fx:id="secretButton" onAction="#secretMethod" opacity="0.0" BorderPane.alignment="CENTER" />
+            <VBox prefHeight="538.0" prefWidth="237.0" BorderPane.alignment="CENTER">
+               <children>
+                          <MFXButton fx:id="mapDataEditorButton" onAction="#handleMapDataEditorButton" prefHeight="49.0" prefWidth="256.0" text="Map Data Editor ">
+                              <VBox.margin>
+                                  <Insets left="20.0" top="120.0" />
+                              </VBox.margin>
+                          </MFXButton>
+                          <MFXButton fx:id="pathfindingButton" onAction="#handlePathfindingButton" prefHeight="49.0" prefWidth="254.0" text="Path Finding">
+                              <VBox.margin>
+                                  <Insets left="20.0" top="50.0" />
+                              </VBox.margin>
+                          </MFXButton>
+                          <MFXButton fx:id="serviceRequestsButton" alignment="CENTER" onAction="#handleServiceRequestsButton" prefHeight="49.0" prefWidth="230.0" text="Service Requests">
+                     <VBox.margin>
+                        <Insets left="20.0" top="50.0" />
+                     </VBox.margin>
+                          </MFXButton>
+               </children>
+            </VBox>
          </left>
+         <right>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXButton fx:id="secretButton" onAction="#secretMethod" opacity="0.0" prefHeight="168.0" prefWidth="24.0" />
+                        <MFXButton fx:id="exitButton" alignment="CENTER" onAction="#handleExitButton" prefWidth="100.0" text="Exit">
+                     <VBox.margin>
+                        <Insets top="315.0" />
+                     </VBox.margin>
+                  </MFXButton>
+               </children>
+            </VBox>
+         </right>
       </BorderPane>
    </children>
 </StackPane>

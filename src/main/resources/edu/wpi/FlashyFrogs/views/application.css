@@ -1,37 +1,53 @@
 .root{
-    -fx-background-color:#acb4ce;
+    -fx-background-color:#f1f1f1;
+
 }
+
 .label{
     -fx-font-size: 20;
     -fx-font-family: "Arial Black";
+    -fx-text-fill:#ffffff;
 }
+.mfx-combo-box.combo{
+    -fx-background-color:#3079ed ;
+}
+.mfx-text-field:hover{
+    -fx-border-color:#3079ed;
+}
+
+
+
 .button{
-    -fx-background-color:#7b7de6;
+    -fx-background-color:#2d89ef;
+    -fx-border-color: #3079ed;
     -fx-font-family:"Arial Black" ;
     -fx-padding: 15px 5px;
     -fx-text-alignment: center;
-    -fx-font-size: 13px;
-    -fx-border-radius:30px;
-
-
+    /*-fx-font-size: 13px;*/
+    -fx-border-radius:10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill:#ffffff ;
 }
 .button:hover{
-    -fx-background-color:#848cec;
-
+    -fx-background-color:#00508e;
 }
-
 .text-area{
     -fx-background-color:#33343b;
     -fx-border-color:#33343b ;
 }
-.table-view{
-    -fx-background-color:#acb4ce;
-
+.menu-button:hover{
+    -fx-background-color:#0067b1;
 }
 .menu-bar{
-    -fx-background-color:#7b7de6;
+    -fx-background-color:#012d5a;
 }
-#serviceRequestMenu{
-    -fx-background-color:#848cec;
+.menu-item{
+    -fx-background-color: #012d5a;
 }
+.menu-item:hover{
+    -fx-background-color:#0067b1
+}
+
+
+
 
