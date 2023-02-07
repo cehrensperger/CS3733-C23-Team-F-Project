@@ -31,7 +31,9 @@ public class LoginController {
     // TODO if already in database
     Session ses = CONNECTION.getSessionFactory().openSession();
     try {
-
+      //check if it's in the database
+      // create new UserLogin(Username, Password)
+      // if (UserLogin.get(Username) != -1 && UserLogin.checkPasswordEqual(Password))
       ses.close();
     } catch (Exception e) {
       ses.close();
