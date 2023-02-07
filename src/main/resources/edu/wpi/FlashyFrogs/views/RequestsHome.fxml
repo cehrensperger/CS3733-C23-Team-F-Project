@@ -42,6 +42,7 @@
                            </VBox.margin>
                         </MFXButton>
                         <MFXButton fx:id="audioVisualButton" onAction="#handleAudioVisualButton" prefWidth="275.0" text="Audio/Visual Services" />
+                        <MFXButton fx:id="computerServices" onAction="#handleComputerServicesButton" prefWidth="275.0" text="Computer Services" />
                      </children>
                   </VBox>
                </children>

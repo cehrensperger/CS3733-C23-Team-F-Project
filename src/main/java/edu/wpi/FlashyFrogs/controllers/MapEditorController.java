@@ -1,9 +1,8 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
-
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.io.IOException;
 import java.util.List;
@@ -14,19 +13,23 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.util.Callback;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 public class MapEditorController {
-  public MFXComboBox<Node.Floor> floorSelector;
-  @FXML private HBox editorBox; // Editor box, map is appended to this on startup
+  @FXML private MFXButton cancelButton;
+  @FXML private MFXButton saveButton;
+  @FXML private MFXComboBox<Node.Floor> floorSelector;
+  @FXML private BorderPane editorBox; // Editor box, map is appended to this on startup
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
 
@@ -39,16 +42,69 @@ public class MapEditorController {
   private void initialize() {
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
-    createLocationNameTable();
+    AtomicReference<PopOver> tablePopOver =
+        new AtomicReference<>(); // The pop-over the map is using for node highlighting
+
+    locationTable.setRowFactory(
+        new Callback<>() {
+          @Override
+          public TableRow<LocationName> call(TableView<LocationName> param) {
+            TableRow<LocationName> row = new TableRow<>(); // Create a new table row to use
+
+            // Add a listener to show the pop-up
+            row.hoverProperty()
+                .addListener(
+                    (observable, oldValue, newValue) -> {
+                      // If the pop over exists and is either not focused or we are showing a new
+                      // row
+                      if (tablePopOver.get() != null
+                          && (!tablePopOver.get().isFocused() || newValue)) {
+                        tablePopOver.get().hide(); // Hide the pop-over
+                        tablePopOver.set(null); // Delete the pop-over
+                      }
+
+                      // If we have a new value to show
+                      if (newValue) {
+                        // Load the location name info view
+                        FXMLLoader locationNameLoader =
+                            new FXMLLoader(
+                                getClass().getResource("../views/LocationNameInfo.fxml"));
+
+                        // Load the resource
+                        try {
+                          tablePopOver.set(
+                              new PopOver(locationNameLoader.load())); // Create the pop-over
+                        } catch (IOException e) {
+                          throw new RuntimeException(e); // If anything goes wrong, just re-throw
+                        }
+
+                        LocationNameInfoController controller =
+                            locationNameLoader.getController(); // Get the controller
+                        controller.setLocationName(
+                            row.getItem(),
+                            mapController.getMapSession()); // Set the location name to the value
+
+                        tablePopOver.get().show(row); // Show the pop-over on the row
+                      }
+                    });
+
+            return row; // Return the generated row
+          }
+        });
 
     // Load the map loader
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(getClass().getResource("../views/Map.fxml")));
 
     Pane map = mapLoader.load(); // Load the map
-    editorBox.getChildren().add(map); // Put the map loader into the editor box
+    editorBox.setCenter(map); // Put the map loader into the editor box
+
     mapController = mapLoader.getController(); // Load the map controller
-    AtomicReference<PopOver> popOver =
+
+    createLocationNameTable(
+        mapController.getMapSession()); // Create the table using the map session
+
+    AtomicReference<PopOver> mapPopOver =
         new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
     // Set the node creation processor
@@ -62,9 +118,9 @@ public class MapEditorController {
                     // If we're no longer hovering and the pop over exists, delete it. We will
                     // either create a new one
                     // or, keep it deleted
-                    if (popOver.get() != null && (!popOver.get().isFocused() || newValue)) {
-                      popOver.get().hide(); // Hide it
-                      popOver.set(null); // And delete it (set it to null)
+                    if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
+                      mapPopOver.get().hide(); // Hide it
+                      mapPopOver.set(null); // And delete it (set it to null)
                     }
 
                     // If we should draw a new pop-up
@@ -75,22 +131,19 @@ public class MapEditorController {
 
                       try {
                         // Try creating the pop-over
-                        popOver.set(new PopOver(nodeInfoLoader.load()));
+                        mapPopOver.set(new PopOver(nodeInfoLoader.load()));
                       } catch (IOException e) {
                         throw new RuntimeException(e); // If it fails, throw an exception
                       }
 
                       NodeInfoController controller =
                           nodeInfoLoader.getController(); // Get the controller to use
-                      controller.setNode(node); // Set the node
+                      controller.setNode(node, mapController.getMapSession()); // Set the node
 
-                      popOver.get().show(circle); // Show the pop-over
+                      mapPopOver.get().show(circle); // Show the pop-over
                     }
                   });
         });
-
-    // Set the map to take all available space
-    HBox.setHgrow(map, Priority.ALWAYS);
 
     floorSelector
         .getItems()
@@ -102,12 +155,21 @@ public class MapEditorController {
         .addListener((observable, oldValue, newValue) -> mapController.setFloor(newValue));
   }
 
-  private void createLocationNameTable() {
-    Session session = CONNECTION.getSessionFactory().openSession();
+  /**
+   * Creates the location name table, first clearing existing entries, then updating them
+   *
+   * @param session the session to use in querying
+   */
+  private void createLocationNameTable(@NonNull Session session) {
+    locationTable.getItems().clear(); // Clear the table
+
     List<LocationName> longNames =
         session.createQuery("FROM LocationName", LocationName.class).getResultList();
-    ObservableList<LocationName> longNamesObservableList = FXCollections.observableList(longNames);
-    session.close();
+
+    ObservableList<LocationName> longNamesObservableList =
+        FXCollections.observableList(longNames); // Create the list
+
+    // Add the list to the table
     locationTable.getItems().addAll(longNamesObservableList);
   }
 }

@@ -67,12 +67,12 @@ public class PathFindingController {
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
 
     // reset all lines and circles to be black
-    for (Circle circle : mapController.getNodes().values()) {
+    for (Circle circle : mapController.getNodeToCircleMap().values()) {
       if (circle != null) {
         circle.setFill(Paint.valueOf(Color.BLACK.toString()));
       }
     }
-    for (Line line : mapController.getEdges().values()) {
+    for (Line line : mapController.getEdgeToLineMap().values()) {
       line.setStroke(Paint.valueOf(Color.BLACK.toString()));
     }
 
@@ -103,7 +103,7 @@ public class PathFindingController {
     // color all circles that the mapController is displaying right now
     // and that are part of the path red
     for (Node node : nodes) {
-      Circle circle = mapController.getNodes().get(node);
+      Circle circle = mapController.getNodeToCircleMap().get(node);
       if (circle != null) {
 
         circle.setFill(Paint.valueOf(Color.RED.toString()));
@@ -111,26 +111,25 @@ public class PathFindingController {
     }
 
     for (int i = 1; i < nodes.size(); i++) {
-      //find the edge related to each pair of nodes
+      // find the edge related to each pair of nodes
       Edge edge = session.find(Edge.class, new Edge(nodes.get(i - 1), nodes.get(i)));
 
-      //if it couldn't find the edge, reverse the direction and look again
+      // if it couldn't find the edge, reverse the direction and look again
       if (edge == null) {
         edge = session.find(Edge.class, new Edge(nodes.get(i), nodes.get(i - 1)));
       }
 
-
-      System.out.println(mapController.getEdges().get(edge));
+      System.out.println(mapController.getEdgeToLineMap().get(edge));
       System.out.println();
 
-      //get the line on the map associated with the edge
-      Line line = mapController.getEdges().get(edge);
+      // get the line on the map associated with the edge
+      Line line = mapController.getEdgeToLineMap().get(edge);
 
-      //if it is null, it is probably on another floor
+      // if it is null, it is probably on another floor
       if (line != null) {
         line.setStroke(Paint.valueOf(Color.RED.toString()));
       }
-      System.out.println(mapController.getEdges().get(edge));
+      System.out.println(mapController.getEdgeToLineMap().get(edge));
     }
 
     session.close();

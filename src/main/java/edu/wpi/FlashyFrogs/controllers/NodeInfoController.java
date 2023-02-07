@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import org.hibernate.Session;
 
 /** Controller for the node info */
 public class NodeInfoController {
@@ -23,16 +24,17 @@ public class NodeInfoController {
    * Sets the node that the pop-up will use, including updating fields to use it
    *
    * @param node the node to set to
+   * @param session the session to use to fetch/save data
    */
   @SneakyThrows
-  public void setNode(@NonNull Node node) {
+  public void setNode(@NonNull Node node, @NonNull Session session) {
     // Set node text
     nodeIDField.setText(node.getId());
     xCoordinateField.setText(Integer.toString(node.getXCoord()));
     yCoordinateField.setText(Integer.toString(node.getYCoord()));
     floorField.setText(node.getFloor().name());
 
-    LocationName location = node.getCurrentLocation(); // Get the location for the node
+    LocationName location = node.getCurrentLocation(session); // Get the location for the node
     if (location != null) { // If the location exists
       // Set its fields
       FXMLLoader locationNameLoader =
@@ -43,7 +45,7 @@ public class NodeInfoController {
 
       LocationNameInfoController controller =
           locationNameLoader.getController(); // Load the controller
-      controller.setLocationName(location); // Set the location name
+      controller.setLocationName(location, session); // Set the location name
     }
   }
 }
