@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="editorBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
@@ -27,16 +28,6 @@
          </padding>
             </HBox>
          </top>
-         <left>
-            <TableView fx:id="locationTable" BorderPane.alignment="CENTER">
-               <columns>
-                  <TableColumn fx:id="longName" prefWidth="247.0" text="Long Name" />
-               </columns>
-         <padding>
-            <Insets right="10.0" />
-         </padding>
-            </TableView>
-         </left>
    <bottom>
       <HBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
@@ -48,4 +39,19 @@
          </BorderPane.margin>
       </HBox>
    </bottom>
+   <left>
+      <VBox prefHeight="495.0" prefWidth="257.0" BorderPane.alignment="CENTER">
+         <children>
+                  <TableView fx:id="locationTable" prefHeight="468.0" prefWidth="257.0">
+                     <columns>
+                        <TableColumn fx:id="longName" prefWidth="247.0" text="Long Name" />
+                     </columns>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+                  </TableView>
+            <MFXButton fx:id="addMove" onAction="#popupMove" prefHeight="25.0" prefWidth="260.0" text="Add a Move" />
+         </children>
+      </VBox>
+   </left>
 </BorderPane>

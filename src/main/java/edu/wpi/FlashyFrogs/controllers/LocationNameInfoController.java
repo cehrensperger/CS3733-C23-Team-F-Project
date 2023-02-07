@@ -62,7 +62,7 @@ public class LocationNameInfoController {
           session
               .createMutationQuery("DELETE FROM LocationName WHERE longName = :originalName")
               .setParameter("originalName", locationName.getLongName());
-          handleDelete.run(); // Run the deletetion handler
+          handleDelete.run(); // Run the deletion handler
         });
 
     saveButton.setOnAction(
