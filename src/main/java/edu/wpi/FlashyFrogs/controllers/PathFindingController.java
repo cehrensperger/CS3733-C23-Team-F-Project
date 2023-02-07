@@ -87,7 +87,6 @@ public class PathFindingController {
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
-
     // display path as text
     try {
       pathText.setText(

@@ -13,6 +13,7 @@
          <top>
             <HBox alignment="CENTER_RIGHT" spacing="25.0" BorderPane.alignment="CENTER">
                <children>
+            <MFXButton fx:id="backButton" text="Back" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Floor:" />
                   <MFXComboBox fx:id="floorSelector" alignment="TOP_RIGHT" editable="false" promptText="Floor" />
                </children>

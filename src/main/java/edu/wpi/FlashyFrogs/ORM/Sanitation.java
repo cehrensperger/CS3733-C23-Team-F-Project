@@ -23,7 +23,12 @@ public class Sanitation extends ServiceRequest {
   @Setter
   @JoinColumn(
       name = "location",
-      foreignKey = @ForeignKey(name = "location_name_fk"),
+      foreignKey =
+          @ForeignKey(
+              name = "location_name_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (location) REFERENCES locationname(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
   @ManyToOne

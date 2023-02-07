@@ -31,9 +31,20 @@ public class LocationNameInfoController {
         .addListener(
             (observable, oldValue, newValue) -> {
               // Create the new location (on update cascade)
+              session
+                  .createMutationQuery(
+                      "UPDATE LocationName SET longName=:newValue "
+                          + "WHERE longName=:originalLocation")
+                  .setParameter("longName", newValue)
+                  .setParameter("originalLocation", location.get().getLongName())
+                  .executeUpdate();
+
+              // Re-fetch the location
               location.set(
-                  LocationName.updateLongName(
-                      location.get(), newValue, session)); // Save the new location as the reference
+                  session
+                      .createQuery("FROM LocationName WHERE longName=:newValue", LocationName.class)
+                      .setParameter("newValue", newValue)
+                      .uniqueResult());
             });
 
     // Set the items for the combobox

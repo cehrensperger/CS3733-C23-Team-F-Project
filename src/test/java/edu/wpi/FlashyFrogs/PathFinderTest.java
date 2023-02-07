@@ -865,7 +865,6 @@ public class PathFinderTest {
   }
 
   /** Tests that the algorithm priorities elevators over stairs */
-
   @Test
   public void floorChangeTest() {
     // Line of nodes A->E, moving apart in Y-Coord
@@ -893,10 +892,8 @@ public class PathFinderTest {
     LocationName upperElevatorName =
         new LocationName("Upper Elevator", LocationName.LocationType.ELEV, "upperElevator");
 
-
     // End name
     LocationName endName = new LocationName("end", LocationName.LocationType.DEPT, "end");
-
 
     Move startMove = new Move(start, startName, Date.from(Instant.now()));
     Move lowerStairMove = new Move(lowerStair, lowerStairName, Date.from(Instant.now()));
@@ -904,7 +901,6 @@ public class PathFinderTest {
     Move lowerElevatorMove = new Move(lowerElevator, lowerElevatorName, Date.from(Instant.now()));
     Move upperElevatorMove = new Move(upperElevator, upperElevatorName, Date.from(Instant.now()));
     Move endMove = new Move(end, endName, Date.from(Instant.now()));
-
 
     // Create a transaction to put stuff into the DB. This is because the PathFinder will only read
     // committed data
