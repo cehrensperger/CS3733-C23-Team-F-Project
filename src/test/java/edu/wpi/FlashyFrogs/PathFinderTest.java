@@ -66,8 +66,7 @@ public class PathFinderTest {
   /** Tests that a start location does not exist throws a NullPointerException */
   @Test
   public void startLocationDoesNotExistTest() {
-    PathFinder pathFinder =
-        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
+    PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
     assertThrows(
         NullPointerException.class,
@@ -95,8 +94,7 @@ public class PathFinderTest {
     testSession.persist(startMove); // Persist the start move
     commitTransaction.commit(); // Commit the changes
 
-    PathFinder pathFinder =
-        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
+    PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
     // Assert that the second node results in an exception
     assertThrows(NullPointerException.class, () -> pathFinder.findPath("start", "doesnotexist)"));
@@ -118,8 +116,7 @@ public class PathFinderTest {
     testSession.persist(endLocation);
     commitTransaction.commit(); // Commit the transaction
 
-    PathFinder pathFinder =
-        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
+    PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
     // Assert that finding the path throws an exception
     assertThrows(
@@ -148,8 +145,7 @@ public class PathFinderTest {
     testSession.persist(startToStartNode);
     commitTransaction.commit(); // Commit the transaction
 
-    PathFinder pathFinder =
-        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
+    PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
     // Assert that finding the path throws an exception
     assertThrows(
@@ -182,8 +178,7 @@ public class PathFinderTest {
     testSession.persist(endLocationToNode);
     commitTransaction.commit(); // Commit the transaction
 
-    PathFinder pathFinder =
-        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
+    PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
     // Assert the path returns null
     assertNull(pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
@@ -242,7 +237,7 @@ public class PathFinderTest {
     expectedResult.add(nodeFive);
 
     // Find the path and validate it
-    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
+    PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
         expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
   }
@@ -316,8 +311,7 @@ public class PathFinderTest {
     expectedResult.add(realEnd); // To real end
 
     // Create the PathFinder
-    PathFinder pathFinder =
-        new PathFinder(DBConnection.CONNECTION.getSessionFactory()); // Create the path finder
+    PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
     assertEquals(
         expectedResult,
         pathFinder.findPath(start.getLongName(), end.getLongName())); // Check the path
@@ -358,7 +352,7 @@ public class PathFinderTest {
     expectedResult.add(endNode);
 
     // Assert that the path is valid
-    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
+    PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
         expectedResult,
         pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
@@ -370,9 +364,7 @@ public class PathFinderTest {
    */
   @Test
   public void takesLatestDatabaseStateTest() {
-    PathFinder pathFinder =
-        new PathFinder(
-            DBConnection.CONNECTION.getSessionFactory()); // Create the path finder right away
+    PathFinder pathFinder = new PathFinder(testSession); // Create the path finder right away
 
     // Nodes
     Node start = new Node("start", "b", Node.Floor.THREE, 0, 0);
@@ -457,7 +449,7 @@ public class PathFinderTest {
     expectedResult.add(target);
 
     // Create the pathfinder and check the path
-    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
+    PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
         expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
   }
@@ -521,9 +513,7 @@ public class PathFinderTest {
     resultList.add(leftMiddle);
     resultList.add(endNode);
 
-    PathFinder pathFinder =
-        new PathFinder(
-            DBConnection.CONNECTION.getSessionFactory()); // Create the path finder to use
+    PathFinder pathFinder = new PathFinder(testSession); // Create the path finder to use
     assertEquals(
         resultList,
         pathFinder.findPath(startName.getLongName(), endName.getLongName())); // Find the path
@@ -665,7 +655,7 @@ public class PathFinderTest {
     expectedResult.add(target);
 
     // Check that the path finder finds the right path
-    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
+    PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
         expectedResult,
         pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
@@ -728,8 +718,7 @@ public class PathFinderTest {
                               .orElseThrow();
 
                       // Create the path finder
-                      PathFinder pathFinder =
-                          new PathFinder(DBConnection.CONNECTION.getSessionFactory());
+                      PathFinder pathFinder = new PathFinder(testSession);
 
                       // Find the path between the nodes
                       List<Node> result =
@@ -793,10 +782,7 @@ public class PathFinderTest {
                 DynamicTest.dynamicTest(
                     "Node List To Location " + testNumber,
                     () -> {
-                      PathFinder pathFinder =
-                          new PathFinder(
-                              DBConnection.CONNECTION
-                                  .getSessionFactory()); // Create the path finder
+                      PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
                       // Create a random generator
                       Random randomGenerator = new Random();
@@ -872,9 +858,92 @@ public class PathFinderTest {
     expectedResult.add(endNode);
 
     // Check that the result is expected
-    PathFinder pathFinder = new PathFinder(DBConnection.CONNECTION.getSessionFactory());
+    PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
         expectedResult,
         pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
+  }
+
+  /** Tests that the algorithm priorities elevators over stairs */
+  @Test
+  public void floorChangeTest() {
+    // Line of nodes A->E, moving apart in Y-Coord
+    Node start = new Node("start", "building", Node.Floor.L1, 0, 0);
+    Node lowerStair = new Node("lowerStair", "building", Node.Floor.L1, 0, 1);
+    Node upperStair = new Node("upperStair", "building", Node.Floor.L2, 0, 1);
+    Node lowerElevator = new Node("lowerElevator", "building", Node.Floor.L1, 0, -1);
+    Node upperElevator = new Node("upperElevator", "building", Node.Floor.L2, 0, -1);
+    Node end = new Node("end", "building", Node.Floor.L2, 0, 0);
+    Edge startToStair = new Edge(start, lowerStair);
+    Edge startToElevator = new Edge(start, lowerElevator);
+    Edge stairs = new Edge(lowerStair, upperStair);
+    Edge elevator = new Edge(lowerElevator, upperElevator);
+    Edge stairToEnd = new Edge(upperStair, end);
+    Edge elevatorToEnd = new Edge(upperElevator, end);
+
+    // Start name
+    LocationName startName = new LocationName("start", LocationName.LocationType.CONF, "start");
+    LocationName lowerStairName =
+        new LocationName("Lower Stair", LocationName.LocationType.STAI, "lowerStair");
+    LocationName upperStairName =
+        new LocationName("Upper Stair", LocationName.LocationType.STAI, "upperStair");
+    LocationName lowerElevatorName =
+        new LocationName("Lower Elevator", LocationName.LocationType.ELEV, "lowerElevator");
+    LocationName upperElevatorName =
+        new LocationName("Upper Elevator", LocationName.LocationType.ELEV, "upperElevator");
+
+    // End name
+    LocationName endName = new LocationName("end", LocationName.LocationType.DEPT, "end");
+
+    Move startMove = new Move(start, startName, Date.from(Instant.now()));
+    Move lowerStairMove = new Move(lowerStair, lowerStairName, Date.from(Instant.now()));
+    Move upperStairMove = new Move(upperStair, upperStairName, Date.from(Instant.now()));
+    Move lowerElevatorMove = new Move(lowerElevator, lowerElevatorName, Date.from(Instant.now()));
+    Move upperElevatorMove = new Move(upperElevator, upperElevatorName, Date.from(Instant.now()));
+    Move endMove = new Move(end, endName, Date.from(Instant.now()));
+
+    // Create a transaction to put stuff into the DB. This is because the PathFinder will only read
+    // committed data
+    Transaction creationTransaction = testSession.beginTransaction();
+
+    // Save the Nodes and edges
+    testSession.persist(start);
+    testSession.persist(lowerStair);
+    testSession.persist(upperStair);
+    testSession.persist(lowerElevator);
+    testSession.persist(upperElevator);
+    testSession.persist(end);
+    testSession.persist(startToStair);
+    testSession.persist(startToElevator);
+    testSession.persist(stairs);
+    testSession.persist(elevator);
+    testSession.persist(stairToEnd);
+    testSession.persist(elevatorToEnd);
+    testSession.persist(startName);
+    testSession.persist(lowerStairName);
+    testSession.persist(upperStairName);
+    testSession.persist(lowerElevatorName);
+    testSession.persist(upperElevatorName);
+    testSession.persist(endName);
+    testSession.persist(startMove);
+    testSession.persist(lowerStairMove);
+    testSession.persist(upperStairMove);
+    testSession.persist(lowerElevatorMove);
+    testSession.persist(upperElevatorMove);
+    testSession.persist(endMove);
+
+    creationTransaction.commit(); // Commit the data
+
+    // Create the expected result list
+    List<Node> expectedResult = new LinkedList<>();
+    expectedResult.add(start);
+    expectedResult.add(lowerElevator);
+    expectedResult.add(upperElevator);
+    expectedResult.add(end);
+
+    // Find the path and validate it
+    PathFinder pathFinder = new PathFinder(testSession);
+    assertEquals(
+        expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
   }
 }
