@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.controlsfx.control.PopOver;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 public class LoginAdministratorController {
@@ -47,7 +48,7 @@ public class LoginAdministratorController {
     popOver.show(node.getScene().getWindow());
   }
 
-  public void initialize() {
+  public void initialize() throws Exception {
 
     // set columns userlogin
 
@@ -56,13 +57,21 @@ public class LoginAdministratorController {
 
     // create logIn table
     // open session
+    ObservableList<UserLogin> userLoginObservableList =
+            null; // convert list to ObservableList
     Session ses = CONNECTION.getSessionFactory().openSession();
-    List<edu.wpi.FlashyFrogs.ORM.UserLogin> userLoginObjects =
-        ses.createQuery("SELECT s FROM UserLogin s", edu.wpi.FlashyFrogs.ORM.UserLogin.class)
-            .getResultList(); // select everything from userLogin table and add to list
-    ObservableList<edu.wpi.FlashyFrogs.ORM.UserLogin> userLoginObservableList =
-        FXCollections.observableList(userLoginObjects); // convert list to ObservableList
-    ses.close();
+    try {
+      List<UserLogin> userLoginObjects =
+          ses.createQuery("SELECT s FROM UserLogin s", UserLogin.class)
+              .getResultList(); // select everything from userLogin table and add to list
+      userLoginObservableList = FXCollections.observableList(userLoginObjects);
+      ses.close();
+    } catch (Exception e) {
+      ses.close();
+      //TODO Show a popup or something
+      throw e;
+
+    }
     userLoginTable
         .getItems()
         .addAll(userLoginObservableList); // add every item in observable list to moveTable
