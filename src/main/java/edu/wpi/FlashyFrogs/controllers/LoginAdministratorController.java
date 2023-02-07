@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.Login;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
@@ -24,7 +23,7 @@ import org.hibernate.Session;
 public class LoginAdministratorController {
 
   @FXML private MFXButton back;
-  @FXML private TableView<Login> tableView;
+  @FXML private TableView<UserLogin> tableView;
 
   @FXML private MFXButton addNewUser;
 

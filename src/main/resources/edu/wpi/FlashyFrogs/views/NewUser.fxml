@@ -4,6 +4,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
@@ -16,22 +17,23 @@
          <center>
             <VBox alignment="CENTER" prefHeight="459.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXTextField fx:id="username" prefWidth="200.0">
+                  <Label fx:id="errorMessage" alignment="CENTER" prefHeight="27.0" prefWidth="178.0" textFill="RED" visible="false" />
+                  <MFXTextField fx:id="username" floatingText="Username:" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </MFXTextField>
-                  <MFXPasswordField fx:id="pass1" prefWidth="200.0">
+                  <MFXPasswordField fx:id="pass1" floatingText="Password:" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </MFXPasswordField>
-                  <MFXPasswordField fx:id="pass2" prefWidth="200.0">
+                  <MFXPasswordField fx:id="pass2" floatingText="Confirm Password:" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </MFXPasswordField>
-                  <MFXButton fx:id="newUser" text="Add User" />
+                  <MFXButton fx:id="newUser" onAction="#handleNewUser" text="Add User" />
                </children>
             </VBox>
          </center>
