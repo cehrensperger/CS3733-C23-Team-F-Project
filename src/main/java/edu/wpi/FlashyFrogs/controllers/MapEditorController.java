@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
@@ -200,4 +201,17 @@ public class MapEditorController {
     // Add the list to the table
     locationTable.getItems().addAll(longNamesObservableList);
   }
+
+    @FXML
+    public void handleQ(ActionEvent event) throws IOException {
+        FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+        PopOver popOver = new PopOver(newLoad.load());
+
+        HelpController help = newLoad.getController();
+        help.handleQMapEditor();
+
+        popOver.detach();
+        javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+        popOver.show(node.getScene().getWindow());
+    }
 }

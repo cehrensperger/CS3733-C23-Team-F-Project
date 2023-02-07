@@ -14,8 +14,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,8 +21,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import org.controlsfx.control.PopOver;
-import org.hibernate.Session;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 
@@ -77,6 +73,7 @@ public class PathFindingController {
 
     // Set the node creation processor
   }
+
   @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
@@ -257,7 +254,7 @@ public class PathFindingController {
     help.handleQPathFinding();
 
     popOver.detach();
-    Node node = (Node) event.getSource();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
     popOver.show(node.getScene().getWindow());
   }
 }

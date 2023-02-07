@@ -67,7 +67,7 @@ public class LocationNameInfoController {
 
     saveButton.setOnAction(
         event -> {
-            errorText.setText(""); // Clear the error text
+          errorText.setText(""); // Clear the error text
 
           // Check to make sure that the location is unique. Uses a query because session.find
           // does not play nice with changing long names without committing
