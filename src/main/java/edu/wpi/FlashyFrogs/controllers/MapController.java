@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.Session;
@@ -29,8 +30,12 @@ public class MapController {
   @FXML private Group group; // Group that will be used as display in the gesture pane
   private Node.Floor floor =
       null; // The floor to display on the map. Starts as null, e.g., empty map, no floor
+
+  @Getter
   private @NonNull final Map<Edge, Line> edges =
       new HashMap<>(); // Map relating edge to the line it is represented by
+
+  @Getter
   private @NonNull final Map<Node, Circle> nodes =
       new HashMap<>(); // Map relating node to the circle it is represented by
 
