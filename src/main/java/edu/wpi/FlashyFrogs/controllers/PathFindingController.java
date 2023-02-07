@@ -1,7 +1,5 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
-
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -22,7 +20,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.SneakyThrows;
-import org.hibernate.Session;
 
 public class PathFindingController {
 
@@ -55,6 +52,7 @@ public class PathFindingController {
   }
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
+    mapController.exit();
     Fapp.setScene("Home");
   }
 
@@ -77,7 +75,7 @@ public class PathFindingController {
     }
 
     // create session for PathFinder
-    Session session = CONNECTION.getSessionFactory().openSession();
+    // Session session = CONNECTION.getSessionFactory().openSession();
     // session.find(LocationName.class, start.getText());
     // LocationName startPath = session.find(LocationName.class, start.getText());
     // LocationName endPath = session.find(LocationName.class, end.getText());
@@ -86,13 +84,14 @@ public class PathFindingController {
     String startPath = start.getText();
     String endPath = end.getText();
     // Transaction transaction = session.beginTransaction();
-    PathFinder pathFinder = new PathFinder(CONNECTION.getSessionFactory());
+    PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
     // display path as text
     try {
       pathText.setText(
           "Path:\n"
-              + pathFinder.nodeListToLocation(pathFinder.findPath(startPath, endPath), session));
+              + pathFinder.nodeListToLocation(
+                  pathFinder.findPath(startPath, endPath), mapController.getMapSession()));
     } catch (NullPointerException e) {
       System.out.println("Error: No data in database");
     }
@@ -112,11 +111,15 @@ public class PathFindingController {
 
     for (int i = 1; i < nodes.size(); i++) {
       // find the edge related to each pair of nodes
-      Edge edge = session.find(Edge.class, new Edge(nodes.get(i - 1), nodes.get(i)));
+      Edge edge =
+          mapController.getMapSession().find(Edge.class, new Edge(nodes.get(i - 1), nodes.get(i)));
 
       // if it couldn't find the edge, reverse the direction and look again
       if (edge == null) {
-        edge = session.find(Edge.class, new Edge(nodes.get(i), nodes.get(i - 1)));
+        edge =
+            mapController
+                .getMapSession()
+                .find(Edge.class, new Edge(nodes.get(i), nodes.get(i - 1)));
       }
 
       System.out.println(mapController.getEdgeToLineMap().get(edge));
@@ -132,6 +135,6 @@ public class PathFindingController {
       System.out.println(mapController.getEdgeToLineMap().get(edge));
     }
 
-    session.close();
+    // session.close();
   }
 }
