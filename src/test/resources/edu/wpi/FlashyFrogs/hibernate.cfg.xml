@@ -13,12 +13,12 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://database.cs.wpi.edu:5432/teamfdb</property>
-        <property name="connection.username">teamf</property>
-        <property name="connection.password">teamf60</property>
+        <property name="connection.url">jdbc:postgresql://batyr.db.elephantsql.com/kgevwset</property>
+        <property name="connection.username">kgevwset</property>
+        <property name="connection.password">V2ivXBRgJKHSLAcpBymcaM9fVRuTS8Me</property>
         <property name="connection.autocommit">false</property>
 
-        <property name="default_schema">test</property>
+        <property name="hibernate.default_schema">test</property>
 
         <property name="connection.pool_size">1</property>
 
@@ -30,14 +30,15 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create-drop</property>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Edge"/>
-        <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Move"/>
-        <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.ServiceRequest"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Security"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Sanitation"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.InternalTransport"/>
-
+        <mapping class="edu.wpi.FlashyFrogs.ORM.ComputerService"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.AudioVisual"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
 
         <!-- Names the annotated entity class -->
     </session-factory>

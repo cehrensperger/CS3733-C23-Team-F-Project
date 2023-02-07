@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
@@ -9,74 +10,94 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.PathFindingController">
-   <children>
-      <BorderPane prefHeight="600.0" prefWidth="800.0">
-         <center>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.PathFindingController">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="TOP_CENTER" prefHeight="118.0" prefWidth="800.0">
                <children>
-                  <MFXTextField fx:id="start" floatMode="DISABLED" prefHeight="59.0" prefWidth="328.0" promptText="Start:">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </MFXTextField>
-                  <MFXTextField fx:id="end" alignment="TOP_LEFT" floatMode="DISABLED" prefHeight="59.0" prefWidth="328.0" promptText="End:">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </MFXTextField>
-                  <Text fx:id="pathText" strokeType="OUTSIDE" strokeWidth="0.0" text="Path:" wrappingWidth="321.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-               </children>
-            </VBox>
-         </center>
-         <bottom>
-            <AnchorPane prefWidth="800.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox prefWidth="800.0">
+                  <VBox alignment="TOP_RIGHT" prefHeight="118.0" prefWidth="250.0" />
+                  <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="300.0">
                      <children>
-                        <HBox alignment="BOTTOM_RIGHT" prefWidth="800.0">
-                           <children>
-                              <MFXButton fx:id="clearButton" onAction="#handleButtonClear" prefWidth="100.0" text="Clear">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </MFXButton>
-                              <MFXButton fx:id="backButton" onAction="#handleBackButton" prefWidth="100.0" text="Back">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </MFXButton>
-                              <MFXButton fx:id="getPath" onAction="#handleGetPath" prefWidth="100.0" text="Get Path">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </MFXButton>
-                           </children>
+                        <MFXTextField fx:id="start" floatMode="DISABLED" prefHeight="29.0" prefWidth="368.0" promptText="Start:">
                            <VBox.margin>
-                              <Insets bottom="10.0" right="10.0" top="10.0" />
+                              <Insets bottom="10.0" />
                            </VBox.margin>
-                        </HBox>
-                        <Accordion>
-                          <panes>
-                            <TitledPane animated="false" text="Help">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </TitledPane>
-                          </panes>
-                        </Accordion>
+                        </MFXTextField>
+                        <MFXTextField fx:id="end" alignment="TOP_LEFT" floatMode="DISABLED" prefHeight="29.0" prefWidth="396.0" promptText="End:">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </MFXTextField>
+                        <MFXComboBox fx:id="floorSelector" promptText="Floor" />
+                        <AnchorPane fx:id="mapPane1" prefHeight="332.0" prefWidth="800.0" VBox.vgrow="ALWAYS" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" />
                      </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="TOP_RIGHT" prefHeight="118.0" prefWidth="250.0">
+                     <children>
+                        <MFXButton fx:id="question" onAction="#handleQ" text="?">
+                           <VBox.margin>
+                              <Insets right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </MFXButton>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </VBox>
                </children>
-            </AnchorPane>
-         </bottom>
-      </BorderPane>
-   </children>
-</AnchorPane>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <AnchorPane fx:id="mapPane" prefHeight="402.0" prefWidth="788.0" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <AnchorPane prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefWidth="800.0">
+               <children>
+                  <HBox fx:id="buttonsHBox" alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <MFXButton fx:id="clearButton" onAction="#handleButtonClear" prefWidth="100.0" text="Clear" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <MFXButton fx:id="backButton" onAction="#handleBackButton" prefWidth="100.0" text="Back" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <MFXButton fx:id="getPath" onAction="#handleGetPath" prefWidth="100.0" text="Get Path" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Accordion>
+                    <panes>
+                      <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Help">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </TitledPane>
+                    </panes>
+                  </Accordion>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

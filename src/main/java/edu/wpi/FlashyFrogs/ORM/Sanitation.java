@@ -17,22 +17,27 @@ public class Sanitation extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  SanitationType type;
+  private SanitationType type;
 
   @Getter
   @Setter
   @JoinColumn(
       name = "location",
-      foreignKey = @ForeignKey(name = "location_name_fk"),
+      foreignKey =
+          @ForeignKey(
+              name = "location_name_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (location) REFERENCES locationname(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
   @ManyToOne
-  LocationName location;
+  private LocationName location;
 
   /** Creates a new Sanitation with a generated id */
   public Sanitation() {
-    this.status = Status.BLANK;
-    this.requestType = "Sanitation";
+    super.setStatus(Status.BLANK);
+    super.setRequestType("Sanitation");
   }
 
   /**
@@ -67,20 +72,21 @@ public class Sanitation extends ServiceRequest {
       @NonNull Urgency urgency,
       @NonNull LocationName location) {
     this.type = theType;
-    this.empFirstName = empFirstName;
-    this.empMiddleName = empMiddleName;
-    this.empLastName = empLastName;
-    this.empDept = empDept;
-    this.assignedEmpFirstName = assignedEmpFirstName;
-    this.assignedEmpMiddleName = assignedEmpMiddleName;
-    this.assignedEmpLastName = assignedEmpLastName;
-    this.assignedEmpDept = assignedEmpDept;
-    this.dateOfIncident = dateOfIncident;
-    this.dateOfSubmission = dateOfSubmission;
-    this.status = Status.BLANK;
-    this.urgency = urgency;
+    super.setEmpFirstName(empFirstName);
+    super.setEmpMiddleName(empMiddleName);
+    super.setEmpLastName(empLastName);
+    ;
+    super.setEmpDept(empDept);
+    super.setAssignedEmpFirstName(assignedEmpFirstName);
+    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
+    super.setAssignedEmpLastName(assignedEmpLastName);
+    super.setAssignedEmpDept(assignedEmpDept);
+    super.setDateOfIncident(dateOfIncident);
+    super.setDateOfSubmission(dateOfSubmission);
+    super.setStatus(Status.BLANK);
+    super.setUrgency(urgency);
     this.location = location;
-    this.requestType = "Sanitation";
+    super.setRequestType("Sanitation");
   }
 
   /** Enumerated type for the possible types we can create */
