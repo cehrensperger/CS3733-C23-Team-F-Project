@@ -216,7 +216,5 @@ public class MapEditorController {
   }
 
   @FXML
-    private void popupMove() {
-
-  }
+  private void popupMove() {}
 }

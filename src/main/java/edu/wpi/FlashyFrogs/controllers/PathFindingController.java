@@ -48,7 +48,7 @@ public class PathFindingController {
         .addListener(
             (observable, oldValue, newValue) -> {
 
-              //should figure out how to get rid of magic numbers
+              // should figure out how to get rid of magic numbers
               buttonsHBox.setMaxWidth(newValue.doubleValue() - 30.0);
               buttonsHBox.setMinWidth(newValue.doubleValue() - 30.0);
 
