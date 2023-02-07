@@ -1,9 +1,8 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.Main;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
@@ -66,7 +65,7 @@ public class DBTableController implements Initializable {
   public TableColumn<Move, Date> colTimestamp;
   public TextField txtID;
   public TextField txtLongName;
-  public Button btnadd;
+
   public Button backbutton;
   @FXML private MFXButton back;
   // Update Buttons
@@ -116,7 +115,7 @@ public class DBTableController implements Initializable {
    */
   @FXML
   private void addMove(javafx.event.ActionEvent actionEvent) throws Exception {
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     String colID = moveTxtID.getText();
     String colLongName = moveTxtLongName.getText();
 
@@ -163,7 +162,7 @@ public class DBTableController implements Initializable {
   @FXML
   private void updateID(ActionEvent event) {
     if (checkNodeID != nodeTxtID.getText()) {
-      Session session = Main.factory.openSession();
+      Session session = CONNECTION.getSessionFactory().openSession();
       Transaction transaction = session.beginTransaction();
 
       String id = checkNodeID;
@@ -225,7 +224,7 @@ public class DBTableController implements Initializable {
 
   private void createMoveTable() {
     // open session
-    Session ses = factory.openSession();
+    Session ses = CONNECTION.getSessionFactory().openSession();
     List<Move> moveObjects =
         ses.createQuery("SELECT s FROM Move s", Move.class)
             .getResultList(); // select everything from move table and add to list
@@ -240,7 +239,7 @@ public class DBTableController implements Initializable {
 
   private void createNodeTable() {
     // open session
-    Session ses = factory.openSession();
+    Session ses = CONNECTION.getSessionFactory().openSession();
     List<Node> nodeObjects =
         ses.createQuery("SELECT s FROM Node s", Node.class)
             .getResultList(); // select everything from move table and add to list
@@ -255,7 +254,7 @@ public class DBTableController implements Initializable {
 
   private void createEdgeTable() {
     // open session
-    Session ses = factory.openSession();
+    Session ses = CONNECTION.getSessionFactory().openSession();
     List<Edge> edgeObjects =
         ses.createQuery("SELECT s FROM Edge s", Edge.class)
             .getResultList(); // select everything from move table and add to list
@@ -270,7 +269,7 @@ public class DBTableController implements Initializable {
 
   private void createLnTable() {
     // open session
-    Session ses = factory.openSession();
+    Session ses = CONNECTION.getSessionFactory().openSession();
     List<LocationName> lnObjects =
         ses.createQuery("SELECT s FROM LocationName s", LocationName.class)
             .getResultList(); // select everything from move table and add to list
@@ -288,7 +287,7 @@ public class DBTableController implements Initializable {
   }
 
   public void nodeUpdate(ActionEvent actionEvent) {
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
     Node node = session.find(Node.class, checkNodeID);
     node.setXCoord(Integer.parseInt(nodeTxtX.getText()));
@@ -302,7 +301,7 @@ public class DBTableController implements Initializable {
   }
 
   public void submitLongName(ActionEvent actionEvent) {
-    Session session = Main.factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
     LocationName location = session.find(LocationName.class, checkLongName);
     List<Move> moves =
@@ -333,7 +332,7 @@ public class DBTableController implements Initializable {
   }
 
   public void lnUpdate(ActionEvent actionEvent) {
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
     LocationName locationName = session.find(LocationName.class, checkLongName);
     locationName.setLocationType(LocationName.LocationType.valueOf(lnTxtLocationType.getText()));

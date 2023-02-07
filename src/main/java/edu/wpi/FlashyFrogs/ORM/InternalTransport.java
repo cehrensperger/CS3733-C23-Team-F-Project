@@ -17,7 +17,21 @@ public class InternalTransport extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  String patientName;
+  String patientFirstName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String patientMiddleName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  String patientLastName;
 
   @Getter
   @Setter
@@ -45,6 +59,7 @@ public class InternalTransport extends ServiceRequest {
 
   /** Creates a new InternalTransport with a generated id */
   public InternalTransport() {
+    this.status = Status.BLANK;
     this.requestType = "InternalTransport";
   }
 
@@ -54,7 +69,9 @@ public class InternalTransport extends ServiceRequest {
    * @param theDOB the Date to use in the DOB field
    * @param theNewLoc the LocationName to use in the newLoc field
    * @param theOldLoc the LocationName to use in the oldLoc field
-   * @param thePatientName the String to use in the patientName field
+   * @param thePatientFirstName the String to use in the patientFirstName field
+   * @param thePatientMiddleName the String to use in the patientMiddleName field
+   * @param thePatientLastName the String to use in the patientlastName field
    * @param empFirstName the String to use in the empFirstName field
    * @param empMiddleName the String to use in the empMiddleName field
    * @param empLastName the String to use in the empLastName field
@@ -71,7 +88,9 @@ public class InternalTransport extends ServiceRequest {
       @NonNull Date theDOB,
       @NonNull LocationName theNewLoc,
       @NonNull LocationName theOldLoc,
-      @NonNull String thePatientName,
+      @NonNull String thePatientFirstName,
+      @NonNull String thePatientMiddleName,
+      @NonNull String thePatientLastName,
       @NonNull String empFirstName,
       @NonNull String empMiddleName,
       @NonNull String empLastName,
@@ -86,7 +105,9 @@ public class InternalTransport extends ServiceRequest {
     this.dateOfBirth = theDOB;
     this.newLoc = theNewLoc;
     this.oldLoc = theOldLoc;
-    this.patientName = thePatientName;
+    this.patientFirstName = thePatientFirstName;
+    this.patientMiddleName = thePatientMiddleName;
+    this.patientLastName = thePatientLastName;
     this.empFirstName = empFirstName;
     this.empMiddleName = empMiddleName;
     this.empLastName = empLastName;

@@ -18,6 +18,8 @@ public class HomeController {
   @FXML private MFXButton exitButton;
   @FXML private MenuItem closeMenuItem;
   @FXML private MenuItem loadMapMenuItem;
+  @FXML private MenuItem loadFeedbackMenuItem;
+  @FXML private MFXButton hiddneButton;
 
   Stage stage;
 
@@ -59,5 +61,13 @@ public class HomeController {
 
   public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("LoadMapPage");
+  }
+
+  public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Feedback");
+  }
+
+  public void secretMethod(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Home2");
   }
 }

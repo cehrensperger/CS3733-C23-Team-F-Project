@@ -1,24 +1,27 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.SanitationServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Paint;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -32,7 +35,6 @@ public class SanitationServiceController extends ServiceRequestController {
   @FXML MFXTextField firstName;
   @FXML MFXTextField lastName;
   @FXML MFXTextField middleName;
-  @FXML MFXTextField timeEntry;
   @FXML MFXComboBox departmentDropDown;
   @FXML MFXComboBox urgencyEntry;
   @FXML private MFXTextField first2;
@@ -40,13 +42,11 @@ public class SanitationServiceController extends ServiceRequestController {
   @FXML private MFXTextField last2;
   @FXML private MFXComboBox department2;
   @FXML private MFXButton allButton;
+  @FXML Label errorMessage;
   private Connection connection = null; // connection to database
-  private SanitationServiceData sanitationServiceData;
 
   /** Method run when controller is initializes */
   public void initialize() {
-
-    sanitationServiceData = new SanitationServiceData();
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     requestTypeDropDown.getItems().addAll("Mopping", "Sweeping", "Vacuuming");
     // locationDropDown.getItems().addAll("room 1", "room 2", "public space 1", "public space 2");
@@ -54,7 +54,7 @@ public class SanitationServiceController extends ServiceRequestController {
     // I don't really know what to put here
     departmentDropDown.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
 
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
@@ -65,7 +65,7 @@ public class SanitationServiceController extends ServiceRequestController {
   }
 
   /**
-   * clears all fields and drop downs
+   * clears all fields and drop-downs
    *
    * @param actionEvent event that triggered method
    * @throws IOException
@@ -78,7 +78,6 @@ public class SanitationServiceController extends ServiceRequestController {
     lastName.clear();
     middleName.clear();
     departmentDropDown.clear();
-    timeEntry.clear();
     urgencyEntry.clear();
     first2.clear();
     middle2.clear();
@@ -94,57 +93,69 @@ public class SanitationServiceController extends ServiceRequestController {
    */
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
-    String[] parts = {};
-    String departmentEnumString = departmentDropDown.getText().toUpperCase();
+    try {
+      String[] parts = {};
+      String departmentEnumString = departmentDropDown.getText().toUpperCase().replace(" ", "_");
+      String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
+      parts = urgencyEntry.getText().toUpperCase().split(" ");
+      String urgencyEnumString = parts[0] + "_" + parts[1];
 
-    parts = urgencyEntry.getText().toUpperCase().split(" ");
-    String urgencyEnumString = parts[0] + "_" + parts[1];
-    // TODO: handle empty case and close session!!!!!
+      if (firstName.getText().equals("")
+          || middleName.getText().equals("")
+          || lastName.getText().equals("")
+          || first2.getText().equals("")
+          || middle2.getText().equals("")
+          || last2.getText().equals("")
+          || department2.getText().equals("")
+          || departmentDropDown.getText().equals("")
+          || date.getText().equals("")
+          || locationDropDown.getText().equals("")
+          || requestTypeDropDown.getText().equals("")) {
+        throw new NullPointerException();
+      }
 
-    String departmentEnumString2 = department2.getText().toUpperCase();
+      String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
 
-    String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
+      Date dateOfIncident =
+          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-    Sanitation sanitationRequest =
-        new Sanitation(
-            Sanitation.SanitationType.valueOf(requestTypeEnumString),
-            firstName.getText(),
-            middleName.getText(),
-            lastName.getText(),
-            first2.getText(),
-            middle2.getText(),
-            last2.getText(),
-            ServiceRequest.EmpDept.valueOf(departmentEnumString),
-            ServiceRequest.EmpDept.valueOf(departmentEnumString2),
-            new Date(),
-            Date.from(Instant.now()),
-            ServiceRequest.Urgency.valueOf(urgencyEnumString),
-            session.find(LocationName.class, locationDropDown.getText()));
-
-    session.persist(sanitationRequest);
-    transaction.commit();
-    session.close();
-    System.out.println(sanitationServiceData);
-  }
-
-  private void addSanitationRequest(SanitationServiceData sd) {
-    Session session = factory.openSession();
-    Transaction transaction = session.beginTransaction();
-    Sanitation sanitationRequest = new Sanitation();
-    sanitationRequest.setLocation(null);
-    sanitationRequest.setType(Sanitation.SanitationType.valueOf(sd.getRequestType()));
-    sanitationRequest.setEmpFirstName(sd.getEmployeeFirstName());
-    sanitationRequest.setEmpMiddleName(sd.getEmployeeMiddleName());
-    sanitationRequest.setEmpLastName(sd.getEmployeeLastName());
-    sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
-
-    session.persist(sanitationRequest);
-    transaction.commit();
-    session.close();
-    System.out.println("submitted");
+      Sanitation sanitationRequest =
+          new Sanitation(
+              Sanitation.SanitationType.valueOf(requestTypeEnumString),
+              firstName.getText(),
+              middleName.getText(),
+              lastName.getText(),
+              first2.getText(),
+              middle2.getText(),
+              last2.getText(),
+              ServiceRequest.EmpDept.valueOf(departmentEnumString),
+              ServiceRequest.EmpDept.valueOf(departmentEnumString2),
+              dateOfIncident,
+              Date.from(Instant.now()),
+              ServiceRequest.Urgency.valueOf(urgencyEnumString),
+              session.find(LocationName.class, locationDropDown.getText()));
+      try {
+        session.persist(sanitationRequest);
+        transaction.commit();
+        session.close();
+        handleClear(actionEvent);
+        errorMessage.setTextFill(Paint.valueOf("#44ff00"));
+        errorMessage.setText("Successfully submitted.");
+      } catch (RollbackException exception) {
+        session.clear();
+        errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+        errorMessage.setText("Please fill all fields.");
+        session.close();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      session.clear();
+      errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+      errorMessage.setText("Please fill all fields.");
+      session.close();
+    }
   }
 
   /**
@@ -162,58 +173,4 @@ public class SanitationServiceController extends ServiceRequestController {
 
     Fapp.setScene("AllSanitationRequest");
   }
-
-  /**
-   * generates a table to store button click information
-   *
-   * @return true when table is successfully created or already exists, false otherwise
-   */
-  //  private boolean createTable() {
-  //
-  //    boolean table_exists = false;
-  //
-  //    if (this.connection != null) {
-  //      String createQuery =
-  //          "CREATE TABLE APP.buttonClicks("
-  //              + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY
-  // 1), "
-  //              + "btn_name VARCHAR(50), "
-  //              + "time_stamp TIMESTAMP NOT NULL, "
-  //              + "PRIMARY KEY(id) )";
-  //      try {
-  //        Statement statement = this.connection.createStatement();
-  //        statement.execute(createQuery);
-  //
-  //        table_exists = true;
-  //      } catch (SQLException e) {
-  //        // Error code 955 is "name is already used by an existing object", so this table name
-  //        // already exists
-  //        if (e.getErrorCode() == 955 || e.getMessage().contains("already exists"))
-  //          table_exists = true;
-  //        else e.printStackTrace();
-  //      }
-  //    }
-  //    return table_exists;
-  //  }
-  //
-  //  /**
-  //   * Stores button click data to database
-  //   *
-  //   * @return true if data is stored successfully, false otherwise
-  //   */
-  //  private boolean logData() {
-  //    if (connection != null) {
-  //      String writeQuery =
-  //          "INSERT INTO APP.buttonClicks(btn_name, time_stamp) VALUES ( 'ClickButton',
-  // CURRENT_TIMESTAMP ) ";
-  //      try {
-  //        Statement statement = this.connection.createStatement();
-  //        statement.execute(writeQuery);
-  //        return true;
-  //      } catch (SQLException e) {
-  //        e.printStackTrace();
-  //      }
-  //    }
-  //    return false;
-  //  }
 }

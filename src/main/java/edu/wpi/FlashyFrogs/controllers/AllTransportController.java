@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
@@ -47,7 +47,7 @@ public class AllTransportController extends AllRequestsController {
     // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     // Transaction transaction = session.beginTransaction();
     // Sanitation sanitationRequest = new Sanitation();
 
@@ -65,7 +65,7 @@ public class AllTransportController extends AllRequestsController {
           @Override
           public void handle(TableColumn.CellEditEvent<ServiceRequest, String> t) {
 
-            Session editSession = factory.openSession();
+            Session editSession = CONNECTION.getSessionFactory().openSession();
             Transaction transaction = editSession.beginTransaction();
 
             ServiceRequest serviceRequest =

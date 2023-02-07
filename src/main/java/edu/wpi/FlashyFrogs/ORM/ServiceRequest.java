@@ -92,7 +92,7 @@ public class ServiceRequest {
   Date dateOfIncident;
 
   @Basic
-  @Temporal(TemporalType.TIMESTAMP)
+  @Temporal(TemporalType.DATE)
   @Column(nullable = false)
   @NonNull
   @Getter
@@ -136,7 +136,8 @@ public class ServiceRequest {
     NURSING("nursing"),
     CARDIOLOGY("cardiology"),
     RADIOLOGY("radiology"),
-    MAINTENANCE("maintenance");
+    MAINTENANCE("maintenance"),
+    TRAUMA_UNIT("trauma unit");
 
     @NonNull public final String EmpDept;
 
@@ -166,12 +167,6 @@ public class ServiceRequest {
     Urgency(@NonNull String urgency) {
       Urgency = urgency;
     }
-
-    //    public static Optional<Urgency> get(String urgency) {
-    //      return Arrays.stream(Urgency.values())
-    //              .filter(env -> env.getName().equals(urgency))
-    //              .findFirst();
-    //    }
   }
 
   /**

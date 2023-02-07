@@ -37,6 +37,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -52,6 +53,15 @@
             <Insets top="8.0" />
          </VBox.margin>
       </Text>
+      <HBox prefHeight="125.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="errorMessage" alignment="CENTER" prefHeight="28.0" prefWidth="801.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Incident:" wrappingWidth="188.00004882812493">
          <font>
             <Font size="24.0" />
@@ -60,29 +70,20 @@
             <Insets left="10.0" />
          </VBox.margin>
       </Text>
-      <HBox spacing="10.0">
+      <HBox spacing="5.0">
          <children>
             <MFXComboBox fx:id="requestTypeDropDown" prefHeight="49.0" prefWidth="207.0" promptText="Request Type" />
             <MFXComboBox fx:id="locationDropDown" prefHeight="52.0" prefWidth="206.0" promptText="Location" />
-            <MFXDatePicker fx:id="date" floatMode="INLINE" prefHeight="27.0" prefWidth="194.0" promptText="Date" />
+            <MFXDatePicker fx:id="date" floatMode="INLINE" prefHeight="27.0" prefWidth="215.0" promptText="Date" />
+            <MFXComboBox fx:id="urgencyEntry" prefHeight="51.0" prefWidth="204.0" promptText="Urgency">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </MFXComboBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <MFXTextField fx:id="timeEntry" prefHeight="51.0" prefWidth="205.0" promptText="Time 00:00 AM/PM">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </MFXTextField>
-            <MFXComboBox fx:id="urgencyEntry" prefHeight="51.0" prefWidth="204.0" promptText="Urgency">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </MFXComboBox>
-         </children>
       </HBox>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:">
          <font>

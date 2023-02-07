@@ -1,242 +1,191 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.SubmitInfo;
+import edu.wpi.FlashyFrogs.ORM.InternalTransport;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Comparator.*;
+import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Paint;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class TransportController extends ServiceRequestController {
   @FXML MFXTextField firstNameTextfield; // ID of the first name text field
   @FXML MFXTextField lastNameTextfield;
   @FXML MFXTextField middleNameTextfield;
+  @FXML MFXTextField firstNameTextfield2;
+  @FXML MFXTextField lastNameTextfield2;
+  @FXML MFXTextField middleNameTextfield2;
   @FXML MFXDatePicker dateOfBirthDatePicker;
   @FXML MFXComboBox currentLocationComboBox;
   @FXML MFXComboBox newLocationComboBox;
   @FXML MFXDatePicker dateOfTransportDatePicker;
-  @FXML MFXTextField firstNameTextfield2;
-  @FXML MFXTextField lastNameTextfield2;
-  @FXML MFXTextField middleNameTextfield2;
   @FXML MFXComboBox departmentComboBox;
   @FXML MFXButton clearButton;
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
+  @FXML MFXComboBox urgency;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
   @FXML private MFXComboBox department2;
   @FXML private MFXButton allButton;
+  @FXML private Label errorMessage;
 
   private Connection connection = null; // connection to database
 
-  private SubmitInfo submitInfo;
-
   /** Method run when controller is initializes */
   public void initialize() {
-    // if connection is successful
-    //    if (this.connectToDB()) {
-    //      this.createTable();
-    //    }
 
-    submitInfo = new SubmitInfo();
-
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
-    newLocationComboBox.setItems(FXCollections.observableList(objects));
-    currentLocationComboBox.setItems(FXCollections.observableList(objects));
-    session.close();
+    //    StringComparator stringComparator = new StringComparator();
+    ObservableList<String> observableList = FXCollections.observableList(objects);
+    //    observableList.sort(stringComparator);
 
-    newLocationComboBox.getItems().addAll("Intesive Care Unit", "Emergency Room", "Operating Room");
+    newLocationComboBox.setItems(observableList);
+    currentLocationComboBox.setItems(FXCollections.observableList(objects));
+    urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     departmentComboBox.getItems().addAll("Cardiology", "Radiology", "Trauma Unit");
     department2.getItems().addAll("Cardiology", "Radiology", "Trauma Unit");
+    session.close();
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
     firstNameTextfield.clear();
     lastNameTextfield.clear();
     middleNameTextfield.clear();
+    firstNameTextfield2.clear();
+    lastNameTextfield2.clear();
+    middleNameTextfield2.clear();
     dateOfBirthDatePicker.clear();
     currentLocationComboBox.clear();
     newLocationComboBox.clear();
     dateOfTransportDatePicker.clear();
-    firstNameTextfield2.clear();
-    lastNameTextfield2.clear();
-    middleNameTextfield2.clear();
     departmentComboBox.clear();
     first2.clear();
     middle2.clear();
     last2.clear();
     department2.clear();
+    urgency.clear();
   }
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-
     Fapp.setScene("AllTransport");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    //    System.out.println("Submit Button was Clicked");
-    //    System.out.println(this.logData() ? "Data logged" : "Data was not logged");
-    submitInfo.setPatientFirstName(firstNameTextfield.getText());
-    submitInfo.setPatientLastName(lastNameTextfield.getText());
-    submitInfo.setPatientMiddleName(middleNameTextfield.getText());
-    submitInfo.setDOB(dateOfBirthDatePicker.getText());
-    submitInfo.setCurrentLocationInfo(currentLocationComboBox.getText());
-    submitInfo.setNewLocationInfo(newLocationComboBox.getText());
-    submitInfo.setDOT(dateOfTransportDatePicker.getText()); // Date of Transport
-    submitInfo.setEmployeeFirstName(firstNameTextfield2.getText());
-    submitInfo.setEmployeeLastName(lastNameTextfield2.getText());
-    submitInfo.setEmployeeMiddleName(middleNameTextfield2.getText());
-    submitInfo.setEmployeeDepartment(departmentComboBox.getText());
-    System.out.println(submitInfo.getDOB());
-    System.out.println(submitInfo.getPatientMiddleName());
+    Session session = CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
 
-    //    Session session = factory.openSession();
-    //    Transaction transaction = session.beginTransaction();
-    //    InternalTransport transportRequest =
-    //        new InternalTransport(
-    //            //            new Date(),
-    //            //            session.find(LocationName.class, newLocationComboBox.getText()),
-    //            //            session.find(LocationName.class, currentLocationComboBox.getText()),
-    //
-    //            );
-    // securityRequest.setLocation(locationEntry.getText());
+    try {
+      String departmentEnumString = departmentComboBox.getText().toUpperCase().replace(" ", "_");
+      String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
+      String urgencyString = urgency.getText().toUpperCase().replace(" ", "_");
 
-    //    transportRequest.setType("Transport");//transport no
-    //    // longer has a type, to get "Transport" do Class.simpleName()
+      if (firstNameTextfield.getText().equals("")
+          || middleNameTextfield.getText().equals("")
+          || lastNameTextfield.getText().equals("")
+          || first2.getText().equals("")
+          || middleNameTextfield2.getText().equals("")
+          || lastNameTextfield2.getText().equals("")
+          || firstNameTextfield2.getText().equals("")
+          || middle2.getText().equals("")
+          || last2.getText().equals("")
+          || department2.getText().equals("")
+          || departmentComboBox.getText().equals("")
+          || dateOfTransportDatePicker.getText().equals("")
+          || dateOfBirthDatePicker.getText().equals("")
+          || currentLocationComboBox.getText().equals("")
+          || newLocationComboBox.getText().equals("")) {
+        throw new NullPointerException();
+      }
+      if (firstNameTextfield.getText().equals("")
+          || middleNameTextfield.getText().equals("")
+          || lastNameTextfield.getText().equals("")
+          || first2.getText().equals("")
+          || middle2.getText().equals("")
+          || last2.getText().equals("")
+          || department2.getText().equals("")
+          || departmentComboBox.getText().equals("")
+          || dateOfTransportDatePicker.getText().equals("")
+          || dateOfBirthDatePicker.getText().equals("")
+          || currentLocationComboBox.getText().equals("")
+          || newLocationComboBox.getText().equals("")) {
+        throw new NullPointerException();
+      }
 
-    //    transportRequest.setEmpFirstName(firstNameTextfield.getText());
-    //    transportRequest.setEmpMiddleName(middleNameTextfield.getText());
-    //    transportRequest.setEmpLastName(lastNameTextfield.getText());
-    //    transportRequest.setDateOfSubmission(Date.from(Instant.now()));
-    //
-    //    session.persist(transportRequest);
-    //    transaction.commit();
-    //    session.close();
+      Date dateOfTransport =
+          Date.from(
+              dateOfTransportDatePicker
+                  .getValue()
+                  .atStartOfDay(ZoneId.systemDefault())
+                  .toInstant());
+      Date dateOfBirth =
+          Date.from(
+              dateOfBirthDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+      InternalTransport transport = new InternalTransport();
+      transport.setEmpFirstName(firstNameTextfield2.getText());
+      transport.setEmpMiddleName(middleNameTextfield2.getText());
+      transport.setEmpLastName(lastNameTextfield2.getText());
+      transport.setAssignedEmpFirstName(first2.getText());
+      transport.setAssignedEmpMiddleName(middle2.getText());
+      transport.setAssignedEmpLastName(last2.getText());
+      transport.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
+      transport.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
+      transport.setDateOfBirth(dateOfBirth);
+      transport.setDateOfIncident(dateOfTransport);
+      transport.setDateOfSubmission(Date.from(Instant.now()));
+      transport.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
+      transport.setNewLoc(session.find(LocationName.class, newLocationComboBox.getText()));
+      transport.setOldLoc(session.find(LocationName.class, currentLocationComboBox.getText()));
+      transport.setPatientFirstName(firstNameTextfield.getText());
+      transport.setPatientMiddleName(middleNameTextfield.getText());
+      transport.setPatientLastName(lastNameTextfield.getText());
+      try {
+        session.persist(transport);
+        transaction.commit();
+        session.close();
+        handleClear(actionEvent);
+        errorMessage.setTextFill(Paint.valueOf("#44ff00"));
+        errorMessage.setText("Successfully submitted.");
+      } catch (RollbackException exception) {
+        session.clear();
+        errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+        errorMessage.setText("Please fill all fields.");
+        session.close();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      session.clear();
+      errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+      errorMessage.setText("Please fill all fields.");
+      session.close();
+    }
   }
-
-  /**
-   * When the button is clicked, the method will log the data in the terminal and database
-   *
-   * @param actionEvent event that triggered method
-   * @throws IOException
-   */
-  //  public void buttonClicked(ActionEvent actionEvent) throws IOException {
-  //    System.out.println("Button was clicked");
-  //    System.out.println(this.logData() ? "Data logged" : "Data NOT logged");
-  //  }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
   }
-
-  /**
-   * Generates connection to server on localhost at default port (1521) be aware of the username and
-   * password when testing
-   *
-   * @return True when connection is successful, False when failed
-   */
-  private boolean connectToDB() {
-
-    try {
-      Class.forName(
-          "org.apache.derby.jdbc.ClientDriver"); // Check that proper driver is packaged for Apache
-      // Derby
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("NO DRIVER");
-      return false;
-    }
-    try {
-      // create Connection at specified URL
-      this.connection =
-          DriverManager.getConnection(
-              "jdbc:derby://localhost:1527/testDB;create=true",
-              "app",
-              "derbypass"); // This will change for each team as their DB is developed
-      if (this.connection != null) {
-        System.out.println("Connected to the database!");
-      } else {
-        System.out.println("Failed to make connection!");
-      }
-    } catch (SQLException e) {
-      System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-      return false;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
-    }
-
-    // connection successful, return true
-    return true;
-  }
-
-  /**
-   * generates a table to store button click information
-   *
-   * @return true when table is successfully created or already exists, false otherwise
-   */
-  private boolean createTable() {
-
-    boolean table_exists = false;
-
-    if (this.connection != null) {
-      String createQuery =
-          "CREATE TABLE APP.buttonClicks("
-              + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-              + "btn_name VARCHAR(50), "
-              + "time_stamp TIMESTAMP NOT NULL, "
-              + "PRIMARY KEY(id) )";
-      try {
-        Statement statement = this.connection.createStatement();
-        statement.execute(createQuery);
-
-        table_exists = true;
-      } catch (SQLException e) {
-        // Error code 955 is "name is already used by an existing object", so this table name
-        // already exists
-        if (e.getErrorCode() == 955 || e.getMessage().contains("already exists"))
-          table_exists = true;
-        else e.printStackTrace();
-      }
-    }
-    return table_exists;
-  }
-
-  /**
-   * Stores button click data to database
-   *
-   * @return true if data is stored successfully, false otherwise
-   */
-  //  private boolean logData() {
-  //    if (connection != null) {
-  //      String writeQuery =
-  //          "INSERT INTO APP.buttonClicks(btn_name, time_stamp) VALUES ( 'ClickButton',
-  // CURRENT_TIMESTAMP ) ";
-  //      try {
-  //        Statement statement = this.connection.createStatement();
-  //        statement.execute(writeQuery);
-  //        return true;
-  //      } catch (SQLException e) {
-  //        e.printStackTrace();
-  //      }
-  //    }
-  //    return false;
-  //  }
 }
