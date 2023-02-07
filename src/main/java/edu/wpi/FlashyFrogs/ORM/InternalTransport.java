@@ -17,21 +17,21 @@ public class InternalTransport extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  String patientFirstName;
+  private String patientFirstName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String patientMiddleName;
+  private String patientMiddleName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String patientLastName;
+  private String patientLastName;
 
   @Getter
   @Setter
@@ -41,26 +41,26 @@ public class InternalTransport extends ServiceRequest {
       nullable = false)
   @NonNull
   @ManyToOne
-  LocationName oldLoc;
+  private LocationName oldLoc;
 
   @Getter
   @Setter
   @JoinColumn(name = "newLoc", foreignKey = @ForeignKey(name = "location_name2_fk"))
   @NonNull
   @ManyToOne
-  LocationName newLoc;
+  private LocationName newLoc;
 
   @Column(nullable = false)
   @NonNull
   @Temporal(TemporalType.TIMESTAMP)
   @Getter
   @Setter
-  Date dateOfBirth;
+  private Date dateOfBirth;
 
   /** Creates a new InternalTransport with a generated id */
   public InternalTransport() {
-    this.status = Status.BLANK;
-    this.requestType = "InternalTransport";
+    super.setStatus(Status.BLANK);
+    super.setRequestType("InternalTransport");
   }
 
   /**
@@ -108,18 +108,18 @@ public class InternalTransport extends ServiceRequest {
     this.patientFirstName = thePatientFirstName;
     this.patientMiddleName = thePatientMiddleName;
     this.patientLastName = thePatientLastName;
-    this.empFirstName = empFirstName;
-    this.empMiddleName = empMiddleName;
-    this.empLastName = empLastName;
-    this.empDept = empDept;
-    this.assignedEmpFirstName = assignedEmpFirstName;
-    this.assignedEmpMiddleName = assignedEmpMiddleName;
-    this.assignedEmpLastName = assignedEmpLastName;
-    this.assignedEmpDept = assignedEmpDept;
-    this.dateOfIncident = dateOfIncident;
-    this.dateOfSubmission = dateOfSubmission;
-    this.status = Status.BLANK;
-    this.urgency = urgency;
-    this.requestType = "InternalTransport";
+    super.setEmpFirstName(empFirstName);
+    super.setEmpMiddleName(empMiddleName);
+    super.setEmpLastName(empLastName);
+    super.setEmpDept(empDept);
+    super.setAssignedEmpFirstName(assignedEmpFirstName);
+    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
+    super.setAssignedEmpLastName(assignedEmpLastName);
+    super.setAssignedEmpDept(assignedEmpDept);
+    super.setDateOfIncident(dateOfIncident);
+    super.setDateOfSubmission(dateOfSubmission);
+    super.setStatus(Status.BLANK);
+    super.setUrgency(urgency);
+    super.setRequestType("InternalTransport");
   }
 }

@@ -15,7 +15,7 @@ public class Move {
   @JoinColumn(name = "node_id", foreignKey = @ForeignKey(name = "node_id_fk"), nullable = false)
   @NonNull
   @ManyToOne
-  Node node;
+  private Node node;
 
   @Id
   @Getter
@@ -26,7 +26,7 @@ public class Move {
       nullable = false)
   @NonNull
   @ManyToOne
-  LocationName location;
+  private LocationName location;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Id
@@ -34,7 +34,7 @@ public class Move {
   @NonNull
   @Getter
   @Setter
-  Date moveDate;
+  private Date moveDate;
 
   /** Creates a new Move with empty fields */
   public Move() {}
