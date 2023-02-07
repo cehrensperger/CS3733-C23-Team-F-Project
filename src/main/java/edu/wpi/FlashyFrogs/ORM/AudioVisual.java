@@ -18,50 +18,55 @@ public class AudioVisual extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  String patientFirstName;
+  private String patientFirstName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String patientMiddleName;
+  private String patientMiddleName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String patientLastName;
+  private String patientLastName;
 
   @Getter
   @Setter
   @JoinColumn(
       name = "location",
-      foreignKey = @ForeignKey(name = "location_name1_fk"),
+      foreignKey =
+          @ForeignKey(
+              name = "location_name1_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (location) REFERENCES locationname(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
   @ManyToOne
-  LocationName location;
+  private LocationName location;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  AccommodationType accommodationType;
+  private AccommodationType accommodationType;
 
   @Column(nullable = false)
   @NonNull
   @Temporal(TemporalType.TIMESTAMP)
   @Getter
   @Setter
-  Date dateOfBirth;
+  private Date dateOfBirth;
 
   /** Creates a new AudioVisual with a generated id */
   public AudioVisual() {
-    this.status = Status.BLANK;
-    this.requestType = "AudioVisual";
+    super.setStatus(Status.BLANK);
+    super.setRequestType("AudioVisual");
   }
   /**
    * Creates a new AudioVisual with a generated id and the specified fields
@@ -102,19 +107,19 @@ public class AudioVisual extends ServiceRequest {
       @NonNull String patientLastName,
       @NonNull LocationName location,
       @NonNull Date dateOfBirth) {
-    this.empFirstName = empFirstName;
-    this.empMiddleName = empMiddleName;
-    this.empLastName = empLastName;
-    this.empDept = empDept;
-    this.assignedEmpFirstName = assignedEmpFirstName;
-    this.assignedEmpMiddleName = assignedEmpMiddleName;
-    this.assignedEmpLastName = assignedEmpLastName;
-    this.assignedEmpDept = assignedEmpDept;
-    this.dateOfIncident = dateOfIncident;
-    this.dateOfSubmission = dateOfSubmission;
-    this.status = Status.BLANK;
-    this.urgency = urgency;
-    this.requestType = "AudioVisual";
+    super.setEmpFirstName(empFirstName);
+    super.setEmpMiddleName(empMiddleName);
+    super.setEmpLastName(empLastName);
+    super.setEmpDept(empDept);
+    super.setAssignedEmpFirstName(assignedEmpFirstName);
+    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
+    super.setAssignedEmpLastName(assignedEmpLastName);
+    super.setAssignedEmpDept(assignedEmpDept);
+    super.setDateOfIncident(dateOfIncident);
+    super.setDateOfSubmission(dateOfSubmission);
+    super.setStatus(Status.BLANK);
+    super.setUrgency(urgency);
+    super.setRequestType("AudioVisual");
     this.accommodationType = accommodationType;
     this.location = location;
     this.patientFirstName = patientFirstName;
@@ -124,10 +129,9 @@ public class AudioVisual extends ServiceRequest {
   }
 
   public enum AccommodationType {
-    VISUAL("visual"),
     AUDIO("audio"),
-    OTHER("other"),
-    IDK_DO_WE_NEED_MORE("idk");
+    VISUAL("visual"),
+    BOTH("both");
 
     @NonNull public final String AcommodationType;
 

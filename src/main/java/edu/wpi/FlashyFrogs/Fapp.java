@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs;
 
 import java.io.IOException;
+import java.util.Objects;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,6 +30,7 @@ public class Fapp extends Application {
     Fapp.primaryStage = primaryStage;
 
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Home.fxml"));
+
     final Pane root = loader.load();
 
     Fapp.rootPane = root;
@@ -39,8 +42,11 @@ public class Fapp extends Application {
     // Navigation.navigate(Screen.HOME);
   }
 
-  public static void setScene(String sceneName) throws IOException {
-    Parent root = FXMLLoader.load(Fapp.class.getResource("views/" + sceneName + ".fxml"));
+  @SneakyThrows
+  public static void setScene(String sceneName) {
+    Parent root =
+        FXMLLoader.load(
+            Objects.requireNonNull(Fapp.class.getResource("views/" + sceneName + ".fxml")));
     Scene scene = new Scene(root);
     // Scene scene = new Scene(root, 600, 400);
 

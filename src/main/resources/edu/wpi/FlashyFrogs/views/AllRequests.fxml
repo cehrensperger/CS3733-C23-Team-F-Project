@@ -14,14 +14,14 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AllRequestsController">
    <center>
-      <TableView fx:id="tableView" prefHeight="411.0" prefWidth="700.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn fx:id="typeCol" editable="false" prefWidth="129.59995114803314" text="Service Request ID" />
-            <TableColumn fx:id="empLastNameCol" editable="false" prefWidth="129.59995114803314" text="Employee Last Name" />
-            <TableColumn fx:id="submissionDateCol" editable="false" prefWidth="190.39996337890625" text="Date and Time of Submission" />
-            <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="87.60006713867188" text="Status" />
-        </columns>
-      </TableView>
+       <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <columns>
+               <TableColumn fx:id="typeCol" prefWidth="200.0" text="Service Request Type" />
+               <TableColumn fx:id="empLastNameCol" prefWidth="224.0" text="Employee Last Name" />
+               <TableColumn fx:id="submissionDateCol" prefWidth="250.0" text="Date and Time of Submission" />
+               <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="125.0" text="Status" />
+           </columns>
+       </TableView>
    </center>
    <top>
       <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">

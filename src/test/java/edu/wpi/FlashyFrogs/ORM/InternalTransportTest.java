@@ -15,7 +15,9 @@ public class InternalTransportTest {
           new Date(2002 - 10 - 02),
           new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
           new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
-          "John Doe",
+          "John",
+          "B",
+          "Doe",
           "Wilson",
           "Softeng",
           "Wong",
@@ -37,7 +39,9 @@ public class InternalTransportTest {
         new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"));
     testIntTransp.setOldLoc(
         new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"));
-    testIntTransp.setPatientName("John Doe");
+    testIntTransp.setPatientFirstName("John");
+    testIntTransp.setPatientMiddleName("B");
+    testIntTransp.setPatientLastName("Doe");
     testIntTransp.setEmpFirstName("Wilson");
     testIntTransp.setEmpMiddleName("Softeng");
     testIntTransp.setEmpLastName("Wong");
@@ -80,9 +84,12 @@ public class InternalTransportTest {
   /** Tests setter for patientName */
   @Test
   void setPatientName() {
-    String newPatientName = "Jimboo Jones";
-    testIntTransp.setPatientName(newPatientName);
-    assertEquals(newPatientName, testIntTransp.getPatientName());
+    String patientFirstName = "Jimboo";
+    String patientLastName = "Jones";
+    testIntTransp.setPatientFirstName(patientFirstName);
+    testIntTransp.setPatientLastName(patientLastName);
+    assertEquals(patientFirstName, testIntTransp.getPatientFirstName());
+    assertEquals(patientLastName, testIntTransp.getPatientLastName());
   }
 
   /** Tests setter for empFirstName */
@@ -181,7 +188,9 @@ public class InternalTransportTest {
             new Date(2002 - 10 - 02),
             new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
             new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
-            "John Doe",
+            "John",
+            "B",
+            "Doe",
             "Wilson",
             "Softeng",
             "Wong",

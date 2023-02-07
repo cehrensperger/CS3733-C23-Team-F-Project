@@ -7,44 +7,42 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.Session;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Node")
 public class Node {
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String id;
+  private String id;
 
   @Basic
   @Column(nullable = false)
   @Getter
   @Setter
-  int xCoord;
+  private int xCoord;
 
   @Basic
   @Column(nullable = false)
   @Getter
   @Setter
-  int yCoord;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  Floor floor;
+  private int yCoord;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String building;
+  private Floor floor;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  private String building;
 
   /** Creates a new Node with empty fields */
   public Node() {}

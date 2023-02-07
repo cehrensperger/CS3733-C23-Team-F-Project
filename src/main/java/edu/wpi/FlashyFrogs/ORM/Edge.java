@@ -12,20 +12,34 @@ import org.hibernate.annotations.Cascade;
 public class Edge {
   @Id
   @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-  @JoinColumn(name = "node1_id", nullable = false, foreignKey = @ForeignKey(name = "node1_id_fk"))
-  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(
+      name = "node1_id",
+      nullable = false,
+      foreignKey =
+          @ForeignKey(
+              name = "node1_id_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (node1_id) REFERENCES node(id) ON UPDATE CASCADE ON DELETE CASCADE"))
+  @ManyToOne
   @NonNull
   @Getter
   @Setter
-  Node node1;
+  private Node node1;
 
   @Id
-  @JoinColumn(name = "node2_id", nullable = false, foreignKey = @ForeignKey(name = "node2_id_fk"))
+  @JoinColumn(
+      name = "node2_id",
+      nullable = false,
+      foreignKey =
+          @ForeignKey(
+              name = "node2_id_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (node2_id) REFERENCES node(id) ON UPDATE CASCADE ON DELETE CASCADE"))
   @NonNull
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @Getter
   @Setter
-  Node node2;
+  private Node node2;
 
   /** Creates a new Edge with empty fields */
   public Edge() {}
