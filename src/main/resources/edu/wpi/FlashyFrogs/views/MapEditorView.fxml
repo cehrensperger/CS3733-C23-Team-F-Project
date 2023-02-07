@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="editorBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController">
+<BorderPane fx:id="editorBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.MapEditorController" prefWidth="800" prefHeight="600">
          <top>
             <HBox alignment="CENTER_RIGHT" spacing="25.0" BorderPane.alignment="CENTER">
                <children>
-            <MFXButton fx:id="backButton" text="Back" />
+                   <MFXButton fx:id="backButton" text="Back" alignment="TOP_LEFT"/>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Floor:" />
                   <MFXComboBox fx:id="floorSelector" alignment="TOP_RIGHT" editable="false" promptText="Floor" />
                </children>

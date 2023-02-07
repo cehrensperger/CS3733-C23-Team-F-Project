@@ -40,7 +40,7 @@ public class HomeController {
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("DBTableEditor");
+    Fapp.setScene("MapEditorView");
   }
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {

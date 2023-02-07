@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -42,26 +43,22 @@ public class MapEditorController {
   @FXML
   private void initialize() {
     // Exit listener
-    backButton
-        .onActionProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              mapController.exit(); // Should go back
-            });
+    backButton.setOnAction(
+        event -> {
+          mapController.exit(); // Should go back
+
+          Fapp.setScene("Home");
+        });
 
     // Cancel listener
-    cancelButton
-        .onActionProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              mapController.cancelChanges(); // Cancel changes
-              createLocationNameTable(mapController.getMapSession()); // Reload the table
-            });
+    cancelButton.setOnAction(
+        event -> {
+          mapController.cancelChanges(); // Cancel changes
+          createLocationNameTable(mapController.getMapSession()); // Reload the table
+        });
 
     // Save listener
-    saveButton
-        .onActionProperty()
-        .addListener((observable, oldValue, newValue) -> mapController.saveChanges());
+    saveButton.setOnAction(event -> mapController.saveChanges());
 
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
