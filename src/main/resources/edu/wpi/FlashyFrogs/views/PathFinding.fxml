@@ -64,7 +64,7 @@
          <children>
             <VBox prefWidth="800.0">
                <children>
-                  <HBox alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0" VBox.vgrow="ALWAYS">
+                  <HBox fx:id="buttonsHBox" alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0" VBox.vgrow="ALWAYS">
                      <children>
                         <MFXButton fx:id="clearButton" onAction="#handleButtonClear" prefWidth="100.0" text="Clear" HBox.hgrow="ALWAYS">
                            <HBox.margin>

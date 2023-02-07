@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -34,6 +35,7 @@ public class PathFindingController {
   @FXML private MFXButton clearButton;
   @FXML private AnchorPane mapPane;
   @FXML private MFXComboBox<Node.Floor> floorSelector;
+  @FXML private HBox buttonsHBox;
 
   private MapController mapController;
   AtomicReference<PopOver> mapPopOver =
@@ -41,6 +43,18 @@ public class PathFindingController {
 
   @SneakyThrows
   public void initialize() {
+    Fapp.getPrimaryStage()
+        .widthProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+
+              //should figure out how to get rid of magic numbers
+              buttonsHBox.setMaxWidth(newValue.doubleValue() - 30.0);
+              buttonsHBox.setMinWidth(newValue.doubleValue() - 30.0);
+
+              // for debugging
+              // buttonsHBox.setBackground(Background.fill(Color.RED));
+            });
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(getClass().getResource("../views/Map.fxml")));
 
@@ -84,61 +98,12 @@ public class PathFindingController {
   public void handleButtonClear(ActionEvent event) throws IOException {
     start.clear();
     end.clear();
-    pathText.setText("Path:");
+    drawNodesAndEdges();
+    // pathText.setText("Path:");
   }
 
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
     drawNodesAndEdges();
-    //    // reset all lines and circles to be black
-    //    for (Node node : mapController.getNodeToCircleMap().keySet()) {
-    //      Circle circle = mapController.getNodeToCircleMap().get(node);
-    //      if (circle != null) {
-    //        circle.setFill(Paint.valueOf(Color.BLACK.toString()));
-    //        circle
-    //            .hoverProperty()
-    //            .addListener(
-    //                (observable, oldValue, newValue) -> {
-    //                  System.out.println("hovering");
-    //                  // If we're no longer hovering and the pop over exists, delete it. We will
-    //                  // either create a new one
-    //                  // or, keep it deleted
-    //                  if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue))
-    // {
-    //                    mapPopOver.get().hide(); // Hide it
-    //                    mapPopOver.set(null); // And delete it (set it to null)
-    //                  }
-    //
-    //                  // If we should draw a new pop-up
-    //                  if (newValue) {
-    //                    // Get the node info in FXML form
-    //                    FXMLLoader nodeLocationNamePopUp =
-    //                        new FXMLLoader(
-    //                            getClass().getResource("../views/NodeLocationNamePopUp.fxml"));
-    //
-    //                    try {
-    //                      // Try creating the pop-over
-    //                      mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
-    //                    } catch (IOException e) {
-    //                      throw new RuntimeException(e); // If it fails, throw an exception
-    //                    }
-    //                    NodeLocationNamePopUpController controller =
-    //                        nodeLocationNamePopUp.getController();
-    //                    controller.setNode(node, mapController.getMapSession());
-    //
-    //                    mapPopOver.get().show(circle); // Show the pop-over
-    //                  }
-    //                });
-    //      }
-    //    }
-    //    for (Line line : mapController.getEdgeToLineMap().values()) {
-    //      line.setStroke(Paint.valueOf(Color.BLACK.toString()));
-    //    }
-
-    // create session for PathFinder
-    // Session session = CONNECTION.getSessionFactory().openSession();
-    // session.find(LocationName.class, start.getText());
-    // LocationName startPath = session.find(LocationName.class, start.getText());
-    // LocationName endPath = session.find(LocationName.class, end.getText());
 
     // get start and end locations from text fields
     String startPath = start.getText();
