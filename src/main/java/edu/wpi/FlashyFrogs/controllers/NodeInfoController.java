@@ -45,7 +45,13 @@ public class NodeInfoController {
 
       LocationNameInfoController controller =
           locationNameLoader.getController(); // Load the controller
-      controller.setLocationName(location, session); // Set the location name
+
+      // Set the location name
+      controller.setLocationName(
+          location,
+          session,
+          () -> locationPane.getChildren().clear(),
+          (locationName) -> {}); // On delete clear
     }
   }
 }

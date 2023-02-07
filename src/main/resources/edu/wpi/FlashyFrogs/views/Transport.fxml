@@ -13,16 +13,6 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.TransportController">
-    <top>
-        <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation Form" BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-                <Insets top="8.0" />
-            </BorderPane.margin>
-            <font>
-                <Font size="36.0" />
-            </font>
-        </Text>
-    </top>
     <center>
         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
@@ -216,4 +206,30 @@
             </children>
         </HBox>
     </center>
+   <top>
+      <HBox alignment="TOP_CENTER" prefHeight="55.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="100.0" prefWidth="248.0" />
+              <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation Form">
+                  <font>
+                      <Font size="36.0" />
+                  </font>
+               <HBox.margin>
+                  <Insets top="8.0" />
+               </HBox.margin>
+              </Text>
+            <VBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="178.0">
+               <children>
+                  <MFXButton fx:id="question" onAction="#handleQ" text="?" />
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" top="10.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </HBox>
+   </top>
 </BorderPane>

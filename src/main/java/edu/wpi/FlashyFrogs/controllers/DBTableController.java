@@ -342,4 +342,18 @@ public class DBTableController implements Initializable {
     session.close();
     createLnTable();
   }
+
+  //  @FXML
+  //  public void handleQ(ActionEvent event) throws IOException {
+  //
+  //    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+  //    PopOver popOver = new PopOver(newLoad.load());
+  //
+  //    HelpController help = newLoad.getController();
+  //    help.handleQDBTableEditor();
+  //
+  //    popOver.detach();
+  //    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+  //    popOver.show(node.getScene().getWindow());
+  //  }
 }

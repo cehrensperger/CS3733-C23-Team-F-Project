@@ -48,7 +48,7 @@ public class PathFindingController {
         .addListener(
             (observable, oldValue, newValue) -> {
 
-              //should figure out how to get rid of magic numbers
+              // should figure out how to get rid of magic numbers
               buttonsHBox.setMaxWidth(newValue.doubleValue() - 30.0);
               buttonsHBox.setMinWidth(newValue.doubleValue() - 30.0);
 
@@ -87,6 +87,8 @@ public class PathFindingController {
 
     // Set the node creation processor
   }
+
+  @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
     mapController.exit();
@@ -205,5 +207,19 @@ public class PathFindingController {
     for (Line line : mapController.getEdgeToLineMap().values()) {
       line.setStroke(Paint.valueOf(Color.BLACK.toString()));
     }
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQPathFinding();
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 }

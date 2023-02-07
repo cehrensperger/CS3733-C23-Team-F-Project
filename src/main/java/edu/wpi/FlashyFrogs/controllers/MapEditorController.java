@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -10,6 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
@@ -42,26 +44,22 @@ public class MapEditorController {
   @FXML
   private void initialize() {
     // Exit listener
-    backButton
-        .onActionProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              mapController.exit(); // Should go back
-            });
+    backButton.setOnAction(
+        event -> {
+          mapController.exit(); // Should go back
+
+          Fapp.setScene("Home");
+        });
 
     // Cancel listener
-    cancelButton
-        .onActionProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              mapController.cancelChanges(); // Cancel changes
-              createLocationNameTable(mapController.getMapSession()); // Reload the table
-            });
+    cancelButton.setOnAction(
+        event -> {
+          mapController.cancelChanges(); // Cancel changes
+          createLocationNameTable(mapController.getMapSession()); // Reload the table
+        });
 
     // Save listener
-    saveButton
-        .onActionProperty()
-        .addListener((observable, oldValue, newValue) -> mapController.saveChanges());
+    saveButton.setOnAction(event -> mapController.saveChanges());
 
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
@@ -103,9 +101,17 @@ public class MapEditorController {
 
                         LocationNameInfoController controller =
                             locationNameLoader.getController(); // Get the controller
+
+                        // Set the location name to the value
                         controller.setLocationName(
-                            row.getItem(),
-                            mapController.getMapSession()); // Set the location name to the value
+                            row.getItem(), // Set it to the rows item
+                            mapController.getMapSession(),
+                            () -> {
+                              locationTable.getItems().remove(row.getItem());
+                              tablePopOver.get().hide();
+                            },
+                            (locationName) ->
+                                locationTable.getItems().set(row.getIndex(), locationName));
 
                         tablePopOver.get().show(row); // Show the pop-over on the row
                       }
@@ -195,4 +201,20 @@ public class MapEditorController {
     // Add the list to the table
     locationTable.getItems().addAll(longNamesObservableList);
   }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQMapEditor();
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
+  }
+
+  @FXML
+  private void popupMove() {}
 }
