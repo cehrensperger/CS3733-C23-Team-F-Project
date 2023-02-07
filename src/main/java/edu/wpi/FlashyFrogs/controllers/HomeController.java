@@ -6,6 +6,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -20,8 +21,15 @@ public class HomeController {
   @FXML private MenuItem loadMapMenuItem;
   @FXML private MenuItem loadFeedbackMenuItem;
   @FXML private MFXButton hiddneButton;
+  @FXML private ImageView backgroundImage;
 
   Stage stage;
+
+  public void initialize() {
+    stage = Fapp.getPrimaryStage();
+    backgroundImage.fitHeightProperty().bind(stage.heightProperty());
+    backgroundImage.fitWidthProperty().bind(stage.widthProperty());
+  }
 
   @FXML
   public void handleExitButton(ActionEvent event) throws IOException {
