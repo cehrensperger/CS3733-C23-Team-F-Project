@@ -51,7 +51,15 @@ public class PathFindingController {
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorSelector
         .valueProperty()
-        .addListener((observable, oldValue, newValue) -> mapController.setFloor(newValue));
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.setFloor(newValue);
+              try {
+                handleGetPath(null);
+              } catch (IOException e) {
+                throw new RuntimeException(e);
+              }
+            });
 
     AnchorPane.setTopAnchor(map, 0.0);
     AnchorPane.setBottomAnchor(map, 0.0);
