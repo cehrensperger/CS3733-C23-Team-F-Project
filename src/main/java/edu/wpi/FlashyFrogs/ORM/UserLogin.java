@@ -1,10 +1,8 @@
 package edu.wpi.FlashyFrogs.ORM;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import jakarta.persistence.*;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -27,39 +25,22 @@ public class UserLogin {
   @Column(nullable = false)
   @NonNull
   @Getter
-  String password;
+  String hash;
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  byte[] salt;
-
-  public void setPassword(String newPassword) throws NoSuchAlgorithmException {
-    System.out.println("Before Set: " + this.password);
-    MessageDigest md = MessageDigest.getInstance("SHA-512");
-    md.update(salt);
-    byte[] hashedPassword = md.digest(newPassword.getBytes(StandardCharsets.UTF_8));
-    this.password = hashedPassword.toString();
-    System.out.println("After Set: " + this.password);
+  public void setPassword(String newPassword) {
+    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
+    hash = argon2.hash(2, 15 * 1024, 1, newPassword.toCharArray());
   }
 
   /** Creates a new UserLogin with empty fields */
   public UserLogin() {}
 
-  public UserLogin(@NonNull String theUserName, @NonNull String thePassword)
-      throws NoSuchAlgorithmException {
+  public UserLogin(@NonNull String theUserName, @NonNull String thePassword) {
     this.userName = theUserName;
 
     // Encrypts password with salt
-    SecureRandom random = new SecureRandom();
-    salt = new byte[16];
-    random.nextBytes(salt);
-    MessageDigest md = MessageDigest.getInstance("SHA-512");
-    md.update(salt);
-    byte[] hashedPassword = md.digest(thePassword.getBytes(StandardCharsets.UTF_8));
-
-    this.password = hashedPassword.toString();
+    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
+    hash = argon2.hash(2, 15 * 1024, 1, thePassword.toCharArray());
   }
 
   /**
@@ -85,17 +66,26 @@ public class UserLogin {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(this.userName, this.password);
+    return Objects.hash(this.userName, this.hash);
   }
 
   /**
    * Overrides the default toString method with one that returns the id of the Node object
    *
-   * @return the id of the Node object
+   * @return the id of the UserLogin object
    */
   @Override
   @NonNull
   public String toString() {
     return this.userName;
+  }
+
+  /**
+   * @param potentialPassword given by user to be checked against actual password
+   * @return true if the password matches the current password, false otherwise
+   */
+  public boolean checkPasswordEqual(String potentialPassword) {
+    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
+    return argon2.verify(hash, potentialPassword.toCharArray());
   }
 }
