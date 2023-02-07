@@ -40,7 +40,7 @@ public class PathFindingController {
     String startPath = start.getText();
     String endPath = end.getText();
     // Transaction transaction = session.beginTransaction();
-    PathFinder pathFinder = new PathFinder(CONNECTION.getSessionFactory());
+    PathFinder pathFinder = new PathFinder(session);
 
     try {
       pathText.setText(
