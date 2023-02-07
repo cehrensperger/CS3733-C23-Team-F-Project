@@ -124,10 +124,9 @@ public class AudioVisual extends ServiceRequest {
   }
 
   public enum AccommodationType {
-    VISUAL("visual"),
     AUDIO("audio"),
-    OTHER("other"),
-    IDK_DO_WE_NEED_MORE("idk");
+    VISUAL("visual"),
+    BOTH("both");
 
     @NonNull public final String AcommodationType;
 

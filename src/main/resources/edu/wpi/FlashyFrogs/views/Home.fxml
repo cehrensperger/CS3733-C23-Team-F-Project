@@ -110,6 +110,9 @@
               </panes>
             </Accordion>
          </bottom>
+         <left>
+            <MFXButton fx:id="secretButton" onAction="#secretMethod" opacity="0.0" BorderPane.alignment="CENTER" />
+         </left>
       </BorderPane>
    </children>
 </StackPane>
