@@ -5,10 +5,12 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinder;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.SneakyThrows;
+import org.controlsfx.control.PopOver;
 
 public class PathFindingController {
 
@@ -30,8 +33,11 @@ public class PathFindingController {
   @FXML private MFXButton backButton;
   @FXML private MFXButton clearButton;
   @FXML private AnchorPane mapPane;
+  @FXML private MFXComboBox<Node.Floor> floorSelector;
 
   private MapController mapController;
+  AtomicReference<PopOver> mapPopOver =
+      new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
   @SneakyThrows
   public void initialize() {
@@ -42,6 +48,23 @@ public class PathFindingController {
     mapPane.getChildren().add(map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
     mapController.setFloor(Node.Floor.L1);
+    floorSelector
+        .getItems()
+        .addAll(Node.Floor.values()); // Add all the floors to the floor selector
+
+    // Add a listener so that when the floor is changed, the map  controller sets the new floor
+    floorSelector
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.setFloor(newValue);
+              try {
+                handleGetPath(null);
+              } catch (IOException e) {
+                throw new RuntimeException(e);
+              }
+            });
+    drawNodesAndEdges();
 
     AnchorPane.setTopAnchor(map, 0.0);
     AnchorPane.setBottomAnchor(map, 0.0);
@@ -63,16 +86,51 @@ public class PathFindingController {
   }
 
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
-
-    // reset all lines and circles to be black
-    for (Circle circle : mapController.getNodeToCircleMap().values()) {
-      if (circle != null) {
-        circle.setFill(Paint.valueOf(Color.BLACK.toString()));
-      }
-    }
-    for (Line line : mapController.getEdgeToLineMap().values()) {
-      line.setStroke(Paint.valueOf(Color.BLACK.toString()));
-    }
+    drawNodesAndEdges();
+    //    // reset all lines and circles to be black
+    //    for (Node node : mapController.getNodeToCircleMap().keySet()) {
+    //      Circle circle = mapController.getNodeToCircleMap().get(node);
+    //      if (circle != null) {
+    //        circle.setFill(Paint.valueOf(Color.BLACK.toString()));
+    //        circle
+    //            .hoverProperty()
+    //            .addListener(
+    //                (observable, oldValue, newValue) -> {
+    //                  System.out.println("hovering");
+    //                  // If we're no longer hovering and the pop over exists, delete it. We will
+    //                  // either create a new one
+    //                  // or, keep it deleted
+    //                  if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue))
+    // {
+    //                    mapPopOver.get().hide(); // Hide it
+    //                    mapPopOver.set(null); // And delete it (set it to null)
+    //                  }
+    //
+    //                  // If we should draw a new pop-up
+    //                  if (newValue) {
+    //                    // Get the node info in FXML form
+    //                    FXMLLoader nodeLocationNamePopUp =
+    //                        new FXMLLoader(
+    //                            getClass().getResource("../views/NodeLocationNamePopUp.fxml"));
+    //
+    //                    try {
+    //                      // Try creating the pop-over
+    //                      mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
+    //                    } catch (IOException e) {
+    //                      throw new RuntimeException(e); // If it fails, throw an exception
+    //                    }
+    //                    NodeLocationNamePopUpController controller =
+    //                        nodeLocationNamePopUp.getController();
+    //                    controller.setNode(node, mapController.getMapSession());
+    //
+    //                    mapPopOver.get().show(circle); // Show the pop-over
+    //                  }
+    //                });
+    //      }
+    //    }
+    //    for (Line line : mapController.getEdgeToLineMap().values()) {
+    //      line.setStroke(Paint.valueOf(Color.BLACK.toString()));
+    //    }
 
     // create session for PathFinder
     // Session session = CONNECTION.getSessionFactory().openSession();
@@ -137,5 +195,50 @@ public class PathFindingController {
     }
 
     // session.close();
+  }
+
+  private void drawNodesAndEdges() {
+    for (Node node : mapController.getNodeToCircleMap().keySet()) {
+      Circle circle = mapController.getNodeToCircleMap().get(node);
+      if (circle != null) {
+        circle.setFill(Paint.valueOf(Color.BLACK.toString()));
+        circle
+            .hoverProperty()
+            .addListener(
+                (observable, oldValue, newValue) -> {
+                  System.out.println("hovering");
+                  // If we're no longer hovering and the pop over exists, delete it. We will
+                  // either create a new one
+                  // or, keep it deleted
+                  if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
+                    mapPopOver.get().hide(); // Hide it
+                    mapPopOver.set(null); // And delete it (set it to null)
+                  }
+
+                  // If we should draw a new pop-up
+                  if (newValue) {
+                    // Get the node info in FXML form
+                    FXMLLoader nodeLocationNamePopUp =
+                        new FXMLLoader(
+                            getClass().getResource("../views/NodeLocationNamePopUp.fxml"));
+
+                    try {
+                      // Try creating the pop-over
+                      mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
+                    } catch (IOException e) {
+                      throw new RuntimeException(e); // If it fails, throw an exception
+                    }
+                    NodeLocationNamePopUpController controller =
+                        nodeLocationNamePopUp.getController();
+                    controller.setNode(node, mapController.getMapSession());
+
+                    mapPopOver.get().show(circle); // Show the pop-over
+                  }
+                });
+      }
+    }
+    for (Line line : mapController.getEdgeToLineMap().values()) {
+      line.setStroke(Paint.valueOf(Color.BLACK.toString()));
+    }
   }
 }
