@@ -47,12 +47,11 @@ public class PathFindingController {
         .widthProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              // buttonsHBox.setPrefWidth(newValue.doubleValue());
-              buttonsHBox.setMaxWidth(newValue.doubleValue() - 30.0);
 
-              // not sure why I have to set min width
+              //should figure out how to get rid of magic numbers
+              buttonsHBox.setMaxWidth(newValue.doubleValue() - 30.0);
               buttonsHBox.setMinWidth(newValue.doubleValue() - 30.0);
-              System.out.println(backButton.getAlignment());
+
               // for debugging
               // buttonsHBox.setBackground(Background.fill(Color.RED));
             });
