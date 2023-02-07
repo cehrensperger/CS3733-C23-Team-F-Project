@@ -17,21 +17,21 @@ public class LocationName {
   @NonNull
   @Getter
   @Setter
-  String longName;
+  private String longName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String shortName;
+  private String shortName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  LocationType locationType; // why is this mad at me but node is not????
+  private LocationType locationType; // why is this mad at me but node is not????
 
   /** Creates a new LocationName with empty fields */
   public LocationName() {}
