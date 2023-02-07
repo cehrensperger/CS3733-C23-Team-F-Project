@@ -19,7 +19,7 @@ public class HomeController {
   @FXML private MenuItem closeMenuItem;
   @FXML private MenuItem loadMapMenuItem;
   @FXML private MenuItem loadFeedbackMenuItem;
-  @FXML private MFXButton hiddneButton;
+  @FXML private MFXButton secretButton;
 
   Stage stage;
 

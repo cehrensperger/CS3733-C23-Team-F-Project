@@ -17,10 +17,10 @@
     <center>
         <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="typeCol" prefWidth="129.59995114803314" text="ID" />
-                <TableColumn fx:id="empLastNameCol" prefWidth="129.59995114803314" text="Employee Last Name" />
-                <TableColumn fx:id="submissionDateCol" prefWidth="176.4000244140625" text="Date and Time of Submission" />
-                <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="81.19998168945312" text="Status" />
+                <TableColumn fx:id="typeCol" prefWidth="200.0" text="Service Request Type" />
+                <TableColumn fx:id="empLastNameCol" prefWidth="224.0" text="Employee Last Name" />
+                <TableColumn fx:id="submissionDateCol" prefWidth="250.0" text="Date and Time of Submission" />
+                <TableColumn fx:id="statusCol" minWidth="0.0" prefWidth="125.0" text="Status" />
             </columns>
         </TableView>
     </center>
