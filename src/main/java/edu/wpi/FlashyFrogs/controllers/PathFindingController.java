@@ -84,7 +84,9 @@ public class PathFindingController {
     String startPath = start.getText();
     String endPath = end.getText();
     // Transaction transaction = session.beginTransaction();
+
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
+
 
     // display path as text
     try {
