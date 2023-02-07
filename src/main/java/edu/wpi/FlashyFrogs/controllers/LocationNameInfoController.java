@@ -30,7 +30,7 @@ public class LocationNameInfoController {
         .textProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              // Create the new location (on update cascade ☹️)
+              // Create the new location (on update cascade)
               location.set(
                   LocationName.updateLongName(
                       location.get(), newValue, session)); // Save the new location as the reference

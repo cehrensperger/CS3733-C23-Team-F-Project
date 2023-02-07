@@ -1,6 +1,5 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.MapEntity;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -17,7 +16,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import lombok.NonNull;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 /**
  * Controller for the Map of the hospital. Provides utilities to make it useful for classes that may
@@ -91,28 +89,20 @@ public class MapController {
       Pane pane = new Pane(); // Create it
       group.getChildren().add(pane); // Add it to the group
 
-      Session mapUpdateSession =
-          DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
-
-      Transaction readTransaction =
-          mapUpdateSession.beginTransaction(); // Begin a transaction for reading
-
       // Get the list of nodes
       List<Node> nodes =
-          mapUpdateSession
+          getMapSession()
               .createQuery("FROM Node n WHERE n.floor = :floor", Node.class)
               .setParameter("floor", mapEntity.getMapFloor())
               .getResultList();
 
       // Get the list of edges
       List<Edge> edges =
-          mapUpdateSession
+          getMapSession()
               .createQuery(
                   "FROM Edge WHERE node1.floor = :floor AND node2.floor = :floor", Edge.class)
               .setParameter("floor", mapEntity.getMapFloor())
               .getResultList();
-
-      readTransaction.commit(); // Commit the update transaction, now that we're done reading
 
       // For each node in the nodes to draw
       for (Node node : nodes) {
@@ -134,8 +124,6 @@ public class MapController {
 
         mapEntity.addEdge(edge, lineToDraw); // Add the line to the entity
       }
-
-      mapUpdateSession.close(); // Close the session
     }
   }
 
@@ -147,5 +135,21 @@ public class MapController {
   public void setFloor(@NonNull Node.Floor floor) {
     this.mapEntity.setMapFloor(floor); // Set the floor in the entity
     redraw(); // Force a redraw/re-fetch from scratch
+  }
+
+  /** Saves changes to the map */
+  public void saveChanges() {
+    this.mapEntity.commitMapChanges(); // Commit the map changes
+  }
+
+  /** Cancels changes to the map */
+  public void cancelChanges() {
+    this.mapEntity.rollbackMapChanges(); // Abort the changes
+    this.redraw(); // Redraw the map, as the map will now be in a different staet
+  }
+
+  /** Shuts down the map controller, ending the session it uses */
+  public void exit() {
+    this.mapEntity.closeMap(); // Close the map
   }
 }

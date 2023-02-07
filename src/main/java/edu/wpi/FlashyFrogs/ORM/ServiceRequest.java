@@ -18,70 +18,70 @@ public class ServiceRequest {
   @Getter
   @Setter
   @GeneratedValue
-  long id;
+  private long id;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  Status status;
+  private Status status;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String empFirstName;
+  private String empFirstName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String empMiddleName;
+  private String empMiddleName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String empLastName;
+  private String empLastName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  EmpDept empDept;
+  private EmpDept empDept;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String assignedEmpFirstName;
+  private String assignedEmpFirstName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String assignedEmpMiddleName;
+  private String assignedEmpMiddleName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String assignedEmpLastName;
+  private String assignedEmpLastName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  EmpDept assignedEmpDept;
+  private EmpDept assignedEmpDept;
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
@@ -89,7 +89,7 @@ public class ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  Date dateOfIncident;
+  private Date dateOfIncident;
 
   @Basic
   @Temporal(TemporalType.DATE)
@@ -97,21 +97,21 @@ public class ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  Date dateOfSubmission;
+  private Date dateOfSubmission;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  Urgency urgency;
+  private Urgency urgency;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String requestType;
+  private String requestType;
 
   /** Enumerated type for the possible statuses we can create */
   public enum Status {
