@@ -100,9 +100,17 @@ public class MapEditorController {
 
                         LocationNameInfoController controller =
                             locationNameLoader.getController(); // Get the controller
+
+                        // Set the location name to the value
                         controller.setLocationName(
-                            row.getItem(),
-                            mapController.getMapSession()); // Set the location name to the value
+                            row.getItem(), // Set it to the rows item
+                            mapController.getMapSession(),
+                            () -> {
+                              locationTable.getItems().remove(row.getItem());
+                              tablePopOver.get().hide();
+                            },
+                            (locationName) ->
+                                locationTable.getItems().set(row.getIndex(), locationName));
 
                         tablePopOver.get().show(row); // Show the pop-over on the row
                       }
