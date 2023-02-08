@@ -1,4 +1,41 @@
 ﻿nodeType,longName,shortName
+HALL,Hall 1,Hall
+CONF,BTM Conference Center,BTM Conference
+DEPT,Neuroscience Waiting Room,Neuro Waiting Room
+DEPT,Orthopedics and Rhemutalogy,Orthopedics and Rhemutalogy
+DEPT,MS Waiting,MS Waiting
+DEPT,CART Waiting,CART Waiting
+ELEV,Elevator S 01,Elevator S 1
+ELEV,Elevator S 02,Elevator S 2
+ELEV,Elevator S Floor 3,Elevator S 3
+ELEV,Elevator S L2,Elevator S L2
+EXIT,Parking Garage L2,Parking Garage L2
+HALL,Hall 2,Hall
+HALL,Hall 3,Hall
+HALL,Hall 4,Hall
+HALL,Hallway to Elevator,Hall
+HALL,Hall 5,Hall
+HALL,Hall 6,Hall
+HALL,Hall 7,Hall
+HALL,Hallway Intersection,Hall
+HALL,Hall 8,Hall
+HALL,Hall 9,Hall
+HALL,Hall 10,Hall
+HALL,Hall 11,Hall
+HALL,Hall 12,Hall
+HALL,Hall 13,Hall
+HALL,Hall 14,Hall
+HALL,Hall 15,Hall
+HALL,Hall 16,Hall
+HALL,Hall 17,Hall
+HALL,Hall 18,Hall
+HALL,Hall 19,Hall
+HALL,Hall 20,Hall
+HALL,HallNode,HallNode
+HALL,Hall 21,Hall
+HALL,Hall 22,Hall
+HALL,Hall 23,Hall
+HALL,Hall 24,Hall
 INFO,BTM Security Desk,Security
 LABS,Innovation Hub,Innovation Hub
 LABS,MRI CT Scan Imaging,MRI CT Imaging
@@ -14,6 +51,7 @@ DEPT,Oral Medicine and Dentistry,DEPT B0202
 DEPT,Lee Bell Breast Center,DEPT B0302
 DEPT,Jen Center for Primary Care,DEPT B0402
 DEPT,Ear Nose & Throat,DEPT B0502
+HALL,Hallway Intersection 31 Level 2,Hallway B3102
 DEPT,Plastic Surgery,DEPT B0702
 DEPT,Outpatient Pharmacy,DEPT B0802
 DEPT,Weiner Center for Preoperative Evaluation,DEPT B0902
@@ -46,7 +84,6 @@ HALL,Hallway Intersection 27 Level 2,Hallway B2702
 HALL,Hallway Intersection 28 Level 2,Hallway B2802
 HALL,Hallway Intersection 29 Level 2,Hallway B2902
 HALL,Hallway Intersection 30 Level 2,Hallway B3002
-HALL,Hallway Intersection 31 Level 2,Hallway B3102
 HALL,Hallway Intersection 32 Level 2,Hallway B3202
 INFO,Information Desk Level 2,INFO B0102
 INFO,Valet Service Level 2,INFO B0202
@@ -396,7 +433,7 @@ HALL,Hallway Node 11 Floor 3,Hall
 HALL,Hallway Node 13 Floor 3,Hall
 REST,Restroom Node 12 Floor 3,Restroom Shapiro Floor 3
 SERV,The Porch Node 16 Floor 3,The Porch
-STAI,Staircase Node 9 Floor 3,Floor 3 Stairs
+STAI,Staircase Node 9 Floor 3,Floor 3 Stairs 
 ELEV,Elevator Q MapNode 7 Floor L1,Elevator Q L1
 EXIT,Fenwood Road Exit MapNode 1 Floor L1,Fenwood Road EntranceExit L1
 HALL,Hallway MapNode 2 Floor L1,Hall
@@ -526,3 +563,7 @@ ELEV,Elevator M Floor L1,Elevator ML1
 ELEV,Elevator M Floor 1,Elevator M1
 ELEV,Elevator M Floor 2,Elevator M2
 ELEV,Elevator M Floor 3,Elevator M3
+HALL,Hallway Connector 1 Floor L2,Hallway W01L2
+HALL,Hallway Connector 2 Floor L2,Hallway W02L2
+HALL,Hallway Connector 1 Floor 1,Hallway W0101
+HALL,Hallway Connector 2 Floor 1,Hallway W0201

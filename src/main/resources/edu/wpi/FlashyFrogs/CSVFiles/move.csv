@@ -1,4 +1,41 @@
 ﻿nodeID,longName
+02X1580Y2538,Hall 1
+03X1648Y2968,BTM Conference Center
+01X1401Y2628,Neuroscience Waiting Room
+02X1395Y2674,Orthopedics and Rhemutalogy
+01X1720Y2847,MS Waiting
+01X0986Y2852,CART Waiting
+01X1534Y2777,Elevator S 01
+02X1532Y2777,Elevator S 02
+03X1539Y2773,Elevator S Floor 3
+L2X1630Y2742,Elevator S L2
+L2X1696Y2788,Parking Garage L2
+01X1638Y2553,Hall 2
+02X1591Y2560,Hall 3
+03X1534Y2732,Hall 4
+L2X1627Y2782,Hallway to Elevator
+01X1608Y2596,Hall 5
+02X1590Y2604,Hall 6
+03X1600Y2732,Hall 7
+L2X1698Y2776,Hallway Intersection
+01X1608Y2737,Hall 8
+02X1590Y2745,Hall 9
+03X1650Y2732,Hall 10
+L2X1701Y2734,Hall 11
+01X1420Y2737,Hall 12
+02X1528Y2745,Hall 13
+03X1650Y2766,Hall 14
+L2X1698Y2687,Hall 15
+01X1420Y2865,Hall 16
+02X1398Y2745,Hall 17
+03X1650Y2855,Hall 18
+01X1678Y2865,Hall 19
+02X1683Y2543,Hall 20
+03X1580Y2858,HallNode
+01X1017Y2865,Hall 21
+01X1532Y2739,Hall 22
+01X1581Y2566,Hall 23
+01X1605Y2568,Hall 24
 L2X1681Y2747,BTM Security Desk
 03X1611Y2678,Innovation Hub
 L2X1667Y2682,MRI CT Scan Imaging
@@ -14,6 +51,7 @@ L2X1667Y2682,MRI CT Scan Imaging
 02X2385Y0753,Lee Bell Breast Center
 02X2439Y0902,Jen Center for Primary Care
 02X2623Y1018,Ear Nose & Throat
+02X2782Y1303,Hallway Intersection 31 Level 2
 02X2945Y0775,Plastic Surgery
 02X3155Y0890,Outpatient Pharmacy
 02X3257Y0879,Weiner Center for Preoperative Evaluation
@@ -46,7 +84,7 @@ L2X1667Y2682,MRI CT Scan Imaging
 02X3063Y1043,Hallway Intersection 28 Level 2
 02X2782Y1091,Hallway Intersection 29 Level 2
 02X2782Y1165,Hallway Intersection 30 Level 2
-02X2554Y1280,Hallway Intersection 31 Level 2
+02X2554Y1280,Hallway K Elevator Floor L2
 02X2554Y1472,Hallway Intersection 32 Level 2
 02X2962Y0963,Information Desk Level 2
 02X3136Y0963,Valet Service Level 2
@@ -526,3 +564,7 @@ L1X1820Y1284,Elevator M Floor L1
 01X1810Y1280,Elevator M Floor 1
 02X1825Y1280,Elevator M Floor 2
 03X1815Y1290,Elevator M Floor 3
+L2X1745Y1524,Hallway Connector 1 Floor L2
+L2X1745Y1539,Hallway Connector 2 Floor L2
+01X2160Y0910,Hallway Connector 1 Floor 1
+01X2175Y0910,Hallway Connector 2 Floor 1
