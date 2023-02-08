@@ -78,10 +78,7 @@
 .table-view .column-header {
     -fx-background-color: #0067b1;
 }
-.table-row-cell:hover {
-    -fx-background-color: #93f9b911;
-    -fx-text-background-color: red;
-}
+
 .table-row-cell:odd{
     -fx-background-color: #0067b1;
     -fx-background-insets: 0, 0 0 1 0;
@@ -95,6 +92,10 @@
     -fx-padding: 0.0em;
     -fx-text-background-color:#f1f1f1;
     -fx-font-family: "Arial Black";
+}
+.table-row-cell:hover {
+    -fx-background-color: #f1f1f1;
+        -fx-text-background-color: #012d5a;
 }
 .table-view .virtual-flow .scroll-bar:vertical .thumb{
     -fx-background-color:  linear-gradient(to bottom, #0067b1, #012d5a);
