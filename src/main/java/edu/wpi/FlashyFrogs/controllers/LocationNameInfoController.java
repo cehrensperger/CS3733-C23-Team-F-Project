@@ -36,7 +36,8 @@ public class LocationNameInfoController {
       @NonNull LocationName locationName,
       @NonNull Session session,
       @NonNull Runnable handleDelete,
-      @NonNull Consumer<LocationName> onUpdate) {
+      @NonNull Consumer<LocationName> onUpdate,
+      boolean isNewLocation) {
     // Place to store the last "safe" location name, only useful for cases when that changes
     final String[] originalName = new String[1]; // String array (pointer) for the original name
     originalName[0] = locationName.getLongName(); // Original name to reference
@@ -65,7 +66,10 @@ public class LocationNameInfoController {
           // Do the deletion in the DB
           session
               .createMutationQuery("DELETE FROM LocationName WHERE longName = :originalName")
-              .setParameter("originalName", originalName[0]);
+              .setParameter("originalName", originalName[0])
+              .executeUpdate();
+
+          session.flush();
           handleDelete.run(); // Run the deletion handler
         });
 
@@ -86,11 +90,13 @@ public class LocationNameInfoController {
             return; // Short-circuit, don't run the update
           }
 
-          // Run a query that updates the location name to be the new values, searching by the long
-          // name PK
-          if (session.find(LocationName.class, longName.get()) == null) {
+          if (isNewLocation) {
+            // If it's new, we can just persist
             session.persist(new LocationName(longName.get(), type.get(), shortName.get()));
           } else {
+            // Run a query that updates the location name to be the new values, searching by the
+            // long
+            // name PK
             session
                 .createMutationQuery(
                     "UPDATE LocationName SET "

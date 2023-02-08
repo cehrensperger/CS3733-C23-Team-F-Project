@@ -127,7 +127,7 @@ public class MapEditorController {
                   LocationNameInfoController controller =
                       locationNameLoader.getController(); // Get the controller
 
-                    // We need to cache the row num, as when we do the setter, this will change
+                  // We need to cache the row num, as when we do the setter, this will change
                   int rowNum = row.getIndex();
 
                   // Set the location name to the value
@@ -138,8 +138,9 @@ public class MapEditorController {
                         locationTable.getItems().remove(row.getItem());
                         tablePopOver.get().hide();
                       },
-                          // Set the original saved row number to be the new location nam,e
-                      (locationName) -> locationTable.getItems().set(rowNum, locationName));
+                      // Set the original saved row number to be the new location nam,e
+                      (locationName) -> locationTable.getItems().set(rowNum, locationName),
+                      false);
 
                   tablePopOver.get().show(row); // Show the pop-over on the row
                 });
@@ -190,7 +191,13 @@ public class MapEditorController {
 
                 NodeInfoController controller =
                     nodeInfoLoader.getController(); // Get the controller to use
-                controller.setNode(node, mapController.getMapSession()); // Set the node
+                controller.setNode(
+                    node,
+                    mapController.getMapSession(),
+                    () -> {
+                      mapPopOver.getAndSet(null).hide(); // hide the pop-over
+                      mapController.redraw(); // Redraw the map
+                    }); // Set the node
 
                 mapPopOver.get().show(circle); // Show the pop-over
               });
@@ -261,13 +268,12 @@ public class MapEditorController {
     addLoc.setLocationName(
         new LocationName("", LocationName.LocationType.HALL, ""),
         mapController.getMapSession(),
-        () -> {
-          popOver.hide();
-        },
+        popOver::hide,
         (locationName) -> {
           popOver.hide();
           locationTable.getItems().add(0, locationName);
-        });
+        },
+        true);
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
