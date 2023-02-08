@@ -28,6 +28,7 @@
     -fx-border-radius:10px;
     -fx-background-radius: 10px;
     -fx-text-fill:#f1f1f1 ;
+
 }
 .button:hover{
     -fx-background-color:#00508e;
@@ -43,9 +44,11 @@
 .menu-bar{
     -fx-background-color:#012d5a;
 
+
 }
 .menu-item{
     -fx-background-color: #012d5a;
+
 }
 #serviceRequestMenu{
     -fx-text-fill: #f1f1f1;
@@ -55,6 +58,44 @@
     -fx-background-color:#0067b1
 }
 
-
-
-
+/*tableview*/
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(to bottom, #0067b1, #012d5a);
+    -fx-background-radius: 7px 7px 0px 0px;
+    -fx-background-insets: 0 11px 0 0;
+    -fx-padding: 0 0 5px 0;
+}
+.table-view .table-cell{
+    -fx-border-color: transparent;
+    -fx-padding: 2 0 2 10px;
+}
+.table-view .column-header {
+    -fx-background-color: #0067b1;
+}
+.table-row-cell: hover {
+    -fx-background-color: #93f9b911;
+    -fx-text-background-color: red;
+}
+.table-row-cell: odd{
+    -fx-background-color: #0067b1;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+    -fx-text-background-color: #f1f1f1;
+    -fx-font-family: "Arial Black";
+}
+.table-row-cell: even{
+    -fx-background-color: #012d5a;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+    -fx-text-background-color:#f1f1f1;
+    -fx-font-family: "Arial Black";
+}
+.table-view .virtual-flow .scroll-bar:vertical .thumb{
+    -fx-background-color:  linear-gradient(to bottom, #0067b1, #012d5a);
+}
+.table-view .virtual-flow .scroll-bar:horizontal .thumb {
+    -fx-background-color:  linear-gradient(to right, #0067b1, #012d5a);
+}
