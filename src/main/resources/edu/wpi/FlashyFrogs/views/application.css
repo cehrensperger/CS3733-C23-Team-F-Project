@@ -8,6 +8,7 @@
     -fx-font-family: "Arial Black";
     -fx-text-fill:#000000;
 }
+
 .mfx-combo-box.combo{
     -fx-background-color:#3079ed ;
 }
@@ -34,6 +35,7 @@
 .text-area{
     -fx-background-color:#33343b;
     -fx-border-color:#33343b ;
+    -fx-text-fill: #33343b ;
 }
 .menu-button:hover{
     -fx-background-color:#0067b1;

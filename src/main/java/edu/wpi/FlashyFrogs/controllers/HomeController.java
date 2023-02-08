@@ -8,13 +8,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
 public class HomeController {
-
   @FXML private StackPane rootPane;
   @FXML private MFXButton serviceRequestsButton;
   @FXML private MFXButton mapDataEditorButton;
@@ -27,6 +28,7 @@ public class HomeController {
   @FXML private MFXButton hiddneButton;
   @FXML private ImageView backgroundImage;
   @FXML private MFXButton secretButton;
+  @FXML private TextArea AboutText;
 
   Stage stage;
 
@@ -97,11 +99,14 @@ public class HomeController {
   public void changeToLightMode(ActionEvent actionEvent) throws IOException {
     rootPane.getStylesheets().clear();
     rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/application.css");
+    AboutText.setBlendMode(BlendMode.DARKEN);
   }
 
   public void changeToDarkMode(ActionEvent actionEvent) throws IOException {
     rootPane.getStylesheets().clear();
     rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/dark-mode.css");
+    AboutText.setBlendMode(BlendMode.SOFT_LIGHT);
+    AboutText.setStyle("-fx-text-fill: #2f2f2f;");
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {
