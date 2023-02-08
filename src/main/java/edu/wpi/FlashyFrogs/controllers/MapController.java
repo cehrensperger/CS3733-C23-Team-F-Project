@@ -70,7 +70,7 @@ public class MapController {
    * Redraws the entire map, from scratch. This is an EXPENSIVE operation, so should be avoided when
    * possible. This involves DB fetches to fetch data from the floor
    */
-  private void redraw() {
+  public void redraw() {
     // Clear the gesture pane
     group.getChildren().clear();
 
