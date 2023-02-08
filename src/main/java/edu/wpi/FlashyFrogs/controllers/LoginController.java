@@ -13,6 +13,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class LoginController {
 
@@ -26,12 +27,15 @@ public class LoginController {
   public void loginButton(ActionEvent actionEvent) throws Exception {
     // TODO if already in database
     Session ses = CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = ses.beginTransaction();
     try {
       // check if it's in the database
       // create new UserLogin(Username, Password)
       // if (UserLogin.get(Username) != -1 && UserLogin.checkPasswordEqual(Password))
+
       ses.close();
     } catch (Exception e) {
+      transaction.rollback();
       ses.close();
       // TODO Show a popup or something
       throw e;

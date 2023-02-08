@@ -7,7 +7,6 @@ import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,10 +35,11 @@ public class LoginAdministratorController {
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    PopOver popOver =
-        new PopOver(
-            FXMLLoader.load(
-                Objects.requireNonNull(getClass().getResource("../views/NewUser.fxml"))));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/NewUser.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+    NewUserController newUser = newLoad.getController();
+    newUser.setPopOver(popOver);
+
     popOver.detach();
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
