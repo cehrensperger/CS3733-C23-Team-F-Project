@@ -118,7 +118,7 @@ public class HomeController {
     rootPane.getStylesheets().clear();
     rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/light-mode.css");
     AboutText.setBlendMode(BlendMode.DARKEN);
-    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/home-override.css");
+    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/label-override.css");
     Fapp.setLightMode(true);
   }
 
@@ -134,6 +134,7 @@ public class HomeController {
     AboutText.setStyle("-fx-text-fill: #2f2f2f;");
     Fapp.setLightMode(false);
   }
+
   public void handleLogOut(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Login");
   }

@@ -26,6 +26,15 @@ public class LoginController {
   @FXML private MFXPasswordField password;
   @FXML private Label errorMessage;
 
+  public void initialize() {
+    if (Fapp.isLightMode()) {
+      rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/light-mode.css");
+      rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/label-override.css");
+    } else {
+      rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/dark-mode.css");
+    }
+  }
+
   public void loginButton(ActionEvent actionEvent) throws Exception {
     if (username.getText().equals("") || password.getText().equals("")) {
       // One of the values is left null

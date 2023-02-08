@@ -67,7 +67,6 @@ public class LoginAdministratorController {
       userLoginTable
           .getItems()
           .addAll(userLoginObservableList); // add every item in observable list to moveTable
-
     } catch (Exception e) {
       ses.close();
       throw e;
