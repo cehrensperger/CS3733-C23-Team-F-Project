@@ -19,10 +19,8 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -77,22 +75,6 @@ public class MapEditorController {
             final Background[] originalBackground =
                 new Background[1]; // Get the original background to go back to
 
-            // Hover stuff to set the background as you scroll through
-            row.hoverProperty()
-                .addListener(
-                    (observable, oldValue, newValue) -> {
-                      // If we're hovering
-                      if (newValue) {
-                        originalBackground[0] = row.getBackground(); // Save the background
-
-                        // Set the hover color
-                        row.setBackground(
-                            new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
-                      } else {
-                        row.setBackground(originalBackground[0]); // Otherwise, go back
-                      }
-                    });
-
             // When the user selects a row, just un-select it to avoid breaking formatting
             row.selectedProperty()
                 .addListener(
@@ -102,10 +84,6 @@ public class MapEditorController {
             // Add a listener to show the pop-up
             row.setOnMouseClicked(
                 (event) -> {
-                  row.setBackground(
-                      // Set the selected background
-                      new Background(new BackgroundFill(Color.web("#2d89ef"), null, null)));
-
                   // If the pop over exists and is either not focused or we are showing a new
                   // row
                   if (tablePopOver.get() != null) {
