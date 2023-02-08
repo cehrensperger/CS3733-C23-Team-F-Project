@@ -26,7 +26,6 @@ public class AddMoveController {
   private PopOver popOver;
   private Session session;
 
-
   public void setPopOver(PopOver popOver) {
     this.popOver = popOver;
   }
@@ -36,9 +35,7 @@ public class AddMoveController {
     fillBoxes(); // fill the dropdown boxes
   }
 
-  /**
-   * Populates the dropdown boxes with the correct items
-   */
+  /** Populates the dropdown boxes with the correct items */
   public void fillBoxes() {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
@@ -50,6 +47,7 @@ public class AddMoveController {
 
   /**
    * Persist the input node in the database
+   *
    * @param event the event triggering this (unused)
    */
   @FXML
@@ -85,6 +83,7 @@ public class AddMoveController {
 
   /**
    * do not persist the node and close the popOver
+   *
    * @param event the event triggering this (unused)
    */
   @FXML

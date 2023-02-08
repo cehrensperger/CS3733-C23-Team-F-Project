@@ -32,9 +32,7 @@ public class AddNodeController {
     this.session = session;
   }
 
-  /**
-   * initialize the controller by filling the floor dropdown
-   */
+  /** initialize the controller by filling the floor dropdown */
   @FXML
   private void initialize() {
     floorField.setItems(FXCollections.observableArrayList(Node.Floor.values()));
@@ -42,6 +40,7 @@ public class AddNodeController {
 
   /**
    * persist the node in the database
+   *
    * @param event the event triggering this (unused)
    */
   @SneakyThrows
@@ -52,7 +51,7 @@ public class AddNodeController {
           || yCoordField.getText().equals("")
           || buildingField.getText().equals("")
           || floorField.getText().equals("")) {
-        throw new Exception(); //throw an exception
+        throw new Exception(); // throw an exception
       }
 
       // generate the new id
@@ -73,7 +72,7 @@ public class AddNodeController {
               Node.Floor.valueOf(floorField.getText()),
               Integer.parseInt(xCoordField.getText()),
               Integer.parseInt(yCoordField.getText()));
-      //persist the new node and close the popOver
+      // persist the new node and close the popOver
       session.persist(node);
       popOver.hide();
 
@@ -87,6 +86,7 @@ public class AddNodeController {
 
   /**
    * cancel the submission and close the popOver
+   *
    * @param event the event triggering this (unused)
    */
   @FXML
@@ -96,6 +96,7 @@ public class AddNodeController {
 
   /**
    * generate the node id based on xCoord, yCoord, and Floor
+   *
    * @param xCoord the x coordinate of the new node
    * @param yCoord the y coordinate of the new node
    * @param floor the floor that the new node is on
@@ -107,17 +108,18 @@ public class AddNodeController {
     int yCoordInt;
 
     try {
-        // Parse to integers
+      // Parse to integers
       xCoordInt = Integer.parseInt(xCoord); // Parse x
       yCoordInt = Integer.parseInt(yCoord); // Parse y
     } catch (NumberFormatException error) {
-        // If something went wrong, throw an exception indicating as much
+      // If something went wrong, throw an exception indicating as much
       throw new IllegalArgumentException("Coordinates must be numeric!");
     }
 
     // If the coordinates are out of bound
     if (xCoordInt < 0 || xCoordInt > 9999 || yCoordInt < 0 || yCoordInt > 9999) {
-      throw new IllegalArgumentException("Coordinates must be 0 -> 9999!"); // Throw an exception indicating
+      throw new IllegalArgumentException(
+          "Coordinates must be 0 -> 9999!"); // Throw an exception indicating
     }
 
     // Return the formatted string

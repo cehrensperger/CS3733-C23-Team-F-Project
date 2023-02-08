@@ -295,15 +295,15 @@ public class MapEditorController {
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
-    popOver.show(node.getScene().getWindow()); //display the popover
+    popOver.show(node.getScene().getWindow()); // display the popover
   }
 
-    /**
-     * opens the popup for adding a new node
-     *
-     * @param event the event triggering this (unused)
-     * @throws IOException
-     */
+  /**
+   * opens the popup for adding a new node
+   *
+   * @param event the event triggering this (unused)
+   * @throws IOException
+   */
   @FXML
   private void popupNode(ActionEvent event) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/AddNode.fxml"));

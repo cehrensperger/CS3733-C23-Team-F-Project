@@ -278,14 +278,20 @@ public class HelpController {
   @FXML
   public void handleQMapEditor() {
     e1.setText("The Map Editor allows editing of the hospital map. The map is separated into two");
-    e2.setText("main ideas: Nodes, and Locations. Nodes are essentially places on the map - a physical location.");
-    e3.setText("Nodes are linked to each other by edges - this is primarily for pathfinding purposes. A nodes location" +
-            "is required to be unique on its floor.");
+    e2.setText(
+        "main ideas: Nodes, and Locations. Nodes are essentially places on the map - a physical location.");
+    e3.setText(
+        "Nodes are linked to each other by edges - this is primarily for pathfinding purposes. A nodes location"
+            + "is required to be unique on its floor.");
     e4.setText("");
-    e5.setText("Locations are something that goes in a place on the map - for instance a department, or a bathroom.");
-    e6.setText("Locations can be created or deleted independently of nodes, and are associated with a node via the ");
-    e7.setText("use of Moves. Moves occur on a given date - a location is associated with the node that");
-    e8.setText("is most recently mapped to it (but not in the future!). Note that if something else is mapped to the");
+    e5.setText(
+        "Locations are something that goes in a place on the map - for instance a department, or a bathroom.");
+    e6.setText(
+        "Locations can be created or deleted independently of nodes, and are associated with a node via the ");
+    e7.setText(
+        "use of Moves. Moves occur on a given date - a location is associated with the node that");
+    e8.setText(
+        "is most recently mapped to it (but not in the future!). Note that if something else is mapped to the");
     e9.setText("node more recently, the location will be unmapped.");
     e10.setText("");
     e11.setText("To edit locations, click on them in the table.");
