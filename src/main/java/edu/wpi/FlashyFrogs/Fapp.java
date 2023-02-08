@@ -48,6 +48,7 @@ public class Fapp extends Application {
         FXMLLoader.load(
             Objects.requireNonNull(Fapp.class.getResource("views/" + sceneName + ".fxml")));
     Scene scene = new Scene(root);
+    scene.getStylesheets().add(Fapp.class.getResource("views/application.css").toExternalForm());
     // Scene scene = new Scene(root, 600, 400);
 
     primaryStage.setScene(scene);

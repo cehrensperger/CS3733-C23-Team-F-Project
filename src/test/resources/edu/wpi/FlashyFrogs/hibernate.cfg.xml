@@ -13,9 +13,9 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://database.cs.wpi.edu:5432/teamfdb</property>
-        <property name="connection.username">teamf</property>
-        <property name="connection.password">teamf60</property>
+        <property name="connection.url">jdbc:postgresql://batyr.db.elephantsql.com/kgevwset</property>
+        <property name="connection.username">kgevwset</property>
+        <property name="connection.password">V2ivXBRgJKHSLAcpBymcaM9fVRuTS8Me</property>
         <property name="connection.autocommit">false</property>
 
         <property name="hibernate.default_schema">test</property>
