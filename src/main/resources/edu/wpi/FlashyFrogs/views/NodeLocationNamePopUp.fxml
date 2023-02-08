@@ -14,8 +14,8 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label fx:id="label1" alignment="CENTER" contentDisplay="CENTER" prefHeight="141.0" prefWidth="339.0" />
-      <Label fx:id="label2" alignment="CENTER" contentDisplay="CENTER" prefHeight="168.0" prefWidth="394.0" GridPane.rowIndex="1" />
+      <Label fx:id="label1" alignment="CENTER" contentDisplay="CENTER" prefHeight="141.0" prefWidth="339.0" style="-fx-text-fill: #000000" />
+      <Label fx:id="label2" alignment="CENTER" contentDisplay="CENTER" prefHeight="168.0" prefWidth="394.0" GridPane.rowIndex="1" style="-fx-text-fill: #000000" />
       <Label alignment="TOP_CENTER" prefHeight="134.0" prefWidth="290.0" text="Node ID" />
       <Label alignment="TOP_CENTER" prefHeight="134.0" prefWidth="290.0" text="Location Name" GridPane.rowIndex="1" />
    </children>
