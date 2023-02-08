@@ -7,6 +7,9 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import org.controlsfx.control.PopOver;
 
 public class FeedbackController {
 
@@ -20,6 +23,7 @@ public class FeedbackController {
   @FXML private MFXButton clear;
   @FXML private MFXButton back;
   @FXML private MFXButton submit;
+  @FXML private MFXButton question;
 
   public void initialize() {
     department.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
@@ -34,6 +38,20 @@ public class FeedbackController {
     department.clear();
     email.clear();
     phone.clear();
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQFeedback();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 
   @FXML

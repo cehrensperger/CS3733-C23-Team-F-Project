@@ -71,11 +71,11 @@ public class CSVParser {
             new Node(
                 fields[0], // ID
                 fields[4], // Building
-                Node.Floor.valueOf(fields[3]), // Floor
+                Node.Floor.getEnum(fields[3]), // Floor
                 Integer.parseInt(fields[1]), // X-Coord
                 Integer.parseInt(fields[2])); // Y-Coord
         nodes.put(fields[0], node); // Put the node into the table with its ID
-        session.persist(node); // Persist the Node
+        session.persist(node);
       }
 
       // While there are new edges
@@ -88,6 +88,8 @@ public class CSVParser {
         session.persist(edge); // Persist the Edge
       }
 
+      session.flush();
+
       // While the locations have newlines
       while (locationFileScanner.hasNextLine()) {
         fields = locationFileScanner.nextLine().split(","); // Find the location fields
@@ -99,13 +101,18 @@ public class CSVParser {
         session.persist(location); // Persist the location
       }
 
+      session.flush();
+
       // While there are more moves
       while (moveFileScanner.hasNextLine()) {
         fields = moveFileScanner.nextLine().split(","); // Find the fields
 
         // Create the move from the lookups
         Move move =
-            new Move(nodes.get(fields[0]), locations.get(fields[1]), Date.from(Instant.now()));
+            new Move(
+                session.get(Node.class, fields[0]),
+                locations.get(fields[1]),
+                Date.from(Instant.now()));
         session.persist(move); // Persist the move
       }
 

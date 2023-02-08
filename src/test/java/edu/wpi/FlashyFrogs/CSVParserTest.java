@@ -7,18 +7,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.*;
 
 public class CSVParserTest {
-  private static SessionFactory
-      sessionFactory; // Session factory to be created before all tests have run
-  private static StandardServiceRegistry
-      serviceRegistry; // Service registry associated with the factory
   private static Session testSession; // Session to be used for each individual test
 
   /**
@@ -26,14 +18,8 @@ public class CSVParserTest {
    */
   @BeforeAll
   public static void setupSessionFactory() {
-    // Create the service registry we will use
-    serviceRegistry =
-        new StandardServiceRegistryBuilder()
-            .configure("./edu/wpi/FlashyFrogs/hibernate.cfg.xml") // Load settings
-            .build();
-
-    // Create the session factory from that
-    sessionFactory = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
+    // Create the DB Connection we will use
+    DBConnection.CONNECTION.connect(); // Connect to the DB
   }
 
   /**
@@ -41,14 +27,14 @@ public class CSVParserTest {
    */
   @AfterAll
   public static void closeSessionFactory() {
-    sessionFactory.close(); // Close the session factory
-    serviceRegistry.close(); // Close the service registry
+    DBConnection.CONNECTION.disconnect(); // Teardown the connection
   }
 
-  static File nodeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv");
+  static File nodeFile =
+      new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/nodesWithNewIDs.csv");
   static File testNodeFile =
       new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/testNodes.csv");
-  static File edgeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv");
+  static File edgeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/edgesFixed.csv");
   static File moveFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
   static File locationFile =
       new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
@@ -56,7 +42,7 @@ public class CSVParserTest {
 
   @BeforeEach
   public void setup() {
-    testSession = sessionFactory.openSession();
+    testSession = DBConnection.CONNECTION.getSessionFactory().openSession();
   }
 
   @AfterEach
@@ -78,7 +64,13 @@ public class CSVParserTest {
   public void readFilesTest() {
     try {
       assertDoesNotThrow(
-          () -> CSVParser.readFiles(nodeFile, edgeFile, locationFile, moveFile, Main.factory));
+          () ->
+              CSVParser.readFiles(
+                  nodeFile,
+                  edgeFile,
+                  locationFile,
+                  moveFile,
+                  DBConnection.CONNECTION.getSessionFactory()));
     } catch (Exception e) {
       fail();
     }
@@ -89,7 +81,13 @@ public class CSVParserTest {
   public void readEmptyFilesTest() {
     try {
       assertDoesNotThrow(
-          () -> CSVParser.readFiles(emptyFile, emptyFile, emptyFile, emptyFile, Main.factory));
+          () ->
+              CSVParser.readFiles(
+                  emptyFile,
+                  emptyFile,
+                  emptyFile,
+                  emptyFile,
+                  DBConnection.CONNECTION.getSessionFactory()));
     } catch (Exception e) {
       fail();
     }
@@ -99,7 +97,12 @@ public class CSVParserTest {
   @Test
   public void insertTest() {
     try {
-      CSVParser.readFiles(testNodeFile, emptyFile, emptyFile, emptyFile, Main.factory);
+      CSVParser.readFiles(
+          testNodeFile,
+          emptyFile,
+          emptyFile,
+          emptyFile,
+          DBConnection.CONNECTION.getSessionFactory());
     } catch (FileNotFoundException e) {
       fail();
     }
@@ -128,6 +131,10 @@ public class CSVParserTest {
         Exception.class,
         () ->
             CSVParser.readFiles(
-                new File(""), new File(""), new File(""), new File(""), sessionFactory));
+                new File(""),
+                new File(""),
+                new File(""),
+                new File(""),
+                DBConnection.CONNECTION.getSessionFactory()));
   }
 }

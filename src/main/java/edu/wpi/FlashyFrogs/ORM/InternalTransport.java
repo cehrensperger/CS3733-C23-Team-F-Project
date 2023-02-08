@@ -17,35 +17,62 @@ public class InternalTransport extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  String patientName;
+  private String patientFirstName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  private String patientMiddleName;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  private String patientLastName;
 
   @Getter
   @Setter
   @JoinColumn(
       name = "oldLoc",
-      foreignKey = @ForeignKey(name = "location_name1_fk"),
+      foreignKey =
+          @ForeignKey(
+              name = "location_name1_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (oldLoc) REFERENCES "
+                      + "locationname(longName) ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
   @ManyToOne
-  LocationName oldLoc;
+  private LocationName oldLoc;
 
   @Getter
   @Setter
-  @JoinColumn(name = "newLoc", foreignKey = @ForeignKey(name = "location_name2_fk"))
+  @JoinColumn(
+      name = "newLoc",
+      foreignKey =
+          @ForeignKey(
+              name = "location_name2_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (newLoc) REFERENCES locationname(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
   @NonNull
   @ManyToOne
-  LocationName newLoc;
+  private LocationName newLoc;
 
   @Column(nullable = false)
   @NonNull
   @Temporal(TemporalType.TIMESTAMP)
   @Getter
   @Setter
-  Date dateOfBirth;
+  private Date dateOfBirth;
 
   /** Creates a new InternalTransport with a generated id */
   public InternalTransport() {
-    this.requestType = "InternalTransport";
+    super.setStatus(Status.BLANK);
+    super.setRequestType("InternalTransport");
   }
 
   /**
@@ -54,7 +81,9 @@ public class InternalTransport extends ServiceRequest {
    * @param theDOB the Date to use in the DOB field
    * @param theNewLoc the LocationName to use in the newLoc field
    * @param theOldLoc the LocationName to use in the oldLoc field
-   * @param thePatientName the String to use in the patientName field
+   * @param thePatientFirstName the String to use in the patientFirstName field
+   * @param thePatientMiddleName the String to use in the patientMiddleName field
+   * @param thePatientLastName the String to use in the patientlastName field
    * @param empFirstName the String to use in the empFirstName field
    * @param empMiddleName the String to use in the empMiddleName field
    * @param empLastName the String to use in the empLastName field
@@ -71,7 +100,9 @@ public class InternalTransport extends ServiceRequest {
       @NonNull Date theDOB,
       @NonNull LocationName theNewLoc,
       @NonNull LocationName theOldLoc,
-      @NonNull String thePatientName,
+      @NonNull String thePatientFirstName,
+      @NonNull String thePatientMiddleName,
+      @NonNull String thePatientLastName,
       @NonNull String empFirstName,
       @NonNull String empMiddleName,
       @NonNull String empLastName,
@@ -86,19 +117,21 @@ public class InternalTransport extends ServiceRequest {
     this.dateOfBirth = theDOB;
     this.newLoc = theNewLoc;
     this.oldLoc = theOldLoc;
-    this.patientName = thePatientName;
-    this.empFirstName = empFirstName;
-    this.empMiddleName = empMiddleName;
-    this.empLastName = empLastName;
-    this.empDept = empDept;
-    this.assignedEmpFirstName = assignedEmpFirstName;
-    this.assignedEmpMiddleName = assignedEmpMiddleName;
-    this.assignedEmpLastName = assignedEmpLastName;
-    this.assignedEmpDept = assignedEmpDept;
-    this.dateOfIncident = dateOfIncident;
-    this.dateOfSubmission = dateOfSubmission;
-    this.status = Status.BLANK;
-    this.urgency = urgency;
-    this.requestType = "InternalTransport";
+    this.patientFirstName = thePatientFirstName;
+    this.patientMiddleName = thePatientMiddleName;
+    this.patientLastName = thePatientLastName;
+    super.setEmpFirstName(empFirstName);
+    super.setEmpMiddleName(empMiddleName);
+    super.setEmpLastName(empLastName);
+    super.setEmpDept(empDept);
+    super.setAssignedEmpFirstName(assignedEmpFirstName);
+    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
+    super.setAssignedEmpLastName(assignedEmpLastName);
+    super.setAssignedEmpDept(assignedEmpDept);
+    super.setDateOfIncident(dateOfIncident);
+    super.setDateOfSubmission(dateOfSubmission);
+    super.setStatus(Status.BLANK);
+    super.setUrgency(urgency);
+    super.setRequestType("InternalTransport");
   }
 }

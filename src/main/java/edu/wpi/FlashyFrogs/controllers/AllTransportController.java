@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
@@ -13,19 +13,37 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class AllTransportController extends AllRequestsController {
 
   @FXML private MFXButton back;
+  @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Transport");
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQAllRequests();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 
   public void initialize() {
@@ -47,7 +65,7 @@ public class AllTransportController extends AllRequestsController {
     // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     // Transaction transaction = session.beginTransaction();
     // Sanitation sanitationRequest = new Sanitation();
 
@@ -65,7 +83,7 @@ public class AllTransportController extends AllRequestsController {
           @Override
           public void handle(TableColumn.CellEditEvent<ServiceRequest, String> t) {
 
-            Session editSession = factory.openSession();
+            Session editSession = CONNECTION.getSessionFactory().openSession();
             Transaction transaction = editSession.beginTransaction();
 
             ServiceRequest serviceRequest =

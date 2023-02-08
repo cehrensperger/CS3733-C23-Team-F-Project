@@ -1,25 +1,32 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-import static edu.wpi.FlashyFrogs.Main.factory;
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.SecurityServiceData;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -31,9 +38,6 @@ public class SecurityServiceController extends ServiceRequestController {
   @FXML private MFXTextField incidentReportEntry;
   @FXML private MFXComboBox locationEntry;
   @FXML private MFXDatePicker dateEntry;
-  @FXML private MFXTextField timeEntry;
-  @FXML private Text employeeInformationText;
-  @FXML private Text nameText;
   @FXML private MFXTextField firstEntry;
   @FXML private MFXTextField middleEntry;
   @FXML private MFXTextField lastEntry;
@@ -41,14 +45,14 @@ public class SecurityServiceController extends ServiceRequestController {
   @FXML private MFXButton submitButton;
   @FXML private MFXButton homeButton;
   @FXML private MFXButton allButton;
+  @FXML private MFXButton question;
   @FXML private MFXComboBox urgencyEntry;
   @FXML private MFXComboBox departmentEntry;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
   @FXML private MFXComboBox department2;
-
-  private SecurityServiceData securityServiceData;
+  @FXML private Label errorMessage;
 
   /** initializes when app starts */
   public void initialize() {
@@ -56,12 +60,19 @@ public class SecurityServiceController extends ServiceRequestController {
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     departmentEntry.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
     department2.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
-    securityServiceData = new SecurityServiceData();
 
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
 
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+
+    objects.sort(
+        new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+          }
+        });
     session.close();
     locationEntry.setItems(FXCollections.observableList(objects));
   }
@@ -76,7 +87,6 @@ public class SecurityServiceController extends ServiceRequestController {
     incidentReportEntry.clear();
     locationEntry.clear();
     dateEntry.clear();
-    timeEntry.clear();
     firstEntry.clear();
     middleEntry.clear();
     lastEntry.clear();
@@ -91,59 +101,72 @@ public class SecurityServiceController extends ServiceRequestController {
   /**
    * sends the field information from the security service form to the SecurityServiceData class
    *
-   * @param event the submit button is clicked
+   * @param actionEvent the submit button is clicked
    * @throws IOException
    */
-  public void handleSubmit(ActionEvent event) throws IOException {
+  public void handleSubmit(ActionEvent actionEvent) throws IOException {
 
-    String incidentReport = incidentReportEntry.getText();
-    String location = locationEntry.getText();
-    String date = dateEntry.getText();
-    String time = timeEntry.getText();
-    String first = firstEntry.getText();
-    String middle = middleEntry.getText();
-    String last = lastEntry.getText();
-    String department = departmentEntry.getText();
-
-    securityServiceData.setInfo(
-        incidentReport, location, date, time, first, middle, last, department);
-    System.out.println(securityServiceData.getInfo());
-
-    Session session = factory.openSession();
+    Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    String[] parts = urgencyEntry.getText().toUpperCase().split(" ");
-    String urgencyEnumString = parts[0] + "_" + parts[1];
-    Security securityRequest =
-        new Security(
-            incidentReport,
-            session.find(LocationName.class, location),
-            first,
-            middle,
-            last,
-            first2.getText(),
-            middle2.getText(),
-            last2.getText(),
-            ServiceRequest.EmpDept.valueOf(department.toUpperCase()),
-            ServiceRequest.EmpDept.valueOf(department2.getText().toUpperCase()),
-            new Date(),
-            Date.from(Instant.now()),
-            ServiceRequest.Urgency.valueOf(urgencyEnumString));
 
-    // securityRequest.setLocation(locationEntry.getText());
+    try {
+      String[] parts = {};
+      String departmentEnumString = departmentEntry.getText().toUpperCase().replace(" ", "_");
+      String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
+      parts = urgencyEntry.getText().toUpperCase().split(" ");
+      String urgencyEnumString = parts[0] + "_" + parts[1];
 
-    //    securityRequest.setType(Sanitation.SanitationType.valueOf("Security")); //security no
-    // longer has a type, to get "Security" do Class.simpleName()
+      if (firstEntry.getText().equals("")
+          || middleEntry.getText().equals("")
+          || lastEntry.getText().equals("")
+          || first2.getText().equals("")
+          || middle2.getText().equals("")
+          || last2.getText().equals("")
+          || department2.getText().equals("")
+          || departmentEntry.getText().equals("")
+          || dateEntry.getText().equals("")
+          || locationEntry.getText().equals("")
+          || incidentReportEntry.getText().equals("")) {
+        throw new NullPointerException();
+      }
 
-    //    securityRequest.setEmpFirstName(firstEntry.getText());
-    //    securityRequest.setEmpMiddleName(middleEntry.getText());
-    //    securityRequest.setEmpLastName(lastEntry.getText());
-    //    securityRequest.setDateOfSubmission(Date.from(Instant.now()));
+      Date dateOfIncident =
+          Date.from(dateEntry.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-    session.persist(securityRequest);
-    transaction.commit();
-    session.close();
-    // System.out.println(sanitationServiceData);
-    // SecurityServiceData data = new SecurityServiceData();
+      Security securityRequest = new Security();
+      securityRequest.setEmpFirstName(firstEntry.getText());
+      securityRequest.setEmpMiddleName(middleEntry.getText());
+      securityRequest.setEmpLastName(lastEntry.getText());
+      securityRequest.setAssignedEmpFirstName(first2.getText());
+      securityRequest.setAssignedEmpMiddleName(middle2.getText());
+      securityRequest.setAssignedEmpLastName(last2.getText());
+      securityRequest.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
+      securityRequest.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
+      securityRequest.setDateOfIncident(dateOfIncident);
+      securityRequest.setDateOfSubmission(Date.from(Instant.now()));
+      securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyEnumString));
+      securityRequest.setLocation(session.find(LocationName.class, locationEntry.getText()));
+      securityRequest.setIncidentReport(incidentReportEntry.getText());
+
+      try {
+        session.persist(securityRequest);
+        transaction.commit();
+        session.close();
+        handleClear(actionEvent);
+        errorMessage.setTextFill(Paint.valueOf("#44ff00"));
+        errorMessage.setText("Successfully submitted.");
+      } catch (RollbackException exception) {
+        session.clear();
+        errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+        errorMessage.setText("Please fill all fields.");
+        session.close();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      session.clear();
+      errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+      errorMessage.setText("Please fill all fields.");
+      session.close();
+    }
   }
 
   /**
@@ -159,7 +182,20 @@ public class SecurityServiceController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-
     Fapp.setScene("AllSecurityService");
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQSecurity();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 }

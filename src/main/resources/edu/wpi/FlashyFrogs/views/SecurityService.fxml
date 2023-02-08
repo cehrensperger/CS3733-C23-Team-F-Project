@@ -5,6 +5,8 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -12,21 +14,16 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SecurityServiceController">
-   <top>
-      <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Form" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets top="8.0" />
-         </BorderPane.margin>
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Text>
-   </top>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="800.0">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="800.0" HBox.hgrow="ALWAYS">
                <children>
+                  <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="825.0" textFill="RED" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                   <Text fx:id="incidentReportText" strokeType="OUTSIDE" strokeWidth="0.0" text="Incident Report:" wrappingWidth="306.7578125">
                      <font>
                         <Font size="24.0" />
@@ -35,50 +32,35 @@
                         <Insets bottom="5.0" left="10.0" top="10.0" />
                      </VBox.margin>
                   </Text>
-                  <MFXTextField fx:id="incidentReportEntry" prefHeight="70.0" prefWidth="807.0" promptText="Description Of Incident">
+                  <MFXTextField fx:id="incidentReportEntry" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="807.0" promptText="Description of Incident">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </VBox.margin>
                   </MFXTextField>
-                  <HBox prefHeight="45.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <VBox prefHeight="56.0" prefWidth="265.0">
-                           <children>
-                              <MFXComboBox fx:id="locationEntry" prefHeight="54.0" prefWidth="244.0" promptText="Location">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </VBox.margin>
-                              </MFXComboBox>
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="56.0" prefWidth="265.0">
-                           <children>
-                              <MFXDatePicker fx:id="dateEntry" floatMode="INLINE" prefHeight="50.0" prefWidth="281.0" promptText="Date">
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                              </MFXDatePicker>
-                           </children>
+                        <MFXComboBox fx:id="locationEntry" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="240.0" promptText="Location" HBox.hgrow="ALWAYS">
                            <HBox.margin>
-                              <Insets right="5.0" />
+                              <Insets left="10.0" right="5.0" top="10.0" />
                            </HBox.margin>
-                        </VBox>
-                        <VBox prefHeight="56.0" prefWidth="265.0">
-                           <children>
-                              <MFXTextField fx:id="timeEntry" prefHeight="50.0" prefWidth="273.0" promptText="Time 00:00 AM/PM">
-                                 <VBox.margin>
-                                    <Insets right="10.0" top="5.0" />
-                                 </VBox.margin>
-                              </MFXTextField>
-                           </children>
-                        </VBox>
+                        </MFXComboBox>
+                        <MFXDatePicker fx:id="dateEntry" floatMode="INLINE" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="281.0" promptText="Date" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="5.0" top="10.0" />
+                           </HBox.margin>
+                        </MFXDatePicker>
+                        <MFXComboBox fx:id="urgencyEntry" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="257.0" promptText="Urgency:" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </MFXComboBox>
                      </children>
                   </HBox>
-                  <MFXComboBox fx:id="urgencyEntry" prefHeight="50.0" prefWidth="184.0" promptText="Urgency:">
-                     <VBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </VBox.margin>
-                  </MFXComboBox>
+                  <HBox maxWidth="1.7976931348623157E308" prefHeight="45.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="56.0" prefWidth="265.0" />
+                     </children>
+                  </HBox>
                   <Text fx:id="employeeInformationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:" wrappingWidth="369.02734375">
                      <VBox.margin>
                         <Insets left="10.0" top="10.0" />
@@ -97,39 +79,39 @@
                   </Text>
                   <HBox prefHeight="50.0" prefWidth="200.0">
                      <children>
-                        <VBox prefHeight="42.0" prefWidth="200.0">
+                        <VBox maxWidth="1.7976931348623157E308" prefHeight="42.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <MFXTextField fx:id="firstEntry" prefHeight="30.0" prefWidth="200.0" promptText="First">
+                              <MFXTextField fx:id="firstEntry" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0" promptText="First">
                                  <VBox.margin>
                                     <Insets left="10.0" right="5.0" />
                                  </VBox.margin>
                               </MFXTextField>
                            </children>
                         </VBox>
-                        <VBox prefHeight="40.0" prefWidth="200.0">
+                        <VBox maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <MFXTextField fx:id="middleEntry" prefHeight="51.0" prefWidth="200.0" promptText="Middle">
+                              <MFXTextField fx:id="middleEntry" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Middle">
                                  <VBox.margin>
                                     <Insets right="5.0" />
                                  </VBox.margin>
                               </MFXTextField>
                            </children>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="200.0">
+                        <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <MFXTextField fx:id="lastEntry" prefHeight="51.0" prefWidth="200.0" promptText="Last">
+                              <MFXTextField fx:id="lastEntry" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Last">
                                  <VBox.margin>
                                     <Insets right="5.0" />
                                  </VBox.margin>
                               </MFXTextField>
                            </children>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="200.0">
+                        <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <MFXComboBox fx:id="departmentEntry" prefHeight="51.0" prefWidth="210.0" promptText="Department">
+                              <MFXComboBox fx:id="departmentEntry" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="210.0" promptText="Department">
                                  <VBox.margin>
                                     <Insets right="10.0" />
                                  </VBox.margin>
@@ -156,20 +138,20 @@
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <HBox prefHeight="30.0" prefWidth="200.0">
+                        <HBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0">
                            <children>
-                              <MFXTextField fx:id="first2" prefHeight="51.0" prefWidth="200.0" promptText="First">
+                              <MFXTextField fx:id="first2" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="190.0" promptText="First" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets left="10.0" right="5.0" />
                                  </HBox.margin>
                               </MFXTextField>
-                              <MFXTextField fx:id="middle2" prefHeight="51.0" prefWidth="200.0" promptText="Middle" />
-                              <MFXTextField fx:id="last2" prefHeight="51.0" prefWidth="200.0" promptText="Last">
+                              <MFXTextField fx:id="middle2" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Middle" HBox.hgrow="ALWAYS" />
+                              <MFXTextField fx:id="last2" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Last" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets left="5.0" />
                                  </HBox.margin>
                               </MFXTextField>
-                              <MFXComboBox fx:id="department2" prefHeight="56.0" prefWidth="200.0" promptText="Department">
+                              <MFXComboBox fx:id="department2" maxWidth="1.7976931348623157E308" prefHeight="56.0" prefWidth="200.0" promptText="Department" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets left="5.0" right="10.0" />
                                  </HBox.margin>
@@ -178,31 +160,36 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox alignment="BOTTOM_RIGHT" prefHeight="41.0" prefWidth="800.0">
+                  <HBox alignment="BOTTOM_RIGHT" prefHeight="41.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox alignment="BOTTOM_LEFT" prefHeight="47.0" prefWidth="470.0">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                            <children>
-                              <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Security Service Forms" />
+                              <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Security Service Forms" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
                            </children>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <MFXButton fx:id="clearButton" onAction="#handleClear" prefHeight="27.0" prefWidth="100.0" text="Clear">
-                           <HBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </HBox.margin>
-                        </MFXButton>
-                        <MFXButton fx:id="homeButton" onAction="#handleBack" prefWidth="100.0" text="Back">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </MFXButton>
-                        <MFXButton fx:id="submitButton" onAction="#handleSubmit" prefWidth="100.0" text="Submit">
-                           <HBox.margin>
-                              <Insets bottom="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </MFXButton>
+                        </AnchorPane>
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox maxWidth="1.7976931348623157E308" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <children>
+                                    <MFXButton fx:id="clearButton" onAction="#handleClear" prefHeight="27.0" prefWidth="100.0" text="Clear">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                    <MFXButton fx:id="homeButton" onAction="#handleBack" prefWidth="100.0" text="Back">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                    <MFXButton fx:id="submitButton" onAction="#handleSubmit" prefWidth="100.0" text="Submit">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="5.0" right="10.0" top="5.0" />
+                                       </HBox.margin>
+                                    </MFXButton>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
                      </children>
                   </HBox>
                </children>
@@ -210,4 +197,20 @@
          </children>
       </HBox>
    </center>
+   <top>
+      <HBox alignment="TOP_CENTER" prefHeight="43.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Form" wrappingWidth="357.51092529296875" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <AnchorPane HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton fx:id="question" onAction="#handleQ" text="?" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

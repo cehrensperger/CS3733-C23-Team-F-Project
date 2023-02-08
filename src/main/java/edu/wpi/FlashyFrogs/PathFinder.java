@@ -6,12 +6,10 @@ import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 @AllArgsConstructor
 public class PathFinder {
-  @NonNull private final SessionFactory sessionFactory;
+  @NonNull private final Session session;
 
   /**
    * Converts a String location name to the LocationName object associated with it. MAY return Null
@@ -26,68 +24,14 @@ public class PathFinder {
   }
 
   /**
-   * converts a location name to a Node by looking for the latest Node that has the given location
-   * name. Returns null if no result could be found
-   *
-   * @param name the location name to query for
-   * @param session the session to run the query on
-   * @return the found node, or null
-   */
-  private Node locationToNode(@NonNull LocationName name, @NonNull Session session) {
-    // Create a query that selects the first node from the move where the location is the location
-    // orders by descending date (first at top) and limits it to one, so we only get one.
-    // Then casts to a Node, sets the parameter location (to prevent injection)
-    // Get unique result will either return the result, or null if there was none
-    return session
-        .createQuery(
-            """
-                                SELECT node
-                                FROM Move
-                                where location = :location
-                                ORDER BY moveDate DESC
-                                LIMIT 1""",
-            Node.class)
-        .setParameter("location", name)
-        .uniqueResult();
-  }
-
-  /**
-   * Returns the location associated with a given Node, or null if none could be found
-   *
-   * @param node the node to lookup
-   * @param session the session to use in the lookup
-   * @return the location that was found
-   */
-  private LocationName nodeToLocation(@NonNull Node node, @NonNull Session session) {
-    // Create a query that selects the first location from the move where the location is the
-    // location, orders
-    // by descending date (first at top) and limits to one, so we only get one.
-    // Then casts to LocationName, sets the parameter location (to prevent injection)
-    // Gets a unique result, which will return either the singular result found or null if there was
-    // none
-    return session
-        .createQuery(
-            """
-                                SELECT location
-                                FROM Move
-                                WHERE node = :node
-                                ORDER BY moveDate DESC
-                                LIMIT 1""",
-            LocationName.class)
-        .setParameter("node", node)
-        .uniqueResult();
-  }
-
-  /**
    * @param nodes list of nodes to lookup
-   * @param session the session to use in the lookup
    * @return list of locations that were found
    */
   public List<LocationName> nodeListToLocation(
       @NonNull List<Node> nodes, @NonNull Session session) {
     List<LocationName> locations = new ArrayList<>();
     for (Node node : nodes) {
-      locations.add(nodeToLocation(node, session));
+      locations.add(node.getCurrentLocation(session));
     }
     return locations;
   }
@@ -130,39 +74,17 @@ public class PathFinder {
    *     location) fails
    */
   public List<Node> findPath(@NonNull String start, @NonNull String end) {
-    // Get the session to use for this
-    Session session = sessionFactory.openSession();
-
-    // Create a transaction so that nothing happens while reading occurs
-    Transaction transaction = session.beginTransaction();
-
     List<Node> path;
 
-    try {
-      // Query location names and return nodes to send to aStar function
-      Node startNode = locationToNode(longNameToLocation(start, session), session);
-      Node endNode = locationToNode(longNameToLocation(end, session), session);
+    // Query location names and return nodes to send to aStar function
+    LocationName startLocation = longNameToLocation(start, session);
+    LocationName endLocation = longNameToLocation(end, session);
 
-      // Find the path with A*
-      path = aStar(startNode, endNode, session);
-    } catch (
-        NullPointerException
-            error) { // Catch failures, so we can close the transaction no matter what
-      // End the transaction
-      transaction.rollback();
+    Node startNode = startLocation.getCurrentNode(session);
+    Node endNode = endLocation.getCurrentNode(session);
 
-      // Close the session
-      session.close();
-
-      throw error;
-    }
-
-    // Commit the transaction
-    transaction.commit();
-
-    // Close the session
-    session.close();
-
+    // Find the path with A*
+    path = aStar(startNode, endNode, session);
     return path; // Return the path
   }
 
@@ -205,7 +127,23 @@ public class PathFinder {
       NODE_LOOP:
       for (Node node : getNeighbors(q.node, session)) { // get the neighbors of the current node
         NodeWrapper child = new NodeWrapper(node, q); // create node wrapper out of current node
-        child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start
+        if (q.node.getFloor() != child.node.getFloor()) {
+          if (child
+              .node
+              .getCurrentLocation(session)
+              .getLocationType()
+              .equals(LocationName.LocationType.ELEV)) {
+            child.g = q.g + 10; // cost for elevator
+          } else if (child
+              .node
+              .getCurrentLocation(session)
+              .getLocationType()
+              .equals(LocationName.LocationType.STAI)) {
+            child.g = q.g + 20; // cost for stairs
+          }
+        } else {
+          child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start
+        }
         child.h =
             euclideanDistance(child.node, end); // calculate the lowest possible distance to end
         child.f = child.g + child.h;
