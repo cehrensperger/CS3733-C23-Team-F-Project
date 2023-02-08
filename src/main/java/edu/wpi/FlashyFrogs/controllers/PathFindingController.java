@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.Edge;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinder;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -144,13 +145,11 @@ public class PathFindingController {
     for (Node node : nodes) {
       Circle circle = mapController.getNodeToCircleMap().get(node);
       if (circle != null) {
-        if (node.getCurrentLocation(mapController.getMapSession())
-            .toString()
-            .equals(start.getText())) {
+        LocationName nodeLocation = node.getCurrentLocation(mapController.getMapSession());
+
+        if (nodeLocation != null && nodeLocation.toString().equals(start.getText())) {
           circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-        } else if (node.getCurrentLocation(mapController.getMapSession())
-            .toString()
-            .equals(end.getText())) {
+        } else if (nodeLocation != null && nodeLocation.toString().equals(end.getText())) {
           circle.setFill(Paint.valueOf(Color.GREEN.toString()));
         } else {
           circle.setFill(Paint.valueOf(Color.RED.toString()));

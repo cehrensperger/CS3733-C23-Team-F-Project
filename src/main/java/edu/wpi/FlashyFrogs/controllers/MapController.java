@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import lombok.NonNull;
+import net.kurobako.gesturefx.GesturePane;
 import org.hibernate.Session;
 
 /**
@@ -23,6 +24,7 @@ import org.hibernate.Session;
  * automatically display changes to the map
  */
 public class MapController {
+  @FXML private GesturePane gesturePane; // Gesture pane
   @FXML private Group group; // Group that will be used as display in the gesture pane
 
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
@@ -124,6 +126,9 @@ public class MapController {
 
         mapEntity.addEdge(edge, lineToDraw); // Add the line to the entity
       }
+
+      gesturePane.centreOn(
+          new javafx.geometry.Point2D(nodes.get(0).getXCoord(), nodes.get(0).getYCoord()));
     }
   }
 
