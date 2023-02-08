@@ -100,6 +100,7 @@ public class HomeController {
     rootPane.getStylesheets().clear();
     rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/application.css");
     AboutText.setBlendMode(BlendMode.DARKEN);
+    Fapp.setLightMode(true);
   }
 
   public void changeToDarkMode(ActionEvent actionEvent) throws IOException {
@@ -107,6 +108,7 @@ public class HomeController {
     rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/dark-mode.css");
     AboutText.setBlendMode(BlendMode.SOFT_LIGHT);
     AboutText.setStyle("-fx-text-fill: #2f2f2f;");
+    Fapp.setLightMode(false);
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {

@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Fapp extends Application {
-
+  @Setter @Getter private static boolean isLightMode = true;
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
 
@@ -48,9 +48,12 @@ public class Fapp extends Application {
         FXMLLoader.load(
             Objects.requireNonNull(Fapp.class.getResource("views/" + sceneName + ".fxml")));
     Scene scene = new Scene(root);
-    scene.getStylesheets().add(Fapp.class.getResource("views/application.css").toExternalForm());
+    if (isLightMode()) {
+      scene.getStylesheets().add(Fapp.class.getResource("views/application.css").toExternalForm());
+    } else {
+      scene.getStylesheets().add(Fapp.class.getResource("views/dark-mode.css").toExternalForm());
+    }
     // Scene scene = new Scene(root, 600, 400);
-
     primaryStage.setScene(scene);
     primaryStage.setMaximized(false);
     primaryStage.show();
