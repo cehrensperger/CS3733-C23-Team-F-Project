@@ -24,6 +24,7 @@ public class HomeController {
   @FXML private MenuItem closeMenuItem;
   @FXML private MenuItem loadMapMenuItem;
   @FXML private MenuItem loadFeedbackMenuItem;
+  @FXML private MenuItem logoutMenuItem;
   @FXML private MFXButton hiddneButton;
   @FXML private ImageView backgroundImage;
   @FXML private MFXButton secretButton;
@@ -100,6 +101,10 @@ public class HomeController {
 
   public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Feedback");
+  }
+
+  public void handleLogOut(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Login");
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {

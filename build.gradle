@@ -45,7 +45,9 @@ dependencies {
 
             'org.hibernate:hibernate-core:6.1.6.Final',
 
-            'org.postgresql:postgresql:42.5.1'
+            'org.postgresql:postgresql:42.5.1',
+
+            'de.mkammerer:argon2-jvm:2.11'
     )
 
     testImplementation(
