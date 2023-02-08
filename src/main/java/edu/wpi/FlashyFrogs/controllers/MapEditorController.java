@@ -166,7 +166,8 @@ public class MapEditorController {
                     () -> {
                       mapPopOver.getAndSet(null).hide(); // hide the pop-over
                       mapController.redraw(); // Redraw the map
-                    }); // Set the node
+                    },
+                    () -> createLocationNameTable(mapController.getMapSession())); // Set the node
 
                 mapPopOver.get().show(circle); // Show the pop-over
               });
