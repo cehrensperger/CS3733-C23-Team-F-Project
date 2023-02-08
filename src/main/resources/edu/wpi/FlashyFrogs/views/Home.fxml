@@ -64,6 +64,12 @@
                         <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
                     </items>
                   </Menu>
+                  <Menu fx:id="ColorScheme" mnemonicParsing="false" text="Color Scheme">
+                      <items>
+                          <MenuItem mnemonicParsing="false" onAction="#changeToDarkMode" text="Dark Mode" />
+                          <MenuItem mnemonicParsing="false" onAction="#changeToLightMode" text="Light Mode" />
+                      </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </top>
