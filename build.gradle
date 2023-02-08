@@ -107,10 +107,8 @@ def codeCoverageExcludes = [
         'edu.wpi.FlashyFrogs.Main',
         'edu.wpi.FlashyFrogs.controllers.*',
         'edu.wpi.FlashyFrogs.navigation.*',
-        'edu.wpi.FlashyFrogs.FileData', // needs tests
         'edu.wpi.FlashyFrogs.ResourceDictionary',
         'edu.wpi.FlashyFrogs.Fapp',
-        'edu.wpi.FlashyFrogs.MapEntity',
 ]
 
 jacoco {
