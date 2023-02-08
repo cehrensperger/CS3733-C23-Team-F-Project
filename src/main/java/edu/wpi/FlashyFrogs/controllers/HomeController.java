@@ -37,7 +37,9 @@ public class HomeController {
     backgroundImage.fitHeightProperty().bind(stage.heightProperty());
     backgroundImage.fitWidthProperty().bind(stage.widthProperty());
     if (Fapp.isLightMode()) {
-      rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/home-override.css");
+      changeToLightMode();
+    } else {
+      changeToDarkMode();
     }
   }
 
@@ -99,7 +101,12 @@ public class HomeController {
     Fapp.setScene("Feedback");
   }
 
-  public void changeToLightMode(ActionEvent actionEvent) throws IOException {
+  // invoked only by the application
+  public void changeToLightModeFromButtonPress(ActionEvent actionEvent) throws IOException {
+    changeToLightMode();
+  }
+
+  public void changeToLightMode() {
     rootPane.getStylesheets().clear();
     rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/light-mode.css");
     AboutText.setBlendMode(BlendMode.DARKEN);
@@ -107,7 +114,12 @@ public class HomeController {
     Fapp.setLightMode(true);
   }
 
-  public void changeToDarkMode(ActionEvent actionEvent) throws IOException {
+  // invoked only by the application
+  public void changeToDarkModeFromButtonPress(ActionEvent actionEvent) throws IOException {
+    changeToDarkMode();
+  }
+
+  public void changeToDarkMode() {
     rootPane.getStylesheets().clear();
     rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/dark-mode.css");
     AboutText.setBlendMode(BlendMode.SOFT_LIGHT);
