@@ -294,4 +294,18 @@ public class MapEditorController {
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
     popOver.show(node.getScene().getWindow());
   }
+
+  @FXML
+  private void popupNode(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/AddNode.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    AddNodeController addNode = newLoad.getController();
+    addNode.setPopOver(popOver);
+    addNode.setSession(mapController.getMapSession());
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
+  }
 }

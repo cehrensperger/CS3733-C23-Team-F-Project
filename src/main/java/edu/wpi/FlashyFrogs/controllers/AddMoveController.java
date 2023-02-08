@@ -57,12 +57,15 @@ public class AddMoveController {
       Date date = new Date(moveDatePicker.getText());
 
       Move move = new Move(node, location, date);
+      if (session.find(Move.class, move) != null) throw new NullPointerException();
       session.persist(move);
+      popOver.hide();
 
+    } catch (NullPointerException e) {
+      errorMessage.setText("This move already exists.");
     } catch (Exception e) {
       errorMessage.setText("Please fill all fields.");
     }
-    popOver.hide();
   }
 
   @FXML
