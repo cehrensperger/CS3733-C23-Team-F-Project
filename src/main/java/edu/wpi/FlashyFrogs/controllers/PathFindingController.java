@@ -6,11 +6,13 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,11 +26,12 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
+import org.hibernate.Session;
 
 public class PathFindingController {
 
-  @FXML private MFXTextField start;
-  @FXML private MFXTextField end;
+  @FXML private MFXFilterComboBox start;
+  @FXML private MFXFilterComboBox end;
   @FXML private Text pathText;
   @FXML private MFXButton getPath;
   @FXML private MFXButton backButton;
@@ -43,16 +46,16 @@ public class PathFindingController {
 
   @SneakyThrows
   public void initialize() {
+
     Fapp.getPrimaryStage()
         .widthProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              // buttonsHBox.setPrefWidth(newValue.doubleValue());
-              buttonsHBox.setMaxWidth(newValue.doubleValue() - 30.0);
 
-              // not sure why I have to set min width
+              // should figure out how to get rid of magic numbers
+              buttonsHBox.setMaxWidth(newValue.doubleValue() - 30.0);
               buttonsHBox.setMinWidth(newValue.doubleValue() - 30.0);
-              System.out.println(backButton.getAlignment());
+
               // for debugging
               // buttonsHBox.setBackground(Background.fill(Color.RED));
             });
@@ -87,7 +90,25 @@ public class PathFindingController {
     AnchorPane.setRightAnchor(map, 0.0);
 
     // Set the node creation processor
+    Session session = mapController.getMapSession();
+
+    List<String> objects =
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    // session.close();
+
+    objects.sort(
+        new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+          }
+        });
+
+    start.setItems(FXCollections.observableList(objects));
+    end.setItems(FXCollections.observableList(objects));
   }
+
+  @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
     mapController.exit();
@@ -206,5 +227,19 @@ public class PathFindingController {
     for (Line line : mapController.getEdgeToLineMap().values()) {
       line.setStroke(Paint.valueOf(Color.BLACK.toString()));
     }
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQPathFinding();
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 }

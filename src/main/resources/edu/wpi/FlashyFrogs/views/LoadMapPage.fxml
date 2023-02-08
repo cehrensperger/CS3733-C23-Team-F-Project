@@ -25,38 +25,37 @@
             </HBox>
             <HBox alignment="BASELINE_CENTER" spacing="70.0">
                <children>
-                  <Label fx:id="nodesFileLabel" text="No File Chosen" />
-                  <Label fx:id="edgesFileLabel" text="No File Chosen" />
-                  <Label fx:id="locationsFileLabel" text="No File Chosen" />
-                  <Label fx:id="movesFileLabel" text="No File Chosen" />
+                  <VBox spacing="20.0">
+                     <children>
+                        <Label fx:id="nodesFileLabel" alignment="CENTER" contentDisplay="CENTER" text="No File Chosen" textAlignment="CENTER" />
+                        <MFXButton fx:id="chooseNodesButton" alignment="CENTER" contentDisplay="CENTER" onAction="#handleChooseNodes" prefHeight="25.0" prefWidth="94.0" text="Choose File" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="20.0">
+                     <children>
+                        <Label fx:id="edgesFileLabel" alignment="CENTER" contentDisplay="CENTER" text="No File Chosen" textAlignment="CENTER" />
+                        <MFXButton fx:id="chooseEdgesButton" alignment="CENTER" contentDisplay="CENTER" onAction="#handleChooseEdges" prefHeight="25.0" prefWidth="94.0" text="Choose File" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="20.0">
+                     <children>
+                        <Label fx:id="locationsFileLabel" alignment="CENTER" contentDisplay="CENTER" text="No File Chosen" textAlignment="CENTER" />
+                        <MFXButton fx:id="chooseLocationsButton" alignment="CENTER" contentDisplay="CENTER" onAction="#handleChooseLocations" prefHeight="25.0" prefWidth="94.0" text="Choose File" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="20.0">
+                     <children>
+                        <Label fx:id="movesFileLabel" alignment="CENTER" contentDisplay="CENTER" text="No File Chosen" textAlignment="CENTER" />
+                        <MFXButton fx:id="chooseMovesButton" alignment="CENTER" contentDisplay="CENTER" onAction="#handleChooseMoves" prefHeight="25.0" prefWidth="94.0" text="Choose File" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="32.0" prefWidth="600.0" spacing="50.0">
-               <children>
-                  <MFXButton fx:id="chooseNodesButton" onAction="#handleChooseNodes" prefHeight="25.0" prefWidth="94.0" text="Choose File">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </MFXButton>
-                  <MFXButton fx:id="chooseEdgesButton" onAction="#handleChooseEdges" prefHeight="25.0" prefWidth="94.0" text="Choose File">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </MFXButton>
-                  <MFXButton fx:id="chooseLocationsButton" onAction="#handleChooseLocations" prefHeight="25.0" prefWidth="94.0" text="Choose File">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </MFXButton>
-                  <MFXButton fx:id="chooseMovesButton" onAction="#handleChooseMoves" prefHeight="25.0" prefWidth="94.0" text="Choose File">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </MFXButton>
-               </children>
-               <opaqueInsets>
+               <VBox.margin>
                   <Insets />
-               </opaqueInsets>
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+               </padding>
             </HBox>
          </children>
       </VBox>
@@ -72,4 +71,11 @@
          </padding>
       </HBox>
    </bottom>
+   <top>
+      <MFXButton fx:id="question" onAction="#handleQ" text="?" BorderPane.alignment="TOP_RIGHT">
+         <BorderPane.margin>
+            <Insets right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </MFXButton>
+   </top>
 </BorderPane>

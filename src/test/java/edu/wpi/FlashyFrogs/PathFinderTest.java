@@ -677,8 +677,8 @@ public class PathFinderTest {
     // Read in the CSVs from the path finder
     try {
       CSVParser.readFiles(
-          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Nodes.csv"),
-          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/L1Edges.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/nodesWithNewIDs.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/edgesFixed.csv"),
           new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv"),
           new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv"),
           DBConnection.CONNECTION.getSessionFactory());

@@ -45,14 +45,24 @@
 
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SanitationServiceController">
   <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form" textAlignment="CENTER" wrappingWidth="799.71875">
-         <font>
-            <Font size="36.0" />
-         </font>
-         <VBox.margin>
-            <Insets top="8.0" />
-         </VBox.margin>
-      </Text>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form" textAlignment="CENTER" wrappingWidth="637.71875">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <VBox alignment="TOP_RIGHT" prefHeight="34.0" prefWidth="49.0">
+               <children>
+                  <MFXButton fx:id="question" onAction="#handleQ" text="?" />
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" top="10.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
       <HBox prefHeight="125.0" prefWidth="200.0">
          <children>
             <Label fx:id="errorMessage" alignment="CENTER" prefHeight="28.0" prefWidth="801.0" textAlignment="CENTER" textFill="RED">

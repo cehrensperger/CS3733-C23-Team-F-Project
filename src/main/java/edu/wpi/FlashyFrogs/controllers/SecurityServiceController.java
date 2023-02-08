@@ -14,15 +14,19 @@ import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -41,6 +45,7 @@ public class SecurityServiceController extends ServiceRequestController {
   @FXML private MFXButton submitButton;
   @FXML private MFXButton homeButton;
   @FXML private MFXButton allButton;
+  @FXML private MFXButton question;
   @FXML private MFXComboBox urgencyEntry;
   @FXML private MFXComboBox departmentEntry;
   @FXML private MFXTextField first2;
@@ -60,6 +65,14 @@ public class SecurityServiceController extends ServiceRequestController {
 
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+
+    objects.sort(
+        new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+          }
+        });
     session.close();
     locationEntry.setItems(FXCollections.observableList(objects));
   }
@@ -170,5 +183,19 @@ public class SecurityServiceController extends ServiceRequestController {
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("AllSecurityService");
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQSecurity();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 }

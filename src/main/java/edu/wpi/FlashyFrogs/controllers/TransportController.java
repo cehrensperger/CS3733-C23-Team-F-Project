@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Comparator.*;
 import java.util.Date;
 import java.util.List;
@@ -22,8 +23,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -42,6 +46,7 @@ public class TransportController extends ServiceRequestController {
   @FXML MFXButton clearButton;
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
+  @FXML MFXButton question;
   @FXML MFXComboBox urgency;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
@@ -59,6 +64,13 @@ public class TransportController extends ServiceRequestController {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
+    objects.sort(
+        new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+          }
+        });
     //    StringComparator stringComparator = new StringComparator();
     ObservableList<String> observableList = FXCollections.observableList(objects);
     //    observableList.sort(stringComparator);
@@ -187,5 +199,19 @@ public class TransportController extends ServiceRequestController {
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("RequestsHome");
+  }
+
+  @FXML
+  public void handleQ(ActionEvent event) throws IOException {
+
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    HelpController help = newLoad.getController();
+    help.handleQTransport();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 }
