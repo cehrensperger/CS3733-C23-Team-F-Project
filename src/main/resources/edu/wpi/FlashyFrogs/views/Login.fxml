@@ -31,7 +31,7 @@
                         <Insets bottom="70.0" top="8.0" />
                      </VBox.margin>
                   </Text>
-                  <Label fx:id="errorMessage" textFill="RED" visible="false">
+                  <Label fx:id="errorMessage" textFill="RED" visible="false" style="-fx-text-fill: red">
                      <VBox.margin>
                         <Insets bottom="30.0" />
                      </VBox.margin>
