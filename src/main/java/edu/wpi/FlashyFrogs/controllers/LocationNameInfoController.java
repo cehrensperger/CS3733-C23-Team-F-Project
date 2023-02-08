@@ -88,16 +88,20 @@ public class LocationNameInfoController {
 
           // Run a query that updates the location name to be the new values, searching by the long
           // name PK
-          session
-              .createMutationQuery(
-                  "UPDATE LocationName SET "
-                      + "longName = :newLongName, locationType = :newType, shortName = :newShortName "
-                      + "WHERE longName = :originalName")
-              .setParameter("newLongName", longName.get())
-              .setParameter("newType", type.get())
-              .setParameter("newShortName", shortName.get())
-              .setParameter("originalName", originalName[0])
-              .executeUpdate();
+          if (session.find(LocationName.class, longName.get()) == null) {
+            session.persist(new LocationName(longName.get(), type.get(), shortName.get()));
+          } else {
+            session
+                .createMutationQuery(
+                    "UPDATE LocationName SET "
+                        + "longName = :newLongName, locationType = :newType, shortName = :newShortName "
+                        + "WHERE longName = :originalName")
+                .setParameter("newLongName", longName.get())
+                .setParameter("newType", type.get())
+                .setParameter("newShortName", shortName.get())
+                .setParameter("originalName", originalName[0])
+                .executeUpdate();
+          }
 
           session.flush(); // Force things to persist
 
@@ -113,5 +117,9 @@ public class LocationNameInfoController {
 
           onUpdate.accept(newLocation); // Accept the new location reference for update
         });
+  }
+
+  public void setDeleteButtonText(String text) {
+    deleteButton.setText(text);
   }
 }

@@ -239,7 +239,31 @@ public class MapEditorController {
     PopOver popOver = new PopOver(newLoad.load());
 
     AddMoveController addMove = newLoad.getController();
-    //      addMove.handleQMapEditor();
+    addMove.setPopOver(popOver);
+    addMove.setSession(mapController.getMapSession());
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
+  }
+
+  @FXML
+  private void popupLocation(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/LocationNameInfo.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    LocationNameInfoController addLoc = newLoad.getController();
+    addLoc.setDeleteButtonText("Cancel");
+    addLoc.setLocationName(
+        new LocationName("", LocationName.LocationType.HALL, ""),
+        mapController.getMapSession(),
+        () -> {
+          popOver.hide();
+        },
+        (locationName) -> {
+          popOver.hide();
+          locationTable.getItems().add(0, locationName);
+        });
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
