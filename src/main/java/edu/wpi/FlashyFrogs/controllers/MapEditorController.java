@@ -233,20 +233,20 @@ public class MapEditorController {
 
     /**
      * Handler for the help menu for the map
-     * @param event unsued event
+     * @param event unused event
      */
     @SneakyThrows
   @FXML
   public void handleQ(ActionEvent event) {
     FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
-    PopOver popOver = new PopOver(newLoad.load());
+    PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
-    HelpController help = newLoad.getController();
-    help.handleQMapEditor();
+    HelpController help = newLoad.getController(); // get the controller
+    help.handleQMapEditor(); // display the correct help text
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
-    popOver.show(node.getScene().getWindow());
+    popOver.show(node.getScene().getWindow()); // display the popOver
   }
 
     /**
@@ -257,15 +257,15 @@ public class MapEditorController {
   @SneakyThrows
   private void popupMove(ActionEvent event) {
     FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/AddMove.fxml"));
-    PopOver popOver = new PopOver(newLoad.load());
+    PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
-    AddMoveController addMove = newLoad.getController();
-    addMove.setPopOver(popOver);
-    addMove.setSession(mapController.getMapSession());
+    AddMoveController addMove = newLoad.getController(); // get the controllers
+    addMove.setPopOver(popOver); // pass the popOver
+    addMove.setSession(mapController.getMapSession()); // pass the session
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
-    popOver.show(node.getScene().getWindow());
+    popOver.show(node.getScene().getWindow()); // display the popover
   }
 
     /**
@@ -276,11 +276,11 @@ public class MapEditorController {
   @FXML
   private void popupLocation(ActionEvent event) {
     FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/LocationNameInfo.fxml"));
-    PopOver popOver = new PopOver(newLoad.load());
+    PopOver popOver = new PopOver(newLoad.load()); // create the new popover
 
-    LocationNameInfoController addLoc = newLoad.getController();
-    addLoc.setDeleteButtonText("Cancel");
-    addLoc.setLocationName(
+    LocationNameInfoController addLoc = newLoad.getController(); // get the controller
+    addLoc.setDeleteButtonText("Cancel"); // change the original text of the delete button
+    addLoc.setLocationName( // create a new location to pass in param
         new LocationName("", LocationName.LocationType.HALL, ""),
         mapController.getMapSession(),
         popOver::hide,
@@ -292,20 +292,26 @@ public class MapEditorController {
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
-    popOver.show(node.getScene().getWindow());
+    popOver.show(node.getScene().getWindow()); //display the popover
   }
 
+    /**
+     * opens the popup for adding a new node
+     *
+     * @param event the event triggering this (unused)
+     * @throws IOException
+     */
   @FXML
   private void popupNode(ActionEvent event) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/AddNode.fxml"));
-    PopOver popOver = new PopOver(newLoad.load());
+    PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
-    AddNodeController addNode = newLoad.getController();
-    addNode.setPopOver(popOver);
-    addNode.setSession(mapController.getMapSession());
+    AddNodeController addNode = newLoad.getController(); // get the controller
+    addNode.setPopOver(popOver); // pass the popover
+    addNode.setSession(mapController.getMapSession()); // pass the session
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
-    popOver.show(node.getScene().getWindow());
+    popOver.show(node.getScene().getWindow()); // display the popover
   }
 }
