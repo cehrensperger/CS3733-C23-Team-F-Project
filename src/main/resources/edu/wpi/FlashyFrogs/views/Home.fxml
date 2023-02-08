@@ -18,7 +18,7 @@
 
 <StackPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
     <stylesheets>
-        <URL value="@application.css" />
+        <URL value="@light-mode.css" />
     </stylesheets>
     <children>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
@@ -34,7 +34,7 @@
           <center>
               <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="245.0" prefWidth="600.0" spacing="12.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextArea blendMode="DARKEN" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="445.0" text="JOIN US IN TRANSFORMING THE FUTURE OF MEDICINE&#10;&#10;With your support, Brigham and Women's Hospital is able to deliver the highest quality patient care, pursue the most innovative and promising medical research, and train the brightest medical minds to become the next generation of healthcare leaders." wrapText="true" HBox.hgrow="ALWAYS">
+                  <TextArea fx:id="AboutText" blendMode="DARKEN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="445.0" text="JOIN US IN TRANSFORMING THE FUTURE OF MEDICINE&#10;&#10;With your support, Brigham and Women's Hospital is able to deliver the highest quality patient care, pursue the most innovative and promising medical research, and train the brightest medical minds to become the next generation of healthcare leaders." wrapText="true" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets bottom="180.0" top="130.0" />
                      </HBox.margin>
@@ -63,6 +63,12 @@
                         <MenuItem fx:id="sanitationMenuItem" mnemonicParsing="false" onAction="#handleSanitationMenuItem" text="Sanitation" />
                         <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
                     </items>
+                  </Menu>
+                  <Menu fx:id="ColorScheme" mnemonicParsing="false" text="Color Scheme">
+                      <items>
+                          <MenuItem mnemonicParsing="false" onAction="#changeToDarkMode" text="Dark Mode" />
+                          <MenuItem mnemonicParsing="false" onAction="#changeToLightMode" text="Light Mode" />
+                      </items>
                   </Menu>
               </menus>
             </MenuBar>

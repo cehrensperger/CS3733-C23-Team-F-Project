@@ -40,17 +40,14 @@
       </HBox>
    </bottom>
    <left>
-      <VBox prefHeight="495.0" prefWidth="257.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="495.0" prefWidth="292.0" BorderPane.alignment="CENTER">
          <children>
-                  <TableView fx:id="locationTable" prefHeight="468.0" prefWidth="257.0">
-                     <columns>
-                        <TableColumn fx:id="longName" prefWidth="247.0" text="Long Name" />
-                     </columns>
-               <padding>
-                  <Insets right="10.0" />
-               </padding>
-                  </TableView>
-            <MFXButton fx:id="addMove" onAction="#popupMove" prefHeight="25.0" prefWidth="260.0" text="Add a Move" />
+            <TableView fx:id="locationTable" prefHeight="470.0" prefWidth="322.0">
+              <columns>
+                <TableColumn fx:id="longName" prefWidth="272.0" text="LongName" />
+              </columns>
+            </TableView>
+            <MFXButton fx:id="addMove" onAction="#popupMove" prefHeight="30.0" prefWidth="292.0" text="Add a Move" />
          </children>
       </VBox>
    </left>

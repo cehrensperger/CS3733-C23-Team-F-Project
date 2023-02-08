@@ -8,13 +8,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
 public class HomeController {
-
   @FXML private StackPane rootPane;
   @FXML private MFXButton serviceRequestsButton;
   @FXML private MFXButton mapDataEditorButton;
@@ -28,6 +29,7 @@ public class HomeController {
   @FXML private MFXButton hiddneButton;
   @FXML private ImageView backgroundImage;
   @FXML private MFXButton secretButton;
+  @FXML private TextArea AboutText;
 
   Stage stage;
 
@@ -35,6 +37,11 @@ public class HomeController {
     stage = Fapp.getPrimaryStage();
     backgroundImage.fitHeightProperty().bind(stage.heightProperty());
     backgroundImage.fitWidthProperty().bind(stage.widthProperty());
+    if (Fapp.isLightMode()) {
+      changeToLightMode();
+    } else {
+      changeToDarkMode();
+    }
   }
 
   @FXML
@@ -101,6 +108,31 @@ public class HomeController {
 
   public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Feedback");
+  }
+
+  public void changeToLightModeFromButtonPress(ActionEvent actionEvent) throws IOException {
+    changeToLightMode();
+  }
+
+  public void changeToLightMode() {
+    rootPane.getStylesheets().clear();
+    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/light-mode.css");
+    AboutText.setBlendMode(BlendMode.DARKEN);
+    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/label-override.css");
+    Fapp.setLightMode(true);
+  }
+
+  // invoked only by the application
+  public void changeToDarkModeFromButtonPress(ActionEvent actionEvent) throws IOException {
+    changeToDarkMode();
+  }
+
+  public void changeToDarkMode() {
+    rootPane.getStylesheets().clear();
+    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/dark-mode.css");
+    AboutText.setBlendMode(BlendMode.SOFT_LIGHT);
+    AboutText.setStyle("-fx-text-fill: #2f2f2f;");
+    Fapp.setLightMode(false);
   }
 
   public void handleLogOut(ActionEvent actionEvent) throws IOException {
