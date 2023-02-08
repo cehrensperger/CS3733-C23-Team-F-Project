@@ -72,43 +72,43 @@ public class HomeController {
   }
 
   public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("RequestsHome", "views");
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("MapEditorView");
+    Fapp.setScene("MapEditorView", "MapEditor");
   }
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("PathFinding");
+    Fapp.setScene("PathFinding", "views");
   }
 
   public void handleSecurityMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SecurityService");
+    Fapp.setScene("SecurityService", "views");
   }
 
   public void handleTransportMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Transport");
+    Fapp.setScene("Transport", "views");
   }
 
   public void handleSanitationMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SanitationService");
+    Fapp.setScene("SanitationService", "views");
   }
 
   public void handleAudioVisualMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AudioVisualService");
+    Fapp.setScene("AudioVisualService", "views");
   }
 
   public void handleComputerMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ComputerService");
+    Fapp.setScene("ComputerService", "views");
   }
 
   public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("LoadMapPage");
+    Fapp.setScene("LoadMapPage", "views");
   }
 
   public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Feedback");
+    Fapp.setScene("Feedback", "views");
   }
 
   /**
@@ -150,10 +150,9 @@ public class HomeController {
    * Change the color theme to Dark Mode when the Color Scheme > Dark Mode option is selected on
    * Home.fxml.
    *
-   * @param actionEvent
-   * @throws IOException
+   * @param actionEvent not used
    */
-  public void changeToDarkMode(ActionEvent actionEvent) throws IOException {
+  public void changeToDarkMode(ActionEvent actionEvent) {
     setToDarkMode();
   }
 
@@ -184,10 +183,10 @@ public class HomeController {
   }
 
   public void handleLogOut(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Login");
+    Fapp.setScene("Login", "views");
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home2");
+    Fapp.setScene("Home2", "views");
   }
 }

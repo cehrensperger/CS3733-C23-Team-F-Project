@@ -16,7 +16,7 @@ public class ConfirmationController {
 
   @FXML
   public void homeButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("Home", "views");
   }
 
   @FXML

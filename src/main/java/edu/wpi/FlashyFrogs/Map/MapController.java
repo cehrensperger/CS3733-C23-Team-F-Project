@@ -1,6 +1,5 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.Map;
 
-import edu.wpi.FlashyFrogs.MapEntity;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -24,7 +24,7 @@ import org.hibernate.Session;
  * automatically display changes to the map
  */
 public class MapController {
-  @FXML private GesturePane gesturePane; // Gesture pane
+  @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
 
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
@@ -36,6 +36,16 @@ public class MapController {
    */
   public void setNodeCreation(BiConsumer<Node, Circle> function) {
     mapEntity.setNodeCreation(function);
+  }
+
+  /**
+   * Zooms the map to the given coordinates
+   *
+   * @param x the x-coordinate to zoom to
+   * @param y the y-coordinate to zoom to
+   */
+  public void zoomToCoordinates(int x, int y) {
+    gesturePane.centreOn(new Point2D(x, y));
   }
 
   /**
@@ -126,9 +136,6 @@ public class MapController {
 
         mapEntity.addEdge(edge, lineToDraw); // Add the line to the entity
       }
-
-      gesturePane.centreOn(
-          new javafx.geometry.Point2D(nodes.get(0).getXCoord(), nodes.get(0).getYCoord()));
     }
   }
 

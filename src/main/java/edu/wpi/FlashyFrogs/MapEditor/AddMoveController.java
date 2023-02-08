@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.MapEditor;
 
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
@@ -6,37 +6,35 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import lombok.Setter;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 public class AddMoveController {
   @FXML private MFXButton cancelButton;
   @FXML private MFXButton saveButton;
-  @FXML private MFXComboBox locationNameField;
-  @FXML private MFXComboBox nodeIDField;
+  @FXML private MFXComboBox<String> locationNameField;
+  @FXML private MFXComboBox<String> nodeIDField;
   @FXML private MFXDatePicker moveDatePicker;
   @FXML private Label errorMessage;
 
-  private PopOver popOver;
+  @Setter private PopOver popOver;
   private Session session;
 
-  public void setPopOver(PopOver popOver) {
-    this.popOver = popOver;
-  }
-
-  public void setSession(Session session) {
+  void setSession(Session session) {
     this.session = session;
     fillBoxes(); // fill the dropdown boxes
   }
 
   /** Populates the dropdown boxes with the correct items */
-  public void fillBoxes() {
+  private void fillBoxes() {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
     locationNameField.setItems(FXCollections.observableList(objects));
@@ -61,7 +59,7 @@ public class AddMoveController {
       // create the objects for the Move constructor
       LocationName location = session.find(LocationName.class, locationNameField.getText());
       Node node = session.find(Node.class, nodeIDField.getText());
-      Date date = new Date(moveDatePicker.getText());
+      Date date = DateFormat.getDateInstance().parse(moveDatePicker.getText());
 
       // create the new move
       Move move = new Move(node, location, date);
