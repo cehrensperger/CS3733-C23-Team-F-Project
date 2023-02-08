@@ -108,7 +108,7 @@ public class MapEditorController {
 
                   // If the pop over exists and is either not focused or we are showing a new
                   // row
-                  if (tablePopOver.get() != null && (!tablePopOver.get().isFocused())) {
+                  if (tablePopOver.get() != null) {
                     tablePopOver.get().hide(); // Hide the pop-over
                     tablePopOver.set(null); // Delete the pop-over
                   }
@@ -127,6 +127,9 @@ public class MapEditorController {
                   LocationNameInfoController controller =
                       locationNameLoader.getController(); // Get the controller
 
+                    // We need to cache the row num, as when we do the setter, this will change
+                  int rowNum = row.getIndex();
+
                   // Set the location name to the value
                   controller.setLocationName(
                       row.getItem(), // Set it to the rows item
@@ -135,7 +138,8 @@ public class MapEditorController {
                         locationTable.getItems().remove(row.getItem());
                         tablePopOver.get().hide();
                       },
-                      (locationName) -> locationTable.getItems().set(row.getIndex(), locationName));
+                          // Set the original saved row number to be the new location nam,e
+                      (locationName) -> locationTable.getItems().set(rowNum, locationName));
 
                   tablePopOver.get().show(row); // Show the pop-over on the row
                 });
