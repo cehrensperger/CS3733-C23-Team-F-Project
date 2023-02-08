@@ -49,7 +49,7 @@ public class Fapp extends Application {
             Objects.requireNonNull(Fapp.class.getResource("views/" + sceneName + ".fxml")));
     Scene scene = new Scene(root);
     if (isLightMode()) {
-      scene.getStylesheets().add(Fapp.class.getResource("views/application.css").toExternalForm());
+      scene.getStylesheets().add(Fapp.class.getResource("views/light-mode.css").toExternalForm());
     } else {
       scene.getStylesheets().add(Fapp.class.getResource("views/dark-mode.css").toExternalForm());
     }

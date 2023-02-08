@@ -98,7 +98,7 @@ public class HomeController {
 
   public void changeToLightMode(ActionEvent actionEvent) throws IOException {
     rootPane.getStylesheets().clear();
-    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/application.css");
+    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/light-mode.css");
     AboutText.setBlendMode(BlendMode.DARKEN);
     Fapp.setLightMode(true);
   }
