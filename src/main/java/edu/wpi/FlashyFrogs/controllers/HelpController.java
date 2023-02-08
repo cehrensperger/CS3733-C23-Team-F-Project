@@ -24,13 +24,14 @@ public class HelpController {
   public void handleQHome() throws IOException {
     e1.setText(
         "Service Requests Page - Allows the user to select which service request form they would like to fill out or access a list of previously submitted service request forms.");
-    e2.setText("Map Data Editor - Allows the user to edit nodes on teh hospital maps");
+    e2.setText("Map Data Editor - Allows the user to edit nodes on the hospital maps");
     e3.setText(
         "Path Finding - Provides the path between a start node and an end node in the hospital");
     e4.setText(
         "Service Requests - Allows the user to navigate to the specific user request form they are trying to visit");
     e5.setText("File -> Close - Allows the user to close the app");
-    e6.setText("File -> Load Map - (not sure what this is tbh)");
+    e6.setText(
+        "File -> Load Map - Allows the user to upload CSV files to clear the database and input custom data");
     e7.setText("File -> Feedback - Allows the user to provide feedback on the app");
     e8.setText("");
     e9.setText("");

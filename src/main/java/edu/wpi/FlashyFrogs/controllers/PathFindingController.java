@@ -6,11 +6,13 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,11 +26,12 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
+import org.hibernate.Session;
 
 public class PathFindingController {
 
-  @FXML private MFXTextField start;
-  @FXML private MFXTextField end;
+  @FXML private MFXFilterComboBox start;
+  @FXML private MFXFilterComboBox end;
   @FXML private Text pathText;
   @FXML private MFXButton getPath;
   @FXML private MFXButton backButton;
@@ -43,6 +46,7 @@ public class PathFindingController {
 
   @SneakyThrows
   public void initialize() {
+
     Fapp.getPrimaryStage()
         .widthProperty()
         .addListener(
@@ -86,6 +90,22 @@ public class PathFindingController {
     AnchorPane.setRightAnchor(map, 0.0);
 
     // Set the node creation processor
+    Session session = mapController.getMapSession();
+
+    List<String> objects =
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    // session.close();
+
+    objects.sort(
+        new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+          }
+        });
+
+    start.setItems(FXCollections.observableList(objects));
+    end.setItems(FXCollections.observableList(objects));
   }
 
   @FXML private MFXButton question;
