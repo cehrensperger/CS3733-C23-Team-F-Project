@@ -27,6 +27,7 @@ public class LoginController {
   @FXML private Label errorMessage;
 
   public void initialize() {
+    rootPane.getStylesheets().clear();
     if (Fapp.isLightMode()) {
       rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/light-mode.css");
       rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/label-override.css");
