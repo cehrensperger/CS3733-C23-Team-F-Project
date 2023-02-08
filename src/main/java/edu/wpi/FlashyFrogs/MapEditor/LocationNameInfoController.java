@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.MapEditor;
 
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -32,7 +32,7 @@ public class LocationNameInfoController {
    * @param onUpdate function to be called when the location itself changes - passes the location
    *     back to the caller
    */
-  public void setLocationName(
+  void setLocationName(
       @NonNull LocationName locationName,
       @NonNull Session session,
       @NonNull Runnable handleDelete,
@@ -125,7 +125,7 @@ public class LocationNameInfoController {
         });
   }
 
-  public void setDeleteButtonText(String text) {
+  void setDeleteButtonText(@NonNull String text) {
     deleteButton.setText(text);
   }
 }

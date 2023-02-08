@@ -1,5 +1,6 @@
-package edu.wpi.FlashyFrogs;
+package edu.wpi.FlashyFrogs.Map;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import org.hibernate.Transaction;
  * relations between things on the map and their physical representations, and enables
  * commit/rollback operations on the map
  */
-public class MapEntity {
+class MapEntity {
   @Getter @NonNull
   private final Map<Node, Circle> nodeToCircleMap = new HashMap<>(); // Map for node to circle
 
@@ -39,7 +40,7 @@ public class MapEntity {
    *
    * @param mapFloor the new floor to set
    */
-  public void setMapFloor(@NonNull Node.Floor mapFloor) {
+  void setMapFloor(@NonNull Node.Floor mapFloor) {
     this.mapFloor = mapFloor;
 
     nodeToCircleMap.clear();
@@ -52,7 +53,7 @@ public class MapEntity {
    * @param node the node to add
    * @param circle the circle that represents the node
    */
-  public void addNode(@NonNull Node node, @NonNull Circle circle) {
+  void addNode(@NonNull Node node, @NonNull Circle circle) {
     nodeToCircleMap.put(node, circle); // Put the node into the map
 
     // If the node we're creating is valid
@@ -67,19 +68,19 @@ public class MapEntity {
    * @param edge the edge to add
    * @param line the line that represents the edge
    */
-  public void addEdge(@NonNull Edge edge, @NonNull Line line) {
+  void addEdge(@NonNull Edge edge, @NonNull Line line) {
     edgeToLineMap.put(edge, line); // Put the edge into the map
   }
 
   /** Commits any changes that have been made using the map session */
-  public void commitMapChanges() {
+  void commitMapChanges() {
     mapTransaction.commit(); // Commit
 
     mapTransaction = getMapSession().beginTransaction(); // Begin a new transaction
   }
 
   /** Rolls-back any changes that have been made using the map session */
-  public void rollbackMapChanges() {
+  void rollbackMapChanges() {
     mapTransaction.rollback(); // Rollback
 
     mapTransaction = getMapSession().beginTransaction(); // Begin a new transaction
@@ -89,7 +90,7 @@ public class MapEntity {
    * Function that MUST be called on map close! If this is not called, the session used will NOT be
    * properly closed. This also manages rolling back the open transaction
    */
-  public void closeMap() {
+  void closeMap() {
     mapTransaction.rollback(); // Close the map transaction
     getMapSession().close(); // Close the map session
   }

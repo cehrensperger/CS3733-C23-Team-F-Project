@@ -1,8 +1,10 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.MapEditor;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.controllers.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.io.IOException;
@@ -46,7 +48,7 @@ public class MapEditorController {
         event -> {
           mapController.exit(); // Should go back
 
-          Fapp.setScene("Home");
+          Fapp.setScene("Home", "views");
         });
 
     // Cancel listener
@@ -86,7 +88,7 @@ public class MapEditorController {
 
                 // Load the location name info view
                 FXMLLoader locationNameLoader =
-                    new FXMLLoader(Fapp.class.getResource("views/LocationNameInfo.fxml"));
+                    new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
 
                 // Load the resource
                 try {
@@ -120,7 +122,7 @@ public class MapEditorController {
         });
 
     // Load the map loader
-    FXMLLoader mapLoader = new FXMLLoader(Fapp.class.getResource("views/Map.fxml"));
+    FXMLLoader mapLoader = new FXMLLoader(Fapp.class.getResource("Map/Map.fxml"));
 
     Pane map = mapLoader.load(); // Load the map
     editorBox.setCenter(map); // Put the map loader into the editor box
@@ -148,8 +150,7 @@ public class MapEditorController {
                 }
 
                 // Get the node info in FXML form
-                FXMLLoader nodeInfoLoader =
-                    new FXMLLoader(Fapp.class.getResource("views/NodeInfo.fxml"));
+                FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
 
                 try {
                   // Try creating the pop-over
@@ -166,7 +167,8 @@ public class MapEditorController {
                     () -> {
                       mapPopOver.getAndSet(null).hide(); // hide the pop-over
                       mapController.redraw(); // Redraw the map
-                    }); // Set the node
+                    },
+                    () -> createLocationNameTable(mapController.getMapSession())); // Set the node
 
                 mapPopOver.get().show(circle); // Show the pop-over
               });
@@ -180,6 +182,10 @@ public class MapEditorController {
     floorSelector
         .valueProperty()
         .addListener((observable, oldValue, newValue) -> mapController.setFloor(newValue));
+
+    floorSelector.setValue(Node.Floor.L2); // Set the base floor
+
+    floorSelector.setText(Node.Floor.L2.name()); // Set the floor text
   }
 
   /**
@@ -208,7 +214,7 @@ public class MapEditorController {
   @SneakyThrows
   @FXML
   public void handleQ(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("views/Help.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
     HelpController help = newLoad.getController(); // get the controller
@@ -227,7 +233,7 @@ public class MapEditorController {
   @FXML
   @SneakyThrows
   private void popupMove(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AddMove.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("AddMove.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
     AddMoveController addMove = newLoad.getController(); // get the controllers
@@ -247,7 +253,7 @@ public class MapEditorController {
   @SneakyThrows
   @FXML
   private void popupLocation(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/LocationNameInfo.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popover
 
     LocationNameInfoController addLoc = newLoad.getController(); // get the controller
@@ -268,14 +274,14 @@ public class MapEditorController {
   }
 
   /**
-   * opens the popup for adding a new node
+   * opens the popup for adding a new node f
    *
    * @param event the event triggering this (unused)
-   * @throws IOException
    */
   @FXML
-  private void popupNode(ActionEvent event) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AddNode.fxml"));
+  @SneakyThrows
+  private void popupNode(ActionEvent event) {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("AddNode.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
     AddNodeController addNode = newLoad.getController(); // get the controller

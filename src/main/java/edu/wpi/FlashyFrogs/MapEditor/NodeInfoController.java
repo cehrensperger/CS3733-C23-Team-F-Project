@@ -1,6 +1,5 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.MapEditor;
 
-import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -79,9 +78,15 @@ public class NodeInfoController {
    * @param session the session to use to fetch/save data
    * @param onChange function to bve called when a change happens, should close the pop-over and
    *     handle any visual updates necessary
+   * @param onLocationChange function to be called when the lcoation changes to process table
+   *     updates
    */
   @SneakyThrows
-  public void setNode(@NonNull Node node, @NonNull Session session, @NonNull Runnable onChange) {
+  public void setNode(
+      @NonNull Node node,
+      @NonNull Session session,
+      @NonNull Runnable onChange,
+      @NonNull Runnable onLocationChange) {
     String[] originalID = new String[1]; // Original ID for the node
     originalID[0] = node.getId(); // Set the original ID
 
@@ -147,7 +152,7 @@ public class NodeInfoController {
 
       // Set its fields
       FXMLLoader locationNameLoader =
-          new FXMLLoader(Fapp.class.getResource("views/LocationNameInfo.fxml"));
+          new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
 
       // Load the file, set it to be on the location panes children
       locationPane.getChildren().add(locationNameLoader.load());
@@ -155,12 +160,15 @@ public class NodeInfoController {
       LocationNameInfoController controller =
           locationNameLoader.getController(); // Load the controller
 
-      // Set the location name
+      // Set the location name, make sure that table updates are processed
       controller.setLocationName(
           location,
           session,
-          () -> locationPane.getChildren().clear(),
-          (locationName) -> {},
+          () -> {
+            locationPane.getChildren().clear();
+            onLocationChange.run();
+          },
+          (locationName) -> onLocationChange.run(),
           false); // On delete clear
     }
 

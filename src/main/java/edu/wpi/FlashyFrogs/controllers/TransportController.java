@@ -16,7 +16,6 @@ import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Comparator;
-import java.util.Comparator.*;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -104,7 +103,7 @@ public class TransportController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllTransport");
+    Fapp.setScene("AllTransport", "views");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -198,7 +197,7 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("RequestsHome", "views");
   }
 
   @FXML

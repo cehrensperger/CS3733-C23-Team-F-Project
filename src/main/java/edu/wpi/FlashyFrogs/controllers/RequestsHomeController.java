@@ -32,7 +32,7 @@ public class RequestsHomeController {
 
   @FXML
   public void handleSecurityServiceButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SecurityService");
+    Fapp.setScene("SecurityService", "views");
   }
 
   @FXML
@@ -51,13 +51,13 @@ public class RequestsHomeController {
 
   @FXML
   public void handleSanitationServiceButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SanitationService");
+    Fapp.setScene("SanitationService", "views");
   }
 
   @FXML
   public void handleInternalPatientTransportationButton(ActionEvent actionEvent)
       throws IOException {
-    Fapp.setScene("Transport");
+    Fapp.setScene("Transport", "views");
   }
 
   @FXML
@@ -68,21 +68,21 @@ public class RequestsHomeController {
 
   @FXML
   public void handleBackButton(ActionEvent event) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("Home", "views");
   }
 
   @FXML
   public void handleAllRequestsButton(ActionEvent event) throws IOException {
-    Fapp.setScene("AllRequests");
+    Fapp.setScene("AllRequests", "views");
   }
 
   @FXML
   public void handleAudioVisualButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AudioVisualService");
+    Fapp.setScene("AudioVisualService", "views");
   }
 
   @FXML
   public void handleComputerServicesButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ComputerService");
+    Fapp.setScene("ComputerService", "views");
   }
 }

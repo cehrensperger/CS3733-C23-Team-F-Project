@@ -177,12 +177,12 @@ public class SecurityServiceController extends ServiceRequestController {
    */
   @FXML
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("RequestsHome", "views");
   }
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllSecurityService");
+    Fapp.setScene("AllSecurityService", "views");
   }
 
   @FXML
