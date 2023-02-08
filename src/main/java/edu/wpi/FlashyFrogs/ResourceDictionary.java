@@ -16,8 +16,8 @@ public enum ResourceDictionary {
   L1("src/main/resources/edu/wpi/FlashyFrogs/floors/L1.png"), // , // L1 hospital map image
   // G("floors/G.png"), // Ground floor hospital map image
   ONE("src/main/resources/edu/wpi/FlashyFrogs/floors/one.png"), // Floor one map image
-  TWO("src/main/resources/edu/wpi/FlashyFrogs/floors/two.png"); // , // Floor two map image
-  // THREE("floors/three.png"); // Floor three map image
+  TWO("src/main/resources/edu/wpi/FlashyFrogs/floors/two.png"), // , // Floor two map image
+  THREE("src/main/resources/edu/wpi/FlashyFrogs/floors/three.png"); // Floor three map image
 
   @NonNull public final Image resource; // The resource that is being stored in the dictionary
 

@@ -23,7 +23,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
@@ -32,7 +31,6 @@ public class PathFindingController {
 
   @FXML private MFXFilterComboBox start;
   @FXML private MFXFilterComboBox end;
-  @FXML private Text pathText;
   @FXML private MFXButton getPath;
   @FXML private MFXButton backButton;
   @FXML private MFXButton clearButton;
@@ -76,8 +74,14 @@ public class PathFindingController {
         .addListener(
             (observable, oldValue, newValue) -> {
               mapController.setFloor(newValue);
+
+              drawNodesAndEdges(); // Re-draw pop-ups
+
               try {
-                handleGetPath(null);
+                // If we have a valid path
+                if (!start.getText().equals("") && !end.getText().equals("")) {
+                  handleGetPath(null);
+                }
               } catch (IOException e) {
                 throw new RuntimeException(e);
               }
@@ -132,16 +136,6 @@ public class PathFindingController {
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
-    // display path as text
-    try {
-      pathText.setText(
-          "Path:\n"
-              + pathFinder.nodeListToLocation(
-                  pathFinder.findPath(startPath, endPath), mapController.getMapSession()));
-    } catch (NullPointerException e) {
-      System.out.println("Error: No data in database");
-    }
-
     // list of nodes that represent the shortest path
     List<Node> nodes = pathFinder.findPath(startPath, endPath);
 
@@ -168,9 +162,6 @@ public class PathFindingController {
                 .find(Edge.class, new Edge(nodes.get(i), nodes.get(i - 1)));
       }
 
-      System.out.println(mapController.getEdgeToLineMap().get(edge));
-      System.out.println();
-
       // get the line on the map associated with the edge
       Line line = mapController.getEdgeToLineMap().get(edge);
 
@@ -178,7 +169,6 @@ public class PathFindingController {
       if (line != null) {
         line.setStroke(Paint.valueOf(Color.RED.toString()));
       }
-      System.out.println(mapController.getEdgeToLineMap().get(edge));
     }
 
     // session.close();
@@ -193,7 +183,6 @@ public class PathFindingController {
             .hoverProperty()
             .addListener(
                 (observable, oldValue, newValue) -> {
-                  System.out.println("hovering");
                   // If we're no longer hovering and the pop over exists, delete it. We will
                   // either create a new one
                   // or, keep it deleted
