@@ -32,29 +32,40 @@ public class AddNodeController {
     this.session = session;
   }
 
+  /**
+   * initialize the controller by filling the floor dropdown
+   */
   @FXML
   private void initialize() {
     floorField.setItems(FXCollections.observableArrayList(Node.Floor.values()));
   }
 
+  /**
+   * persist the node in the database
+   * @param event the event triggering this (unused)
+   */
   @SneakyThrows
   @FXML
   private void saveNode(ActionEvent event) {
     try {
-      if (xCoordField.getText().equals("")
+      if (xCoordField.getText().equals("") // if any of the fields are empty
           || yCoordField.getText().equals("")
           || buildingField.getText().equals("")
           || floorField.getText().equals("")) {
-        throw new Exception();
+        throw new Exception(); //throw an exception
       }
 
+      // generate the new id
       String id =
           processNodeUpdate(
               xCoordField.getText(),
               yCoordField.getText(),
               Node.Floor.valueOf(floorField.getText()));
+
+      // if the node already exists, throw an exception
       if (session.find(Node.class, id) != null) throw new NullPointerException();
 
+      // create the new node object
       Node node =
           new Node(
               id,
@@ -62,23 +73,34 @@ public class AddNodeController {
               Node.Floor.valueOf(floorField.getText()),
               Integer.parseInt(xCoordField.getText()),
               Integer.parseInt(yCoordField.getText()));
+      //persist the new node and close the popOver
       session.persist(node);
       popOver.hide();
 
+      // tell the user what's wrong
     } catch (NullPointerException e) {
       errorMessage.setText("This Node already exists.");
-      throw e;
     } catch (Exception e) {
       errorMessage.setText("Please fill all fields.");
-      throw e;
     }
   }
 
+  /**
+   * cancel the submission and close the popOver
+   * @param event the event triggering this (unused)
+   */
   @FXML
   private void cancelNode(ActionEvent event) {
     popOver.hide();
   }
 
+  /**
+   * generate the node id based on xCoord, yCoord, and Floor
+   * @param xCoord the x coordinate of the new node
+   * @param yCoord the y coordinate of the new node
+   * @param floor the floor that the new node is on
+   * @return the id of the new node
+   */
   private String processNodeUpdate(String xCoord, String yCoord, Node.Floor floor) {
     int xCoordInt;
     int yCoordInt;
