@@ -56,11 +56,11 @@ public class FeedbackController {
 
   @FXML
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("Home", "views");
   }
 
   @FXML
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Confirmation");
+    Fapp.setScene("Confirmation", "views");
   }
 }

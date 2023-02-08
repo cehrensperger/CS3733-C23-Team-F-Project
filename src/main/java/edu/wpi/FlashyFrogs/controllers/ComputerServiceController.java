@@ -72,7 +72,7 @@ public class ComputerServiceController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllComputerServiceRequest");
+    Fapp.setScene("AllComputerServiceRequest", "views");
   }
 
   @FXML
@@ -164,7 +164,7 @@ public class ComputerServiceController extends ServiceRequestController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("RequestsHome", "views");
   }
 
   @FXML

@@ -179,13 +179,13 @@ public class SanitationServiceController extends ServiceRequestController {
    * @throws IOException
    */
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("RequestsHome", "views");
   }
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
 
-    Fapp.setScene("AllSanitationRequest");
+    Fapp.setScene("AllSanitationRequest", "views");
   }
 
   @FXML

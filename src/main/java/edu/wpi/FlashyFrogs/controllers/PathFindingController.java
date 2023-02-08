@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -59,7 +60,7 @@ public class PathFindingController {
               // buttonsHBox.setBackground(Background.fill(Color.RED));
             });
     FXMLLoader mapLoader =
-        new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("views/Map.fxml")));
+        new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
     Pane map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(map); // Put the map loader into the editor box
@@ -117,7 +118,7 @@ public class PathFindingController {
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
     mapController.exit();
-    Fapp.setScene("Home");
+    Fapp.setScene("Home", "views");
   }
 
   public void handleButtonClear(ActionEvent event) throws IOException {
