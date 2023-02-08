@@ -8,9 +8,9 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
-import org.hibernate.Session;
 
 public class AddNodeController {
   @FXML private MFXButton cancelButton;
@@ -21,16 +21,9 @@ public class AddNodeController {
   @FXML private MFXComboBox<Node.Floor> floorField;
   @FXML private Label errorMessage;
 
-  private PopOver popOver;
-  private Session session;
+  @Setter private PopOver popOver;
 
-  public void setPopOver(PopOver popOver) {
-    this.popOver = popOver;
-  }
-
-  public void setSession(Session session) {
-    this.session = session;
-  }
+  @Setter private MapController mapController;
 
   /** initialize the controller by filling the floor dropdown */
   @FXML
@@ -62,7 +55,8 @@ public class AddNodeController {
               Node.Floor.valueOf(floorField.getText()));
 
       // if the node already exists, throw an exception
-      if (session.find(Node.class, id) != null) throw new NullPointerException();
+      if (mapController.getMapSession().find(Node.class, id) != null)
+        throw new NullPointerException();
 
       // create the new node object
       Node node =
@@ -73,8 +67,10 @@ public class AddNodeController {
               Integer.parseInt(xCoordField.getText()),
               Integer.parseInt(yCoordField.getText()));
       // persist the new node and close the popOver
-      session.persist(node);
+      mapController.getMapSession().persist(node);
       popOver.hide();
+
+      mapController.redraw(); // Redraw the map
 
       // tell the user what's wrong
     } catch (NullPointerException e) {
@@ -122,7 +118,15 @@ public class AddNodeController {
           "Coordinates must be 0 -> 9999!"); // Throw an exception indicating
     }
 
+    // Floor number as a string
+    String floorNumber = floor.floorNum;
+
+    // If the floor is one character
+    if (floorNumber.length() == 1) {
+      floorNumber = "0" + floorNumber; // Prepend a 0
+    }
+
     // Return the formatted string
-    return floor.toString() + String.format("X%04dY%04d", xCoordInt, yCoordInt);
+    return floorNumber + String.format("X%04dY%04d", xCoordInt, yCoordInt);
   }
 }

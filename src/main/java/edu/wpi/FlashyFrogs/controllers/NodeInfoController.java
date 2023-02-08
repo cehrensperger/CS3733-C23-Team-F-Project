@@ -60,8 +60,16 @@ public class NodeInfoController {
           "Coordinates must be 0 -> 9999!"); // Throw an exception indicating
     }
 
+    // Floor number as a string
+    String floorNumber = floor.floorNum;
+
+    // If the floor is one character
+    if (floorNumber.length() == 1) {
+      floorNumber = "0" + floorNumber; // Prepend a 0
+    }
+
     // Return the formatted string
-    return floor.toString() + String.format("X%04dY%04d", xCoordInt, yCoordInt);
+    return floorNumber + String.format("X%04dY%04d", xCoordInt, yCoordInt);
   }
 
   /**
@@ -112,6 +120,20 @@ public class NodeInfoController {
     // Set the floor items
     floorField.setItems(FXCollections.observableArrayList(Node.Floor.values()));
     floorField.setText(floor.get().toString()); // Set the text manually because MFX is mean
+
+    floorField
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              errorText.setText(""); // Clear text to start
+
+              try {
+                // Set the ID
+                nodeID.setValue(processNodeUpdate(xCoord.get(), yCoord.get(), floor.get()));
+              } catch (IllegalArgumentException error) {
+                errorText.setText(error.getMessage()); // Show error
+              }
+            });
 
     // Bind the fields
     nodeIDField.textProperty().bindBidirectional(nodeID);

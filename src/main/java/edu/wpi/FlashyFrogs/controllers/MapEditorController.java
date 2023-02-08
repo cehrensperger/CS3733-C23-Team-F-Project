@@ -17,10 +17,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -67,63 +65,58 @@ public class MapEditorController {
         new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
     locationTable.setRowFactory(
-        new Callback<>() {
-          @Override
-          public TableRow<LocationName> call(TableView<LocationName> param) {
-            TableRow<LocationName> row = new TableRow<>(); // Create a new table row to use
-            final Background[] originalBackground =
-                new Background[1]; // Get the original background to go back to
+        param -> {
+          TableRow<LocationName> row = new TableRow<>(); // Create a new table row to use
 
-            // When the user selects a row, just un-select it to avoid breaking formatting
-            row.selectedProperty()
-                .addListener(
-                    // Add a listener that does that
-                    (observable, oldValue, newValue) -> row.updateSelected(false));
+          // When the user selects a row, just un-select it to avoid breaking formatting
+          row.selectedProperty()
+              .addListener(
+                  // Add a listener that does that
+                  (observable, oldValue, newValue) -> row.updateSelected(false));
 
-            // Add a listener to show the pop-up
-            row.setOnMouseClicked(
-                (event) -> {
-                  // If the pop over exists and is either not focused or we are showing a new
-                  // row
-                  if (tablePopOver.get() != null) {
-                    tablePopOver.get().hide(); // Hide the pop-over
-                    tablePopOver.set(null); // Delete the pop-over
-                  }
+          // Add a listener to show the pop-up
+          row.setOnMouseClicked(
+              (event) -> {
+                // If the pop over exists and is either not focused or we are showing a new
+                // row
+                if (tablePopOver.get() != null) {
+                  tablePopOver.get().hide(); // Hide the pop-over
+                  tablePopOver.set(null); // Delete the pop-over
+                }
 
-                  // Load the location name info view
-                  FXMLLoader locationNameLoader =
-                      new FXMLLoader(Fapp.class.getResource("views/LocationNameInfo.fxml"));
+                // Load the location name info view
+                FXMLLoader locationNameLoader =
+                    new FXMLLoader(Fapp.class.getResource("views/LocationNameInfo.fxml"));
 
-                  // Load the resource
-                  try {
-                    tablePopOver.set(new PopOver(locationNameLoader.load())); // Create the pop-over
-                  } catch (IOException e) {
-                    throw new RuntimeException(e); // If anything goes wrong, just re-throw
-                  }
+                // Load the resource
+                try {
+                  tablePopOver.set(new PopOver(locationNameLoader.load())); // Create the pop-over
+                } catch (IOException e) {
+                  throw new RuntimeException(e); // If anything goes wrong, just re-throw
+                }
 
-                  LocationNameInfoController controller =
-                      locationNameLoader.getController(); // Get the controller
+                LocationNameInfoController controller =
+                    locationNameLoader.getController(); // Get the controller
 
-                  // We need to cache the row num, as when we do the setter, this will change
-                  int rowNum = row.getIndex();
+                // We need to cache the row num, as when we do the setter, this will change
+                int rowNum = row.getIndex();
 
-                  // Set the location name to the value
-                  controller.setLocationName(
-                      row.getItem(), // Set it to the rows item
-                      mapController.getMapSession(),
-                      () -> {
-                        locationTable.getItems().remove(row.getItem());
-                        tablePopOver.get().hide();
-                      },
-                      // Set the original saved row number to be the new location nam,e
-                      (locationName) -> locationTable.getItems().set(rowNum, locationName),
-                      false);
+                // Set the location name to the value
+                controller.setLocationName(
+                    row.getItem(), // Set it to the rows item
+                    mapController.getMapSession(),
+                    () -> {
+                      locationTable.getItems().remove(row.getItem());
+                      tablePopOver.get().hide();
+                    },
+                    // Set the original saved row number to be the new location nam,e
+                    (locationName) -> locationTable.getItems().set(rowNum, locationName),
+                    false);
 
-                  tablePopOver.get().show(row); // Show the pop-over on the row
-                });
+                tablePopOver.get().show(row); // Show the pop-over on the row
+              });
 
-            return row; // Return the generated row
-          }
+          return row; // Return the generated row
         });
 
     // Load the map loader
@@ -287,7 +280,7 @@ public class MapEditorController {
 
     AddNodeController addNode = newLoad.getController(); // get the controller
     addNode.setPopOver(popOver); // pass the popover
-    addNode.setSession(mapController.getMapSession()); // pass the session
+    addNode.setMapController(mapController); // pass the session
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
