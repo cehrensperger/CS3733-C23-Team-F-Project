@@ -231,11 +231,12 @@ public class MapEditorController {
     locationTable.getItems().addAll(longNamesObservableList);
   }
 
-    /**
-     * Handler for the help menu for the map
-     * @param event unused event
-     */
-    @SneakyThrows
+  /**
+   * Handler for the help menu for the map
+   *
+   * @param event unsued event
+   */
+  @SneakyThrows
   @FXML
   public void handleQ(ActionEvent event) {
     FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
@@ -249,10 +250,11 @@ public class MapEditorController {
     popOver.show(node.getScene().getWindow()); // display the popOver
   }
 
-    /**
-     * Creates a pop-up for a new move to be created
-     * @param event the unused creation event
-     */
+  /**
+   * Creates a pop-up for a new move to be created
+   *
+   * @param event the unused creation event
+   */
   @FXML
   @SneakyThrows
   private void popupMove(ActionEvent event) {
@@ -268,10 +270,11 @@ public class MapEditorController {
     popOver.show(node.getScene().getWindow()); // display the popover
   }
 
-    /**
-     * Creates a pop-up to create a new location
-     * @param event the unused event calling this
-     */
+  /**
+   * Creates a pop-up to create a new location
+   *
+   * @param event the unused event calling this
+   */
   @SneakyThrows
   @FXML
   private void popupLocation(ActionEvent event) {
