@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -63,6 +64,15 @@ public class SanitationServiceController extends ServiceRequestController {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
     session.close();
+
+    objects.sort(
+        new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+          }
+        });
+
     locationDropDown.setItems(FXCollections.observableList(objects));
 
     department2.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");

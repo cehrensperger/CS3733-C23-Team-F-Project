@@ -86,6 +86,14 @@ public class HomeController {
     Fapp.setScene("SanitationService");
   }
 
+  public void handleAudioVisualMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("AudioVisualService");
+  }
+
+  public void handleComputerMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ComputerService");
+  }
+
   public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("LoadMapPage");
   }
