@@ -58,7 +58,7 @@ public class PathFindingController {
               // buttonsHBox.setBackground(Background.fill(Color.RED));
             });
     FXMLLoader mapLoader =
-        new FXMLLoader(Objects.requireNonNull(getClass().getResource("../views/Map.fxml")));
+        new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("views/Map.fxml")));
 
     Pane map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(map); // Put the map loader into the editor box
@@ -200,8 +200,7 @@ public class PathFindingController {
                   if (newValue) {
                     // Get the node info in FXML form
                     FXMLLoader nodeLocationNamePopUp =
-                        new FXMLLoader(
-                            getClass().getResource("../views/NodeLocationNamePopUp.fxml"));
+                        new FXMLLoader(Fapp.class.getResource("views/NodeLocationNamePopUp.fxml"));
 
                     try {
                       // Try creating the pop-over
@@ -226,7 +225,7 @@ public class PathFindingController {
   @FXML
   public void handleQ(ActionEvent event) throws IOException {
 
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
 
     HelpController help = newLoad.getController();

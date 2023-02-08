@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs;
 
-import java.io.FileInputStream;
+import java.util.Objects;
 import javafx.scene.image.Image;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -12,12 +12,12 @@ import lombok.SneakyThrows;
  * This is useful for runtime switching, where that cannot happen
  */
 public enum ResourceDictionary {
-  L2("src/main/resources/edu/wpi/FlashyFrogs/floors/L2.png"), // L2 hospital map image
-  L1("src/main/resources/edu/wpi/FlashyFrogs/floors/L1.png"), // , // L1 hospital map image
+  L2("floors/L2.png"), // L2 hospital map image
+  L1("floors/L1.png"), // , // L1 hospital map image
   // G("floors/G.png"), // Ground floor hospital map image
-  ONE("src/main/resources/edu/wpi/FlashyFrogs/floors/one.png"), // Floor one map image
-  TWO("src/main/resources/edu/wpi/FlashyFrogs/floors/two.png"), // , // Floor two map image
-  THREE("src/main/resources/edu/wpi/FlashyFrogs/floors/three.png"); // Floor three map image
+  ONE("floors/one.png"), // Floor one map image
+  TWO("floors/two.png"), // , // Floor two map image
+  THREE("floors/three.png"); // Floor three map image
 
   @NonNull public final Image resource; // The resource that is being stored in the dictionary
 
@@ -29,6 +29,6 @@ public enum ResourceDictionary {
    */
   @SneakyThrows
   ResourceDictionary(String URI) {
-    resource = new Image(new FileInputStream(URI));
+    resource = new Image(Objects.requireNonNull(Fapp.class.getResource(URI)).openStream());
   }
 }

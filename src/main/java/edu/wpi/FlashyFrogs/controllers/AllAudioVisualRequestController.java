@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class AllAudioVisualRequestController extends AllRequestsController {
   @FXML
   public void handleQ(ActionEvent event) throws IOException {
 
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
 
     HelpController help = newLoad.getController();

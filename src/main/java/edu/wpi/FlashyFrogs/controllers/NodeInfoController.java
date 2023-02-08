@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -124,7 +125,7 @@ public class NodeInfoController {
 
       // Set its fields
       FXMLLoader locationNameLoader =
-          new FXMLLoader(getClass().getResource("../views/LocationNameInfo.fxml"));
+          new FXMLLoader(Fapp.class.getResource("views/LocationNameInfo.fxml"));
 
       // Load the file, set it to be on the location panes children
       locationPane.getChildren().add(locationNameLoader.load());

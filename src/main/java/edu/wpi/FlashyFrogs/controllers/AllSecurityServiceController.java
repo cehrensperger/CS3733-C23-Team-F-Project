@@ -35,7 +35,7 @@ public class AllSecurityServiceController extends AllRequestsController {
   @FXML
   public void handleQ(ActionEvent event) throws IOException {
 
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
 
     HelpController help = newLoad.getController();
