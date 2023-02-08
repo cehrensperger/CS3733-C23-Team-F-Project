@@ -18,8 +18,6 @@ public class NodeInfoController {
   @FXML private MFXTextField yCoordinateField;
   @FXML private MFXTextField floorField;
 
-  // The node that info is being displayed on
-
   /**
    * Sets the node that the pop-up will use, including updating fields to use it
    *
