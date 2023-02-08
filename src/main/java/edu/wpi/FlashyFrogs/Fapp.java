@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Fapp extends Application {
-  @Setter @Getter private static boolean isLightMode = true;
+  @Setter @Getter private static boolean isLightMode = true; //keeps track of whether we are in Light Mode or Dark Mode
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
 
@@ -48,11 +48,13 @@ public class Fapp extends Application {
         FXMLLoader.load(
             Objects.requireNonNull(Fapp.class.getResource("views/" + sceneName + ".fxml")));
     Scene scene = new Scene(root);
-    rootPane.getStylesheets().clear();
+    //apply CSS styling to pages whenever we switch to them
+    rootPane.getStylesheets().clear(); //getStylesheets.add() is used frequently, so this line exists to clear off all
+    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
     if (isLightMode()) {
-      scene.getStylesheets().add(Fapp.class.getResource("views/light-mode.css").toExternalForm());
-    } else {
-      scene.getStylesheets().add(Fapp.class.getResource("views/dark-mode.css").toExternalForm());
+      scene.getStylesheets().add(Fapp.class.getResource("views/light-mode.css").toExternalForm()); //apply Light Mode styling
+    } else { //we are not in Light Mode, so
+      scene.getStylesheets().add(Fapp.class.getResource("views/dark-mode.css").toExternalForm()); //apply Dark Mode styling
     }
     // Scene scene = new Scene(root, 600, 400);
     primaryStage.setScene(scene);
