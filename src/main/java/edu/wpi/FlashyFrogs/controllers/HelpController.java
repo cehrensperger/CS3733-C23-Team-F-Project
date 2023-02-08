@@ -24,13 +24,14 @@ public class HelpController {
   public void handleQHome() throws IOException {
     e1.setText(
         "Service Requests Page - Allows the user to select which service request form they would like to fill out or access a list of previously submitted service request forms.");
-    e2.setText("Map Data Editor - Allows the user to edit nodes on teh hospital maps");
+    e2.setText("Map Data Editor - Allows the user to edit nodes on the hospital maps");
     e3.setText(
         "Path Finding - Provides the path between a start node and an end node in the hospital");
     e4.setText(
         "Service Requests - Allows the user to navigate to the specific user request form they are trying to visit");
     e5.setText("File -> Close - Allows the user to close the app");
-    e6.setText("File -> Load Map - (not sure what this is tbh)");
+    e6.setText(
+        "File -> Load Map - Allows the user to upload CSV files to clear the database and input custom data");
     e7.setText("File -> Feedback - Allows the user to provide feedback on the app");
     e8.setText("");
     e9.setText("");
@@ -176,10 +177,12 @@ public class HelpController {
   public void handleQPathFinding() throws IOException {
     e1.setText("Start - Enter the starting location of the path to be generated");
     e2.setText("End - Enter the end location of the path to be generated");
-    e3.setText("Path - The path will appear here after it is generated");
-    e4.setText("Clear - Clears all of the fields on the page");
-    e5.setText("Back - Brings the user back to the service requests page");
-    e6.setText("Get Path - Generates the path given the locations put in start and end");
+    e3.setText("Clear - Clears all of the fields on the page");
+    e4.setText("Back - Brings the user back to the service requests page");
+    e5.setText(
+        "Get Path - Generates the path given the locations put in start and end and displays the path on the map");
+    e6.setText(
+        "         If the path goes between floors, switch floors using the drop down to view the other floors");
     e7.setText("");
     e8.setText("");
     e9.setText("");

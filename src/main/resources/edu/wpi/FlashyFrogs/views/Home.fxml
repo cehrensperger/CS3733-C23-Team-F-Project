@@ -3,12 +3,10 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,7 +15,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <StackPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
     <stylesheets>
@@ -50,57 +47,34 @@
               </HBox>
           </center>
          <top>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
-               <children>
-                  <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <menus>
-                      <Menu fx:id="File" mnemonicParsing="false" text="File">
-                        <items>
-                          <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleClose" text="Close" />
-                              <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#handleLoadMapMenuItem" text="Load Map" />
-                            <MenuItem fx:id="loadFeedbackMenuItem" mnemonicParsing="false" onAction="#handleFeedbackMenuItem" text="Feedback Form" />
-                        </items>
-                      </Menu>
-                        <Menu fx:id="serviceRequestMenu" mnemonicParsing="false" text="Service Requests">
-                          <items>
-                            <MenuItem fx:id="transportMenuItem" mnemonicParsing="false" onAction="#handleTransportMenuItem" text="Transport" />
-                              <MenuItem fx:id="sanitationMenuItem" mnemonicParsing="false" onAction="#handleSanitationMenuItem" text="Sanitation" />
-                              <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
-                          </items>
-                        </Menu>
-                        <Menu fx:id="ColorScheme" mnemonicParsing="false" text="Color Scheme">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#changeToDarkMode" text="Dark Mode" />
-                              <MenuItem mnemonicParsing="false" onAction="#changeToLightMode" text="Light Mode" />
-                          </items>
-                        </Menu>
-                    </menus>
-                  </MenuBar>
-               </children>
-            </AnchorPane>
+            <MenuBar prefHeight="25.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleClose" text="Close" />
+                        <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#handleLoadMapMenuItem" text="Load Map" />
+                      <MenuItem fx:id="loadFeedbackMenuItem" mnemonicParsing="false" onAction="#handleFeedbackMenuItem" text="Feedback Form" />
+                      <MenuItem fx:id="logoutMenuItem" mnemonicParsing="false" onAction="#handleLogOut" text="Sign Out" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Service Requests">
+                    <items>
+                      <MenuItem fx:id="transportMenuItem" mnemonicParsing="false" onAction="#handleTransportMenuItem" text="Transport" />
+                        <MenuItem fx:id="sanitationMenuItem" mnemonicParsing="false" onAction="#handleSanitationMenuItem" text="Sanitation" />
+                        <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
          </top>
          <bottom>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="BOTTOM_RIGHT">
                <children>
-                  <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <panes>
-                      <TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Help">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="159.0" prefWidth="798.0">
-                                 <children>
-                                    <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests Page - A page where the user can select which service request form they would like to fill out and allows them to view a list of previously submitted service request forms" wrappingWidth="784.0" />
-                                    <Text layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Map Data Editor - Allows the user to edit nodes on the hospital maps" />
-                                    <Text layoutX="14.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Path Finding - Provides the path between a start and end node in the hospital" />
-                                    <Text layoutX="14.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests - Allows  the user to navigate to the specific user request form they are trying to visit" />
-                                    <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File -&gt; Close - Allows the user to close the app" />
-                                    <Text layoutX="14.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File -&gt; Load Map - (Not Sure what this is tbh)" />
-                                    <Text layoutX="14.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File -&gt; Feedback - Allows teh user to provide feedback on the app" />
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </TitledPane>
-                    </panes>
-                  </Accordion>
+                        <MFXButton fx:id="exitButton" alignment="CENTER" onAction="#handleExitButton" prefHeight="34.0" prefWidth="100.0" text="Exit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </MFXButton>
                </children>
             </AnchorPane>
          </bottom>
@@ -126,14 +100,17 @@
             </VBox>
          </left>
          <right>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="542.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="508.0" prefWidth="100.0" BorderPane.alignment="CENTER_RIGHT">
                <children>
-                  <MFXButton fx:id="secretButton" minHeight="-Infinity" minWidth="-Infinity" onAction="#secretMethod" opacity="0.0" prefHeight="168.0" prefWidth="4.0" />
-                        <MFXButton fx:id="exitButton" alignment="CENTER" onAction="#handleExitButton" prefHeight="34.0" prefWidth="100.0" text="Exit" VBox.vgrow="ALWAYS">
+                  <MFXButton fx:id="question" contentDisplay="TOP" onAction="#handleQ" text="?">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
                      <VBox.margin>
-                        <Insets top="315.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </MFXButton>
+                  <MFXButton fx:id="secretButton" minHeight="-Infinity" minWidth="-Infinity" onAction="#secretMethod" opacity="0.0" prefHeight="132.0" prefWidth="4.0" />
                </children>
             </VBox>
          </right>

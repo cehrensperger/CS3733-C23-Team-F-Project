@@ -2,7 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.TitledPane?>
@@ -18,18 +18,10 @@
             <HBox alignment="TOP_CENTER" prefHeight="118.0" prefWidth="800.0">
                <children>
                   <VBox alignment="TOP_RIGHT" prefHeight="118.0" prefWidth="250.0" />
-                  <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="300.0">
+                  <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="300.0" spacing="5.0">
                      <children>
-                        <MFXTextField fx:id="start" floatMode="DISABLED" prefHeight="29.0" prefWidth="368.0" promptText="Start:">
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin>
-                        </MFXTextField>
-                        <MFXTextField fx:id="end" alignment="TOP_LEFT" floatMode="DISABLED" prefHeight="29.0" prefWidth="396.0" promptText="End:">
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin>
-                        </MFXTextField>
+                        <MFXFilterComboBox fx:id="start" prefHeight="40.0" prefWidth="280.0" promptText="Start" />
+                        <MFXFilterComboBox fx:id="end" prefHeight="40.0" prefWidth="280.0" promptText="End" />
                         <MFXComboBox fx:id="floorSelector" promptText="Floor" />
                         <AnchorPane fx:id="mapPane1" prefHeight="332.0" prefWidth="800.0" VBox.vgrow="ALWAYS" />
                         <HBox prefHeight="100.0" prefWidth="200.0" />

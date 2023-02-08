@@ -25,6 +25,7 @@ public class HomeController {
   @FXML private MenuItem closeMenuItem;
   @FXML private MenuItem loadMapMenuItem;
   @FXML private MenuItem loadFeedbackMenuItem;
+  @FXML private MenuItem logoutMenuItem;
   @FXML private MFXButton hiddneButton;
   @FXML private ImageView backgroundImage;
   @FXML private MFXButton secretButton;
@@ -93,6 +94,14 @@ public class HomeController {
     Fapp.setScene("SanitationService");
   }
 
+  public void handleAudioVisualMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("AudioVisualService");
+  }
+
+  public void handleComputerMenuItem(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ComputerService");
+  }
+
   public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("LoadMapPage");
   }
@@ -101,7 +110,6 @@ public class HomeController {
     Fapp.setScene("Feedback");
   }
 
-  // invoked only by the application
   public void changeToLightModeFromButtonPress(ActionEvent actionEvent) throws IOException {
     changeToLightMode();
   }
@@ -125,6 +133,9 @@ public class HomeController {
     AboutText.setBlendMode(BlendMode.SOFT_LIGHT);
     AboutText.setStyle("-fx-text-fill: #2f2f2f;");
     Fapp.setLightMode(false);
+  }
+  public void handleLogOut(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Login");
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {

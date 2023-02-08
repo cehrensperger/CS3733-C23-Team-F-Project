@@ -14,6 +14,7 @@ import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -64,6 +65,14 @@ public class SecurityServiceController extends ServiceRequestController {
 
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+
+    objects.sort(
+        new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+          }
+        });
     session.close();
     locationEntry.setItems(FXCollections.observableList(objects));
   }

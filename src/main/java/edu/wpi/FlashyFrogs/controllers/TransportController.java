@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Comparator.*;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,13 @@ public class TransportController extends ServiceRequestController {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
+    objects.sort(
+        new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+          }
+        });
     //    StringComparator stringComparator = new StringComparator();
     ObservableList<String> observableList = FXCollections.observableList(objects);
     //    observableList.sort(stringComparator);
