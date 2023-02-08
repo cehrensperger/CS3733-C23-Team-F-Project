@@ -52,9 +52,9 @@
          <top>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <children>
-                  <MenuBar id="HomeMenuBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <menus>
-                      <Menu mnemonicParsing="false" text="File">
+                      <Menu fx:id="File" mnemonicParsing="false" text="File">
                         <items>
                           <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleClose" text="Close" />
                               <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#handleLoadMapMenuItem" text="Load Map" />
@@ -68,7 +68,7 @@
                               <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
                           </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Color Scheme">
+                        <Menu fx:id="ColorScheme" mnemonicParsing="false" text="Color Scheme">
                           <items>
                             <MenuItem mnemonicParsing="false" onAction="#changeToDarkMode" text="Dark Mode" />
                               <MenuItem mnemonicParsing="false" onAction="#changeToLightMode" text="Light Mode" />
