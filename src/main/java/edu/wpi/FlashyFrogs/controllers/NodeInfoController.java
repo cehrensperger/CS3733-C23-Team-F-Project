@@ -40,18 +40,22 @@ public class NodeInfoController {
    * @throws IllegalArgumentException if the provided information does not constitute a valid node
    */
   private static String processNodeUpdate(String xCoord, String yCoord, Node.Floor floor) {
+    // Integers for the coordiantes
     int xCoordInt;
     int yCoordInt;
 
     try {
-      xCoordInt = Integer.parseInt(xCoord);
-      yCoordInt = Integer.parseInt(yCoord);
+        // Parse to integers
+      xCoordInt = Integer.parseInt(xCoord); // Parse x
+      yCoordInt = Integer.parseInt(yCoord); // Parse y
     } catch (NumberFormatException error) {
+        // If something went wrong, throw an exception indicating as much
       throw new IllegalArgumentException("Coordinates must be numeric!");
     }
 
+    // If the coordinates are out of bound
     if (xCoordInt < 0 || xCoordInt > 9999 || yCoordInt < 0 || yCoordInt > 9999) {
-      throw new IllegalArgumentException("Coordinates must be 0 -> 9999!");
+      throw new IllegalArgumentException("Coordinates must be 0 -> 9999!"); // Throw an exception indicating
     }
 
     // Return the formatted string
