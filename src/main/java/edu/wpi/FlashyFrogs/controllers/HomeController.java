@@ -94,6 +94,16 @@ public class HomeController {
     Fapp.setScene("Feedback");
   }
 
+  public void changeToLightMode(ActionEvent actionEvent) throws IOException {
+    rootPane.getStylesheets().clear();
+    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/application.css");
+  }
+
+  public void changeToDarkMode(ActionEvent actionEvent) throws IOException {
+    rootPane.getStylesheets().clear();
+    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/dark-mode.css");
+  }
+
   public void secretMethod(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Home2");
   }
