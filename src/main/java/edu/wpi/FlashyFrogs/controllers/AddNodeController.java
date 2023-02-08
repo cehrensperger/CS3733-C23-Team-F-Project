@@ -48,20 +48,24 @@ public class AddNodeController {
   @FXML
   private void saveNode(ActionEvent event) {
     try {
-      if (xCoordField.getText().equals("")
+      if (xCoordField.getText().equals("") // if any of the fields are empty
           || yCoordField.getText().equals("")
           || buildingField.getText().equals("")
           || floorField.getText().equals("")) {
-        throw new Exception();
+        throw new Exception(); //throw an exception
       }
 
+      // generate the new id
       String id =
           processNodeUpdate(
               xCoordField.getText(),
               yCoordField.getText(),
               Node.Floor.valueOf(floorField.getText()));
+
+      // if the node already exists, throw an exception
       if (session.find(Node.class, id) != null) throw new NullPointerException();
 
+      // create the new node object
       Node node =
           new Node(
               id,
@@ -69,9 +73,11 @@ public class AddNodeController {
               Node.Floor.valueOf(floorField.getText()),
               Integer.parseInt(xCoordField.getText()),
               Integer.parseInt(yCoordField.getText()));
+      //persist the new node and close the popOver
       session.persist(node);
       popOver.hide();
 
+      // tell the user what's wrong
     } catch (NullPointerException e) {
       errorMessage.setText("This Node already exists.");
     } catch (Exception e) {
