@@ -62,6 +62,8 @@
                       <MenuItem fx:id="transportMenuItem" mnemonicParsing="false" onAction="#handleTransportMenuItem" text="Transport" />
                         <MenuItem fx:id="sanitationMenuItem" mnemonicParsing="false" onAction="#handleSanitationMenuItem" text="Sanitation" />
                         <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
+                        <MenuItem fx:id="audioVisualMenuItem" mnemonicParsing="false" onAction="#handleAudioVisualMenuItem" text="Audio/Visual" />
+                        <MenuItem fx:id="computerMenuItem" mnemonicParsing="false" onAction="#handleComputerMenuItem" text="Computer" />
                     </items>
                   </Menu>
                   <Menu fx:id="ColorScheme" mnemonicParsing="false" text="Color Scheme">
