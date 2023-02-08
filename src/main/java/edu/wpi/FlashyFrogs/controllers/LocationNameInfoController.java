@@ -37,6 +37,10 @@ public class LocationNameInfoController {
       @NonNull Session session,
       @NonNull Runnable handleDelete,
       @NonNull Consumer<LocationName> onUpdate) {
+    // Place to store the last "safe" location name, only useful for cases when that changes
+    final String[] originalName = new String[1]; // String array (pointer) for the original name
+    originalName[0] = locationName.getLongName(); // Original name to reference
+
     // Create properties representing the location names
     StringProperty longName = new SimpleStringProperty(locationName.getLongName());
     ObjectProperty<LocationName.LocationType> type =
@@ -61,7 +65,7 @@ public class LocationNameInfoController {
           // Do the deletion in the DB
           session
               .createMutationQuery("DELETE FROM LocationName WHERE longName = :originalName")
-              .setParameter("originalName", locationName.getLongName());
+              .setParameter("originalName", originalName[0]);
           handleDelete.run(); // Run the deletion handler
         });
 
@@ -71,7 +75,7 @@ public class LocationNameInfoController {
 
           // Check to make sure that the location is unique. Uses a query because session.find
           // does not play nice with changing long names without committing
-          if (!longName.get().equals(locationName.getLongName())
+          if (!longName.get().equals(originalName[0])
               && session
                       .createQuery(
                           "FROM LocationName WHERE longName = :newName", LocationName.class)
@@ -92,24 +96,22 @@ public class LocationNameInfoController {
               .setParameter("newLongName", longName.get())
               .setParameter("newType", type.get())
               .setParameter("newShortName", shortName.get())
-              .setParameter("originalName", locationName.getLongName())
+              .setParameter("originalName", originalName[0])
               .executeUpdate();
 
           session.flush(); // Force things to persist
 
-          // If they haven't changed the long name, refresh the object so that we get the query
-          // changes
-          if (locationName.getLongName().equals(longName.get())) {
-            session.refresh(locationName); // Refresh
-          }
-
-          // Call the updater with the newly-gotten location name
-          onUpdate.accept(
+          // Get the new location based on the above
+          originalName[0] = longName.get(); // Update the name
+          LocationName newLocation =
               session
                   .createQuery(
                       "FROM LocationName WHERE longName = :newLongName", LocationName.class)
                   .setParameter("newLongName", longName.get())
-                  .getSingleResult());
+                  .getSingleResult();
+          session.refresh(newLocation); // Update the new location object
+
+          onUpdate.accept(newLocation); // Accept the new location reference for update
         });
   }
 }
