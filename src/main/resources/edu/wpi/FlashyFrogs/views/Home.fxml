@@ -47,30 +47,25 @@
               </HBox>
           </center>
          <top>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
-               <children>
-                  <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <menus>
-                      <Menu mnemonicParsing="false" text="File">
-                        <items>
-                          <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleClose" text="Close" />
-                              <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#handleLoadMapMenuItem" text="Load Map" />
-                            <MenuItem fx:id="loadFeedbackMenuItem" mnemonicParsing="false" onAction="#handleFeedbackMenuItem" text="Feedback Form" />
-                        </items>
-                      </Menu>
-                        <Menu fx:id="serviceRequestMenu" mnemonicParsing="false" text="Service Requests">
-                          <items>
-                            <MenuItem fx:id="transportMenuItem" mnemonicParsing="false" onAction="#handleTransportMenuItem" text="Transport" />
-                              <MenuItem fx:id="sanitationMenuItem" mnemonicParsing="false" onAction="#handleSanitationMenuItem" text="Sanitation" />
-                              <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
-                              <MenuItem fx:id="audioVisualMenuItem" mnemonicParsing="false" onAction="#handleAudioVisualMenuItem" text="Audio/Visual" />
-                              <MenuItem fx:id="computerMenuItem" mnemonicParsing="false" onAction="#handleComputerMenuItem" text="Computer" />
-                          </items>
-                        </Menu>
-                    </menus>
-                  </MenuBar>
-               </children>
-            </AnchorPane>
+            <MenuBar prefHeight="25.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleClose" text="Close" />
+                        <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#handleLoadMapMenuItem" text="Load Map" />
+                      <MenuItem fx:id="loadFeedbackMenuItem" mnemonicParsing="false" onAction="#handleFeedbackMenuItem" text="Feedback Form" />
+                      <MenuItem fx:id="logoutMenuItem" mnemonicParsing="false" onAction="#handleLogOut" text="Sign Out" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Service Requests">
+                    <items>
+                      <MenuItem fx:id="transportMenuItem" mnemonicParsing="false" onAction="#handleTransportMenuItem" text="Transport" />
+                        <MenuItem fx:id="sanitationMenuItem" mnemonicParsing="false" onAction="#handleSanitationMenuItem" text="Sanitation" />
+                        <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
          </top>
          <bottom>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="BOTTOM_RIGHT">
