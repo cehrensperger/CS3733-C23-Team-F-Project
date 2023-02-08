@@ -144,8 +144,13 @@ public class PathFindingController {
     for (Node node : nodes) {
       Circle circle = mapController.getNodeToCircleMap().get(node);
       if (circle != null) {
-
-        circle.setFill(Paint.valueOf(Color.RED.toString()));
+        if (node.getCurrentLocation().toString().equals(start.getText())) {
+          circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+        } else if (node.getCurrentLocation().toString().equals(end.getText())) {
+          circle.setFill(Paint.valueOf(Color.GREEN.toString()));
+        } else {
+          circle.setFill(Paint.valueOf(Color.RED.toString()));
+        }
       }
     }
 
