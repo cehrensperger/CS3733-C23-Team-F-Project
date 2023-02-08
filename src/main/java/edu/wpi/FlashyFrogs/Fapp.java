@@ -32,7 +32,7 @@ public class Fapp extends Application {
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
     primaryStage.setResizable(false);
-    final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Home.fxml"));
+    final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Login.fxml"));
 
     final Pane root = loader.load();
 
