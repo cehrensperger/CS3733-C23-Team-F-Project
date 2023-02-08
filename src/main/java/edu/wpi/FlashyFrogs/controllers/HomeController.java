@@ -36,6 +36,9 @@ public class HomeController {
     stage = Fapp.getPrimaryStage();
     backgroundImage.fitHeightProperty().bind(stage.heightProperty());
     backgroundImage.fitWidthProperty().bind(stage.widthProperty());
+    if (Fapp.isLightMode()) {
+      rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/home-override.css");
+    }
   }
 
   @FXML
@@ -100,6 +103,7 @@ public class HomeController {
     rootPane.getStylesheets().clear();
     rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/light-mode.css");
     AboutText.setBlendMode(BlendMode.DARKEN);
+    rootPane.getStylesheets().add("edu/wpi/FlashyFrogs/views/home-override.css");
     Fapp.setLightMode(true);
   }
 
