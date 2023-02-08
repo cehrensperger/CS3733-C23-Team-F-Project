@@ -18,8 +18,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -71,51 +74,76 @@ public class MapEditorController {
           @Override
           public TableRow<LocationName> call(TableView<LocationName> param) {
             TableRow<LocationName> row = new TableRow<>(); // Create a new table row to use
+            final Background[] originalBackground =
+                new Background[1]; // Get the original background to go back to
 
-            // Add a listener to show the pop-up
+            // Hover stuff to set the background as you scroll through
             row.hoverProperty()
                 .addListener(
                     (observable, oldValue, newValue) -> {
-                      // If the pop over exists and is either not focused or we are showing a new
-                      // row
-                      if (tablePopOver.get() != null
-                          && (!tablePopOver.get().isFocused() || newValue)) {
-                        tablePopOver.get().hide(); // Hide the pop-over
-                        tablePopOver.set(null); // Delete the pop-over
-                      }
-
-                      // If we have a new value to show
+                      // If we're hovering
                       if (newValue) {
-                        // Load the location name info view
-                        FXMLLoader locationNameLoader =
-                            new FXMLLoader(
-                                getClass().getResource("../views/LocationNameInfo.fxml"));
+                        originalBackground[0] = row.getBackground(); // Save the background
 
-                        // Load the resource
-                        try {
-                          tablePopOver.set(
-                              new PopOver(locationNameLoader.load())); // Create the pop-over
-                        } catch (IOException e) {
-                          throw new RuntimeException(e); // If anything goes wrong, just re-throw
-                        }
-
-                        LocationNameInfoController controller =
-                            locationNameLoader.getController(); // Get the controller
-
-                        // Set the location name to the value
-                        controller.setLocationName(
-                            row.getItem(), // Set it to the rows item
-                            mapController.getMapSession(),
-                            () -> {
-                              locationTable.getItems().remove(row.getItem());
-                              tablePopOver.get().hide();
-                            },
-                            (locationName) ->
-                                locationTable.getItems().set(row.getIndex(), locationName));
-
-                        tablePopOver.get().show(row); // Show the pop-over on the row
+                        // Set the hover color
+                        row.setBackground(
+                            new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+                      } else {
+                        row.setBackground(originalBackground[0]); // Otherwise, go back
                       }
                     });
+
+            // When the user selects a row, just un-select it to avoid breaking formatting
+            row.selectedProperty()
+                .addListener(
+                    // Add a listener that does that
+                    (observable, oldValue, newValue) -> row.updateSelected(false));
+
+            // Add a listener to show the pop-up
+            row.setOnMouseClicked(
+                (event) -> {
+                  row.setBackground(
+                      // Set the selected background
+                      new Background(new BackgroundFill(Color.web("#2d89ef"), null, null)));
+
+                  // If the pop over exists and is either not focused or we are showing a new
+                  // row
+                  if (tablePopOver.get() != null) {
+                    tablePopOver.get().hide(); // Hide the pop-over
+                    tablePopOver.set(null); // Delete the pop-over
+                  }
+
+                  // Load the location name info view
+                  FXMLLoader locationNameLoader =
+                      new FXMLLoader(getClass().getResource("../views/LocationNameInfo.fxml"));
+
+                  // Load the resource
+                  try {
+                    tablePopOver.set(new PopOver(locationNameLoader.load())); // Create the pop-over
+                  } catch (IOException e) {
+                    throw new RuntimeException(e); // If anything goes wrong, just re-throw
+                  }
+
+                  LocationNameInfoController controller =
+                      locationNameLoader.getController(); // Get the controller
+
+                  // We need to cache the row num, as when we do the setter, this will change
+                  int rowNum = row.getIndex();
+
+                  // Set the location name to the value
+                  controller.setLocationName(
+                      row.getItem(), // Set it to the rows item
+                      mapController.getMapSession(),
+                      () -> {
+                        locationTable.getItems().remove(row.getItem());
+                        tablePopOver.get().hide();
+                      },
+                      // Set the original saved row number to be the new location nam,e
+                      (locationName) -> locationTable.getItems().set(rowNum, locationName),
+                      false);
+
+                  tablePopOver.get().show(row); // Show the pop-over on the row
+                });
 
             return row; // Return the generated row
           }
@@ -140,38 +168,39 @@ public class MapEditorController {
     mapController.setNodeCreation(
         (node, circle) -> {
           // Set the on-click processor
-          circle
-              .hoverProperty()
-              .addListener(
-                  (observable, oldValue, newValue) -> {
-                    // If we're no longer hovering and the pop over exists, delete it. We will
-                    // either create a new one
-                    // or, keep it deleted
-                    if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
-                      mapPopOver.get().hide(); // Hide it
-                      mapPopOver.set(null); // And delete it (set it to null)
-                    }
+          circle.setOnMouseClicked(
+              (event) -> {
+                // If we're no longer hovering and the pop over exists, delete it. We will
+                // either create a new one
+                // or, keep it deleted
+                if (mapPopOver.get() != null) {
+                  mapPopOver.get().hide(); // Hide it
+                  mapPopOver.set(null); // And delete it (set it to null)
+                }
 
-                    // If we should draw a new pop-up
-                    if (newValue) {
-                      // Get the node info in FXML form
-                      FXMLLoader nodeInfoLoader =
-                          new FXMLLoader(getClass().getResource("../views/NodeInfo.fxml"));
+                // Get the node info in FXML form
+                FXMLLoader nodeInfoLoader =
+                    new FXMLLoader(getClass().getResource("../views/NodeInfo.fxml"));
 
-                      try {
-                        // Try creating the pop-over
-                        mapPopOver.set(new PopOver(nodeInfoLoader.load()));
-                      } catch (IOException e) {
-                        throw new RuntimeException(e); // If it fails, throw an exception
-                      }
+                try {
+                  // Try creating the pop-over
+                  mapPopOver.set(new PopOver(nodeInfoLoader.load()));
+                } catch (IOException e) {
+                  throw new RuntimeException(e); // If it fails, throw an exception
+                }
 
-                      NodeInfoController controller =
-                          nodeInfoLoader.getController(); // Get the controller to use
-                      controller.setNode(node, mapController.getMapSession()); // Set the node
+                NodeInfoController controller =
+                    nodeInfoLoader.getController(); // Get the controller to use
+                controller.setNode(
+                    node,
+                    mapController.getMapSession(),
+                    () -> {
+                      mapPopOver.getAndSet(null).hide(); // hide the pop-over
+                      mapController.redraw(); // Redraw the map
+                    }); // Set the node
 
-                      mapPopOver.get().show(circle); // Show the pop-over
-                    }
-                  });
+                mapPopOver.get().show(circle); // Show the pop-over
+              });
         });
 
     floorSelector
@@ -202,19 +231,90 @@ public class MapEditorController {
     locationTable.getItems().addAll(longNamesObservableList);
   }
 
+  /**
+   * Handler for the help menu for the map
+   *
+   * @param event unsued event
+   */
+  @SneakyThrows
   @FXML
-  public void handleQ(ActionEvent event) throws IOException {
+  public void handleQ(ActionEvent event) {
     FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/Help.fxml"));
-    PopOver popOver = new PopOver(newLoad.load());
+    PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
-    HelpController help = newLoad.getController();
-    help.handleQMapEditor();
+    HelpController help = newLoad.getController(); // get the controller
+    help.handleQMapEditor(); // display the correct help text
 
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
-    popOver.show(node.getScene().getWindow());
+    popOver.show(node.getScene().getWindow()); // display the popOver
   }
 
+  /**
+   * Creates a pop-up for a new move to be created
+   *
+   * @param event the unused creation event
+   */
   @FXML
-  private void popupMove() {}
+  @SneakyThrows
+  private void popupMove(ActionEvent event) {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/AddMove.fxml"));
+    PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
+
+    AddMoveController addMove = newLoad.getController(); // get the controllers
+    addMove.setPopOver(popOver); // pass the popOver
+    addMove.setSession(mapController.getMapSession()); // pass the session
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow()); // display the popover
+  }
+
+  /**
+   * Creates a pop-up to create a new location
+   *
+   * @param event the unused event calling this
+   */
+  @SneakyThrows
+  @FXML
+  private void popupLocation(ActionEvent event) {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/LocationNameInfo.fxml"));
+    PopOver popOver = new PopOver(newLoad.load()); // create the new popover
+
+    LocationNameInfoController addLoc = newLoad.getController(); // get the controller
+    addLoc.setDeleteButtonText("Cancel"); // change the original text of the delete button
+    addLoc.setLocationName( // create a new location to pass in param
+        new LocationName("", LocationName.LocationType.HALL, ""),
+        mapController.getMapSession(),
+        popOver::hide,
+        (locationName) -> {
+          popOver.hide();
+          locationTable.getItems().add(0, locationName);
+        },
+        true);
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow()); //display the popover
+  }
+
+    /**
+     * opens the popup for adding a new node
+     *
+     * @param event the event triggering this (unused)
+     * @throws IOException
+     */
+  @FXML
+  private void popupNode(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/AddNode.fxml"));
+    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+
+    AddNodeController addNode = newLoad.getController(); // get the controller
+    addNode.setPopOver(popOver); // pass the popover
+    addNode.setSession(mapController.getMapSession()); // pass the session
+
+    popOver.detach();
+    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+    popOver.show(node.getScene().getWindow()); // display the popover
+  }
 }

@@ -42,7 +42,7 @@
    <left>
       <VBox prefHeight="495.0" prefWidth="257.0" BorderPane.alignment="CENTER">
          <children>
-                  <TableView fx:id="locationTable" prefHeight="468.0" prefWidth="257.0">
+                  <TableView fx:id="locationTable" prefHeight="468.0" prefWidth="250.0">
                      <columns>
                         <TableColumn fx:id="longName" prefWidth="247.0" text="Long Name" />
                      </columns>
@@ -50,7 +50,16 @@
                   <Insets right="10.0" />
                </padding>
                   </TableView>
-            <MFXButton fx:id="addMove" onAction="#popupMove" prefHeight="25.0" prefWidth="260.0" text="Add a Move" />
+            <MFXButton fx:id="addLocation" onAction="#popupLocation" prefHeight="25.0" prefWidth="260.0" text="Add a Location">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></MFXButton>
+            <MFXButton fx:id="addNode" onAction="#popupNode" prefHeight="25.0" prefWidth="260.0" text="Add a Node">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="addMove" onAction="#popupMove" prefHeight="25.0" prefWidth="260.0" text="Link Node and Location Name" />
          </children>
       </VBox>
    </left>
