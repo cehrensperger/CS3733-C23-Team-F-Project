@@ -20,6 +20,7 @@ public class HomeController {
   @FXML private MenuItem loadMapMenuItem;
   @FXML private MenuItem loadFeedbackMenuItem;
   @FXML private MenuItem logoutMenuItem;
+  @FXML private MFXButton secretButton;
 
   Stage stage;
 
@@ -69,5 +70,9 @@ public class HomeController {
 
   public void handleLogOut(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Login");
+  }
+
+  public void secretMethod(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Home2");
   }
 }

@@ -1,7 +1,8 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -12,21 +13,33 @@ public class Move {
   @Id
   @Getter
   @Setter
-  @JoinColumn(name = "node_id", foreignKey = @ForeignKey(name = "node_id_fk"), nullable = false)
+  @JoinColumn(
+      name = "node_id",
+      foreignKey =
+          @ForeignKey(
+              name = "node_id_fk",
+              foreignKeyDefinition =
+                  "foreign key (node_id) REFERENCES node(id) ON UPDATE CASCADE ON DELETE CASCADE"),
+      nullable = false)
   @NonNull
-  @ManyToOne
-  Node node;
+  @ManyToOne(cascade = CascadeType.ALL)
+  private Node node;
 
   @Id
   @Getter
   @Setter
   @JoinColumn(
       name = "longName",
-      foreignKey = @ForeignKey(name = "location_name_fk"),
+      foreignKey =
+          @ForeignKey(
+              name = "location_name_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (longName) REFERENCES "
+                      + "locationname(longName) ON UPDATE CASCADE ON DELETE CASCADE"),
       nullable = false)
   @NonNull
   @ManyToOne
-  LocationName location;
+  private LocationName location;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Id
@@ -34,7 +47,7 @@ public class Move {
   @NonNull
   @Getter
   @Setter
-  Date moveDate;
+  private Date moveDate;
 
   /** Creates a new Move with empty fields */
   public Move() {}

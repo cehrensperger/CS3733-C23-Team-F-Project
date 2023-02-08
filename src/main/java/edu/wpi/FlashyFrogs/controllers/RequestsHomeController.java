@@ -57,4 +57,14 @@ public class RequestsHomeController {
   public void handleAllRequestsButton(ActionEvent event) throws IOException {
     Fapp.setScene("AllRequests");
   }
+
+  @FXML
+  public void handleAudioVisualButton(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("AudioVisualService");
+  }
+
+  @FXML
+  public void handleComputerServicesButton(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ComputerService");
+  }
 }

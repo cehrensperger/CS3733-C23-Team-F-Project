@@ -7,44 +7,42 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.Session;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Node")
 public class Node {
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String id;
+  private String id;
 
   @Basic
   @Column(nullable = false)
   @Getter
   @Setter
-  int xCoord;
+  private int xCoord;
 
   @Basic
   @Column(nullable = false)
   @Getter
   @Setter
-  int yCoord;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  Floor floor;
+  private int yCoord;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  String building;
+  private Floor floor;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  private String building;
 
   /** Creates a new Node with empty fields */
   public Node() {}
@@ -76,7 +74,6 @@ public class Node {
   public enum Floor {
     L2("L2"),
     L1("L1"),
-    G("G"),
     ONE("1"),
     TWO("2"),
     THREE("3");
@@ -90,6 +87,14 @@ public class Node {
      */
     Floor(@NonNull String floor) {
       floorNum = floor; // The floor to create
+    }
+
+    public static Floor getEnum(String value) {
+      for (Floor f : Floor.values()) {
+
+        if (f.floorNum.equals(value)) return f;
+      }
+      return null;
     }
   }
 
