@@ -8,9 +8,17 @@
     -fx-font-family: "Arial Black";
     -fx-text-fill:#f1f1f1;
 }
-.mfx-combo-box.combo{
-    -fx-background-color:#2f2f2f ;
+.mfx-combo-box.combo-popup{
+    -fx-background-color:#012d5a ;
 }
+
+.mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell{
+    -fx-background-color:#012d5a ;
+}
+.mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:hover{
+    -fx-background-color: #00508e;
+}
+
 .mfx-text-field:hover{
     -fx-border-color:#2f2f2f;
 }
