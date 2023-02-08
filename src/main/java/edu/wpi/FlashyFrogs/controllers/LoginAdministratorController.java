@@ -39,7 +39,7 @@ public class LoginAdministratorController {
     PopOver popOver = new PopOver(newLoad.load());
     NewUserController newUser = newLoad.getController();
     newUser.setPopOver(popOver);
-
+    newUser.setLoginAdminController(this);
     popOver.detach();
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
@@ -47,6 +47,8 @@ public class LoginAdministratorController {
 
   public void initialize() throws Exception {
 
+    // Clear old table before init
+    userLoginTable.getItems().clear();
     // set columns userlogin
 
     userName.setCellValueFactory(new PropertyValueFactory<>("userName"));
@@ -68,7 +70,6 @@ public class LoginAdministratorController {
 
     } catch (Exception e) {
       ses.close();
-      // TODO Show a popup or something
       throw e;
     }
   }

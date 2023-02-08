@@ -17,6 +17,7 @@ import org.hibernate.Transaction;
 public class NewUserController {
 
   private PopOver popOver;
+  private LoginAdministratorController loginAdministratorController;
   @FXML private MFXButton newUser;
   @FXML private MFXTextField username;
   @FXML private MFXPasswordField pass1;
@@ -25,6 +26,10 @@ public class NewUserController {
 
   public void setPopOver(PopOver thePopOver) {
     this.popOver = thePopOver;
+  }
+
+  public void setLoginAdminController(LoginAdministratorController adminController) {
+    this.loginAdministratorController = adminController;
   }
 
   public void initialize() {}
@@ -48,6 +53,7 @@ public class NewUserController {
         ses.persist(newUser);
         transaction.commit();
         ses.close();
+        loginAdministratorController.initialize();
         popOver.hide();
       } catch (Exception e) {
         errorMessage.setText("That username is already taken.");
