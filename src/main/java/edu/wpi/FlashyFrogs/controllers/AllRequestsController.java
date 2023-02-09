@@ -37,7 +37,7 @@ public class AllRequestsController {
 
   @FXML
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome", "views");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   public void handleQ(ActionEvent event) throws IOException {

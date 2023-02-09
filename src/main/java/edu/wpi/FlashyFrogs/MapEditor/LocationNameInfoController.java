@@ -4,6 +4,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -28,15 +29,17 @@ public class LocationNameInfoController {
    *
    * @param locationName the location name to set everything to use
    * @param session the session to use to get information on the location name
-   * @param handleDelete a function that should be called when this location is deleted
-   * @param onUpdate function to be called when the location itself changes - passes the location
-   *     back to the caller
+   * @param handleDelete a function that should be called when this location is deleted. The
+   *     location to delete should be provided
+   * @param onUpdate function to be called when the location itself changes - passes the old
+   *     location and the new one. Must be prepared to accept null in cases where a location is
+   *     being created
    */
   void setLocationName(
       @NonNull LocationName locationName,
       @NonNull Session session,
-      @NonNull Runnable handleDelete,
-      @NonNull Consumer<LocationName> onUpdate,
+      @NonNull Consumer<LocationName> handleDelete,
+      @NonNull BiConsumer<LocationName, LocationName> onUpdate,
       boolean isNewLocation) {
     // Place to store the last "safe" location name, only useful for cases when that changes
     final String[] originalName = new String[1]; // String array (pointer) for the original name
@@ -63,6 +66,14 @@ public class LocationNameInfoController {
     // Bind the delete button
     deleteButton.setOnAction(
         event -> {
+          // Original location name for the deletion handler
+          LocationName oldName =
+              session
+                  .createQuery(
+                      "FROM LocationName WHERE longName = :originalName", LocationName.class)
+                  .setParameter("originalName", originalName[0])
+                  .uniqueResult();
+
           // Do the deletion in the DB
           session
               .createMutationQuery("DELETE FROM LocationName WHERE longName = :originalName")
@@ -70,7 +81,7 @@ public class LocationNameInfoController {
               .executeUpdate();
 
           session.flush();
-          handleDelete.run(); // Run the deletion handler
+          handleDelete.accept(oldName); // Run the deletion handler
         });
 
     saveButton.setOnAction(
@@ -90,10 +101,21 @@ public class LocationNameInfoController {
             return; // Short-circuit, don't run the update
           }
 
+          LocationName oldLocation; // The old location to pass into the handler
+
           if (isNewLocation) {
+            oldLocation = null; // There is no old location if this is new
+
             // If it's new, we can just persist
             session.persist(new LocationName(longName.get(), type.get(), shortName.get()));
           } else {
+            // Old name, for the update handler
+            oldLocation =
+                session
+                    .createQuery("FROM LocationName WHERE longName = :oldName", LocationName.class)
+                    .setParameter("oldName", originalName[0])
+                    .getSingleResult();
+
             // Run a query that updates the location name to be the new values, searching by the
             // long
             // name PK
@@ -121,7 +143,8 @@ public class LocationNameInfoController {
                   .getSingleResult();
           session.refresh(newLocation); // Update the new location object
 
-          onUpdate.accept(newLocation); // Accept the new location reference for update
+          // Run the updater
+          onUpdate.accept(oldLocation, newLocation); // Accept the new location reference for update
         });
   }
 

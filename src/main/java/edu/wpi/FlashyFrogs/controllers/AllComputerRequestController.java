@@ -28,7 +28,7 @@ public class AllComputerRequestController extends AllRequestsController {
   @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ComputerService", "views");
+    Fapp.setScene("views", "ComputerService");
   }
 
   public void initialize() {

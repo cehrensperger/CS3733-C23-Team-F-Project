@@ -63,7 +63,7 @@ public class LoginController {
             password.getText())) { // Username's Password is not equal to what was inputted
           throw new Exception();
         } else { // Username and Password match database
-          Fapp.setScene("Home", "views");
+          Fapp.setScene("views", "Home");
         }
         ses.close();
       } catch (Exception e) {
@@ -85,6 +85,6 @@ public class LoginController {
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("LoginAdministrator", "views");
+    Fapp.setScene("views", "LoginAdministrator");
   }
 }

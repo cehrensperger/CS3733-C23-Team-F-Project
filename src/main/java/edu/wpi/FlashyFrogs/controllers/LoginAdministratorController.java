@@ -31,7 +31,7 @@ public class LoginAdministratorController {
   @FXML private TableColumn<UserLogin, String> password;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Login", "views");
+    Fapp.setScene("views", "Login");
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {

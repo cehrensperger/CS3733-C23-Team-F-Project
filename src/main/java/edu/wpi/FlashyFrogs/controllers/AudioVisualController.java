@@ -104,11 +104,11 @@ public class AudioVisualController extends ServiceRequestController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome", "views");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllAudioVisualRequest", "views");
+    Fapp.setScene("views", "AllAudioVisualRequest");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {

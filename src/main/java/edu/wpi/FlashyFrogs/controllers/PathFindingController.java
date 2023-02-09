@@ -10,7 +10,6 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,22 +46,20 @@ public class PathFindingController {
   AtomicReference<PopOver> mapPopOver =
       new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
-
   @SneakyThrows
   public void initialize() {
-    //set resizing behavior
+    // set resizing behavior
     Fapp.getPrimaryStage()
         .widthProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
 
-              //TODO: figure out how to get rid of magic numbers
+              // TODO: figure out how to get rid of magic numbers
               buttonsHBox.setMaxWidth(newValue.doubleValue() - 30.0);
               buttonsHBox.setMinWidth(newValue.doubleValue() - 30.0);
-
             });
 
-    //load map page
+    // load map page
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
@@ -94,8 +91,7 @@ public class PathFindingController {
               }
             });
 
-
-    //make the anchor pane resizable
+    // make the anchor pane resizable
     AnchorPane.setTopAnchor(map, 0.0);
     AnchorPane.setBottomAnchor(map, 0.0);
     AnchorPane.setLeftAnchor(map, 0.0);
@@ -104,16 +100,14 @@ public class PathFindingController {
     // don't create a new session since the map is already using one
     Session session = mapController.getMapSession();
 
-
-    //get the list of all location names from the database
+    // get the list of all location names from the database
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
-
-    //sort the locations alphabetically
+    // sort the locations alphabetically
     objects.sort(String::compareTo);
 
-    //set the items of the dropdowns to be the location names
+    // set the items of the dropdowns to be the location names
     start.setItems(FXCollections.observableList(objects));
     end.setItems(FXCollections.observableList(objects));
 
@@ -124,12 +118,12 @@ public class PathFindingController {
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
     mapController.exit();
-    Fapp.setScene("Home", "views");
+    Fapp.setScene("views", "Home");
   }
 
   private void hideAll() {
 
-    //set all opacities to 0
+    // set all opacities to 0
     for (Line line : mapController.getEdgeToLineMap().values()) {
       line.setOpacity(0);
     }
@@ -150,7 +144,6 @@ public class PathFindingController {
     // later show the nodes and edges that are part of the path
     hideAll();
 
-
     // get start and end locations from text fields
     String startPath = start.getText();
     String endPath = end.getText();
@@ -161,25 +154,23 @@ public class PathFindingController {
     List<Node> nodes = pathFinder.findPath(startPath, endPath);
 
     if (nodes == null) {
-      //if nodes is null, that means the there was no possible path
+      // if nodes is null, that means the there was no possible path
       error.setTextFill(Paint.valueOf(Color.RED.toString()));
       error.setText("No path found");
     } else {
       // color all circles that are part of the path red
 
-      error.setText("");  // take away error message if there was one
+      error.setText(""); // take away error message if there was one
 
       for (Node node : nodes) {
-        //get the circle that represents the node from the mapController
+        // get the circle that represents the node from the mapController
         Circle circle = mapController.getNodeToCircleMap().get(node);
-
 
         if (circle != null) {
           circle.setOpacity(1);
 
-
-          //set hover behavior for each circle
-          //TODO: change this to click behavior like in the map data editor
+          // set hover behavior for each circle
+          // TODO: change this to click behavior like in the map data editor
           circle
               .hoverProperty()
               .addListener(
@@ -213,18 +204,18 @@ public class PathFindingController {
                     }
                   });
 
-          //get location name of the node in the path to check against the start and end locations
+          // get location name of the node in the path to check against the start and end locations
           LocationName nodeLocation = node.getCurrentLocation(mapController.getMapSession());
 
-          //if the node location is null, don't attempt to check it against the start and end text
+          // if the node location is null, don't attempt to check it against the start and end text
           if (nodeLocation != null && nodeLocation.toString().equals(start.getText())) {
-            //blue for start node
+            // blue for start node
             circle.setFill(Paint.valueOf(Color.BLUE.toString()));
           } else if (nodeLocation != null && nodeLocation.toString().equals(end.getText())) {
-            //green for end node
+            // green for end node
             circle.setFill(Paint.valueOf(Color.GREEN.toString()));
           } else {
-            //red for in-between nodes
+            // red for in-between nodes
             circle.setFill(Paint.valueOf(Color.RED.toString()));
           }
         }
@@ -258,14 +249,14 @@ public class PathFindingController {
 
   @FXML
   public void handleQ(ActionEvent event) throws IOException {
-    //load the help page
+    // load the help page
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
-    //load a pop-over object with the help page in it
+    // load a pop-over object with the help page in it
     PopOver popOver = new PopOver(newLoad.load());
 
-    //get the contoller of the help page
+    // get the contoller of the help page
     HelpController help = newLoad.getController();
-    //show the correct text for the path finding page specifically
+    // show the correct text for the path finding page specifically
     help.handleQPathFinding();
 
     popOver.detach();
