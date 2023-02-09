@@ -29,7 +29,7 @@ public class AllSecurityServiceController extends AllRequestsController {
   @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SecurityService", "views");
+    Fapp.setScene("views", "SecurityService");
   }
 
   @FXML

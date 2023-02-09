@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import java.text.DateFormat;
@@ -18,8 +17,6 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 public class AddMoveController {
-  @FXML private MFXButton cancelButton;
-  @FXML private MFXButton saveButton;
   @FXML private MFXComboBox<String> locationNameField;
   @FXML private MFXComboBox<String> nodeIDField;
   @FXML private MFXDatePicker moveDatePicker;

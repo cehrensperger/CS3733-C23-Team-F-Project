@@ -103,7 +103,7 @@ public class TransportController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllTransport", "views");
+    Fapp.setScene("views", "AllTransport");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -197,7 +197,7 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome", "views");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   @FXML

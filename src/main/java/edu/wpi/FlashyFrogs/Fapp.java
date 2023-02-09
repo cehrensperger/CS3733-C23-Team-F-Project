@@ -46,7 +46,7 @@ public class Fapp extends Application {
   }
 
   @SneakyThrows
-  public static void setScene(String sceneName, String packageName) {
+  public static void setScene(String packageName, String sceneName) {
     Parent root =
         FXMLLoader.load(
             Objects.requireNonNull(

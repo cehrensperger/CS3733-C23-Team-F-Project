@@ -5,6 +5,8 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -20,6 +23,11 @@ import org.hibernate.Session;
 
 /** Controller for the node info */
 public class NodeInfoController {
+  @FXML private ColumnConstraints thirdColumn;
+  @FXML private ColumnConstraints fourthColumn;
+
+  @FXML private Text nodeLocationText;
+  @FXML private MFXTextField buildingField;
   @FXML private Text errorText;
   @FXML private MFXButton deleteButton;
   @FXML private MFXButton saveButton;
@@ -75,18 +83,25 @@ public class NodeInfoController {
    * Sets the node that the pop-up will use, including updating fields to use it
    *
    * @param node the node to set to
-   * @param session the session to use to fetch/save data
-   * @param onChange function to bve called when a change happens, should close the pop-over and
-   *     handle any visual updates necessary
-   * @param onLocationChange function to be called when the lcoation changes to process table
-   *     updates
+   * @param session the session to use to fetch/save data* handle any visual updates necessary
+   * @param onNodeDelete function to run when a node is to be deleted, should accept the node and
+   *     remove it
+   * @param onNodeUpdate function to call when a nodes id is updated, should accept the old node
+   *     object and the new one
+   * @param onLocationDelete function to be called when the location is deleted, accepts the
+   *     location to delete
+   * @param onLocationChange function to be called when the location changes to process table
+   *     updates. First parameter is the old location, second is the new location
    */
   @SneakyThrows
   public void setNode(
       @NonNull Node node,
       @NonNull Session session,
-      @NonNull Runnable onChange,
-      @NonNull Runnable onLocationChange) {
+      @NonNull Consumer<Node> onNodeDelete,
+      @NonNull BiConsumer<Node, Node> onNodeUpdate,
+      @NonNull Consumer<LocationName> onLocationDelete,
+      @NonNull BiConsumer<LocationName, LocationName> onLocationChange,
+      boolean isNewNode) {
     String[] originalID = new String[1]; // Original ID for the node
     originalID[0] = node.getId(); // Set the original ID
 
@@ -95,6 +110,7 @@ public class NodeInfoController {
     StringProperty xCoord = new SimpleStringProperty(Integer.toString(node.getXCoord()));
     StringProperty yCoord = new SimpleStringProperty(Integer.toString(node.getYCoord()));
     ObjectProperty<Node.Floor> floor = new SimpleObjectProperty<>(node.getFloor());
+    StringProperty building = new SimpleStringProperty(node.getBuilding());
 
     // Listener for x-coord
     xCoord.addListener(
@@ -141,40 +157,56 @@ public class NodeInfoController {
             });
 
     // Bind the fields
-    nodeIDField.textProperty().bindBidirectional(nodeID);
+    nodeIDField.textProperty().bindBidirectional(nodeID); // Bind ID
     xCoordinateField.textProperty().bindBidirectional(xCoord); // Bind x-coord
     yCoordinateField.textProperty().bindBidirectional(yCoord); // Bind y-coord
     floorField.valueProperty().bindBidirectional(floor); // Bind floor
+    buildingField.textProperty().bindBidirectional(building); // Bind building
 
-    LocationName location = node.getCurrentLocation(session); // Get the location for the node
+    // If it's not a new node
+    if (!isNewNode) {
+      LocationName location = node.getCurrentLocation(session); // Get the location for the node
 
-    if (location != null) { // If the location exists
+      if (location != null) { // If the location exists
 
-      // Set its fields
-      FXMLLoader locationNameLoader =
-          new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
+        // Set its fields
+        FXMLLoader locationNameLoader =
+            new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
 
-      // Load the file, set it to be on the location panes children
-      locationPane.getChildren().add(locationNameLoader.load());
+        // Load the file, set it to be on the location panes children
+        locationPane.getChildren().add(locationNameLoader.load());
 
-      LocationNameInfoController controller =
-          locationNameLoader.getController(); // Load the controller
+        LocationNameInfoController controller =
+            locationNameLoader.getController(); // Load the controller
 
-      // Set the location name, make sure that table updates are processed
-      controller.setLocationName(
-          location,
-          session,
-          () -> {
-            locationPane.getChildren().clear();
-            onLocationChange.run();
-          },
-          (locationName) -> onLocationChange.run(),
-          false); // On delete clear
+        // Set the location name, make sure that table updates are processed
+        controller.setLocationName(
+            location,
+            session,
+            (oldLocation) -> {
+              locationPane.getChildren().clear();
+              onLocationDelete.accept(oldLocation);
+            },
+            onLocationChange, // Handle location updates
+            false); // On delete clear
+      }
+    } else {
+      nodeLocationText.setVisible(false); // hide the location name
+      locationPane.setVisible(false); // hide the location frame
+      thirdColumn.setMaxWidth(0); // hide the columns
+      fourthColumn.setMaxWidth(0); // hide the other one
     }
 
     // Set the callback for the delete button
     deleteButton.setOnAction(
         (event) -> {
+          // Get the old node to run the deletion
+          Node original =
+              session
+                  .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                  .setParameter("originalID", originalID[0])
+                  .uniqueResult();
+
           // Create a query that deletes the node with the set ID
           session
               .createMutationQuery("DELETE FROM Node WHERE id = :originalID")
@@ -182,7 +214,7 @@ public class NodeInfoController {
               .executeUpdate();
 
           session.flush(); // Force updates
-          onChange.run(); // Run the delete callback
+          onNodeDelete.accept(original); // Run the delete callback
         });
 
     // Set the callback for the save button
@@ -213,19 +245,40 @@ public class NodeInfoController {
           int xCoordInt = Integer.parseInt(xCoord.get()); // X-Coordinate
           int yCoordInt = Integer.parseInt(yCoord.get()); // Y-Coordinate
 
-          // Run a query that updates the location name to be the new values, searching by the long
-          // name PK
-          session
-              .createMutationQuery(
-                  "UPDATE Node SET "
-                      + "id = :newID, xCoord = :newXCoord, yCoord = :newYCoord, floor = :newFloor "
-                      + "WHERE id = :originalID")
-              .setParameter("newID", nodeID.get())
-              .setParameter("newXCoord", xCoordInt)
-              .setParameter("newYCoord", yCoordInt)
-              .setParameter("newFloor", floor.get())
-              .setParameter("originalID", originalID[0])
-              .executeUpdate();
+          Node oldNode; // Place to store the old node for the callback
+
+          // If it's a new node
+          if (isNewNode) {
+            oldNode = null; // There is no old node
+
+            // Create the new node
+            Node newNode =
+                new Node(nodeID.get(), building.get(), floor.get(), xCoordInt, yCoordInt);
+
+            session.persist(newNode); // Persist it
+          } else {
+            // Fetch the old node
+            oldNode =
+                session
+                    .createQuery("FROM Node WHERE id =:oldID", Node.class)
+                    .setParameter("oldID", originalID[0])
+                    .getSingleResult();
+
+            // Run a query that updates the location name to be the new values, searching by the
+            // long
+            // name PK
+            session
+                .createMutationQuery(
+                    "UPDATE Node SET "
+                        + "id = :newID, xCoord = :newXCoord, yCoord = :newYCoord, floor = :newFloor "
+                        + "WHERE id = :originalID")
+                .setParameter("newID", nodeID.get())
+                .setParameter("newXCoord", xCoordInt)
+                .setParameter("newYCoord", yCoordInt)
+                .setParameter("newFloor", floor.get())
+                .setParameter("originalID", originalID[0])
+                .executeUpdate();
+          }
 
           session.flush(); // Force things to persist
 
@@ -239,7 +292,7 @@ public class NodeInfoController {
                   .getSingleResult();
           session.refresh(newNode); // Update the new location object
 
-          onChange.run(); // Do the redraw
+          onNodeUpdate.accept(oldNode, newNode); // Do the redraw with the new noder
         });
   }
 }

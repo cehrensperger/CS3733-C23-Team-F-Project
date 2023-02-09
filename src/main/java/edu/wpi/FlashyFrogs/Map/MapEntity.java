@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.Map;
 import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -63,6 +64,27 @@ class MapEntity {
   }
 
   /**
+   * Removes a given node from the node to circle mapping. Does not deal with un-rending the circle,
+   * only deletes it from the mapping. Also handles edge deletion (but not rendering of that)
+   *
+   * @param node the node to delete
+   */
+  void removeNode(@NonNull Node node) {
+    nodeToCircleMap.remove(node); // Delete the node
+
+    // Filter to only have the edges to remove using a stream
+    Collection<Edge> edgesToRemove =
+        edgeToLineMap.keySet().stream()
+            .filter((edge) -> (edge.getNode1().equals(node) || edge.getNode2().equals(node)))
+            .toList();
+
+    // For each edge to remove
+    for (Edge toRemove : edgesToRemove) {
+      removeEdge(toRemove); // Delete it
+    }
+  }
+
+  /**
    * Adds an edge to the map, including doing any set callbacks
    *
    * @param edge the edge to add
@@ -70,6 +92,15 @@ class MapEntity {
    */
   void addEdge(@NonNull Edge edge, @NonNull Line line) {
     edgeToLineMap.put(edge, line); // Put the edge into the map
+  }
+
+  /**
+   * Removes an edge from the map. Does not handle visual changes, only deletes it from the mapping
+   *
+   * @param edge the edge to remove
+   */
+  void removeEdge(@NonNull Edge edge) {
+    edgeToLineMap.remove(edge);
   }
 
   /** Commits any changes that have been made using the map session */
