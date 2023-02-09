@@ -112,49 +112,41 @@ public class NodeInfoController {
     ObjectProperty<Node.Floor> floor = new SimpleObjectProperty<>(node.getFloor());
     StringProperty building = new SimpleStringProperty(node.getBuilding());
 
-    // Listener for x-coord
-    xCoord.addListener(
-        (observable, oldValue, newValue) -> {
+    // Runnable to be run when a field is changed, validates everything
+    Runnable onFieldChange =
+        () -> {
           errorText.setText(""); // Clear text to start
 
           try {
             // Set the ID
             nodeID.setValue(processNodeUpdate(xCoord.get(), yCoord.get(), floor.get()));
+
+            // If the building is empty
+            if (building.get().equals("")) {
+              errorText.setText(
+                  "Fill in all fields before submitting!"); // The user must fill it in before
+              // submitting
+            }
           } catch (IllegalArgumentException error) {
             errorText.setText(error.getMessage()); // Show error
           }
-        });
+        };
+
+    // Listener for x-coord
+    xCoord.addListener((observable, oldValue, newValue) -> onFieldChange.run());
 
     // Listener for Y-Coord
-    yCoord.addListener(
-        ((observable, oldValue, newValue) -> {
-          errorText.setText(""); // Clear text to start
-
-          try {
-            // Set the ID
-            nodeID.setValue(processNodeUpdate(xCoord.get(), yCoord.get(), floor.get()));
-          } catch (IllegalArgumentException error) {
-            errorText.setText(error.getMessage()); // Show error
-          }
-        }));
+    yCoord.addListener(((observable, oldValue, newValue) -> onFieldChange.run()));
 
     // Set the floor items
     floorField.setItems(FXCollections.observableArrayList(Node.Floor.values()));
     floorField.setText(floor.get().toString()); // Set the text manually because MFX is mean
 
-    floorField
-        .valueProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              errorText.setText(""); // Clear text to start
+    // Listen for field changes
+    floorField.valueProperty().addListener((observable, oldValue, newValue) -> onFieldChange.run());
 
-              try {
-                // Set the ID
-                nodeID.setValue(processNodeUpdate(xCoord.get(), yCoord.get(), floor.get()));
-              } catch (IllegalArgumentException error) {
-                errorText.setText(error.getMessage()); // Show error
-              }
-            });
+    // Listen for building
+    building.addListener(((observable, oldValue, newValue) -> onFieldChange.run()));
 
     // Bind the fields
     nodeIDField.textProperty().bindBidirectional(nodeID); // Bind ID
@@ -220,17 +212,15 @@ public class NodeInfoController {
     // Set the callback for the save button
     saveButton.setOnAction(
         event -> {
-          errorText.setText(""); // Clear the error text
+          onFieldChange.run(); // Validate the input
 
-          try {
-            nodeID.set(
-                processNodeUpdate(xCoord.get(), yCoord.get(), floor.get())); // Try updating the ID
-          } catch (IllegalArgumentException error) {
-            errorText.setText(error.getMessage()); // Display the error
-            return; // Short-circuit
+          if (!errorText.getText().equals("")) { // If validating created an error
+            return; // Stop
           }
 
-          // Check to make sure that the node is unique
+          // Check to make sure that the node is unique. Uses session.find to ensure
+          // that hibernate doesn't do weird stuff. Only done on submit because this
+          // may take significant time, so we don't want typing delays
           if (!nodeID.get().equals(originalID[0])
               && session
                       .createQuery("FROM Node WHERE id = :newID", Node.class)
@@ -238,7 +228,7 @@ public class NodeInfoController {
                       .uniqueResult()
                   != null) {
             errorText.setText("A node with that ID already exists! No changes saved.");
-            return; // Short-circuit, don't run the update
+            return; // Short-circuit, prevent submit
           }
 
           // Parse the integers

@@ -51,6 +51,28 @@ public class LocationNameInfoController {
         new SimpleObjectProperty<>(locationName.getLocationType());
     StringProperty shortName = new SimpleStringProperty(locationName.getShortName());
 
+    // Runnable that should be called to validate input parameters
+    Runnable onFieldChange =
+        () -> {
+          errorText.setText(""); // Clear the error text
+
+          // If there are empty fields
+          if (longName.get().equals("") || shortName.get().equals("")) {
+            errorText.setText("Fill in all fields before submitting!"); // Show that
+          }
+        };
+
+    // Error listener in the long name
+    longName.addListener(
+        (observable, oldValue, newValue) -> {
+          onFieldChange.run();
+        });
+
+    // Error name in the short name
+    shortName.addListener(
+        (observable, oldValue, newValue) -> {
+          onFieldChange.run();
+        });
     // Set the text manually cuz MaterialFX is mean
     locationTypeField.setText(locationName.getLocationType().name());
 
@@ -86,10 +108,16 @@ public class LocationNameInfoController {
 
     saveButton.setOnAction(
         event -> {
-          errorText.setText(""); // Clear the error text
+          onFieldChange.run(); // Run the validator
+
+          // If that failed, we have an error message
+          if (!errorText.getText().equals("")) {
+            return; // So block the return value
+          }
 
           // Check to make sure that the location is unique. Uses a query because session.find
-          // does not play nice with changing long names without committing
+          // does not play nice with changing long names without committing.
+          // Done here and not every time a field is changed to make validation faster
           if (!longName.get().equals(originalName[0])
               && session
                       .createQuery(
@@ -97,8 +125,10 @@ public class LocationNameInfoController {
                       .setParameter("newName", longName.get())
                       .uniqueResult()
                   != null) {
+
+            // Show an error
             errorText.setText("A location with that name already exists! No changes saved.");
-            return; // Short-circuit, don't run the update
+            return; // Short-circuit, prevent submit
           }
 
           LocationName oldLocation; // The old location to pass into the handler
