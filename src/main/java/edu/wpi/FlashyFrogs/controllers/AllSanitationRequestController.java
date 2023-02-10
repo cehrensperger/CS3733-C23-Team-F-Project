@@ -29,7 +29,7 @@ public class AllSanitationRequestController extends AllRequestsController {
   @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SanitationService", "views");
+    Fapp.setScene("views", "SanitationService");
   }
 
   public void handleQ(ActionEvent event) throws IOException {

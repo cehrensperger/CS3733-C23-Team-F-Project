@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -96,7 +95,7 @@ public class TransportController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllTransport", "views");
+    Fapp.setScene("views", "AllTransport");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -108,7 +107,7 @@ public class TransportController extends ServiceRequestController {
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       String urgencyString = urgency.getText().toUpperCase().replace(" ", "_");
 
-      //check
+      // check
       if (firstNameTextfield.getText().equals("")
           || middleNameTextfield.getText().equals("")
           || lastNameTextfield.getText().equals("")
@@ -191,7 +190,7 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome", "views");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   @FXML

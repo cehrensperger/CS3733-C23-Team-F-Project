@@ -36,38 +36,38 @@ public class Home2Controller {
   }
 
   public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome", "views");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("DBTableEditor", "views");
+    Fapp.setScene("views", "DBTableEditor");
   }
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("PathFinding", "views");
+    Fapp.setScene("views", "PathFinding");
   }
 
   public void handleSecurityMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SecurityService", "views");
+    Fapp.setScene("views", "SecurityService");
   }
 
   public void handleTransportMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Transport", "views");
+    Fapp.setScene("views", "Transport");
   }
 
   public void handleSanitationMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SanitationService", "views");
+    Fapp.setScene("views", "SanitationService");
   }
 
   public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("LoadMapPage", "views");
+    Fapp.setScene("views", "LoadMapPage");
   }
 
   public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Feedback", "views");
+    Fapp.setScene("views", "Feedback");
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home", "views");
+    Fapp.setScene("views", "Home");
   }
 }

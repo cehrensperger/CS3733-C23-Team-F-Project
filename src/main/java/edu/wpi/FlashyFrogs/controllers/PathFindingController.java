@@ -118,7 +118,7 @@ public class PathFindingController {
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
     mapController.exit();
-    Fapp.setScene("Home", "views");
+    Fapp.setScene("views", "Home");
   }
 
   private void hideAll() {

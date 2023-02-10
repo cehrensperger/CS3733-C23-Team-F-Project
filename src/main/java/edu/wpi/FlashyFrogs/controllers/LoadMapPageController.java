@@ -104,7 +104,7 @@ public class LoadMapPageController {
   }
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home", "views");
+    Fapp.setScene("views", "Home");
   }
 
   @FXML
