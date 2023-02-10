@@ -63,16 +63,9 @@ public class TransportController extends ServiceRequestController {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
-    objects.sort(
-        new Comparator<String>() {
-          @Override
-          public int compare(String o1, String o2) {
-            return o1.compareTo(o2);
-          }
-        });
-    //    StringComparator stringComparator = new StringComparator();
+    objects.sort(String::compareTo);
+
     ObservableList<String> observableList = FXCollections.observableList(objects);
-    //    observableList.sort(stringComparator);
 
     newLocationComboBox.setItems(observableList);
     currentLocationComboBox.setItems(FXCollections.observableList(objects));
@@ -115,6 +108,7 @@ public class TransportController extends ServiceRequestController {
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       String urgencyString = urgency.getText().toUpperCase().replace(" ", "_");
 
+      //check
       if (firstNameTextfield.getText().equals("")
           || middleNameTextfield.getText().equals("")
           || lastNameTextfield.getText().equals("")
