@@ -4,23 +4,26 @@
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-
+<?import javafx.scene.shape.Line?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER" layoutX="66.0" layoutY="28.0" prefHeight="40.0" style="-fx-background-color: #012D5A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="TOP_CENTER" layoutX="66.0" layoutY="28.0" minHeight="30.0" style="-fx-background-color: #012D5A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Home" />
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="204.0" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Service Requests" />
-                  <Button mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Help">
+                  <Button mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Home" textFill="WHITE" />
+                  <Line endX="100.0" startX="100.0" startY="14.8928861618042" stroke="#34587a" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Service Requests" textFill="WHITE" />
+                  <Line endX="100.0" startX="100.0" startY="14.8928861618042" stroke="#34587a" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Help" textFill="WHITE">
                      <effect>
                         <Blend />
                      </effect>
                   </Button>
                </children>
             </HBox>
+            <HBox alignment="CENTER_RIGHT" />
          </children>
       </HBox>
    </children>
