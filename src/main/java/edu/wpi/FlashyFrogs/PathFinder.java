@@ -99,8 +99,35 @@ public class PathFinder {
   }
 
   private List<Node> breadthFirst(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
-    return null;
-  }
+    List<Node> queue = new LinkedList<>();
+    List<Node> visited = new LinkedList<>();
+    Node currentNode = start;
+    queue.add(start);
+    NodeWrapper currentNodeWrapper = new NodeWrapper(currentNode, null);
+    while(!visited.contains(end)) {
+      List<Node> neighbors = getNeighbors(currentNode, session).stream().toList();
+      for(Node node : neighbors) {
+        if(!visited.contains(node)) { //if the node wasn't already visited
+          queue.add(node);
+          currentNodeWrapper = new NodeWrapper(node, currentNodeWrapper);
+        }
+      }
+      visited.add(currentNode);
+      queue.remove(currentNode);
+      currentNode = queue.get(0);
+    }
+    List<Node> path = new LinkedList<>();
+    if(visited.contains(end)) {
+      while(currentNodeWrapper.parent != null) {
+        path.add(currentNodeWrapper.node);
+        currentNodeWrapper = currentNodeWrapper.parent;
+      }
+      path.add(start);
+      return path;
+    } else {
+      return null;
+    }
+    }
 
   private List<Node> depthFirst(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
     Stack<Node> stack = new Stack<>(); // create stack
