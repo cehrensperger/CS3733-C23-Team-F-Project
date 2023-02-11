@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SanitationServiceController">
+  <children>
+      <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <AnchorPane HBox.hgrow="ALWAYS">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Request Form" wrappingWidth="637.71875" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <AnchorPane maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton fx:id="question" onAction="#handleQ" text="?" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox prefHeight="125.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="errorMessage" alignment="CENTER" prefHeight="28.0" prefWidth="801.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Incident:" wrappingWidth="188.00004882812493">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="10.0" />
+         </VBox.margin>
+      </Text>
+      <HBox maxWidth="1.7976931348623157E308" spacing="5.0">
+         <children>
+            <MFXComboBox fx:id="requestTypeDropDown" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="207.0" promptText="Request Type" HBox.hgrow="ALWAYS" />
+            <MFXComboBox fx:id="locationDropDown" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="206.0" promptText="Location" HBox.hgrow="ALWAYS" />
+            <MFXDatePicker fx:id="date" floatMode="INLINE" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="215.0" promptText="Date" HBox.hgrow="ALWAYS" />
+            <MFXComboBox fx:id="urgencyEntry" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="204.0" promptText="Urgency" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </MFXComboBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+         <VBox.margin>
+            <Insets left="10.0" />
+         </VBox.margin>
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <HBox spacing="5.0">
+         <children>
+            <MFXTextField fx:id="firstName" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="200.0" promptText="First" HBox.hgrow="ALWAYS" />
+            <MFXTextField fx:id="middleName" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="200.0" promptText="Middle" HBox.hgrow="ALWAYS" />
+            <MFXTextField fx:id="lastName" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="204.0" promptText="Last" HBox.hgrow="ALWAYS" />
+            <MFXComboBox fx:id="departmentDropDown" borderGap="5.0" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Department" HBox.hgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Employee:">
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <HBox prefHeight="50.0" prefWidth="800.0">
+               <children>
+                  <MFXTextField fx:id="first2" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="200.0" promptText="First" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+                  <MFXTextField fx:id="middle2" maxWidth="1.7976931348623157E308" prefWidth="200.0" promptText="Middle" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+                  <MFXTextField fx:id="last2" maxWidth="1.7976931348623157E308" prefWidth="200.0" promptText="Last" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+                  <MFXComboBox fx:id="department2" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="200.0" promptText="Department" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" right="10.0" />
+                     </HBox.margin>
+                  </MFXComboBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="221.0" prefWidth="800.0" spacing="10.0" VBox.vgrow="ALWAYS">
+         <children>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Sanitation Requests" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox layoutX="197.1999969482422" layoutY="101.5999984741211" spacing="10.0" AnchorPane.bottomAnchor="1.5258789041183718E-6" AnchorPane.rightAnchor="3.051757857974735E-6">
+                     <children>
+                        <MFXButton fx:id="clearButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#handleClear" prefWidth="100.0" text="clear" />
+                        <MFXButton fx:id="backButton" onAction="#handleBack" prefWidth="100.0" text="back" />
+                        <MFXButton fx:id="submitButton" accessibleHelp="Click button to print to terminal" accessibleText="Click Here" onAction="#handleSubmit" prefWidth="100.0" text="submit" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+  </children>
+</VBox>
