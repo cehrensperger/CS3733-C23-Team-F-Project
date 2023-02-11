@@ -123,7 +123,7 @@ public class PathFinder {
       }
     }
     if(!visited.contains(end)) { //we ended because stack empty, not because we found a path
-      return null; 
+      return null;
     } else {
       return stack.stream().toList();
     }
