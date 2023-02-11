@@ -64,6 +64,11 @@ public class PathFinder {
             .getResultList());
   }
 
+  public enum Algorithm {
+    ASTAR, DEPTHFIRST, BREADTHFIRST;
+  }
+
+
   /**
    * Public method to find the path between two locations.
    *
@@ -73,7 +78,7 @@ public class PathFinder {
    * @throws NullPointerException if the lookup for a location (or node associated with the
    *     location) fails
    */
-  public List<Node> findPath(@NonNull String start, @NonNull String end) {
+  public List<Node> findPath(@NonNull String start, @NonNull String end, @NonNull Algorithm algorithm) {
     List<Node> path;
 
     // Query location names and return nodes to send to aStar function
@@ -83,10 +88,48 @@ public class PathFinder {
     Node startNode = startLocation.getCurrentNode(session);
     Node endNode = endLocation.getCurrentNode(session);
 
-    // Find the path with A*
-    path = aStar(startNode, endNode, session);
+    path = null; //initialize path
+    // Find the path with the algorithm
+    switch(algorithm) {
+      case ASTAR: path = aStar(startNode, endNode, session); break;
+      case BREADTHFIRST: path = breadthFirst(startNode, endNode, session); break;
+      case DEPTHFIRST: path = depthFirst(startNode, endNode, session); break;
+    }
     return path; // Return the path
   }
+
+  private List<Node> breadthFirst(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
+    return null;
+  }
+
+  private List<Node> depthFirst(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
+    Stack<Node> stack = new Stack<>(); // create stack
+    List<Node> visited = new LinkedList<>(); // create list for nodes that have been visited
+    stack.push(start); // push start node to stack
+    visited.add(start); //mark start node as visited: so the while loop won't bother executing if start node is destination node
+    while(!visited.contains(end) && !stack.isEmpty()) {
+      List<Node> neighbors = getNeighbors(stack.peek(), session).stream().toList();
+      boolean noUnvisitedVerticesReachable = true;
+      for(Node node : neighbors) {
+        if(!visited.contains(node)) { //if the node wasn't already visited
+          noUnvisitedVerticesReachable = false;
+          stack.push(node);
+          visited.add(node);
+          break;
+        }
+      }
+      if(noUnvisitedVerticesReachable) {
+        stack.pop();
+      }
+    }
+    if(!visited.contains(end)) { //we ended because stack empty, not because we found a path
+      return null; 
+    } else {
+      return stack.stream().toList();
+    }
+  }
+
+
 
   /**
    * Private method to find the path between two locations.
