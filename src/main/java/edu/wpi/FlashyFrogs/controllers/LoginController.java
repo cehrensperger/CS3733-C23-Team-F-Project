@@ -19,9 +19,6 @@ import org.hibernate.Session;
 public class LoginController {
 
   @FXML private AnchorPane rootPane;
-  @FXML private MFXButton login;
-  @FXML private MFXButton clear;
-  @FXML private MenuItem newUserMenuItem;
   @FXML private MFXTextField username;
   @FXML private MFXPasswordField password;
   @FXML private Label errorMessage;

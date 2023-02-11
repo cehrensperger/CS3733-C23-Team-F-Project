@@ -17,18 +17,7 @@ import org.controlsfx.control.PopOver;
 
 public class HomeController {
   @FXML private StackPane rootPane;
-  @FXML private MFXButton serviceRequestsButton;
-  @FXML private MFXButton mapDataEditorButton;
-  @FXML private MFXButton pathfindingButton;
-  @FXML private MFXButton question;
-  @FXML private MFXButton exitButton;
-  @FXML private MenuItem closeMenuItem;
-  @FXML private MenuItem loadMapMenuItem;
-  @FXML private MenuItem loadFeedbackMenuItem;
-  @FXML private MenuItem logoutMenuItem;
-  @FXML private MFXButton hiddneButton;
   @FXML private ImageView backgroundImage;
-  @FXML private MFXButton secretButton;
   @FXML private TextArea AboutText;
 
   Stage stage;

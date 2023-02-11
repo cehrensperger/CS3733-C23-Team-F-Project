@@ -32,26 +32,18 @@ import org.hibernate.Transaction;
 
 public class SecurityServiceController extends ServiceRequestController {
 
-  @FXML private AnchorPane rootPane;
-  @FXML private Text securityServiceText;
-  @FXML private Text incidentReportText;
   @FXML private MFXTextField incidentReportEntry;
-  @FXML private MFXComboBox locationEntry;
+  @FXML private MFXComboBox<String> locationEntry;
   @FXML private MFXDatePicker dateEntry;
   @FXML private MFXTextField firstEntry;
   @FXML private MFXTextField middleEntry;
   @FXML private MFXTextField lastEntry;
-  @FXML private MFXButton clearButton;
-  @FXML private MFXButton submitButton;
-  @FXML private MFXButton homeButton;
-  @FXML private MFXButton allButton;
-  @FXML private MFXButton question;
-  @FXML private MFXComboBox urgencyEntry;
-  @FXML private MFXComboBox departmentEntry;
+  @FXML private MFXComboBox<String> urgencyEntry;
+  @FXML private MFXComboBox<String> departmentEntry;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
-  @FXML private MFXComboBox department2;
+  @FXML private MFXComboBox<String> department2;
   @FXML private Label errorMessage;
 
   /** initializes when app starts */
@@ -110,7 +102,7 @@ public class SecurityServiceController extends ServiceRequestController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String[] parts = {};
+      String[] parts;
       String departmentEnumString = departmentEntry.getText().toUpperCase().replace(" ", "_");
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       parts = urgencyEntry.getText().toUpperCase().split(" ");

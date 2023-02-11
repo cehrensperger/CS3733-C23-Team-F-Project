@@ -12,14 +12,7 @@ import javafx.stage.Stage;
 public class Home2Controller {
 
   @FXML private StackPane rootPane;
-  @FXML private MFXButton serviceRequestsButton;
-  @FXML private MFXButton mapDataEditorButton;
-  @FXML private MFXButton pathfindingButton;
-  @FXML private MFXButton exitButton;
-  @FXML private MenuItem closeMenuItem;
-  @FXML private MenuItem loadMapMenuItem;
-  @FXML private MenuItem loadFeedbackMenuItem;
-  @FXML private MFXButton secretButton;
+
 
   Stage stage;
 

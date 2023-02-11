@@ -37,20 +37,18 @@ public class TransportController extends ServiceRequestController {
   @FXML MFXTextField lastNameTextfield2;
   @FXML MFXTextField middleNameTextfield2;
   @FXML MFXDatePicker dateOfBirthDatePicker;
-  @FXML MFXComboBox currentLocationComboBox;
-  @FXML MFXComboBox newLocationComboBox;
+  @FXML MFXComboBox<String> currentLocationComboBox;
+  @FXML MFXComboBox<String> newLocationComboBox;
   @FXML MFXDatePicker dateOfTransportDatePicker;
-  @FXML MFXComboBox departmentComboBox;
+  @FXML MFXComboBox<String> departmentComboBox;
   @FXML MFXButton clearButton;
   @FXML MFXButton submitButton;
-  @FXML MFXButton backButton;
   @FXML MFXButton question;
-  @FXML MFXComboBox urgency;
+  @FXML MFXComboBox<String> urgency;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
-  @FXML private MFXComboBox department2;
-  @FXML private MFXButton allButton;
+  @FXML private MFXComboBox<String> department2;
   @FXML private Label errorMessage;
 
   private Connection connection = null; // connection to database
