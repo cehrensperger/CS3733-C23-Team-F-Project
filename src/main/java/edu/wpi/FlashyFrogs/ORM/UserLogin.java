@@ -12,20 +12,37 @@ import org.hibernate.annotations.Cascade;
 @Entity
 @Table(name = "userlogin")
 public class UserLogin {
-
+  /**
+   * Reference to the user ID that is being logged in. Does not update on user change, as that is
+   * supposed to be unchangable. However, should cascade on delete
+   */
   @Id
+  @Cascade(org.hibernate.annotations.CascadeType.DELETE)
+  @JoinColumn(
+      name = "user_id",
+      nullable = false,
+      foreignKey =
+          @ForeignKey(
+              name = "user_id_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (user_id) REFERENCES " + "user(id) ON DELETE CASCADE"))
+  @OneToOne
+  @NonNull
+  @Getter
+  private User user;
+
   @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   @NonNull
   @Getter
   @Setter
-  String userName;
+  private String userName;
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
-  String hash;
+  private String hash;
 
   public void setPassword(String newPassword) {
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
@@ -35,7 +52,15 @@ public class UserLogin {
   /** Creates a new UserLogin with empty fields */
   public UserLogin() {}
 
-  public UserLogin(@NonNull String theUserName, @NonNull String thePassword) {
+  /**
+   * Creates a user log in with filled in fields
+   *
+   * @param user the user to create the thing for
+   * @param theUserName the username of the user
+   * @param thePassword the password of the user
+   */
+  public UserLogin(@NonNull User user, @NonNull String theUserName, @NonNull String thePassword) {
+    this.user = user;
     this.userName = theUserName;
 
     // Encrypts password with salt
@@ -55,7 +80,7 @@ public class UserLogin {
     if (obj == null) return false;
     if (this.getClass() != obj.getClass()) return false;
     UserLogin other = (UserLogin) obj;
-    return this.userName.equals(other.getUserName());
+    return this.user.equals(other.getUser());
   }
 
   /**
@@ -66,7 +91,7 @@ public class UserLogin {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(this.userName, this.hash);
+    return Objects.hash(this.user);
   }
 
   /**
