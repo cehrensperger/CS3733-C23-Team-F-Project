@@ -21,15 +21,15 @@
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="155.66615295410156">
                      <VBox.margin>
-                        <Insets left="25.0" top="18.0" />
+                        <Insets left="18.0" top="18.0" />
                      </VBox.margin>
                      <font>
-                        <Font size="28.0" />
+                        <Font size="24.0" />
                      </font>
                   </Text>
                   <MFXButton prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: 012D5A;" text="Audio/Visual        " wrapText="true">
                      <VBox.margin>
-                        <Insets left="25.0" top="18.0" />
+                        <Insets left="18.0" top="18.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
@@ -37,7 +37,7 @@
                   </MFXButton>
                   <MFXButton prefHeight="60.0" prefWidth="150.0" text="Information Technology" wrapText="true">
                      <VBox.margin>
-                        <Insets left="25.0" top="18.0" />
+                        <Insets left="18.0" top="18.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
@@ -45,7 +45,7 @@
                   </MFXButton>
                   <MFXButton prefHeight="60.0" prefWidth="150.0" text="Internal Patient Transportation" wrapText="true">
                      <VBox.margin>
-                        <Insets left="25.0" top="18.0" />
+                        <Insets left="18.0" top="18.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
@@ -53,7 +53,7 @@
                   </MFXButton>
                   <MFXButton prefHeight="60.0" prefWidth="150.0" text="Sanitation            " wrapText="true">
                      <VBox.margin>
-                        <Insets left="25.0" top="18.0" />
+                        <Insets left="18.0" top="18.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
@@ -61,7 +61,7 @@
                   </MFXButton>
                   <MFXButton prefHeight="60.0" prefWidth="150.0" text="Security                " wrapText="true">
                      <VBox.margin>
-                        <Insets left="25.0" top="18.0" />
+                        <Insets left="18.0" top="18.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
@@ -73,7 +73,7 @@
                            <children>
                               <MFXButton prefHeight="25.0" prefWidth="85.0" text="Credits">
                                  <VBox.margin>
-                                    <Insets left="25.0" />
+                                    <Insets left="18.0" />
                                  </VBox.margin>
                                  <font>
                                     <Font size="16.0" />
@@ -81,7 +81,7 @@
                               </MFXButton>
                               <MFXButton prefHeight="25.0" prefWidth="85.0" text="Back">
                                  <VBox.margin>
-                                    <Insets bottom="25.0" left="25.0" top="18.0" />
+                                    <Insets bottom="18.0" left="18.0" top="18.0" />
                                  </VBox.margin>
                                  <font>
                                     <Font size="16.0" />
