@@ -2,18 +2,14 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SecurityServiceController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CreditsController">
     <children>
         <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
@@ -97,7 +93,7 @@
             <center>
                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Request">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Credits" wrappingWidth="708.447021484375">
                             <font>
                                 <Font size="28.0" />
                             </font>
@@ -107,9 +103,9 @@
                         </Text>
                         <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <VBox prefHeight="400.0" prefWidth="200.0">
+                                <VBox prefHeight="573.0" prefWidth="609.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -117,82 +113,80 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox promptText="Location of Request">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
-                                        <SearchableComboBox promptText="Location Type">
-                                            <VBox.margin>
-                                                <Insets />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Information Technology">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Security">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Text>
                                     </children>
                                     <HBox.margin>
                                         <Insets right="100.0" />
                                     </HBox.margin>
                                 </VBox>
-                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="470.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
-                                <VBox prefHeight="159.0" prefWidth="200.0">
-                                    <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Security Information">
-                                            <font>
-                                                <Font size="20.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <SearchableComboBox promptText="Threat Type">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
-                                        <SearchableComboBox promptText="Urgency">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
-                                        <DatePicker prefHeight="26.0" prefWidth="218.0" promptText="Date Preference" />
-                                        <TextField promptText="Time Preference (00:00 AM/PM)">
-                                            <VBox.margin>
-                                                <Insets top="18.0" />
-                                            </VBox.margin>
-                                        </TextField>
-                                        <TextField promptText="Reason For Transfer" text="Description of Request">
-                                            <VBox.margin>
-                                                <Insets bottom="216.0" top="18.0" />
-                                            </VBox.margin>
-                                        </TextField>
-                                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
-                                            <children>
-                                                <HBox prefHeight="100.0" prefWidth="200.0">
-                                                    <children>
-                                                        <MFXButton prefHeight="25.0" prefWidth="85.0" text="Clear">
-                                                            <font>
-                                                                <Font size="16.0" />
-                                                            </font>
-                                                        </MFXButton>
-                                                    </children>
-                                                </HBox>
-                                                <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                                                    <children>
-                                                        <MFXButton prefHeight="25.0" prefWidth="85.0" text="Submit">
-                                                            <font>
-                                                                <Font size="16.0" />
-                                                            </font>
-                                                        </MFXButton>
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets top="18.0" />
-                                            </VBox.margin>
-                                        </HBox>
-                                    </children>
-                                    <HBox.margin>
-                                        <Insets left="100.0" />
-                                    </HBox.margin></VBox>
                             </children>
                             <VBox.margin>
                                 <Insets top="50.0" />
