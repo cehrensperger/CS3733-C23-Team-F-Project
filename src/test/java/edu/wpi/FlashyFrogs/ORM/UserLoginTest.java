@@ -159,4 +159,24 @@ public class UserLoginTest {
     transaction.rollback(); // Abort the transaction
     session.close(); // Close the session
   }
+
+  /** Tests that one-to-one is enforced by the DB constraints */
+  @Test
+  public void oneToOneTest() {
+    // Create a dummy user, we will try to delete this
+    User user = new User("b", "c", "d", User.EmployeeType.ADMIN);
+    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(user, "other", "bad");
+
+    // Begin the transaction to commit the things with
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+    session.persist(user);
+    session.persist(userLogin);
+
+    // Assert that the persist fails
+    assertThrows(Exception.class, () -> session.persist(otherUserLogin));
+
+    session.close(); // Close the session
+  }
 }

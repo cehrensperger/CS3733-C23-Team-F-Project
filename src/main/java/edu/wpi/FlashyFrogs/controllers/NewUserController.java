@@ -4,7 +4,6 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
@@ -46,10 +45,12 @@ public class NewUserController {
     } else {
       // Save Username and Password to db
       errorMessage.setVisible(false);
-      UserLogin newUser = new UserLogin(new User(), username.getText(), pass1.getText());
+      User userFK = new User("test", "DELETE ME", "test", User.EmployeeType.ADMIN);
+      UserLogin newUser = new UserLogin(userFK, username.getText(), pass1.getText());
       Session ses = CONNECTION.getSessionFactory().openSession();
       Transaction transaction = ses.beginTransaction();
       try {
+        ses.persist(userFK);
         ses.persist(newUser);
         transaction.commit();
         ses.close();
