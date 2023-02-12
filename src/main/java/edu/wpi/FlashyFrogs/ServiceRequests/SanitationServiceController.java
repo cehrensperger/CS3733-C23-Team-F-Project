@@ -127,23 +127,23 @@ public class SanitationServiceController extends ServiceRequestController {
       Date dateOfIncident =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      Sanitation sanitationRequest =
-          new Sanitation(
-              Sanitation.SanitationType.valueOf(requestTypeEnumString),
-              firstName.getText(),
-              middleName.getText(),
-              lastName.getText(),
-              first2.getText(),
-              middle2.getText(),
-              last2.getText(),
-              ServiceRequest.EmpDept.valueOf(departmentEnumString),
-              ServiceRequest.EmpDept.valueOf(departmentEnumString2),
-              dateOfIncident,
-              Date.from(Instant.now()),
-              ServiceRequest.Urgency.valueOf(urgencyEnumString),
-              session.find(LocationName.class, locationDropDown.getText()));
+      //      Sanitation sanitationRequest =
+      //          new Sanitation(
+      //              Sanitation.SanitationType.valueOf(requestTypeEnumString),
+      //              firstName.getText(),
+      //              middleName.getText(),
+      //              lastName.getText(),
+      //              first2.getText(),
+      //              middle2.getText(),
+      //              last2.getText(),
+      //              ServiceRequest.EmpDept.valueOf(departmentEnumString),
+      //              ServiceRequest.EmpDept.valueOf(departmentEnumString2),
+      //              dateOfIncident,
+      //              Date.from(Instant.now()),
+      //              ServiceRequest.Urgency.valueOf(urgencyEnumString),
+      //              session.find(LocationName.class, locationDropDown.getText()));
       try {
-        session.persist(sanitationRequest);
+        //        session.persist(sanitationRequest);
         transaction.commit();
         session.close();
         handleClear(actionEvent);

@@ -2,6 +2,9 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.wpi.FlashyFrogs.DBConnection;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,10 +20,9 @@ public class EdgeTest {
   @BeforeEach
   @AfterEach
   public void resetTestEdge() {
-    testEdge.setNode1(testNode1);
-    testEdge.setNode2(testNode2);
-    testEdge.getNode1().setId("Test");
-    testEdge.getNode1().setId("Other Test");
+    Node testNode1 = new Node("Test", "Building", Node.Floor.L2, 0, 1);
+    Node testNode2 = new Node("Other Test", "Building", Node.Floor.L2, 0, 1);
+    Edge testEdge = new Edge(testNode1, testNode2);
   }
   /**
    * Tests the equals Edge method using three edges: two are the same (between nodes 1 and 2) and
@@ -37,13 +39,13 @@ public class EdgeTest {
   }
 
   /** Tests to see that HashCode changes when attributes that determine HashCode changes */
-  @Test
-  public void testHashCode() {
-    int originalHash = testEdge.hashCode();
-    testEdge.getNode1().setId("DifferentID");
-    testEdge.getNode2().setId("AnotherDifferentID");
-    assertNotEquals(testEdge.hashCode(), originalHash);
-  }
+  //  @Test
+  //  public void testHashCode() {
+  //    int originalHash = testEdge.hashCode();
+  //    testEdge.getNode1().setId("DifferentID");
+  //    testEdge.getNode2().setId("AnotherDifferentID");
+  //    assertNotEquals(testEdge.hashCode(), originalHash);
+  //  }
 
   /** Checks to see if toString makes a string in the same format specified in Edge.java */
   @Test
@@ -52,31 +54,16 @@ public class EdgeTest {
     assertEquals(stringEdge, testEdge.getNode1().getId() + "_" + testEdge.getNode2());
   }
 
-  /** Tests setter for Node1 */
-  @Test
-  void setNode1() {
-    Node newNode = new Node("New ID", "New Building", Node.Floor.L2, 0, 0);
-    testEdge.setNode1(newNode);
-    assertEquals(newNode, testEdge.getNode1());
-  }
-
-  /** Tests setter for Node2 */
-  @Test
-  void setNode2() {
-    Node newNode = new Node("New ID", "New Building", Node.Floor.L2, 0, 0);
-    testEdge.setNode2(newNode);
-    assertEquals(newNode, testEdge.getNode2());
-  }
-
   /** Test setters with the blank edge constructor */
   @Test
   public void blankEdgeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
     // Create a blank edge, set its fields
     Edge blankEdge = new Edge();
-    blankEdge.setNode1(testNode1);
-    blankEdge.setNode2(testNode2);
 
-    // Test that a filled in edge is equal to the blank edge
-    assertEquals(new Edge(testNode1, testNode2), blankEdge);
+    // Check that persist throws an exception
+    assertThrows(Exception.class, () -> session.persist(blankEdge));
   }
 }

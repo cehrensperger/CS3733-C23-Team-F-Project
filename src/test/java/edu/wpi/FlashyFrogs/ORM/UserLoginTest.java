@@ -24,7 +24,7 @@ public class UserLoginTest {
   // Creates iteration of Login
   private UserLogin testLogin =
       new UserLogin(
-          new User("a", "b", "c", User.EmployeeType.ADMIN), "testUserName", "testPassword");
+          new User("a", "b", "c", User.EmployeeType.ADMIN, null), "testUserName", "testPassword");
 
   /** Reset testLogin after each test */
   @BeforeEach
@@ -32,7 +32,7 @@ public class UserLoginTest {
   public void resetTestLogin() {
     testLogin =
         new UserLogin(
-            new User("a", "b", "c", User.EmployeeType.ADMIN), "testUserName", "testPassword");
+            new User("a", "b", "c", User.EmployeeType.ADMIN, null), "testUserName", "testPassword");
   }
 
   /** Checks to see if toString makes a string in the same format specified in UserLogin.java */
@@ -73,9 +73,9 @@ public class UserLoginTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Get a session
     Transaction commitTransaction = session.beginTransaction(); // begin a transaction
     // Two different users
-    User user = new User("a", "b", "c", User.EmployeeType.ADMIN);
+    User user = new User("a", "b", "c", User.EmployeeType.ADMIN, null);
     session.persist(user); // Persist the user, set the ID
-    User differetUser = new User("b", "c", "d", User.EmployeeType.STAFF);
+    User differetUser = new User("b", "c", "d", User.EmployeeType.STAFF, null);
     session.persist(differetUser); // Persist the other user, set the ID
 
     commitTransaction.rollback(); // Rollback the transaction, all we care about is the IDs
@@ -97,7 +97,7 @@ public class UserLoginTest {
   @Test
   public void updateCascadeTest() {
     // Create a dummy user, we will try to update this
-    User user = new User("bob", "dad", "pop", User.EmployeeType.ADMIN);
+    User user = new User("bob", "dad", "pop", User.EmployeeType.ADMIN, null);
     UserLogin userLogin = new UserLogin(user, "bobuser", "B");
 
     // Begin the transaction to commit the things with
@@ -106,10 +106,17 @@ public class UserLoginTest {
     session.persist(user);
     session.persist(userLogin);
 
+    long originalID = user.getId(); // ID for the user to start after persisting
+
     // Assert that the mutation query updating the name throws
     assertThrows(
         Exception.class,
         () -> session.createMutationQuery("UPDATE User SET id=50").executeUpdate());
+
+    session.refresh(user); // Refresh the user to get any changes
+    session.refresh(userLogin); // Refresh the user login
+    assertEquals(originalID, user.getId()); // Assert the ID works
+    assertEquals(user, userLogin.getUser()); // Assert the user login has the right user
 
     session.close(); // Close the session
   }
@@ -118,7 +125,7 @@ public class UserLoginTest {
   @Test
   public void deleteQueryCascadeTest() {
     // Create a dummy user, we will try to delete this
-    User user = new User("test", "test", "pop", User.EmployeeType.ADMIN);
+    User user = new User("test", "test", "pop", User.EmployeeType.ADMIN, null);
     UserLogin userLogin = new UserLogin(user, "login", "password");
 
     // Begin the transaction to commit the things with
@@ -132,6 +139,7 @@ public class UserLoginTest {
 
     // Assert the result list is 0 (there are no UserLogins)
     assertEquals(0, session.createQuery("FROM UserLogin", UserLogin.class).getResultList().size());
+    assertEquals(0, session.createQuery("FROM User", User.class).getResultList().size());
 
     transaction.rollback(); // Abort the transaction
     session.close(); // Close the session
@@ -141,7 +149,7 @@ public class UserLoginTest {
   @Test
   public void deleteHibernateCascadeTest() {
     // Create a dummy user, we will try to delete this
-    User user = new User("sadf", "nffghj", "dsfg", User.EmployeeType.ADMIN);
+    User user = new User("sadf", "nffghj", "dsfg", User.EmployeeType.ADMIN, null);
     UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
 
     // Begin the transaction to commit the things with
@@ -155,8 +163,51 @@ public class UserLoginTest {
 
     // Assert the result list is 0 (there are no UserLogins)
     assertEquals(0, session.createQuery("FROM UserLogin", UserLogin.class).getResultList().size());
+    assertEquals(0, session.createQuery("FROM User", User.class).getResultList().size());
 
     transaction.rollback(); // Abort the transaction
+    session.close(); // Close the session
+  }
+
+  /** Tests that one-to-one is enforced by the DB constraints */
+  @Test
+  public void oneToOneTest() {
+    // Create a dummy user, we will try to delete this
+    User user = new User("b", "c", "d", User.EmployeeType.ADMIN, null);
+    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(user, "other", "bad");
+
+    // Begin the transaction to commit the things with
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+    session.persist(user);
+    session.persist(userLogin);
+
+    // Assert that the persist fails
+    assertThrows(Exception.class, () -> session.persist(otherUserLogin));
+
+    session.close(); // Close the session
+  }
+
+  /** Tests that duplicate logins are disallowed by the DB */
+  @Test
+  public void noDuplicateLoginsTest() {
+    // Create a dummy user, we will try to delete this
+    User user = new User("b", "c", "d", User.EmployeeType.ADMIN, null);
+    User otherUser = new User("c", "d", "e", User.EmployeeType.STAFF, null);
+    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(otherUser, "hj", "bad");
+
+    // Begin the transaction to commit the things with
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+    session.persist(user);
+    session.persist(otherUser);
+    session.persist(userLogin);
+
+    // Assert that the persist fails
+    assertThrows(Exception.class, () -> session.persist(otherUserLogin));
+
     session.close(); // Close the session
   }
 }

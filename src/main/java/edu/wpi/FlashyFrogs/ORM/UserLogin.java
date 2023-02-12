@@ -26,12 +26,11 @@ public class UserLogin {
               name = "user_id_fk",
               foreignKeyDefinition =
                   "FOREIGN KEY (user_id) REFERENCES \"user\"(id) ON DELETE CASCADE"))
-  @OneToOne
+  @OneToOne(optional = false)
   @NonNull
   @Getter
   private User user;
 
-  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @Column(nullable = false, unique = true)
   @NonNull
   @Getter
@@ -109,7 +108,7 @@ public class UserLogin {
    * @param potentialPassword given by user to be checked against actual password
    * @return true if the password matches the current password, false otherwise
    */
-  public boolean checkPasswordEqual(String potentialPassword) {
+  public boolean checkPasswordEqual(@NonNull String potentialPassword) {
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
     return argon2.verify(hash, potentialPassword.toCharArray());
   }

@@ -4,7 +4,6 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.AudioVisual;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -146,28 +145,28 @@ public class AudioVisualController extends ServiceRequestController {
       Date dateOfIncident = Date.from(Instant.now());
       Date dateOfBirth =
           Date.from(dateOfBirthEntry.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-      AudioVisual audioVisual =
-          new AudioVisual(
-              empFirst.getText(),
-              empMiddle.getText(),
-              empLast.getText(),
-              assignedEmpFirst.getText(),
-              assignedEmpMiddle.getText(),
-              assignedEmpLast.getText(),
-              AudioVisual.EmpDept.valueOf(departmentEnumString),
-              AudioVisual.EmpDept.valueOf(departmentEnumString2),
-              dateOfIncident,
-              Date.from(Instant.now()),
-              AudioVisual.Urgency.valueOf(urgencyEnumString),
-              AudioVisual.AccommodationType.valueOf(
-                  accommodationEntry.getText().replace(" ", "_").toUpperCase()),
-              patientFirst.getText(),
-              patientMiddle.getText(),
-              patientLast.getText(),
-              session.find(LocationName.class, locationEntry.getText()),
-              dateOfBirth);
+      //      AudioVisual audioVisual =
+      //          new AudioVisual(
+      //              empFirst.getText(),
+      //              empMiddle.getText(),
+      //              empLast.getText(),
+      //              assignedEmpFirst.getText(),
+      //              assignedEmpMiddle.getText(),
+      //              assignedEmpLast.getText(),
+      //              AudioVisual.EmpDept.valueOf(departmentEnumString),
+      //              AudioVisual.EmpDept.valueOf(departmentEnumString2),
+      //              dateOfIncident,
+      //              Date.from(Instant.now()),
+      //              AudioVisual.Urgency.valueOf(urgencyEnumString),
+      //              AudioVisual.AccommodationType.valueOf(
+      //                  accommodationEntry.getText().replace(" ", "_").toUpperCase()),
+      //              patientFirst.getText(),
+      //              patientMiddle.getText(),
+      //              patientLast.getText(),
+      //              session.find(LocationName.class, locationEntry.getText()),
+      //              dateOfBirth);
       try {
-        session.persist(audioVisual);
+        //        session.persist(audioVisual);
         transaction.commit();
         session.close();
         handleClear(actionEvent);

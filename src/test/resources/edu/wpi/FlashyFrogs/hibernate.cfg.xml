@@ -13,9 +13,9 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://batyr.db.elephantsql.com/kgevwset</property>
-        <property name="connection.username">kgevwset</property>
-        <property name="connection.password">V2ivXBRgJKHSLAcpBymcaM9fVRuTS8Me</property>
+        <property name="connection.url">jdbc:postgresql://teamfdb.cvghxuuw8gnd.us-east-2.rds.amazonaws.com:5432/postgres</property>
+        <property name="connection.username">teamf</property>
+        <property name="connection.password">NN8zYvkExhTkOv9tEabj</property>
         <property name="connection.autocommit">false</property>
 
         <property name="hibernate.default_schema">test</property>
@@ -41,6 +41,7 @@
         <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.UserLogin"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.User"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Department"/>
 
         <!-- Names the annotated entity class -->
     </session-factory>
