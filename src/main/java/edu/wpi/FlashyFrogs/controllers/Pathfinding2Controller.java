@@ -247,7 +247,7 @@ public class Pathfinding2Controller {
   @FXML
   public void openMapEditor(ActionEvent event) throws IOException {
     mapController.exit();
-    Fapp.setScene("views", "MapEditorView");
+    Fapp.setScene("MapEditor", "MapEditorView");
   }
 
   @FXML
