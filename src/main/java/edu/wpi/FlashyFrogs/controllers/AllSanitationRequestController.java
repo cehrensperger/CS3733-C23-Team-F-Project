@@ -29,7 +29,7 @@ public class AllSanitationRequestController extends AllRequestsController {
   @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SanitationService");
+    Fapp.setScene("views", "SanitationService");
   }
 
   public void handleQ(ActionEvent event) throws IOException {
@@ -47,7 +47,6 @@ public class AllSanitationRequestController extends AllRequestsController {
 
   public void initialize() {
     System.out.println("initializing");
-    // typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
     typeCol.setCellValueFactory(
         new Callback<
             TableColumn.CellDataFeatures<ServiceRequest, String>, ObservableValue<String>>() {
@@ -58,12 +57,9 @@ public class AllSanitationRequestController extends AllRequestsController {
         });
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
-    // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    // Transaction transaction = session.beginTransaction();
-    // Sanitation sanitationRequest = new Sanitation();
 
     List<ServiceRequest> objects =
         session.createQuery("SELECT s FROM Sanitation s", ServiceRequest.class).getResultList();
@@ -85,7 +81,6 @@ public class AllSanitationRequestController extends AllRequestsController {
             serviceRequest.setStatus(ServiceRequest.Status.valueOf((t.getNewValue())));
 
             editSession.merge(serviceRequest);
-            // editSession.persist(serviceRequest);
             transaction.commit();
             editSession.close();
           }

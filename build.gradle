@@ -13,6 +13,12 @@ repositories {
     maven {
         url 'https://apisite.crmyers.dev/maven'
     }
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
 }
 
 javafx {
@@ -47,7 +53,9 @@ dependencies {
 
             'org.postgresql:postgresql:42.5.1',
 
-            'de.mkammerer:argon2-jvm:2.11'
+            'de.mkammerer:argon2-jvm:2.11',
+            'com.onexip:FlexBoxFX:0.1.5.3-SNAPSHOT',
+            'com.github.hervegirod:fxsvgimage:1.1'
     )
 
     testImplementation(

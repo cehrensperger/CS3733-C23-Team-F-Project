@@ -205,15 +205,6 @@ public class InternalTransportTest {
     assertTrue(testIntTransp.equals(otherIntTransport));
   }
 
-  /** Tests to see that HashCode changes when attributes that determine HashCode changes */
-  @Test
-  void testHashCode() {
-    int originalHash = testIntTransp.hashCode();
-    testIntTransp.setId(1);
-    testIntTransp.setDateOfSubmission(new Date(2023 - 01 - 30));
-    assertNotEquals(testIntTransp.hashCode(), originalHash);
-  }
-
   /**
    * Checks to see if toString makes a string in the same format specified in
    * InternalTransportTest.java

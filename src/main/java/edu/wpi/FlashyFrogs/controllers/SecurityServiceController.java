@@ -6,7 +6,6 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -23,35 +22,25 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class SecurityServiceController extends ServiceRequestController {
 
-  @FXML private AnchorPane rootPane;
-  @FXML private Text securityServiceText;
-  @FXML private Text incidentReportText;
   @FXML private MFXTextField incidentReportEntry;
-  @FXML private MFXComboBox locationEntry;
+  @FXML private MFXComboBox<String> locationEntry;
   @FXML private MFXDatePicker dateEntry;
   @FXML private MFXTextField firstEntry;
   @FXML private MFXTextField middleEntry;
   @FXML private MFXTextField lastEntry;
-  @FXML private MFXButton clearButton;
-  @FXML private MFXButton submitButton;
-  @FXML private MFXButton homeButton;
-  @FXML private MFXButton allButton;
-  @FXML private MFXButton question;
-  @FXML private MFXComboBox urgencyEntry;
-  @FXML private MFXComboBox departmentEntry;
+  @FXML private MFXComboBox<String> urgencyEntry;
+  @FXML private MFXComboBox<String> departmentEntry;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
-  @FXML private MFXComboBox department2;
+  @FXML private MFXComboBox<String> department2;
   @FXML private Label errorMessage;
 
   /** initializes when app starts */
@@ -110,7 +99,7 @@ public class SecurityServiceController extends ServiceRequestController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String[] parts = {};
+      String[] parts;
       String departmentEnumString = departmentEntry.getText().toUpperCase().replace(" ", "_");
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       parts = urgencyEntry.getText().toUpperCase().split(" ");
@@ -177,12 +166,12 @@ public class SecurityServiceController extends ServiceRequestController {
    */
   @FXML
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllSecurityService");
+    Fapp.setScene("views", "AllSecurityService");
   }
 
   @FXML

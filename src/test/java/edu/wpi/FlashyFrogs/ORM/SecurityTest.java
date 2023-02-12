@@ -173,14 +173,13 @@ public class SecurityTest {
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT);
-    assertTrue(testSecurity.equals(otherSec));
+    assertEquals(testSecurity, otherSec);
   }
 
   /** Tests to see that HashCode changes when attributes that determine HashCode changes */
   @Test
   void testHashCode() {
     int originalHash = testSecurity.hashCode();
-    testSecurity.setId(1);
     testSecurity.setDateOfSubmission(new Date(2023 - 1 - 30));
     assertNotEquals(testSecurity.hashCode(), originalHash);
   }

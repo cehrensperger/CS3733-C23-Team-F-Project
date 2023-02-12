@@ -1,13 +1,11 @@
 package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
@@ -17,18 +15,7 @@ import org.controlsfx.control.PopOver;
 
 public class HomeController {
   @FXML private StackPane rootPane;
-  @FXML private MFXButton serviceRequestsButton;
-  @FXML private MFXButton mapDataEditorButton;
-  @FXML private MFXButton pathfindingButton;
-  @FXML private MFXButton question;
-  @FXML private MFXButton exitButton;
-  @FXML private MenuItem closeMenuItem;
-  @FXML private MenuItem loadMapMenuItem;
-  @FXML private MenuItem loadFeedbackMenuItem;
-  @FXML private MenuItem logoutMenuItem;
-  @FXML private MFXButton hiddneButton;
   @FXML private ImageView backgroundImage;
-  @FXML private MFXButton secretButton;
   @FXML private TextArea AboutText;
 
   Stage stage;
@@ -72,43 +59,43 @@ public class HomeController {
   }
 
   public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("MapEditorView");
+    Fapp.setScene("MapEditor", "MapEditorView");
   }
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("PathFinding");
+    Fapp.setScene("views", "PathFinding");
   }
 
   public void handleSecurityMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SecurityService");
+    Fapp.setScene("views", "SecurityService");
   }
 
   public void handleTransportMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Transport");
+    Fapp.setScene("views", "Transport");
   }
 
   public void handleSanitationMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SanitationService");
+    Fapp.setScene("views", "SanitationService");
   }
 
   public void handleAudioVisualMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AudioVisualService");
+    Fapp.setScene("views", "AudioVisualService");
   }
 
   public void handleComputerMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ComputerService");
+    Fapp.setScene("views", "ComputerService");
   }
 
   public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("LoadMapPage");
+    Fapp.setScene("views", "LoadMapPage");
   }
 
   public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Feedback");
+    Fapp.setScene("views", "Feedback");
   }
 
   /**
@@ -150,10 +137,9 @@ public class HomeController {
    * Change the color theme to Dark Mode when the Color Scheme > Dark Mode option is selected on
    * Home.fxml.
    *
-   * @param actionEvent
-   * @throws IOException
+   * @param actionEvent not used
    */
-  public void changeToDarkMode(ActionEvent actionEvent) throws IOException {
+  public void changeToDarkMode(ActionEvent actionEvent) {
     setToDarkMode();
   }
 
@@ -184,10 +170,10 @@ public class HomeController {
   }
 
   public void handleLogOut(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Login");
+    Fapp.setScene("views", "Login");
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home2");
+    Fapp.setScene("views", "Home2");
   }
 }

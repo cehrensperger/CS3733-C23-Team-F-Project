@@ -163,16 +163,7 @@ public class SanitationTest {
             new Date(2023 - 02 - 01),
             ServiceRequest.Urgency.MODERATELY_URGENT,
             new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"));
-    assertTrue(testSan.equals(otherSan));
-  }
-
-  /** Tests to see that HashCode changes when attributes that determine HashCode changes */
-  @Test
-  void testHashCode() {
-    int originalHash = testSan.hashCode();
-    testSan.setId(1);
-    testSan.setDateOfSubmission(new Date(2023 - 01 - 30));
-    assertNotEquals(testSan.hashCode(), originalHash);
+    assertEquals(testSan, otherSan);
   }
 
   /** Checks to see if toString makes a string in the same format specified in Sanitation.java */

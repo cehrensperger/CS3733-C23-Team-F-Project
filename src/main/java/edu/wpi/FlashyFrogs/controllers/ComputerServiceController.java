@@ -25,19 +25,19 @@ import org.hibernate.Transaction;
 
 public class ComputerServiceController extends ServiceRequestController {
 
-  @FXML private MFXComboBox deviceType;
+  @FXML private MFXComboBox<String> deviceType;
   @FXML private MFXTextField deviceModel;
-  @FXML private MFXComboBox serviceType;
+  @FXML private MFXComboBox<String> serviceType;
   @FXML private MFXTextField issueDescription;
-  @FXML private MFXComboBox urgencyEntry;
+  @FXML private MFXComboBox<String> urgencyEntry;
   @FXML private MFXTextField firstEntry;
   @FXML private MFXTextField middleEntry;
   @FXML private MFXTextField lastEntry;
-  @FXML private MFXComboBox departmentEntry;
+  @FXML private MFXComboBox<String> departmentEntry;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
-  @FXML private MFXComboBox department2;
+  @FXML private MFXComboBox<String> department2;
   @FXML private Label errorMessage;
 
   @FXML private MFXButton question;
@@ -72,7 +72,7 @@ public class ComputerServiceController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllComputerServiceRequest");
+    Fapp.setScene("views", "AllComputerServiceRequest");
   }
 
   @FXML
@@ -122,8 +122,6 @@ public class ComputerServiceController extends ServiceRequestController {
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       String deviceTypeEnumString = deviceType.getText().toUpperCase().replace(" ", "_");
       String serviceTypeEnumString = serviceType.getText().toUpperCase().replace(" ", "_");
-      // Date dateOfIncident =
-      //        Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       ComputerService computerService =
           new ComputerService(
@@ -164,7 +162,7 @@ public class ComputerServiceController extends ServiceRequestController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   @FXML

@@ -17,7 +17,7 @@ public class FeedbackController {
   @FXML private MFXTextField first;
   @FXML private MFXTextField middle;
   @FXML private MFXTextField last;
-  @FXML private MFXComboBox department;
+  @FXML private MFXComboBox<String> department;
   @FXML private MFXTextField email;
   @FXML private MFXTextField phone;
   @FXML private MFXButton clear;
@@ -56,11 +56,11 @@ public class FeedbackController {
 
   @FXML
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("views", "Home");
   }
 
   @FXML
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Confirmation");
+    Fapp.setScene("views", "Confirmation");
   }
 }
