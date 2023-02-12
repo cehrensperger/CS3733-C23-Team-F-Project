@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -17,29 +18,33 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
    <children>
-      <VBox prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
+      <StackPane layoutX="1011.0" layoutY="486.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label onMouseClicked="#openPathfinding" text="Pathfinding" textFill="WHITE" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </ImageView>
+            <VBox prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;">
+               <children>
+                  <Label onMouseClicked="#openPathfinding" text="Pathfinding" textFill="WHITE" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </VBox>
+            <Button mnemonicParsing="false" onAction="#openPathfinding" opacity="0.0" prefHeight="216.0" prefWidth="262.0" text="Button" />
          </children>
-         <effect>
-            <DropShadow />
-         </effect>
-      </VBox>
+      </StackPane>
       <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Announcements">
