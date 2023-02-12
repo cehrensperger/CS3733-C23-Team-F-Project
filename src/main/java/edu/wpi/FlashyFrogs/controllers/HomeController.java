@@ -47,7 +47,7 @@ public class HomeController {
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
     System.out.println("opening pathfinding");
-    Fapp.setScene("views", "PathFinding.fxml");
+    Fapp.setScene("views", "PathFinding");
   }
 
   @FXML
@@ -77,7 +77,7 @@ public class HomeController {
   }
 
   public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views","RequestsHome");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
@@ -163,7 +163,6 @@ public class HomeController {
    * @param actionEvent
    * @throws IOException
    */
-
   public void changeToDarkMode(ActionEvent actionEvent) {
     // setToDarkMode();
 
