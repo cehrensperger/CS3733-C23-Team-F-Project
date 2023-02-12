@@ -7,6 +7,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 
@@ -20,7 +21,7 @@ public class HoldTransportController {
   @FXML MFXButton credits;
   @FXML MFXButton back;
 
-  @FXML TextField ID;
+  @FXML TextField patient;
   @FXML SearchableComboBox vision;
   @FXML SearchableComboBox hearing;
   @FXML SearchableComboBox consciousness;
@@ -34,9 +35,8 @@ public class HoldTransportController {
   @FXML SearchableComboBox mode;
   @FXML SearchableComboBox isolation;
   @FXML SearchableComboBox personal;
-  @FXML SearchableComboBox reason;
+  @FXML TextField reason;
   @FXML MFXButton clear;
-  @FXML SearchableComboBox submit;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -92,7 +92,7 @@ public class HoldTransportController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    ID.setText("");
+    patient.setText("");
     vision.valueProperty().set(null);
     hearing.valueProperty().set(null);
     consciousness.valueProperty().set(null);
@@ -106,7 +106,7 @@ public class HoldTransportController {
     mode.valueProperty().set(null);
     isolation.valueProperty().set(null);
     personal.valueProperty().set(null);
-    reason.valueProperty().set(null);
+    reason.setText("");
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {

@@ -164,7 +164,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <TextField promptText="Patient ID">
+                              <TextField fx:id="patient" promptText="Patient ID">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
@@ -226,7 +226,7 @@
                                  </VBox.margin>
                               </SearchableComboBox>
                               <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date Preference" />
-                              <TextField promptText="Time Preference (00:00 AM/PM)">
+                              <TextField fx:id="time" promptText="Time Preference (00:00 AM/PM)">
                                  <VBox.margin>
                                     <Insets top="18.0" />
                                  </VBox.margin>
@@ -246,7 +246,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </SearchableComboBox>
-                              <TextField  promptText="Reason For Transfer">
+                              <TextField fx:id="reason" promptText="Reason For Transfer">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
