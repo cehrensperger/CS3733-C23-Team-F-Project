@@ -9,18 +9,14 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-/**
- * Department table, represents departments an employee can belong to
- */
+/** Department table, represents departments an employee can belong to */
 @Entity
 @Table(name = "department")
 
 @AllArgsConstructor
 public class Department {
 
-  /**
-   * Long (formal) name for the department
-   */
+  /** Long (formal) name for the department */
   @Id
   @Column(nullable = false)
   @NonNull
@@ -28,9 +24,7 @@ public class Department {
   private String longName;
 
 
-  /**
-   * Short (display) name for the department
-   */
+  /** Short (display) name for the department */
   @Column(nullable = false)
   @NonNull
   @Getter
@@ -40,6 +34,7 @@ public class Department {
 
   /**
    * Equals method, returns true if the long names are identical
+   *
    * @param o the other department to compare this to
    * @return true if the two are equal in long name, false otherwise
    */
@@ -55,6 +50,7 @@ public class Department {
 
   /**
    * Hash code implementation
+   *
    * @return the hash code for the long name
    */
   @Override
@@ -64,6 +60,7 @@ public class Department {
 
   /**
    * Implementation for the to-string method, gets the short name
+   *
    * @return the short name for the employee
    */
   @Override
@@ -71,8 +68,6 @@ public class Department {
     return getShortName();
   }
 
-  /**
-   * Empty constructor, required by hibernate
-   */
+  /** Empty constructor, required by hibernate */
   public Department() {}
 }

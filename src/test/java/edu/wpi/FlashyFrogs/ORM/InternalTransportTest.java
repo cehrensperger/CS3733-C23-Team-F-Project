@@ -35,8 +35,8 @@ public class InternalTransportTest {
     }
   }
 
-  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
-  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL);
+  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   InternalTransport testIntTransp =
       new InternalTransport(
           new Date(2002 - 10 - 02),
@@ -116,7 +116,7 @@ public class InternalTransportTest {
   /** Tests setter for emp */
   @Test
   public void setEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testIntTransp.setEmp(newEmp);
     assertEquals(newEmp, testIntTransp.getEmp());
   }
@@ -124,7 +124,7 @@ public class InternalTransportTest {
   /** Test setter for Assigned emp */
   @Test
   public void setAssignedEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testIntTransp.setAssignedEmp(newEmp);
     assertEquals(newEmp, testIntTransp.getAssignedEmp());
   }
@@ -191,7 +191,7 @@ public class InternalTransportTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
+    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
 
     LocationName loc1 =
         new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName");

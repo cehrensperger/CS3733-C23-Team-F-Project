@@ -43,11 +43,9 @@ public class AudioVisual extends ServiceRequest {
               name = "location_name1_fk",
               foreignKeyDefinition =
                   "FOREIGN KEY (location) REFERENCES locationname(longName) "
-                      + "ON UPDATE CASCADE ON DELETE SET NULL"),
-      nullable = false)
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
   @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-  @NonNull
-  @ManyToOne(optional = false)
+  @ManyToOne
   private LocationName location;
 
   @Basic
@@ -84,7 +82,7 @@ public class AudioVisual extends ServiceRequest {
    * @param dateOfBirth the Date to use in the dateOfBirth field
    */
   public AudioVisual(
-      @NonNull User emp,
+      User emp,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,
@@ -92,7 +90,7 @@ public class AudioVisual extends ServiceRequest {
       @NonNull String patientFirstName,
       @NonNull String patientMiddleName,
       @NonNull String patientLastName,
-      @NonNull LocationName location,
+      LocationName location,
       @NonNull Date dateOfBirth) {
     super.setEmp(emp);
     super.setDateOfIncident(dateOfIncident);

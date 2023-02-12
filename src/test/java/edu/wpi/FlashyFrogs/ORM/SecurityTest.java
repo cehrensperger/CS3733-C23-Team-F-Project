@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 public class SecurityTest {
   // Creates iteration of LocationName
 
-  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
-  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL);
+  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   Security testSecurity =
       new Security(
           "Incident Report",
@@ -52,7 +52,7 @@ public class SecurityTest {
   /** Tests setter for emp */
   @Test
   public void setEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testSecurity.setEmp(newEmp);
     assertEquals(newEmp, testSecurity.getEmp());
   }
@@ -60,7 +60,7 @@ public class SecurityTest {
   /** Test setter for Assigned emp */
   @Test
   public void setAssignedEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testSecurity.setAssignedEmp(newEmp);
     assertEquals(newEmp, testSecurity.getAssignedEmp());
   }

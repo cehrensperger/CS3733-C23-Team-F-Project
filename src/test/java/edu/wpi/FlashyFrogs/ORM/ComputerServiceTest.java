@@ -34,8 +34,8 @@ public class ComputerServiceTest {
     }
   }
 
-  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
-  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL);
+  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   ComputerService testCS =
       new ComputerService(
           emp,
@@ -72,7 +72,7 @@ public class ComputerServiceTest {
   /** Tests setter for emp */
   @Test
   public void setEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testCS.setEmp(newEmp);
     assertEquals(newEmp, testCS.getEmp());
   }
@@ -80,7 +80,7 @@ public class ComputerServiceTest {
   /** Test setter for Assigned emp */
   @Test
   public void setAssignedEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testCS.setAssignedEmp(newEmp);
     assertEquals(newEmp, testCS.getAssignedEmp());
   }
@@ -168,7 +168,7 @@ public class ComputerServiceTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
+    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
 
     session.persist(emp);
     // Create the cs request we will use

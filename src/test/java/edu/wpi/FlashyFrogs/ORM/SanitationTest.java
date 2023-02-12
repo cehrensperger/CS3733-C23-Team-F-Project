@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 
 // Creates iteration of Sanitation
 public class SanitationTest {
-  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
-  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL);
+  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   Sanitation testSan =
       new Sanitation(
           Sanitation.SanitationType.MOPPING,
@@ -50,7 +50,7 @@ public class SanitationTest {
   /** Tests setter for emp */
   @Test
   public void setEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testSan.setEmp(newEmp);
     assertEquals(newEmp, testSan.getEmp());
   }
@@ -58,7 +58,7 @@ public class SanitationTest {
   /** Test setter for Assigned emp */
   @Test
   public void setAssignedEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testSan.setAssignedEmp(newEmp);
     assertEquals(newEmp, testSan.getAssignedEmp());
   }

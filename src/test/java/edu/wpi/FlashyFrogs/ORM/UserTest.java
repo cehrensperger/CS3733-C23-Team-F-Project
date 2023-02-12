@@ -81,8 +81,7 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", "dfhdfsgh", "afgawert", User.EmployeeType.ADMIN,
-            department);
+    User u = new User("abasb", "dfhdfsgh", "afgawert", User.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -107,9 +106,7 @@ public class UserTest {
     assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
-  /**
-   * Tries setting the middle name from null to something
-   */
+  /** Tries setting the middle name from null to something */
   @Test
   public void setMiddleNameTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -118,8 +115,7 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", null, "afgawert", User.EmployeeType.ADMIN,
-            department);
+    User u = new User("abasb", null, "afgawert", User.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -144,9 +140,7 @@ public class UserTest {
     assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
-  /**
-   * Sets the middle name from one value to another
-   */
+  /** Sets the middle name from one value to another */
   @Test
   public void updateMiddleNameTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -155,8 +149,7 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN,
-            department);
+    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -181,9 +174,7 @@ public class UserTest {
     assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
-  /**
-   * Starts the middle name as null, and tests setting it to the same
-   */
+  /** Starts the middle name as null, and tests setting it to the same */
   @Test
   public void nullToNullMiddleNameTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -192,8 +183,7 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", "val1", "afgawert", User.EmployeeType.ADMIN,
-            department);
+    User u = new User("abasb", "val1", "afgawert", User.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -256,7 +246,7 @@ public class UserTest {
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
     // Try creating a new user
-    User u = new User("lll", null, "qwerty", User.EmployeeType.MEDICAL, null );
+    User u = new User("lll", null, "qwerty", User.EmployeeType.MEDICAL, null);
 
     session.persist(u); // Persist U to set its ID (not to make it actually work)
 
@@ -280,9 +270,7 @@ public class UserTest {
     assertEquals(User.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
   }
 
-  /**
-   * Test where the department is set to something from null
-   */
+  /** Test where the department is set to something from null */
   @Test
   public void setDepartmentTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -317,12 +305,13 @@ public class UserTest {
     assertEquals(User.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
   }
 
-<<<<<<< HEAD
-  /** Tests setting all parameters one at a time and testing for sequential side effects */
-=======
+
+  /** Tests setting all parameters one at a time and testing for sequential side effects *
   /**
    * Test where the department is valid and is changed from one valid thing to another
    */
+  /** Test where the department is valid and is changed from one valid thing to another */
+
   @Test
   public void changeDepartmentTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -331,8 +320,7 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN,
-            department);
+    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN, department);
 
     Department otherDepartment = new Department("b", "c"); // Other department name
 
@@ -346,8 +334,7 @@ public class UserTest {
     long originalID = u.getId(); // Get the original ID
 
     // Check the starting
-    assertEquals(new Department("long", "short"),
-            u.getDepartment()); // Assert the field is right
+    assertEquals(new Department("long", "short"), u.getDepartment()); // Assert the field is right
 
     // Try to set
     u.setDepartment(otherDepartment);
@@ -361,10 +348,13 @@ public class UserTest {
     assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
+
   /**
    * Tries setting the department from one null value to another
    */
->>>>>>> 6dcd39e98aca71cd23231bf85e76240eb18ea289
+
+  /** Tries setting the department from one null value to another */
+
   @Test
   public void clearDepartmentTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -373,8 +363,7 @@ public class UserTest {
     Department department = new Department("j", "k");
 
     // Try creating a new user
-    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN,
-            department);
+    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -385,8 +374,7 @@ public class UserTest {
     long originalID = u.getId(); // Get the original ID
 
     // Check the starting
-    assertEquals(new Department("j", "k"),
-            u.getDepartment()); // Assert the field is right
+    assertEquals(new Department("j", "k"), u.getDepartment()); // Assert the field is right
 
     // Check the values
     assertEquals(originalID, u.getId());
@@ -397,17 +385,14 @@ public class UserTest {
     assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
-  /**
-   * Tests setting the department from one null value to another
-   */
+  /** Tests setting the department from one null value to another */
   @Test
   public void nullToNullDepartmentTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
     // Try creating a new user
-    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN,
-            null);
+    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN, null);
 
     session.persist(u); // Persist U to set its ID (not to make it actually work)
 
@@ -445,13 +430,12 @@ public class UserTest {
     long originalID = u.getId(); // Get the original ID
 
     // Check the starting fields
-     assertEquals(originalID, u.getId());
+    assertEquals(originalID, u.getId());
     assertEquals("pop", u.getFirstName()); // Check the first name
     assertNull(null); // Check middle name side effects
     assertEquals("pod", u.getLastName()); // Check last name side effects
     assertEquals(User.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
     assertNull(u.getDepartment());
-
 
     // Try to set the first name
     u.setFirstName("asdf");
@@ -576,9 +560,7 @@ public class UserTest {
     session.close(); // Close the session
   }
 
-  /**
-   * Tests for deleting from the departments, the user should be set to null
-   */
+  /** Tests for deleting from the departments, the user should be set to null */
   @Test
   public void departmentDeleteTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -603,9 +585,7 @@ public class UserTest {
     session.close(); // Close the session
   }
 
-  /**
-   * Tests for deleting from the departments in a query, the user should be set to null
-   */
+  /** Tests for deleting from the departments in a query, the user should be set to null */
   @Test
   public void departmentDeleteQueryTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -630,9 +610,7 @@ public class UserTest {
     session.close(); // Close the session
   }
 
-  /**
-   * Tests that updating department long name via a query will result in a cascade
-   */
+  /** Tests that updating department long name via a query will result in a cascade */
   @Test
   public void departmentUpdateTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
