@@ -98,6 +98,7 @@ public class Node {
 
     /**
      * Override for the toString, returns the floor num as a string
+     *
      * @return the floor num as a string
      */
     @Override

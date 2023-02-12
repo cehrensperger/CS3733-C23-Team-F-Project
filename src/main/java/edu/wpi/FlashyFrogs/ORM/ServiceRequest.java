@@ -5,7 +5,6 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "ServiceRequest")
@@ -47,8 +46,7 @@ public class ServiceRequest {
           @ForeignKey(
               name = "assignedempid_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (assignedempid) REFERENCES "
-                      + "\"emp\"(id) ON DELETE SET NULL"))
+                  "FOREIGN KEY (assignedempid) REFERENCES " + "\"emp\"(id) ON DELETE SET NULL"))
   @ManyToOne(optional = false)
   private User assignedEmp;
 
@@ -101,6 +99,7 @@ public class ServiceRequest {
 
     /**
      * Override for the toString, returns the status as a string
+     *
      * @return the status as a string
      */
     @Override
@@ -130,6 +129,7 @@ public class ServiceRequest {
 
     /**
      * Override for the toString, returns the department as a string
+     *
      * @return the department as a string
      */
     @Override
@@ -157,6 +157,7 @@ public class ServiceRequest {
 
     /**
      * Override for the toString, returns the urgency as a string
+     *
      * @return the urgency as a string
      */
     @Override

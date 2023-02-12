@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 @Entity
