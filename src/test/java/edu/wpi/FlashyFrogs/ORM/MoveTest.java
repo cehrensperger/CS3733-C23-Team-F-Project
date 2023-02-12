@@ -28,6 +28,8 @@ public class MoveTest {
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
       connection.createMutationQuery("DELETE FROM Move").executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM Node").executeUpdate();
+      connection.createMutationQuery("DELETE FROM LocationName").executeUpdate();
       cleanupTransaction.commit(); // Commit the cleanup
     }
   }
@@ -48,28 +50,6 @@ public class MoveTest {
             new Node("Test", "Building", Node.Floor.L2, 0, 0),
             new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
             new Date(2023 - 1 - 31));
-  }
-
-  /** Tests if the equals in Move.java correctly compares two Move objects */
-  @Test
-  void testEquals() {
-    Move otherTestMove =
-        new Move(
-            new Node("Test", "Building", Node.Floor.L2, 0, 0),
-            new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
-            new Date(2023 - 1 - 31));
-    assertEquals(testMove, otherTestMove);
-  }
-
-  /** Tests to see that HashCode changes when attributes that determine HashCode changes */
-  @Test
-  void testHashCode() {
-    Move testMove2 =
-        new Move(
-            new Node("OtherTest", "SecondBuilding", Node.Floor.L1, 0, 10),
-            new LocationName("DifferentLong", LocationName.LocationType.DEPT, "NewShort"),
-            new Date(2023 - 2 - 1));
-    assertNotEquals(testMove2.hashCode(), testMove.hashCode());
   }
 
   /** Checks to see if toString makes a string in the same format specified in Move.java */
@@ -98,6 +78,109 @@ public class MoveTest {
     Move emptyMove = new Move();
 
     // Check that persist throws an exception
-    assertThrows(Exception.class, () -> session.persist(emptyMove));
+    assertThrows(
+        Exception.class,
+        () -> {
+          session.persist(emptyMove);
+          transaction.commit();
+        });
+    session.close();
+  }
+
+  /**
+   * Tests the equals and hash code methods for move. Should be completely dependent on the move
+   * being the same
+   */
+  @Test
+  public void equalsAndHashCodeTest() {
+    // Two different moves
+    Move move =
+        new Move(
+            new Node("Test", "Building", Node.Floor.L2, 0, 0),
+            new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
+            new Date(2023 - 1 - 31));
+    Move sameMove =
+        new Move(
+            new Node("Test", "Building", Node.Floor.L2, 0, 0),
+            new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
+            new Date(2023 - 1 - 31));
+    Move differentNodeMove =
+        new Move(
+            new Node("Test2", "Building2", Node.Floor.L1, 1, 1),
+            new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
+            new Date(2023 - 1 - 31));
+    Move differentLocationMove =
+        new Move(
+            new Node("Test", "Building", Node.Floor.L2, 0, 0),
+            new LocationName("NewLongName", LocationName.LocationType.BATH, "NewShortName"),
+            new Date(2023 - 1 - 31));
+    Move differentDateMove =
+        new Move(
+            new Node("Test", "Building", Node.Floor.L2, 0, 0),
+            new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
+            new Date(2022 - 12 - 24));
+    Move differentMove =
+        new Move(
+            new Node("Test2", "Building2", Node.Floor.L1, 1, 1),
+            new LocationName("NewLongName", LocationName.LocationType.BATH, "NewShortName"),
+            new Date(2022 - 12 - 24));
+
+    // Assert that the moves are the right equals including hash code
+    assertEquals(move, sameMove);
+    assertEquals(move.hashCode(), sameMove.hashCode());
+    assertNotEquals(move, differentNodeMove);
+    assertNotEquals(move.hashCode(), differentNodeMove.hashCode());
+    assertNotEquals(move, differentLocationMove);
+    assertNotEquals(move.hashCode(), differentLocationMove.hashCode());
+    assertNotEquals(move, differentDateMove);
+    assertNotEquals(move.hashCode(), differentDateMove.hashCode());
+    assertNotEquals(move, differentMove);
+    assertNotEquals(move.hashCode(), differentMove.hashCode());
+  }
+
+  /** Tests that deleting a node associated with a move also deletes that move */
+  @Test
+  public void deleteNodeCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Get a session
+    Transaction commitTransaction = session.beginTransaction(); // begin a transaction
+
+    Node node = new Node("Test", "Building", Node.Floor.L2, 0, 0);
+    session.persist(node);
+
+    LocationName location =
+        new LocationName("LongName", LocationName.LocationType.HALL, "ShortName");
+    session.persist(location);
+
+    Move move = new Move(node, location, new Date(2023 - 1 - 31));
+    session.persist(move);
+
+    session.remove(node);
+
+    assertNull(session.createQuery("FROM Move", Move.class).uniqueResult());
+
+    session.close();
+  }
+
+  /** Tests that deleting a location associated with a move also deletes the move */
+  @Test
+  public void deleteLocationCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Get a session
+    Transaction commitTransaction = session.beginTransaction(); // begin a transaction
+
+    Node node = new Node("Test", "Building", Node.Floor.L2, 0, 0);
+    session.persist(node);
+
+    LocationName location =
+        new LocationName("LongName", LocationName.LocationType.HALL, "ShortName");
+    session.persist(location);
+
+    Move move = new Move(node, location, new Date(2023 - 1 - 31));
+    session.persist(move);
+
+    session.remove(location);
+
+    assertNull(session.createQuery("FROM Move", Move.class).uniqueResult());
+
+    session.close();
   }
 }
