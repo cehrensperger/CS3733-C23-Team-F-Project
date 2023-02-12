@@ -10,6 +10,9 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,6 +40,7 @@ public class PathFindingController {
   @FXML private MFXComboBox<Node.Floor> floorSelector;
   @FXML private HBox buttonsHBox;
   @FXML private Label error;
+  @FXML private MFXFilterComboBox algorithm;
 
   private MapController mapController;
   AtomicReference<PopOver> mapPopOver =
@@ -100,12 +104,20 @@ public class PathFindingController {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
-    // sort the locations alphabetically
+    //make the list of algorithms
+    List<String> algorithms = new LinkedList<>();
+    algorithms.add("A*");
+    algorithms.add("Breadth-first");
+    algorithms.add("Depth-first");
+
+    // sort the locations alphabetically, algorithms are already alphabetically sorted
     objects.sort(String::compareTo);
 
     // set the items of the dropdowns to be the location names
     start.setItems(FXCollections.observableList(objects));
     end.setItems(FXCollections.observableList(objects));
+    algorithm.setItems(FXCollections.observableList(algorithms));
+
 
     // hide all nodes and edges on the map so that the user will only see the
     // nodes and edges relevant to the path they generate
@@ -132,6 +144,7 @@ public class PathFindingController {
   public void handleButtonClear(ActionEvent event) throws IOException {
     start.setText("");
     end.setText("");
+    algorithm.clear();
     hideAll();
   }
 
@@ -145,6 +158,19 @@ public class PathFindingController {
     String endPath = end.getText();
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
+
+    // get algorithm from text fields
+      switch (algorithm.getText()) {
+          case "A*":
+              pathFinder.setAlgorithm(new AStar());
+              break;
+          case "Breadth-first":
+              pathFinder.setAlgorithm(new BreadthFirst());
+              break;
+          case "Depth-first":
+              pathFinder.setAlgorithm(new DepthFirst());
+              break;
+      }
 
     // list of nodes that represent the shortest path
     List<Node> nodes = pathFinder.findPath(startPath, endPath);
