@@ -49,8 +49,7 @@ public class ServiceRequest {
           @ForeignKey(
               name = "empid_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (empid) REFERENCES " + "\"assignedEmp\"(id) ON DELETE SET NULL")
-      )
+                  "FOREIGN KEY (empid) REFERENCES " + "\"assignedEmp\"(id) ON DELETE SET NULL"))
   @Cascade(org.hibernate.annotations.CascadeType.DELETE)
   @ManyToOne
   private User assignedEmp;
