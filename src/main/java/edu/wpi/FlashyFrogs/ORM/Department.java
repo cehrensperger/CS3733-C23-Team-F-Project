@@ -9,17 +9,17 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-@Table(name="department")
+@Table(name = "department")
 public class Department {
-    @Id
-    @Column(nullable = false)
-    @NonNull
-    @Getter
-    private String longName;
+  @Id
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  private String longName;
 
-    @Column(nullable = false)
-    @NonNull
-    @Getter
-    @Setter
-    private String shortName;
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  private String shortName;
 }

@@ -79,6 +79,7 @@ public class LocationName {
 
     /**
      * Override for the toString, returns the type as a string
+     *
      * @return the type as a string
      */
     @Override

@@ -1,11 +1,10 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import org.hibernate.annotations.Cascade;
-
-import java.util.Objects;
 
 @Entity
 @Table(name = "Edge")

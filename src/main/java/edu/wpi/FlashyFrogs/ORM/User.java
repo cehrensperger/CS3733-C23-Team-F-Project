@@ -50,10 +50,14 @@ public class User {
   @NonNull
   private EmployeeType employeeType;
 
-  @JoinColumn(name = "department_name",
-          foreignKey = @ForeignKey(name = "department_name_fk",
-                  foreignKeyDefinition = "FOREIGN KEY (department_name) REFERENCES department(longName) " +
-                          "ON UPDATE CASCADE ON DELETE SET NULL"))
+  @JoinColumn(
+      name = "department_name",
+      foreignKey =
+          @ForeignKey(
+              name = "department_name_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (department_name) REFERENCES department(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
   @ManyToOne
   @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @Setter
@@ -66,11 +70,11 @@ public class User {
     MEDICAL("Medical Practitioner"), // Medical employee
     STAFF("Staff Member"); // Staff, e.g., janitors
 
-
     @NonNull public final String type; // Display type
 
     /**
      * Sets the type for the employee, i.e., string backing
+     *
      * @param type the type of employee
      */
     EmployeeType(@NonNull String type) {
@@ -79,6 +83,7 @@ public class User {
 
     /**
      * Override for the toString, returns the type as a string
+     *
      * @return the type as a string
      */
     @Override
