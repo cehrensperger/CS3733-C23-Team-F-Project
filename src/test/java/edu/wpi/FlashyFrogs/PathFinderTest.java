@@ -29,11 +29,11 @@ import org.junit.jupiter.api.*;
 public class PathFinderTest {
   private Session testSession; // Session to be used for each individual test
 
-  private AStar aStar; // Algorithm to be used in tests
+  private AStar aStar = new AStar(); // Algorithm to be used in tests
 
-  private BreadthFirst breadthFirst; // Algorithm to be used in tests
+  private BreadthFirst breadthFirst = new BreadthFirst(); // Algorithm to be used in tests
 
-  private DepthFirst depthFirst; // Algorithm to be used in tests
+  private DepthFirst depthFirst = new DepthFirst(); // Algorithm to be used in tests
 
   /**
    * Setup method to be run before all tests that creates the session factory and service registry

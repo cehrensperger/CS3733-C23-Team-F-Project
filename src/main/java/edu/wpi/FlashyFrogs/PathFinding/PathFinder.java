@@ -9,7 +9,7 @@ import org.hibernate.Session;
 public class PathFinder {
   @NonNull private final Session session;
 
-  IFindPath algorithm;
+  private IFindPath algorithm;
 
   public PathFinder(Session session) {
     this.session = session;
