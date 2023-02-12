@@ -30,7 +30,7 @@
                   <Insets bottom="44.0" />
                </VBox.margin>
             </TableView>
-            <Button fx:id="addLocation" mnemonicParsing="false" onAction="#popupMove" prefHeight="39.0" prefWidth="223.0" text="Add Location">
+            <Button fx:id="addLocation" mnemonicParsing="false" onAction="#popupLocation" prefHeight="39.0" prefWidth="223.0" text="Add Location">
                <VBox.margin>
                   <Insets bottom="44.0" />
                </VBox.margin>

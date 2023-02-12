@@ -1,9 +1,6 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
 import edu.wpi.FlashyFrogs.ORM.LocationName;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.beans.property.ObjectProperty;
@@ -12,17 +9,20 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import lombok.NonNull;
+import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
 public class LocationNameInfoController {
-  @FXML private MFXButton saveButton;
-  @FXML private MFXButton deleteButton;
+  @FXML private Button saveButton;
+  @FXML private Button deleteButton;
   @FXML private Text errorText;
-  @FXML private MFXTextField locationNameField;
-  @FXML private MFXComboBox<LocationName.LocationType> locationTypeField;
-  @FXML private MFXTextField shortNameField;
+  @FXML private TextField locationNameField;
+  @FXML private SearchableComboBox<LocationName.LocationType> locationTypeField;
+  @FXML private TextField shortNameField;
 
   /**
    * Sets the location name and updates the associated
@@ -74,7 +74,9 @@ public class LocationNameInfoController {
           onFieldChange.run();
         });
     // Set the text manually cuz MaterialFX is mean
-    locationTypeField.setText(locationName.getLocationType().name());
+    locationTypeField
+        .valueProperty()
+        .set(LocationName.LocationType.valueOf(locationName.getLocationType().name()));
 
     // Bind the items for the type field
     locationTypeField.setItems(

@@ -25,7 +25,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import lombok.NonNull;
@@ -37,7 +36,6 @@ import org.hibernate.Session;
 public class MapEditorController {
   public AnchorPane mapPane;
   @FXML private MFXComboBox<Node.Floor> floorSelector;
-  @FXML private BorderPane editorBox; // Editor box, map is appended to this on startup
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
 
@@ -108,13 +106,6 @@ public class MapEditorController {
           return row; // Return the generated row
         });
 
-    //    // Load the map loader
-    //    FXMLLoader mapLoader = new FXMLLoader(Fapp.class.getResource("Map/Map.fxml"));
-    //
-    //    Pane map = mapLoader.load(); // Load the map
-    //    editorBox.setCenter(map); // Put the map loader into the editor box
-    //
-    //    mapController = mapLoader.getController(); // Load the map controller
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
