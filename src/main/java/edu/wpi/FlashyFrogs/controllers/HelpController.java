@@ -177,13 +177,13 @@ public class HelpController {
   public void handleQPathFinding() throws IOException {
     e1.setText("Start - Enter the starting location of the path to be generated");
     e2.setText("End - Enter the end location of the path to be generated");
-    e3.setText("Algorithm - Enter your desired pathfinding algorithm to use to generate the path");
-    e4.setText("Clear - Clears all of the fields on the page");
-    e5.setText("Back - Brings the user back to the service requests page");
-    e6.setText(
+    e3.setText("Clear - Clears all of the fields on the page");
+    e4.setText("Back - Brings the user back to the service requests page");
+    e5.setText(
         "Get Path - Generates the path given the locations put in start and end and displays the path on the map");
-    e7.setText(
+    e6.setText(
         "         If the path goes between floors, switch floors using the drop down to view the other floors");
+    e7.setText("");
     e8.setText("");
     e9.setText("");
     e10.setText("");

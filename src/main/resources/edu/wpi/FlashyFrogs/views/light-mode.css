@@ -6,7 +6,7 @@
 
 .label{
     -fx-font-size: 12;
-    -fx-font-family: "Open Sans";
+    -fx-font-family: "Arial Black";
     -fx-text-fill: #000000;
 }
 
@@ -20,17 +20,15 @@
 
 
 .button{
-    -fx-background-color:#F6BD39;
-    -fx-border-color: #D2D2D2;
-    -fx-font-family:"Open Sans" ;
-    -fx-font-weight: bold;
+    -fx-background-color:#2d89ef;
+    -fx-border-color: #3079ed;
+    -fx-font-family:"Arial Black" ;
     -fx-padding: 15px 5px;
     -fx-text-alignment: center;
     /*-fx-font-size: 13px;*/
-    -fx-border-width: 1px;
-    -fx-border-radius:3px;
-    -fx-background-radius: 3px;
-    -fx-text-fill:#002D59;
+    -fx-border-radius:10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill:#f1f1f1 ;
 
 }
 .button:hover{
@@ -87,14 +85,14 @@
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
     -fx-text-background-color: #f1f1f1;
-    -fx-font-family: "Open Sans";
+    -fx-font-family: "Arial Black";
 }
 .table-row-cell:even{
     -fx-background-color: #012d5a;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
     -fx-text-background-color:#f1f1f1;
-    -fx-font-family: "Open Sans";
+    -fx-font-family: "Arial Black";
 }
 .table-row-cell:hover {
     -fx-background-color: #f1f1f1;

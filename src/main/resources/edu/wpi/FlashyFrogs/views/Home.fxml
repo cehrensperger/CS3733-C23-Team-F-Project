@@ -1,127 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
-    <stylesheets>
-        <URL value="@light-mode.css" />
-    </stylesheets>
-    <children>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox onMouseClicked="#openPathfinding" prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <ImageView fx:id="backgroundImage" fitHeight="600.0" fitWidth="800.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <image>
-                  <Image url="@backgroundImage.png" />
-               </image>
+            <Label text="Pathfinding" textFill="WHITE">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
             </ImageView>
          </children>
-      </AnchorPane>
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
-          <center>
-              <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="245.0" prefWidth="600.0" spacing="12.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TextArea fx:id="AboutText" editable='false' blendMode="DARKEN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="445.0" text="JOIN US IN TRANSFORMING THE FUTURE OF MEDICINE&#10;&#10;With your support, Brigham and Women's Hospital is able to deliver the highest quality patient care, pursue the most innovative and promising medical research, and train the brightest medical minds to become the next generation of healthcare leaders." wrapText="true" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets bottom="180.0" top="130.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Arial Black" size="16.0" />
-                     </font>
-                  </TextArea>
-               </children>
-
-              </HBox>
-          </center>
-         <top>
-            <MenuBar prefHeight="25.0" prefWidth="800.0" BorderPane.alignment="CENTER">
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleClose" text="Close" />
-                        <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#handleLoadMapMenuItem" text="Load Map" />
-                      <MenuItem fx:id="loadFeedbackMenuItem" mnemonicParsing="false" onAction="#handleFeedbackMenuItem" text="Feedback Form" />
-                      <MenuItem fx:id="logoutMenuItem" mnemonicParsing="false" onAction="#handleLogOut" text="Sign Out" />
-                  </items>
-                </Menu>
-                  <Menu mnemonicParsing="false" text="Service Requests">
-                    <items>
-                      <MenuItem fx:id="transportMenuItem" mnemonicParsing="false" onAction="#handleTransportMenuItem" text="Transport" />
-                        <MenuItem fx:id="sanitationMenuItem" mnemonicParsing="false" onAction="#handleSanitationMenuItem" text="Sanitation" />
-                        <MenuItem fx:id="securityMenuItem" mnemonicParsing="false" onAction="#handleSecurityMenuItem" text="Security" />
-                        <MenuItem fx:id="audioVisualMenuItem" mnemonicParsing="false" onAction="#handleAudioVisualMenuItem" text="Audio/Visual" />
-                        <MenuItem fx:id="computerMenuItem" mnemonicParsing="false" onAction="#handleComputerMenuItem" text="Computer" />
-                    </items>
-                  </Menu>
-                  <Menu fx:id="ColorScheme" mnemonicParsing="false" text="Color Scheme">
-                      <items>
-                          <MenuItem mnemonicParsing="false" onAction="#changeToDarkMode" text="Dark Mode" />
-                          <MenuItem mnemonicParsing="false" onAction="#changeToLightMode" text="Light Mode" />
-                      </items>
-                  </Menu>
-              </menus>
-            </MenuBar>
-         </top>
-         <bottom>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="BOTTOM_RIGHT">
-               <children>
-                        <MFXButton fx:id="exitButton" alignment="CENTER" onAction="#handleExitButton" prefHeight="34.0" prefWidth="100.0" text="Exit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </MFXButton>
-               </children>
-            </AnchorPane>
-         </bottom>
+         <effect>
+            <DropShadow />
+         </effect>
+      </VBox>
+      <BorderPane prefHeight="720.0" prefWidth="1280.0">
          <left>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="237.0" BorderPane.alignment="CENTER">
-               <children>
-                          <MFXButton fx:id="mapDataEditorButton" onAction="#handleMapDataEditorButton" prefHeight="49.0" prefWidth="256.0" text="Map Data Editor ">
-                              <VBox.margin>
-                                  <Insets left="20.0" top="120.0" />
-                              </VBox.margin>
-                          </MFXButton>
-                          <MFXButton fx:id="pathfindingButton" onAction="#handlePathfindingButton" prefHeight="49.0" prefWidth="254.0" text="Path Finding">
-                              <VBox.margin>
-                                  <Insets left="20.0" top="50.0" />
-                              </VBox.margin>
-                          </MFXButton>
-                          <MFXButton fx:id="serviceRequestsButton" alignment="CENTER" onAction="#handleServiceRequestsButton" prefHeight="49.0" prefWidth="230.0" text="Service Requests">
-                     <VBox.margin>
-                        <Insets left="20.0" top="50.0" />
-                     </VBox.margin>
-                          </MFXButton>
-               </children>
-            </VBox>
+            <VBox prefHeight="467.0" prefWidth="156.0" BorderPane.alignment="CENTER" />
          </left>
-         <right>
-            <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="508.0" prefWidth="100.0" BorderPane.alignment="CENTER_RIGHT">
-               <children>
-                  <MFXButton fx:id="question" contentDisplay="TOP" onAction="#handleQ" text="?">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </MFXButton>
-                  <MFXButton fx:id="secretButton" minHeight="-Infinity" minWidth="-Infinity" onAction="#secretMethod" opacity="0.0" prefHeight="132.0" prefWidth="4.0" />
-               </children>
-            </VBox>
-         </right>
       </BorderPane>
    </children>
-</StackPane>
+</AnchorPane>

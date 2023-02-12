@@ -14,7 +14,6 @@ public class PathFinder {
   public PathFinder(Session session) {
     this.session = session;
   }
-
   /**
    * Converts a String location name to the LocationName object associated with it. MAY return Null
    * if no location has that name

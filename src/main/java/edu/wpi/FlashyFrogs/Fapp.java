@@ -31,8 +31,7 @@ public class Fapp extends Application {
   public void start(Stage primaryStage) throws IOException {
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
-    primaryStage.setResizable(false);
-    final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Login.fxml"));
+    final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
 
     final Pane root = loader.load();
 
@@ -46,10 +45,11 @@ public class Fapp extends Application {
   }
 
   @SneakyThrows
-  public static void setScene(String sceneName) {
+  public static void setScene(String packageName, String sceneName) {
     Parent root =
         FXMLLoader.load(
-            Objects.requireNonNull(Fapp.class.getResource("views/" + sceneName + ".fxml")));
+            Objects.requireNonNull(
+                Fapp.class.getResource(packageName + "/" + sceneName + ".fxml")));
     Scene scene = new Scene(root);
     // apply CSS styling to pages whenever we switch to them
     rootPane
