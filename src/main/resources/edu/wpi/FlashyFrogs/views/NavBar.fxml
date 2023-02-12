@@ -8,11 +8,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.Rectangle?>
 
 <BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="TOP_CENTER" layoutX="66.0" layoutY="28.0" prefHeight="37.0" prefWidth="800.0" style="-fx-background-color: #012D5A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -34,18 +33,13 @@
             </HBox>
             <MenuButton mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-text-fill: #FFF;" text="Welcome, Wilson Wong" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
+                <MenuItem mnemonicParsing="false" text="User Preferences                 " />
+                <MenuItem mnemonicParsing="false" text="Sign Out" />
+                  <MenuItem mnemonicParsing="false" text="Close Application" />
               </items>
             </MenuButton>
+            <AnchorPane prefHeight="37.0" prefWidth="200.0" />
          </children>
       </AnchorPane>
    </top>
-   <left>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d1d1d1" height="1164.0" layoutY="-564.0" stroke="#d1d1d1" strokeType="INSIDE" width="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-564.0" />
-         </children>
-      </AnchorPane>
-   </left>
 </BorderPane>
