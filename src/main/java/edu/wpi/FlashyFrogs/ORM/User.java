@@ -50,6 +50,10 @@ public class User {
   @NonNull
   private EmployeeType employeeType;
 
+
+  /**
+   * The department the employee is a member of
+   */
   @JoinColumn(
       name = "department_name",
       foreignKey =
@@ -102,16 +106,28 @@ public class User {
    * @param middleName the middle name
    * @param lastName the last name
    * @param employeeType the type of employee
+   * @param department the department
    */
   public User(
       @NonNull String firstName,
       String middleName,
       @NonNull String lastName,
-      @NonNull EmployeeType employeeType) {
+      @NonNull EmployeeType employeeType,
+      Department department) {
     this.firstName = firstName; // Set the first name
     this.middleName = middleName; // Set the middle name
     this.lastName = lastName; // Set the last name
     this.employeeType = employeeType; // Set the employee type
+    this.department = department; // Set the department
+  }
+
+  /**
+   * ToString method, returns the first name " " the last name
+   * @return the display representation of the user
+   */
+  @Override
+  public String toString() {
+    return getFirstName() + " " + getLastName();
   }
 
   /**

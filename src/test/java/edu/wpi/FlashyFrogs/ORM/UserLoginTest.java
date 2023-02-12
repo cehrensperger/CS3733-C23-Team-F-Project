@@ -106,10 +106,17 @@ public class UserLoginTest {
     session.persist(user);
     session.persist(userLogin);
 
+    long originalID = user.getId(); // ID for the user to start after persisting
+
     // Assert that the mutation query updating the name throws
     assertThrows(
         Exception.class,
         () -> session.createMutationQuery("UPDATE User SET id=50").executeUpdate());
+
+    session.refresh(user); // Refresh the user to get any changes
+    session.refresh(userLogin); // Refresh the user login
+    assertEquals(originalID, user.getId()); // Assert the ID works
+    assertEquals(user, userLogin.getUser()); // Assert the user login has the right user
 
     session.close(); // Close the session
   }
@@ -132,6 +139,7 @@ public class UserLoginTest {
 
     // Assert the result list is 0 (there are no UserLogins)
     assertEquals(0, session.createQuery("FROM UserLogin", UserLogin.class).getResultList().size());
+    assertEquals(0, session.createQuery("FROM User", User.class).getResultList().size());
 
     transaction.rollback(); // Abort the transaction
     session.close(); // Close the session
@@ -155,6 +163,7 @@ public class UserLoginTest {
 
     // Assert the result list is 0 (there are no UserLogins)
     assertEquals(0, session.createQuery("FROM UserLogin", UserLogin.class).getResultList().size());
+    assertEquals(0, session.createQuery("FROM User", User.class).getResultList().size());
 
     transaction.rollback(); // Abort the transaction
     session.close(); // Close the session
