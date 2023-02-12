@@ -1,6 +1,8 @@
-package edu.wpi.FlashyFrogs.Map;
+package edu.wpi.FlashyFrogs.PathFinding;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.Map.MapController;
+import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
