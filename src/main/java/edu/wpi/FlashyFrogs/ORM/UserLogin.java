@@ -108,7 +108,7 @@ public class UserLogin {
    * @param potentialPassword given by user to be checked against actual password
    * @return true if the password matches the current password, false otherwise
    */
-  public boolean checkPasswordEqual(String potentialPassword) {
+  public boolean checkPasswordEqual(@NonNull String potentialPassword) {
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
     return argon2.verify(hash, potentialPassword.toCharArray());
   }
