@@ -128,8 +128,9 @@ public class HomeController {
   }
 
   /**
-   * Call to set EmployeeHome.fxml to light mode. Also makes some tweaks to JavaFX elements specific to
-   * EmployeeHome.fxml, so not all of this method is generalizable to setting any page to light mode.
+   * Call to set EmployeeHome.fxml to light mode. Also makes some tweaks to JavaFX elements specific
+   * to EmployeeHome.fxml, so not all of this method is generalizable to setting any page to light
+   * mode.
    */
   public void setToLightMode() {
     //    rootPane
@@ -169,8 +170,9 @@ public class HomeController {
   }
 
   /**
-   * Call to set EmployeeHome.fxml to dark mode. Also makes some tweaks to JavaFX elements specific to
-   * EmployeeHome.fxml, so not all of this method is generalizable to setting any page to dark mode.
+   * Call to set EmployeeHome.fxml to dark mode. Also makes some tweaks to JavaFX elements specific
+   * to EmployeeHome.fxml, so not all of this method is generalizable to setting any page to dark
+   * mode.
    */
   public void setToDarkMode() {
     //    rootPane

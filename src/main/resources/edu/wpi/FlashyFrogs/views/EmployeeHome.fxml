@@ -134,7 +134,7 @@
             <TableColumn prefWidth="298.0" text="Summary" />
         </columns>
       </TableView>
-      <ImageView fitHeight="112.0" fitWidth="1339.0" layoutX="220.0" pickOnBounds="true" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="-279.0" AnchorPane.topAnchor="0.0">
+      <ImageView fitHeight="112.0" fitWidth="1637.0" layoutX="220.0" pickOnBounds="true" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="-577.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@Brigham-Womens-TO-USE.jpg" />
          </image>
