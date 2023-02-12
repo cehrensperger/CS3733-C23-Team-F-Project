@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
    <children>
-      <VBox onMouseClicked="#openPathfinding" prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
+      <VBox prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label text="Pathfinding" textFill="WHITE">
+            <Label onMouseClicked="#openPathfinding" text="Pathfinding" textFill="WHITE" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
@@ -21,7 +21,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
