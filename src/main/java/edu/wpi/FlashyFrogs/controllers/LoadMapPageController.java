@@ -16,13 +16,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class LoadMapPageController {
-  @FXML private MFXButton chooseNodesButton;
-  @FXML private MFXButton chooseEdgesButton;
-  @FXML private MFXButton chooseLocationsButton;
-  @FXML private MFXButton chooseMovesButton;
-  @FXML private MFXButton backButton;
-  @FXML private MFXButton question;
-
   @FXML private Label nodesFileLabel;
   @FXML private Label edgesFileLabel;
   @FXML private Label locationsFileLabel;

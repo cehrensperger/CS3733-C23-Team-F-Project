@@ -21,11 +21,8 @@ import org.hibernate.Session;
 
 public class LoginAdministratorController {
 
-  @FXML private MFXButton back;
+
   @FXML private TableView<UserLogin> tableView;
-
-  @FXML private MFXButton addNewUser;
-
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, String> userName;
   @FXML private TableColumn<UserLogin, String> password;

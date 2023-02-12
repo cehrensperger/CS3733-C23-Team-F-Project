@@ -48,8 +48,6 @@ public class AllTransportController extends AllRequestsController {
 
   public void initialize() {
     System.out.println("initializing");
-    //    typeCol.setCellValueFactory(
-    //        new PropertyValueFactory<edu.wpi.FlashyFrogs.ORM.ServiceRequest, String>("type"));
 
     typeCol.setCellValueFactory(
         new Callback<
@@ -62,12 +60,9 @@ public class AllTransportController extends AllRequestsController {
 
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
-    // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    // Transaction transaction = session.beginTransaction();
-    // Sanitation sanitationRequest = new Sanitation();
 
     List<ServiceRequest> objects =
         session
@@ -91,7 +86,6 @@ public class AllTransportController extends AllRequestsController {
             serviceRequest.setStatus(ServiceRequest.Status.valueOf((t.getNewValue())));
 
             editSession.merge(serviceRequest);
-            // editSession.persist(serviceRequest);
             transaction.commit();
             editSession.close();
           }

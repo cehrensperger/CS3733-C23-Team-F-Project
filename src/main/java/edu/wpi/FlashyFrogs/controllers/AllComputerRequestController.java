@@ -33,7 +33,6 @@ public class AllComputerRequestController extends AllRequestsController {
 
   public void initialize() {
     System.out.println("initializing");
-    // typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
     typeCol.setCellValueFactory(
         new Callback<
             TableColumn.CellDataFeatures<ServiceRequest, String>, ObservableValue<String>>() {
@@ -42,19 +41,18 @@ public class AllComputerRequestController extends AllRequestsController {
             return new SimpleStringProperty(p.getValue().toString());
           }
         });
+
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
-    // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    // Transaction transaction = session.beginTransaction();
-    // Sanitation sanitationRequest = new Sanitation();
 
     List<ServiceRequest> objects =
         session
             .createQuery("SELECT s FROM ComputerService s", ServiceRequest.class)
             .getResultList();
+
     System.out.println(objects.size());
     System.out.println(FXCollections.observableList(objects).size());
     tableView.setItems(FXCollections.observableList(objects));
@@ -73,7 +71,6 @@ public class AllComputerRequestController extends AllRequestsController {
             serviceRequest.setStatus(ServiceRequest.Status.valueOf((t.getNewValue())));
 
             editSession.merge(serviceRequest);
-            // editSession.persist(serviceRequest);
             transaction.commit();
             editSession.close();
           }

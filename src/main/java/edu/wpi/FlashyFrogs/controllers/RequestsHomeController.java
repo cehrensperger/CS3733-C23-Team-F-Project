@@ -15,14 +15,6 @@ import org.controlsfx.control.PopOver;
 public class RequestsHomeController {
 
   @FXML private BorderPane rootPane;
-  @FXML private Text homeText;
-  @FXML private MFXButton internalPatientTransportationButton;
-  @FXML private MFXButton sanitationServicesButton;
-  @FXML private MFXButton securityServicesButton;
-  @FXML private MFXButton exitButton;
-  @FXML private MFXButton backButton;
-  @FXML private MFXButton allRequestsButton;
-  @FXML private MFXButton question;
 
   Stage stage;
 

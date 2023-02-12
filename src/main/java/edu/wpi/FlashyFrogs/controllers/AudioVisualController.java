@@ -34,17 +34,17 @@ public class AudioVisualController extends ServiceRequestController {
   @FXML private MFXTextField patientMiddle;
   @FXML private MFXTextField patientLast;
   @FXML private MFXDatePicker dateOfBirthEntry;
-  @FXML private MFXComboBox locationEntry;
-  @FXML private MFXComboBox accommodationEntry;
-  @FXML private MFXComboBox urgencyEntry;
+  @FXML private MFXComboBox<String> locationEntry;
+  @FXML private MFXComboBox<String> accommodationEntry;
+  @FXML private MFXComboBox<String> urgencyEntry;
   @FXML private MFXTextField empFirst;
   @FXML private MFXTextField empMiddle;
   @FXML private MFXTextField empLast;
-  @FXML private MFXComboBox empDeptEntry;
+  @FXML private MFXComboBox<String> empDeptEntry;
   @FXML private MFXTextField assignedEmpFirst;
   @FXML private MFXTextField assignedEmpMiddle;
   @FXML private MFXTextField assignedEmpLast;
-  @FXML private MFXComboBox assignedEmpDeptEntry;
+  @FXML private MFXComboBox<String> assignedEmpDeptEntry;
   @FXML private Label errorMessage;
 
   @FXML private MFXButton question;
@@ -71,6 +71,7 @@ public class AudioVisualController extends ServiceRequestController {
     }
 
     Session session = CONNECTION.getSessionFactory().openSession();
+
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
     session.close();
@@ -140,7 +141,6 @@ public class AudioVisualController extends ServiceRequestController {
       }
 
       String departmentEnumString2 = assignedEmpDeptEntry.getText().toUpperCase();
-      // String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
 
       Date dateOfIncident = Date.from(Instant.now());
       Date dateOfBirth =

@@ -19,7 +19,6 @@ public class NewUserController {
 
   private PopOver popOver;
   private LoginAdministratorController loginAdministratorController;
-  @FXML private MFXButton newUser;
   @FXML private MFXTextField username;
   @FXML private MFXPasswordField pass1;
   @FXML private MFXPasswordField pass2;

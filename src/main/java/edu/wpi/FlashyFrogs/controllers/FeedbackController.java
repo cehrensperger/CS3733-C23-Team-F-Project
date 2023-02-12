@@ -17,7 +17,7 @@ public class FeedbackController {
   @FXML private MFXTextField first;
   @FXML private MFXTextField middle;
   @FXML private MFXTextField last;
-  @FXML private MFXComboBox department;
+  @FXML private MFXComboBox<String> department;
   @FXML private MFXTextField email;
   @FXML private MFXTextField phone;
   @FXML private MFXButton clear;

@@ -30,7 +30,7 @@ public class AllRequestsController {
   @FXML protected TableColumn<ServiceRequest, String> submissionDateCol;
   @FXML protected TableColumn<ServiceRequest, String> statusCol;
 
-  @FXML protected TableView tableView;
+  @FXML protected TableView<ServiceRequest> tableView;
   @FXML private MFXButton back;
 
   @FXML private MFXButton question;
@@ -55,27 +55,27 @@ public class AllRequestsController {
 
   public void initialize() {
     System.out.println("initializing");
+
     typeCol.setCellValueFactory(
         new Callback<
             TableColumn.CellDataFeatures<ServiceRequest, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(
               TableColumn.CellDataFeatures<ServiceRequest, String> p) {
+            // p represents a single cell in the column (typeCol)
+            // This method returns what should be displayed in the cell
             return new SimpleStringProperty(p.getValue().toString());
           }
         });
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empLastName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
-    // submissionTimeCol.setCellValueFactory(new PropertyValueFactory<>("idk"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    // Transaction transaction = session.beginTransaction();
-    // Sanitation sanitationRequest = new Sanitation();
 
+    // get all ServiceRequests of any type from the DB
     List<ServiceRequest> objects =
         session.createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class).getResultList();
-    System.out.println(objects.size());
-    System.out.println(FXCollections.observableList(objects).size());
+
     tableView.setItems(FXCollections.observableList(objects));
     tableView.setEditable(true);
     statusCol.setCellFactory(ComboBoxTableCell.forTableColumn("BLANK", "PROCESSING", "DONE"));
@@ -92,7 +92,6 @@ public class AllRequestsController {
             serviceRequest.setStatus(ServiceRequest.Status.valueOf((t.getNewValue())));
 
             editSession.merge(serviceRequest);
-            // editSession.persist(serviceRequest);
             transaction.commit();
             editSession.close();
           }

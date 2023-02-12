@@ -6,7 +6,6 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinder;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
@@ -31,16 +30,12 @@ import org.hibernate.Session;
 
 public class PathFindingController {
 
-  @FXML private MFXFilterComboBox start;
-  @FXML private MFXFilterComboBox end;
-  @FXML private MFXButton getPath;
-  @FXML private MFXButton backButton;
-  @FXML private MFXButton clearButton;
+  @FXML private MFXFilterComboBox<String> start;
+  @FXML private MFXFilterComboBox<String> end;
   @FXML private AnchorPane mapPane;
   @FXML private MFXComboBox<Node.Floor> floorSelector;
   @FXML private HBox buttonsHBox;
   @FXML private Label error;
-  @FXML private MFXButton question;
 
   private MapController mapController;
   AtomicReference<PopOver> mapPopOver =
@@ -205,6 +200,9 @@ public class PathFindingController {
                   });
 
           // get location name of the node in the path to check against the start and end locations
+          // getCurrentLocation() creates its own session but map already has one running,
+          // so we have to use that one
+
           LocationName nodeLocation = node.getCurrentLocation(mapController.getMapSession());
 
           // if the node location is null, don't attempt to check it against the start and end text
