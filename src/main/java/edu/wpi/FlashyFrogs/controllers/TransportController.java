@@ -149,14 +149,14 @@ public class TransportController extends ServiceRequestController {
               dateOfBirthDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       InternalTransport transport = new InternalTransport();
-      transport.setEmpFirstName(firstNameTextfield2.getText());
-      transport.setEmpMiddleName(middleNameTextfield2.getText());
-      transport.setEmpLastName(lastNameTextfield2.getText());
-      transport.setAssignedEmpFirstName(first2.getText());
-      transport.setAssignedEmpMiddleName(middle2.getText());
-      transport.setAssignedEmpLastName(last2.getText());
-      transport.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
-      transport.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
+      //      transport.setEmpFirstName(firstNameTextfield2.getText());
+      //      transport.setEmpMiddleName(middleNameTextfield2.getText());
+      //      transport.setEmpLastName(lastNameTextfield2.getText());
+      //      transport.setAssignedEmpFirstName(first2.getText());
+      //      transport.setAssignedEmpMiddleName(middle2.getText());
+      //      transport.setAssignedEmpLastName(last2.getText());
+      //      transport.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
+      //      transport.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
       transport.setDateOfBirth(dateOfBirth);
       transport.setDateOfIncident(dateOfTransport);
       transport.setDateOfSubmission(Date.from(Instant.now()));
