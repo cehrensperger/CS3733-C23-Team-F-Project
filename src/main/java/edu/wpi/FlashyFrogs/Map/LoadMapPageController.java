@@ -1,11 +1,10 @@
 package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.*;
+import edu.wpi.FlashyFrogs.controllers.HelpController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import edu.wpi.FlashyFrogs.controllers.HelpController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
