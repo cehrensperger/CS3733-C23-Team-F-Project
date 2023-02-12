@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.PathFinding;
+package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;

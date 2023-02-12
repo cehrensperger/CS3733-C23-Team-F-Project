@@ -1,12 +1,10 @@
-package edu.wpi.FlashyFrogs.PathFinding;
+package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
-import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
