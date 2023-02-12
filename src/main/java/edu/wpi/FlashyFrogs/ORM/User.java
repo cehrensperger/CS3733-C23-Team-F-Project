@@ -1,12 +1,11 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
-
-import java.util.Objects;
 
 /** Class representing a user in the database */
 @Entity
@@ -63,13 +62,17 @@ public class User {
 
   /**
    * Creates a user with filled-in fields
+   *
    * @param firstName the first name
    * @param middleName the middle name
    * @param lastName the last name
    * @param employeeType the type of employee
    */
-  public User(@NonNull String firstName, String middleName, @NonNull String lastName,
-              @NonNull EmployeeType employeeType) {
+  public User(
+      @NonNull String firstName,
+      String middleName,
+      @NonNull String lastName,
+      @NonNull EmployeeType employeeType) {
     this.firstName = firstName; // Set the first name
     this.middleName = middleName; // Set the middle name
     this.lastName = lastName; // Set the last name
@@ -78,13 +81,15 @@ public class User {
 
   /**
    * Determines if two users are equal by comparing their IDs
+   *
    * @param o the other object
    * @return true if and only if both are Users and the second user has the same ID
    */
   @Override
   public boolean equals(Object o) {
     if (this == o) return true; // Quick check
-    if (o == null || getClass() != o.getClass()) return false; // Bad the other one is a different class
+    if (o == null || getClass() != o.getClass())
+      return false; // Bad the other one is a different class
 
     User user = (User) o; // Cast
 
@@ -93,6 +98,7 @@ public class User {
 
   /**
    * Hash code implementation, hashes the ID
+   *
    * @return the hash of the ID
    */
   @Override

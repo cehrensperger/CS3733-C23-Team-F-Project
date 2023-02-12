@@ -25,7 +25,7 @@ public class UserLogin {
           @ForeignKey(
               name = "user_id_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (user_id) REFERENCES " + "user(id) ON DELETE CASCADE"))
+                  "FOREIGN KEY (user_id) REFERENCES \"user\"(id) ON DELETE CASCADE"))
   @OneToOne
   @NonNull
   @Getter

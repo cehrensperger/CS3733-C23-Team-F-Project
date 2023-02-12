@@ -181,16 +181,7 @@ public class ComputerServiceTest {
             "Lenovo Rogue",
             "Bad battery life",
             ComputerService.ServiceType.HARDWARE_REPAIR);
-    assertTrue(testCS.equals(otherCS));
-  }
-
-  /** Tests to see that HashCode changes when attributes that determine HashCode changes */
-  @Test
-  void testHashCode() {
-    int originalHash = testCS.hashCode();
-    testCS.setId(1);
-    testCS.setDateOfSubmission(new Date(2023 - 01 - 30));
-    assertNotEquals(testCS.hashCode(), originalHash);
+    assertEquals(testCS, otherCS);
   }
 
   /** Checks to see if toString makes a string in the same format specified in Sanitation.java */

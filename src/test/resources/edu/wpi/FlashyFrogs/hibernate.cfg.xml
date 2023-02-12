@@ -39,6 +39,8 @@
         <mapping class="edu.wpi.FlashyFrogs.ORM.AudioVisual"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.UserLogin"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.User"/>
 
         <!-- Names the annotated entity class -->
     </session-factory>
