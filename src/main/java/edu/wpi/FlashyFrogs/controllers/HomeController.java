@@ -1,11 +1,13 @@
 package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -14,7 +16,18 @@ import org.controlsfx.control.PopOver;
 
 public class HomeController {
   @FXML private StackPane rootPane;
+  @FXML private MFXButton serviceRequestsButton;
+  @FXML private MFXButton mapDataEditorButton;
+  @FXML private MFXButton pathfindingButton;
+  @FXML private MFXButton question;
+  @FXML private MFXButton exitButton;
+  @FXML private MenuItem closeMenuItem;
+  @FXML private MenuItem loadMapMenuItem;
+  @FXML private MenuItem loadFeedbackMenuItem;
+  @FXML private MenuItem logoutMenuItem;
+  @FXML private MFXButton hiddneButton;
   @FXML private ImageView backgroundImage;
+  @FXML private MFXButton secretButton;
   @FXML private TextArea AboutText;
 
   Stage stage;
@@ -64,11 +77,11 @@ public class HomeController {
   }
 
   public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "RequestsHome");
+    Fapp.setScene("views","RequestsHome");
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("MapEditor", "MapEditorView");
+    Fapp.setScene("views", "MapEditorView");
   }
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
@@ -147,10 +160,13 @@ public class HomeController {
    * Change the color theme to Dark Mode when the Color Scheme > Dark Mode option is selected on
    * Home.fxml.
    *
-   * @param actionEvent not used
+   * @param actionEvent
+   * @throws IOException
    */
+
   public void changeToDarkMode(ActionEvent actionEvent) {
     // setToDarkMode();
+
   }
 
   /**
