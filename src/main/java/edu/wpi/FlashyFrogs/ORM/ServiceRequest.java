@@ -26,61 +26,34 @@ public class ServiceRequest {
   @Setter
   private Status status;
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
-  private String empFirstName;
+  @JoinColumn(
+      name = "empid",
+      foreignKey =
+          @ForeignKey(
+              name = "empid_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (empid) REFERENCES " + "\"emp\"(id) ON DELETE SET NULL"),
+      nullable = false)
+  @Cascade(org.hibernate.annotations.CascadeType.DELETE)
+  @NonNull
+  @ManyToOne
+  private User emp;
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
-  private String empMiddleName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String empLastName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private EmpDept empDept;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String assignedEmpFirstName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String assignedEmpMiddleName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String assignedEmpLastName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private EmpDept assignedEmpDept;
+  @JoinColumn(
+      name = "empid",
+      foreignKey =
+          @ForeignKey(
+              name = "empid_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (empid) REFERENCES " + "\"assignedEmp\"(id) ON DELETE SET NULL")
+      )
+  @Cascade(org.hibernate.annotations.CascadeType.DELETE)
+  @ManyToOne
+  private User assignedEmp;
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
