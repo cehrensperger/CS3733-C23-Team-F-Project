@@ -1,16 +1,15 @@
 package edu.wpi.FlashyFrogs.ORM;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import edu.wpi.FlashyFrogs.DBConnection;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /** Tests for the ORM user class */
 public class UserTest {
@@ -157,9 +156,7 @@ public class UserTest {
     assertEquals(User.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
   }
 
-  /**
-   * Tests setting all parameters one at a time and testing for sequential side effects
-   */
+  /** Tests setting all parameters one at a time and testing for sequential side effects */
   @Test
   public void setAllTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -219,9 +216,7 @@ public class UserTest {
     assertEquals(User.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
   }
 
-  /**
-   * Tests that duplicate names are allowed (and that they end up with different names)
-   */
+  /** Tests that duplicate names are allowed (and that they end up with different names) */
   @Test
   public void duplicateNamesAllowedTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -235,15 +230,15 @@ public class UserTest {
     session.persist(uCopy); // Persist the other one with identical fields
 
     // Assert that the users are correct
-    assertEquals(List.of(u, uCopy), session.createQuery("FROM User",
-            User.class).getResultList());
+    assertEquals(List.of(u, uCopy), session.createQuery("FROM User", User.class).getResultList());
 
     transaction.rollback(); // Rollback
     session.close(); // Close
   }
 
   /**
-   * Tests the equals and hash code methods for the user class, ensures that fetched objects are equal
+   * Tests the equals and hash code methods for the user class, ensures that fetched objects are
+   * equal
    */
   @Test
   public void testEqualsAndHashCode() {
@@ -256,8 +251,8 @@ public class UserTest {
 
     // Assert that the one thing in the database matches this
     assertEquals(u, session.createQuery("FROM User", User.class).getSingleResult());
-    assertEquals(u.hashCode(),
-            session.createQuery("FROM User", User.class).getSingleResult().hashCode());
+    assertEquals(
+        u.hashCode(), session.createQuery("FROM User", User.class).getSingleResult().hashCode());
 
     // Identical user that should have a different ID
     User u2 = new User("a", "b", "c", User.EmployeeType.MEDICAL);
@@ -272,5 +267,8 @@ public class UserTest {
 
     assertNotEquals(u, u3); // Assert U and U3 aren't equal
     assertNotEquals(u.hashCode(), u3.hashCode()); // Assert their hash codes are different
+
+    transaction.rollback();
+    session.close();
   }
 }

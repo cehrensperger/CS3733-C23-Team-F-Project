@@ -2,23 +2,43 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import java.util.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.junit.jupiter.api.*;
 
 // Creates iteration of Sanitation
 public class AudioVisualTest {
+  /** Sets up the data base before all tests run */
+  @BeforeAll
+  public static void setupDBConnection() {
+    DBConnection.CONNECTION.connect(); // Connect
+  }
+
+  /** Tears down the database, meant to be used after all tests finish */
+  @AfterAll
+  public static void disconnectDBConnection() {
+    DBConnection.CONNECTION.disconnect(); // Disconnect
+  }
+
+  /** Cleans up the user table. Runs after each test */
+  @AfterEach
+  public void teardownTable() {
+    // Use a closure to manage the session to use
+    try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
+      connection.createMutationQuery("DELETE FROM AudioVisual").executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
+      cleanupTransaction.commit(); // Commit the cleanup
+    }
+  }
+
+  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
+  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL);
   AudioVisual testAV =
       new AudioVisual(
-          "Wilson",
-          "Softeng",
-          "Wong",
-          "Jonathan",
-          "Elias",
-          "Golden",
-          ServiceRequest.EmpDept.CARDIOLOGY,
-          ServiceRequest.EmpDept.MAINTENANCE,
+          emp,
           new Date(2023 - 01 - 31),
           new Date(2023 - 02 - 01),
           ServiceRequest.Urgency.MODERATELY_URGENT,
@@ -33,14 +53,15 @@ public class AudioVisualTest {
   @BeforeEach
   @AfterEach
   public void resetTestSanitation() {
-    testAV.setEmpFirstName("Wilson");
-    testAV.setEmpMiddleName("Softeng");
-    testAV.setEmpLastName("Wong");
-    testAV.setAssignedEmpFirstName("Jonathan");
-    testAV.setAssignedEmpMiddleName("Elias");
-    testAV.setAssignedEmpLastName("Golden");
-    testAV.setEmpDept(ServiceRequest.EmpDept.CARDIOLOGY);
-    testAV.setAssignedEmpDept(ServiceRequest.EmpDept.MAINTENANCE);
+    emp.setFirstName("Wilson");
+    emp.setMiddleName("Softeng");
+    emp.setLastName("Wong");
+    assignedEmp.setFirstName("Jonathan");
+    assignedEmp.setMiddleName("Elias");
+    assignedEmp.setLastName("Golden");
+    emp.setEmployeeType(User.EmployeeType.MEDICAL);
+    assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
+    testAV.setAssignedEmp(assignedEmp);
     testAV.setDateOfIncident(new Date(2023 - 01 - 31));
     testAV.setDateOfSubmission(new Date(2023 - 02 - 01));
     testAV.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
@@ -52,66 +73,20 @@ public class AudioVisualTest {
     testAV.setDateOfBirth(new Date(2001 - 12 - 8));
   }
 
-  /** Tests setter for empFirstName */
+  /** Tests setter for emp */
   @Test
-  public void setEmpFirstName() {
-    String newEmpFirstName = "Greg";
-    testAV.setEmpFirstName(newEmpFirstName);
-    assertEquals(newEmpFirstName, testAV.getEmpFirstName());
+  public void setEmp() {
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    testAV.setEmp(newEmp);
+    assertEquals(newEmp, testAV.getEmp());
   }
 
-  /** Tests setter for empMiddleName */
+  /** Test setter for Assigned emp */
   @Test
-  void setEmpMiddleName() {
-    String newEmpMiddleName = "Grag";
-    testAV.setEmpMiddleName(newEmpMiddleName);
-    assertEquals(newEmpMiddleName, testAV.getEmpMiddleName());
-  }
-
-  /** Tests setter for empLastName */
-  @Test
-  void setEmpLastName() {
-    String newEmpLastName = "Gregson";
-    testAV.setEmpLastName(newEmpLastName);
-    assertEquals(newEmpLastName, testAV.getEmpLastName());
-  }
-
-  /** Tests setter for assignedEmpFirstName */
-  @Test
-  void setAssignedEmpFirstName() {
-    String newAssignedEmpFirstName = "William";
-    testAV.setAssignedEmpFirstName(newAssignedEmpFirstName);
-    assertEquals(newAssignedEmpFirstName, testAV.getAssignedEmpFirstName());
-  }
-
-  /** Tests setter for assignedEmpMiddleName */
-  @Test
-  void setAssignedEmpMiddleName() {
-    String newAssignedEmpMiddleName = "Martin";
-    testAV.setAssignedEmpMiddleName(newAssignedEmpMiddleName);
-    assertEquals(newAssignedEmpMiddleName, testAV.getAssignedEmpMiddleName());
-  }
-
-  /** Tests setter for assignedEmpLastName */
-  @Test
-  void setAssignedEmpLastName() {
-    String newAssignedEmpLastName = "Joel";
-    testAV.setAssignedEmpLastName(newAssignedEmpLastName);
-    assertEquals(newAssignedEmpLastName, testAV.getAssignedEmpLastName());
-  }
-
-  /** Tests setter for empDept */
-  @Test
-  void setEmpDept() {
-    testAV.setEmpDept(ServiceRequest.EmpDept.NURSING);
-    assertEquals(ServiceRequest.EmpDept.NURSING, testAV.getEmpDept());
-  }
-
-  /** Tests setter for assignedEmpDept */
-  @Test
-  void setAssignedEmpDept() {
-    testAV.setAssignedEmpDept(ServiceRequest.EmpDept.RADIOLOGY);
-    assertEquals(ServiceRequest.EmpDept.RADIOLOGY, testAV.getAssignedEmpDept());
+  public void setAssignedEmp() {
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN);
+    testAV.setAssignedEmp(newEmp);
+    assertEquals(newEmp, testAV.getAssignedEmp());
   }
 
   /** Tests setter for dateOfIncident */
@@ -179,19 +154,24 @@ public class AudioVisualTest {
     assertEquals(new Date(2001 - 1 - 1), testAV.getDateOfBirth());
   }
 
-  /** Tests if the equals in Sanitation.java correctly compares two Sanitation objects */
+  /**
+   * Tests the equals and hash code methods for the AudioVisual class, ensures that fetched objects
+   * are equal
+   */
   @Test
-  void testEquals() {
-    AudioVisual otherAV =
+  public void testEqualsAndHashCode() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
+    LocationName location = new LocationName("Name", LocationName.LocationType.EXIT, "name");
+
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    AudioVisual av =
         new AudioVisual(
-            "Wilson",
-            "Softeng",
-            "Wong",
-            "Jonathan",
-            "Elias",
-            "Golden",
-            ServiceRequest.EmpDept.CARDIOLOGY,
-            ServiceRequest.EmpDept.MAINTENANCE,
+            emp,
             new Date(2023 - 01 - 31),
             new Date(2023 - 02 - 01),
             ServiceRequest.Urgency.MODERATELY_URGENT,
@@ -199,9 +179,54 @@ public class AudioVisualTest {
             "Emre",
             "Rusen",
             "Sabaz",
-            new LocationName("Name", LocationName.LocationType.EXIT, "name"),
+            location,
             new Date(2001 - 12 - 8));
-    assertEquals(testAV, otherAV);
+    session.persist(av);
+
+    // Assert that the one thing in the database matches this
+    assertEquals(av, session.createQuery("FROM AudioVisual", AudioVisual.class).getSingleResult());
+    assertEquals(
+        av.hashCode(),
+        session.createQuery("FROM AudioVisual ", AudioVisual.class).getSingleResult().hashCode());
+
+    // Identical user that should have a different ID
+    AudioVisual av2 =
+        new AudioVisual(
+            emp,
+            new Date(2023 - 01 - 31),
+            new Date(2023 - 02 - 01),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            AudioVisual.AccommodationType.AUDIO,
+            "Emre",
+            "Rusen",
+            "Sabaz",
+            location,
+            new Date(2001 - 12 - 8));
+    session.persist(av2); // Load U2 into the DB, set its ID
+
+    assertNotEquals(av, av2); // Assert U and U2 aren't equal
+    assertNotEquals(av.hashCode(), av2.hashCode()); // Assert their has hash codes are different
+
+    // Completely different user
+    AudioVisual av3 =
+        new AudioVisual(
+            emp,
+            new Date(2024 - 02 - 20),
+            new Date(2024 - 03 - 21),
+            ServiceRequest.Urgency.VERY_URGENT,
+            AudioVisual.AccommodationType.VISUAL,
+            "Owen",
+            "Matthew",
+            "Krause",
+            location,
+            new Date(2002 - 11 - 2));
+    session.persist(av3); // Load u3 into the DB, set its ID
+
+    assertNotEquals(av, av3); // Assert U and U3 aren't equal
+    assertNotEquals(av.hashCode(), av3.hashCode()); // Assert their hash codes are different
+
+    transaction.rollback();
+    session.close();
   }
 
   /** Checks to see if toString makes a string in the same format specified in Sanitation.java */

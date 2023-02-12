@@ -44,12 +44,13 @@ public class ServiceRequest {
   @Getter
   @Setter
   @JoinColumn(
-      name = "empid",
+      name = "assignedempid",
       foreignKey =
           @ForeignKey(
-              name = "empid_fk",
+              name = "assignedempid_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (empid) REFERENCES " + "\"assignedEmp\"(id) ON DELETE SET NULL"))
+                  "FOREIGN KEY (assignedempid) REFERENCES "
+                      + "\"assignedEmp\"(id) ON DELETE SET NULL"))
   @Cascade(org.hibernate.annotations.CascadeType.DELETE)
   @ManyToOne
   private User assignedEmp;
@@ -157,14 +158,13 @@ public class ServiceRequest {
   }
 
   /**
-   * Overrides the default hashCode method with one that uses the id and dateOfSubmission of the
-   * object
+   * Overrides the default hashCode method with one that uses the id of the object
    *
    * @return the new hashcode
    */
   @Override
   public int hashCode() {
-    return Objects.hash(this.id, this.dateOfSubmission);
+    return Objects.hash(this.id);
   }
 
   /**
