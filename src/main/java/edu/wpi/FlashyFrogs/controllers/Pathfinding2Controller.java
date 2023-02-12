@@ -85,7 +85,7 @@ public class Pathfinding2Controller {
           // drawNodesAndEdges(); // Re-draw pop-ups
           try {
             // If we have a valid path
-            floorSelector.setText("Floor " + newValue.n);
+            floorSelector.setText("Floor " + newValue.name());
             hideAll();
             if (!startingBox.valueProperty().get().equals("")
                 && !destinationBox.valueProperty().get().equals("")) {
