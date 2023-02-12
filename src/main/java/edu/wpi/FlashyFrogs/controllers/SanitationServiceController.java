@@ -33,28 +33,26 @@ public class SanitationServiceController extends ServiceRequestController {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML
   @FXML MFXButton submitButton;
   @FXML MFXButton backButton;
-  @FXML MFXComboBox requestTypeDropDown;
-  @FXML MFXComboBox locationDropDown;
+  @FXML MFXComboBox<String> requestTypeDropDown;
+  @FXML MFXComboBox<String> locationDropDown;
   @FXML MFXDatePicker date;
   @FXML MFXTextField firstName;
   @FXML MFXTextField lastName;
   @FXML MFXTextField middleName;
-  @FXML MFXComboBox departmentDropDown;
-  @FXML MFXComboBox urgencyEntry;
+  @FXML MFXComboBox<String> departmentDropDown;
+  @FXML MFXComboBox<String> urgencyEntry;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
-  @FXML private MFXComboBox department2;
+  @FXML private MFXComboBox<String> department2;
   @FXML private MFXButton allButton;
   @FXML private MFXButton question;
   @FXML Label errorMessage;
-  private Connection connection = null; // connection to database
 
   /** Method run when controller is initializes */
   public void initialize() {
     urgencyEntry.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     requestTypeDropDown.getItems().addAll("Mopping", "Sweeping", "Vacuuming");
-    // locationDropDown.getItems().addAll("room 1", "room 2", "public space 1", "public space 2");
 
     // I don't really know what to put here
     departmentDropDown.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
@@ -65,13 +63,7 @@ public class SanitationServiceController extends ServiceRequestController {
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
     session.close();
 
-    objects.sort(
-        new Comparator<String>() {
-          @Override
-          public int compare(String o1, String o2) {
-            return o1.compareTo(o2);
-          }
-        });
+    objects.sort(String::compareTo);
 
     locationDropDown.setItems(FXCollections.observableList(objects));
 
@@ -111,7 +103,7 @@ public class SanitationServiceController extends ServiceRequestController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String[] parts = {};
+      String[] parts;
       String departmentEnumString = departmentDropDown.getText().toUpperCase().replace(" ", "_");
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       parts = urgencyEntry.getText().toUpperCase().split(" ");
@@ -179,13 +171,13 @@ public class SanitationServiceController extends ServiceRequestController {
    * @throws IOException
    */
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
 
-    Fapp.setScene("AllSanitationRequest");
+    Fapp.setScene("views", "AllSanitationRequest");
   }
 
   @FXML

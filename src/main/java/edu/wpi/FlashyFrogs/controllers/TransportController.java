@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.Comparator;
-import java.util.Comparator.*;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -39,20 +37,18 @@ public class TransportController extends ServiceRequestController {
   @FXML MFXTextField lastNameTextfield2;
   @FXML MFXTextField middleNameTextfield2;
   @FXML MFXDatePicker dateOfBirthDatePicker;
-  @FXML MFXComboBox currentLocationComboBox;
-  @FXML MFXComboBox newLocationComboBox;
+  @FXML MFXComboBox<String> currentLocationComboBox;
+  @FXML MFXComboBox<String> newLocationComboBox;
   @FXML MFXDatePicker dateOfTransportDatePicker;
-  @FXML MFXComboBox departmentComboBox;
+  @FXML MFXComboBox<String> departmentComboBox;
   @FXML MFXButton clearButton;
   @FXML MFXButton submitButton;
-  @FXML MFXButton backButton;
   @FXML MFXButton question;
-  @FXML MFXComboBox urgency;
+  @FXML MFXComboBox<String> urgency;
   @FXML private MFXTextField first2;
   @FXML private MFXTextField middle2;
   @FXML private MFXTextField last2;
-  @FXML private MFXComboBox department2;
-  @FXML private MFXButton allButton;
+  @FXML private MFXComboBox<String> department2;
   @FXML private Label errorMessage;
 
   private Connection connection = null; // connection to database
@@ -64,16 +60,9 @@ public class TransportController extends ServiceRequestController {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
-    objects.sort(
-        new Comparator<String>() {
-          @Override
-          public int compare(String o1, String o2) {
-            return o1.compareTo(o2);
-          }
-        });
-    //    StringComparator stringComparator = new StringComparator();
+    objects.sort(String::compareTo);
+
     ObservableList<String> observableList = FXCollections.observableList(objects);
-    //    observableList.sort(stringComparator);
 
     newLocationComboBox.setItems(observableList);
     currentLocationComboBox.setItems(FXCollections.observableList(objects));
@@ -104,7 +93,7 @@ public class TransportController extends ServiceRequestController {
 
   @FXML
   public void handleAllButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("AllTransport");
+    Fapp.setScene("views", "AllTransport");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -116,6 +105,7 @@ public class TransportController extends ServiceRequestController {
       String departmentEnumString2 = department2.getText().toUpperCase().replace(" ", "_");
       String urgencyString = urgency.getText().toUpperCase().replace(" ", "_");
 
+      // check
       if (firstNameTextfield.getText().equals("")
           || middleNameTextfield.getText().equals("")
           || lastNameTextfield.getText().equals("")
@@ -198,7 +188,7 @@ public class TransportController extends ServiceRequestController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   @FXML

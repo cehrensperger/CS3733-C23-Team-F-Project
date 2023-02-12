@@ -21,17 +21,14 @@ import org.hibernate.Session;
 
 public class LoginAdministratorController {
 
-  @FXML private MFXButton back;
+
   @FXML private TableView<UserLogin> tableView;
-
-  @FXML private MFXButton addNewUser;
-
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, String> userName;
   @FXML private TableColumn<UserLogin, String> password;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Login");
+    Fapp.setScene("views", "Login");
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {

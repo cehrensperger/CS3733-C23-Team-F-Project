@@ -16,7 +16,6 @@ public class ServiceRequest {
   @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Column(nullable = false)
   @Getter
-  @Setter
   @GeneratedValue
   private long id;
 

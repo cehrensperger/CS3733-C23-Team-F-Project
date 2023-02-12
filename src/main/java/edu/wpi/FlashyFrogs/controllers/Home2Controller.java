@@ -12,14 +12,7 @@ import javafx.stage.Stage;
 public class Home2Controller {
 
   @FXML private StackPane rootPane;
-  @FXML private MFXButton serviceRequestsButton;
-  @FXML private MFXButton mapDataEditorButton;
-  @FXML private MFXButton pathfindingButton;
-  @FXML private MFXButton exitButton;
-  @FXML private MenuItem closeMenuItem;
-  @FXML private MenuItem loadMapMenuItem;
-  @FXML private MenuItem loadFeedbackMenuItem;
-  @FXML private MFXButton secretButton;
+
 
   Stage stage;
 
@@ -36,38 +29,38 @@ public class Home2Controller {
   }
 
   public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("RequestsHome");
+    Fapp.setScene("views", "RequestsHome");
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("DBTableEditor");
+    Fapp.setScene("views", "DBTableEditor");
   }
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("PathFinding");
+    Fapp.setScene("views", "PathFinding");
   }
 
   public void handleSecurityMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SecurityService");
+    Fapp.setScene("views", "SecurityService");
   }
 
   public void handleTransportMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Transport");
+    Fapp.setScene("views", "Transport");
   }
 
   public void handleSanitationMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("SanitationService");
+    Fapp.setScene("views", "SanitationService");
   }
 
   public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("LoadMapPage");
+    Fapp.setScene("views", "LoadMapPage");
   }
 
   public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Feedback");
+    Fapp.setScene("views", "Feedback");
   }
 
   public void secretMethod(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Home");
+    Fapp.setScene("views", "Home");
   }
 }

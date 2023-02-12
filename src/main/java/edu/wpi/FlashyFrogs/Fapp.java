@@ -46,10 +46,11 @@ public class Fapp extends Application {
   }
 
   @SneakyThrows
-  public static void setScene(String sceneName) {
+  public static void setScene(String packageName, String sceneName) {
     Parent root =
         FXMLLoader.load(
-            Objects.requireNonNull(Fapp.class.getResource("views/" + sceneName + ".fxml")));
+            Objects.requireNonNull(
+                Fapp.class.getResource(packageName + "/" + sceneName + ".fxml")));
     Scene scene = new Scene(root);
     // apply CSS styling to pages whenever we switch to them
     rootPane

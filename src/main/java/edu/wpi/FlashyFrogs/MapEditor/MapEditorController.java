@@ -1,12 +1,19 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.MapEditor;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
+import io.github.palexdev.materialfx.dialogs.MFXStageDialogBuilder;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -26,9 +34,6 @@ import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 public class MapEditorController {
-  @FXML private MFXButton backButton;
-  @FXML private MFXButton cancelButton;
-  @FXML private MFXButton saveButton;
   @FXML private MFXComboBox<Node.Floor> floorSelector;
   @FXML private BorderPane editorBox; // Editor box, map is appended to this on startup
   private MapController mapController; // Controller for the map
@@ -41,24 +46,6 @@ public class MapEditorController {
   @SneakyThrows
   @FXML
   private void initialize() {
-    // Exit listener
-    backButton.setOnAction(
-        event -> {
-          mapController.exit(); // Should go back
-
-          Fapp.setScene("Home");
-        });
-
-    // Cancel listener
-    cancelButton.setOnAction(
-        event -> {
-          mapController.cancelChanges(); // Cancel changes
-          createLocationNameTable(mapController.getMapSession()); // Reload the table
-        });
-
-    // Save listener
-    saveButton.setOnAction(event -> mapController.saveChanges());
-
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -80,13 +67,12 @@ public class MapEditorController {
                 // If the pop over exists and is either not focused or we are showing a new
                 // row
                 if (tablePopOver.get() != null) {
-                  tablePopOver.get().hide(); // Hide the pop-over
-                  tablePopOver.set(null); // Delete the pop-over
+                  tablePopOver.getAndSet(null).hide(); // Hide the pop-over and clear it
                 }
 
                 // Load the location name info view
                 FXMLLoader locationNameLoader =
-                    new FXMLLoader(Fapp.class.getResource("views/LocationNameInfo.fxml"));
+                    new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
 
                 // Load the resource
                 try {
@@ -98,19 +84,20 @@ public class MapEditorController {
                 LocationNameInfoController controller =
                     locationNameLoader.getController(); // Get the controller
 
-                // We need to cache the row num, as when we do the setter, this will change
-                int rowNum = row.getIndex();
-
                 // Set the location name to the value
                 controller.setLocationName(
                     row.getItem(), // Set it to the rows item
                     mapController.getMapSession(),
-                    () -> {
-                      locationTable.getItems().remove(row.getItem());
-                      tablePopOver.get().hide();
+                    (oldName) -> {
+                      locationTable.getItems().remove(oldName); // Remove the old name
+                      tablePopOver.get().hide(); // Remove the pop-over
                     },
-                    // Set the original saved row number to be the new location nam,e
-                    (locationName) -> locationTable.getItems().set(rowNum, locationName),
+                    // Set the original saved row number to be the new location name
+                    (oldLocation, newLocation) -> {
+                      updateLocationInTable(
+                          oldLocation, newLocation); // Update the location in the table
+                      tablePopOver.getAndSet(null).hide(); // Hide the pop-over
+                    },
                     false);
 
                 tablePopOver.get().show(row); // Show the pop-over on the row
@@ -120,7 +107,7 @@ public class MapEditorController {
         });
 
     // Load the map loader
-    FXMLLoader mapLoader = new FXMLLoader(Fapp.class.getResource("views/Map.fxml"));
+    FXMLLoader mapLoader = new FXMLLoader(Fapp.class.getResource("Map/Map.fxml"));
 
     Pane map = mapLoader.load(); // Load the map
     editorBox.setCenter(map); // Put the map loader into the editor box
@@ -143,13 +130,11 @@ public class MapEditorController {
                 // either create a new one
                 // or, keep it deleted
                 if (mapPopOver.get() != null) {
-                  mapPopOver.get().hide(); // Hide it
-                  mapPopOver.set(null); // And delete it (set it to null)
+                  mapPopOver.getAndSet(null).hide(); // Hide it and clear it
                 }
 
                 // Get the node info in FXML form
-                FXMLLoader nodeInfoLoader =
-                    new FXMLLoader(Fapp.class.getResource("views/NodeInfo.fxml"));
+                FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
 
                 try {
                   // Try creating the pop-over
@@ -163,10 +148,17 @@ public class MapEditorController {
                 controller.setNode(
                     node,
                     mapController.getMapSession(),
-                    () -> {
-                      mapPopOver.getAndSet(null).hide(); // hide the pop-over
-                      mapController.redraw(); // Redraw the map
-                    }); // Set the node
+                    (oldNode) -> {
+                      mapController.deleteNode(oldNode); // On delete, delete
+                      mapPopOver.getAndSet(null).hide(); // And get rid of the pop-up
+                    },
+                    (oldNode, newNode) -> {
+                      mapController.moveNode(oldNode, newNode); // On move move
+                      mapPopOver.getAndSet(null).hide(); // And get the pop-up
+                    },
+                    (oldLocation) -> locationTable.getItems().remove(oldLocation),
+                    this::updateLocationInTable, // Update when locations update
+                    false); // Delete on delete
 
                 mapPopOver.get().show(circle); // Show the pop-over
               });
@@ -180,6 +172,10 @@ public class MapEditorController {
     floorSelector
         .valueProperty()
         .addListener((observable, oldValue, newValue) -> mapController.setFloor(newValue));
+
+    floorSelector.setValue(Node.Floor.L2); // Set the base floor
+
+    floorSelector.setText(Node.Floor.L2.name()); // Set the floor text
   }
 
   /**
@@ -208,7 +204,7 @@ public class MapEditorController {
   @SneakyThrows
   @FXML
   public void handleQ(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("views/Help.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
     HelpController help = newLoad.getController(); // get the controller
@@ -227,7 +223,7 @@ public class MapEditorController {
   @FXML
   @SneakyThrows
   private void popupMove(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AddMove.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("AddMove.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
     AddMoveController addMove = newLoad.getController(); // get the controllers
@@ -247,7 +243,7 @@ public class MapEditorController {
   @SneakyThrows
   @FXML
   private void popupLocation(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/LocationNameInfo.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popover
 
     LocationNameInfoController addLoc = newLoad.getController(); // get the controller
@@ -255,10 +251,10 @@ public class MapEditorController {
     addLoc.setLocationName( // create a new location to pass in param
         new LocationName("", LocationName.LocationType.HALL, ""),
         mapController.getMapSession(),
-        popOver::hide,
-        (locationName) -> {
+        (onDelete) -> popOver.hide(),
+        (oldLocation, newLocation) -> {
           popOver.hide();
-          locationTable.getItems().add(0, locationName);
+          locationTable.getItems().add(0, newLocation);
         },
         true);
 
@@ -268,22 +264,133 @@ public class MapEditorController {
   }
 
   /**
-   * opens the popup for adding a new node
+   * Replaces the selected location name in the table with a new location name
+   *
+   * @param oldLocation the old location
+   * @param newLocation the new location
+   */
+  private void updateLocationInTable(LocationName oldLocation, LocationName newLocation) {
+    // Replace everywhere that the old location name is with the new location name
+    locationTable
+        .getItems()
+        .replaceAll(
+            locationName -> {
+              if (locationName.equals(oldLocation)) { // Check if the location is the old one
+                return newLocation; // If so, return the new one
+              }
+
+              return locationName; // Return the old name otherwise
+            });
+  }
+
+  /**
+   * opens the popup for adding a new node f
    *
    * @param event the event triggering this (unused)
-   * @throws IOException
    */
   @FXML
-  private void popupNode(ActionEvent event) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AddNode.fxml"));
+  @SneakyThrows
+  private void popupNode(ActionEvent event) {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
-    AddNodeController addNode = newLoad.getController(); // get the controller
-    addNode.setPopOver(popOver); // pass the popover
-    addNode.setMapController(mapController); // pass the session
+    NodeInfoController addNode = newLoad.getController(); // get the controller
+    // Provide the blank node
+    addNode.setNode(
+        new Node("", "", mapController.getFloor(), 0, 0),
+        mapController.getMapSession(), // Get the map session
+        (oldNode) -> popOver.hide(), // On delete we do nothing but hide
+        (oldNode, newNode) -> {
+          mapController.addNode(newNode);
+          popOver.hide();
+        }, // On create new one, process it
+        (oldLocation) -> {},
+        (oldLocation, newLocation) -> {}, // No location processing, no locations
+        true); // This is a new node
 
-    popOver.detach();
-    javafx.scene.Node node = (javafx.scene.Node) event.getSource();
-    popOver.show(node.getScene().getWindow()); // display the popover
+    popOver.detach(); // Detatch the pop-up, so it's not stuck to the button
+    javafx.scene.Node node =
+        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
+    popOver.show(node); // display the popover
+  }
+
+  /**
+   * Handles the user pressing the back button, asks them to confirm, signals map exit and then
+   * exits
+   *
+   * @param actionEvent the event signaling the back press, not used
+   */
+  public void handleBackButton(ActionEvent actionEvent) {
+    // Create a confirm exit dialog
+
+    MFXStageDialogBuilder stageBuilder =
+        MFXGenericDialogBuilder.build().toStageDialogBuilder(); // Convert to stage for exit
+    stageBuilder.setTitle("Confirm Exit"); // Give it a name
+    stageBuilder.setAlwaysOnTop(true); // Always on top
+    stageBuilder.initModality(Modality.APPLICATION_MODAL); // Only the pop-up can be used
+    MFXGenericDialog dialog =
+        MFXGenericDialogBuilder.build() // Build the dialog
+            .setHeaderText("Confirm Exit")
+            .setOnMinimize((event) -> stageBuilder.get().close()) // On minimize, just close
+            .setOnClose((event) -> stageBuilder.get().close()) // On close, just close
+            // Set content/body text
+            .setContentText(
+                "You may have unsaved changes!\n"
+                    + "Select what you'd like to do with any unsaved map edits")
+            .addActions(
+                // Action to exit (use map.entry cuz)
+                Map.entry(new MFXButton("Continue Editing"), (event) -> stageBuilder.get().close()),
+                // Action to discard and exit
+                Map.entry(
+                    new MFXButton("Discard Changes and Exit"),
+                    (event) -> {
+                      mapController.exit(); // Exit the controller
+                      stageBuilder.get().close(); // Close the pop-pu
+                      Fapp.setScene("views", "home"); // Go back
+                    }),
+                // Action to save
+                Map.entry(
+                    new MFXButton("Save Changes and Exit"),
+                    (event) -> {
+                      handleSave(null); // handle the save
+                      mapController.exit(); // exit
+                      stageBuilder.get().close(); // Close the pop-up
+                      Fapp.setScene("views", "home"); // go home
+                    }))
+            .get();
+    dialog.getStylesheets().clear(); // Clear the style
+
+    // Set style based on mode
+    dialog
+        .getStylesheets()
+        .add(
+            (Objects.requireNonNull(
+                    Fapp.isLightMode()
+                        ? // if light mode
+                        Fapp.class.getResource("views/light-mode.css")
+                        : // Set light mode
+                        Fapp.class.getResource("views/dark-mode.css"))) // Otherwise, dark
+                .toExternalForm());
+    stageBuilder.setContent(dialog); // Set the dialog to be the built dialog
+    stageBuilder.get().showDialog(); // Show everything
+  }
+
+  /**
+   * Handles a press of the cancel button, rolls back everything and then regenerates the map
+   *
+   * @param actionEvent the action event signaling the cancel
+   */
+  public void handleCancel(ActionEvent actionEvent) {
+    mapController.cancelChanges(); // Cancel changes
+    createLocationNameTable(mapController.getMapSession()); // Reload the table
+  }
+
+  /**
+   * Handles a press of the save button, commits map changes
+   *
+   * @param actionEvent the event signaling the save action
+   */
+  public void handleSave(ActionEvent actionEvent) {
+    mapController.saveChanges(); // On save just save
   }
 }
