@@ -238,7 +238,7 @@ public class MapEditorController {
   @FXML
   @SneakyThrows
   private void popupMove(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("AddMoveN.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("AddMove.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
     AddMoveController addMove = newLoad.getController(); // get the controllers
