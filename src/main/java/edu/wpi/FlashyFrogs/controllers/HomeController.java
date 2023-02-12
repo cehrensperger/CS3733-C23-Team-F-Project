@@ -47,7 +47,7 @@ public class HomeController {
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
     System.out.println("opening pathfinding");
-    Fapp.setScene("views", "PathFinding");
+    Fapp.setScene("views", "Pathfinding2");
   }
 
   @FXML
