@@ -6,16 +6,16 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinder;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -24,21 +24,26 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import lombok.SneakyThrows;
+import org.controlsfx.control.HyperlinkLabel;
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
 public class Pathfinding2Controller {
 
-  @FXML private MFXFilterComboBox<String> start;
-  @FXML private MFXFilterComboBox<String> end;
+  @FXML private SearchableComboBox<String> startingBox;
+  @FXML private SearchableComboBox<String> destinationBox;
+  @FXML private SearchableComboBox<String> algorithmBox;
   @FXML private AnchorPane mapPane;
-  @FXML private MFXComboBox<Node.Floor> floorSelector;
+  @FXML private HyperlinkLabel floorSelector;
   @FXML private HBox buttonsHBox;
-  @FXML private Label error;
+  //  @FXML private Label error;
 
   private MapController mapController;
   AtomicReference<PopOver> mapPopOver =
       new AtomicReference<>(); // The pop-over the map is using for node highlighting
+
+  ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>(Node.Floor.L1);
 
   @SneakyThrows
   public void initialize() {
@@ -58,38 +63,38 @@ public class Pathfinding2Controller {
         new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
     Pane map = mapLoader.load(); // Load the map
-    mapPane.getChildren().add(map); // Put the map loader into the editor box
+    mapPane.getChildren().add(0, map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
     mapController.setFloor(Node.Floor.L1);
-    //    floorSelector
-    //        .getItems()
-    //        .addAll(Node.Floor.values()); // Add all the floors to the floor selector
-    //    floorSelector.setText("L1");
-
-    // Add a listener so that when the floor is changed, the map  controller sets the new floor
-    //    floorSelector
-    //        .valueProperty()
-    //        .addListener(
-    //            (observable, oldValue, newValue) -> {
-    //              mapController.setFloor(newValue);
-    //
-    //              // drawNodesAndEdges(); // Re-draw pop-ups
-    //
-    //              try {
-    //                // If we have a valid path
-    //                if (!start.getText().equals("") && !end.getText().equals("")) {
-    //                  handleGetPath(null);
-    //                }
-    //              } catch (IOException e) {
-    //                throw new RuntimeException(e);
-    //              }
-    //            });
 
     // make the anchor pane resizable
     AnchorPane.setTopAnchor(map, 0.0);
     AnchorPane.setBottomAnchor(map, 0.0);
     AnchorPane.setLeftAnchor(map, 0.0);
     AnchorPane.setRightAnchor(map, 0.0);
+
+    //    floorSelector
+    //        .getItems()
+    //        .addAll(Node.Floor.values()); // Add all the floors to the floor selector
+    //    floorSelector.setText("L1");
+
+    // Add a listener so that when the floor is changed, the map  controller sets the new floor
+    floorProperty.addListener(
+        (observable, oldValue, newValue) -> {
+          mapController.setFloor(newValue);
+          // drawNodesAndEdges(); // Re-draw pop-ups
+          try {
+            // If we have a valid path
+            floorSelector.setText("Floor " + newValue.n);
+            hideAll();
+            if (!startingBox.valueProperty().get().equals("")
+                && !destinationBox.valueProperty().get().equals("")) {
+              handleGetPath(null);
+            }
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+        });
 
     // don't create a new session since the map is already using one
     Session session = mapController.getMapSession();
@@ -102,8 +107,8 @@ public class Pathfinding2Controller {
     objects.sort(String::compareTo);
 
     // set the items of the dropdowns to be the location names
-    //    start.setItems(FXCollections.observableList(objects));
-    //    end.setItems(FXCollections.observableList(objects));
+    startingBox.setItems(FXCollections.observableList(objects));
+    destinationBox.setItems(FXCollections.observableList(objects));
 
     // hide all nodes and edges on the map so that the user will only see the
     // nodes and edges relevant to the path they generate
@@ -128,8 +133,9 @@ public class Pathfinding2Controller {
   }
 
   public void handleButtonClear(ActionEvent event) throws IOException {
-    start.setText("");
-    end.setText("");
+    startingBox.valueProperty().set(null);
+    destinationBox.valueProperty().set(null);
+    algorithmBox.valueProperty().set(null);
     hideAll();
   }
 
@@ -139,8 +145,9 @@ public class Pathfinding2Controller {
     hideAll();
 
     // get start and end locations from text fields
-    String startPath = start.getText();
-    String endPath = end.getText();
+    String startPath = startingBox.valueProperty().get();
+    String endPath = destinationBox.valueProperty().get();
+    String algorithm = algorithmBox.valueProperty().get();
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
@@ -149,12 +156,13 @@ public class Pathfinding2Controller {
 
     if (nodes == null) {
       // if nodes is null, that means the there was no possible path
-      error.setTextFill(Paint.valueOf(Color.RED.toString()));
-      error.setText("No path found");
+      //      error.setTextFill(Paint.valueOf(Color.RED.toString()));
+      //      error.setText("No path found");
+      System.out.println("no path found");
     } else {
       // color all circles that are part of the path red
 
-      error.setText(""); // take away error message if there was one
+      //      error.setText(""); // take away error message if there was one
 
       for (Node node : nodes) {
         // get the circle that represents the node from the mapController
@@ -205,10 +213,12 @@ public class Pathfinding2Controller {
           LocationName nodeLocation = node.getCurrentLocation(mapController.getMapSession());
 
           // if the node location is null, don't attempt to check it against the start and end text
-          if (nodeLocation != null && nodeLocation.toString().equals(start.getText())) {
+          if (nodeLocation != null
+              && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
             // blue for start node
             circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-          } else if (nodeLocation != null && nodeLocation.toString().equals(end.getText())) {
+          } else if (nodeLocation != null
+              && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
             // green for end node
             circle.setFill(Paint.valueOf(Color.GREEN.toString()));
           } else {
@@ -265,5 +275,26 @@ public class Pathfinding2Controller {
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
     popOver.show(node.getScene().getWindow());
+  }
+
+  @FXML
+  public void upFloor(ActionEvent event) {
+    int floorLevel = floorProperty.getValue().ordinal() + 1;
+    if (floorLevel > Node.Floor.values().length - 1) floorLevel = 0;
+
+    floorProperty.setValue(Node.Floor.values()[floorLevel]);
+  }
+
+  @FXML
+  public void downFloor(ActionEvent event) {
+    int floorLevel = floorProperty.getValue().ordinal() - 1;
+    if (floorLevel < 0) floorLevel = Node.Floor.values().length - 1;
+
+    floorProperty.setValue(Node.Floor.values()[floorLevel]);
+  }
+
+  @FXML
+  public void openFloorSelector(ActionEvent event) {
+    // open floor selector popup
   }
 }
