@@ -68,10 +68,28 @@ public class PathFinderTest {
   public void startLocationDoesNotExistTest() {
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath("a", "b", PathFinder.Algorithm.ASTAR)); // Assert that a null pointer exception is thrown
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath("a", "b", PathFinder.Algorithm.BREADTHFIRST)); // Assert that a null pointer exception is thrown
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath("a", "b", PathFinder.Algorithm.DEPTHFIRST)); // Assert that a null pointer exception is thrown
-
+    assertThrows(
+        NullPointerException.class,
+        () ->
+            pathFinder.findPath(
+                "a",
+                "b",
+                PathFinder.Algorithm.ASTAR)); // Assert that a null pointer exception is thrown
+    assertThrows(
+        NullPointerException.class,
+        () ->
+            pathFinder.findPath(
+                "a",
+                "b",
+                PathFinder.Algorithm
+                    .BREADTHFIRST)); // Assert that a null pointer exception is thrown
+    assertThrows(
+        NullPointerException.class,
+        () ->
+            pathFinder.findPath(
+                "a",
+                "b",
+                PathFinder.Algorithm.DEPTHFIRST)); // Assert that a null pointer exception is thrown
   }
 
   /**
@@ -88,7 +106,8 @@ public class PathFinderTest {
     // Create the move relating the two
     Move startMove = new Move(startNode, startLocation, new Date());
 
-    Transaction commitTransaction = testSession.beginTransaction(); // Create a transaction to commit with
+    Transaction commitTransaction =
+        testSession.beginTransaction(); // Create a transaction to commit with
     testSession.persist(startLocation); // Persist the start location
     testSession.persist(startNode); // Persist the start node
     testSession.persist(startMove); // Persist the start move
@@ -97,10 +116,15 @@ public class PathFinderTest {
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
     // Assert that the second node results in an exception
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath("start", "doesnotexist)", PathFinder.Algorithm.ASTAR));
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath("start", "doesnotexist)", PathFinder.Algorithm.BREADTHFIRST));
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath("start", "doesnotexist)", PathFinder.Algorithm.DEPTHFIRST));
-
+    assertThrows(
+        NullPointerException.class,
+        () -> pathFinder.findPath("start", "doesnotexist)", PathFinder.Algorithm.ASTAR));
+    assertThrows(
+        NullPointerException.class,
+        () -> pathFinder.findPath("start", "doesnotexist)", PathFinder.Algorithm.BREADTHFIRST));
+    assertThrows(
+        NullPointerException.class,
+        () -> pathFinder.findPath("start", "doesnotexist)", PathFinder.Algorithm.DEPTHFIRST));
   }
 
   /**
@@ -124,14 +148,25 @@ public class PathFinderTest {
     // Assert that finding the path throws an exception
     assertThrows(
         NullPointerException.class,
-        () -> pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
+        () ->
+            pathFinder.findPath(
+                startLocation.getLongName(),
+                endLocation.getLongName(),
+                PathFinder.Algorithm.ASTAR));
     assertThrows(
-            NullPointerException.class,
-            () -> pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.BREADTHFIRST));
+        NullPointerException.class,
+        () ->
+            pathFinder.findPath(
+                startLocation.getLongName(),
+                endLocation.getLongName(),
+                PathFinder.Algorithm.BREADTHFIRST));
     assertThrows(
-            NullPointerException.class,
-            () -> pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.DEPTHFIRST));
-
+        NullPointerException.class,
+        () ->
+            pathFinder.findPath(
+                startLocation.getLongName(),
+                endLocation.getLongName(),
+                PathFinder.Algorithm.DEPTHFIRST));
   }
 
   /** Test for a case where the end move does not exist */
@@ -160,14 +195,25 @@ public class PathFinderTest {
     // Assert that finding the path throws an exception
     assertThrows(
         NullPointerException.class,
-        () -> pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
+        () ->
+            pathFinder.findPath(
+                startLocation.getLongName(),
+                endLocation.getLongName(),
+                PathFinder.Algorithm.ASTAR));
     assertThrows(
-            NullPointerException.class,
-            () -> pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.BREADTHFIRST));
+        NullPointerException.class,
+        () ->
+            pathFinder.findPath(
+                startLocation.getLongName(),
+                endLocation.getLongName(),
+                PathFinder.Algorithm.BREADTHFIRST));
     assertThrows(
-            NullPointerException.class,
-            () -> pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName() , PathFinder.Algorithm.DEPTHFIRST));
-
+        NullPointerException.class,
+        () ->
+            pathFinder.findPath(
+                startLocation.getLongName(),
+                endLocation.getLongName(),
+                PathFinder.Algorithm.DEPTHFIRST));
   }
 
   /** Tests for a case where the nodes are valid, however the path to the end does not exist */
@@ -198,10 +244,19 @@ public class PathFinderTest {
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
     // Assert the path returns null
-    assertNull(pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
-    assertNull(pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.BREADTHFIRST));
-    assertNull(pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.DEPTHFIRST));
-
+    assertNull(
+        pathFinder.findPath(
+            startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
+    assertNull(
+        pathFinder.findPath(
+            startLocation.getLongName(),
+            endLocation.getLongName(),
+            PathFinder.Algorithm.BREADTHFIRST));
+    assertNull(
+        pathFinder.findPath(
+            startLocation.getLongName(),
+            endLocation.getLongName(),
+            PathFinder.Algorithm.DEPTHFIRST));
   }
 
   /** Tests for a line of nodes, ensures that the algorithm reaches the end */
@@ -259,7 +314,17 @@ public class PathFinderTest {
     // Find the path and validate it
     PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
-        expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
+        expectedResult,
+        pathFinder.findPath(
+            startName.getLongName(), endName.getLongName(), PathFinder.Algorithm.ASTAR));
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(
+            startName.getLongName(), endName.getLongName(), PathFinder.Algorithm.BREADTHFIRST));
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(
+            startName.getLongName(), endName.getLongName(), PathFinder.Algorithm.DEPTHFIRST));
   }
 
   /**
@@ -334,7 +399,20 @@ public class PathFinderTest {
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
     assertEquals(
         expectedResult,
-        pathFinder.findPath(start.getLongName(), end.getLongName())); // Check the path
+        pathFinder.findPath(
+            start.getLongName(), end.getLongName(), PathFinder.Algorithm.ASTAR)); // Check the path
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(
+            start.getLongName(),
+            end.getLongName(),
+            PathFinder.Algorithm.BREADTHFIRST)); // Check the path
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(
+            start.getLongName(),
+            end.getLongName(),
+            PathFinder.Algorithm.DEPTHFIRST)); // Check the path
   }
 
   /** Tests that paths are bidirectional, e.g., that a path from end->start works */
@@ -375,7 +453,20 @@ public class PathFinderTest {
     PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
         expectedResult,
-        pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
+        pathFinder.findPath(
+            startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(
+            startLocation.getLongName(),
+            endLocation.getLongName(),
+            PathFinder.Algorithm.BREADTHFIRST));
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(
+            startLocation.getLongName(),
+            endLocation.getLongName(),
+            PathFinder.Algorithm.DEPTHFIRST));
   }
 
   /**
@@ -419,7 +510,21 @@ public class PathFinderTest {
 
     // Assert that the path matches
     assertEquals(
-        expectedPath, pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
+        expectedPath,
+        pathFinder.findPath(
+            startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
+    assertEquals(
+        expectedPath,
+        pathFinder.findPath(
+            startLocation.getLongName(),
+            endLocation.getLongName(),
+            PathFinder.Algorithm.BREADTHFIRST));
+    assertEquals(
+        expectedPath,
+        pathFinder.findPath(
+            startLocation.getLongName(),
+            endLocation.getLongName(),
+            PathFinder.Algorithm.DEPTHFIRST));
   }
 
   /** Test that when there is a loop before the target, the algorithm still reaches the end */
@@ -471,7 +576,17 @@ public class PathFinderTest {
     // Create the pathfinder and check the path
     PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
-        expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
+        expectedResult,
+        pathFinder.findPath(
+            startName.getLongName(), endName.getLongName(), PathFinder.Algorithm.ASTAR));
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(
+            startName.getLongName(), endName.getLongName(), PathFinder.Algorithm.BREADTHFIRST));
+    assertEquals(
+        expectedResult,
+        pathFinder.findPath(
+            startName.getLongName(), endName.getLongName(), PathFinder.Algorithm.DEPTHFIRST));
   }
 
   /**
@@ -536,12 +651,15 @@ public class PathFinderTest {
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder to use
     assertEquals(
         resultList,
-        pathFinder.findPath(startName.getLongName(), endName.getLongName())); // Find the path
+        pathFinder.findPath(
+            startName.getLongName(),
+            endName.getLongName(),
+            PathFinder.Algorithm.ASTAR)); // Find the path
   }
 
   /**
-   * Test that the program takes a shorter path with bogus branches and more paths. Also contains
-   * loops
+   * Test that the A* algorithm takes a shorter path with bogus branches and more paths. Also
+   * contains loops
    */
   @Test
   public void takesShorterPathWithBogusBranchesTest() {
@@ -678,7 +796,8 @@ public class PathFinderTest {
     PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
         expectedResult,
-        pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName()));
+        pathFinder.findPath(
+            startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
   }
 
   /**
@@ -741,9 +860,21 @@ public class PathFinderTest {
                       PathFinder pathFinder = new PathFinder(testSession);
 
                       // Find the path between the nodes
-                      List<Node> result =
+                      List<Node> resultAStar =
                           pathFinder.findPath(
-                              startLocation.getLongName(), endLocation.getLongName());
+                              startLocation.getLongName(),
+                              endLocation.getLongName(),
+                              PathFinder.Algorithm.ASTAR);
+                      List<Node> resultBreadthFirst =
+                          pathFinder.findPath(
+                              startLocation.getLongName(),
+                              endLocation.getLongName(),
+                              PathFinder.Algorithm.BREADTHFIRST);
+                      List<Node> resultDepthFirst =
+                          pathFinder.findPath(
+                              startLocation.getLongName(),
+                              endLocation.getLongName(),
+                              PathFinder.Algorithm.DEPTHFIRST);
 
                       // Transaction to get
                       transaction = testSession.beginTransaction();
@@ -755,7 +886,27 @@ public class PathFinderTest {
                               .createQuery(
                                   "SELECT location FROM Move " + "WHERE node = :node",
                                   LocationName.class)
-                              .setParameter("node", result.get(0))
+                              .setParameter("node", resultAStar.get(0))
+                              .uniqueResult());
+
+                      // Get the start location, ensure the first node is that
+                      assertEquals(
+                          startLocation,
+                          testSession
+                              .createQuery(
+                                  "SELECT location FROM Move " + "WHERE node = :node",
+                                  LocationName.class)
+                              .setParameter("node", resultBreadthFirst.get(0))
+                              .uniqueResult());
+
+                      // Get the start location, ensure the first node is that
+                      assertEquals(
+                          startLocation,
+                          testSession
+                              .createQuery(
+                                  "SELECT location FROM Move " + "WHERE node = :node",
+                                  LocationName.class)
+                              .setParameter("node", resultDepthFirst.get(0))
                               .uniqueResult());
 
                       // Get the end location, ensure that the first node is that
@@ -765,12 +916,74 @@ public class PathFinderTest {
                               .createQuery(
                                   "SELECT location FROM Move " + "WHERE node = :node",
                                   LocationName.class)
-                              .setParameter("node", result.get(result.size() - 1))
+                              .setParameter("node", resultAStar.get(resultAStar.size() - 1))
+                              .uniqueResult());
+
+                      assertEquals(
+                          endLocation,
+                          testSession
+                              .createQuery(
+                                  "SELECT location FROM Move " + "WHERE node = :node",
+                                  LocationName.class)
+                              .setParameter(
+                                  "node", resultBreadthFirst.get(resultBreadthFirst.size() - 1))
+                              .uniqueResult());
+
+                      assertEquals(
+                          endLocation,
+                          testSession
+                              .createQuery(
+                                  "SELECT location FROM Move " + "WHERE node = :node",
+                                  LocationName.class)
+                              .setParameter(
+                                  "node", resultDepthFirst.get(resultDepthFirst.size() - 1))
                               .uniqueResult());
 
                       // Now check that each node actually has a connection
                       Node lastNode = null; // Last node, start it as null
-                      for (Node node : result) { // For each node
+                      for (Node node : resultAStar) { // For each node
+                        // If the last node isn't null, check that there's a connection between it
+                        // and this node
+                        if (lastNode != null) {
+                          // Assert that we have an Edge connecting the provided Node in either
+                          // direction
+                          assertNotNull(
+                              testSession
+                                  .createQuery(
+                                      "FROM Edge WHERE "
+                                          + "(node1 = :firstNode AND node2 = :secondNode) OR "
+                                          + "(node2 = :secondNode AND node1 = :firstNode)",
+                                      Edge.class)
+                                  .setParameter("firstNode", node)
+                                  .setParameter("secondNode", lastNode));
+                        }
+
+                        lastNode = node; // Increment the node
+                      }
+
+                      lastNode = null; // Last node, start it as null
+                      for (Node node : resultBreadthFirst) { // For each node
+                        // If the last node isn't null, check that there's a connection between it
+                        // and this node
+                        if (lastNode != null) {
+                          // Assert that we have an Edge connecting the provided Node in either
+                          // direction
+                          assertNotNull(
+                              testSession
+                                  .createQuery(
+                                      "FROM Edge WHERE "
+                                          + "(node1 = :firstNode AND node2 = :secondNode) OR "
+                                          + "(node2 = :secondNode AND node1 = :firstNode)",
+                                      Edge.class)
+                                  .setParameter("firstNode", node)
+                                  .setParameter("secondNode", lastNode));
+                        }
+
+                        lastNode = node; // Increment the node
+                      }
+
+                      lastNode = null; // Last node, start it as null
+                      for (Node node : resultDepthFirst) { // For each node
                         // If the last node isn't null, check that there's a connection between it
                         // and this node
                         if (lastNode != null) {
@@ -881,17 +1094,23 @@ public class PathFinderTest {
     PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
         expectedResult,
-        pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
+        pathFinder.findPath(
+            startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.ASTAR));
     assertEquals(
-            expectedResult,
-            pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.BREADTHFIRST));
+        expectedResult,
+        pathFinder.findPath(
+            startLocation.getLongName(),
+            endLocation.getLongName(),
+            PathFinder.Algorithm.BREADTHFIRST));
     assertEquals(
-            expectedResult,
-            pathFinder.findPath(startLocation.getLongName(), endLocation.getLongName(), PathFinder.Algorithm.DEPTHFIRST));
-
+        expectedResult,
+        pathFinder.findPath(
+            startLocation.getLongName(),
+            endLocation.getLongName(),
+            PathFinder.Algorithm.DEPTHFIRST));
   }
 
-  /** Tests that the algorithm priorities elevators over stairs */
+  /** Tests that the A* algorithm prioritizes elevators over stairs */
   @Test
   public void floorChangeTest() {
     // Line of nodes A->E, moving apart in Y-Coord
@@ -972,6 +1191,8 @@ public class PathFinderTest {
     // Find the path and validate it
     PathFinder pathFinder = new PathFinder(testSession);
     assertEquals(
-        expectedResult, pathFinder.findPath(startName.getLongName(), endName.getLongName()));
+        expectedResult,
+        pathFinder.findPath(
+            startName.getLongName(), endName.getLongName(), PathFinder.Algorithm.ASTAR));
   }
 }
