@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.PathFinding.PathFinder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.Instant;
