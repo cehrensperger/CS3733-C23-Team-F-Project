@@ -5,6 +5,7 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Security")
@@ -31,7 +32,8 @@ public class Security extends ServiceRequest {
                       + "ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
-  @ManyToOne
+  @ManyToOne(optional = false)
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   private LocationName location;
 
   /** Creates a new Security object with a generated id */

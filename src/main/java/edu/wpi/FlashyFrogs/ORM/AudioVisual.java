@@ -5,6 +5,7 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "AudioVisual")
@@ -12,7 +13,6 @@ import lombok.Setter;
     name = "service_request_id",
     foreignKey = @ForeignKey(name = "service_request_id_fk"))
 public class AudioVisual extends ServiceRequest {
-
   @Basic
   @Column(nullable = false)
   @NonNull
@@ -45,8 +45,9 @@ public class AudioVisual extends ServiceRequest {
                   "FOREIGN KEY (location) REFERENCES locationname(longName) "
                       + "ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
+  @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
   @NonNull
-  @ManyToOne
+  @ManyToOne(optional = false)
   private LocationName location;
 
   @Basic
@@ -112,7 +113,7 @@ public class AudioVisual extends ServiceRequest {
     VISUAL("visual"),
     BOTH("both");
 
-    @NonNull public final String AcommodationType;
+    @NonNull public final String AccommodationType;
 
     /**
      * Creates a new AcomodationType with the given String backing
@@ -120,7 +121,7 @@ public class AudioVisual extends ServiceRequest {
      * @param accommodationType the AcomodationType to create. Must not be null
      */
     AccommodationType(@NonNull String accommodationType) {
-      AcommodationType = accommodationType;
+      AccommodationType = accommodationType;
     }
   }
 }

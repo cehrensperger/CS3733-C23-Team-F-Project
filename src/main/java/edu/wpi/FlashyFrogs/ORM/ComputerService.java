@@ -97,6 +97,15 @@ public class ComputerService extends ServiceRequest {
     ServiceType(@NonNull String serviceType) {
       ServiceType = serviceType;
     }
+
+    /**
+     * Override for the toString, returns the type as a string
+     * @return the type as a string
+     */
+    @Override
+    public String toString() {
+      return this.ServiceType;
+    }
   }
 
   /** Enumerated type for the possible DeviceTypes we can create */

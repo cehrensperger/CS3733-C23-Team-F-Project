@@ -50,11 +50,41 @@ public class User {
   @NonNull
   private EmployeeType employeeType;
 
+  @JoinColumn(name = "department_name",
+          foreignKey = @ForeignKey(name = "department_name_fk",
+                  foreignKeyDefinition = "FOREIGN KEY (department_name) REFERENCES department(longName) " +
+                          "ON UPDATE CASCADE ON DELETE SET NULL"))
+  @ManyToOne
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+  @Setter
+  @Getter
+  private Department department;
+
   /** Enumerated type representing the possible employee types */
   public enum EmployeeType {
-    ADMIN, // Admin employee
-    MEDICAL, // Medical employee
-    STAFF // Staff, e.g., janitors
+    ADMIN("Administrator"), // Admin employee
+    MEDICAL("Medical Practitioner"), // Medical employee
+    STAFF("Staff Member"); // Staff, e.g., janitors
+
+
+    @NonNull public final String type; // Display type
+
+    /**
+     * Sets the type for the employee, i.e., string backing
+     * @param type the type of employee
+     */
+    EmployeeType(@NonNull String type) {
+      this.type = type;
+    }
+
+    /**
+     * Override for the toString, returns the type as a string
+     * @return the type as a string
+     */
+    @Override
+    public String toString() {
+      return this.type;
+    }
   }
 
   /** Empty constructor, required for Hibernate */

@@ -26,12 +26,11 @@ public class UserLogin {
               name = "user_id_fk",
               foreignKeyDefinition =
                   "FOREIGN KEY (user_id) REFERENCES \"user\"(id) ON DELETE CASCADE"))
-  @OneToOne
+  @OneToOne(optional = false)
   @NonNull
   @Getter
   private User user;
 
-  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @Column(nullable = false, unique = true)
   @NonNull
   @Getter

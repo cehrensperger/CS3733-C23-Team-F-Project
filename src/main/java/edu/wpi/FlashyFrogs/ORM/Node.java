@@ -15,7 +15,6 @@ public class Node {
   @Column(nullable = false)
   @NonNull
   @Getter
-  @Setter
   private String id;
 
   @Basic
@@ -95,6 +94,15 @@ public class Node {
         if (f.floorNum.equals(value)) return f;
       }
       return null;
+    }
+
+    /**
+     * Override for the toString, returns the floor num as a string
+     * @return the floor num as a string
+     */
+    @Override
+    public String toString() {
+      return this.floorNum;
     }
   }
 

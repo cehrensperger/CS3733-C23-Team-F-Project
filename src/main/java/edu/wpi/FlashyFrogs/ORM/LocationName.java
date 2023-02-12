@@ -76,6 +76,15 @@ public class LocationName {
     LocationType(@NonNull String name) {
       this.name = name; // The name to provide
     }
+
+    /**
+     * Override for the toString, returns the type as a string
+     * @return the type as a string
+     */
+    @Override
+    public String toString() {
+      return this.name;
+    }
   }
 
   /**

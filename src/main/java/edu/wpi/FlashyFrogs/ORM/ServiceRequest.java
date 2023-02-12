@@ -13,7 +13,6 @@ import org.hibernate.annotations.Cascade;
 public class ServiceRequest {
   @Basic
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Column(nullable = false)
   @Getter
   @GeneratedValue
@@ -36,9 +35,8 @@ public class ServiceRequest {
               foreignKeyDefinition =
                   "FOREIGN KEY (empid) REFERENCES " + "\"emp\"(id) ON DELETE SET NULL"),
       nullable = false)
-  @Cascade(org.hibernate.annotations.CascadeType.DELETE)
   @NonNull
-  @ManyToOne
+  @ManyToOne(optional = false)
   private User emp;
 
   @Getter
@@ -50,9 +48,8 @@ public class ServiceRequest {
               name = "assignedempid_fk",
               foreignKeyDefinition =
                   "FOREIGN KEY (assignedempid) REFERENCES "
-                      + "\"assignedEmp\"(id) ON DELETE SET NULL"))
-  @Cascade(org.hibernate.annotations.CascadeType.DELETE)
-  @ManyToOne
+                      + "\"emp\"(id) ON DELETE SET NULL"))
+  @ManyToOne(optional = false)
   private User assignedEmp;
 
   @Basic
@@ -101,6 +98,15 @@ public class ServiceRequest {
     Status(@NonNull String statusVal) {
       status = statusVal;
     }
+
+    /**
+     * Override for the toString, returns the status as a string
+     * @return the status as a string
+     */
+    @Override
+    public String toString() {
+      return this.status;
+    }
   }
 
   /** Enumerated type for the possible departments we can create */
@@ -121,6 +127,15 @@ public class ServiceRequest {
     EmpDept(@NonNull String dept) {
       EmpDept = dept;
     }
+
+    /**
+     * Override for the toString, returns the department as a string
+     * @return the department as a string
+     */
+    @Override
+    public String toString() {
+      return this.EmpDept;
+    }
   }
 
   /** Enumerated type for the possible urgencies we can create */
@@ -138,6 +153,15 @@ public class ServiceRequest {
      */
     Urgency(@NonNull String urgency) {
       Urgency = urgency;
+    }
+
+    /**
+     * Override for the toString, returns the urgency as a string
+     * @return the urgency as a string
+     */
+    @Override
+    public String toString() {
+      return this.Urgency;
     }
   }
 
