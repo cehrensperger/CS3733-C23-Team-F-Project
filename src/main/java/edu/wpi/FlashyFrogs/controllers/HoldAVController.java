@@ -11,8 +11,7 @@ import org.controlsfx.control.SearchableComboBox;
 
 import java.io.IOException;
 
-public class HoldSecurityController {
-
+public class HoldAVController {
 
     @FXML MFXButton clear;
     @FXML MFXButton submit;
@@ -23,25 +22,27 @@ public class HoldSecurityController {
     @FXML MFXButton IPT;
     @FXML MFXButton sanitation;
     @FXML MFXButton security;
-    @FXML
-    Text h1;
+    @FXML SearchableComboBox location;
+    @FXML SearchableComboBox type;
+    @FXML TextField device;
+    @FXML TextField model;
+    @FXML TextField reason;
+    @FXML DatePicker date;
+    @FXML TextField time;
+    @FXML SearchableComboBox urgency;
+    @FXML TextField description;
+
+    @FXML Text h1;
     @FXML Text h2;
     @FXML Text h3;
     @FXML Text h4;
     @FXML Text h5;
     @FXML Text h6;
     @FXML Text h7;
-    @FXML SearchableComboBox location;
-    @FXML SearchableComboBox type;
-    @FXML SearchableComboBox threat;
-    @FXML SearchableComboBox urgency;
-    @FXML DatePicker date;
-    @FXML TextField time;
-    @FXML TextField description;
+    @FXML Text h8;
+    @FXML Text h9;
 
     boolean hDone = false;
-
-
 
     public void initialize()
     {
@@ -52,13 +53,13 @@ public class HoldSecurityController {
         h5.setVisible(false);
         h6.setVisible(false);
         h7.setVisible(false);
-
+        h8.setVisible(false);
+        h9.setVisible(false);
 
         type.getItems().addAll("Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
-        threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
         urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
-
     }
+
 
     public void handleSubmit(ActionEvent actionEvent) throws IOException {
         //
@@ -67,12 +68,14 @@ public class HoldSecurityController {
     public void handleClear(ActionEvent actionEvent) throws IOException {
         location.valueProperty().set(null);
         type.valueProperty().set(null);
-        threat.valueProperty().set(null);
-        urgency.valueProperty().set(null);
+        device.setText("");
+        model.setText("");
         date.valueProperty().set(null);
         time.setText("");
+        urgency.valueProperty().set(null);
         description.setText("");
     }
+
 
     public void help()
     {
@@ -84,6 +87,8 @@ public class HoldSecurityController {
             h5.setVisible(true);
             h6.setVisible(true);
             h7.setVisible(true);
+            h8.setVisible(true);
+            h9.setVisible(true);
             hDone = true;
         }
         if(hDone = true)
@@ -95,6 +100,8 @@ public class HoldSecurityController {
             h5.setVisible(false);
             h6.setVisible(false);
             h7.setVisible(false);
+            h8.setVisible(false);
+            h9.setVisible(false);
             hDone = false;
         }
 
@@ -127,6 +134,5 @@ public class HoldSecurityController {
     public void handleBack(ActionEvent actionEvent) throws IOException {
         Fapp.setScene("views", "Home");
     }
-
 
 }

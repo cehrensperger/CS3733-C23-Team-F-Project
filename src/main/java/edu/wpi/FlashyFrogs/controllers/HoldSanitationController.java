@@ -1,5 +1,7 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.Fapp;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -10,6 +12,18 @@ import org.controlsfx.control.SearchableComboBox;
 import java.io.IOException;
 
 public class HoldSanitationController {
+
+    @FXML
+    MFXButton AV;
+    @FXML MFXButton IT;
+    @FXML MFXButton IPT;
+    @FXML MFXButton sanitation;
+    @FXML MFXButton security;
+    @FXML MFXButton credits;
+    @FXML MFXButton back;
+    @FXML MFXButton clear;
+    @FXML MFXButton submit;
+
     @FXML Text h1;
     @FXML Text h2;
     @FXML Text h3;
@@ -21,7 +35,7 @@ public class HoldSanitationController {
     @FXML Text h9;
     @FXML SearchableComboBox location;
     @FXML SearchableComboBox type;
-    @FXML SearchableComboBox sanitation;
+    @FXML SearchableComboBox sanitationType;
     @FXML DatePicker date;
     @FXML TextField time;
     @FXML SearchableComboBox urgency;
@@ -43,7 +57,7 @@ public class HoldSanitationController {
         h9.setVisible(false);
 
         type.getItems().addAll("Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
-        sanitation.getItems().addAll("Sweeping", "Mopping", "Sanitizing");
+        sanitationType.getItems().addAll("Sweeping", "Mopping", "Sanitizing");
         urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
         isolation.getItems().addAll("Yes", "No");
         biohazard.getItems().addAll("Yes", "No");
@@ -57,7 +71,7 @@ public class HoldSanitationController {
     public void handleClear(ActionEvent actionEvent) throws IOException {
         location.valueProperty().set(null);
         type.valueProperty().set(null);
-        sanitation.valueProperty().set(null);
+        sanitationType.valueProperty().set(null);
         date.valueProperty().set(null);
         time.setText("");
         urgency.valueProperty().set(null);
@@ -94,6 +108,34 @@ public class HoldSanitationController {
             hDone = false;
         }
 
+    }
+
+    public void handleAV(ActionEvent actionEvent) throws IOException {
+        Fapp.setScene("views", "AV2");
+    }
+
+    public void handleIT(ActionEvent actionEvent) throws IOException {
+        Fapp.setScene("views", "IT2");
+    }
+
+    public void handleIPT(ActionEvent actionEvent) throws IOException {
+        Fapp.setScene("views", "T2");
+    }
+
+    public void handleSanitation(ActionEvent actionEvent) throws IOException {
+        Fapp.setScene("views", "Sa2");
+    }
+
+    public void handleSecurity(ActionEvent actionEvent) throws IOException {
+        Fapp.setScene("views", "Se2");
+    }
+
+    public void handleCredits(ActionEvent actionEvent) throws IOException {
+        Fapp.setScene("views", "Credits");
+    }
+
+    public void handleBack(ActionEvent actionEvent) throws IOException {
+        Fapp.setScene("views", "Home");
     }
 
 }
