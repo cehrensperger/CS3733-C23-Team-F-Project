@@ -1,9 +1,11 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.PathFinding;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import edu.wpi.FlashyFrogs.PathFinder;
+import edu.wpi.FlashyFrogs.controllers.HelpController;
+import edu.wpi.FlashyFrogs.controllers.MapController;
+import edu.wpi.FlashyFrogs.controllers.NodeLocationNamePopUpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
@@ -139,27 +141,27 @@ public class PathFindingController {
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
     drawNodesAndEdges();
 
-    // get start and end locations and algorithm from text fields
-    String startPath = start.getText();
-    String endPath = end.getText();
-    PathFinder.Algorithm algorithmEnum = PathFinder.Algorithm.ASTAR;
-    switch (algorithm.getText()) {
-      case "A*":
-        algorithmEnum = PathFinder.Algorithm.ASTAR;
-        break;
-      case "Breadth-first":
-        algorithmEnum = PathFinder.Algorithm.BREADTHFIRST;
-        break;
-      case "Depth-first":
-        algorithmEnum = PathFinder.Algorithm.DEPTHFIRST;
-        break;
-    }
     // Transaction transaction = session.beginTransaction();
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
+    // get start and end locations and algorithm from text fields
+    String startPath = start.getText();
+    String endPath = end.getText();
+    switch (algorithm.getText()) {
+      case "A*":
+        pathFinder.setAlgorithm(new AStar());
+        break;
+      case "Breadth-first":
+        pathFinder.setAlgorithm(new BreadthFirst());
+        break;
+      case "Depth-first":
+        pathFinder.setAlgorithm(new DepthFirst());
+        break;
+    }
+
     // list of nodes that represent the shortest path
-    List<Node> nodes = pathFinder.findPath(startPath, endPath, algorithmEnum);
+    List<Node> nodes = pathFinder.findPath(startPath, endPath);
 
     // color all circles that the mapController is displaying right now
     // and that are part of the path red
