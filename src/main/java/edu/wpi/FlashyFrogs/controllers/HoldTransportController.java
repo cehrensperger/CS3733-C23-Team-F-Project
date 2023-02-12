@@ -117,24 +117,25 @@ public class HoldTransportController {
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AV2");
+    Fapp.setScene("views", "AudioVisualService");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "IT2");
+    Fapp.setScene("views", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "T2");
+    Fapp.setScene("views", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Sa2");
+    Fapp.setScene("views", "SanitationService");
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Se2");
+    Fapp.setScene("views", "SecurityService");
   }
+
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("views", "Credits");
