@@ -31,7 +31,6 @@ public class Fapp extends Application {
   public void start(Stage primaryStage) throws IOException {
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
-    primaryStage.setResizable(false);
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/Login.fxml"));
 
     final Pane root = loader.load();
