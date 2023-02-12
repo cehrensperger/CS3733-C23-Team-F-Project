@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.SecurityServiceController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AudioVisualController">
     <children>
         <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
@@ -97,7 +97,7 @@
             <center>
                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Request">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual Service Request">
                             <font>
                                 <Font size="28.0" />
                             </font>
@@ -117,14 +117,14 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox promptText="Location of Request">
+                                        <SearchableComboBox promptText="Location of Request" style="-fx-background-color: FFFFFF;">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
                                         <SearchableComboBox promptText="Location Type">
                                             <VBox.margin>
-                                                <Insets />
+                                                <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
                                     </children>
@@ -135,7 +135,7 @@
                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="470.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                 <VBox prefHeight="159.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Security Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Device Information">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -143,27 +143,33 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox promptText="Threat Type">
+                                        <TextField promptText="Reason For Transfer" text="Device Type">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
-                                        </SearchableComboBox>
+                                        </TextField>
+                                        <TextField text="Device Model">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
+                              <TextField text="Reason for Request">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </TextField>
+                                        <DatePicker prefHeight="26.0" prefWidth="218.0" promptText="Date (needed by)" />
+                                        <TextField promptText="Time (needed by) (00:00 AM/PM)">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" top="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
                                         <SearchableComboBox promptText="Urgency">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
-                                        <DatePicker prefHeight="26.0" prefWidth="218.0" promptText="Date Preference" />
-                                        <TextField promptText="Time Preference (00:00 AM/PM)">
-                                            <VBox.margin>
-                                                <Insets top="18.0" />
-                                            </VBox.margin>
-                                        </TextField>
-                                        <TextField promptText="Reason For Transfer" text="Description of Request">
-                                            <VBox.margin>
-                                                <Insets bottom="216.0" top="18.0" />
-                                            </VBox.margin>
-                                        </TextField>
+                                        <TextField prefWidth="200.0" text="Description of Request" />
                                         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
@@ -186,7 +192,7 @@
                                                 </HBox>
                                             </children>
                                             <VBox.margin>
-                                                <Insets top="18.0" />
+                                                <Insets top="144.0" />
                                             </VBox.margin>
                                         </HBox>
                                     </children>
