@@ -56,9 +56,7 @@ public class HoldTransportController {
 
   boolean hDone = false;
 
-
-  public void initialize()
-  {
+  public void initialize() {
     h1.setVisible(false);
     h2.setVisible(false);
     h3.setVisible(false);
@@ -76,15 +74,24 @@ public class HoldTransportController {
     h15.setVisible(false);
 
     vision.getItems().addAll("Good", "Poor", "Blind", "Glasses");
-    hearing.getItems().addAll("Good", "Poor", "Deaf", "Hearing Aid (Left)", "Hearing Aid (Right)", "Hearing Aid (Both)");
+    hearing
+        .getItems()
+        .addAll(
+            "Good",
+            "Poor",
+            "Deaf",
+            "Hearing Aid (Left)",
+            "Hearing Aid (Right)",
+            "Hearing Aid (Both)");
     consciousness.getItems().addAll("Good", "Moderate", "Poor");
     condition.getItems().addAll("Healthy", "Moderate", "Poor");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     equipment.getItems().addAll("None", "Cane", "Walker", "Wheel Chair", "Bed");
     mode.getItems().addAll("Self", "With Help", "Equipment Needed");
     isolation.getItems().addAll("Yes", "No");
-    personal.getItems().addAll("None", "Glasses", "Walker", "Cane", "Hearing Aids", "Dentures", "Other");
-
+    personal
+        .getItems()
+        .addAll("None", "Glasses", "Walker", "Cane", "Hearing Aids", "Dentures", "Other");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -137,9 +144,8 @@ public class HoldTransportController {
     Fapp.setScene("views", "Home");
   }
 
-  public void help()
-  {
-    if(hDone = false) {
+  public void help() {
+    if (hDone = false) {
       h1.setVisible(true);
       h2.setVisible(true);
       h3.setVisible(true);
@@ -157,8 +163,7 @@ public class HoldTransportController {
       h15.setVisible(true);
       hDone = true;
     }
-    if(hDone = true)
-    {
+    if (hDone = true) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
@@ -176,7 +181,5 @@ public class HoldTransportController {
       h15.setVisible(false);
       hDone = false;
     }
-
   }
-
 }
