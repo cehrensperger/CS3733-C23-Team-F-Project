@@ -118,7 +118,7 @@ public class HomeController {
 
   /**
    * Change the color theme to Light Mode when the Color Scheme > Light Mode option is selected on
-   * Home.fxml.
+   * EmployeeHome.fxml.
    *
    * @param actionEvent
    * @throws IOException
@@ -128,8 +128,8 @@ public class HomeController {
   }
 
   /**
-   * Call to set Home.fxml to light mode. Also makes some tweaks to JavaFX elements specific to
-   * Home.fxml, so not all of this method is generalizable to setting any page to light mode.
+   * Call to set EmployeeHome.fxml to light mode. Also makes some tweaks to JavaFX elements specific to
+   * EmployeeHome.fxml, so not all of this method is generalizable to setting any page to light mode.
    */
   public void setToLightMode() {
     //    rootPane
@@ -158,7 +158,7 @@ public class HomeController {
 
   /**
    * Change the color theme to Dark Mode when the Color Scheme > Dark Mode option is selected on
-   * Home.fxml.
+   * EmployeeHome.fxml.
    *
    * @param actionEvent
    * @throws IOException
@@ -169,8 +169,8 @@ public class HomeController {
   }
 
   /**
-   * Call to set Home.fxml to dark mode. Also makes some tweaks to JavaFX elements specific to
-   * Home.fxml, so not all of this method is generalizable to setting any page to dark mode.
+   * Call to set EmployeeHome.fxml to dark mode. Also makes some tweaks to JavaFX elements specific to
+   * EmployeeHome.fxml, so not all of this method is generalizable to setting any page to dark mode.
    */
   public void setToDarkMode() {
     //    rootPane
