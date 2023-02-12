@@ -5,6 +5,7 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "InternalTransport")
@@ -45,7 +46,8 @@ public class InternalTransport extends ServiceRequest {
                       + "locationname(longName) ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
-  @ManyToOne
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+  @ManyToOne(optional = false)
   private LocationName oldLoc;
 
   @Getter
@@ -59,7 +61,8 @@ public class InternalTransport extends ServiceRequest {
                   "FOREIGN KEY (newLoc) REFERENCES locationname(longName) "
                       + "ON UPDATE CASCADE ON DELETE SET NULL"))
   @NonNull
-  @ManyToOne
+  @ManyToOne(optional = false)
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   private LocationName newLoc;
 
   @Column(nullable = false)

@@ -1,17 +1,16 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import org.hibernate.annotations.Cascade;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "Edge")
 public class Edge {
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @JoinColumn(
       name = "node1_id",
       nullable = false,
@@ -20,10 +19,10 @@ public class Edge {
               name = "node1_id_fk",
               foreignKeyDefinition =
                   "FOREIGN KEY (node1_id) REFERENCES node(id) ON UPDATE CASCADE ON DELETE CASCADE"))
-  @ManyToOne
+  @ManyToOne(optional = false)
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @NonNull
   @Getter
-  @Setter
   private Node node1;
 
   @Id
@@ -36,9 +35,9 @@ public class Edge {
               foreignKeyDefinition =
                   "FOREIGN KEY (node2_id) REFERENCES node(id) ON UPDATE CASCADE ON DELETE CASCADE"))
   @NonNull
-  @ManyToOne
+  @ManyToOne(optional = false)
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Getter
-  @Setter
   private Node node2;
 
   /** Creates a new Edge with empty fields */
