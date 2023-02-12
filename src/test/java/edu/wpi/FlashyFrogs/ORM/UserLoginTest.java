@@ -179,4 +179,26 @@ public class UserLoginTest {
 
     session.close(); // Close the session
   }
+
+  /** Tests that duplicate logins are disallowed by the DB */
+  @Test
+  public void noDuplicateLoginsTest() {
+    // Create a dummy user, we will try to delete this
+    User user = new User("b", "c", "d", User.EmployeeType.ADMIN);
+    User otherUser = new User("c", "d", "e", User.EmployeeType.STAFF);
+    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(otherUser, "hj", "bad");
+
+    // Begin the transaction to commit the things with
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+    session.persist(user);
+    session.persist(otherUser);
+    session.persist(userLogin);
+
+    // Assert that the persist fails
+    assertThrows(Exception.class, () -> session.persist(otherUserLogin));
+
+    session.close(); // Close the session
+  }
 }
