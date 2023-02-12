@@ -189,7 +189,7 @@ public class AudioVisualTest {
         av.hashCode(),
         session.createQuery("FROM AudioVisual ", AudioVisual.class).getSingleResult().hashCode());
 
-    // Identical user that should have a different ID
+    // Identical av request that should have a different ID
     AudioVisual av2 =
         new AudioVisual(
             emp,
@@ -202,12 +202,12 @@ public class AudioVisualTest {
             "Sabaz",
             location,
             new Date(2001 - 12 - 8));
-    session.persist(av2); // Load U2 into the DB, set its ID
+    session.persist(av2); // Load av2 into the DB, set its ID
 
-    assertNotEquals(av, av2); // Assert U and U2 aren't equal
+    assertNotEquals(av, av2); // Assert av and av2 aren't equal
     assertNotEquals(av.hashCode(), av2.hashCode()); // Assert their has hash codes are different
 
-    // Completely different user
+    // Completely different av request
     AudioVisual av3 =
         new AudioVisual(
             emp,
@@ -220,9 +220,9 @@ public class AudioVisualTest {
             "Krause",
             location,
             new Date(2002 - 11 - 2));
-    session.persist(av3); // Load u3 into the DB, set its ID
+    session.persist(av3); // Load av3 into the DB, set its ID
 
-    assertNotEquals(av, av3); // Assert U and U3 aren't equal
+    assertNotEquals(av, av3); // Assert av and av3 aren't equal
     assertNotEquals(av.hashCode(), av3.hashCode()); // Assert their hash codes are different
 
     transaction.rollback();

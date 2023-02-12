@@ -2,13 +2,38 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import java.util.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.junit.jupiter.api.*;
 
 public class InternalTransportTest {
-  // Creates iteration of InternalTransportTest
+  /** Sets up the data base before all tests run */
+  @BeforeAll
+  public static void setupDBConnection() {
+    DBConnection.CONNECTION.connect(); // Connect
+  }
+
+  /** Tears down the database, meant to be used after all tests finish */
+  @AfterAll
+  public static void disconnectDBConnection() {
+    DBConnection.CONNECTION.disconnect(); // Disconnect
+  }
+
+  /** Cleans up the user table. Runs after each test */
+  @AfterEach
+  public void teardownTable() {
+    // Use a closure to manage the session to use
+    try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
+      connection
+          .createMutationQuery("DELETE FROM InternalTransport")
+          .executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
+      cleanupTransaction.commit(); // Commit the cleanup
+    }
+  }
 
   User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
   User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL);
@@ -156,6 +181,91 @@ public class InternalTransportTest {
   //            ServiceRequest.Urgency.MODERATELY_URGENT);
   //    assertTrue(testIntTransp.equals(otherIntTransport));
   //  }
+
+  /**
+   * Tests the equals and hash code methods for the InternalTransport class, ensures that fetched
+   * objects are equal
+   */
+  @Test
+  public void testEqualsAndHashCode() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL);
+
+    LocationName loc1 =
+        new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName");
+    LocationName loc2 =
+        new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName");
+
+    session.persist(emp);
+    session.persist(loc1);
+    session.persist(loc2);
+    // Create the transport request we will use
+    InternalTransport it =
+        new InternalTransport(
+            new Date(2002 - 10 - 02),
+            loc1,
+            loc2,
+            "John",
+            "B",
+            "Doe",
+            emp,
+            new Date(2023 - 01 - 31),
+            new Date(2023 - 02 - 01),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    session.persist(it);
+
+    // Assert that the one thing in the database matches this
+    assertEquals(
+        it,
+        session.createQuery("FROM InternalTransport", InternalTransport.class).getSingleResult());
+    assertEquals(
+        it.hashCode(),
+        session
+            .createQuery("FROM InternalTransport", InternalTransport.class)
+            .getSingleResult()
+            .hashCode());
+
+    // Identical transport request that should have a different ID
+    InternalTransport it2 =
+        new InternalTransport(
+            new Date(2002 - 10 - 02),
+            loc1,
+            loc2,
+            "John",
+            "B",
+            "Doe",
+            emp,
+            new Date(2023 - 01 - 31),
+            new Date(2023 - 02 - 01),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    session.persist(it2); // Load it2 into the DB, set its ID
+
+    assertNotEquals(it, it2); // Assert it and it2 aren't equal
+    assertNotEquals(it.hashCode(), it2.hashCode()); // Assert their has hash codes are different
+
+    // Completely different transport request
+    InternalTransport it3 =
+        new InternalTransport(
+            new Date(2001 - 11 - 22),
+            loc2,
+            loc1,
+            "Jane",
+            "L",
+            "Smith",
+            emp,
+            new Date(2023 - 01 - 31),
+            new Date(2023 - 02 - 01),
+            ServiceRequest.Urgency.VERY_URGENT);
+    session.persist(it3); // Load it3 into the DB, set its ID
+
+    assertNotEquals(it, it3); // Assert it and it3 aren't equal
+    assertNotEquals(it.hashCode(), it3.hashCode()); // Assert their hash codes are different
+
+    transaction.rollback();
+    session.close();
+  }
 
   /**
    * Checks to see if toString makes a string in the same format specified in
