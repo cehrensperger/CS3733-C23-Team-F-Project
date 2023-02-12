@@ -36,10 +36,10 @@ public class AudioVisualTest {
 
   private final Department sourceDept = new Department("a", "b");
   private final Department endDept = new Department("c", "d");
-  private final User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL,
-          sourceDept);
-  private final User assignedEmp = new User("Jonathan", "Elias", "Golden",
-          User.EmployeeType.MEDICAL, endDept);
+  private final User emp =
+      new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, sourceDept);
+  private final User assignedEmp =
+      new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, endDept);
   AudioVisual testAV =
       new AudioVisual(
           emp,
@@ -243,9 +243,7 @@ public class AudioVisualTest {
     session.close();
   }
 
-  /**
-   * Tests that deleting the emp this is referenced to sets it to null
-   */
+  /** Tests that deleting the emp this is referenced to sets it to null */
   @Test
   public void locationDeleteCascadeTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -286,63 +284,35 @@ public class AudioVisualTest {
     session.close();
   }
 
-  /**
-   * Tests that deleting the emp this is associated to with a query sets it to null
-   */
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
   @Test
-  public void locationDeleteCascadeQueryTest() {
+  public void locationDeleteCascadeQueryTest() {}
 
-  }
-
-  /**
-   * Test that updating the location cascades
-   */
+  /** Test that updating the location cascades */
   @Test
-  public void locationUpdateCascadeTest() {
+  public void locationUpdateCascadeTest() {}
 
-  }
-
-  /**
-   * Tests that deleting the emp this is referenced to sets it to null
-   */
+  /** Tests that deleting the emp this is referenced to sets it to null */
   @Test
   public void empDeleteCascadeTest() {}
 
-  /**
-   * Tests that deleting the emp this is associated to with a query sets it to null
-   */
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
   @Test
-  public void empDeleteCascadeQueryTest() {
+  public void empDeleteCascadeQueryTest() {}
 
-  }
-
-  /**
-   * Tests that updating the employee results in a cascade update failure
-   */
+  /** Tests that updating the employee results in a cascade update failure */
   @Test
-  public void empUpdateCascadeTest() {
+  public void empUpdateCascadeTest() {}
 
-  }
-
-  /**
-   * Tests that deleting the emp this is referenced to sets it to null
-   */
+  /** Tests that deleting the emp this is referenced to sets it to null */
   @Test
   public void assignedEmpDeleteCascadeTest() {}
 
-  /**
-   * Tests that deleting the emp this is associated to with a query sets it to null
-   */
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
   @Test
-  public void assignedEmpDeleteCascadeQueryTest() {
+  public void assignedEmpDeleteCascadeQueryTest() {}
 
-  }
-
-  /**
-   * Tests that updating the employee results in a cascade update failure
-   */
+  /** Tests that updating the employee results in a cascade update failure */
   @Test
-  public void assignedEmpUpdateCascadeTest() {
-
-  }
+  public void assignedEmpUpdateCascadeTest() {}
 }

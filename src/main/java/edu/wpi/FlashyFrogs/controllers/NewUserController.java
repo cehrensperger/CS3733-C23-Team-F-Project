@@ -45,7 +45,8 @@ public class NewUserController {
     } else {
       // Save Username and Password to db
       errorMessage.setVisible(false);
-      User userFK = new User("test", "DELETE ME", "test", User.EmployeeType.ADMIN);
+      User userFK =
+          new User("test", "DELETE ME", "test", User.EmployeeType.ADMIN, null); // update department
       UserLogin newUser = new UserLogin(userFK, username.getText(), pass1.getText());
       Session ses = CONNECTION.getSessionFactory().openSession();
       Transaction transaction = ses.beginTransaction();

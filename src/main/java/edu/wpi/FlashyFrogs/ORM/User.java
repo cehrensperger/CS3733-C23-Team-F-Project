@@ -50,9 +50,7 @@ public class User {
   @NonNull
   private EmployeeType employeeType;
 
-  /**
-   * The department the employee is a member of
-   */
+  /** The department the employee is a member of */
   @JoinColumn(
       name = "department_name",
       foreignKey =
@@ -122,6 +120,7 @@ public class User {
 
   /**
    * ToString method, returns the first name " " the last name
+   *
    * @return the display representation of the user
    */
   @Override
