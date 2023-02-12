@@ -27,7 +27,7 @@
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: 012D5A;" text="Audio/Visual        " wrapText="true">
+                  <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual        " textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -35,7 +35,7 @@
                         <Font size="16.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" text="Information Technology" wrapText="true">
+                  <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Information Technology" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -43,7 +43,7 @@
                         <Font size="16.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" text="Internal Patient Transportation" wrapText="true">
+                  <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -51,7 +51,7 @@
                         <Font size="16.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" text="Sanitation            " wrapText="true">
+                  <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Sanitation            " textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -59,7 +59,7 @@
                         <Font size="16.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" text="Security                " wrapText="true">
+                  <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Security                " textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
