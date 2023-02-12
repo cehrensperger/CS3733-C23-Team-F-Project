@@ -28,7 +28,6 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 public class PathFindingController {
-
   @FXML private MFXFilterComboBox start;
   @FXML private MFXFilterComboBox end;
   @FXML private MFXButton getPath;
@@ -137,7 +136,7 @@ public class PathFindingController {
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
     // list of nodes that represent the shortest path
-    List<Node> nodes = pathFinder.findPath(startPath, endPath);
+    List<Node> nodes = pathFinder.findPath(startPath, endPath, PathFinder.Algorithm.ASTAR);
 
     // color all circles that the mapController is displaying right now
     // and that are part of the path red

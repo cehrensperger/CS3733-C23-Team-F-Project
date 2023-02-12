@@ -108,22 +108,26 @@ public class PathFinder {
 
   private List<Node> breadthFirst(
       @NonNull Node start, @NonNull Node end, @NonNull Session session) {
-    List<Node> queue = new LinkedList<>();
+    List<NodeWrapper> queue = new LinkedList<>();
     List<Node> visited = new LinkedList<>();
-    Node currentNode = start;
-    queue.add(start);
-    NodeWrapper currentNodeWrapper = new NodeWrapper(currentNode, null);
-    while (!visited.contains(end)) {
-      List<Node> neighbors = getNeighbors(currentNode, session).stream().toList();
+    NodeWrapper currentNodeWrapper = new NodeWrapper(start, null);
+    queue.add(currentNodeWrapper);
+    while (!visited.contains(end) && !queue.isEmpty()) {
+      List<Node> neighbors = getNeighbors(currentNodeWrapper.node, session).stream().toList();
       for (Node node : neighbors) {
-        if (!visited.contains(node)) { // if the node wasn't already visited
-          queue.add(node);
-          currentNodeWrapper = new NodeWrapper(node, currentNodeWrapper);
+        if (!visited.contains(node)
+            && !queue.contains(node)
+            && !node.equals(
+                currentNodeWrapper
+                    .node)) { // if the node wasn't already visited and isn't already queued
+          queue.add(new NodeWrapper(node, currentNodeWrapper));
         }
       }
-      visited.add(currentNode);
-      queue.remove(currentNode);
-      currentNode = queue.get(0);
+      visited.add(currentNodeWrapper.node);
+      queue.remove(currentNodeWrapper);
+      if (!queue.isEmpty()) {
+        currentNodeWrapper = queue.get(0);
+      }
     }
     List<Node> path = new LinkedList<>();
     if (visited.contains(end)) {
@@ -132,6 +136,7 @@ public class PathFinder {
         currentNodeWrapper = currentNodeWrapper.parent;
       }
       path.add(start);
+      Collections.reverse(path);
       return path;
     } else {
       return null;
