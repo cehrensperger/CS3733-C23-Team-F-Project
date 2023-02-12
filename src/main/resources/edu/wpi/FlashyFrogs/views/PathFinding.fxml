@@ -18,8 +18,9 @@
                   <VBox alignment="TOP_RIGHT" prefHeight="118.0" prefWidth="250.0" />
                   <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="300.0" spacing="5.0">
                      <children>
-                        <MFXFilterComboBox fx:id="start" prefHeight="40.0" prefWidth="280.0" promptText="Start" />
-                        <MFXFilterComboBox fx:id="end" prefHeight="40.0" prefWidth="280.0" promptText="End" />
+                        <MFXFilterComboBox fx:id="start" prefHeight="40.0" prefWidth="280.0" promptText="Starting Location" />
+                        <MFXFilterComboBox fx:id="end" prefHeight="40.0" prefWidth="280.0" promptText="Destination" />
+                        <MFXFilterComboBox fx:id="algorithm" prefHeight="40.0" prefWidth="280.0" promptText="Pathfinding Algorithm" />
                         <MFXComboBox fx:id="floorSelector" promptText="Floor" />
                         <AnchorPane fx:id="mapPane1" prefHeight="332.0" prefWidth="800.0" VBox.vgrow="ALWAYS" />
                         <HBox prefHeight="100.0" prefWidth="200.0" />
@@ -66,7 +67,7 @@
                               <Insets right="5.0" />
                            </HBox.margin>
                         </MFXButton>
-                        <MFXButton fx:id="getPath" onAction="#handleGetPath" prefWidth="100.0" text="Get Path" HBox.hgrow="ALWAYS">
+                        <MFXButton fx:id="getPath" onAction="#handleGetPath" prefWidth="100.0" text="Generate Path" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>

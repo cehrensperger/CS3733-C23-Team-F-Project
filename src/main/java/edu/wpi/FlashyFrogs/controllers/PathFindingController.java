@@ -9,6 +9,7 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,6 +29,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 public class PathFindingController {
+  @FXML private MFXFilterComboBox algorithm;
   @FXML private MFXFilterComboBox start;
   @FXML private MFXFilterComboBox end;
   @FXML private MFXButton getPath;
@@ -78,7 +80,9 @@ public class PathFindingController {
 
               try {
                 // If we have a valid path
-                if (!start.getText().equals("") && !end.getText().equals("")) {
+                if (!start.getText().equals("")
+                    && !end.getText().equals("")
+                    && !algorithm.getText().equals("")) {
                   handleGetPath(null);
                 }
               } catch (IOException e) {
@@ -99,6 +103,11 @@ public class PathFindingController {
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
     // session.close();
 
+    List<String> algorithms = new LinkedList<>();
+    algorithms.add("A*");
+    algorithms.add("Breadth-first");
+    algorithms.add("Depth-first");
+
     objects.sort(
         new Comparator<String>() {
           @Override
@@ -109,6 +118,7 @@ public class PathFindingController {
 
     start.setItems(FXCollections.observableList(objects));
     end.setItems(FXCollections.observableList(objects));
+    algorithm.setItems(FXCollections.observableList(algorithms));
   }
 
   @FXML private MFXButton question;
@@ -121,6 +131,7 @@ public class PathFindingController {
   public void handleButtonClear(ActionEvent event) throws IOException {
     start.clear();
     end.clear();
+    algorithm.clear();
     drawNodesAndEdges();
     // pathText.setText("Path:");
   }
@@ -128,15 +139,27 @@ public class PathFindingController {
   public void handleGetPath(ActionEvent actionEvent) throws IOException {
     drawNodesAndEdges();
 
-    // get start and end locations from text fields
+    // get start and end locations and algorithm from text fields
     String startPath = start.getText();
     String endPath = end.getText();
+    PathFinder.Algorithm algorithmEnum = PathFinder.Algorithm.ASTAR;
+    switch (algorithm.getText()) {
+      case "A*":
+        algorithmEnum = PathFinder.Algorithm.ASTAR;
+        break;
+      case "Breadth-first":
+        algorithmEnum = PathFinder.Algorithm.BREADTHFIRST;
+        break;
+      case "Depth-first":
+        algorithmEnum = PathFinder.Algorithm.DEPTHFIRST;
+        break;
+    }
     // Transaction transaction = session.beginTransaction();
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
     // list of nodes that represent the shortest path
-    List<Node> nodes = pathFinder.findPath(startPath, endPath, PathFinder.Algorithm.ASTAR);
+    List<Node> nodes = pathFinder.findPath(startPath, endPath, algorithmEnum);
 
     // color all circles that the mapController is displaying right now
     // and that are part of the path red
