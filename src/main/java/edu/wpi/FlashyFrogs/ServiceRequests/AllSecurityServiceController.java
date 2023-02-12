@@ -1,9 +1,10 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
@@ -23,13 +24,13 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class AllTransportController extends AllRequestsController {
+public class AllSecurityServiceController extends AllRequestsController {
 
   @FXML private MFXButton back;
   @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Transport");
+    Fapp.setScene("views", "SecurityService");
   }
 
   @FXML
@@ -48,7 +49,6 @@ public class AllTransportController extends AllRequestsController {
 
   public void initialize() {
     System.out.println("initializing");
-
     typeCol.setCellValueFactory(
         new Callback<
             TableColumn.CellDataFeatures<ServiceRequest, String>, ObservableValue<String>>() {
@@ -57,7 +57,6 @@ public class AllTransportController extends AllRequestsController {
             return new SimpleStringProperty(p.getValue().toString());
           }
         });
-
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -65,9 +64,7 @@ public class AllTransportController extends AllRequestsController {
     Session session = CONNECTION.getSessionFactory().openSession();
 
     List<ServiceRequest> objects =
-        session
-            .createQuery("SELECT s FROM InternalTransport s", ServiceRequest.class)
-            .getResultList();
+        session.createQuery("SELECT s FROM Security s", ServiceRequest.class).getResultList();
     System.out.println(objects.size());
     System.out.println(FXCollections.observableList(objects).size());
     tableView.setItems(FXCollections.observableList(objects));

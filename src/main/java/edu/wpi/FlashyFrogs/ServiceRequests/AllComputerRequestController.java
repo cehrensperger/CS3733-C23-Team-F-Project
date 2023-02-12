@@ -1,9 +1,10 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
@@ -23,9 +24,13 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class AllAudioVisualRequestController extends AllRequestsController {
-
+public class AllComputerRequestController extends AllRequestsController {
+  @FXML private MFXButton back;
   @FXML private MFXButton question;
+
+  public void handleBackButton(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("views", "ComputerService");
+  }
 
   public void initialize() {
     System.out.println("initializing");
@@ -37,6 +42,7 @@ public class AllAudioVisualRequestController extends AllRequestsController {
             return new SimpleStringProperty(p.getValue().toString());
           }
         });
+
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -44,7 +50,10 @@ public class AllAudioVisualRequestController extends AllRequestsController {
     Session session = CONNECTION.getSessionFactory().openSession();
 
     List<ServiceRequest> objects =
-        session.createQuery("SELECT s FROM AudioVisual s", ServiceRequest.class).getResultList();
+        session
+            .createQuery("SELECT s FROM ComputerService s", ServiceRequest.class)
+            .getResultList();
+
     System.out.println(objects.size());
     System.out.println(FXCollections.observableList(objects).size());
     tableView.setItems(FXCollections.observableList(objects));

@@ -1,7 +1,9 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import java.io.IOException;
+
+import edu.wpi.FlashyFrogs.controllers.HelpController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

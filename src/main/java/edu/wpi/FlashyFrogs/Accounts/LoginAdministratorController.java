@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.Accounts;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 

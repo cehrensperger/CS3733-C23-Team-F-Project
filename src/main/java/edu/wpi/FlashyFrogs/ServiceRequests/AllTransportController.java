@@ -1,9 +1,10 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
@@ -23,15 +24,16 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class AllSanitationRequestController extends AllRequestsController {
+public class AllTransportController extends AllRequestsController {
 
   @FXML private MFXButton back;
   @FXML private MFXButton question;
 
   public void handleBackButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SanitationService");
+    Fapp.setScene("views", "Transport");
   }
 
+  @FXML
   public void handleQ(ActionEvent event) throws IOException {
 
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Help.fxml"));
@@ -47,6 +49,7 @@ public class AllSanitationRequestController extends AllRequestsController {
 
   public void initialize() {
     System.out.println("initializing");
+
     typeCol.setCellValueFactory(
         new Callback<
             TableColumn.CellDataFeatures<ServiceRequest, String>, ObservableValue<String>>() {
@@ -55,6 +58,7 @@ public class AllSanitationRequestController extends AllRequestsController {
             return new SimpleStringProperty(p.getValue().toString());
           }
         });
+
     empLastNameCol.setCellValueFactory(new PropertyValueFactory<>("empFirstName"));
     submissionDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
     statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -62,7 +66,9 @@ public class AllSanitationRequestController extends AllRequestsController {
     Session session = CONNECTION.getSessionFactory().openSession();
 
     List<ServiceRequest> objects =
-        session.createQuery("SELECT s FROM Sanitation s", ServiceRequest.class).getResultList();
+        session
+            .createQuery("SELECT s FROM InternalTransport s", ServiceRequest.class)
+            .getResultList();
     System.out.println(objects.size());
     System.out.println(FXCollections.observableList(objects).size());
     tableView.setItems(FXCollections.observableList(objects));

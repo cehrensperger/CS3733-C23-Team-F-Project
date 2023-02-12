@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.ORM.Node;
 import javafx.fxml.FXML;
