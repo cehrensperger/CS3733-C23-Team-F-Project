@@ -130,8 +130,17 @@ public class SecurityTest {
   @Test
   void testHashCode() {
     int originalHash = testSecurity.hashCode();
+    Security sameSecurity =
+        new Security(
+            "Incident Report",
+            new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
     testSecurity.setDateOfSubmission(new Date(2023 - 1 - 30));
-    assertNotEquals(testSecurity.hashCode(), originalHash);
+    assertEquals(testSecurity.hashCode(), originalHash);
+    assertNotEquals(originalHash, sameSecurity.hashCode());
   }
 
   /** Checks to see if toString makes a string in the same format specified in Security.java */
