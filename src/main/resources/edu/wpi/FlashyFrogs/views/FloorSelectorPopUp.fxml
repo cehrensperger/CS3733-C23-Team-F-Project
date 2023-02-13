@@ -6,12 +6,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="182.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.views.FloorSelectorPopUp">
+<AnchorPane prefHeight="182.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.FloorSelectorController">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
          <children>
-            <Button maxWidth="100.0" mnemonicParsing="false" prefHeight="25.0" text="3rd Floor">
+            <Button fx:id="button3" maxWidth="100.0" mnemonicParsing="false" onAction="#changeFloor" prefHeight="25.0" text="Floor 3">
                <font>
                   <Font size="16.0" />
                </font>
@@ -19,7 +18,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-            <Button maxWidth="100.0" mnemonicParsing="false" prefHeight="25.0" text="2nd Floor">
+            <Button fx:id="button2" maxWidth="100.0" mnemonicParsing="false" onAction="#changeFloor" prefHeight="25.0" text="Floor 2">
                <font>
                   <Font size="16.0" />
                </font>
@@ -27,7 +26,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-            <Button maxWidth="100.0" mnemonicParsing="false" prefHeight="25.0" text="1st Floor">
+            <Button fx:id="button1" maxWidth="100.0" mnemonicParsing="false" onAction="#changeFloor" prefHeight="25.0" text="Floor 1">
                <font>
                   <Font size="16.0" />
                </font>
@@ -35,7 +34,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-            <Button maxWidth="100.0" mnemonicParsing="false" prefHeight="25.0" text="L1">
+            <Button fx:id="buttonL1" maxWidth="100.0" mnemonicParsing="false" onAction="#changeFloor" prefHeight="25.0" text="Floor L1">
                <font>
                   <Font size="16.0" />
                </font>
@@ -43,7 +42,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-            <Button maxWidth="100.0" mnemonicParsing="false" prefHeight="25.0" text="L2">
+            <Button fx:id="buttonL2" maxWidth="100.0" mnemonicParsing="false" onAction="#changeFloor" prefHeight="25.0" text="Floor L2">
                <font>
                   <Font size="16.0" />
                </font>
