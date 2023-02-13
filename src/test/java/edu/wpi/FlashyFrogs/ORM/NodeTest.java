@@ -50,11 +50,7 @@ public class NodeTest {
   @BeforeEach
   @AfterEach
   public void resetTestNode() {
-    testNode.setId("Test");
-    testNode.setBuilding("Building");
-    testNode.setFloor(Node.Floor.L2);
-    testNode.setXCoord(0);
-    testNode.setYCoord(1);
+    Node testNode = new Node("Test", "Building", Node.Floor.L2, 0, 1);
   }
 
   /** Tests if the equals in Node.java correctly compares two Node objects */
@@ -76,18 +72,8 @@ public class NodeTest {
   /** Tests to see that HashCode changes when attributes that determine HashCode changes */
   @Test
   void testHashCode() {
-    int originalHash = testNode.hashCode();
-    testNode.setId("NewID");
-    testNode.setXCoord(100);
-    testNode.setYCoord(100000);
-    assertNotEquals(testNode.hashCode(), originalHash);
-  }
-
-  /** Tests setter for id */
-  @Test
-  void setId() {
-    testNode.setId("Changed");
-    assertEquals("Changed", testNode.getId());
+    Node testNode2 = new Node("NewID", "Building", Node.Floor.L2, 100, 100000);
+    assertNotEquals(testNode2.hashCode(), testNode.hashCode());
   }
 
   /** Tests setter for xCoord */
