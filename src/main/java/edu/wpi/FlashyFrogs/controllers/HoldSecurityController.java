@@ -111,7 +111,7 @@ public class HoldSecurityController {
       Security securityRequest = new Security();
       //this needs to be updated when database is fixed
       /*securityRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      securityRequest.setType(type.getValue().toString());
+      securityRequest.setLocationType(type.getValue().toString());
       securityRequest.setThreat(threat.getValue().toString());
       securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
       securityRequest.setDateOfIncident(dateOfRequest);

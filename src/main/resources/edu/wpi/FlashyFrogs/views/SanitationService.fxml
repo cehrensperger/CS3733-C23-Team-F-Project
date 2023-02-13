@@ -105,7 +105,7 @@
                                 <Insets top="55.0" />
                             </VBox.margin>
                         </Text>
-                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
                             <children>
                         <VBox prefHeight="200.0" prefWidth="185.0">
                            <HBox.margin>
@@ -140,7 +140,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox fx:id="location" promptText="Location of Request" style="-fx-background-color: FFFFFF;">
+                                        <SearchableComboBox fx:id="location" promptText="Location of Request" style="-fx-background-color: #F1F1F1;">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
