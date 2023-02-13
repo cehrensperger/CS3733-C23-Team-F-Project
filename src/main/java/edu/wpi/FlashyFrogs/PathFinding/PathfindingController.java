@@ -6,18 +6,13 @@ import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import edu.wpi.FlashyFrogs.PathFinding.AStar;
-import edu.wpi.FlashyFrogs.PathFinding.BreadthFirst;
-import edu.wpi.FlashyFrogs.PathFinding.DepthFirst;
-import edu.wpi.FlashyFrogs.PathFinding.PathFinder;
+import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
+import edu.wpi.FlashyFrogs.controllers.HelpController;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-
-import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
-import edu.wpi.FlashyFrogs.controllers.HelpController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -158,19 +153,16 @@ public class PathfindingController {
     if (algorithmBox.getValue() != null) {
       switch (algorithmBox.getValue()) {
         case "A*":
-          break;
+          pathFinder.setAlgorithm(new AStar());
         case "Breadth-first":
           pathFinder.setAlgorithm(new BreadthFirst());
           break;
         case "Depth-first":
           pathFinder.setAlgorithm(new DepthFirst());
           break;
-        default:
-          pathFinder.setAlgorithm(new AStar());
-          break;
       }
     }
-    
+
     List<Node> nodes = pathFinder.findPath(startPath, endPath);
 
     if (nodes == null) {
