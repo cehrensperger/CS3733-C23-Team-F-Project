@@ -108,7 +108,7 @@ public class PathFindingController {
             hideAll();
             if (startingBox.valueProperty().getValue() != null
                 && destinationBox.valueProperty().getValue() != null) {
-              handleGetPath(null);
+              handleGetPath();
             }
           } catch (IOException e) {
             throw new RuntimeException(e);
@@ -131,7 +131,7 @@ public class PathFindingController {
     hideAll();
   }
 
-  public void handleBack(ActionEvent actionEvent) throws IOException {
+  public void handleBack() throws IOException {
     mapController.exit();
     Fapp.setScene("views", "Home");
   }
@@ -148,14 +148,15 @@ public class PathFindingController {
     }
   }
 
-  public void handleButtonClear(ActionEvent event) throws IOException {
-    startingBox.valueProperty().set(null);
-    destinationBox.valueProperty().set(null);
-    algorithmBox.valueProperty().set(null);
-    hideAll();
-  }
+  // might not be necessary
+  //  public void handleButtonClear(ActionEvent event) throws IOException {
+  //    startingBox.valueProperty().set(null);
+  //    destinationBox.valueProperty().set(null);
+  //    algorithmBox.valueProperty().set(null);
+  //    hideAll();
+  //  }
 
-  public void handleGetPath(ActionEvent actionEvent) throws IOException {
+  public void handleGetPath() throws IOException {
     // initially hide all nodes and edges
     // later show the nodes and edges that are part of the path
     hideAll();
@@ -166,20 +167,12 @@ public class PathFindingController {
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
-    // @michael i think this is probably where the problem is
     // get algorithm to use in pathfinding from algorithmBox
     if (algorithmBox.getValue() != null) {
       switch (algorithmBox.getValue()) {
-        case "Breadth-first":
-          pathFinder.setAlgorithm(new BreadthFirst());
-          break;
-        case "Depth-first":
-          pathFinder.setAlgorithm(new DepthFirst());
-          break;
-        case "A*":
-        default:
-          pathFinder.setAlgorithm(new AStar());
-          break;
+        case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
+        case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
+        default -> pathFinder.setAlgorithm(new AStar());
       }
     }
 
@@ -208,7 +201,7 @@ public class PathFindingController {
           // get the circle that represents the node from the mapController
           Circle circle = mapController.getNodeToCircleMap().get(node);
 
-          if (circle != null) { //TODO: fix this garbage
+          if (circle != null) { // TODO: fix this garbage
             circle.setOpacity(0);
 
             // set hover behavior for each circle
@@ -217,7 +210,7 @@ public class PathFindingController {
                 .hoverProperty()
                 .addListener(
                     (observable, oldValue, newValue) -> {
-                      // If we're no longer hovering and the pop over exists, delete it. We will
+                      // If we're no longer hovering and the pop-over exists, delete it. We will
                       // either create a new one
                       // or, keep it deleted
                       if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
@@ -291,7 +284,7 @@ public class PathFindingController {
   }
 
   @FXML
-  public void openMapEditor(ActionEvent event) throws IOException {
+  public void openMapEditor() {
     mapController.exit();
     Fapp.setScene("MapEditor", "MapEditorView");
   }
@@ -303,7 +296,7 @@ public class PathFindingController {
     // load a pop-over object with the help page in it
     PopOver popOver = new PopOver(newLoad.load());
 
-    // get the contoller of the help page
+    // get the controller of the help page
     HelpController help = newLoad.getController();
     // show the correct text for the path finding page specifically
     help.handleQPathFinding();
@@ -314,7 +307,7 @@ public class PathFindingController {
   }
 
   @FXML
-  public void upFloor(ActionEvent event) {
+  public void upFloor() {
     int floorLevel = floorProperty.getValue().ordinal() + 1;
     if (floorLevel > Node.Floor.values().length - 1) floorLevel = 0;
 
@@ -322,7 +315,7 @@ public class PathFindingController {
   }
 
   @FXML
-  public void downFloor(ActionEvent event) {
+  public void downFloor() {
     int floorLevel = floorProperty.getValue().ordinal() - 1;
     if (floorLevel < 0) floorLevel = Node.Floor.values().length - 1;
 
@@ -337,7 +330,7 @@ public class PathFindingController {
     FloorSelectorController floorPopup = newLoad.getController();
     floorPopup.setFloorProperty(this.floorProperty);
 
-    popOver.detach(); // Detatch the pop-up, so it's not stuck to the button
+    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
