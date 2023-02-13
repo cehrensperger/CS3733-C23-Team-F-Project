@@ -142,7 +142,7 @@
             <Image url="@Brigham-Womens-TO-USE.jpg" />
          </image>
       </ImageView>
-      <SearchableComboBox layoutX="469.0" layoutY="120.0" prefHeight="25.0" prefWidth="89.0" promptText="Filter" AnchorPane.leftAnchor="469.0" AnchorPane.topAnchor="120.0" />
+      <SearchableComboBox fx:id="filterBox" layoutX="1171.0" layoutY="120.0" prefHeight="25.0" prefWidth="164.0" promptText="Filter" AnchorPane.rightAnchor="20.0" />
       <MFXButton fx:id="manageButton" onAction="#manageAnnouncements" prefHeight="60.0" prefWidth="150.0" text="Manage Announcements" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
@@ -155,7 +155,7 @@
             <TableColumn fx:id="dateCol" minWidth="0.0" prefWidth="375.0" text="Date Effective" />
          </columns>
       </TableView>
-      <Label fx:id="tableText1" layoutX="240.0" layoutY="451.0" text="Future Moves">
+      <Label fx:id="tableText2" layoutX="240.0" layoutY="459.0" text="Future Moves">
          <font>
             <Font size="24.0" />
          </font>
