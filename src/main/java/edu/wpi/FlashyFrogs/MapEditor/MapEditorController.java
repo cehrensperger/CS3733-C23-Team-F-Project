@@ -24,7 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import lombok.NonNull;
@@ -34,8 +34,8 @@ import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 public class MapEditorController {
+  public AnchorPane mapPane;
   @FXML private MFXComboBox<Node.Floor> floorSelector;
-  @FXML private BorderPane editorBox; // Editor box, map is appended to this on startup
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
 
@@ -106,13 +106,19 @@ public class MapEditorController {
           return row; // Return the generated row
         });
 
-    // Load the map loader
-    FXMLLoader mapLoader = new FXMLLoader(Fapp.class.getResource("Map/Map.fxml"));
+    FXMLLoader mapLoader =
+        new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
     Pane map = mapLoader.load(); // Load the map
-    editorBox.setCenter(map); // Put the map loader into the editor box
+    mapPane.getChildren().add(map); // Put the map loader into the editor box
+    mapController = mapLoader.getController();
+    mapController.setFloor(Node.Floor.L1);
 
-    mapController = mapLoader.getController(); // Load the map controller
+    // make the anchor pane resizable
+    AnchorPane.setTopAnchor(map, 0.0);
+    AnchorPane.setBottomAnchor(map, 0.0);
+    AnchorPane.setLeftAnchor(map, 0.0);
+    AnchorPane.setRightAnchor(map, 0.0);
 
     createLocationNameTable(
         mapController.getMapSession()); // Create the table using the map session

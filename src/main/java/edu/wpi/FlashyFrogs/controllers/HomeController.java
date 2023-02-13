@@ -1,13 +1,14 @@
 package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -15,27 +16,44 @@ import org.controlsfx.control.PopOver;
 
 public class HomeController {
   @FXML private StackPane rootPane;
+  @FXML private MFXButton serviceRequestsButton;
+  @FXML private MFXButton mapDataEditorButton;
+  @FXML private MFXButton pathfindingButton;
+  @FXML private MFXButton question;
+  @FXML private MFXButton exitButton;
+  @FXML private MenuItem closeMenuItem;
+  @FXML private MenuItem loadMapMenuItem;
+  @FXML private MenuItem loadFeedbackMenuItem;
+  @FXML private MenuItem logoutMenuItem;
+  @FXML private MFXButton hiddneButton;
   @FXML private ImageView backgroundImage;
+  @FXML private MFXButton secretButton;
   @FXML private TextArea AboutText;
 
   Stage stage;
 
   public void initialize() {
-    stage = Fapp.getPrimaryStage();
-    backgroundImage.fitHeightProperty().bind(stage.heightProperty());
-    backgroundImage.fitWidthProperty().bind(stage.widthProperty());
+    //    stage = Fapp.getPrimaryStage();
+    //    backgroundImage.fitHeightProperty().bind(stage.heightProperty());
+    //    backgroundImage.fitWidthProperty().bind(stage.widthProperty());
     // ensure that Home doesn't lose its styling upon leaving the page and returning to it
-    if (Fapp.isLightMode()) {
-      setToLightMode();
-    } else {
-      setToDarkMode();
-    }
+    //    if (Fapp.isLightMode()) {
+    //      setToLightMode();
+    //    } else {
+    //      setToDarkMode();
+    //    }
+  }
+
+  @FXML
+  public void openPathfinding(ActionEvent event) throws IOException {
+    System.out.println("opening pathfinding");
+    Fapp.setScene("views", "Pathfinding2");
   }
 
   @FXML
   public void handleExitButton(ActionEvent event) throws IOException {
-    stage = (Stage) rootPane.getScene().getWindow();
-    stage.close();
+    //    stage = (Stage) rootPane.getScene().getWindow();
+    //    stage.close();
   }
 
   @FXML
@@ -54,8 +72,8 @@ public class HomeController {
 
   @FXML
   public void handleClose(ActionEvent event) throws IOException {
-    stage = (Stage) rootPane.getScene().getWindow();
-    stage.close();
+    //    stage = (Stage) rootPane.getScene().getWindow();
+    //    stage.close();
   }
 
   public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
@@ -63,7 +81,7 @@ public class HomeController {
   }
 
   public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("MapEditor", "MapEditorView");
+    Fapp.setScene("views", "MapEditorView");
   }
 
   public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
@@ -100,73 +118,88 @@ public class HomeController {
 
   /**
    * Change the color theme to Light Mode when the Color Scheme > Light Mode option is selected on
-   * Home.fxml.
+   * EmployeeHome.fxml.
    *
    * @param actionEvent
    * @throws IOException
    */
   public void changeToLightMode(ActionEvent actionEvent) throws IOException {
-    setToLightMode();
+    //    setToLightMode();
   }
 
   /**
-   * Call to set Home.fxml to light mode. Also makes some tweaks to JavaFX elements specific to
-   * Home.fxml, so not all of this method is generalizable to setting any page to light mode.
+   * Call to set EmployeeHome.fxml to light mode. Also makes some tweaks to JavaFX elements specific
+   * to EmployeeHome.fxml, so not all of this method is generalizable to setting any page to light
+   * mode.
    */
   public void setToLightMode() {
-    rootPane
-        .getStylesheets()
-        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off all
-    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
-    rootPane
-        .getStylesheets()
-        .add("edu/wpi/FlashyFrogs/views/light-mode.css"); // add the light mode CSS
-    AboutText.setBlendMode(
-        BlendMode.DARKEN); // change the Blend Mode on the text box describing the hospital, as the
-    // Blend Mode used for Light Mode does not give the desired appearance
-    rootPane
-        .getStylesheets()
-        .add("edu/wpi/FlashyFrogs/views/label-override.css"); // usually the text color in label
-    // elements is black in Light Mode, but the upper left menu on the Home page would be hard to
-    // read with black text,
-    // so for this page we change the label text color to white.
-    Fapp.setLightMode(true); // set the isLightMode variable to true, as we switched to Light Mode
+    //    rootPane
+    //        .getStylesheets()
+    //        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off
+    // all
+    //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
+    //    rootPane
+    //        .getStylesheets()
+    //        .add("edu/wpi/FlashyFrogs/views/light-mode.css"); // add the light mode CSS
+    //    AboutText.setBlendMode(
+    //        BlendMode.DARKEN); // change the Blend Mode on the text box describing the hospital,
+    // as the
+    //    // Blend Mode used for Light Mode does not give the desired appearance
+    //    rootPane
+    //        .getStylesheets()
+    //        .add("edu/wpi/FlashyFrogs/views/label-override.css"); // usually the text color in
+    // label
+    //    // elements is black in Light Mode, but the upper left menu on the Home page would be hard
+    // to
+    //    // read with black text,
+    //    // so for this page we change the label text color to white.
+    //    Fapp.setLightMode(true); // set the isLightMode variable to true, as we switched to Light
+    // Mode
   }
 
   /**
    * Change the color theme to Dark Mode when the Color Scheme > Dark Mode option is selected on
-   * Home.fxml.
+   * EmployeeHome.fxml.
    *
-   * @param actionEvent not used
+   * @param actionEvent
+   * @throws IOException
    */
   public void changeToDarkMode(ActionEvent actionEvent) {
-    setToDarkMode();
+    // setToDarkMode();
+
   }
 
   /**
-   * Call to set Home.fxml to dark mode. Also makes some tweaks to JavaFX elements specific to
-   * Home.fxml, so not all of this method is generalizable to setting any page to dark mode.
+   * Call to set EmployeeHome.fxml to dark mode. Also makes some tweaks to JavaFX elements specific
+   * to EmployeeHome.fxml, so not all of this method is generalizable to setting any page to dark
+   * mode.
    */
   public void setToDarkMode() {
-    rootPane
-        .getStylesheets()
-        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off all
-    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
-    rootPane
-        .getStylesheets()
-        .add("edu/wpi/FlashyFrogs/views/dark-mode.css"); // add the dark mode CSS
-    AboutText.setBlendMode(
-        BlendMode.SOFT_LIGHT); // change the Blend Mode on the text box describing the hospital, as
-    // using Light Mode's Blend Mode (DARKEN) on this will make all the text in the box invisible;
-    // SOFT_LIGHT keeps it
-    // visible and somewhat preserves the transparency idea shown in Light Mode
-    AboutText.setStyle(
-        "-fx-text-fill: #2f2f2f;"); // usually the text color in text-area elements is white in Dark
-    // Mode,
-    // but the text-area element on this page, the one describing the hospital, would be hard to
-    // read with white, so for
-    // this page we change the color to black/gray.
-    Fapp.setLightMode(false); // set the isLightMode variable to false, as we switched to Dark Mode
+    //    rootPane
+    //        .getStylesheets()
+    //        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off
+    // all
+    //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
+    //    rootPane
+    //        .getStylesheets()
+    //        .add("edu/wpi/FlashyFrogs/views/dark-mode.css"); // add the dark mode CSS
+    //    AboutText.setBlendMode(
+    //        BlendMode.SOFT_LIGHT); // change the Blend Mode on the text box describing the
+    // hospital, as
+    //    // using Light Mode's Blend Mode (DARKEN) on this will make all the text in the box
+    // invisible;
+    //    // SOFT_LIGHT keeps it
+    //    // visible and somewhat preserves the transparency idea shown in Light Mode
+    //    AboutText.setStyle(
+    //        "-fx-text-fill: #2f2f2f;"); // usually the text color in text-area elements is white
+    // in Dark
+    //    // Mode,
+    //    // but the text-area element on this page, the one describing the hospital, would be hard
+    // to
+    //    // read with white, so for
+    //    // this page we change the color to black/gray.
+    //    Fapp.setLightMode(false); // set the isLightMode variable to false, as we switched to Dark
+    // Mode
   }
 
   public void handleLogOut(ActionEvent actionEvent) throws IOException {
