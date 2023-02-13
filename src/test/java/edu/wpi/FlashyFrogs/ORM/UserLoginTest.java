@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.wpi.FlashyFrogs.DBConnection;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -24,9 +25,12 @@ public class UserLoginTest {
   @AfterEach
   public void clearDB() {
     // If the prior test is open
-    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
-    if (priorSession != null && priorSession.isOpen()) {
-      priorSession.close(); // Close it, so we can create new ones
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
     }
 
     // Create a session to clear with

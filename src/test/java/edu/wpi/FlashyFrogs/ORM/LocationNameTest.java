@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.time.Instant;
 import java.util.*;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -39,9 +40,12 @@ public class LocationNameTest {
   @AfterEach
   public void cleanupDatabase() {
     // If the prior test is open
-    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
-    if (priorSession != null && priorSession.isOpen()) {
-      priorSession.close(); // Close it, so we can create new ones
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
     }
 
     // cancel any still-running transactions
