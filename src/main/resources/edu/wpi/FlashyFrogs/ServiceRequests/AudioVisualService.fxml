@@ -1,233 +1,298 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.AudioVisualController">
-   <top>
-      <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets top="8.0" />
-         </BorderPane.margin>
-         <children>
-            <HBox maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="800.0">
-               <children>
-                  <AnchorPane maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Text fx:id="securityServiceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual Request Form" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HoldAVController">
+    <children>
+        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="155.66615295410156">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="24.0" />
+                            </font>
                         </Text>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                     <children>
-                        <MFXButton fx:id="question" onAction="#handleQ" text="?" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                     </children>
-                  </AnchorPane>
-               </children>
-            </HBox>
-            <Label fx:id="errorMessage" maxWidth="1.7976931348623157E308" prefHeight="23.0" prefWidth="7.0" textAlignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </VBox>
-   </top>
-   <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="800.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Text fx:id="incidentReportText" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Information:" wrappingWidth="306.7578125">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Text>
-                  <Text fx:id="nameText1" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                  </Text>
-                  <HBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0">
-                     <children>
-                        <MFXTextField fx:id="patientFirst" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="First" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets left="10.0" right="5.0" />
-                           </HBox.margin>
-                        </MFXTextField>
-                        <MFXTextField fx:id="patientMiddle" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Middle" HBox.hgrow="ALWAYS" />
-                        <MFXTextField fx:id="patientLast" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Last" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </MFXTextField>
-                        <MFXDatePicker fx:id="dateOfBirthEntry" floatMode="INLINE" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="281.0" promptText="Date of Birth" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets left="5.0" right="10.0" />
-                           </HBox.margin>
-                        </MFXDatePicker>
-                     </children>
-                  </HBox>
-                  <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <MFXComboBox fx:id="locationEntry" prefHeight="50.0" prefWidth="256.0" promptText="Current Location:">
-                           <HBox.margin>
-                              <Insets left="10.0" right="5.0" top="10.0" />
-                           </HBox.margin>
-                        </MFXComboBox>
-                        <MFXComboBox fx:id="accommodationEntry" prefHeight="50.0" prefWidth="264.0" promptText="Type of Accommodation:">
-                           <HBox.margin>
-                              <Insets right="5.0" top="10.0" />
-                           </HBox.margin>
-                        </MFXComboBox>
-                        <MFXComboBox fx:id="urgencyEntry" prefHeight="50.0" prefWidth="252.0" promptText="Urgency:">
-                           <HBox.margin>
-                              <Insets right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </MFXComboBox>
-                     </children>
-                  </HBox>
-                  <Text fx:id="employeeInformationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Information:" wrappingWidth="369.02734375">
-                     <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Text>
-                  <HBox maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="200.0">
-                     <children>
-                        <VBox maxWidth="1.7976931348623157E308" prefHeight="42.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <MFXTextField fx:id="empFirst" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0" promptText="First">
-                                 <VBox.margin>
-                                    <Insets left="10.0" right="5.0" />
-                                 </VBox.margin>
-                              </MFXTextField>
-                           </children>
-                        </VBox>
-                        <VBox maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <MFXTextField fx:id="empMiddle" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Middle">
-                                 <VBox.margin>
-                                    <Insets right="5.0" />
-                                 </VBox.margin>
-                              </MFXTextField>
-                           </children>
-                        </VBox>
-                        <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                           <children>
-                              <MFXTextField fx:id="empLast" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Last">
-                                 <VBox.margin>
-                                    <Insets right="5.0" />
-                                 </VBox.margin>
-                              </MFXTextField>
-                           </children>
-                        </VBox>
-                        <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <MFXComboBox fx:id="empDeptEntry" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="210.0" promptText="Department">
-                                 <VBox.margin>
-                                    <Insets right="10.0" />
-                                 </VBox.margin>
-                              </MFXComboBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Employee:" wrappingWidth="275.61328125">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets left="10.0" top="10.0" />
-                           </VBox.margin>
+                        <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual        " textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Information Technology" textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Sanitation            " textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Security                " textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <AnchorPane VBox.vgrow="ALWAYS">
+                            <children>
+                                <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
+                                    <children>
+                                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Credits" textFill="WHITE">
+                                            <VBox.margin>
+                                                <Insets left="18.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </MFXButton>
+                                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Back" textFill="#012d5a">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" left="18.0" top="18.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </MFXButton>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual Service Request">
+                            <font>
+                                <Font size="28.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="55.0" />
+                            </VBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <HBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0">
+                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
+                            <children>
+                        <VBox prefHeight="200.0" prefWidth="185.0">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
                            <children>
-                              <MFXTextField fx:id="assignedEmpFirst" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="First" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets left="10.0" right="5.0" />
-                                 </HBox.margin>
-                              </MFXTextField>
-                              <MFXTextField fx:id="assignedEmpMiddle" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Middle" HBox.hgrow="ALWAYS" />
-                              <MFXTextField fx:id="assignedEmpLast" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="200.0" promptText="Last" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </MFXTextField>
-                              <MFXComboBox fx:id="assignedEmpDeptEntry" maxWidth="1.7976931348623157E308" prefHeight="56.0" prefWidth="200.0" promptText="Department" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="10.0" />
-                                 </HBox.margin>
-                              </MFXComboBox>
+                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="48.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of location is the audio/visual device needed in" textAlignment="RIGHT" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="24.0" />
+                                 </VBox.margin>
+                              </Text>
                            </children>
+                        </VBox>
+                                <VBox prefHeight="400.0" prefWidth="200.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Information">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                                        <SearchableComboBox fx:id="location" promptText="Location of Request" style="-fx-background-color: FFFFFF;">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                        <SearchableComboBox fx:id="type" promptText="Location Type">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets right="100.0" />
+                                    </HBox.margin>
+                                </VBox>
+                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="470.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                <VBox prefHeight="159.0" prefWidth="200.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Device Information">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                                        <TextField fx:id="device" promptText="Reason For Transfer" text="Device Type">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
+                                        <TextField fx:id="model" text="Device Model">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
+                              <TextField fx:id="reason" text="Reason for Request">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </TextField>
+                                        <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date (needed by)" />
+                                        <TextField fx:id="time" promptText="Time (needed by) (00:00 AM/PM)">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" top="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
+                                        <SearchableComboBox fx:id="urgency" promptText="Urgency">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                        <TextField fx:id="description" prefWidth="200.0" text="Description of Request" />
+                                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                        <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Clear" textAlignment="CENTER" textFill="#b6000b">
+                                                            <font>
+                                                                <Font size="16.0" />
+                                                            </font>
+                                                        </MFXButton>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                                                            <font>
+                                                                <Font size="16.0" />
+                                                            </font>
+                                                        </MFXButton>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets top="144.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets left="100.0" />
+                                    </HBox.margin></VBox>
+                        <VBox prefHeight="200.0" prefWidth="185.0">
+                           <HBox.margin>
+                              <Insets left="10.0" top="48.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of device do you need" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="32.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the model of the device you need" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the reason for the device requested" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="32.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What date is the device needed by" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="30.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What time is the device needed by" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="32.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h8" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of this request" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="30.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h9" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the request" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="32.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="50.0" />
+                            </VBox.margin>
                         </HBox>
-                     </children>
-                  </VBox>
-                  <HBox alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="41.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <AnchorPane maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                           <children>
-                              <MFXButton fx:id="allButton" onAction="#handleAllButton" prefWidth="275.0" text="All Audio/Visual Requests" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                           <children>
-                              <HBox maxWidth="1.7976931348623157E308" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                                 <children>
-                                    <MFXButton fx:id="clearButton" onAction="#handleClear" prefHeight="27.0" prefWidth="100.0" text="Clear" />
-                                    <MFXButton fx:id="homeButton" onAction="#handleBack" prefWidth="100.0" text="Back" />
-                                    <MFXButton fx:id="submitButton" onAction="#handleSubmit" prefWidth="100.0" text="Submit" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </center>
-</BorderPane>
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

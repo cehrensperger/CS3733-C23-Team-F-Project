@@ -4,21 +4,26 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
-import io.github.palexdev.materialfx.controls.MFXPasswordField;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 
 public class LoginController {
 
   @FXML private AnchorPane rootPane;
-  @FXML private MFXTextField username;
-  @FXML private MFXPasswordField password;
+  @FXML private TextField username;
+  @FXML private PasswordField password;
+  @FXML private MFXButton login;
+  @FXML private MFXButton clear;
+  @FXML Text forgot;
   @FXML private Label errorMessage;
 
   public void initialize() {

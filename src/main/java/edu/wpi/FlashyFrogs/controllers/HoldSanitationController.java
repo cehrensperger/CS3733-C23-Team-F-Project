@@ -1,14 +1,32 @@
 package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.Sanitation;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.sql.Connection;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
+
+import jakarta.persistence.RollbackException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 public class HoldSanitationController {
 
@@ -41,6 +59,9 @@ public class HoldSanitationController {
   @FXML SearchableComboBox biohazard;
   @FXML TextField description;
   boolean hDone = false;
+  @FXML private Label errorMessage;
+  private Connection connection = null;
+
 
   public void initialize() {
     h1.setVisible(false);
@@ -53,6 +74,15 @@ public class HoldSanitationController {
     h8.setVisible(false);
     h9.setVisible(false);
 
+    Session session = CONNECTION.getSessionFactory().openSession();
+    List<String> objects =
+            session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+
+    objects.sort(String::compareTo);
+
+    ObservableList<String> observableList = FXCollections.observableList(objects);
+
+    location.setItems(observableList);
     type.getItems()
         .addAll(
             "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
@@ -63,7 +93,62 @@ public class HoldSanitationController {
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    //
+
+    Session session = CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+
+    try {
+      String[] parts;
+      parts = urgency.getValue().toString().toUpperCase().split(" ");
+      String urgencyEnumString = parts[0] + "_" + parts[1];
+
+      if (location.getValue().toString().equals("")
+              || type.getValue().toString().equals("")
+              || sanitationType.getValue().toString().equals("")
+              || date.getValue().toString().equals("")
+              || time.getText().equals("")
+              || isolation.getValue().toString().equals("")
+              || biohazard.getValue().toString().equals("")
+              || description.getText().equals("")) {
+        throw new NullPointerException();
+      }
+
+      //String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
+
+      Date dateOfIncident =
+              Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+      Sanitation sanitationRequest = new Sanitation();
+      /*sanitationRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
+      sanitationRequest.setLocationType(type.getValue().toString());
+      sanitationRequest.setSanitationType(sanitationType.getValue().toString());
+      sanitationRequest.setDateOfIncident(dateOfIncident);
+      sanitationRequest.setTime(time.getText());
+      sanitationRequest.setUrgency.valueOf(urgencyEnumString);
+      sanitationRequest.setIsolation(isolation.getValue().toString());
+      sanitationRequest.setBiohazard(biohazard.getValue().toString());
+      sanitationRequest.setDescription(description.getText());
+     */
+      try {
+        session.persist(sanitationRequest);
+        transaction.commit();
+        session.close();
+        handleClear(actionEvent);
+        errorMessage.setTextFill(Paint.valueOf("#012D5A"));
+        errorMessage.setText("Successfully submitted.");
+      } catch (RollbackException exception) {
+        session.clear();
+        errorMessage.setTextFill(Paint.valueOf("#b6000b"));
+        errorMessage.setText("Please fill all fields.");
+        session.close();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      session.clear();
+      errorMessage.setTextFill(Paint.valueOf("#b6000b"));
+      errorMessage.setText("Please fill all fields.");
+      session.close();
+    }
+
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
@@ -106,23 +191,23 @@ public class HoldSanitationController {
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AV2");
+    Fapp.setScene("views", "AudioVisualService");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "IT2");
+    Fapp.setScene("views", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "T2");
+    Fapp.setScene("views", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Sa2");
+    Fapp.setScene("views", "SanitationService");
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Se2");
+    Fapp.setScene("views", "SecurityService");
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
