@@ -54,9 +54,10 @@ public class SecurityTest {
 
   private final Department sourceDept = new Department("a", "b");
   private final Department endDept = new Department("c", "d");
-  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
-  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
-  Security testSecurity =
+  private final User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+  private final User assignedEmp =
+      new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
+  private final Security testSecurity =
       new Security(
           "Incident Report",
           new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
@@ -95,18 +96,99 @@ public class SecurityTest {
 
   /** Tests setter for emp */
   @Test
-  public void setEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
+  public void changeEmpTest() {
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, endDept);
     testSecurity.setEmp(newEmp);
     assertEquals(newEmp, testSecurity.getEmp());
   }
 
+  /** Tests that the department clears (something -> null) correctly */
+  @Test
+  public void clearEmpTest() {
+    testSecurity.setEmp(null);
+    assertNull(testSecurity.getEmp());
+  }
+
+  /** Starts the location as null, then sets it to be something */
+  @Test
+  public void setEmpTest() {
+    Security test =
+        new Security("R", null, null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT);
+    test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+
+    // Assert that the location is correct
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getEmp());
+  }
+
+  /** Starts the location name as null and sets it to null */
+  @Test
+  public void nullToNullEmployeeTest() {
+    Security test =
+        new Security(
+            "BSDFSDF", null, null, new Date(), new Date(), ServiceRequest.Urgency.VERY_URGENT);
+    test.setEmp(null);
+
+    // Assert that the location is correct
+    assertNull(test.getEmp());
+  }
+
   /** Test setter for Assigned emp */
   @Test
-  public void setAssignedEmp() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
+  public void changeAssignedEmpTest() {
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, sourceDept);
     testSecurity.setAssignedEmp(newEmp);
     assertEquals(newEmp, testSecurity.getAssignedEmp());
+  }
+
+  /** Tests that the department clears (something -> null) correctly */
+  @Test
+  public void clearAssignedEmpTest() {
+    testSecurity.setAssignedEmp(emp);
+    testSecurity.setAssignedEmp(null);
+    assertNull(testSecurity.getAssignedEmp());
+  }
+
+  /** Starts the location as null, then sets it to be something */
+  @Test
+  public void setAssignedEmpTest() {
+    AudioVisual test =
+        new AudioVisual(
+            assignedEmp,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            AudioVisual.AccommodationType.BOTH,
+            "a",
+            "b",
+            "c",
+            null,
+            new Date());
+    test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+
+    // Assert that the location is correct
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getAssignedEmp());
+  }
+
+  /** Starts the location name as null and sets it to null */
+  @Test
+  public void nullToNullAssignedEmployeeTest() {
+    AudioVisual test =
+        new AudioVisual(
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            AudioVisual.AccommodationType.BOTH,
+            "b",
+            "as",
+            "qwer",
+            null,
+            new Date());
+    test.setAssignedEmp(null);
+    test.setAssignedEmp(null);
+
+    // Assert that the location is correct
+    assertNull(test.getAssignedEmp());
   }
 
   /** Tests setter for dateOfIncident */
