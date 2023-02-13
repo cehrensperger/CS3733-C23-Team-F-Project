@@ -227,7 +227,8 @@ public class PathFindingController {
           // getCurrentLocation() creates its own session but map already has one running,
           // so we have to use that one
 
-          LocationName nodeLocation = node.getCurrentLocation(mapController.getMapSession());
+          LocationName nodeLocation =
+              node.getCurrentLocation(mapController.getMapSession()).stream().findFirst().get();
 
           // if the node location is null, don't attempt to check it against the start and end text
           if (nodeLocation != null && nodeLocation.toString().equals(start.getText())) {

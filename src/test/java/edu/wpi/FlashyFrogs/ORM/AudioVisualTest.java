@@ -25,6 +25,12 @@ public class AudioVisualTest {
   /** Cleans up the user table. Runs after each test */
   @AfterEach
   public void teardownTable() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
@@ -735,6 +741,7 @@ public class AudioVisualTest {
     assertEquals(emp, session.find(User.class, emp.getId()));
     assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
 
+    transaction.rollback();
     session.close();
   }
 }

@@ -60,7 +60,7 @@ public class ComputerService extends ServiceRequest {
    * @param serviceType the ServiceType to use in the serviceType field
    */
   public ComputerService(
-      @NonNull User emp,
+          User emp,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,
