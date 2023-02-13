@@ -19,9 +19,7 @@ public class NavBarController {
 
   @FXML
   private void handleHomeButton(ActionEvent event) throws IOException {
-    if (true) {
-      Fapp.setScene("views", "EmployeeHome");
-    } else Fapp.setScene("views", "AdminHome");
+    Fapp.setScene("views", "Home");
   }
 
   @FXML

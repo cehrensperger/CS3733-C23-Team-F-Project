@@ -56,12 +56,14 @@ public class AStar implements IFindPath {
           if (child
               .node
               .getCurrentLocation(session)
+              .get(0)
               .getLocationType()
               .equals(LocationName.LocationType.ELEV)) {
             child.g = q.g + 10; // cost for elevator
           } else if (child
               .node
               .getCurrentLocation(session)
+              .get(0)
               .getLocationType()
               .equals(LocationName.LocationType.STAI)) {
             child.g = q.g + 20; // cost for stairs
