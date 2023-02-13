@@ -178,23 +178,33 @@ public class NodeTest {
   public void locationRemappedFallbackTest() {
     Node thisNode = new Node("p", "i", Node.Floor.L1, 99, 0); // Random node
     Node otherNode = new Node("h", "i", Node.Floor.L2, 0, 99); // Bad node
-    LocationName theLocation = new LocationName("a", LocationName.LocationType.SERV, "b");
-    LocationName badLocation = new LocationName("b", LocationName.LocationType.INFO, "b");
+    LocationName newestLocation = new LocationName("newest", LocationName.LocationType.SERV, "n");
+    LocationName middleLocation = new LocationName("middle", LocationName.LocationType.INFO, "m");
+    LocationName oldestLocation = new LocationName("oldest", LocationName.LocationType.SERV, "o");
+
     Move fallbackMove =
-        new Move(thisNode, badLocation, Date.from(Instant.ofEpochSecond(10))); // Old
+        new Move(thisNode, oldestLocation, Date.from(Instant.ofEpochSecond(10))); // Old
     Move oldMove =
-        new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(22))); // Old move
+        new Move(thisNode, middleLocation, Date.from(Instant.ofEpochSecond(22))); // middle move
+
+    Move oldMove1 =
+        new Move(thisNode, newestLocation, Date.from(Instant.ofEpochSecond(33))); // new move
+
     Move newMove =
-        new Move(otherNode, theLocation, Date.from(Instant.ofEpochSecond(100))); // New move
+        new Move(otherNode, newestLocation, Date.from(Instant.ofEpochSecond(100))); // New move
+    Move newestMove = new Move(otherNode, middleLocation, Date.from(Instant.ofEpochSecond(200)));
 
     Transaction commitTransaction = session.beginTransaction(); // Session to commit these
     session.persist(thisNode);
     session.persist(otherNode);
-    session.persist(theLocation);
-    session.persist(badLocation);
+    session.persist(oldestLocation);
+    session.persist(middleLocation);
+    session.persist(newestLocation);
     session.persist(fallbackMove);
     session.persist(oldMove);
+    session.persist(oldMove1);
     session.persist(newMove);
+    session.persist(newestMove);
     commitTransaction.commit(); // Commit
 
     assertTrue(thisNode.getCurrentLocation().isEmpty()); // Assert the location is null
@@ -254,7 +264,9 @@ public class NodeTest {
             .findFirst()
             .get()); // Assert the correct location is gotten
 
-    assertEquals(1, node.getCurrentLocation().size());
+    assertEquals(midLocation, node.getCurrentLocation().stream().toArray()[1]);
+
+    assertEquals(2, node.getCurrentLocation().size());
   }
 
   /** Tests that old mappings of the current location -> a node are ignored */
@@ -410,12 +422,23 @@ public class NodeTest {
         correctNode.getCurrentLocation().stream()
             .findFirst()
             .get()); // Assert the location is right
+
+    assertEquals(
+        oldLocation,
+        correctNode.getCurrentLocation().stream().toArray()[1]); // Assert the location is right
+
     assertEquals(
         correctLocation,
         correctNode.getCurrentLocation(session).stream()
             .findFirst()
             .get()); // Assert the location is right
-    assertEquals(1, correctNode.getCurrentLocation().size());
+
+    assertEquals(
+        oldLocation,
+        correctNode.getCurrentLocation(session).stream()
+            .toArray()[1]); // Assert the location is right
+
+    assertEquals(2, correctNode.getCurrentLocation().size());
   }
 
   @Test
@@ -440,4 +463,27 @@ public class NodeTest {
 
     assertEquals(2, node.getCurrentLocation(session).size());
   }
+
+  //  @Test
+  //  public void idk () {
+  //    Node node = new Node("n", "b", Node.Floor.THREE, 0, 0); // Create the node
+  //    LocationName currentLocation1 =
+  //            new LocationName("curr1", LocationName.LocationType.CONF, "cur1");
+  //    LocationName currentLocation2 =
+  //            new LocationName("curr2", LocationName.LocationType.ELEV, "cur2");
+  //    // LocationName furtherFut = new LocationName("ff", LocationName.LocationType.SERV, "");
+  //    Move currentNode1 =
+  //            new Move(node, currentLocation1, Date.from(Instant.now())); // Move for right now
+  //    Move currentNode2 = new Move(node, currentLocation2, Date.from(Instant.now()));
+  //
+  //    Transaction commitTransaction = session.beginTransaction();
+  //    session.persist(node);
+  //    session.persist(currentLocation1);
+  //    session.persist(currentLocation2);
+  //    session.persist(currentNode1);
+  //    session.persist(currentNode2);
+  //    commitTransaction.commit();
+  //
+  //    assertEquals(2, node.getCurrentLocation(session).size());
+  //  }
 }
