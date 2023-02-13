@@ -51,7 +51,7 @@
                         <Font size="16.0" />
                      </font>
                   </PasswordField>
-                  <MFXButton fx:id="login" prefHeight="38.0" prefWidth="424.0" style="-fx-background-color: #012D5A;" text="Log In" textFill="WHITE">
+                  <MFXButton fx:id="login" onAction="#loginButton" prefHeight="38.0" prefWidth="424.0" style="-fx-background-color: #012D5A;" text="Log In" textFill="WHITE">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -59,7 +59,7 @@
                         <Insets bottom="15.0" />
                      </VBox.margin>
                   </MFXButton>
-                  <MFXButton fx:id="clear" prefHeight="38.0" prefWidth="424.0" style="-fx-background-color: #f1f1f1;" text="Clear" textFill="#b6000b">
+                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="424.0" style="-fx-background-color: #f1f1f1;" text="Clear" textFill="#b6000b">
                      <font>
                         <Font size="16.0" />
                      </font>

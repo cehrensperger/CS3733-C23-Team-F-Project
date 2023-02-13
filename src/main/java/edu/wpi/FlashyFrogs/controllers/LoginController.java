@@ -5,18 +5,16 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXPasswordField;
-import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 import org.hibernate.Session;
-import org.w3c.dom.Text;
 
 public class LoginController {
 
@@ -25,7 +23,7 @@ public class LoginController {
   @FXML private PasswordField password;
   @FXML private MFXButton login;
   @FXML private MFXButton clear;
-  //@FXML Text forgot;
+  @FXML Text forgot;
   @FXML private Label errorMessage;
 
   public void initialize() {

@@ -37,8 +37,8 @@ public class Fapp extends Application {
     Fapp.primaryStage = primaryStage;
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
 
-    final BorderPane root = loader.load();
-    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("views/EmployeeHome.fxml"));
+    final Pane root = loader.load();
+    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("views/Login.fxml"));
     controller = ((NavBarController) loader.getController());
     AnchorPane mainAnchorPane = controller.getAnchorPane();
     AnchorPane innerAnchorPane = homePage.load();
