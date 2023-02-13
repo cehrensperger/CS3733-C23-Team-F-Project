@@ -50,6 +50,8 @@ public class PathFindingController {
 
   ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>(Node.Floor.L1);
 
+  // TODO: GENERATE CIRCLES AND LINES THE WAY MICHAEL SAID TO
+  // TODO: TRUST
   @SneakyThrows
   public void initialize() {
     // set resizing behavior
@@ -168,14 +170,13 @@ public class PathFindingController {
     // get algorithm to use in pathfinding from algorithmBox
     if (algorithmBox.getValue() != null) {
       switch (algorithmBox.getValue()) {
-        case "A*":
-          break;
         case "Breadth-first":
           pathFinder.setAlgorithm(new BreadthFirst());
           break;
         case "Depth-first":
           pathFinder.setAlgorithm(new DepthFirst());
           break;
+        case "A*":
         default:
           pathFinder.setAlgorithm(new AStar());
           break;
@@ -207,42 +208,44 @@ public class PathFindingController {
           // get the circle that represents the node from the mapController
           Circle circle = mapController.getNodeToCircleMap().get(node);
 
-          circle.setOpacity(0);
+          if (circle != null) { //TODO: fix this garbage
+            circle.setOpacity(0);
 
-          // set hover behavior for each circle
-          // TODO: change this to click behavior like in the map data editor
-          circle
-              .hoverProperty()
-              .addListener(
-                  (observable, oldValue, newValue) -> {
-                    // If we're no longer hovering and the pop over exists, delete it. We will
-                    // either create a new one
-                    // or, keep it deleted
-                    if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
-                      mapPopOver.get().hide(); // Hide it
-                      mapPopOver.set(null); // And delete it (set it to null)
-                    }
-
-                    // If we should draw a new pop-up
-                    if (newValue) {
-                      // Get the node info in FXML form
-                      FXMLLoader nodeLocationNamePopUp =
-                          new FXMLLoader(Fapp.class.getResource("Map/NodeLocationNamePopUp.fxml"));
-
-                      try {
-                        // Try creating the pop-over
-                        mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
-                      } catch (IOException e) {
-                        throw new RuntimeException(e); // If it fails, throw an exception
+            // set hover behavior for each circle
+            // TODO: change this to click behavior like in the map data editor
+            circle
+                .hoverProperty()
+                .addListener(
+                    (observable, oldValue, newValue) -> {
+                      // If we're no longer hovering and the pop over exists, delete it. We will
+                      // either create a new one
+                      // or, keep it deleted
+                      if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
+                        mapPopOver.get().hide(); // Hide it
+                        mapPopOver.set(null); // And delete it (set it to null)
                       }
-                      NodeLocationNamePopUpController controller =
-                          nodeLocationNamePopUp.getController();
-                      controller.setNode(node, mapController.getMapSession());
 
-                      mapPopOver.get().show(circle); // Show the pop-over
-                    }
-                  });
+                      // If we should draw a new pop-up
+                      if (newValue) {
+                        // Get the node info in FXML form
+                        FXMLLoader nodeLocationNamePopUp =
+                            new FXMLLoader(
+                                Fapp.class.getResource("Map/NodeLocationNamePopUp.fxml"));
 
+                        try {
+                          // Try creating the pop-over
+                          mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
+                        } catch (IOException e) {
+                          throw new RuntimeException(e); // If it fails, throw an exception
+                        }
+                        NodeLocationNamePopUpController controller =
+                            nodeLocationNamePopUp.getController();
+                        controller.setNode(node, mapController.getMapSession());
+
+                        mapPopOver.get().show(circle); // Show the pop-over
+                      }
+                    });
+          }
           // get location name of the node in the path to check against the start and end locations
           // getCurrentLocation() creates its own session but map already has one running,
           // so we have to use that one
