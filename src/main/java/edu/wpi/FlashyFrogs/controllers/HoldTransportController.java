@@ -137,6 +137,7 @@ public class HoldTransportController {
               || to.getValue().toString().equals("")
               || from.getValue().toString().equals("")
               || equipment.getValue().toString().equals("")
+              || date.getValue().toString().equals("")
               || mode.getValue().toString().equals("")
               || isolation.getValue().toString().equals("")
               || personal.getValue().toString().equals("")
@@ -152,7 +153,7 @@ public class HoldTransportController {
                               .toInstant());
 
       InternalTransport transport = new InternalTransport();
-      //this needs to be updated
+      //this needs to be updated when database is fixed
       /*transport.setPatientID(patient.getText());
       transport.setVision(vision.getValue().toString());
       transport.setHearing(hearing.getValue().toString());
@@ -172,17 +173,17 @@ public class HoldTransportController {
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#44ff00"));
+        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
         errorMessage.setText("Successfully submitted.");
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#ff0000"));
+        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
         errorMessage.setText("Please fill all fields.");
         session.close();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errorMessage.setTextFill(Paint.valueOf("#ff0000"));
+      errorMessage.setTextFill(Paint.valueOf("#b6000b"));
       errorMessage.setText("Please fill all fields.");
       session.close();
     }
