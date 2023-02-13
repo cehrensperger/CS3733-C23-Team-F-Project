@@ -7,8 +7,6 @@ jobs:
     name: Run Gradle Checks
     # Set the type of machine to run on
     runs-on: ubuntu-latest
-    # Docker Hub image that `postgres-job` executes in
-    container: node:latest
 
     # service containers to run with `postgres-job`
     services:
