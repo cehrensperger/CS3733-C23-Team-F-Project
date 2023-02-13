@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.PathFinding;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.Map.MapController;
@@ -15,6 +15,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
+import edu.wpi.FlashyFrogs.controllers.HelpController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -34,7 +37,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
-public class Pathfinding2Controller {
+public class PathfindingController {
 
   @FXML private SearchableComboBox<String> startingBox;
   @FXML private SearchableComboBox<String> destinationBox;
