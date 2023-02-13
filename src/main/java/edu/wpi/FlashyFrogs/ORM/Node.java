@@ -2,10 +2,8 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
-
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -165,7 +163,8 @@ public class Node {
     // when getting location of node, get most recent location associated with this node
     // also check that the location returned has this as the most recent associated node as well
 
-    // now instead get two most recent locations associated with this node if they are on the same day
+    // now instead get two most recent locations associated with this node if they are on the same
+    // day
     // check that they aren't null
     // also check that list of locations' most recent associated nodes are both this
 
@@ -189,63 +188,76 @@ public class Node {
                                         """,
                 LocationName.class)
             .setParameter("node", this)
-                .getResultList();
+            .getResultList();
+    if (locations.isEmpty()) {
+      return locations;
+    }
     LocationName first = locations.stream().findFirst().get();
 
-    //get the date of the first location
+    // get the date of the first location
 
-    Date firstDate = session.createQuery("""
-            SELECT moveDate
-            FROM Move WHERE Move.location = :l
+    Date firstDate =
+        session
+            .createQuery(
+                """
+            SELECT m.moveDate
+            FROM Move m WHERE m.location = :l
             AND moveDate <= current timestamp
-            ORDER BY moveDate DESC LIMIT 1""", Date.class).setParameter("l", first).uniqueResult();
+            ORDER BY moveDate DESC LIMIT 1""",
+                Date.class)
+            .setParameter("l", first)
+            .uniqueResult();
 
-  //filter the list for dates that are the same
+    // filter the list for dates that are the same
     // (remove if they aren't the same because we would just want the most recent anyway)
-  locations.stream().filter(location ->{
-    Date currentDate = (Date)session.createQuery("""
-            SELECT moveDate
-            FROM Move WHERE Move.location = :l
+    locations.removeIf(
+        location -> {
+          Date currentDate =
+              (Date)
+                  session
+                      .createQuery(
+                          """
+            SELECT m.moveDate
+            FROM Move m WHERE m.location = :l
             AND moveDate <= current timestamp
-            ORDER BY moveDate DESC LIMIT 1""").setParameter("l", location).uniqueResult();
-    return currentDate.equals(firstDate);
-  });
+            ORDER BY moveDate DESC LIMIT 1""")
+                      .setParameter("l", location)
+                      .uniqueResult();
+          return !currentDate.equals(firstDate);
+        });
 
+    // make sure that both of the nodes of the location are this node
+    // Node firstNode = locations.stream().findFirst().get().getCurrentNode(session);
+    locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
 
-  //make sure that both of the nodes of the location are this node
-  Node firstNode = locations.stream().findFirst().get().getCurrentNode(session);
-  locations.stream().filter(location -> location.getCurrentNode(session).equals(firstNode));
+    return locations;
 
-
-  return locations;
-
-
-
-//    // If the location isn't null
-//    if (location != null) {
-//      // Get the node most recently associated with this location
-//      Node locationNode =
-//          session
-//              .createQuery(
-//                  """
-//                                            SELECT node
-//                                            FROM Move
-//                                            WHERE location = :location AND moveDate <= current timestamp
-//                                            ORDER BY moveDate DESC
-//                                            LIMIT 1
-//                                            """,
-//                  Node.class)
-//              .setParameter("location", location)
-//              .uniqueResult();
-//
-//      // If that locations most recent node is this
-//      if (locationNode.equals(this)) {
-//        return location; // Return the location
-//      }
-//    }
+    //    // If the location isn't null
+    //    if (location != null) {
+    //      // Get the node most recently associated with this location
+    //      Node locationNode =
+    //          session
+    //              .createQuery(
+    //                  """
+    //                                            SELECT node
+    //                                            FROM Move
+    //                                            WHERE location = :location AND moveDate <= current
+    // timestamp
+    //                                            ORDER BY moveDate DESC
+    //                                            LIMIT 1
+    //                                            """,
+    //                  Node.class)
+    //              .setParameter("location", location)
+    //              .uniqueResult();
+    //
+    //      // If that locations most recent node is this
+    //      if (locationNode.equals(this)) {
+    //        return location; // Return the location
+    //      }
+    //    }
 
     // Otherwise, just return null
-    //return null;
+    // return null;
   }
 
   /**

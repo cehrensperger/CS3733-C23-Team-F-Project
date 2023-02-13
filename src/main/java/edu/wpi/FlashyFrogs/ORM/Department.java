@@ -12,7 +12,6 @@ import lombok.Setter;
 /** Department table, represents departments an employee can belong to */
 @Entity
 @Table(name = "department")
-
 @AllArgsConstructor
 public class Department {
 
@@ -23,14 +22,12 @@ public class Department {
   @Getter
   private String longName;
 
-
   /** Short (display) name for the department */
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
   private String shortName;
-
 
   /**
    * Equals method, returns true if the long names are identical

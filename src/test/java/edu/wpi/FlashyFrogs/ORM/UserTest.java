@@ -305,13 +305,11 @@ public class UserTest {
     assertEquals(User.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
   }
 
-
-  /** Tests setting all parameters one at a time and testing for sequential side effects *
   /**
-   * Test where the department is valid and is changed from one valid thing to another
+   * Tests setting all parameters one at a time and testing for sequential side effects * /** Test
+   * where the department is valid and is changed from one valid thing to another
    */
   /** Test where the department is valid and is changed from one valid thing to another */
-
   @Test
   public void changeDepartmentTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
@@ -348,13 +346,9 @@ public class UserTest {
     assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
-
-  /**
-   * Tries setting the department from one null value to another
-   */
-
   /** Tries setting the department from one null value to another */
 
+  /** Tries setting the department from one null value to another */
   @Test
   public void clearDepartmentTest() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session

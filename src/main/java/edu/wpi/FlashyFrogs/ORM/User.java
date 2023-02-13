@@ -50,7 +50,6 @@ public class User {
   @NonNull
   private EmployeeType employeeType;
 
-
   /** The department the employee is a member of */
   @JoinColumn(
       name = "department_name",

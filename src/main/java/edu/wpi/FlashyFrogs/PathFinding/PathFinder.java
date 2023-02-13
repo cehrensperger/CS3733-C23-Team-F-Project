@@ -31,7 +31,7 @@ public class PathFinder {
       @NonNull List<Node> nodes, @NonNull Session session) {
     List<LocationName> locations = new ArrayList<>();
     for (Node node : nodes) {
-      locations.add(node.getCurrentLocation(session));
+      locations.add(node.getCurrentLocation(session).stream().findFirst().get());
     }
     return locations;
   }
@@ -128,15 +128,15 @@ public class PathFinder {
       for (Node node : getNeighbors(q.node, session)) { // get the neighbors of the current node
         NodeWrapper child = new NodeWrapper(node, q); // create node wrapper out of current node
         if (q.node.getFloor() != child.node.getFloor()) {
-          if (child
-              .node
-              .getCurrentLocation(session)
+          if (child.node.getCurrentLocation(session).stream()
+              .findFirst()
+              .get()
               .getLocationType()
               .equals(LocationName.LocationType.ELEV)) {
             child.g = q.g + 10; // cost for elevator
-          } else if (child
-              .node
-              .getCurrentLocation(session)
+          } else if (child.node.getCurrentLocation(session).stream()
+              .findFirst()
+              .get()
               .getLocationType()
               .equals(LocationName.LocationType.STAI)) {
             child.g = q.g + 20; // cost for stairs
