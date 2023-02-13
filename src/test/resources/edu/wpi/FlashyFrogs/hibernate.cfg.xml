@@ -14,8 +14,8 @@
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
         <property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property>
-        <property name="connection.username">testing</property>
-        <property name="connection.password">R%RjT0^TH353</property>
+        <property name="connection.username">username</property>
+        <property name="connection.password">password</property>
         <property name="connection.autocommit">false</property>
 
         <property name="hibernate.default_schema">production</property>

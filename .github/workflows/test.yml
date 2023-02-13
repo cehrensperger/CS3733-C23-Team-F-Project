@@ -20,11 +20,11 @@ jobs:
           # optional (defaults to `postgres`)
           POSTGRES_DB: postgres
           # required
-          POSTGRES_PASSWORD: R%RjT0^TH353
+          POSTGRES_PASSWORD: password
           # optional (defaults to `5432`)
           POSTGRES_PORT: 5432
           # optional (defaults to `postgres`)
-          POSTGRES_USER: testing
+          POSTGRES_USER: username
         ports:
           # maps tcp port 5432 on service container to the host
           - 5432:5432
