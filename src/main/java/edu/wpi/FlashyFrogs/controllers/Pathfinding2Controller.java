@@ -2,10 +2,11 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.Map.MapController;
+import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import edu.wpi.FlashyFrogs.PathFinder;
+import edu.wpi.FlashyFrogs.PathFinding.PathFinder;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
