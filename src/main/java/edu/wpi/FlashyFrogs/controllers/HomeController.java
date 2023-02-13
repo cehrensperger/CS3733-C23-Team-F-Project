@@ -33,6 +33,8 @@ public class HomeController {
   @FXML protected TableView<ServiceRequest> requestTable;
   @FXML protected Label tableText;
 
+  // add and fill Moves table
+
   public void initialize() {
 
     // need to be the names of the fields
@@ -48,7 +50,7 @@ public class HomeController {
 
     // todo: remove when login is implemented
 
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(session.find(User.class, 2));
+    CurrentUserEntity.CURRENT_USER.setCurrentUser(session.find(User.class, 1));
 
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
