@@ -2,6 +2,8 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -155,7 +157,7 @@ public class LocationName {
     // if the node isn't null
     if (node != null) {
       // Check the move it has most recently
-      LocationName nodeLocation =
+      Collection<LocationName> locations =
           session
               .createQuery(
                   """
@@ -163,14 +165,44 @@ public class LocationName {
                 FROM Move
                 WHERE node = :node AND moveDate <= current timestamp
                 ORDER BY moveDate DESC
-                LIMIT 1
+                LIMIT 2
                 """,
                   LocationName.class)
               .setParameter("node", node)
+              .getResultList();
+
+      LocationName first = locations.stream().findFirst().get();
+
+      Date firstDate =
+          session
+              .createQuery(
+                  """
+                          SELECT m.moveDate
+                          FROM Move m WHERE m.location = :l
+                          AND moveDate <= current timestamp
+                          ORDER BY moveDate DESC LIMIT 1""",
+                  Date.class)
+              .setParameter("l", first)
               .uniqueResult();
 
+      locations.removeIf(
+          location -> {
+            Date currentDate =
+                (Date)
+                    session
+                        .createQuery(
+                            """
+                                  SELECT m.moveDate
+                                  FROM Move m WHERE m.location = :l
+                                  AND moveDate <= current timestamp
+                                  ORDER BY moveDate DESC LIMIT 1""")
+                        .setParameter("l", location)
+                        .uniqueResult();
+            return !currentDate.equals(firstDate);
+          });
+
       // If that is this
-      if (nodeLocation.equals(this)) {
+      if (locations.contains(this)) {
         return node; // Then this location is associated with the node
       }
     }

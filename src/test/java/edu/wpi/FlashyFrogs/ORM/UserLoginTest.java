@@ -23,6 +23,12 @@ public class UserLoginTest {
 
   @AfterEach
   public void clearDB() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
     // Create a session to clear with
     try (Session clearSession = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction transaction = clearSession.beginTransaction(); // Begin the clear transaction

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -120,28 +121,32 @@
             </VBox>
          </children>
       </VBox>
-      <Label layoutX="240.0" layoutY="115.0" text="Assigned Service Requests">
+      <Label fx:id="tableText" layoutX="240.0" layoutY="115.0" text="All Service Requests">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TableView layoutX="240.0" layoutY="157.0" prefHeight="298.0" prefWidth="1000.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="157.0">
+      <TableView fx:id="requestTable" layoutX="240.0" layoutY="157.0" prefHeight="298.0" prefWidth="1000.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="157.0">
         <columns>
-          <TableColumn prefWidth="100.0" text="Request Type" />
-          <TableColumn prefWidth="100.0" text="Request ID" />
-            <TableColumn prefWidth="120.0" text="Initiating Employee" />
-            <TableColumn prefWidth="120.0" text="Assigned Employee" />
-            <TableColumn prefWidth="100.0" text="Date Submitted" />
-            <TableColumn prefWidth="100.0" text="Date Assigned" />
-            <TableColumn text="Urgency" />
-            <TableColumn prefWidth="298.0" text="Summary" />
+          <TableColumn fx:id="requestTypeCol" prefWidth="100.0" text="Request Type" />
+          <TableColumn fx:id="requestIDCol" prefWidth="100.0" text="Request ID" />
+            <TableColumn fx:id="initEmpCol" prefWidth="120.0" text="Initiating Employee" />
+            <TableColumn fx:id="assignedEmpCol" prefWidth="120.0" text="Assigned Employee" />
+            <TableColumn fx:id="subDateCol" prefWidth="100.0" text="Date Submitted" />
+            <TableColumn fx:id="urgencyCol" text="Urgency" />
+            <TableColumn fx:id="summaryCol" prefWidth="399.0" text="Summary" />
         </columns>
       </TableView>
-      <ImageView fitHeight="112.0" fitWidth="1637.0" layoutX="220.0" pickOnBounds="true" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="-577.0" AnchorPane.topAnchor="0.0">
+      <ImageView fitHeight="112.0" fitWidth="1638.0" layoutX="219.0" pickOnBounds="true" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="-577.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@Brigham-Womens-TO-USE.jpg" />
          </image>
       </ImageView>
       <SearchableComboBox layoutX="240.0" layoutY="470.0" prefHeight="25.0" prefWidth="89.0" promptText="Filter" />
+      <MFXButton fx:id="manageButton" onAction="#manageAnnouncements" prefHeight="60.0" prefWidth="150.0" text="Manage Announcements" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
    </children>
 </AnchorPane>

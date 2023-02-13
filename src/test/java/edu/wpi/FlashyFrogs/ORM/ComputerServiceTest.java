@@ -25,11 +25,20 @@ public class ComputerServiceTest {
   /** Cleans up the user table. Runs after each test */
   @AfterEach
   public void teardownTable() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
-      connection.createMutationQuery("DELETE FROM ComputerService ").executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM AudioVisual").executeUpdate(); // Do the drop
       connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
+      connection.createMutationQuery("DELETE FROM LocationName").executeUpdate();
+      connection.createMutationQuery("DELETE FROM User").executeUpdate();
+      connection.createMutationQuery("DELETE FROM Department").executeUpdate();
       cleanupTransaction.commit(); // Commit the cleanup
     }
   }
@@ -39,8 +48,8 @@ public class ComputerServiceTest {
   ComputerService testCS =
       new ComputerService(
           emp,
-          new Date(2023 - 01 - 31),
-          new Date(2023 - 02 - 01),
+          new Date(2023 - 1 - 31),
+          new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT,
           ComputerService.DeviceType.LAPTOP,
           "Lenovo Rogue",
@@ -60,8 +69,8 @@ public class ComputerServiceTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testCS.setAssignedEmp(assignedEmp);
-    testCS.setDateOfIncident(new Date(2023 - 01 - 31));
-    testCS.setDateOfSubmission(new Date(2023 - 02 - 01));
+    testCS.setDateOfIncident(new Date(2023 - 1 - 31));
+    testCS.setDateOfSubmission(new Date(2023 - 2 - 1));
     testCS.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
     testCS.setDeviceType(ComputerService.DeviceType.LAPTOP);
     testCS.setModel("Lenovo Rogue");
@@ -71,24 +80,115 @@ public class ComputerServiceTest {
 
   /** Tests setter for emp */
   @Test
-  public void setEmp() {
+  public void changeEmpTest() {
     User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testCS.setEmp(newEmp);
     assertEquals(newEmp, testCS.getEmp());
   }
 
+  /** Tests that the department clears (something -> null) correctly */
+  @Test
+  public void clearEmpTest() {
+    testCS.setEmp(null);
+    assertNull(testCS.getEmp());
+  }
+
+  /** Starts the location as null, then sets it to be something */
+  @Test
+  public void setEmpTest() {
+    ComputerService test =
+        new ComputerService(
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "b",
+            ComputerService.ServiceType.CONNECTION_ISSUE);
+    test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+
+    // Assert that the location is correct
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getEmp());
+  }
+
+  /** Starts the location name as null and sets it to null */
+  @Test
+  public void nullToNullEmployeeTest() {
+    ComputerService test =
+        new ComputerService(
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT,
+            ComputerService.DeviceType.KIOSK,
+            "a",
+            "b",
+            ComputerService.ServiceType.MISC);
+    test.setEmp(null);
+
+    // Assert that the location is correct
+    assertNull(test.getEmp());
+  }
+
   /** Test setter for Assigned emp */
   @Test
-  public void setAssignedEmp() {
+  public void changeAssignedEmpTest() {
     User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testCS.setAssignedEmp(newEmp);
     assertEquals(newEmp, testCS.getAssignedEmp());
   }
 
+  /** Tests that the department clears (something -> null) correctly */
+  @Test
+  public void clearAssignedEmpTest() {
+    testCS.setAssignedEmp(emp);
+    testCS.setAssignedEmp(null);
+    assertNull(testCS.getAssignedEmp());
+  }
+
+  /** Starts the location as null, then sets it to be something */
+  @Test
+  public void setAssignedEmpTest() {
+    ComputerService test =
+        new ComputerService(
+            assignedEmp,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "b",
+            ComputerService.ServiceType.MISC);
+    test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+
+    // Assert that the location is correct
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getAssignedEmp());
+  }
+
+  /** Starts the location name as null and sets it to null */
+  @Test
+  public void nullToNullAssignedEmployeeTest() {
+    ComputerService test =
+        new ComputerService(
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.KIOSK,
+            "b",
+            "as",
+            ComputerService.ServiceType.SOFTWARE_REPAIR);
+    test.setAssignedEmp(null);
+
+    // Assert that the location is correct
+    assertNull(test.getAssignedEmp());
+  }
+
   /** Tests setter for dateOfIncident */
   @Test
   void setDateOfIncident() {
-    Date newDOI = new Date(2002 - 01 - 17);
+    Date newDOI = new Date(2002 - 1 - 17);
     testCS.setDateOfIncident(newDOI);
     assertEquals(newDOI, testCS.getDateOfIncident());
   }
@@ -96,7 +196,7 @@ public class ComputerServiceTest {
   /** Tests setter for dateOfSubmission */
   @Test
   void setDateOfSubmission() {
-    Date newDOS = new Date(2002 - 01 - 17);
+    Date newDOS = new Date(2002 - 1 - 17);
     testCS.setDateOfSubmission(newDOS);
     assertEquals(newDOS, testCS.getDateOfSubmission());
   }
@@ -136,29 +236,6 @@ public class ComputerServiceTest {
     assertEquals(ComputerService.ServiceType.MISC, testCS.getServiceType());
   }
 
-  /** Tests if the equals in Sanitation.java correctly compares two Sanitation objects */
-  //  @Test
-  //  void testEquals() {
-  //    ComputerService otherCS =
-  //        new ComputerService(
-  //            "Wilson",
-  //            "Softeng",
-  //            "Wong",
-  //            "Jonathan",
-  //            "Elias",
-  //            "Golden",
-  //            ServiceRequest.EmpDept.CARDIOLOGY,
-  //            ServiceRequest.EmpDept.MAINTENANCE,
-  //            new Date(2023 - 01 - 31),
-  //            new Date(2023 - 02 - 01),
-  //            ServiceRequest.Urgency.MODERATELY_URGENT,
-  //            ComputerService.DeviceType.LAPTOP,
-  //            "Lenovo Rogue",
-  //            "Bad battery life",
-  //            ComputerService.ServiceType.HARDWARE_REPAIR);
-  //    assertEquals(testCS, otherCS);
-  //  }
-
   /**
    * Tests the equals and hash code methods for the ComputerService class, ensures that fetched
    * objects are equal
@@ -175,8 +252,8 @@ public class ComputerServiceTest {
     ComputerService cs =
         new ComputerService(
             emp,
-            new Date(2023 - 01 - 31),
-            new Date(2023 - 02 - 01),
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT,
             ComputerService.DeviceType.LAPTOP,
             "Lenovo Rogue",
@@ -198,8 +275,8 @@ public class ComputerServiceTest {
     ComputerService cs2 =
         new ComputerService(
             emp,
-            new Date(2023 - 01 - 31),
-            new Date(2023 - 02 - 01),
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT,
             ComputerService.DeviceType.LAPTOP,
             "Lenovo Rogue",
@@ -214,8 +291,8 @@ public class ComputerServiceTest {
     ComputerService cs3 =
         new ComputerService(
             emp,
-            new Date(2024 - 02 - 20),
-            new Date(2024 - 03 - 21),
+            new Date(2024 - 2 - 20),
+            new Date(2024 - 3 - 21),
             ServiceRequest.Urgency.VERY_URGENT,
             ComputerService.DeviceType.DESKTOP,
             "MacBook Pro",

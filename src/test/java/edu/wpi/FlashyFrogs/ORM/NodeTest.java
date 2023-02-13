@@ -36,6 +36,12 @@ public class NodeTest {
   /** Cleans up the DB tables and closes the test session */
   @AfterEach
   public void cleanupDatabase() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
     Transaction cleanupTransaction =
         session.beginTransaction(); // Create a transaction to cleanup with
     session.createMutationQuery("DELETE FROM Move").executeUpdate(); // Delete moves
@@ -107,8 +113,9 @@ public class NodeTest {
   /** If a node isn't in the database, querying for it should return null */
   @Test
   public void nodeNotPersistedTest() {
-    assertNull(testNode.getCurrentLocation()); // Assert the test node has a null location
-    assertNull(testNode.getCurrentLocation(session)); // Assert the test node has a null location
+    assertTrue(testNode.getCurrentLocation().isEmpty()); // Assert the test node has a null location
+    assertTrue(
+        testNode.getCurrentLocation(session).isEmpty()); // Assert the test node has a null location
   }
 
   /** Tests that a node with no mapping in move does not return a location */
@@ -121,8 +128,8 @@ public class NodeTest {
     session.persist(testNode); // Persist the node
     commitTransaction.commit(); // Commit
 
-    assertNull(testNode.getCurrentLocation());
-    assertNull(testNode.getCurrentLocation(session));
+    assertTrue(testNode.getCurrentLocation().isEmpty());
+    assertTrue(testNode.getCurrentLocation(session).isEmpty());
   }
 
   /**
@@ -143,8 +150,8 @@ public class NodeTest {
     session.persist(testMove);
     commitTransaction.commit(); // Commit
 
-    assertNull(testNode.getCurrentLocation()); // Assert the location is null
-    assertNull(testNode.getCurrentLocation(session)); // Assert the location is null
+    assertTrue(testNode.getCurrentLocation().isEmpty()); // Assert the location is null
+    assertTrue(testNode.getCurrentLocation(session).isEmpty()); // Assert the location is null
   }
 
   /** Tests that if the correct location is remapped, null is returned */
@@ -165,8 +172,8 @@ public class NodeTest {
     session.persist(newMove);
     commitTransaction.commit(); // Commit
 
-    assertNull(thisNode.getCurrentLocation()); // Assert the location is null
-    assertNull(thisNode.getCurrentLocation(session)); // Assert the location is null
+    assertTrue(thisNode.getCurrentLocation().isEmpty()); // Assert the location is null
+    assertTrue(thisNode.getCurrentLocation(session).isEmpty()); // Assert the location is null
   }
 
   /**
@@ -196,7 +203,7 @@ public class NodeTest {
     session.persist(newMove);
     commitTransaction.commit(); // Commit
 
-    assertNull(thisNode.getCurrentLocation()); // Assert the location is null
+    assertTrue(thisNode.getCurrentLocation().isEmpty()); // Assert the location is null
   }
 
   /** Tests that a simple mapping (one location, one node) works as expected */
@@ -213,8 +220,15 @@ public class NodeTest {
     session.persist(move);
     commitTransaction.commit(); // Commit the transaction
 
-    assertEquals(location, node.getCurrentLocation()); // Assert the location is valid
-    assertEquals(location, node.getCurrentLocation(session)); // Assert the location is valid
+    assertEquals(
+        location,
+        node.getCurrentLocation().stream().findFirst().get()); // Assert the location is valid
+    assertEquals(
+        location,
+        node.getCurrentLocation(session).stream()
+            .findFirst()
+            .get()); // Assert the location is valid
+    assertEquals(1, node.getCurrentLocation().size());
   }
 
   /** Tests that old mappings of this node -> a location are ignored */
@@ -241,7 +255,12 @@ public class NodeTest {
     commitTransaction.commit(); // Commit everything
 
     assertEquals(
-        currentLocation, node.getCurrentLocation()); // Assert the correct location is gotten
+        currentLocation,
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .get()); // Assert the correct location is gotten
+
+    assertEquals(1, node.getCurrentLocation().size());
   }
 
   /** Tests that old mappings of the current location -> a node are ignored */
@@ -262,9 +281,17 @@ public class NodeTest {
     session.persist(oldMove);
     commitTransaction.commit(); // Commit everything
 
-    assertEquals(location, theNode.getCurrentLocation()); // Check that the location is correct
     assertEquals(
-        location, theNode.getCurrentLocation(session)); // Check that the location is correct
+        location,
+        theNode.getCurrentLocation().stream()
+            .findFirst()
+            .get()); // Check that the location is correct
+    assertEquals(
+        location,
+        theNode.getCurrentLocation(session).stream()
+            .findFirst()
+            .get()); // Check that the location is correct
+    assertEquals(1, theNode.getCurrentLocation().size());
   }
 
   /** Tests for a case where the node is remapped in the future, ignores the future locations */
@@ -292,8 +319,15 @@ public class NodeTest {
     session.persist(moreFuture);
     commitTransaction.commit(); // Commit the transaction
 
-    assertEquals(currentLocation, node.getCurrentLocation()); // Assert the location is right
-    assertEquals(currentLocation, node.getCurrentLocation(session)); // Assert the location is right
+    assertEquals(
+        currentLocation,
+        node.getCurrentLocation().stream().findFirst().get()); // Assert the location is right
+    assertEquals(
+        currentLocation,
+        node.getCurrentLocation(session).stream()
+            .findFirst()
+            .get()); // Assert the location is right
+    assertEquals(1, node.getCurrentLocation().size());
   }
 
   /** Test for a case where the location is remapped in the future */
@@ -326,8 +360,17 @@ public class NodeTest {
     session.persist(furthestFuture);
     commitTransaction.commit(); // Commit the transaction
 
-    assertEquals(location, currentNode.getCurrentLocation()); // Assert the location is right
-    assertEquals(location, currentNode.getCurrentLocation(session)); // Assert the location is right
+    assertEquals(
+        location,
+        currentNode.getCurrentLocation().stream()
+            .findFirst()
+            .get()); // Assert the location is right
+    assertEquals(
+        location,
+        currentNode.getCurrentLocation(session).stream()
+            .findFirst()
+            .get()); // Assert the location is right
+    assertEquals(1, currentNode.getCurrentLocation().size());
   }
 
   /**
@@ -368,8 +411,39 @@ public class NodeTest {
     session.persist(currentNodeToOldLocation);
     commitTransaction.commit(); // Commit the transaction
 
-    assertEquals(correctLocation, correctNode.getCurrentLocation()); // Assert the location is right
     assertEquals(
-        correctLocation, correctNode.getCurrentLocation(session)); // Assert the location is right
+        correctLocation,
+        correctNode.getCurrentLocation().stream()
+            .findFirst()
+            .get()); // Assert the location is right
+    assertEquals(
+        correctLocation,
+        correctNode.getCurrentLocation(session).stream()
+            .findFirst()
+            .get()); // Assert the location is right
+    assertEquals(1, correctNode.getCurrentLocation().size());
+  }
+
+  @Test
+  public void twoLocationsAtOnce() {
+    Node node = new Node("n", "b", Node.Floor.THREE, 0, 0); // Create the node
+    LocationName currentLocation1 =
+        new LocationName("curr1", LocationName.LocationType.CONF, "cur1");
+    LocationName currentLocation2 =
+        new LocationName("curr2", LocationName.LocationType.ELEV, "cur2");
+    // LocationName furtherFut = new LocationName("ff", LocationName.LocationType.SERV, "");
+    Move currentNode1 =
+        new Move(node, currentLocation1, Date.from(Instant.now())); // Move for right now
+    Move currentNode2 = new Move(node, currentLocation2, Date.from(Instant.now()));
+
+    Transaction commitTransaction = session.beginTransaction();
+    session.persist(node);
+    session.persist(currentLocation1);
+    session.persist(currentLocation2);
+    session.persist(currentNode1);
+    session.persist(currentNode2);
+    commitTransaction.commit();
+
+    assertEquals(2, node.getCurrentLocation(session).size());
   }
 }

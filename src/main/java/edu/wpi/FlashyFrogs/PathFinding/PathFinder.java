@@ -34,7 +34,7 @@ public class PathFinder {
       @NonNull List<Node> nodes, @NonNull Session session) {
     List<LocationName> locations = new ArrayList<>();
     for (Node node : nodes) {
-      locations.add(node.getCurrentLocation(session));
+      locations.add(node.getCurrentLocation(session).get(0));
     }
     return locations;
   }

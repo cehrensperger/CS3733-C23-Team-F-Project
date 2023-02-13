@@ -28,6 +28,12 @@ public class UserTest {
   /** Cleans up the user table. Runs after each test */
   @AfterEach
   public void teardownTable() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
@@ -305,6 +311,10 @@ public class UserTest {
     assertEquals(User.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
   }
 
+  /**
+   * Tests setting all parameters one at a time and testing for sequential side effects * /** Test
+   * where the department is valid and is changed from one valid thing to another
+   */
   /** Test where the department is valid and is changed from one valid thing to another */
   @Test
   public void changeDepartmentTest() {
@@ -341,6 +351,8 @@ public class UserTest {
     assertEquals(new Department("b", "c"), u.getDepartment()); // Check the department
     assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
+
+  /** Tries setting the department from one null value to another */
 
   /** Tries setting the department from one null value to another */
   @Test
