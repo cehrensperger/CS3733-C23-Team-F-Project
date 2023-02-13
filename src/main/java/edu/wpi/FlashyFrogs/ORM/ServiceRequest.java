@@ -32,8 +32,7 @@ public class ServiceRequest {
           @ForeignKey(
               name = "empid_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (empid) REFERENCES " + "\"emp\"(id) ON DELETE SET NULL"))
-  @NonNull
+                  "FOREIGN KEY (empid) REFERENCES " + "\"user\"(id) ON DELETE SET NULL"))
   @ManyToOne
   private User emp;
 
@@ -45,7 +44,7 @@ public class ServiceRequest {
           @ForeignKey(
               name = "assignedempid_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (assignedempid) REFERENCES " + "\"emp\"(id) ON DELETE SET NULL"))
+                  "FOREIGN KEY (assignedempid) REFERENCES " + "\"user\"(id) ON DELETE SET NULL"))
   @ManyToOne
   private User assignedEmp;
 

@@ -21,6 +21,21 @@ public class UserLoginTest {
     DBConnection.CONNECTION.disconnect(); // Disconnect
   }
 
+  @AfterEach
+  public void clearDB() {
+    // Create a session to clear with
+    try (Session clearSession = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      Transaction transaction = clearSession.beginTransaction(); // Begin the clear transaction
+
+      // Clear the session
+      clearSession.createMutationQuery("DELETE FROM UserLogin").executeUpdate();
+      clearSession.createMutationQuery("DELETE FROM User").executeUpdate();
+      clearSession.createMutationQuery("DELETE FROM Department ").executeUpdate();
+
+      transaction.commit(); // Commit
+    }
+  }
+
   // Creates iteration of Login
   private UserLogin testLogin =
       new UserLogin(
@@ -102,23 +117,45 @@ public class UserLoginTest {
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
-    session.beginTransaction();
+    Transaction transaction = session.beginTransaction();
+
     session.persist(user);
     session.persist(userLogin);
-
     long originalID = user.getId(); // ID for the user to start after persisting
+
+    transaction.commit();
+
+    transaction = session.beginTransaction();
 
     // Assert that the mutation query updating the name throws
     assertThrows(
         Exception.class,
         () -> session.createMutationQuery("UPDATE User SET id=50").executeUpdate());
 
-    session.refresh(user); // Refresh the user to get any changes
-    session.refresh(userLogin); // Refresh the user login
-    assertEquals(originalID, user.getId()); // Assert the ID works
-    assertEquals(user, userLogin.getUser()); // Assert the user login has the right user
+    // Flush
+    session.flush();
 
-    session.close(); // Close the session
+    // Close the transaction. This is required because of the SQL error
+    transaction.rollback();
+    session.close(); // And the session
+
+    // Reset the session
+    Session session2 = DBConnection.CONNECTION.getSessionFactory().openSession();
+
+    user =
+        session2
+            .createQuery("FROM User WHERE id = :oldID", User.class)
+            .setParameter("oldID", originalID)
+            .getSingleResult(); // get the new ID
+    assertEquals(originalID, user.getId()); // Assert the ID works
+
+    // Query for the new login, this will inhertently check it exists with the right ID
+    session2
+        .createQuery("FROM UserLogin WHERE user = :user", UserLogin.class)
+        .setParameter("user", user)
+        .getSingleResult(); // Refresh the user login
+
+    session2.close(); // Close the session
   }
 
   /** Tests that deleting does not throw an exception with a query */
@@ -206,7 +243,12 @@ public class UserLoginTest {
     session.persist(userLogin);
 
     // Assert that the persist fails
-    assertThrows(Exception.class, () -> session.persist(otherUserLogin));
+    assertThrows(
+        Exception.class,
+        () -> {
+          session.persist(otherUserLogin);
+          transaction.commit();
+        });
 
     session.close(); // Close the session
   }

@@ -5,11 +5,31 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.wpi.FlashyFrogs.DBConnection;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 public class EdgeTest {
+  /** Sets up the data base before all tests run */
+  @BeforeAll
+  public static void setupDBConnection() {
+    DBConnection.CONNECTION.connect(); // Connect
+  }
+
+  /** Tears down the database, meant to be used after all tests finish */
+  @AfterAll
+  public static void disconnectDBConnection() {
+    DBConnection.CONNECTION.disconnect(); // Disconnect
+  }
+
+  /** Cleans up the user table. Runs after each test */
+  @AfterEach
+  public void teardownTable() {
+    // Use a closure to manage the session to use
+    try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
+      connection.createMutationQuery("DELETE FROM Edge").executeUpdate(); // Do the drop
+      cleanupTransaction.commit(); // Commit the cleanup
+    }
+  }
 
   // Create Test Edge using Test Nodes
   Node testNode1 = new Node("Test", "Building", Node.Floor.L2, 0, 1);
@@ -64,6 +84,11 @@ public class EdgeTest {
     Edge blankEdge = new Edge();
 
     // Check that persist throws an exception
-    assertThrows(Exception.class, () -> session.persist(blankEdge));
+    assertThrows(
+        Exception.class,
+        () -> {
+          session.persist(blankEdge);
+          transaction.commit();
+        });
   }
 }
