@@ -3,7 +3,6 @@ jobs:
   # Set the job key. The key is displayed as the job name
   # when a job name is not provided
   gradle-check:
-    needs: postgres-job
     # Name the Job
     name: Run Gradle Checks
     # Set the type of machine to run on
