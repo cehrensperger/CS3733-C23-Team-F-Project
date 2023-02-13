@@ -30,11 +30,16 @@ public class ComputerServiceTest {
     try {
       Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
       if (priorSession != null && priorSession.isOpen()) {
+
+        // If the transaction is still active
+        if (priorSession.getTransaction().isActive()) {
+          priorSession.getTransaction().rollback(); // Roll it back
+        }
+
         priorSession.close(); // Close it, so we can create new ones
       }
     } catch (HibernateException ignored) {
     }
-
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
