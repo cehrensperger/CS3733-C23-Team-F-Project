@@ -566,4 +566,13 @@ public class ComputerServiceTest {
     transaction.rollback();
     session.close();
   }
+
+  /** Tests the to string for service type */
+  @Test
+  public void serviceTypeToStringTest() {
+    assertEquals("hardware repair", ComputerService.ServiceType.HARDWARE_REPAIR.toString());
+    assertEquals("software repair", ComputerService.ServiceType.SOFTWARE_REPAIR.toString());
+    assertEquals("connection issue", ComputerService.ServiceType.CONNECTION_ISSUE.toString());
+    assertEquals("miscellaneous", ComputerService.ServiceType.MISC.toString());
+  }
 }

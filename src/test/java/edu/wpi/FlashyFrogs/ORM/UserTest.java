@@ -613,4 +613,32 @@ public class UserTest {
     transaction.rollback(); // Rollback the transaction
     session.close(); // Close the session
   }
+
+  /** Tests that the to string method of a user is first name " " last name */
+  @Test
+  public void toStringTest() {
+    User u = new User("john", "b", "smith", User.EmployeeType.MEDICAL, null);
+    assertEquals("john smith", u.toString()); // Check the to string
+
+    User u2 = new User("b", null, "d", User.EmployeeType.ADMIN, new Department("b", "c"));
+    assertEquals("b d", u2.toString());
+  }
+
+  /** Test that assert equals returns false with null and other classes */
+  @Test
+  public void assertEqualsNullOtherClassTest() {
+    User u = new User("a", "c", "d", User.EmployeeType.STAFF, null);
+
+    // Assert that null fails
+    assertNotEquals(u, null); // Check null
+    assertNotEquals(u, "asdf"); // Check asdf
+  }
+
+  /** Check the enumerated type to string values work */
+  @Test
+  public void checkToStringType() {
+    assertEquals("Administrator", User.EmployeeType.ADMIN.toString());
+    assertEquals("Medical Practitioner", User.EmployeeType.MEDICAL.toString());
+    assertEquals("Staff Member", User.EmployeeType.STAFF.toString());
+  }
 }
