@@ -157,7 +157,10 @@ public class NodeInfoController {
 
     // If it's not a new node
     if (!isNewNode) {
-      LocationName location = node.getCurrentLocation(session); // Get the location for the node
+      LocationName location =
+          node.getCurrentLocation(session).stream()
+              .findFirst()
+              .get(); // Get the location for the node
 
       if (location != null) { // If the location exists
 

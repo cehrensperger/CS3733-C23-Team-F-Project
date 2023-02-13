@@ -47,6 +47,10 @@ public class AddMoveController {
    */
   @FXML
   private void saveMove(ActionEvent event) {
+
+    // If there are two moves on the same move and same location,
+    // show and error message and don't add.
+
     try {
       if (locationNameField.getText().equals("") // if any fields are empty
           || nodeIDField.getText().equals("")
