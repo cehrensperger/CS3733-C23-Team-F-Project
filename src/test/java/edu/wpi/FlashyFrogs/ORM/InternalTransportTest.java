@@ -106,7 +106,7 @@ public class InternalTransportTest {
     testIntTransp.setOldLoc(new LocationName("Hello", LocationName.LocationType.CONF, "Hello"));
     assertEquals(
         new LocationName("Hello", LocationName.LocationType.CONF, "Hello"),
-            testIntTransp.getOldLoc());
+        testIntTransp.getOldLoc());
   }
 
   /** Tests that the department clears (something -> null) correctly */
@@ -121,8 +121,16 @@ public class InternalTransportTest {
   public void setLocationTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(), null, null, "a", "b",
-                "c", null, new Date(), new Date(), ServiceRequest.Urgency.VERY_URGENT);
+            new Date(),
+            null,
+            null,
+            "a",
+            "b",
+            "c",
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT);
     test.setOldLoc(new LocationName("a", LocationName.LocationType.INFO, "B"));
 
     // Assert that the location is correct
@@ -134,15 +142,21 @@ public class InternalTransportTest {
   public void nullToNullLocationTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(), null, null, "b", "c",
-                "d", null, new Date(), new Date(), ServiceRequest.Urgency.VERY_URGENT);
+            new Date(),
+            null,
+            null,
+            "b",
+            "c",
+            "d",
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT);
     test.setOldLoc(null);
 
     // Assert that the location is correct
     assertNull(test.getOldLoc());
   }
-
-
 
   /** Tests setter for oldLoc */
   @Test
