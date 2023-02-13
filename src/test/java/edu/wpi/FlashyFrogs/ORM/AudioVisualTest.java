@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.util.*;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -25,6 +26,21 @@ public class AudioVisualTest {
   /** Cleans up the user table. Runs after each test */
   @AfterEach
   public void teardownTable() {
+    // If the prior test is open
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
+
+        // If the transaction is still active
+        if (priorSession.getTransaction().isActive()) {
+          priorSession.getTransaction().rollback(); // Roll it back
+        }
+
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
+    }
+
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
@@ -735,6 +751,7 @@ public class AudioVisualTest {
     assertEquals(emp, session.find(User.class, emp.getId()));
     assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
 
+    transaction.rollback();
     session.close();
   }
 }

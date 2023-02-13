@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.util.*;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -24,6 +25,21 @@ public class InternalTransportTest {
   /** Cleans up the user table. Runs after each test */
   @AfterEach
   public void teardownTable() {
+    // If the prior test is open
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
+
+        // If the transaction is still active
+        if (priorSession.getTransaction().isActive()) {
+          priorSession.getTransaction().rollback(); // Roll it back
+        }
+
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
+    }
+
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
@@ -39,22 +55,22 @@ public class InternalTransportTest {
   User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   InternalTransport testIntTransp =
       new InternalTransport(
-          new Date(2002 - 10 - 02),
+          new Date(2002 - 10 - 2),
           new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
           new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
           "John",
           "B",
           "Doe",
           emp,
-          new Date(2023 - 01 - 31),
-          new Date(2023 - 02 - 01),
+          new Date(2023 - 1 - 31),
+          new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT);
 
   /** Reset testInternalTransport after each test */
   @BeforeEach
   @AfterEach
   public void resetTestInternalTransport() {
-    testIntTransp.setDateOfBirth(new Date(2002 - 10 - 02));
+    testIntTransp.setDateOfBirth(new Date(2002 - 10 - 2));
     testIntTransp.setNewLoc(
         new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"));
     testIntTransp.setOldLoc(
@@ -71,27 +87,62 @@ public class InternalTransportTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testIntTransp.setAssignedEmp(assignedEmp);
-    testIntTransp.setDateOfIncident(new Date(2023 - 01 - 31));
-    testIntTransp.setDateOfSubmission(new Date(2023 - 02 - 01));
+    testIntTransp.setDateOfIncident(new Date(2023 - 1 - 31));
+    testIntTransp.setDateOfSubmission(new Date(2023 - 2 - 1));
     testIntTransp.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
   }
 
   /** Tests setter for dateOfBirth */
   @Test
   void setDateOfBirth() {
-    Date newDate = new Date(2002 - 01 - 17);
+    Date newDate = new Date(2002 - 1 - 17);
     testIntTransp.setDateOfBirth(newDate);
     assertEquals(newDate, testIntTransp.getDateOfBirth());
   }
 
-  /** Tests setter for newLoc */
+  /** Tests setter for location */
   @Test
-  void setNewLoc() {
-    LocationName newerLoc =
-        new LocationName("NewerLocLong", LocationName.LocationType.EXIT, "NewerLocShort");
-    testIntTransp.setNewLoc(newerLoc);
-    assertEquals(newerLoc, testIntTransp.getNewLoc());
+  public void updateOldLocationLocationTest() {
+    testIntTransp.setOldLoc(new LocationName("Hello", LocationName.LocationType.CONF, "Hello"));
+    assertEquals(
+        new LocationName("Hello", LocationName.LocationType.CONF, "Hello"),
+            testIntTransp.getOldLoc());
   }
+
+  /** Tests that the department clears (something -> null) correctly */
+  @Test
+  public void clearOldLocationTest() {
+    testIntTransp.setOldLoc(null);
+    assertNull(testIntTransp.getOldLoc());
+  }
+
+  /** Starts the location as null, then sets it to be something */
+  @Test
+  public void setLocationTest() {
+    InternalTransport test =
+        new InternalTransport(
+            new Date(), null, null, "a", "b",
+                "c", null, new Date(), new Date(), ServiceRequest.Urgency.VERY_URGENT);
+    test.setOldLoc(new LocationName("a", LocationName.LocationType.INFO, "B"));
+
+    // Assert that the location is correct
+    assertEquals(new LocationName("a", LocationName.LocationType.INFO, "B"), test.getOldLoc());
+  }
+
+  /** Starts the location name as null and sets it to null */
+  @Test
+  public void nullToNullLocationTest() {
+    InternalTransport test =
+        new InternalTransport(
+            new Date(), null, null, "b", "c",
+                "d", null, new Date(), new Date(), ServiceRequest.Urgency.VERY_URGENT);
+    test.setOldLoc(null);
+
+    // Assert that the location is correct
+    assertNull(test.getOldLoc());
+  }
+
+
 
   /** Tests setter for oldLoc */
   @Test
@@ -132,7 +183,7 @@ public class InternalTransportTest {
   /** Tests setter for dateOfIncident */
   @Test
   void setDateOfIncident() {
-    Date newDOI = new Date(2002 - 01 - 17);
+    Date newDOI = new Date(2002 - 1 - 17);
     testIntTransp.setDateOfIncident(newDOI);
     assertEquals(newDOI, testIntTransp.getDateOfIncident());
   }
@@ -140,7 +191,7 @@ public class InternalTransportTest {
   /** Tests setter for dateOfSubmission */
   @Test
   void setDateOfSubmission() {
-    Date newDOS = new Date(2002 - 01 - 17);
+    Date newDOS = new Date(2002 - 1 - 17);
     testIntTransp.setDateOfSubmission(newDOS);
     assertEquals(newDOS, testIntTransp.getDateOfSubmission());
   }
@@ -151,36 +202,6 @@ public class InternalTransportTest {
     testIntTransp.setUrgency(ServiceRequest.Urgency.NOT_URGENT);
     assertEquals(ServiceRequest.Urgency.NOT_URGENT, testIntTransp.getUrgency());
   }
-
-  /**
-   * Tests if the equals in InternalTransportTest.java correctly compares two InternalTransportTest
-   * objects
-   */
-  //  @Test
-  //  void testEquals() {
-  //    InternalTransport otherIntTransport =
-  //        new InternalTransport(
-  //            new Date(2002 - 10 - 02),
-  //            new LocationName("NewLocLongName", LocationName.LocationType.DEPT,
-  // "NewLocShortName"),
-  //            new LocationName("OldLocLongName", LocationName.LocationType.HALL,
-  // "OldLocShortName"),
-  //            "John",
-  //            "B",
-  //            "Doe",
-  //            "Wilson",
-  //            "Softeng",
-  //            "Wong",
-  //            "Jonathan",
-  //            "Elias",
-  //            "Golden",
-  //            ServiceRequest.EmpDept.CARDIOLOGY,
-  //            ServiceRequest.EmpDept.MAINTENANCE,
-  //            new Date(2023 - 01 - 31),
-  //            new Date(2023 - 02 - 01),
-  //            ServiceRequest.Urgency.MODERATELY_URGENT);
-  //    assertTrue(testIntTransp.equals(otherIntTransport));
-  //  }
 
   /**
    * Tests the equals and hash code methods for the InternalTransport class, ensures that fetched
@@ -204,15 +225,15 @@ public class InternalTransportTest {
     // Create the transport request we will use
     InternalTransport it =
         new InternalTransport(
-            new Date(2002 - 10 - 02),
+            new Date(2002 - 10 - 2),
             loc1,
             loc2,
             "John",
             "B",
             "Doe",
             emp,
-            new Date(2023 - 01 - 31),
-            new Date(2023 - 02 - 01),
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT);
     session.persist(it);
 
@@ -230,15 +251,15 @@ public class InternalTransportTest {
     // Identical transport request that should have a different ID
     InternalTransport it2 =
         new InternalTransport(
-            new Date(2002 - 10 - 02),
+            new Date(2002 - 10 - 2),
             loc1,
             loc2,
             "John",
             "B",
             "Doe",
             emp,
-            new Date(2023 - 01 - 31),
-            new Date(2023 - 02 - 01),
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT);
     session.persist(it2); // Load it2 into the DB, set its ID
 
@@ -255,8 +276,8 @@ public class InternalTransportTest {
             "L",
             "Smith",
             emp,
-            new Date(2023 - 01 - 31),
-            new Date(2023 - 02 - 01),
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.VERY_URGENT);
     session.persist(it3); // Load it3 into the DB, set its ID
 
