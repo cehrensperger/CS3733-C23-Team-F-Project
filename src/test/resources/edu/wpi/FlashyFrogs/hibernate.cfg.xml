@@ -13,9 +13,9 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://teamfdb.cvghxuuw8gnd.us-east-2.rds.amazonaws.com:5432/postgres</property>
-        <property name="connection.username">teamf</property>
-        <property name="connection.password">NN8zYvkExhTkOv9tEabj</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property>
+        <property name="connection.username">testing</property>
+        <property name="connection.password">R%RjT0^TH353</property>
         <property name="connection.autocommit">false</property>
 
         <property name="hibernate.default_schema">test</property>
