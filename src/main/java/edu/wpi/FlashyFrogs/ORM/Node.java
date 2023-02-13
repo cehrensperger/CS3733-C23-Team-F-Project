@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.ORM;
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
