@@ -45,8 +45,6 @@ public class LocationNameTest {
 
     Transaction cleanupTransaction =
         session.beginTransaction(); // Create a transaction to cleanup with
-    session.createMutationQuery("DELETE FROM AudioVisual").executeUpdate();
-    session.createMutationQuery("DELETE FROM ComputerService").executeUpdate();
     session.createMutationQuery("DELETE FROM InternalTransport").executeUpdate();
     session.createMutationQuery("DELETE FROM Sanitation").executeUpdate();
     session.createMutationQuery("DELETE FROM Security ").executeUpdate();
@@ -94,6 +92,23 @@ public class LocationNameTest {
   void testToString() {
     String locNameToString = testLocName.toString();
     assertEquals(locNameToString, testLocName.getLongName());
+  }
+
+  /** Checks to see if toString for enum works */
+  @Test
+  void testEnumToString() {
+    assertEquals(LocationName.LocationType.HALL.toString(), "HALL");
+    assertEquals(LocationName.LocationType.ELEV.toString(), "ELEV");
+    assertEquals(LocationName.LocationType.REST.toString(), "REST");
+    assertEquals(LocationName.LocationType.STAI.toString(), "STAI");
+    assertEquals(LocationName.LocationType.DEPT.toString(), "DEPT");
+    assertEquals(LocationName.LocationType.LABS.toString(), "LABS");
+    assertEquals(LocationName.LocationType.INFO.toString(), "INFO");
+    assertEquals(LocationName.LocationType.CONF.toString(), "CONF");
+    assertEquals(LocationName.LocationType.EXIT.toString(), "EXIT");
+    assertEquals(LocationName.LocationType.RETL.toString(), "RETL");
+    assertEquals(LocationName.LocationType.SERV.toString(), "SERV");
+    assertEquals(LocationName.LocationType.BATH.toString(), "BATH");
   }
 
   /** Tests setter for longName */
