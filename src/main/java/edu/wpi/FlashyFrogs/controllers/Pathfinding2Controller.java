@@ -151,7 +151,7 @@ public class Pathfinding2Controller {
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
-    //get algorithm to use in pathfinding from algorithmBox
+    // get algorithm to use in pathfinding from algorithmBox
     if (algorithmBox.getValue() != null) {
       switch (algorithmBox.getValue()) {
         case "A*":

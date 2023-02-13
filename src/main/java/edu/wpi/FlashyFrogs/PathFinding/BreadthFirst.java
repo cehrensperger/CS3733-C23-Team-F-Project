@@ -19,7 +19,14 @@ public class BreadthFirst implements IFindPath {
       List<Node> neighbors =
           PathFinder.getNeighbors(currentNodeWrapper.node, session).stream().toList();
       for (Node node : neighbors) {
-        if (!visited.contains(node)
+        if (node.equals(end)) {
+          queue.clear();
+          nodeQueue.clear();
+          currentNodeWrapper = new PathFinder.NodeWrapper(node, currentNodeWrapper);
+          queue.add(currentNodeWrapper);
+          nodeQueue.add(node);
+          break;
+        } else if (!visited.contains(node)
             && !nodeQueue.contains(node)
             && !node.equals(
                 currentNodeWrapper
