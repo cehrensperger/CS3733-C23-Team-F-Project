@@ -51,7 +51,10 @@ public class LoginController {
     } else {
       Session ses = CONNECTION.getSessionFactory().openSession();
       try {
-        UserLogin logIn = ses.find(UserLogin.class, username.getText());
+        UserLogin logIn =
+            ses.createQuery("FROM UserLogin where userName = :username", UserLogin.class)
+                .setParameter("username", username.getText())
+                .getSingleResult();
         if (logIn == null) { // Username does not exist in database
           throw new Exception();
         } else if (!logIn.checkPasswordEqual(

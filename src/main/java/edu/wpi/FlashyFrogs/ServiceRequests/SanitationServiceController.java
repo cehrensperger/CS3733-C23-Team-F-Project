@@ -3,9 +3,6 @@ package edu.wpi.FlashyFrogs.ServiceRequests;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Sanitation;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -13,7 +10,6 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -127,23 +123,23 @@ public class SanitationServiceController extends ServiceRequestController {
       Date dateOfIncident =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      Sanitation sanitationRequest =
-          new Sanitation(
-              Sanitation.SanitationType.valueOf(requestTypeEnumString),
-              firstName.getText(),
-              middleName.getText(),
-              lastName.getText(),
-              first2.getText(),
-              middle2.getText(),
-              last2.getText(),
-              ServiceRequest.EmpDept.valueOf(departmentEnumString),
-              ServiceRequest.EmpDept.valueOf(departmentEnumString2),
-              dateOfIncident,
-              Date.from(Instant.now()),
-              ServiceRequest.Urgency.valueOf(urgencyEnumString),
-              session.find(LocationName.class, locationDropDown.getText()));
+      //      Sanitation sanitationRequest =
+      //          new Sanitation(
+      //              Sanitation.SanitationType.valueOf(requestTypeEnumString),
+      //              firstName.getText(),
+      //              middleName.getText(),
+      //              lastName.getText(),
+      //              first2.getText(),
+      //              middle2.getText(),
+      //              last2.getText(),
+      //              ServiceRequest.EmpDept.valueOf(departmentEnumString),
+      //              ServiceRequest.EmpDept.valueOf(departmentEnumString2),
+      //              dateOfIncident,
+      //              Date.from(Instant.now()),
+      //              ServiceRequest.Urgency.valueOf(urgencyEnumString),
+      //              session.find(LocationName.class, locationDropDown.getText()));
       try {
-        session.persist(sanitationRequest);
+        //        session.persist(sanitationRequest);
         transaction.commit();
         session.close();
         handleClear(actionEvent);

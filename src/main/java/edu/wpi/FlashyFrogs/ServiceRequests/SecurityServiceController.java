@@ -124,14 +124,15 @@ public class SecurityServiceController extends ServiceRequestController {
           Date.from(dateEntry.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       Security securityRequest = new Security();
-      securityRequest.setEmpFirstName(firstEntry.getText());
-      securityRequest.setEmpMiddleName(middleEntry.getText());
-      securityRequest.setEmpLastName(lastEntry.getText());
-      securityRequest.setAssignedEmpFirstName(first2.getText());
-      securityRequest.setAssignedEmpMiddleName(middle2.getText());
-      securityRequest.setAssignedEmpLastName(last2.getText());
-      securityRequest.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
-      securityRequest.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
+      //      securityRequest.setEmpFirstName(firstEntry.getText());
+      //      securityRequest.setEmpMiddleName(middleEntry.getText());
+      //      securityRequest.setEmpLastName(lastEntry.getText());
+      //      securityRequest.setAssignedEmpFirstName(first2.getText());
+      //      securityRequest.setAssignedEmpMiddleName(middle2.getText());
+      //      securityRequest.setAssignedEmpLastName(last2.getText());
+      //      securityRequest.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
+      //
+      // securityRequest.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
       securityRequest.setDateOfIncident(dateOfIncident);
       securityRequest.setDateOfSubmission(Date.from(Instant.now()));
       securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyEnumString));

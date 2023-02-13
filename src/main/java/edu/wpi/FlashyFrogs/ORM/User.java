@@ -50,11 +50,47 @@ public class User {
   @NonNull
   private EmployeeType employeeType;
 
+  /** The department the employee is a member of */
+  @JoinColumn(
+      name = "department_name",
+      foreignKey =
+          @ForeignKey(
+              name = "department_name_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (department_name) REFERENCES department(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
+  @ManyToOne
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+  @Setter
+  @Getter
+  private Department department;
+
   /** Enumerated type representing the possible employee types */
   public enum EmployeeType {
-    ADMIN, // Admin employee
-    MEDICAL, // Medical employee
-    STAFF // Staff, e.g., janitors
+    ADMIN("Administrator"), // Admin employee
+    MEDICAL("Medical Practitioner"), // Medical employee
+    STAFF("Staff Member"); // Staff, e.g., janitors
+
+    @NonNull public final String type; // Display type
+
+    /**
+     * Sets the type for the employee, i.e., string backing
+     *
+     * @param type the type of employee
+     */
+    EmployeeType(@NonNull String type) {
+      this.type = type;
+    }
+
+    /**
+     * Override for the toString, returns the type as a string
+     *
+     * @return the type as a string
+     */
+    @Override
+    public String toString() {
+      return this.type;
+    }
   }
 
   /** Empty constructor, required for Hibernate */
@@ -67,16 +103,29 @@ public class User {
    * @param middleName the middle name
    * @param lastName the last name
    * @param employeeType the type of employee
+   * @param department the department
    */
   public User(
       @NonNull String firstName,
       String middleName,
       @NonNull String lastName,
-      @NonNull EmployeeType employeeType) {
+      @NonNull EmployeeType employeeType,
+      Department department) {
     this.firstName = firstName; // Set the first name
     this.middleName = middleName; // Set the middle name
     this.lastName = lastName; // Set the last name
     this.employeeType = employeeType; // Set the employee type
+    this.department = department; // Set the department
+  }
+
+  /**
+   * ToString method, returns the first name " " the last name
+   *
+   * @return the display representation of the user
+   */
+  @Override
+  public String toString() {
+    return getFirstName() + " " + getLastName();
   }
 
   /**

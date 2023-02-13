@@ -5,6 +5,7 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "InternalTransport")
@@ -45,7 +46,8 @@ public class InternalTransport extends ServiceRequest {
                       + "locationname(longName) ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
-  @ManyToOne
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+  @ManyToOne(optional = false)
   private LocationName oldLoc;
 
   @Getter
@@ -59,7 +61,8 @@ public class InternalTransport extends ServiceRequest {
                   "FOREIGN KEY (newLoc) REFERENCES locationname(longName) "
                       + "ON UPDATE CASCADE ON DELETE SET NULL"))
   @NonNull
-  @ManyToOne
+  @ManyToOne(optional = false)
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   private LocationName newLoc;
 
   @Column(nullable = false)
@@ -84,14 +87,7 @@ public class InternalTransport extends ServiceRequest {
    * @param thePatientFirstName the String to use in the patientFirstName field
    * @param thePatientMiddleName the String to use in the patientMiddleName field
    * @param thePatientLastName the String to use in the patientlastName field
-   * @param empFirstName the String to use in the empFirstName field
-   * @param empMiddleName the String to use in the empMiddleName field
-   * @param empLastName the String to use in the empLastName field
-   * @param assignedEmpFirstName the String to use in the assignedEmpFirstName field
-   * @param assignedEmpMiddleName the String to use in the assignedEmpMiddleName field
-   * @param assignedEmpLastName the String to use in the assignedEmpLastName field
-   * @param empDept the EmpDept to use in the empDept field
-   * @param assignedEmpDept the EmpDept to use in the assignedEmpDept field
+   * @param emp the User to use in the emp field
    * @param dateOfIncident the Date to use in the dateOfIncident field
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
@@ -103,14 +99,7 @@ public class InternalTransport extends ServiceRequest {
       @NonNull String thePatientFirstName,
       @NonNull String thePatientMiddleName,
       @NonNull String thePatientLastName,
-      @NonNull String empFirstName,
-      @NonNull String empMiddleName,
-      @NonNull String empLastName,
-      @NonNull String assignedEmpFirstName,
-      @NonNull String assignedEmpMiddleName,
-      @NonNull String assignedEmpLastName,
-      @NonNull EmpDept empDept,
-      @NonNull EmpDept assignedEmpDept,
+      @NonNull User emp,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency) {
@@ -120,14 +109,7 @@ public class InternalTransport extends ServiceRequest {
     this.patientFirstName = thePatientFirstName;
     this.patientMiddleName = thePatientMiddleName;
     this.patientLastName = thePatientLastName;
-    super.setEmpFirstName(empFirstName);
-    super.setEmpMiddleName(empMiddleName);
-    super.setEmpLastName(empLastName);
-    super.setEmpDept(empDept);
-    super.setAssignedEmpFirstName(assignedEmpFirstName);
-    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
-    super.setAssignedEmpLastName(assignedEmpLastName);
-    super.setAssignedEmpDept(assignedEmpDept);
+    super.setEmp(emp);
     super.setDateOfIncident(dateOfIncident);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);

@@ -12,8 +12,6 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -124,25 +122,25 @@ public class ComputerServiceController extends ServiceRequestController {
       String deviceTypeEnumString = deviceType.getText().toUpperCase().replace(" ", "_");
       String serviceTypeEnumString = serviceType.getText().toUpperCase().replace(" ", "_");
 
-      ComputerService computerService =
-          new ComputerService(
-              firstEntry.getText(),
-              middleEntry.getText(),
-              lastEntry.getText(),
-              first2.getText(),
-              middle2.getText(),
-              last2.getText(),
-              ComputerService.EmpDept.valueOf(departmentEnumString),
-              ComputerService.EmpDept.valueOf(departmentEnumString2),
-              Date.from(Instant.now()),
-              Date.from(Instant.now()),
-              ServiceRequest.Urgency.valueOf(urgencyEnumString),
-              ComputerService.DeviceType.valueOf(deviceTypeEnumString),
-              deviceModel.getText(),
-              issueDescription.getText(),
-              ComputerService.ServiceType.valueOf(serviceTypeEnumString));
+      //      ComputerService computerService =
+      //          new ComputerService(
+      //              firstEntry.getText(),
+      //              middleEntry.getText(),
+      //              lastEntry.getText(),
+      //              first2.getText(),
+      //              middle2.getText(),
+      //              last2.getText(),
+      //              ComputerService.EmpDept.valueOf(departmentEnumString),
+      //              ComputerService.EmpDept.valueOf(departmentEnumString2),
+      //              Date.from(Instant.now()),
+      //              Date.from(Instant.now()),
+      //              ServiceRequest.Urgency.valueOf(urgencyEnumString),
+      //              ComputerService.DeviceType.valueOf(deviceTypeEnumString),
+      //              deviceModel.getText(),
+      //              issueDescription.getText(),
+      //              ComputerService.ServiceType.valueOf(serviceTypeEnumString));
       try {
-        session.persist(computerService);
+        //        session.persist(computerService);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
