@@ -579,7 +579,7 @@ public class UserTest {
     User u = new User("a", "b", "c", User.EmployeeType.MEDICAL, department);
     session.persist(u); // Save u
 
-    session.createMutationQuery("DELETE FROM Department ").executeUpdate(); // Delete
+    session.createMutationQuery("DELETE FROM Department").executeUpdate(); // Delete
 
     session.refresh(u); // Refresh u, to get the new user
 
