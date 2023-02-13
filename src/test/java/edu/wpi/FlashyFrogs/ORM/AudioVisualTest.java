@@ -208,6 +208,7 @@ public class AudioVisualTest {
             null,
             new Date());
     test.setAssignedEmp(null);
+    test.setAssignedEmp(null);
 
     // Assert that the location is correct
     assertNull(test.getAssignedEmp());
@@ -713,6 +714,115 @@ public class AudioVisualTest {
     // Create the av request we will use
     AudioVisual av =
         new AudioVisual(
+            assignedEmp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            AudioVisual.AccommodationType.VISUAL,
+            "a",
+            "d",
+            "jh",
+            location,
+            new Date(2002 - 10 - 8));
+    av.setAssignedEmp(emp);
+    session.persist(av);
+
+    transaction.commit(); // Commit what we have, so that we can get it after the failure
+
+    transaction = session.beginTransaction(); // Open a new transaction
+    // Change the enp
+    assertThrows(
+        Exception.class,
+        () ->
+            session
+                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .setParameter("id", emp.getId())
+                .executeUpdate());
+
+    session.flush();
+
+    transaction.rollback(); // End that transaction
+
+    transaction = session.beginTransaction();
+
+    // Update the request
+    session.refresh(av);
+
+    // Assert the location is not actually gone
+    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void bothEmpDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(assignedEmp);
+    session.persist(endDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    AudioVisual av =
+        new AudioVisual(
+            emp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            AudioVisual.AccommodationType.VISUAL,
+            "a",
+            "d",
+            "jh",
+            location,
+            new Date(2002 - 10 - 8));
+    av.setAssignedEmp(emp);
+    session.persist(av);
+
+    // Change the enp
+    session
+        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .setParameter("id", emp.getId())
+        .executeUpdate();
+
+    // Update the request
+    session.refresh(av);
+
+    // Assert the location is actually gone
+    assertNull(
+        session
+            .createQuery("FROM User WHERE id = :id", User.class)
+            .setParameter("id", emp.getId())
+            .uniqueResult());
+    assertNull(av.getAssignedEmp()); // Assert the location is null
+    assertNull(av.getEmp());
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that updating the employee results in a cascade update failure */
+  @Test
+  public void bothEmpUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(endDept);
+    session.persist(assignedEmp);
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    AudioVisual av =
+        new AudioVisual(
             emp,
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
@@ -750,6 +860,7 @@ public class AudioVisualTest {
     // Assert the location is not actually gone
     assertEquals(emp, session.find(User.class, emp.getId()));
     assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
+    assertEquals(emp, av.getEmp());
 
     transaction.rollback();
     session.close();

@@ -214,16 +214,16 @@ public class Node {
     locations.removeIf(
         location -> {
           Date currentDate =
-              (Date)
-                  session
-                      .createQuery(
-                          """
+              session
+                  .createQuery(
+                      """
             SELECT m.moveDate
             FROM Move m WHERE m.location = :l
             AND moveDate <= current timestamp
-            ORDER BY moveDate DESC LIMIT 1""")
-                      .setParameter("l", location)
-                      .uniqueResult();
+            ORDER BY moveDate DESC LIMIT 1""",
+                      Date.class)
+                  .setParameter("l", location)
+                  .uniqueResult();
           return !currentDate.equals(firstDate);
         });
 
