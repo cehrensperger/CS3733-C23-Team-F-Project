@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Test;
 // Creates iteration of Sanitation
 public class SanitationTest {
   private final User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
-  private final User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
+  private final User assignedEmp =
+      new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   private final Sanitation testSan =
       new Sanitation(
           Sanitation.SanitationType.MOPPING,
@@ -37,8 +38,7 @@ public class SanitationTest {
     testSan.setDateOfIncident(new Date(2023 - 1 - 31));
     testSan.setDateOfSubmission(new Date(2023 - 2 - 1));
     testSan.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
-    testSan.setLocation(new LocationName("LongName", LocationName.LocationType.HALL,
-            "ShortName"));
+    testSan.setLocation(new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"));
   }
 
   /** Tests setter for sanitationType */
@@ -67,22 +67,30 @@ public class SanitationTest {
   @Test
   public void setEmpTest() {
     Sanitation test =
-        new Sanitation(Sanitation.SanitationType.SWEEPING, null, new Date(), new Date(),
-                ServiceRequest.Urgency.NOT_URGENT,
-                new LocationName("A", LocationName.LocationType.BATH, "B"));
+        new Sanitation(
+            Sanitation.SanitationType.SWEEPING,
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            new LocationName("A", LocationName.LocationType.BATH, "B"));
     test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
-    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null),
-            test.getEmp());
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getEmp());
   }
 
   /** Starts the location name as null and sets it to null */
   @Test
   public void nullToNullEmployeeTest() {
     Sanitation test =
-        new Sanitation(Sanitation.SanitationType.MOPPING, null, new Date(), new Date(),
-                ServiceRequest.Urgency.VERY_URGENT, null);
+        new Sanitation(
+            Sanitation.SanitationType.MOPPING,
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT,
+            null);
     test.setEmp(null);
 
     // Assert that the location is correct
@@ -109,22 +117,30 @@ public class SanitationTest {
   @Test
   public void setAssignedEmpTest() {
     Sanitation test =
-        new Sanitation(Sanitation.SanitationType.SWEEPING, null, new Date(), new Date(),
-                ServiceRequest.Urgency.MODERATELY_URGENT, null);
+        new Sanitation(
+            Sanitation.SanitationType.SWEEPING,
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            null);
     test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
-    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null),
-            test.getAssignedEmp());
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getAssignedEmp());
   }
 
   /** Starts the location name as null and sets it to null */
   @Test
   public void nullToNullAssignedEmployeeTest() {
     Sanitation test =
-        new Sanitation(Sanitation.SanitationType.SWEEPING, assignedEmp, new Date(), new Date(),
-                ServiceRequest.Urgency.NOT_URGENT,
-                new LocationName("B", LocationName.LocationType.INFO, "E"));
+        new Sanitation(
+            Sanitation.SanitationType.SWEEPING,
+            assignedEmp,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            new LocationName("B", LocationName.LocationType.INFO, "E"));
     test.setAssignedEmp(null);
     test.setAssignedEmp(null);
 

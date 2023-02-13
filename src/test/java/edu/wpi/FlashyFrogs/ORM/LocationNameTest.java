@@ -225,11 +225,14 @@ public class LocationNameTest {
     Node badNode = new Node("n", "h", Node.Floor.L1, 6, 59); // Bad node
     LocationName theLocation = new LocationName("bb", LocationName.LocationType.SERV, "aa");
     LocationName otherLocation = new LocationName("a", LocationName.LocationType.INFO, "aa");
+    LocationName anotherLocation =
+        new LocationName("another", LocationName.LocationType.EXIT, "aa");
     Move fallbackMove = new Move(badNode, theLocation, Date.from(Instant.ofEpochSecond(10))); // Old
     Move oldMove =
         new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(22))); // Old move
     Move newMove =
         new Move(thisNode, otherLocation, Date.from(Instant.ofEpochSecond(100))); // New move
+    Move newestMove = new Move(thisNode, anotherLocation, Date.from(Instant.ofEpochSecond(200)));
 
     Transaction commitTransaction = session.beginTransaction(); // Session to commit these
     session.persist(thisNode);
@@ -239,6 +242,7 @@ public class LocationNameTest {
     session.persist(fallbackMove);
     session.persist(oldMove);
     session.persist(newMove);
+    session.persist(newestMove);
     commitTransaction.commit(); // Commit
 
     assertNull(theLocation.getCurrentNode()); // Assert the location is null
