@@ -4,7 +4,6 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -18,7 +17,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
@@ -35,8 +33,6 @@ public class HomeController {
   @FXML protected TableView<ServiceRequest> requestTable;
   @FXML protected Label tableText;
 
-  Stage stage;
-
   public void initialize() {
 
     // need to be the names of the fields
@@ -51,9 +47,8 @@ public class HomeController {
     Session session = CONNECTION.getSessionFactory().openSession();
 
     // todo: remove when login is implemented
-    Department dept = new Department("department", "dept");
-    User user = new User("a", "b", "c", User.EmployeeType.MEDICAL, dept);
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(user);
+
+    CurrentUserEntity.CURRENT_USER.setCurrentUser(session.find(User.class, 2));
 
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
@@ -89,7 +84,7 @@ public class HomeController {
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
     System.out.println("opening pathfinding");
-    Fapp.setScene("views", "Pathfinding2");
+    Fapp.setScene("Pathfinding", "Pathfinding");
   }
 
   @FXML
@@ -248,7 +243,5 @@ public class HomeController {
     Fapp.setScene("views", "Login");
   }
 
-  public void secretMethod(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Home2");
-  }
+  public void manageAnnouncements(ActionEvent event) throws IOException {}
 }
