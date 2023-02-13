@@ -6,8 +6,12 @@ import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.PathFinding.AStar;
+import edu.wpi.FlashyFrogs.PathFinding.BreadthFirst;
+import edu.wpi.FlashyFrogs.PathFinding.DepthFirst;
 import edu.wpi.FlashyFrogs.PathFinding.PathFinder;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -74,11 +78,20 @@ public class Pathfinding2Controller {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
-    // sort the locations alphabetically
+    // sort the locations alphabetically, algorithms already alphabetical
     objects.sort(String::compareTo);
+
+    // make the list of algorithms
+    List<String> algorithms = new LinkedList<>();
+    algorithms.add("A*");
+    algorithms.add("Breadth-first");
+    algorithms.add("Depth-first");
+
+    PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
     startingBox.setItems(FXCollections.observableList(objects));
     destinationBox.setItems(FXCollections.observableList(objects));
+    algorithmBox.setItems(FXCollections.observableList(algorithms));
 
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorProperty.addListener(
