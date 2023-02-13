@@ -38,6 +38,12 @@ public class LocationNameTest {
   /** Cleans up the DB tables and closes the test session */
   @AfterEach
   public void cleanupDatabase() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
     // cancel any still-running transactions
     if (session.getTransaction().isActive()) {
       session.getTransaction().rollback();

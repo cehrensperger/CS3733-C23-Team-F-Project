@@ -36,6 +36,12 @@ public class NodeTest {
   /** Cleans up the DB tables and closes the test session */
   @AfterEach
   public void cleanupDatabase() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
     Transaction cleanupTransaction =
         session.beginTransaction(); // Create a transaction to cleanup with
     session.createMutationQuery("DELETE FROM Move").executeUpdate(); // Delete moves
