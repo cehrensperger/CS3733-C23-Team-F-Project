@@ -170,20 +170,7 @@ public class PathfindingController {
           break;
       }
     }
-
-    /* if (algorithmBox.getValue() != null) {
-      if (algorithmBox.getValue().equals("A*")) {
-        pathFinder.setAlgorithm(new AStar());
-      } else if (algorithmBox.getValue().equals("Breadth-first")) {
-        pathFinder.setAlgorithm(new BreadthFirst());
-      } else if (algorithmBox.getValue().equals("Depth-first")) {
-        pathFinder.setAlgorithm(new DepthFirst());
-      } else {
-        pathFinder.setAlgorithm(new AStar());
-      }
-    } */
-
-    // list of nodes that represent the shortest path
+    
     List<Node> nodes = pathFinder.findPath(startPath, endPath);
 
     if (nodes == null) {
