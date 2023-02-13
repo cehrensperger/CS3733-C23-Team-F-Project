@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CreditsController">
+    <children>
+        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="155.66615295410156">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Text>
+                        <MFXButton prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: 012D5A;" text="Audio/Visual        " wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton prefHeight="60.0" prefWidth="150.0" text="Information Technology" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton prefHeight="60.0" prefWidth="150.0" text="Internal Patient Transportation" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton prefHeight="60.0" prefWidth="150.0" text="Sanitation            " wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton prefHeight="60.0" prefWidth="150.0" text="Security                " wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <AnchorPane VBox.vgrow="ALWAYS">
+                            <children>
+                                <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
+                                    <children>
+                                        <MFXButton prefHeight="25.0" prefWidth="85.0" text="Credits">
+                                            <VBox.margin>
+                                                <Insets left="18.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </MFXButton>
+                                        <MFXButton prefHeight="25.0" prefWidth="85.0" text="Back">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" left="18.0" top="18.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </MFXButton>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Credits" wrappingWidth="708.447021484375">
+                            <font>
+                                <Font size="28.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="55.0" />
+                            </VBox.margin>
+                        </Text>
+                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <VBox prefHeight="573.0" prefWidth="609.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Information Technology">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Security">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Text>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets right="100.0" />
+                                    </HBox.margin>
+                                </VBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="50.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
