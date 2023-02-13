@@ -18,8 +18,6 @@
         <property name="connection.password">password</property>
         <property name="connection.autocommit">false</property>
 
-        <property name="hibernate.default_schema">production</property>
-
         <property name="connection.pool_size">1</property>
 
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
