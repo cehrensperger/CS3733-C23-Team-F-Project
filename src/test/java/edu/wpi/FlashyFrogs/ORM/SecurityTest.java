@@ -52,6 +52,8 @@ public class SecurityTest {
     }
   }
 
+  private final Department sourceDept = new Department("a", "b");
+  private final Department endDept = new Department("c", "d");
   User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
   User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   Security testSecurity =
@@ -62,8 +64,6 @@ public class SecurityTest {
           new Date(2023 - 1 - 31),
           new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT);
-
-  private final Department sourceDept = new Department("a", "b");
 
   /** Reset testSecurity after each test */
   @BeforeEach
@@ -149,6 +149,13 @@ public class SecurityTest {
     assertEquals(newIncRep, testSecurity.getIncidentReport());
   }
 
+  /** Checks to see if toString makes a string in the same format specified in Security.java */
+  @Test
+  void testToString() {
+    String sanToString = testSecurity.toString();
+    assertEquals(sanToString, testSecurity.getClass().getSimpleName() + "_" + testSecurity.getId());
+  }
+
   /**
    * Tests the equals and hash code methods for the AudioVisual class, ensures that fetched objects
    * are equal
@@ -195,7 +202,7 @@ public class SecurityTest {
     assertNotEquals(sec, sec2); // Assert sec and sec2 aren't equal
     assertNotEquals(sec.hashCode(), sec2.hashCode()); // Assert their has hash codes are different
 
-    // Completely different av request
+    // Completely different security request
     Security sec3 =
         new Security(
             "NewIncident Report",
@@ -213,10 +220,422 @@ public class SecurityTest {
     session.close();
   }
 
-  /** Checks to see if toString makes a string in the same format specified in Security.java */
+  /** Tests that deleting the location this is associated to with a query sets it to null */
   @Test
-  void testToString() {
-    String sanToString = testSecurity.toString();
-    assertEquals(sanToString, testSecurity.getClass().getSimpleName() + "_" + testSecurity.getId());
+  public void locationDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("b", "a", "d", User.EmployeeType.MEDICAL, sourceDept);
+    LocationName location = new LocationName("q", LocationName.LocationType.EXIT, "name");
+
+    session.persist(sourceDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    session.persist(sec);
+
+    // Remove the location
+    session.createMutationQuery("DELETE FROM LocationName").executeUpdate();
+
+    session.flush();
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is actually gone
+    assertNull(session.createQuery("FROM LocationName", LocationName.class).uniqueResult());
+    assertNull(sec.getLocation()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Test that updating the location cascades */
+  @Test
+  public void locationUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("jhj", "aew", "hgfd", User.EmployeeType.ADMIN, endDept);
+    LocationName location = new LocationName("b", LocationName.LocationType.EXIT, "a");
+
+    session.persist(endDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    session.persist(sec);
+
+    // Change the location
+    session.createMutationQuery("UPDATE LocationName SET longName = 'newName'").executeUpdate();
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is actually gone
+    assertEquals(
+        new LocationName("newName", LocationName.LocationType.EXIT, "name"),
+        session.find(LocationName.class, "newName"));
+    assertEquals(
+        new LocationName("newName", LocationName.LocationType.EXIT, "name"),
+        sec.getLocation()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is referenced to sets it to null */
+  @Test
+  public void empDeleteCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(endDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    session.persist(sec);
+
+    session.flush();
+
+    // Change the emp
+    session.remove(emp);
+
+    session.flush();
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is actually gone
+    assertNull(session.find(User.class, emp.getId()));
+    assertNull(sec.getEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void empDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(endDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    session.persist(sec);
+
+    // Change the enp
+    session
+        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .setParameter("id", emp.getId())
+        .executeUpdate();
+
+    session.flush();
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is actually gone
+    assertNull(
+        session
+            .createQuery("FROM User WHERE id = :id", User.class)
+            .setParameter("id", emp.getId())
+            .uniqueResult());
+    assertNull(sec.getEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that updating the employee results in a cascade update failure */
+  @Test
+  public void empUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(endDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    session.persist(sec);
+
+    // Commit stuff so we can access it later (it's persisted)
+    transaction.commit();
+    transaction = session.beginTransaction();
+
+    // Change the enp
+    assertThrows(
+        Exception.class,
+        () ->
+            session
+                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .setParameter("id", emp.getId())
+                .executeUpdate());
+
+    transaction.rollback(); // This transaction is trash due to the SQL error
+    transaction = session.beginTransaction(); // Create a new transaction
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is not actually gone
+    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, sec.getEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void assignedEmpDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(assignedEmp);
+    session.persist(endDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    sec.setAssignedEmp(emp);
+    session.persist(sec);
+
+    // Change the enp
+    session
+        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .setParameter("id", emp.getId())
+        .executeUpdate();
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is actually gone
+    assertNull(
+        session
+            .createQuery("FROM User WHERE id = :id", User.class)
+            .setParameter("id", emp.getId())
+            .uniqueResult());
+    assertNull(sec.getAssignedEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that updating the employee results in a cascade update failure */
+  @Test
+  public void assignedEmpUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(endDept);
+    session.persist(assignedEmp);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    sec.setAssignedEmp(emp);
+    session.persist(sec);
+
+    transaction.commit(); // Commit what we have, so that we can get it after the failure
+
+    transaction = session.beginTransaction(); // Open a new transaction
+    // Change the enp
+    assertThrows(
+        Exception.class,
+        () ->
+            session
+                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .setParameter("id", emp.getId())
+                .executeUpdate());
+
+    session.flush();
+
+    transaction.rollback(); // End that transaction
+
+    transaction = session.beginTransaction();
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is not actually gone
+    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, sec.getAssignedEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void bothEmpDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(assignedEmp);
+    session.persist(endDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    sec.setAssignedEmp(emp);
+    session.persist(sec);
+
+    // Change the enp
+    session
+        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .setParameter("id", emp.getId())
+        .executeUpdate();
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is actually gone
+    assertNull(
+        session
+            .createQuery("FROM User WHERE id = :id", User.class)
+            .setParameter("id", emp.getId())
+            .uniqueResult());
+    assertNull(sec.getAssignedEmp()); // Assert the location is null
+    assertNull(sec.getEmp());
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that updating the employee results in a cascade update failure */
+  @Test
+  public void bothEmpUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(endDept);
+    session.persist(assignedEmp);
+    session.persist(emp);
+    session.persist(location);
+    // Create the security request we will use
+    Security sec =
+        new Security(
+            "Incident Report",
+            location,
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    sec.setAssignedEmp(emp);
+    session.persist(sec);
+
+    transaction.commit(); // Commit what we have, so that we can get it after the failure
+
+    transaction = session.beginTransaction(); // Open a new transaction
+    // Change the enp
+    assertThrows(
+        Exception.class,
+        () ->
+            session
+                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .setParameter("id", emp.getId())
+                .executeUpdate());
+
+    session.flush();
+
+    transaction.rollback(); // End that transaction
+
+    transaction = session.beginTransaction();
+
+    // Update the request
+    session.refresh(sec);
+
+    // Assert the location is not actually gone
+    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, sec.getAssignedEmp()); // Assert the location is null
+    assertEquals(emp, sec.getEmp());
+
+    transaction.rollback();
+    session.close();
   }
 }
