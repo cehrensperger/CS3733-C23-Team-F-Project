@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HoldAVController">
+    <children>
+        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="155.66615295410156">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Text>
+                        <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: 012D5A;" text="Audio/Visual        " wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" text="Information Technology" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" text="Internal Patient Transportation" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" text="Sanitation            " wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" text="Security                " wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <AnchorPane VBox.vgrow="ALWAYS">
+                            <children>
+                                <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
+                                    <children>
+                                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Credits" textFill="WHITE">
+                                            <VBox.margin>
+                                                <Insets left="18.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </MFXButton>
+                                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Back" textFill="#012d5a">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" left="18.0" top="18.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </MFXButton>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual Service Request">
+                            <font>
+                                <Font size="28.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="55.0" />
+                            </VBox.margin>
+                        </Text>
+                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
+                            <children>
+                        <VBox prefHeight="200.0" prefWidth="185.0">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="48.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of location is the audio/visual device needed in" textAlignment="RIGHT" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="24.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                                <VBox prefHeight="400.0" prefWidth="200.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Information">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                                        <SearchableComboBox fx:id="location" promptText="Location of Request" style="-fx-background-color: FFFFFF;">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                        <SearchableComboBox fx:id="type" promptText="Location Type">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets right="100.0" />
+                                    </HBox.margin>
+                                </VBox>
+                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="470.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                <VBox prefHeight="159.0" prefWidth="200.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Device Information">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                                        <TextField fx:id="device" promptText="Reason For Transfer" text="Device Type">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
+                                        <TextField fx:id="model" text="Device Model">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
+                              <TextField fx:id="reason" text="Reason for Request">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </TextField>
+                                        <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date (needed by)" />
+                                        <TextField fx:id="time" promptText="Time (needed by) (00:00 AM/PM)">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" top="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
+                                        <SearchableComboBox fx:id="urgency" promptText="Urgency">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                        <TextField fx:id="description" prefWidth="200.0" text="Description of Request" />
+                                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                        <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Clear" textAlignment="CENTER" textFill="#b6000b">
+                                                            <font>
+                                                                <Font size="16.0" />
+                                                            </font>
+                                                        </MFXButton>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                                                            <font>
+                                                                <Font size="16.0" />
+                                                            </font>
+                                                        </MFXButton>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets top="144.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets left="100.0" />
+                                    </HBox.margin></VBox>
+                        <VBox prefHeight="200.0" prefWidth="185.0">
+                           <HBox.margin>
+                              <Insets left="10.0" top="48.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of device do you need" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="32.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the model of the device you need" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the reason for the device requested" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="32.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What date is the device needed by" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="30.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What time is the device needed by" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="32.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h8" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of this request" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="30.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h9" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the request" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="32.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="50.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
