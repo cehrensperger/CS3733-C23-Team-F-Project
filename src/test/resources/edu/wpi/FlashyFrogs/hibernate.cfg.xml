@@ -18,7 +18,7 @@
         <property name="connection.password">R%RjT0^TH353</property>
         <property name="connection.autocommit">false</property>
 
-        <property name="hibernate.default_schema">test</property>
+        <property name="hibernate.default_schema">production</property>
 
         <property name="connection.pool_size">1</property>
 
