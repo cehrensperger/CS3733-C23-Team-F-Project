@@ -193,39 +193,39 @@ public class Node {
     if (locations.isEmpty()) {
       return locations;
     }
-    LocationName first = locations.stream().findFirst().get();
+    // LocationName first = locations.stream().findFirst().get();
 
     // get the date of the first location
 
-    Date firstDate =
-        session
-            .createQuery(
-                """
-            SELECT m.moveDate
-            FROM Move m WHERE m.location = :l
-            AND moveDate <= current timestamp
-            ORDER BY moveDate DESC LIMIT 1""",
-                Date.class)
-            .setParameter("l", first)
-            .uniqueResult();
+    //    Date firstDate =
+    //        session
+    //            .createQuery(
+    //                """
+    //            SELECT m.moveDate
+    //            FROM Move m WHERE m.location = :l
+    //            AND moveDate <= current timestamp
+    //            ORDER BY moveDate DESC LIMIT 1""",
+    //                Date.class)
+    //            .setParameter("l", first)
+    //            .uniqueResult();
 
     // filter the list for dates that are the same
     // (remove if they aren't the same because we would just want the most recent anyway)
-    locations.removeIf(
-        location -> {
-          Date currentDate =
-              session
-                  .createQuery(
-                      """
-            SELECT m.moveDate
-            FROM Move m WHERE m.location = :l
-            AND moveDate <= current timestamp
-            ORDER BY moveDate DESC LIMIT 1""",
-                      Date.class)
-                  .setParameter("l", location)
-                  .uniqueResult();
-          return !currentDate.equals(firstDate);
-        });
+    //    locations.removeIf(
+    //        location -> {
+    //          Date currentDate =
+    //              (Date)
+    //                  session
+    //                      .createQuery(
+    //                          """
+    //            SELECT m.moveDate
+    //            FROM Move m WHERE m.location = :l
+    //            AND moveDate <= current timestamp
+    //            ORDER BY moveDate DESC LIMIT 1""")
+    //                      .setParameter("l", location)
+    //                      .uniqueResult();
+    //          return !currentDate.equals(firstDate);
+    //        });
 
     // make sure that both of the nodes of the location are this node
     // Node firstNode = locations.stream().findFirst().get().getCurrentNode(session);
