@@ -4,6 +4,7 @@ import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -155,7 +156,7 @@ public class Node {
    * @param session the session to use for the lookup
    * @return either the location this node is storing, or null if there is none
    */
-  public Collection<LocationName> getCurrentLocation(@NonNull Session session) {
+  public List<LocationName> getCurrentLocation(@NonNull Session session) {
 
     // associate location with a node
     // then associate that location with a new node
@@ -176,7 +177,7 @@ public class Node {
 
     // If the past two locations for this node are on the same day, return both.
     // Otherwise, return the most recent.
-    Collection<LocationName> locations =
+    List<LocationName> locations =
         session
             .createQuery(
                 """

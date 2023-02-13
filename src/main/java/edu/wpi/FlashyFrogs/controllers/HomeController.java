@@ -1,47 +1,74 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.ORM.User;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.util.List;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.controlsfx.control.PopOver;
+import javafx.scene.control.TableColumn;
+import org.hibernate.Session;
+
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 public class HomeController {
-  @FXML private StackPane rootPane;
-  @FXML private MFXButton serviceRequestsButton;
-  @FXML private MFXButton mapDataEditorButton;
-  @FXML private MFXButton pathfindingButton;
-  @FXML private MFXButton question;
-  @FXML private MFXButton exitButton;
-  @FXML private MenuItem closeMenuItem;
-  @FXML private MenuItem loadMapMenuItem;
-  @FXML private MenuItem loadFeedbackMenuItem;
-  @FXML private MenuItem logoutMenuItem;
-  @FXML private MFXButton hiddneButton;
-  @FXML private ImageView backgroundImage;
-  @FXML private MFXButton secretButton;
-  @FXML private TextArea AboutText;
+  @FXML protected TableColumn<ServiceRequest, String> requestTypeCol;
+  @FXML protected TableColumn<ServiceRequest, String> requestIDCol;
+  @FXML protected TableColumn<ServiceRequest, String> initEmpCol;
+  @FXML protected TableColumn<ServiceRequest, String> assignedEmpCol;
+  @FXML protected TableColumn<ServiceRequest, String> subDateCol;
+  @FXML protected TableColumn<ServiceRequest, String> assignedDateCol;
+  @FXML protected TableColumn<ServiceRequest, String> urgencyCol;
+  @FXML protected TableColumn<ServiceRequest, String> summaryCol;
+
+  @FXML protected TableView<ServiceRequest> tableView;
+  @FXML protected Label tableText;
 
   Stage stage;
 
   public void initialize() {
-    //    stage = Fapp.getPrimaryStage();
-    //    backgroundImage.fitHeightProperty().bind(stage.heightProperty());
-    //    backgroundImage.fitWidthProperty().bind(stage.widthProperty());
-    // ensure that Home doesn't lose its styling upon leaving the page and returning to it
-    //    if (Fapp.isLightMode()) {
-    //      setToLightMode();
-    //    } else {
-    //      setToDarkMode();
-    //    }
+
+    //need to be the names of the fields
+    requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
+    requestIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+    initEmpCol.setCellValueFactory(new PropertyValueFactory<>("emp"));
+    assignedEmpCol.setCellValueFactory(new PropertyValueFactory<>("assignedEmp"));
+    subDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
+    urgencyCol.setCellValueFactory(new PropertyValueFactory<>("urgency"));
+
+    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+
+    if (!isAdmin) tableText.setText("Assigned Service Requests");
+    else tableText.setText("All Service Requests");
+
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    //FILL TABLES
+    List<ServiceRequest> objects;
+    if (!isAdmin) {}
+    else {
+       objects =
+              session.createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class).getResultList();
+    }
+
+
+
   }
 
   @FXML

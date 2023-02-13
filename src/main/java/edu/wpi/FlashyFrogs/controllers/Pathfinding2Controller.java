@@ -6,12 +6,8 @@ import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import edu.wpi.FlashyFrogs.PathFinding.AStar;
-import edu.wpi.FlashyFrogs.PathFinding.BreadthFirst;
-import edu.wpi.FlashyFrogs.PathFinding.DepthFirst;
 import edu.wpi.FlashyFrogs.PathFinding.PathFinder;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -78,20 +74,11 @@ public class Pathfinding2Controller {
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
-    // sort the locations alphabetically, algorithms already alphabetical
+    // sort the locations alphabetically
     objects.sort(String::compareTo);
-
-    // make the list of algorithms
-    List<String> algorithms = new LinkedList<>();
-    algorithms.add("A*");
-    algorithms.add("Breadth-first");
-    algorithms.add("Depth-first");
-
-    PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
     startingBox.setItems(FXCollections.observableList(objects));
     destinationBox.setItems(FXCollections.observableList(objects));
-    algorithmBox.setItems(FXCollections.observableList(algorithms));
 
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorProperty.addListener(
@@ -148,37 +135,9 @@ public class Pathfinding2Controller {
     // get start and end locations from text fields
     String startPath = startingBox.valueProperty().get();
     String endPath = destinationBox.valueProperty().get();
+    String algorithm = algorithmBox.valueProperty().get();
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
-
-    //get algorithm to use in pathfinding from algorithmBox
-    if (algorithmBox.getValue() != null) {
-      switch (algorithmBox.getValue()) {
-        case "A*":
-          break;
-        case "Breadth-first":
-          pathFinder.setAlgorithm(new BreadthFirst());
-          break;
-        case "Depth-first":
-          pathFinder.setAlgorithm(new DepthFirst());
-          break;
-        default:
-          pathFinder.setAlgorithm(new AStar());
-          break;
-      }
-    }
-
-    /* if (algorithmBox.getValue() != null) {
-      if (algorithmBox.getValue().equals("A*")) {
-        pathFinder.setAlgorithm(new AStar());
-      } else if (algorithmBox.getValue().equals("Breadth-first")) {
-        pathFinder.setAlgorithm(new BreadthFirst());
-      } else if (algorithmBox.getValue().equals("Depth-first")) {
-        pathFinder.setAlgorithm(new DepthFirst());
-      } else {
-        pathFinder.setAlgorithm(new AStar());
-      }
-    } */
 
     // list of nodes that represent the shortest path
     List<Node> nodes = pathFinder.findPath(startPath, endPath);
@@ -189,70 +148,65 @@ public class Pathfinding2Controller {
       //      error.setText("No path found");
       System.out.println("no path found");
     } else {
-      if (algorithmBox == null) {
-        System.out.println("choose an algorithm");
-      } else {
+      // color all circles that are part of the path red
 
-        // color all circles that are part of the path red
+      //      error.setText(""); // take away error message if there was one
 
-        //      error.setText(""); // take away error message if there was one
+      for (Node node : nodes) {
+        // get the circle that represents the node from the mapController
+        Circle circle = mapController.getNodeToCircleMap().get(node);
 
-        for (Node node : nodes) {
-          // get the circle that represents the node from the mapController
-          Circle circle = mapController.getNodeToCircleMap().get(node);
+        circle.setOpacity(0);
 
-          circle.setVisible(false);
+        // set hover behavior for each circle
+        // TODO: change this to click behavior like in the map data editor
+        circle
+            .hoverProperty()
+            .addListener(
+                (observable, oldValue, newValue) -> {
+                  // If we're no longer hovering and the pop over exists, delete it. We will
+                  // either create a new one
+                  // or, keep it deleted
+                  if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
+                    mapPopOver.get().hide(); // Hide it
+                    mapPopOver.set(null); // And delete it (set it to null)
+                  }
 
-          // set hover behavior for each circle
-          // TODO: change this to click behavior like in the map data editor
-          circle
-              .hoverProperty()
-              .addListener(
-                  (observable, oldValue, newValue) -> {
-                    // If we're no longer hovering and the pop over exists, delete it. We will
-                    // either create a new one
-                    // or, keep it deleted
-                    if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
-                      mapPopOver.get().hide(); // Hide it
-                      mapPopOver.set(null); // And delete it (set it to null)
+                  // If we should draw a new pop-up
+                  if (newValue) {
+                    // Get the node info in FXML form
+                    FXMLLoader nodeLocationNamePopUp =
+                        new FXMLLoader(Fapp.class.getResource("views/NodeLocationNamePopUp.fxml"));
+
+                    try {
+                      // Try creating the pop-over
+                      mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
+                    } catch (IOException e) {
+                      throw new RuntimeException(e); // If it fails, throw an exception
                     }
+                    NodeLocationNamePopUpController controller =
+                        nodeLocationNamePopUp.getController();
+                    controller.setNode(node, mapController.getMapSession());
 
-                    // If we should draw a new pop-up
-                    if (newValue) {
-                      // Get the node info in FXML form
-                      FXMLLoader nodeLocationNamePopUp =
-                          new FXMLLoader(
-                              Fapp.class.getResource("views/NodeLocationNamePopUp.fxml"));
+                    mapPopOver.get().show(circle); // Show the pop-over
+                  }
+                });
 
-                      try {
-                        // Try creating the pop-over
-                        mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
-                      } catch (IOException e) {
-                        throw new RuntimeException(e); // If it fails, throw an exception
-                      }
-                      NodeLocationNamePopUpController controller =
-                          nodeLocationNamePopUp.getController();
-                      controller.setNode(node, mapController.getMapSession());
+        // get location name of the node in the path to check against the start and end locations
+        // getCurrentLocation() creates its own session but map already has one running,
+        // so we have to use that one
 
-                      mapPopOver.get().show(circle); // Show the pop-over
-                    }
-                  });
+        LocationName nodeLocation = node.getCurrentLocation(mapController.getMapSession()).get(0);
 
-          // get location name of the node in the path to check against the start and end locations
-          // getCurrentLocation() creates its own session but map already has one running,
-          // so we have to use that one
-
-          LocationName nodeLocation = node.getCurrentLocation(mapController.getMapSession());
-
-          // if the node location is null, don't attempt to check it against the start and end text
-          if (nodeLocation != null
-              && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
-            circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-            circle.setVisible(true);
-          } else {
-            circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-            circle.setVisible(true);
-          }
+        // if the node location is null, don't attempt to check it against the start and end text
+        if (nodeLocation != null
+            && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
+          circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+          circle.setOpacity(1);
+        } else if (nodeLocation != null
+            && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
+          circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+          circle.setOpacity(1);
         }
       }
     }
