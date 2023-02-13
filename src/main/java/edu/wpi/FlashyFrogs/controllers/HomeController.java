@@ -1,30 +1,26 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.List;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.util.Callback;
-import org.controlsfx.control.PopOver;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
-
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 public class HomeController {
   @FXML protected TableColumn<ServiceRequest, String> requestTypeCol;
@@ -32,43 +28,62 @@ public class HomeController {
   @FXML protected TableColumn<ServiceRequest, String> initEmpCol;
   @FXML protected TableColumn<ServiceRequest, String> assignedEmpCol;
   @FXML protected TableColumn<ServiceRequest, String> subDateCol;
-  @FXML protected TableColumn<ServiceRequest, String> assignedDateCol;
   @FXML protected TableColumn<ServiceRequest, String> urgencyCol;
   @FXML protected TableColumn<ServiceRequest, String> summaryCol;
+  @FXML protected MFXButton manageButton;
 
-  @FXML protected TableView<ServiceRequest> tableView;
+  @FXML protected TableView<ServiceRequest> requestTable;
   @FXML protected Label tableText;
 
   Stage stage;
 
   public void initialize() {
 
-    //need to be the names of the fields
+    // need to be the names of the fields
     requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
     requestIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
     initEmpCol.setCellValueFactory(new PropertyValueFactory<>("emp"));
     assignedEmpCol.setCellValueFactory(new PropertyValueFactory<>("assignedEmp"));
     subDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
     urgencyCol.setCellValueFactory(new PropertyValueFactory<>("urgency"));
+    summaryCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    // todo: remove when login is implemented
+    Department dept = new Department("department", "dept");
+    User user = new User("a", "b", "c", User.EmployeeType.MEDICAL, dept);
+    CurrentUserEntity.CURRENT_USER.setCurrentUser(user);
 
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
-    if (!isAdmin) tableText.setText("Assigned Service Requests");
-    else tableText.setText("All Service Requests");
-
-    Session session = CONNECTION.getSessionFactory().openSession();
-
-    //FILL TABLES
-    List<ServiceRequest> objects;
-    if (!isAdmin) {}
-    else {
-       objects =
-              session.createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class).getResultList();
+    if (!isAdmin) {
+      tableText.setText("Assigned Service Requests");
+      manageButton.disarm();
+      manageButton.setOpacity(0);
+    } else {
+      tableText.setText("All Service Requests");
+      manageButton.arm();
+      manageButton.setOpacity(1);
     }
 
-
-
+    // FILL TABLES
+    List<ServiceRequest> objects;
+    if (!isAdmin) {
+      objects =
+          session
+              .createQuery(
+                  "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp", ServiceRequest.class)
+              .setParameter("emp", currentUser)
+              .getResultList();
+    } else {
+      objects =
+          session
+              .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+              .getResultList();
+      requestTable.setItems(FXCollections.observableList(objects));
+    }
   }
 
   @FXML

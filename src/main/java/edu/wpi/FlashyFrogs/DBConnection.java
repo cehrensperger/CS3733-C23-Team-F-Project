@@ -6,8 +6,8 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 /**
- * Singleton class representing the Database connection via Hibernate. Prevents duplicate connections
- * or changing the connection once it is established
+ * Singleton class representing the Database connection via Hibernate. Prevents duplicate
+ * connections or changing the connection once it is established
  */
 public enum DBConnection {
   CONNECTION; // The connection

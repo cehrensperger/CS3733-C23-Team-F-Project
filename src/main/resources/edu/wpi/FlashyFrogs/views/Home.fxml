@@ -143,7 +143,7 @@
          </image>
       </ImageView>
       <SearchableComboBox layoutX="240.0" layoutY="470.0" prefHeight="25.0" prefWidth="89.0" promptText="Filter" />
-      <MFXButton prefHeight="60.0" prefWidth="150.0" text="Manage Announcements" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
+      <MFXButton fx:id="manageButton" prefHeight="60.0" prefWidth="150.0" text="Manage Announcements" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
          </font>

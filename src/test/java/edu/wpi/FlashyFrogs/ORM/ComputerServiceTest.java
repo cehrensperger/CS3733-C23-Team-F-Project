@@ -78,12 +78,10 @@ public class ComputerServiceTest {
     testCS.setServiceType(ComputerService.ServiceType.HARDWARE_REPAIR);
   }
 
-
   /** Tests setter for emp */
   @Test
   public void changeEmpTest() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN,
-            null);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testCS.setEmp(newEmp);
     assertEquals(newEmp, testCS.getEmp());
   }
@@ -99,14 +97,19 @@ public class ComputerServiceTest {
   @Test
   public void setEmpTest() {
     ComputerService test =
-        new ComputerService(null, new Date(), new Date(), ServiceRequest.Urgency.VERY_URGENT,
-                ComputerService.DeviceType.PERSONAL, "a", "b",
-                ComputerService.ServiceType.CONNECTION_ISSUE);
+        new ComputerService(
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "b",
+            ComputerService.ServiceType.CONNECTION_ISSUE);
     test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
-    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null),
-            test.getEmp());
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getEmp());
   }
 
   /** Starts the location name as null and sets it to null */
@@ -114,8 +117,14 @@ public class ComputerServiceTest {
   public void nullToNullEmployeeTest() {
     ComputerService test =
         new ComputerService(
-            null, new Date(), new Date(), ServiceRequest.Urgency.VERY_URGENT, ComputerService.DeviceType.KIOSK,
-                "a", "b", ComputerService.ServiceType.MISC);
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT,
+            ComputerService.DeviceType.KIOSK,
+            "a",
+            "b",
+            ComputerService.ServiceType.MISC);
     test.setEmp(null);
 
     // Assert that the location is correct
@@ -125,8 +134,7 @@ public class ComputerServiceTest {
   /** Test setter for Assigned emp */
   @Test
   public void changeAssignedEmpTest() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN,
-            null);
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
     testCS.setAssignedEmp(newEmp);
     assertEquals(newEmp, testCS.getAssignedEmp());
   }
@@ -152,12 +160,10 @@ public class ComputerServiceTest {
             "a",
             "b",
             ComputerService.ServiceType.MISC);
-    test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL,
-            null));
+    test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
-    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null),
-            test.getAssignedEmp());
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getAssignedEmp());
   }
 
   /** Starts the location name as null and sets it to null */
@@ -239,8 +245,7 @@ public class ComputerServiceTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL,
-            null);
+    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
 
     session.persist(emp);
     // Create the cs request we will use
