@@ -8,12 +8,16 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 public class LoginController {
@@ -34,7 +38,7 @@ public class LoginController {
     if (Fapp.isLightMode()) {
       rootPane
           .getStylesheets()
-          .add("edu/wpi/FlashyFrogs/views/light-mode.css"); // apply Light Mode styling
+          .add("edu/wpi/FlashyFrogs/views/Css.css"); // apply Light Mode styling
       rootPane
           .getStylesheets()
           .add("edu/wpi/FlashyFrogs/views/label-override.css"); // usually the text color in label
@@ -72,6 +76,17 @@ public class LoginController {
         ses.close();
       }
     }
+  }
+
+  public void forgotPass(MouseEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/ForgotPass.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+
+    ForgotPassController forgotPass = newLoad.getController();
+
+    popOver.detach();
+    Node node = (Node) event.getSource();
+    popOver.show(node.getScene().getWindow());
   }
 
   public void handleClose(ActionEvent actionEvent) throws IOException {

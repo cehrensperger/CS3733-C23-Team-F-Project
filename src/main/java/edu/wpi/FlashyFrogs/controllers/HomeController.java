@@ -140,7 +140,7 @@ public class HomeController {
     //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
     //    rootPane
     //        .getStylesheets()
-    //        .add("edu/wpi/FlashyFrogs/views/light-mode.css"); // add the light mode CSS
+    //        .add("edu/wpi/FlashyFrogs/views/Css.css"); // add the light mode CSS
     //    AboutText.setBlendMode(
     //        BlendMode.DARKEN); // change the Blend Mode on the text box describing the hospital,
     // as the

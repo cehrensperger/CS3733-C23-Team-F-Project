@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -84,7 +83,7 @@ public class Fapp extends Application {
     //          .getStylesheets()
     //          .add(
     //              Fapp.class
-    //                  .getResource("views/light-mode.css")
+    //                  .getResource("views/Css.css")
     //                  .toExternalForm()); // apply Light Mode styling
     //    } else { // we are not in Light Mode, so
     //      scene

@@ -373,7 +373,7 @@ public class MapEditorController {
             (Objects.requireNonNull(
                     Fapp.isLightMode()
                         ? // if light mode
-                        Fapp.class.getResource("views/light-mode.css")
+                        Fapp.class.getResource("views/Css.css")
                         : // Set light mode
                         Fapp.class.getResource("views/dark-mode.css"))) // Otherwise, dark
                 .toExternalForm());

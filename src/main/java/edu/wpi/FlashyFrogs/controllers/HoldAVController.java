@@ -1,18 +1,16 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.AudioVisual;
-import edu.wpi.FlashyFrogs.ORM.InternalTransport;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.RollbackException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,8 +23,6 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 public class HoldAVController {
 
@@ -77,12 +73,11 @@ public class HoldAVController {
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
-            session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
     objects.sort(String::compareTo);
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
-
 
     location.setItems(observableList);
     type.getItems()
@@ -101,24 +96,19 @@ public class HoldAVController {
 
       // check
       if (location.getValue().toString().equals("")
-              || type.getValue().toString().equals("")
-              || device.getText().equals("")
-              || model.getText().equals("")
-              || reason.getText().equals("")
-              || date.getValue().toString().equals("")
-              || description.getText().equals("")) {
+          || type.getValue().toString().equals("")
+          || device.getText().equals("")
+          || model.getText().equals("")
+          || reason.getText().equals("")
+          || date.getValue().toString().equals("")
+          || description.getText().equals("")) {
         throw new NullPointerException();
       }
 
-      Date dateNeeded =
-              Date.from(
-                      date
-                              .getValue()
-                              .atStartOfDay(ZoneId.systemDefault())
-                              .toInstant());
+      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       AudioVisual audioVisual = new AudioVisual();
-      //this needs to be updated when database is fixed
+      // this needs to be updated when database is fixed
       /*audioVisual.setLocation(session.find(LocationName.class, location.getValue().toString()));
       audioVisual.setLocationType(type.getValue().toString());
       audioVisual.setDeviceType(device.getText());

@@ -1,19 +1,17 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import jakarta.persistence.RollbackException;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.Connection;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.RollbackException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,8 +24,6 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 public class HoldTransportController {
 
@@ -76,7 +72,6 @@ public class HoldTransportController {
   boolean hDone = false;
   private Connection connection = null;
 
-
   public void initialize() {
     h1.setVisible(false);
     h2.setVisible(false);
@@ -96,19 +91,24 @@ public class HoldTransportController {
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
-            session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
     objects.sort(String::compareTo);
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
-
 
     to.setItems(observableList);
     from.setItems(observableList);
     vision.getItems().addAll("Good", "Poor", "Blind", "Glasses");
     hearing
         .getItems()
-        .addAll("Good", "Poor", "Deaf", "Hearing Aid (Left)", "Hearing Aid (Right)", "Hearing Aid (Both)");
+        .addAll(
+            "Good",
+            "Poor",
+            "Deaf",
+            "Hearing Aid (Left)",
+            "Hearing Aid (Right)",
+            "Hearing Aid (Both)");
     consciousness.getItems().addAll("Good", "Moderate", "Poor");
     condition.getItems().addAll("Healthy", "Moderate", "Poor");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
@@ -130,30 +130,26 @@ public class HoldTransportController {
 
       // check
       if (patient.getText().equals("")
-              || vision.getValue().toString().equals("")
-              || hearing.getValue().toString().equals("")
-              || consciousness.getValue().toString().equals("")
-              || condition.getValue().toString().equals("")
-              || to.getValue().toString().equals("")
-              || from.getValue().toString().equals("")
-              || equipment.getValue().toString().equals("")
-              || date.getValue().toString().equals("")
-              || mode.getValue().toString().equals("")
-              || isolation.getValue().toString().equals("")
-              || personal.getValue().toString().equals("")
-              || reason.getText().equals("")) {
+          || vision.getValue().toString().equals("")
+          || hearing.getValue().toString().equals("")
+          || consciousness.getValue().toString().equals("")
+          || condition.getValue().toString().equals("")
+          || to.getValue().toString().equals("")
+          || from.getValue().toString().equals("")
+          || equipment.getValue().toString().equals("")
+          || date.getValue().toString().equals("")
+          || mode.getValue().toString().equals("")
+          || isolation.getValue().toString().equals("")
+          || personal.getValue().toString().equals("")
+          || reason.getText().equals("")) {
         throw new NullPointerException();
       }
 
       Date dateOfTransport =
-              Date.from(
-                      date
-                              .getValue()
-                              .atStartOfDay(ZoneId.systemDefault())
-                              .toInstant());
+          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       InternalTransport transport = new InternalTransport();
-      //this needs to be updated when database is fixed
+      // this needs to be updated when database is fixed
       /*transport.setPatientID(patient.getText());
       transport.setVision(vision.getValue().toString());
       transport.setHearing(hearing.getValue().toString());

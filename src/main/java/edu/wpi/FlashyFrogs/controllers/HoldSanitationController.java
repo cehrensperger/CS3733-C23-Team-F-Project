@@ -1,18 +1,16 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.RollbackException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,8 +23,6 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 public class HoldSanitationController {
 
@@ -62,7 +58,6 @@ public class HoldSanitationController {
   @FXML private Label errorMessage;
   private Connection connection = null;
 
-
   public void initialize() {
     h1.setVisible(false);
     h2.setVisible(false);
@@ -76,7 +71,7 @@ public class HoldSanitationController {
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
-            session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
     objects.sort(String::compareTo);
 
@@ -103,32 +98,32 @@ public class HoldSanitationController {
       String urgencyEnumString = parts[0] + "_" + parts[1];
 
       if (location.getValue().toString().equals("")
-              || type.getValue().toString().equals("")
-              || sanitationType.getValue().toString().equals("")
-              || date.getValue().toString().equals("")
-              || time.getText().equals("")
-              || isolation.getValue().toString().equals("")
-              || biohazard.getValue().toString().equals("")
-              || description.getText().equals("")) {
+          || type.getValue().toString().equals("")
+          || sanitationType.getValue().toString().equals("")
+          || date.getValue().toString().equals("")
+          || time.getText().equals("")
+          || isolation.getValue().toString().equals("")
+          || biohazard.getValue().toString().equals("")
+          || description.getText().equals("")) {
         throw new NullPointerException();
       }
 
-      //String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
+      // String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
 
       Date dateOfIncident =
-              Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       Sanitation sanitationRequest = new Sanitation();
       /*sanitationRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      sanitationRequest.setLocationType(type.getValue().toString());
-      sanitationRequest.setSanitationType(sanitationType.getValue().toString());
-      sanitationRequest.setDateOfIncident(dateOfIncident);
-      sanitationRequest.setTime(time.getText());
-      sanitationRequest.setUrgency.valueOf(urgencyEnumString);
-      sanitationRequest.setIsolation(isolation.getValue().toString());
-      sanitationRequest.setBiohazard(biohazard.getValue().toString());
-      sanitationRequest.setDescription(description.getText());
-     */
+       sanitationRequest.setLocationType(type.getValue().toString());
+       sanitationRequest.setSanitationType(sanitationType.getValue().toString());
+       sanitationRequest.setDateOfIncident(dateOfIncident);
+       sanitationRequest.setTime(time.getText());
+       sanitationRequest.setUrgency.valueOf(urgencyEnumString);
+       sanitationRequest.setIsolation(isolation.getValue().toString());
+       sanitationRequest.setBiohazard(biohazard.getValue().toString());
+       sanitationRequest.setDescription(description.getText());
+      */
       try {
         session.persist(sanitationRequest);
         transaction.commit();
@@ -148,7 +143,6 @@ public class HoldSanitationController {
       errorMessage.setText("Please fill all fields.");
       session.close();
     }
-
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
