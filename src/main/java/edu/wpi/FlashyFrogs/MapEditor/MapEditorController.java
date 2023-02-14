@@ -170,7 +170,10 @@ public class MapEditorController implements IController {
                       mapController.moveNode(oldNode, newNode); // On move move
                       mapPopOver.getAndSet(null).hide(); // And get the pop-up
                     },
-                    (oldLocation) -> locationTable.getItems().remove(oldLocation),
+                    (oldLocation) -> {
+                      locationTable.getItems().remove(oldLocation);
+                      mapController.removeLocationName(oldLocation);
+                    },
                     (oldLocation, newLocation, locationNode) -> {
                       updateLocationInTable(oldLocation, newLocation); // Update the table
                       // Update the location node
@@ -325,9 +328,7 @@ public class MapEditorController implements IController {
           mapController.addNode(newNode);
           popOver.hide();
         }, // On create new one, process it
-        (oldLocation) -> {
-          mapController.removeLocationName(oldLocation);
-        },
+        (oldLocation) -> mapController.removeLocationName(oldLocation),
         (oldLocation, newLocation, node) -> {
           mapController.updateLocationName(oldLocation, newLocation, node);
         }, // No location processing, no locations
