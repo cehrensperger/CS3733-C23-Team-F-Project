@@ -4,8 +4,6 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -14,7 +12,6 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -158,15 +155,16 @@ public class TransportController extends ServiceRequestController {
       //      transport.setAssignedEmpLastName(last2.getText());
       //      transport.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
       //      transport.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
-      transport.setDateOfBirth(dateOfBirth);
-      transport.setTargetDate(dateOfTransport);
-      transport.setDateOfSubmission(Date.from(Instant.now()));
-      transport.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      transport.setNewLoc(session.find(LocationName.class, newLocationComboBox.getText()));
-      transport.setOldLoc(session.find(LocationName.class, currentLocationComboBox.getText()));
-      transport.setPatientFirstName(firstNameTextfield.getText());
-      transport.setPatientMiddleName(middleNameTextfield.getText());
-      transport.setPatientLastName(lastNameTextfield.getText());
+      //      transport.setDateOfBirth(dateOfBirth);
+      //      transport.setTargetDate(dateOfTransport);
+      //      transport.setDateOfSubmission(Date.from(Instant.now()));
+      //      transport.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
+      //      transport.setNewLoc(session.find(LocationName.class, newLocationComboBox.getText()));
+      //      transport.setOldLoc(session.find(LocationName.class,
+      // currentLocationComboBox.getText()));
+      //      transport.setPatientFirstName(firstNameTextfield.getText());
+      //      transport.setPatientMiddleName(middleNameTextfield.getText());
+      //      transport.setPatientLastName(lastNameTextfield.getText());
       try {
         session.persist(transport);
         transaction.commit();

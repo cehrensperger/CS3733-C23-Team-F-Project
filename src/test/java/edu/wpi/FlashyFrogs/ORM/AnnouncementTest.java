@@ -94,7 +94,7 @@ public class AnnouncementTest {
     testAnnouncement.setCreationDate(newDate);
 
     // Check the fields
-    assertEquals(testDate, newDate);
+    assertEquals(newDate, testAnnouncement.getCreationDate());
     assertEquals(newUser, testAnnouncement.getAuthor());
     assertEquals("asdfasf", testAnnouncement.getAnnouncement());
     assertEquals(Long.toString(testAnnouncement.getId()), testAnnouncement.toString());
@@ -141,7 +141,7 @@ public class AnnouncementTest {
     testAnnouncement.setCreationDate(newDate);
 
     // Check the fields
-    assertEquals(testDate, newDate);
+    assertEquals(newDate, testAnnouncement.getCreationDate());
     assertEquals(newUser, testAnnouncement.getAuthor());
     assertEquals("something new", testAnnouncement.getAnnouncement());
 
@@ -242,15 +242,16 @@ public class AnnouncementTest {
 
     transaction.commit(); // Commit, so we can access later
 
-    long originalId = user.getId(); // Get the Id originally
-
     transaction = session.beginTransaction(); // Open a new transaction
 
     // Try creating the query
-    assertThrows(
-        Exception.class, () -> session.createMutationQuery("DELETE FROM User").executeUpdate());
+    session.createMutationQuery("DELETE FROM User").executeUpdate();
 
-    transaction.rollback(); // Rollback
+    session.flush();
+
+    transaction.commit(); // Rollback
+
+    session.refresh(announcement);
 
     transaction = session.beginTransaction(); // Create a new transaction
     assertNull(session.createQuery("FROM User", User.class).uniqueResult()); // Find the old user

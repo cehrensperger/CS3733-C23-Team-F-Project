@@ -32,7 +32,7 @@ public class Announcement {
           @ForeignKey(
               name = "author_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (author) REFERENCES \"user\"(id) ON DELETE CASCADE"))
+                  "FOREIGN KEY (author) REFERENCES \"user\"(id) ON DELETE SET NULL"))
   private User author; // Author for the message
 
   @Basic
