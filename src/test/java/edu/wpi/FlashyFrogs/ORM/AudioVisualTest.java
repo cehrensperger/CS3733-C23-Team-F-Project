@@ -65,7 +65,9 @@ public class AudioVisualTest {
           new Date(2023 - 1 - 31),
           new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT,
-          "Headphones", "Connors Fault", "Connor destroyed my headphones :(",
+          "Headphones",
+          "Connors Fault",
+          "Connor destroyed my headphones :(",
           new LocationName("Name", LocationName.LocationType.EXIT, "name"));
 
   /** Reset testSan after each test */
@@ -112,11 +114,7 @@ public class AudioVisualTest {
   public void setEmpTest() {
     AudioVisual test =
         new AudioVisual(
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT,
-            "a", "b", "c", null);
+            null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT, "a", "b", "c", null);
     test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -128,11 +126,7 @@ public class AudioVisualTest {
   public void nullToNullEmployeeTest() {
     AudioVisual test =
         new AudioVisual(
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT, "A", "B", "C",
-                null);
+            null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT, "A", "B", "C", null);
     test.setEmp(null);
 
     // Assert that the location is correct
@@ -160,14 +154,7 @@ public class AudioVisualTest {
   public void setAssignedEmpTest() {
     AudioVisual test =
         new AudioVisual(
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT,
-                "L",
-            "a",
-            "b",
-            null);
+            null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT, "L", "a", "b", null);
     test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -234,7 +221,7 @@ public class AudioVisualTest {
   /** Tests setter for patientMiddleName */
   @Test
   public void setDescriptionTest() {
-    testAV.setDescription("this is a description");
+    testAV.setDescription("description");
     assertEquals("description", testAV.getDescription());
   }
 
@@ -262,7 +249,9 @@ public class AudioVisualTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            "a", "b", "c",
+            "a",
+            "b",
+            "c",
             null);
     test.setLocation(new LocationName("a", LocationName.LocationType.INFO, "B"));
 
