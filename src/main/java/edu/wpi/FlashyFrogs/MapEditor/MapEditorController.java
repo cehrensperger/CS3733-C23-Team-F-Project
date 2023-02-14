@@ -42,7 +42,7 @@ public class MapEditorController implements IController {
   @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
-    @FXML private floorSelectorButton;
+    @FXML private MFXButton floorSelectorButton;
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
@@ -428,6 +428,7 @@ public class MapEditorController implements IController {
 
   @FXML
   public void openFloorSelector(ActionEvent event) throws IOException {
+      FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
       PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
       FloorSelectorController floorPopup = newLoad.getController();
