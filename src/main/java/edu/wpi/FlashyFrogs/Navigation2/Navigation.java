@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.Navigation2;
+package edu.wpi.FlashyFrogs.navigation;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import java.io.IOException;

@@ -3,10 +3,11 @@ package edu.wpi.FlashyFrogs.Map;
 import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import lombok.Getter;
@@ -73,10 +74,10 @@ class MapEntity {
     nodeToCircleMap.remove(node); // Delete the node
 
     // Filter to only have the edges to remove using a stream
-    Collection<Edge> edgesToRemove =
+    List<Edge> edgesToRemove =
         edgeToLineMap.keySet().stream()
             .filter((edge) -> (edge.getNode1().equals(node) || edge.getNode2().equals(node)))
-            .toList();
+            .collect(Collectors.toList());
 
     // For each edge to remove
     for (Edge toRemove : edgesToRemove) {

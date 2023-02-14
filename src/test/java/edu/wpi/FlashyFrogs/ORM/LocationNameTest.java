@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.time.Instant;
 import java.util.*;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -39,9 +40,18 @@ public class LocationNameTest {
   @AfterEach
   public void cleanupDatabase() {
     // If the prior test is open
-    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
-    if (priorSession != null && priorSession.isOpen()) {
-      priorSession.close(); // Close it, so we can create new ones
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
+
+        // If the transaction is still active
+        if (priorSession.getTransaction().isActive()) {
+          priorSession.getTransaction().rollback(); // Roll it back
+        }
+
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
     }
 
     // cancel any still-running transactions
@@ -189,16 +199,20 @@ public class LocationNameTest {
     Node thisNode = new Node("n", "g", Node.Floor.L2, 99, 100); // Random node
     LocationName theLocation = new LocationName("a", LocationName.LocationType.SERV, "b");
     LocationName otherLocation = new LocationName("b", LocationName.LocationType.REST, "b");
+    LocationName anotherLocation = new LocationName("another", LocationName.LocationType.HALL, "b");
     Move oldMove = new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(1))); // Old move
     Move newMove =
         new Move(thisNode, otherLocation, Date.from(Instant.ofEpochSecond(2))); // New move
+    Move newestMove = new Move(thisNode, anotherLocation, Date.from(Instant.ofEpochSecond(3)));
 
     Transaction commitTransaction = session.beginTransaction(); // Session to commit these
     session.persist(thisNode);
     session.persist(otherLocation);
     session.persist(theLocation);
+    session.persist(anotherLocation);
     session.persist(oldMove);
     session.persist(newMove);
+    session.persist(newestMove);
     commitTransaction.commit(); // Commit
 
     assertNull(theLocation.getCurrentNode()); // Assert the location is null
@@ -213,22 +227,34 @@ public class LocationNameTest {
   public void nodeRemappedFallbackTest() {
     Node thisNode = new Node("a", "j", Node.Floor.L2, 9, 1); // Random node
     Node badNode = new Node("n", "h", Node.Floor.L1, 6, 59); // Bad node
+
     LocationName theLocation = new LocationName("bb", LocationName.LocationType.SERV, "aa");
+
     LocationName otherLocation = new LocationName("a", LocationName.LocationType.INFO, "aa");
+
+    LocationName anotherLocation =
+        new LocationName("another", LocationName.LocationType.EXIT, "aa");
+
     Move fallbackMove = new Move(badNode, theLocation, Date.from(Instant.ofEpochSecond(10))); // Old
+
     Move oldMove =
         new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(22))); // Old move
+
     Move newMove =
         new Move(thisNode, otherLocation, Date.from(Instant.ofEpochSecond(100))); // New move
+
+    Move newestMove = new Move(thisNode, anotherLocation, Date.from(Instant.ofEpochSecond(200)));
 
     Transaction commitTransaction = session.beginTransaction(); // Session to commit these
     session.persist(thisNode);
     session.persist(otherLocation);
     session.persist(theLocation);
     session.persist(badNode);
+    session.persist(anotherLocation);
     session.persist(fallbackMove);
     session.persist(oldMove);
     session.persist(newMove);
+    session.persist(newestMove);
     commitTransaction.commit(); // Commit
 
     assertNull(theLocation.getCurrentNode()); // Assert the location is null
