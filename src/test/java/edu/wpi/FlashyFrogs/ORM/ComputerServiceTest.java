@@ -2,25 +2,54 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import java.util.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.junit.jupiter.api.*;
 
 // Creates iteration of Sanitation
 public class ComputerServiceTest {
+  /** Sets up the data base before all tests run */
+  @BeforeAll
+  public static void setupDBConnection() {
+    DBConnection.CONNECTION.connect(); // Connect
+  }
+
+  /** Tears down the database, meant to be used after all tests finish */
+  @AfterAll
+  public static void disconnectDBConnection() {
+    DBConnection.CONNECTION.disconnect(); // Disconnect
+  }
+
+  /** Cleans up the user table. Runs after each test */
+  @AfterEach
+  public void teardownTable() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
+    // Use a closure to manage the session to use
+    try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
+      connection.createMutationQuery("DELETE FROM AudioVisual").executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
+      connection.createMutationQuery("DELETE FROM LocationName").executeUpdate();
+      connection.createMutationQuery("DELETE FROM User").executeUpdate();
+      connection.createMutationQuery("DELETE FROM Department").executeUpdate();
+      cleanupTransaction.commit(); // Commit the cleanup
+    }
+  }
+
+  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   ComputerService testCS =
       new ComputerService(
-          "Wilson",
-          "Softeng",
-          "Wong",
-          "Jonathan",
-          "Elias",
-          "Golden",
-          ServiceRequest.EmpDept.CARDIOLOGY,
-          ServiceRequest.EmpDept.MAINTENANCE,
-          new Date(2023 - 01 - 31),
-          new Date(2023 - 02 - 01),
+          emp,
+          new Date(2023 - 1 - 31),
+          new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT,
           ComputerService.DeviceType.LAPTOP,
           "Lenovo Rogue",
@@ -31,16 +60,17 @@ public class ComputerServiceTest {
   @BeforeEach
   @AfterEach
   public void resetTestSanitation() {
-    testCS.setEmpFirstName("Wilson");
-    testCS.setEmpMiddleName("Softeng");
-    testCS.setEmpLastName("Wong");
-    testCS.setAssignedEmpFirstName("Jonathan");
-    testCS.setAssignedEmpMiddleName("Elias");
-    testCS.setAssignedEmpLastName("Golden");
-    testCS.setEmpDept(ServiceRequest.EmpDept.CARDIOLOGY);
-    testCS.setAssignedEmpDept(ServiceRequest.EmpDept.MAINTENANCE);
-    testCS.setDateOfIncident(new Date(2023 - 01 - 31));
-    testCS.setDateOfSubmission(new Date(2023 - 02 - 01));
+    emp.setFirstName("Wilson");
+    emp.setMiddleName("Softeng");
+    emp.setLastName("Wong");
+    assignedEmp.setFirstName("Jonathan");
+    assignedEmp.setMiddleName("Elias");
+    assignedEmp.setLastName("Golden");
+    emp.setEmployeeType(User.EmployeeType.MEDICAL);
+    assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
+    testCS.setAssignedEmp(assignedEmp);
+    testCS.setDateOfIncident(new Date(2023 - 1 - 31));
+    testCS.setDateOfSubmission(new Date(2023 - 2 - 1));
     testCS.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
     testCS.setDeviceType(ComputerService.DeviceType.LAPTOP);
     testCS.setModel("Lenovo Rogue");
@@ -48,72 +78,117 @@ public class ComputerServiceTest {
     testCS.setServiceType(ComputerService.ServiceType.HARDWARE_REPAIR);
   }
 
-  /** Tests setter for empFirstName */
+  /** Tests setter for emp */
   @Test
-  public void setEmpFirstName() {
-    String newEmpFirstName = "Greg";
-    testCS.setEmpFirstName(newEmpFirstName);
-    assertEquals(newEmpFirstName, testCS.getEmpFirstName());
+  public void changeEmpTest() {
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
+    testCS.setEmp(newEmp);
+    assertEquals(newEmp, testCS.getEmp());
   }
 
-  /** Tests setter for empMiddleName */
+  /** Tests that the department clears (something -> null) correctly */
   @Test
-  void setEmpMiddleName() {
-    String newEmpMiddleName = "Grag";
-    testCS.setEmpMiddleName(newEmpMiddleName);
-    assertEquals(newEmpMiddleName, testCS.getEmpMiddleName());
+  public void clearEmpTest() {
+    testCS.setEmp(null);
+    assertNull(testCS.getEmp());
   }
 
-  /** Tests setter for empLastName */
+  /** Starts the location as null, then sets it to be something */
   @Test
-  void setEmpLastName() {
-    String newEmpLastName = "Gregson";
-    testCS.setEmpLastName(newEmpLastName);
-    assertEquals(newEmpLastName, testCS.getEmpLastName());
+  public void setEmpTest() {
+    ComputerService test =
+        new ComputerService(
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "b",
+            ComputerService.ServiceType.CONNECTION_ISSUE);
+    test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+
+    // Assert that the location is correct
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getEmp());
   }
 
-  /** Tests setter for assignedEmpFirstName */
+  /** Starts the location name as null and sets it to null */
   @Test
-  void setAssignedEmpFirstName() {
-    String newAssignedEmpFirstName = "William";
-    testCS.setAssignedEmpFirstName(newAssignedEmpFirstName);
-    assertEquals(newAssignedEmpFirstName, testCS.getAssignedEmpFirstName());
+  public void nullToNullEmployeeTest() {
+    ComputerService test =
+        new ComputerService(
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT,
+            ComputerService.DeviceType.KIOSK,
+            "a",
+            "b",
+            ComputerService.ServiceType.MISC);
+    test.setEmp(null);
+
+    // Assert that the location is correct
+    assertNull(test.getEmp());
   }
 
-  /** Tests setter for assignedEmpMiddleName */
+  /** Test setter for Assigned emp */
   @Test
-  void setAssignedEmpMiddleName() {
-    String newAssignedEmpMiddleName = "Martin";
-    testCS.setAssignedEmpMiddleName(newAssignedEmpMiddleName);
-    assertEquals(newAssignedEmpMiddleName, testCS.getAssignedEmpMiddleName());
+  public void changeAssignedEmpTest() {
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
+    testCS.setAssignedEmp(newEmp);
+    assertEquals(newEmp, testCS.getAssignedEmp());
   }
 
-  /** Tests setter for assignedEmpLastName */
+  /** Tests that the department clears (something -> null) correctly */
   @Test
-  void setAssignedEmpLastName() {
-    String newAssignedEmpLastName = "Joel";
-    testCS.setAssignedEmpLastName(newAssignedEmpLastName);
-    assertEquals(newAssignedEmpLastName, testCS.getAssignedEmpLastName());
+  public void clearAssignedEmpTest() {
+    testCS.setAssignedEmp(emp);
+    testCS.setAssignedEmp(null);
+    assertNull(testCS.getAssignedEmp());
   }
 
-  /** Tests setter for empDept */
+  /** Starts the location as null, then sets it to be something */
   @Test
-  void setEmpDept() {
-    testCS.setEmpDept(ServiceRequest.EmpDept.NURSING);
-    assertEquals(ServiceRequest.EmpDept.NURSING, testCS.getEmpDept());
+  public void setAssignedEmpTest() {
+    ComputerService test =
+        new ComputerService(
+            assignedEmp,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "b",
+            ComputerService.ServiceType.MISC);
+    test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+
+    // Assert that the location is correct
+    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getAssignedEmp());
   }
 
-  /** Tests setter for assignedEmpDept */
+  /** Starts the location name as null and sets it to null */
   @Test
-  void setAssignedEmpDept() {
-    testCS.setAssignedEmpDept(ServiceRequest.EmpDept.RADIOLOGY);
-    assertEquals(ServiceRequest.EmpDept.RADIOLOGY, testCS.getAssignedEmpDept());
+  public void nullToNullAssignedEmployeeTest() {
+    ComputerService test =
+        new ComputerService(
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.KIOSK,
+            "b",
+            "as",
+            ComputerService.ServiceType.SOFTWARE_REPAIR);
+    test.setAssignedEmp(null);
+
+    // Assert that the location is correct
+    assertNull(test.getAssignedEmp());
   }
 
   /** Tests setter for dateOfIncident */
   @Test
   void setDateOfIncident() {
-    Date newDOI = new Date(2002 - 01 - 17);
+    Date newDOI = new Date(2002 - 1 - 17);
     testCS.setDateOfIncident(newDOI);
     assertEquals(newDOI, testCS.getDateOfIncident());
   }
@@ -121,7 +196,7 @@ public class ComputerServiceTest {
   /** Tests setter for dateOfSubmission */
   @Test
   void setDateOfSubmission() {
-    Date newDOS = new Date(2002 - 01 - 17);
+    Date newDOS = new Date(2002 - 1 - 17);
     testCS.setDateOfSubmission(newDOS);
     assertEquals(newDOS, testCS.getDateOfSubmission());
   }
@@ -161,27 +236,75 @@ public class ComputerServiceTest {
     assertEquals(ComputerService.ServiceType.MISC, testCS.getServiceType());
   }
 
-  /** Tests if the equals in Sanitation.java correctly compares two Sanitation objects */
+  /**
+   * Tests the equals and hash code methods for the ComputerService class, ensures that fetched
+   * objects are equal
+   */
   @Test
-  void testEquals() {
-    ComputerService otherCS =
+  public void testEqualsAndHashCode() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+
+    session.persist(emp);
+    // Create the cs request we will use
+    ComputerService cs =
         new ComputerService(
-            "Wilson",
-            "Softeng",
-            "Wong",
-            "Jonathan",
-            "Elias",
-            "Golden",
-            ServiceRequest.EmpDept.CARDIOLOGY,
-            ServiceRequest.EmpDept.MAINTENANCE,
-            new Date(2023 - 01 - 31),
-            new Date(2023 - 02 - 01),
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT,
             ComputerService.DeviceType.LAPTOP,
             "Lenovo Rogue",
             "Bad battery life",
             ComputerService.ServiceType.HARDWARE_REPAIR);
-    assertEquals(testCS, otherCS);
+    session.persist(cs);
+
+    // Assert that the one thing in the database matches this
+    assertEquals(
+        cs, session.createQuery("FROM ComputerService", ComputerService.class).getSingleResult());
+    assertEquals(
+        cs.hashCode(),
+        session
+            .createQuery("FROM ComputerService", ComputerService.class)
+            .getSingleResult()
+            .hashCode());
+
+    // Identical cs request that should have a different ID
+    ComputerService cs2 =
+        new ComputerService(
+            emp,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            ComputerService.DeviceType.LAPTOP,
+            "Lenovo Rogue",
+            "Bad battery life",
+            ComputerService.ServiceType.HARDWARE_REPAIR);
+    session.persist(cs2); // Load acs2 into the DB, set its ID
+
+    assertNotEquals(cs, cs2); // Assert cs and cs2 aren't equal
+    assertNotEquals(cs.hashCode(), cs2.hashCode()); // Assert their has hash codes are different
+
+    // Completely different cs request
+    ComputerService cs3 =
+        new ComputerService(
+            emp,
+            new Date(2024 - 2 - 20),
+            new Date(2024 - 3 - 21),
+            ServiceRequest.Urgency.VERY_URGENT,
+            ComputerService.DeviceType.DESKTOP,
+            "MacBook Pro",
+            "No internet",
+            ComputerService.ServiceType.CONNECTION_ISSUE);
+    session.persist(cs3); // Load cs3 into the DB, set its ID
+
+    assertNotEquals(cs, cs3); // Assert cs and cs3 aren't equal
+    assertNotEquals(cs.hashCode(), cs3.hashCode()); // Assert their hash codes are different
+
+    transaction.rollback();
+    session.close();
   }
 
   /** Checks to see if toString makes a string in the same format specified in Sanitation.java */

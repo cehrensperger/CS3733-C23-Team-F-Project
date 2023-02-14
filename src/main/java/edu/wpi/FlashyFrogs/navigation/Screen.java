@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.navigation;
+package edu.wpi.FlashyFrogs.Navigation;
 
 public enum Screen {
   ROOT("views/RequestsHome.fxml"),

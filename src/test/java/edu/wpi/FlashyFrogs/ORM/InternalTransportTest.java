@@ -2,14 +2,47 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import java.util.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.junit.jupiter.api.*;
 
 public class InternalTransportTest {
+  /** Sets up the data base before all tests run */
+  @BeforeAll
+  public static void setupDBConnection() {
+    DBConnection.CONNECTION.connect(); // Connect
+  }
 
-  // Creates iteration of InternalTransportTest
+  /** Tears down the database, meant to be used after all tests finish */
+  @AfterAll
+  public static void disconnectDBConnection() {
+    DBConnection.CONNECTION.disconnect(); // Disconnect
+  }
+
+  /** Cleans up the user table. Runs after each test */
+  @AfterEach
+  public void teardownTable() {
+    // If the prior test is open
+    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+    if (priorSession != null && priorSession.isOpen()) {
+      priorSession.close(); // Close it, so we can create new ones
+    }
+
+    // Use a closure to manage the session to use
+    try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
+      connection
+          .createMutationQuery("DELETE FROM InternalTransport")
+          .executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
+      cleanupTransaction.commit(); // Commit the cleanup
+    }
+  }
+
+  User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+  User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   InternalTransport testIntTransp =
       new InternalTransport(
           new Date(2002 - 10 - 02),
@@ -18,14 +51,7 @@ public class InternalTransportTest {
           "John",
           "B",
           "Doe",
-          "Wilson",
-          "Softeng",
-          "Wong",
-          "Jonathan",
-          "Elias",
-          "Golden",
-          ServiceRequest.EmpDept.CARDIOLOGY,
-          ServiceRequest.EmpDept.MAINTENANCE,
+          emp,
           new Date(2023 - 01 - 31),
           new Date(2023 - 02 - 01),
           ServiceRequest.Urgency.MODERATELY_URGENT);
@@ -42,14 +68,15 @@ public class InternalTransportTest {
     testIntTransp.setPatientFirstName("John");
     testIntTransp.setPatientMiddleName("B");
     testIntTransp.setPatientLastName("Doe");
-    testIntTransp.setEmpFirstName("Wilson");
-    testIntTransp.setEmpMiddleName("Softeng");
-    testIntTransp.setEmpLastName("Wong");
-    testIntTransp.setAssignedEmpFirstName("Jonathan");
-    testIntTransp.setAssignedEmpMiddleName("Elias");
-    testIntTransp.setAssignedEmpLastName("Golden");
-    testIntTransp.setEmpDept(ServiceRequest.EmpDept.CARDIOLOGY);
-    testIntTransp.setAssignedEmpDept(ServiceRequest.EmpDept.MAINTENANCE);
+    emp.setFirstName("Wilson");
+    emp.setMiddleName("Softeng");
+    emp.setLastName("Wong");
+    assignedEmp.setFirstName("Jonathan");
+    assignedEmp.setMiddleName("Elias");
+    assignedEmp.setLastName("Golden");
+    emp.setEmployeeType(User.EmployeeType.MEDICAL);
+    assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
+    testIntTransp.setAssignedEmp(assignedEmp);
     testIntTransp.setDateOfIncident(new Date(2023 - 01 - 31));
     testIntTransp.setDateOfSubmission(new Date(2023 - 02 - 01));
     testIntTransp.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
@@ -92,66 +119,20 @@ public class InternalTransportTest {
     assertEquals(patientLastName, testIntTransp.getPatientLastName());
   }
 
-  /** Tests setter for empFirstName */
+  /** Tests setter for emp */
   @Test
-  void setEmpFirstName() {
-    String newEmpFirstName = "Greg";
-    testIntTransp.setEmpFirstName(newEmpFirstName);
-    assertEquals(newEmpFirstName, testIntTransp.getEmpFirstName());
+  public void setEmp() {
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
+    testIntTransp.setEmp(newEmp);
+    assertEquals(newEmp, testIntTransp.getEmp());
   }
 
-  /** Tests setter for empMiddleName */
+  /** Test setter for Assigned emp */
   @Test
-  void setEmpMiddleName() {
-    String newEmpMiddleName = "Grag";
-    testIntTransp.setEmpMiddleName(newEmpMiddleName);
-    assertEquals(newEmpMiddleName, testIntTransp.getEmpMiddleName());
-  }
-
-  /** Tests setter for empLastName */
-  @Test
-  void setEmpLastName() {
-    String newEmpLastName = "Gregson";
-    testIntTransp.setEmpLastName(newEmpLastName);
-    assertEquals(newEmpLastName, testIntTransp.getEmpLastName());
-  }
-
-  /** Tests setter for assignedEmpFirstName */
-  @Test
-  void setAssignedEmpFirstName() {
-    String newAssignedEmpFirstName = "William";
-    testIntTransp.setAssignedEmpFirstName(newAssignedEmpFirstName);
-    assertEquals(newAssignedEmpFirstName, testIntTransp.getAssignedEmpFirstName());
-  }
-
-  /** Tests setter for assignedEmpMiddleName */
-  @Test
-  void setAssignedEmpMiddleName() {
-    String newAssignedEmpMiddleName = "Martin";
-    testIntTransp.setAssignedEmpMiddleName(newAssignedEmpMiddleName);
-    assertEquals(newAssignedEmpMiddleName, testIntTransp.getAssignedEmpMiddleName());
-  }
-
-  /** Tests setter for assignedEmpLastName */
-  @Test
-  void setAssignedEmpLastName() {
-    String newAssignedEmpLastName = "Joel";
-    testIntTransp.setAssignedEmpLastName(newAssignedEmpLastName);
-    assertEquals(newAssignedEmpLastName, testIntTransp.getAssignedEmpLastName());
-  }
-
-  /** Tests setter for empDept */
-  @Test
-  void setEmpDept() {
-    testIntTransp.setEmpDept(ServiceRequest.EmpDept.NURSING);
-    assertEquals(ServiceRequest.EmpDept.NURSING, testIntTransp.getEmpDept());
-  }
-
-  /** Tests setter for assignedEmpDept */
-  @Test
-  void setAssignedEmpDept() {
-    testIntTransp.setAssignedEmpDept(ServiceRequest.EmpDept.RADIOLOGY);
-    assertEquals(ServiceRequest.EmpDept.RADIOLOGY, testIntTransp.getAssignedEmpDept());
+  public void setAssignedEmp() {
+    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
+    testIntTransp.setAssignedEmp(newEmp);
+    assertEquals(newEmp, testIntTransp.getAssignedEmp());
   }
 
   /** Tests setter for dateOfIncident */
@@ -181,28 +162,115 @@ public class InternalTransportTest {
    * Tests if the equals in InternalTransportTest.java correctly compares two InternalTransportTest
    * objects
    */
+  //  @Test
+  //  void testEquals() {
+  //    InternalTransport otherIntTransport =
+  //        new InternalTransport(
+  //            new Date(2002 - 10 - 02),
+  //            new LocationName("NewLocLongName", LocationName.LocationType.DEPT,
+  // "NewLocShortName"),
+  //            new LocationName("OldLocLongName", LocationName.LocationType.HALL,
+  // "OldLocShortName"),
+  //            "John",
+  //            "B",
+  //            "Doe",
+  //            "Wilson",
+  //            "Softeng",
+  //            "Wong",
+  //            "Jonathan",
+  //            "Elias",
+  //            "Golden",
+  //            ServiceRequest.EmpDept.CARDIOLOGY,
+  //            ServiceRequest.EmpDept.MAINTENANCE,
+  //            new Date(2023 - 01 - 31),
+  //            new Date(2023 - 02 - 01),
+  //            ServiceRequest.Urgency.MODERATELY_URGENT);
+  //    assertTrue(testIntTransp.equals(otherIntTransport));
+  //  }
+
+  /**
+   * Tests the equals and hash code methods for the InternalTransport class, ensures that fetched
+   * objects are equal
+   */
   @Test
-  void testEquals() {
-    InternalTransport otherIntTransport =
+  public void testEqualsAndHashCode() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+
+    LocationName loc1 =
+        new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName");
+    LocationName loc2 =
+        new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName");
+
+    session.persist(emp);
+    session.persist(loc1);
+    session.persist(loc2);
+    // Create the transport request we will use
+    InternalTransport it =
         new InternalTransport(
             new Date(2002 - 10 - 02),
-            new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
-            new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
+            loc1,
+            loc2,
             "John",
             "B",
             "Doe",
-            "Wilson",
-            "Softeng",
-            "Wong",
-            "Jonathan",
-            "Elias",
-            "Golden",
-            ServiceRequest.EmpDept.CARDIOLOGY,
-            ServiceRequest.EmpDept.MAINTENANCE,
+            emp,
             new Date(2023 - 01 - 31),
             new Date(2023 - 02 - 01),
             ServiceRequest.Urgency.MODERATELY_URGENT);
-    assertTrue(testIntTransp.equals(otherIntTransport));
+    session.persist(it);
+
+    // Assert that the one thing in the database matches this
+    assertEquals(
+        it,
+        session.createQuery("FROM InternalTransport", InternalTransport.class).getSingleResult());
+    assertEquals(
+        it.hashCode(),
+        session
+            .createQuery("FROM InternalTransport", InternalTransport.class)
+            .getSingleResult()
+            .hashCode());
+
+    // Identical transport request that should have a different ID
+    InternalTransport it2 =
+        new InternalTransport(
+            new Date(2002 - 10 - 02),
+            loc1,
+            loc2,
+            "John",
+            "B",
+            "Doe",
+            emp,
+            new Date(2023 - 01 - 31),
+            new Date(2023 - 02 - 01),
+            ServiceRequest.Urgency.MODERATELY_URGENT);
+    session.persist(it2); // Load it2 into the DB, set its ID
+
+    assertNotEquals(it, it2); // Assert it and it2 aren't equal
+    assertNotEquals(it.hashCode(), it2.hashCode()); // Assert their has hash codes are different
+
+    // Completely different transport request
+    InternalTransport it3 =
+        new InternalTransport(
+            new Date(2001 - 11 - 22),
+            loc2,
+            loc1,
+            "Jane",
+            "L",
+            "Smith",
+            emp,
+            new Date(2023 - 01 - 31),
+            new Date(2023 - 02 - 01),
+            ServiceRequest.Urgency.VERY_URGENT);
+    session.persist(it3); // Load it3 into the DB, set its ID
+
+    assertNotEquals(it, it3); // Assert it and it3 aren't equal
+    assertNotEquals(it.hashCode(), it3.hashCode()); // Assert their hash codes are different
+
+    transaction.rollback();
+    session.close();
   }
 
   /**

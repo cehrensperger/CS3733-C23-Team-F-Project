@@ -5,6 +5,7 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Security")
@@ -31,7 +32,8 @@ public class Security extends ServiceRequest {
                       + "ON UPDATE CASCADE ON DELETE SET NULL"),
       nullable = false)
   @NonNull
-  @ManyToOne
+  @ManyToOne(optional = false)
+  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   private LocationName location;
 
   /** Creates a new Security object with a generated id */
@@ -45,14 +47,7 @@ public class Security extends ServiceRequest {
    *
    * @param theIncidentReport the String to use in the incidentReport field
    * @param theLocation the LocationName to use in the location field
-   * @param empFirstName the String to use in the empFirstName field
-   * @param empMiddleName the String to use in the empMiddleName field
-   * @param empLastName the String to use in the empLastName field
-   * @param assignedEmpFirstName the String to use in the assignedEmpFirstName field
-   * @param assignedEmpMiddleName the String to use in the assignedEmpMiddleName field
-   * @param assignedEmpLastName the String to use in the assignedEmpLastName field
-   * @param empDept the EmpDept to use in the empDept field
-   * @param assignedEmpDept the EmpDept to use in the assignedEmpDept field
+   * @param emp the User to use in the emp field
    * @param dateOfIncident the Date to use in the dateOfIncident field
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
@@ -60,28 +55,13 @@ public class Security extends ServiceRequest {
   public Security(
       @NonNull String theIncidentReport,
       @NonNull LocationName theLocation,
-      @NonNull String empFirstName,
-      @NonNull String empMiddleName,
-      @NonNull String empLastName,
-      @NonNull String assignedEmpFirstName,
-      @NonNull String assignedEmpMiddleName,
-      @NonNull String assignedEmpLastName,
-      @NonNull EmpDept empDept,
-      @NonNull EmpDept assignedEmpDept,
+      @NonNull User emp,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency) {
     this.incidentReport = theIncidentReport;
     this.location = theLocation;
-    super.setEmpFirstName(empFirstName);
-    super.setEmpMiddleName(empMiddleName);
-    super.setEmpLastName(empLastName);
-    ;
-    super.setEmpDept(empDept);
-    super.setAssignedEmpFirstName(assignedEmpFirstName);
-    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
-    super.setAssignedEmpLastName(assignedEmpLastName);
-    super.setAssignedEmpDept(assignedEmpDept);
+    super.setEmp(emp);
     super.setDateOfIncident(dateOfIncident);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
