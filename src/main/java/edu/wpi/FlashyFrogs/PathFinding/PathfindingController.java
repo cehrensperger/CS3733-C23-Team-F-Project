@@ -231,38 +231,7 @@ public class PathfindingController {
 
             // set hover behavior for each circle
             // TODO: change this to click behavior like in the map data editor
-            circle
-                .hoverProperty()
-                .addListener(
-                    (observable, oldValue, newValue) -> {
-                      // If we're no longer hovering and the pop-over exists, delete it. We will
-                      // either create a new one
-                      // or, keep it deleted
-                      if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
-                        mapPopOver.get().hide(); // Hide it
-                        mapPopOver.set(null); // And delete it (set it to null)
-                      }
 
-                      // If we should draw a new pop-up
-                      if (newValue) {
-                        // Get the node info in FXML form
-                        FXMLLoader nodeLocationNamePopUp =
-                            new FXMLLoader(
-                                Fapp.class.getResource("Map/NodeLocationNamePopUp.fxml"));
-
-                        try {
-                          // Try creating the pop-over
-                          mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
-                        } catch (IOException e) {
-                          throw new RuntimeException(e); // If it fails, throw an exception
-                        }
-                        NodeLocationNamePopUpController controller =
-                            nodeLocationNamePopUp.getController();
-                        controller.setNode(node, mapController.getMapSession());
-
-                        mapPopOver.get().show(circle); // Show the pop-over
-                      }
-                    });
           }
           // get location name of the node in the path to check against the start and end locations
           // getCurrentLocation() creates its own session but map already has one running,
@@ -278,17 +247,51 @@ public class PathfindingController {
             if (nodeLocation != null
                 && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
               circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-
+              setHoverBehavior(circle, node);
               circle.setOpacity(1);
             } else if (nodeLocation != null
                 && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
               circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+              setHoverBehavior(circle, node);
               circle.setOpacity(1);
             }
           }
         }
       }
     }
+  }
+
+  private void setHoverBehavior(Circle circle, Node node) {
+    circle
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              // If we're no longer hovering and the pop-over exists, delete it. We will
+              // either create a new one
+              // or, keep it deleted
+              if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
+                mapPopOver.get().hide(); // Hide it
+                mapPopOver.set(null); // And delete it (set it to null)
+              }
+
+              // If we should draw a new pop-up
+              if (newValue) {
+                // Get the node info in FXML form
+                FXMLLoader nodeLocationNamePopUp =
+                    new FXMLLoader(Fapp.class.getResource("Map/NodeLocationNamePopUp.fxml"));
+
+                try {
+                  // Try creating the pop-over
+                  mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
+                } catch (IOException e) {
+                  throw new RuntimeException(e); // If it fails, throw an exception
+                }
+                NodeLocationNamePopUpController controller = nodeLocationNamePopUp.getController();
+                controller.setNode(node, mapController.getMapSession());
+
+                mapPopOver.get().show(circle); // Show the pop-over
+              }
+            });
   }
 
   @FXML
