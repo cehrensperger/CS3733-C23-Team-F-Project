@@ -76,6 +76,7 @@ public class LoginController implements IController {
         } else { // Username and Password match database
           Fapp.setScene("views", "Home");
           Fapp.logIn();
+          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
         }
         ses.close();
       } catch (Exception e) {
