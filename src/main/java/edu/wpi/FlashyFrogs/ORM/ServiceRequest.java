@@ -5,6 +5,7 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "ServiceRequest")
@@ -15,14 +16,28 @@ public abstract class ServiceRequest {
   @Column(nullable = false)
   @Getter
   @GeneratedValue
-  private long id;
+  private long id; // UUID for the request
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  private Status status;
+  private Status status; // Status for the request
+
+  @Getter
+  @Setter
+  @JoinColumn(
+      name = "location",
+      foreignKey =
+          @ForeignKey(
+              name = "location_name1_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (location) REFERENCES locationname(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
+  @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+  @ManyToOne
+  private LocationName location; // Location the request is needed for (source)
 
   @Getter
   @Setter
@@ -34,7 +49,7 @@ public abstract class ServiceRequest {
               foreignKeyDefinition =
                   "FOREIGN KEY (empid) REFERENCES " + "\"user\"(id) ON DELETE SET NULL"))
   @ManyToOne
-  private User emp;
+  private User emp; // Initiating employee
 
   @Getter
   @Setter
@@ -46,7 +61,7 @@ public abstract class ServiceRequest {
               foreignKeyDefinition =
                   "FOREIGN KEY (assignedempid) REFERENCES " + "\"user\"(id) ON DELETE SET NULL"))
   @ManyToOne
-  private User assignedEmp;
+  private User assignedEmp; // Assigned employee
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
@@ -54,7 +69,7 @@ public abstract class ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  private Date dateOfIncident;
+  private Date date; // Date, this is dependent on the subtype
 
   @Basic
   @Temporal(TemporalType.DATE)
@@ -62,21 +77,21 @@ public abstract class ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  private Date dateOfSubmission;
+  private Date dateOfSubmission; // Submission date
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  private Urgency urgency;
+  private Urgency urgency; // Urgency
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  private String requestType;
+  private String requestType; // Request type
 
   /** Enumerated type for the possible statuses we can create */
   public enum Status {

@@ -133,7 +133,7 @@ public class SecurityServiceController extends ServiceRequestController {
       //      securityRequest.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
       //
       // securityRequest.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
-      securityRequest.setDateOfIncident(dateOfIncident);
+      securityRequest.setTargetDate(dateOfIncident);
       securityRequest.setDateOfSubmission(Date.from(Instant.now()));
       securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyEnumString));
       securityRequest.setLocation(session.find(LocationName.class, locationEntry.getText()));
