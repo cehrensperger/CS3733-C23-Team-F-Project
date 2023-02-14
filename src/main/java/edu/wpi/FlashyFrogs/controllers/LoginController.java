@@ -81,9 +81,7 @@ public class LoginController {
   public void forgotPass(MouseEvent event) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/ForgotPass.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
-
     ForgotPassController forgotPass = newLoad.getController();
-
     popOver.detach();
     Node node = (Node) event.getSource();
     popOver.show(node.getScene().getWindow());
