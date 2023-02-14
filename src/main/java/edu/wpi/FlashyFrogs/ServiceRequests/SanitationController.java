@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -26,7 +27,6 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
 
 public class SanitationController {
 
@@ -105,13 +105,17 @@ public class SanitationController {
       Date dateOfIncident =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      String sanitationTypeEnumString = sanitationType.getValue().toString().toUpperCase().replace(" ", "_");
+      String sanitationTypeEnumString =
+          sanitationType.getValue().toString().toUpperCase().replace(" ", "_");
       boolean isIsolation = false;
-      if(isolation.getValue().toString().equals("Yes")){isIsolation = true;}
+      if (isolation.getValue().toString().equals("Yes")) {
+        isIsolation = true;
+      }
       String bioTypeEnumString = biohazard.getValue().toString().toUpperCase().replace(" ", "_");
 
       Sanitation sanitationRequest = new Sanitation();
-      sanitationRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
+      sanitationRequest.setLocation(
+          session.find(LocationName.class, location.getValue().toString()));
       sanitationRequest.setType(Sanitation.SanitationType.valueOf(sanitationTypeEnumString));
       sanitationRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
       sanitationRequest.setDate(dateOfIncident);

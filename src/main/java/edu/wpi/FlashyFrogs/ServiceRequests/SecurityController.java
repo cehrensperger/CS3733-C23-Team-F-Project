@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -26,7 +27,6 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
 
 public class SecurityController {
 

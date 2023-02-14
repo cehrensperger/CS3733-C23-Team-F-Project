@@ -71,7 +71,6 @@ public class HomeController implements IController {
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
 
-
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 

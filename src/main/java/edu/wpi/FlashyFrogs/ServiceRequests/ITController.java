@@ -9,7 +9,6 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
@@ -77,7 +76,10 @@ public class ITController {
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
     location.setItems(observableList);
-    service.getItems().addAll("Are you requesting a new device?", "Are you requesting a current device repaired?");
+    service
+        .getItems()
+        .addAll(
+            "Are you requesting a new device?", "Are you requesting a current device repaired?");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
   }
 
@@ -102,13 +104,15 @@ public class ITController {
 
       ComputerService informationTechnology = new ComputerService();
       informationTechnology.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
-      informationTechnology.setLocation(session.find(LocationName.class, location.getValue().toString()));
+      informationTechnology.setLocation(
+          session.find(LocationName.class, location.getValue().toString()));
       informationTechnology.setDate(dateNeeded);
       informationTechnology.setDateOfSubmission(Date.from(Instant.now()));
       informationTechnology.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
       informationTechnology.setDescription(description.getText());
       informationTechnology.setDeviceType(ComputerService.DeviceType.valueOf(deviceTypeEnumString));
-      informationTechnology.setServiceType(ComputerService.ServiceType.valueOf(serviceTypeEnumString));
+      informationTechnology.setServiceType(
+          ComputerService.ServiceType.valueOf(serviceTypeEnumString));
       informationTechnology.setBestContact(number.getText());
 
       try {

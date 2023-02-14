@@ -9,7 +9,6 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
@@ -146,19 +145,23 @@ public class TransportController {
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
       String visionEnumString = vision.getValue().toString().toUpperCase().replace(" ", "_");
       String hearingEnumString = hearing.getValue().toString().toUpperCase().replace(" ", "_");
-      String consciousnessEnumString = consciousness.getValue().toString().toUpperCase().replace(" ", "_");
+      String consciousnessEnumString =
+          consciousness.getValue().toString().toUpperCase().replace(" ", "_");
       String conditionEnumString = condition.getValue().toString().toUpperCase().replace(" ", "_");
       String equipmentEnumString = equipment.getValue().toString().toUpperCase().replace(" ", "_");
       String modeEnumString = mode.getValue().toString().toUpperCase().replace(" ", "_");
       boolean isIsolation = false;
-      if(isolation.getValue().toString().equals("Yes")){isIsolation = true;}
+      if (isolation.getValue().toString().equals("Yes")) {
+        isIsolation = true;
+      }
 
       InternalTransport transport = new InternalTransport();
       // this needs to be updated when database is fixed
       transport.setPatientID(patient.getText());
       transport.setVision(InternalTransport.VisionStatus.valueOf(visionEnumString));
       transport.setHearing(InternalTransport.HearingStatus.valueOf(hearingEnumString));
-      transport.setConsciousness(InternalTransport.ConsciousnessStatus.valueOf(consciousnessEnumString));
+      transport.setConsciousness(
+          InternalTransport.ConsciousnessStatus.valueOf(consciousnessEnumString));
       transport.setHealthStatus(InternalTransport.HealthStatus.valueOf(conditionEnumString));
       transport.setLocation(session.find(LocationName.class, from.getValue().toString()));
       transport.setTargetLocation(session.find(LocationName.class, to.getValue().toString()));
