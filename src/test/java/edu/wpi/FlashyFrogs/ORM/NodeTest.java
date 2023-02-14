@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.time.Instant;
 import java.util.Date;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -37,9 +38,18 @@ public class NodeTest {
   @AfterEach
   public void cleanupDatabase() {
     // If the prior test is open
-    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
-    if (priorSession != null && priorSession.isOpen()) {
-      priorSession.close(); // Close it, so we can create new ones
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
+
+        // If the transaction is still active
+        if (priorSession.getTransaction().isActive()) {
+          priorSession.getTransaction().rollback(); // Roll it back
+        }
+
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
     }
 
     Transaction cleanupTransaction =
@@ -56,7 +66,7 @@ public class NodeTest {
   @BeforeEach
   @AfterEach
   public void resetTestNode() {
-    Node testNode = new Node("Test", "Building", Node.Floor.L2, 0, 1);
+    testNode = new Node("Test", "Building", Node.Floor.L2, 0, 1);
   }
 
   /** Tests if the equals in Node.java correctly compares two Node objects */
@@ -184,23 +194,33 @@ public class NodeTest {
   public void locationRemappedFallbackTest() {
     Node thisNode = new Node("p", "i", Node.Floor.L1, 99, 0); // Random node
     Node otherNode = new Node("h", "i", Node.Floor.L2, 0, 99); // Bad node
-    LocationName theLocation = new LocationName("a", LocationName.LocationType.SERV, "b");
-    LocationName badLocation = new LocationName("b", LocationName.LocationType.INFO, "b");
+    LocationName newestLocation = new LocationName("newest", LocationName.LocationType.SERV, "n");
+    LocationName middleLocation = new LocationName("middle", LocationName.LocationType.INFO, "m");
+    LocationName oldestLocation = new LocationName("oldest", LocationName.LocationType.SERV, "o");
+
     Move fallbackMove =
-        new Move(thisNode, badLocation, Date.from(Instant.ofEpochSecond(10))); // Old
+        new Move(thisNode, oldestLocation, Date.from(Instant.ofEpochSecond(10))); // Old
     Move oldMove =
-        new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(22))); // Old move
+        new Move(thisNode, middleLocation, Date.from(Instant.ofEpochSecond(22))); // middle move
+
+    Move oldMove1 =
+        new Move(thisNode, newestLocation, Date.from(Instant.ofEpochSecond(33))); // new move
+
     Move newMove =
-        new Move(otherNode, theLocation, Date.from(Instant.ofEpochSecond(100))); // New move
+        new Move(otherNode, newestLocation, Date.from(Instant.ofEpochSecond(100))); // New move
+    Move newestMove = new Move(otherNode, middleLocation, Date.from(Instant.ofEpochSecond(200)));
 
     Transaction commitTransaction = session.beginTransaction(); // Session to commit these
     session.persist(thisNode);
     session.persist(otherNode);
-    session.persist(theLocation);
-    session.persist(badLocation);
+    session.persist(oldestLocation);
+    session.persist(middleLocation);
+    session.persist(newestLocation);
     session.persist(fallbackMove);
     session.persist(oldMove);
+    session.persist(oldMove1);
     session.persist(newMove);
+    session.persist(newestMove);
     commitTransaction.commit(); // Commit
 
     assertTrue(thisNode.getCurrentLocation().isEmpty()); // Assert the location is null
@@ -222,12 +242,14 @@ public class NodeTest {
 
     assertEquals(
         location,
-        node.getCurrentLocation().stream().findFirst().get()); // Assert the location is valid
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is valid
     assertEquals(
         location,
         node.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Assert the location is valid
+            .orElseThrow()); // Assert the location is valid
     assertEquals(1, node.getCurrentLocation().size());
   }
 
@@ -258,9 +280,11 @@ public class NodeTest {
         currentLocation,
         node.getCurrentLocation().stream()
             .findFirst()
-            .get()); // Assert the correct location is gotten
+            .orElseThrow()); // Assert the correct location is gotten
 
-    assertEquals(1, node.getCurrentLocation().size());
+    assertEquals(midLocation, node.getCurrentLocation().toArray()[1]);
+
+    assertEquals(2, node.getCurrentLocation().size());
   }
 
   /** Tests that old mappings of the current location -> a node are ignored */
@@ -285,12 +309,12 @@ public class NodeTest {
         location,
         theNode.getCurrentLocation().stream()
             .findFirst()
-            .get()); // Check that the location is correct
+            .orElseThrow()); // Check that the location is correct
     assertEquals(
         location,
         theNode.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Check that the location is correct
+            .orElseThrow()); // Check that the location is correct
     assertEquals(1, theNode.getCurrentLocation().size());
   }
 
@@ -321,12 +345,14 @@ public class NodeTest {
 
     assertEquals(
         currentLocation,
-        node.getCurrentLocation().stream().findFirst().get()); // Assert the location is right
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
     assertEquals(
         currentLocation,
         node.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
     assertEquals(1, node.getCurrentLocation().size());
   }
 
@@ -364,12 +390,12 @@ public class NodeTest {
         location,
         currentNode.getCurrentLocation().stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
     assertEquals(
         location,
         currentNode.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
     assertEquals(1, currentNode.getCurrentLocation().size());
   }
 
@@ -415,13 +441,22 @@ public class NodeTest {
         correctLocation,
         correctNode.getCurrentLocation().stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
+
+    assertEquals(
+        oldLocation, correctNode.getCurrentLocation().toArray()[1]); // Assert the location is right
+
     assertEquals(
         correctLocation,
         correctNode.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Assert the location is right
-    assertEquals(1, correctNode.getCurrentLocation().size());
+            .orElseThrow()); // Assert the location is right
+
+    assertEquals(
+        oldLocation,
+        correctNode.getCurrentLocation(session).toArray()[1]); // Assert the location is right
+
+    assertEquals(2, correctNode.getCurrentLocation().size());
   }
 
   @Test
@@ -445,5 +480,23 @@ public class NodeTest {
     commitTransaction.commit();
 
     assertEquals(2, node.getCurrentLocation(session).size());
+  }
+
+  /** Tests the get enum method for Node and the to string method for that */
+  @Test
+  public void floorEnumTest() {
+    assertEquals(Node.Floor.L1, Node.Floor.getEnum("L1"));
+    assertEquals("L1", Node.Floor.L1.toString());
+    assertEquals(Node.Floor.L2, Node.Floor.getEnum("L2"));
+    assertEquals("L2", Node.Floor.L2.toString());
+    assertEquals(Node.Floor.ONE, Node.Floor.getEnum("1"));
+    assertEquals("1", Node.Floor.ONE.toString());
+    assertEquals(Node.Floor.TWO, Node.Floor.getEnum("2"));
+    assertEquals("2", Node.Floor.TWO.toString());
+    assertEquals(Node.Floor.THREE, Node.Floor.getEnum("3"));
+    assertEquals("3", Node.Floor.THREE.toString());
+
+    assertNull(Node.Floor.getEnum("adsfasdfasf"));
+    assertNull(Node.Floor.getEnum(""));
   }
 }

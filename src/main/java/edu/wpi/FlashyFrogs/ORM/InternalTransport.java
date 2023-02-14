@@ -43,11 +43,9 @@ public class InternalTransport extends ServiceRequest {
               name = "location_name1_fk",
               foreignKeyDefinition =
                   "FOREIGN KEY (oldLoc) REFERENCES "
-                      + "locationname(longName) ON UPDATE CASCADE ON DELETE SET NULL"),
-      nullable = false)
-  @NonNull
+                      + "locationname(longName) ON UPDATE CASCADE ON DELETE SET NULL"))
   @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-  @ManyToOne(optional = false)
+  @ManyToOne
   private LocationName oldLoc;
 
   @Getter
@@ -60,8 +58,7 @@ public class InternalTransport extends ServiceRequest {
               foreignKeyDefinition =
                   "FOREIGN KEY (newLoc) REFERENCES locationname(longName) "
                       + "ON UPDATE CASCADE ON DELETE SET NULL"))
-  @NonNull
-  @ManyToOne(optional = false)
+  @ManyToOne
   @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   private LocationName newLoc;
 
@@ -94,12 +91,12 @@ public class InternalTransport extends ServiceRequest {
    */
   public InternalTransport(
       @NonNull Date theDOB,
-      @NonNull LocationName theNewLoc,
-      @NonNull LocationName theOldLoc,
+      LocationName theNewLoc,
+      LocationName theOldLoc,
       @NonNull String thePatientFirstName,
       @NonNull String thePatientMiddleName,
       @NonNull String thePatientLastName,
-      @NonNull User emp,
+      User emp,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency) {

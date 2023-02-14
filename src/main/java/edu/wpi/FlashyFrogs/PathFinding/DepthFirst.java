@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.hibernate.Session;
 
@@ -18,7 +19,8 @@ public class DepthFirst implements IFindPath {
         start); // mark start node as visited: so the while loop won't bother executing if start
     // node is destination node
     while (!visited.contains(end) && !stack.isEmpty()) {
-      List<Node> neighbors = getNeighbors(stack.peek(), session).stream().toList();
+      List<Node> neighbors =
+          getNeighbors(stack.peek(), session).stream().collect(Collectors.toList());
       boolean noUnvisitedVerticesReachable = true;
       for (Node node : neighbors) {
         if (!visited.contains(node)) { // if the node wasn't already visited
@@ -35,7 +37,7 @@ public class DepthFirst implements IFindPath {
     if (!visited.contains(end)) { // we ended because stack empty, not because we found a path
       return null;
     } else {
-      return stack.stream().toList();
+      return stack.stream().collect(Collectors.toList());
     }
   }
 }
