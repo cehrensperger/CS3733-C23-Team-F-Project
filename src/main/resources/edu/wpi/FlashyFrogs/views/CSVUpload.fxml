@@ -30,6 +30,11 @@
       </MFXButton>
       <VBox layoutX="179.0" layoutY="54.0" prefHeight="146.0" prefWidth="377.0" spacing="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
          <children>
+            <Label fx:id="nodeFileLabel" layoutX="10.0" layoutY="127.0" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 1:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
             <Label fx:id="edgeFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 2:">
                <font>
                   <Font size="18.0" />
@@ -41,16 +46,6 @@
                </font>
             </Label>
             <Label fx:id="moveFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 4:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="nodeFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 1:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="nodeFileLabel1" layoutX="10.0" layoutY="127.0" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 1:">
                <font>
                   <Font size="18.0" />
                </font>

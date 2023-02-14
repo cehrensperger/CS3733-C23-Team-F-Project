@@ -51,30 +51,24 @@ public class CSVUploadController {
       try {
         Scanner fileScanner = new Scanner(selectedFile);
         if (fileScanner.hasNextLine()) {
-          switch (fileScanner.nextLine()) {
-            case "nodeID,xcoord,ycoord,floor,building" -> {
-              fileData.setNodesFile(selectedFile);
-              nodeFileLabel.setText(selectedFile.getName());
-              node = true;
-            }
-            case "startNode,endNode" -> {
-              fileData.setEdgesFile(selectedFile);
-              edgeFileLabel.setText(selectedFile.getName());
-              edge = true;
-            }
-            case "nodeType,longName,shortName" -> {
-              fileData.setLocationsFile(selectedFile);
-              locationFileLabel.setText(selectedFile.getName());
-              location = true;
-            }
-            case "nodeID,longName" -> {
-              fileData.setMovesFile(selectedFile);
-              moveFileLabel.setText(selectedFile.getName());
-              move = true;
-            }
-            default -> errorMessage.setText(
-                "Please select 4 files with the proper column headers.");
-          }
+          String string = fileScanner.nextLine();
+          if (string.contains("nodeID,xcoord,ycoord,floor,building")) {
+            fileData.setNodesFile(selectedFile);
+            nodeFileLabel.setText(selectedFile.getName());
+            node = true;
+          } else if (string.contains("startNode,endNode")) {
+            fileData.setEdgesFile(selectedFile);
+            edgeFileLabel.setText(selectedFile.getName());
+            edge = true;
+          } else if (string.contains("nodeID,longName")) {
+            fileData.setMovesFile(selectedFile);
+            moveFileLabel.setText(selectedFile.getName());
+            move = true;
+          } else if (string.contains("nodeType,longName,shortName")) {
+            fileData.setLocationsFile(selectedFile);
+            locationFileLabel.setText(selectedFile.getName());
+            location = true;
+          } else errorMessage.setText("Please select 4 files with the proper column headers.");
         } else {
           errorMessage.setText("Please select 4 files with the proper column headers.");
         }
