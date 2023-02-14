@@ -45,7 +45,7 @@ public class SanitationTest {
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
-      connection.createMutationQuery("DELETE FROM AudioVisual").executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM Sanitation").executeUpdate(); // Do the drop
       connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
       connection.createMutationQuery("DELETE FROM LocationName").executeUpdate();
       connection.createMutationQuery("DELETE FROM User").executeUpdate();

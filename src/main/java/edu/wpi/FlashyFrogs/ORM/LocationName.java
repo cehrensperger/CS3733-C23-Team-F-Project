@@ -140,8 +140,6 @@ public class LocationName {
     //     is no
     //     result
 
-    //
-
     Node node =
         session
             .createQuery(
@@ -172,36 +170,6 @@ public class LocationName {
                   LocationName.class)
               .setParameter("node", node)
               .getResultList();
-
-      // LocationName first = locations.stream().findFirst().get();
-
-      //      Date firstDate =
-      //          session
-      //              .createQuery(
-      //                  """
-      //                          SELECT m.moveDate
-      //                          FROM Move m WHERE m.location = :l
-      //                          AND moveDate <= current timestamp
-      //                          ORDER BY moveDate DESC LIMIT 1""",
-      //                  Date.class)
-      //              .setParameter("l", first)
-      //              .uniqueResult();
-
-      //      locations.removeIf(
-      //          location -> {
-      //            Date currentDate =
-      //                (Date)
-      //                    session
-      //                        .createQuery(
-      //                            """
-      //                                  SELECT m.moveDate
-      //                                  FROM Move m WHERE m.location = :l
-      //                                  AND moveDate <= current timestamp
-      //                                  ORDER BY moveDate DESC LIMIT 1""")
-      //                        .setParameter("l", location)
-      //                        .uniqueResult();
-      //            return !currentDate.equals(firstDate);
-      //          });
 
       // If that is this
       if (locations.contains(this)) {
