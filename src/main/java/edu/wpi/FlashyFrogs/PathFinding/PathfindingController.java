@@ -42,6 +42,8 @@ public class PathfindingController {
   @FXML private AnchorPane mapPane;
   @FXML private Label floorSelector;
   @FXML private MFXButton mapEditorButton;
+  @FXML private MFXButton floorSelectorButton;
+
   //  @FXML private Label error;
 
   private MapController mapController;
@@ -334,5 +336,15 @@ public class PathfindingController {
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
+
+    floorSelectorButton.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                floorSelectorButton.setDisable(false);
+              }
+            });
   }
 }
