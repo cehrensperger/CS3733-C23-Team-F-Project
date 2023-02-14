@@ -1,7 +1,6 @@
 package edu.wpi.FlashyFrogs.navigation;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.navigation.Screen;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 

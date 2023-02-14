@@ -13,6 +13,7 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -133,6 +134,7 @@ public class PathfindingController implements IController {
   }
 
   public void handleBack() throws IOException {
+
     Fapp.handleBack();
   }
 
@@ -195,7 +197,31 @@ public class PathfindingController implements IController {
       } else {
         // color all circles that are part of the path red
 
-        //      error.setText(""); // take away error message if there was one
+        // color edges first so that circles are drawn on top
+        for (int i = 1; i < nodes.size(); i++) {
+          // find the edge related to each pair of nodes
+          Edge edge =
+              mapController
+                  .getMapSession()
+                  .find(Edge.class, new Edge(nodes.get(i - 1), nodes.get(i)));
+
+          // if it couldn't find the edge, reverse the direction and look again
+          if (edge == null) {
+            edge =
+                mapController
+                    .getMapSession()
+                    .find(Edge.class, new Edge(nodes.get(i), nodes.get(i - 1)));
+          }
+
+          // get the line on the map associated with the edge
+          Line line = mapController.getEdgeToLineMap().get(edge);
+          // if it is null, it is probably on another floor
+          if (line != null) {
+            line.setOpacity(1);
+            line.setStroke(Paint.valueOf(Color.BLUE.toString()));
+            line.setStrokeWidth(5);
+          }
+        }
 
         for (Node node : nodes) {
           // get the circle that represents the node from the mapController
@@ -207,13 +233,15 @@ public class PathfindingController implements IController {
             // set hover behavior for each circle
             // TODO: change this to click behavior like in the map data editor
 
-            // get location name of the node in the path to check against the start and end
-            // locations
-            // getCurrentLocation() creates its own session but map already has one running,
-            // so we have to use that one
+          }
+          // get location name of the node in the path to check against the start and end locations
+          // getCurrentLocation() creates its own session but map already has one running,
+          // so we have to use that one
 
-            LocationName nodeLocation =
-                node.getCurrentLocation(mapController.getMapSession()).get(0);
+          Collection<LocationName> locationNames =
+              node.getCurrentLocation(mapController.getMapSession());
+          for (int i = 0; i < locationNames.size(); i++) {
+            LocationName nodeLocation = ((List<LocationName>) locationNames).get(i);
 
             // if the node location is null, don't attempt to check it against the start and end
             // text
