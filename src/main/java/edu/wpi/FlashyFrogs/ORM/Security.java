@@ -20,19 +20,12 @@ public class Security extends ServiceRequest {
   @Setter
   private String incidentReport;
 
+  @Basic
+  @Column(nullable = false)
+  @NonNull
   @Getter
   @Setter
-  @JoinColumn(
-      name = "location",
-      foreignKey =
-          @ForeignKey(
-              name = "location_name_fk",
-              foreignKeyDefinition =
-                  "FOREIGN KEY (location) REFERENCES locationname(longname) "
-                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
-  @ManyToOne
-  @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-  private LocationName location;
+  private ThreatType threatType;
 
   /** Creates a new Security object with a generated id */
   public Security() {
@@ -46,7 +39,7 @@ public class Security extends ServiceRequest {
    * @param theIncidentReport the String to use in the incidentReport field
    * @param theLocation the LocationName to use in the location field
    * @param emp the User to use in the emp field
-   * @param dateOfIncident the Date to use in the dateOfIncident field
+   * @param datePreference the Date to use in the dateOfIncident field
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
    */
@@ -54,16 +47,42 @@ public class Security extends ServiceRequest {
       @NonNull String theIncidentReport,
       LocationName theLocation,
       User emp,
-      @NonNull Date dateOfIncident,
+      @NonNull Date datePreference,
       @NonNull Date dateOfSubmission,
-      @NonNull Urgency urgency) {
+      @NonNull Urgency urgency,
+      @NonNull ThreatType threatType) {
     this.incidentReport = theIncidentReport;
-    this.location = theLocation;
+    super.setLocation(theLocation);
     super.setEmp(emp);
-    super.setTargetDate(dateOfIncident);
+    super.setDate(datePreference);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);
     super.setRequestType("Security");
+    this.threatType = threatType;
+  }
+
+  /** Enumerated type for the possible types we can create */
+  public enum ThreatType {
+    NONE("No Threat"),
+    INTRUDER("Intruder"),
+    WEAPON("Weapon"),
+    PATIENT("Patient");
+
+    @NonNull public final String ThreatType;
+
+    /**
+     * Creates a new status with the given String backing
+     *
+     * @param threatType the type to create. Must not be null
+     */
+    ThreatType(@NonNull String threatType) {
+      ThreatType = threatType;
+    }
+
+    @Override
+    public String toString() {
+      return this.ThreatType;
+    }
   }
 }

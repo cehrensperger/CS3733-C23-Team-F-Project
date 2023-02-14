@@ -2,7 +2,6 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
 import java.util.Date;
-
 import lombok.NonNull;
 
 @Entity
