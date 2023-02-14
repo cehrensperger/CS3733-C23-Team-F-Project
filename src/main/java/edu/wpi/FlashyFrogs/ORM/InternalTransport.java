@@ -60,7 +60,7 @@ public class InternalTransport extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  private HealthStatus status; // Health status of the patient
+  private HealthStatus healthStatus; // Health status of the patient
 
   @Basic
   @Column(nullable = false)
@@ -129,7 +129,7 @@ public class InternalTransport extends ServiceRequest {
     this.patientID = patientID;
     this.vision = vision;
     this.consciousness = consciousness;
-    this.status = condition;
+    this.healthStatus = condition;
     this.targetLocation = endLocation;
     this.equipment = equipment;
     this.mode = modeOfTransport;
