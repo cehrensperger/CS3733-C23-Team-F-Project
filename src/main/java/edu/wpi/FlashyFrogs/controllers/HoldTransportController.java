@@ -48,7 +48,7 @@ public class HoldTransportController {
   @FXML TextField time;
   @FXML SearchableComboBox mode;
   @FXML SearchableComboBox isolation;
-  @FXML SearchableComboBox personal;
+  @FXML TextField personal;
   @FXML TextField reason;
   @FXML MFXButton clear;
 
@@ -115,9 +115,6 @@ public class HoldTransportController {
     equipment.getItems().addAll("None", "Cane", "Walker", "Wheel Chair", "Bed");
     mode.getItems().addAll("Self", "With Help", "Equipment Needed");
     isolation.getItems().addAll("Yes", "No");
-    personal
-        .getItems()
-        .addAll("None", "Glasses", "Walker", "Cane", "Hearing Aids", "Dentures", "Other");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -140,7 +137,7 @@ public class HoldTransportController {
           || date.getValue().toString().equals("")
           || mode.getValue().toString().equals("")
           || isolation.getValue().toString().equals("")
-          || personal.getValue().toString().equals("")
+          || personal.getText().equals("")
           || reason.getText().equals("")) {
         throw new NullPointerException();
       }
@@ -162,7 +159,7 @@ public class HoldTransportController {
       transport.setTime(timeString);
       transport.setMode(mode.getValue().toString());
       transport.setIsolation(isolation.getValue().toString());
-      transport.setPersonal(personal.getValue().toString());
+      transport.setPersonal(personal.getText());
       transport.setReason(reason.getText());*/
       try {
         session.persist(transport);
@@ -199,7 +196,7 @@ public class HoldTransportController {
     time.setText("");
     mode.valueProperty().set(null);
     isolation.valueProperty().set(null);
-    personal.valueProperty().set(null);
+    personal.setText("");
     reason.setText("");
   }
 

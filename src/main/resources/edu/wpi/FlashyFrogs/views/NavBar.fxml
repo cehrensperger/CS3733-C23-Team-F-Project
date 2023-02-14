@@ -18,11 +18,11 @@
                <children>
                   <HBox alignment="CENTER">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#handleHomeButton" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Home" textFill="WHITE" />
-                        <Line endX="100.0" startX="100.0" startY="14.8928861618042" stroke="#34587a" />
-                        <Button mnemonicParsing="false" onAction="#handleServiceRequestsButton" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Service Requests" textFill="WHITE" />
-                        <Line endX="100.0" startX="100.0" startY="14.8928861618042" stroke="#34587a" />
-                        <Button mnemonicParsing="false" onAction="#handleHelpButton" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Help" textFill="WHITE">
+                        <Button fx:id="homeButton" mnemonicParsing="false" onAction="#handleHomeButton" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Home" textFill="WHITE" />
+                        <Line fx:id="line1" endX="100.0" startX="100.0" startY="14.8928861618042" stroke="#34587a" />
+                        <Button fx:id="srButton" mnemonicParsing="false" onAction="#handleServiceRequestsButton" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Service Requests" textFill="WHITE" />
+                        <Line fx:id="line2" endX="100.0" startX="100.0" startY="14.8928861618042" stroke="#34587a" />
+                        <Button fx:id="helpButton" mnemonicParsing="false" onAction="#handleHelpButton" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Help" textFill="WHITE">
                            <effect>
                               <Blend />
                            </effect>
@@ -32,11 +32,11 @@
                   <HBox alignment="CENTER_RIGHT" />
                </children>
             </HBox>
-            <MenuButton mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-text-fill: #FFF;" text="Welcome, Wilson Wong" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+            <MenuButton fx:id="menu" mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-text-fill: #FFF;" text="Welcome, Wilson Wong" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
               <items>
                 <MenuItem mnemonicParsing="false" text="User Preferences                 " />
                 <MenuItem mnemonicParsing="false" text="Sign Out" />
-                  <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />
+                  <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />
               </items>
             </MenuButton>
             <AnchorPane fx:id="SVGPane" minHeight="0.0" minWidth="0.0" prefHeight="18.0" prefWidth="165.0">

@@ -44,7 +44,8 @@ public class Fapp extends Application {
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
 
     final BorderPane root = loader.load();
-    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("Accounts/Login.fxml"));
+    final FXMLLoader homePage =
+        new FXMLLoader(Fapp.class.getResource("Accounts/LoginAdministrator.fxml"));
     controller = ((NavBarController) loader.getController());
     AnchorPane mainAnchorPane = controller.getAnchorPane();
     AnchorPane innerAnchorPane = homePage.load();
@@ -60,6 +61,27 @@ public class Fapp extends Application {
     primaryStage.setScene(scene);
     primaryStage.setFullScreen(true);
     primaryStage.show();
+
+    // apply CSS styling to pages whenever we switch to them
+    rootPane
+        .getStylesheets()
+        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off
+    // all
+    //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
+    scene
+        .getStylesheets()
+        .add(
+            Fapp.class
+                .getResource("views/style2.css")
+                .toExternalForm()); // apply Light Mode styling
+    //    } else { // we are not in Light Mode, so
+    //      scene
+    //          .getStylesheets()
+    //          .add(
+    //              Fapp.class
+    //                  .getResource("views/dark-mode.css")
+    //                  .toExternalForm()); // apply Dark Mode styling
+    //    }
 
     // Navigation.navigate(Screen.HOME);
   }
@@ -87,6 +109,33 @@ public class Fapp extends Application {
     AnchorPane.setBottomAnchor(root, 0.0);
     AnchorPane.setLeftAnchor(root, 0.0);
     AnchorPane.setRightAnchor(root, 0.0);
+
+    // Scene scene = new Scene(root);
+    // apply CSS styling to pages whenever we switch to them
+    //    rootPane
+    //        .getStylesheets()
+    //        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off
+    // all
+    //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
+    //    if (isLightMode()) {
+    //      scene
+    //          .getStylesheets()
+    //          .add(
+    //              Fapp.class
+    //                  .getResource("views/light-mode.css")
+    //                  .toExternalForm()); // apply Light Mode styling
+    //    } else { // we are not in Light Mode, so
+    //      scene
+    //          .getStylesheets()
+    //          .add(
+    //              Fapp.class
+    //                  .getResource("views/dark-mode.css")
+    //                  .toExternalForm()); // apply Dark Mode styling
+    //    }
+    //    // Scene scene = new Scene(root, 600, 400);
+    //    primaryStage.setScene(scene);
+    //    primaryStage.setMaximized(true);
+    //    primaryStage.show();
   }
 
   public static void handleBack() throws IOException {
@@ -98,6 +147,10 @@ public class Fapp extends Application {
   public static void resetStack() {
     prevPage.clear();
     prevPage.push("views,Home");
+  }
+
+  public static void logIn() {
+    controller.logIn();
   }
 
   @Override

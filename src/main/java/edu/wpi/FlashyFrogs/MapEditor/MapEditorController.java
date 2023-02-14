@@ -42,6 +42,7 @@ public class MapEditorController implements IController {
   @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
+  @FXML private MFXButton floorSelectorButton;
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
@@ -437,6 +438,16 @@ public class MapEditorController implements IController {
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
+
+    floorSelectorButton.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                floorSelectorButton.setDisable(false);
+              }
+            });
   }
 
   public void onClose() {
