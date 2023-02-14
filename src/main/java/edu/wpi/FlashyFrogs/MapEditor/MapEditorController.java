@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
@@ -36,7 +37,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
-public class MapEditorController {
+public class MapEditorController implements IController {
   public AnchorPane mapPane;
   @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
@@ -352,18 +353,24 @@ public class MapEditorController {
                 Map.entry(
                     new MFXButton("Discard Changes and Exit"),
                     (event) -> {
-                      mapController.exit(); // Exit the controller
                       stageBuilder.get().close(); // Close the pop-pu
-                      Fapp.setScene("views", "home"); // Go back
+                      try {
+                        Fapp.handleBack(); // go home
+                      } catch (IOException e) {
+                        throw new RuntimeException(e);
+                      } // Go back
                     }),
                 // Action to save
                 Map.entry(
                     new MFXButton("Save Changes and Exit"),
                     (event) -> {
                       handleSave(null); // handle the save
-                      mapController.exit(); // exit
                       stageBuilder.get().close(); // Close the pop-up
-                      Fapp.setScene("views", "home"); // go home
+                      try {
+                        Fapp.handleBack(); // go home
+                      } catch (IOException e) {
+                        throw new RuntimeException(e);
+                      }
                     }))
             .get();
     dialog.getStylesheets().clear(); // Clear the style
@@ -430,5 +437,9 @@ public class MapEditorController {
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
+  }
+
+  public void onClose() {
+    mapController.exit();
   }
 }

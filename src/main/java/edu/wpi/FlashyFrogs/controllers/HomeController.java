@@ -24,7 +24,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
-public class HomeController {
+public class HomeController implements IController {
   @FXML protected TableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected TableColumn<ServiceRequest, String> requestIDCol;
   @FXML protected TableColumn<ServiceRequest, String> initEmpCol;
@@ -48,6 +48,8 @@ public class HomeController {
   ObjectProperty<String> filterProperty = new SimpleObjectProperty<>("");
 
   public void initialize() {
+    Fapp.resetStack();
+
     List<String> filters = new ArrayList<String>();
     filters.add("AudioVisual");
     filters.add("ComputerService");
@@ -140,6 +142,7 @@ public class HomeController {
                         .getResultList()));
           }
         });
+    session.close();
   }
 
   @FXML
@@ -305,4 +308,6 @@ public class HomeController {
   }
 
   public void manageAnnouncements(ActionEvent event) throws IOException {}
+
+  public void onClose() {}
 }

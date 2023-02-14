@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class NewUserController {
+public class NewUserController implements IController {
 
   private PopOver popOver;
   private LoginAdministratorController loginAdministratorController;
@@ -65,4 +66,6 @@ public class NewUserController {
       }
     }
   }
+
+  public void onClose() {}
 }

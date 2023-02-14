@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -18,7 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
-public class LoginAdministratorController {
+public class LoginAdministratorController implements IController {
 
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
@@ -67,4 +68,6 @@ public class LoginAdministratorController {
       throw e;
     }
   }
+
+  public void onClose() {}
 }
