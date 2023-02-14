@@ -1,9 +1,8 @@
 package edu.wpi.FlashyFrogs.navigation;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import java.io.IOException;
-
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 
 @GeneratedExclusion
