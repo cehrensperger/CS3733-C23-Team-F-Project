@@ -3,7 +3,7 @@ package edu.wpi.FlashyFrogs.ServiceRequests;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.AudioVisual;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -28,6 +28,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@GeneratedExclusion
 public class AudioVisualController extends ServiceRequestController {
 
   @FXML private MFXTextField patientFirst;
@@ -56,13 +57,13 @@ public class AudioVisualController extends ServiceRequestController {
       assignedEmpDeptEntry.getItems().add(depts[i].toString().replace("_", " ").toLowerCase());
     }
 
-    AudioVisual.AccommodationType[] accommodations = AudioVisual.AccommodationType.values();
-    System.out.println(accommodations.length);
-    for (int i = 0; i < accommodations.length; i++) {
-      accommodationEntry
-          .getItems()
-          .add(accommodations[i].toString().replace("_", " ").toLowerCase());
-    }
+    //    AudioVisual.AccommodationType[] accommodations = AudioVisual.AccommodationType.values();
+    //    System.out.println(accommodations.length);
+    //    for (int i = 0; i < accommodations.length; i++) {
+    //      accommodationEntry
+    //          .getItems()
+    //          .add(accommodations[i].toString().replace("_", " ").toLowerCase());
+    //    }
 
     ServiceRequest.Urgency[] urgencies = ServiceRequest.Urgency.values();
     System.out.println(urgencies.length);

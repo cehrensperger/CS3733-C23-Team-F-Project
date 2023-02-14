@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.ServiceRequests;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -24,6 +25,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@GeneratedExclusion
 public class SanitationServiceController extends ServiceRequestController {
   @FXML MFXButton clearButton; // fx:ID of the button in the ExampleFXML
   @FXML MFXButton submitButton;

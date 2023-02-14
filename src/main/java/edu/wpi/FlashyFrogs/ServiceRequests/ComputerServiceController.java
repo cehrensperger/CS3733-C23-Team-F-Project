@@ -4,6 +4,7 @@ package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.ComputerService;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
@@ -22,6 +23,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@GeneratedExclusion
 public class ComputerServiceController extends ServiceRequestController {
 
   @FXML private MFXComboBox<String> deviceType;

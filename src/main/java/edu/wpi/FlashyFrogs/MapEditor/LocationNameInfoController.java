@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -16,6 +17,7 @@ import lombok.NonNull;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class LocationNameInfoController {
   @FXML private Button saveButton;
   @FXML private Button deleteButton;

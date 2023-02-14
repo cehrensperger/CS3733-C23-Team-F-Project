@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.Map;
 
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
@@ -23,6 +24,7 @@ import org.hibernate.Session;
  * want to use this. Listens for additions/removals of nodes/edges/locations in order to
  * automatically display changes to the map
  */
+@GeneratedExclusion
 public class MapController {
   @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
@@ -37,6 +39,15 @@ public class MapController {
    */
   public void setNodeCreation(BiConsumer<Node, Circle> function) {
     mapEntity.setNodeCreation(function);
+  }
+
+  /**
+   * Set the edge creation function
+   *
+   * @param function the function to set the edge creation to. May be null
+   */
+  public void setEdgeCreation(BiConsumer<Edge, Line> function) {
+    mapEntity.setEdgeCreation(function);
   }
 
   /**
