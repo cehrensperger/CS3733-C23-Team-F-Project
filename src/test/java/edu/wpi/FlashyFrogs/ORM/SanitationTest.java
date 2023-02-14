@@ -317,6 +317,32 @@ public class SanitationTest {
     assertEquals(sanToString, testSan.getClass().getSimpleName() + "_" + testSan.getId());
   }
 
+  /** Checks to see if toString in Biohazard returns correct value */
+  @Test
+  void testBiohazardToString() {
+    Sanitation.BiohazardLevel bsl1 = Sanitation.BiohazardLevel.BSL1;
+    Sanitation.BiohazardLevel bsl2 = Sanitation.BiohazardLevel.BSL2;
+    Sanitation.BiohazardLevel bsl3 = Sanitation.BiohazardLevel.BSL3;
+    Sanitation.BiohazardLevel bsl4 = Sanitation.BiohazardLevel.BSL4;
+
+    assertEquals("BSL-1", bsl1.toString());
+    assertEquals("BSL-2", bsl2.toString());
+    assertEquals("BSL-3", bsl3.toString());
+    assertEquals("BSL-4", bsl4.toString());
+  }
+
+  /** Checks to see if toString in SanitationType returns correct value */
+  @Test
+  void testSanitationTypeToString() {
+    Sanitation.SanitationType mopping = Sanitation.SanitationType.MOPPING;
+    Sanitation.SanitationType sweeping = Sanitation.SanitationType.SWEEPING;
+    Sanitation.SanitationType vacuuming = Sanitation.SanitationType.VACUUMING;
+
+    assertEquals("mopping", mopping.toString());
+    assertEquals("sweeping", sweeping.toString());
+    assertEquals("vacuuming", vacuuming.toString());
+  }
+
   /**
    * Tests the equals and hash code methods for the AudioVisual class, ensures that fetched objects
    * are equal
