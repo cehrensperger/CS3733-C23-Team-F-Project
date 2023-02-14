@@ -25,7 +25,7 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class HoldTransportController implements IController {
+public class HoldTransportController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -48,7 +48,7 @@ public class HoldTransportController implements IController {
   @FXML TextField time;
   @FXML SearchableComboBox mode;
   @FXML SearchableComboBox isolation;
-  @FXML SearchableComboBox personal;
+  @FXML TextField personal;
   @FXML TextField reason;
   @FXML MFXButton clear;
 
@@ -115,9 +115,6 @@ public class HoldTransportController implements IController {
     equipment.getItems().addAll("None", "Cane", "Walker", "Wheel Chair", "Bed");
     mode.getItems().addAll("Self", "With Help", "Equipment Needed");
     isolation.getItems().addAll("Yes", "No");
-    personal
-        .getItems()
-        .addAll("None", "Glasses", "Walker", "Cane", "Hearing Aids", "Dentures", "Other");
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -140,7 +137,7 @@ public class HoldTransportController implements IController {
           || date.getValue().toString().equals("")
           || mode.getValue().toString().equals("")
           || isolation.getValue().toString().equals("")
-          || personal.getValue().toString().equals("")
+          || personal.getText().equals("")
           || reason.getText().equals("")) {
         throw new NullPointerException();
       }
@@ -162,7 +159,7 @@ public class HoldTransportController implements IController {
       transport.setTime(timeString);
       transport.setMode(mode.getValue().toString());
       transport.setIsolation(isolation.getValue().toString());
-      transport.setPersonal(personal.getValue().toString());
+      transport.setPersonal(personal.getText());
       transport.setReason(reason.getText());*/
       try {
         session.persist(transport);
@@ -199,12 +196,12 @@ public class HoldTransportController implements IController {
     time.setText("");
     mode.valueProperty().set(null);
     isolation.valueProperty().set(null);
-    personal.valueProperty().set(null);
+    personal.setText("");
     reason.setText("");
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AudioVisualService");
+    Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
@@ -216,11 +213,11 @@ public class HoldTransportController implements IController {
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SanitationService");
+    Fapp.setScene("ServiceRequests", "SanitationService");
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SecurityService");
+    Fapp.setScene("ServiceRequests", "SecurityService");
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
@@ -228,7 +225,7 @@ public class HoldTransportController implements IController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
+    Fapp.setScene("views", "Home");
   }
 
   public void help() {
@@ -269,6 +266,4 @@ public class HoldTransportController implements IController {
       hDone = false;
     }
   }
-
-  public void onClose() {}
 }

@@ -102,7 +102,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <MFXButton onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
+                        <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
                      </children>
                   </StackPane>
                </children>

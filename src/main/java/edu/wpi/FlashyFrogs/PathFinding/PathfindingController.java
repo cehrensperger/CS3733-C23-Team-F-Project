@@ -44,6 +44,8 @@ public class PathfindingController implements IController {
   @FXML private AnchorPane mapPane;
   @FXML private Label floorSelector;
   @FXML private MFXButton mapEditorButton;
+  @FXML private MFXButton floorSelectorButton;
+
   //  @FXML private Label error;
 
   private MapController mapController;
@@ -134,7 +136,6 @@ public class PathfindingController implements IController {
   }
 
   public void handleBack() throws IOException {
-
     Fapp.handleBack();
   }
 
@@ -320,7 +321,6 @@ public class PathfindingController implements IController {
 
   @FXML
   public void openMapEditor() {
-    mapController.exit();
     Fapp.setScene("MapEditor", "MapEditorView");
   }
 
@@ -362,6 +362,7 @@ public class PathfindingController implements IController {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
+    popOver.setTitle("");
     FloorSelectorController floorPopup = newLoad.getController();
     floorPopup.setFloorProperty(this.floorProperty);
 
@@ -369,6 +370,16 @@ public class PathfindingController implements IController {
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
+
+    floorSelectorButton.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                floorSelectorButton.setDisable(false);
+              }
+            });
   }
 
   public void onClose() {
