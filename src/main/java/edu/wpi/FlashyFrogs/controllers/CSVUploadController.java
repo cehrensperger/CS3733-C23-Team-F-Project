@@ -4,6 +4,7 @@ import edu.wpi.FlashyFrogs.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,32 +42,30 @@ public class CSVUploadController {
   }
 
   public void handleChooseFiles() {
-    for (int i = 0; i < 4; i++) {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Open Resource File");
-      fileChooser
-          .getExtensionFilters()
-          .addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-      File selectedFile = fileChooser.showOpenDialog(popOver);
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open Resource File");
+    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+    List<File> selectedFiles = fileChooser.showOpenMultipleDialog(popOver);
+    for (int i = 0; i < selectedFiles.size(); i++) {
       try {
-        Scanner fileScanner = new Scanner(selectedFile);
+        Scanner fileScanner = new Scanner(selectedFiles.get(i));
         if (fileScanner.hasNextLine()) {
           String string = fileScanner.nextLine();
           if (string.contains("nodeID,xcoord,ycoord,floor,building")) {
-            fileData.setNodesFile(selectedFile);
-            nodeFileLabel.setText(selectedFile.getName());
+            fileData.setNodesFile(selectedFiles.get(i));
+            nodeFileLabel.setText(" File 1: " + selectedFiles.get(i).getName());
             node = true;
           } else if (string.contains("startNode,endNode")) {
-            fileData.setEdgesFile(selectedFile);
-            edgeFileLabel.setText(selectedFile.getName());
+            fileData.setEdgesFile(selectedFiles.get(i));
+            edgeFileLabel.setText(" File 2: " + selectedFiles.get(i).getName());
             edge = true;
           } else if (string.contains("nodeID,longName")) {
-            fileData.setMovesFile(selectedFile);
-            moveFileLabel.setText(selectedFile.getName());
+            fileData.setMovesFile(selectedFiles.get(i));
+            moveFileLabel.setText(" File 4: " + selectedFiles.get(i).getName());
             move = true;
           } else if (string.contains("nodeType,longName,shortName")) {
-            fileData.setLocationsFile(selectedFile);
-            locationFileLabel.setText(selectedFile.getName());
+            fileData.setLocationsFile(selectedFiles.get(i));
+            locationFileLabel.setText(" File 3: " + selectedFiles.get(i).getName());
             location = true;
           } else errorMessage.setText("Please select 4 files with the proper column headers.");
         } else {

@@ -126,6 +126,7 @@ public class CSVMaker {
         fileWriter.write(serviceRequest.getAssignedEmp() + ",");
         fileWriter.write(serviceRequest.getEmp() + ",");
         fileWriter.write(serviceRequest.getLocation() + ",");
+
       }
 
       fileWriter.close();
@@ -211,6 +212,7 @@ public class CSVMaker {
   }
 
   private static void makeSanitationCSV(Session session) {
+
     List<Sanitation> serviceRequests =
         session.createQuery("SELECT e FROM Sanitation e", Sanitation.class).getResultList();
     File movesFile = new File("sanitationRequests.csv");

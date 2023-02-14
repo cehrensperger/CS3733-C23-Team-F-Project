@@ -52,6 +52,6 @@
             </Label>
          </children>
       </VBox>
-      <Label fx:id="errorMessage" alignment="CENTER" layoutX="215.0" layoutY="21.0" textFill="RED" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="215.0" layoutY="20.0" prefHeight="17.0" prefWidth="28.0" textFill="RED" AnchorPane.bottomAnchor="313.0" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>
