@@ -21,7 +21,7 @@
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
-                                <Font size="24.0" />
+                                <Font name="System Bold" size="24.0" />
                             </font>
                      <styleClass>
                         <String fx:value="inter" />

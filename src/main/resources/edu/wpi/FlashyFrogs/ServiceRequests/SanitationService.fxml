@@ -120,14 +120,6 @@
                                     <Insets top="48.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of location needs sanitation" textAlignment="RIGHT" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="32.0" />
-                                 </VBox.margin>
-                              </Text>
                            </children>
                         </VBox>
                                 <VBox prefHeight="400.0" prefWidth="200.0">
@@ -141,11 +133,6 @@
                                             </VBox.margin>
                                         </Text>
                                         <SearchableComboBox fx:id="location" promptText="Location of Request" style="-fx-background-color: #F1F1F1;">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
-                                        <SearchableComboBox fx:id="type" promptText="Location Type">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>

@@ -2,12 +2,15 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +26,7 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 
 public class HoldSanitationController {
 
@@ -46,7 +50,6 @@ public class HoldSanitationController {
   @FXML Text h8;
   @FXML Text h9;
   @FXML SearchableComboBox location;
-  @FXML SearchableComboBox type;
   @FXML SearchableComboBox sanitationType;
   @FXML DatePicker date;
   @FXML TextField time;
@@ -78,9 +81,6 @@ public class HoldSanitationController {
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
     location.setItems(observableList);
-    type.getItems()
-        .addAll(
-            "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
     sanitationType.getItems().addAll("Sweeping", "Mopping", "Sanitizing");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     isolation.getItems().addAll("Yes", "No");
@@ -94,11 +94,9 @@ public class HoldSanitationController {
 
     try {
       String[] parts;
-      parts = urgency.getValue().toString().toUpperCase().split(" ");
-      String urgencyEnumString = parts[0] + "_" + parts[1];
+      String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
 
       if (location.getValue().toString().equals("")
-          || type.getValue().toString().equals("")
           || sanitationType.getValue().toString().equals("")
           || date.getValue().toString().equals("")
           || time.getText().equals("")
@@ -113,17 +111,21 @@ public class HoldSanitationController {
       Date dateOfIncident =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
+      String sanitationTypeEnumString = sanitationType.getValue().toString().toUpperCase().replace(" ", "_");
+      boolean isIsolation = false;
+      if(isolation.getValue().toString().equals("Yes")){isIsolation = true;}
+      String bioTypeEnumString = biohazard.getValue().toString().toUpperCase().replace(" ", "_");
+
       Sanitation sanitationRequest = new Sanitation();
-      /*sanitationRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
-       sanitationRequest.setLocationType(type.getValue().toString());
-       sanitationRequest.setSanitationType(sanitationType.getValue().toString());
-       sanitationRequest.setDateOfIncident(dateOfIncident);
-       sanitationRequest.setTime(time.getText());
-       sanitationRequest.setUrgency.valueOf(urgencyEnumString);
-       sanitationRequest.setIsolation(isolation.getValue().toString());
-       sanitationRequest.setBiohazard(biohazard.getValue().toString());
-       sanitationRequest.setDescription(description.getText());
-      */
+      sanitationRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
+      sanitationRequest.setType(Sanitation.SanitationType.valueOf(sanitationTypeEnumString));
+      sanitationRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
+      sanitationRequest.setDate(dateOfIncident);
+      sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
+      sanitationRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
+      sanitationRequest.setIsolation(isIsolation);
+      sanitationRequest.setBiohazard(Sanitation.BiohazardLevel.valueOf(bioTypeEnumString));
+      sanitationRequest.setDescription(description.getText());
       try {
         session.persist(sanitationRequest);
         transaction.commit();
@@ -147,7 +149,6 @@ public class HoldSanitationController {
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
     location.valueProperty().set(null);
-    type.valueProperty().set(null);
     sanitationType.valueProperty().set(null);
     date.valueProperty().set(null);
     time.setText("");

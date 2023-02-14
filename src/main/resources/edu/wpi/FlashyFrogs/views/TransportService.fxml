@@ -256,11 +256,6 @@
                                  </VBox.margin>
                               </SearchableComboBox>
                               <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date Preference" />
-                              <TextField fx:id="time" promptText="Time Preference (00:00 AM/PM)">
-                                 <VBox.margin>
-                                    <Insets top="18.0" />
-                                 </VBox.margin>
-                              </TextField>
                               <SearchableComboBox fx:id="mode" promptText="Mode of Transfer">
                                  <VBox.margin>
                                     <Insets bottom="18.0" top="18.0" />
@@ -303,7 +298,7 @@
                                     </HBox>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="18.0" />
+                                    <Insets top="54.0" />
                                  </VBox.margin>
                               </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="112.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -365,14 +360,6 @@
                                  </font>
                                  <VBox.margin>
                                     <Insets top="26.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h11" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the preferred time of the transport" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="33.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="How will the patient be transported" wrappingWidth="185.0">

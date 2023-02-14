@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -161,7 +162,7 @@
                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="470.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                 <VBox prefHeight="159.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Device Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Request Information">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -169,12 +170,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox fx:id="device" promptText="Do you need a new device?">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
-                                        <SearchableComboBox fx:id="repair" promptText="Do you need a repair?">
+                                        <SearchableComboBox fx:id="service" promptText="Service Type">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
@@ -184,11 +180,11 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </TextField>
-                              <TextField fx:id="model" promptText="Time Preference (00:00 AM/PM)" text="Device Model">
+                              <DatePicker fx:id="date" prefHeight="26.0" prefWidth="244.0" promptText="Date (needed by)">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
-                              </TextField>
+                              </DatePicker>
                                         <SearchableComboBox fx:id="urgency" promptText="Urgency">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
@@ -221,7 +217,7 @@
                                                 </HBox>
                                             </children>
                                             <VBox.margin>
-                                                <Insets top="18.0" />
+                                                <Insets top="72.0" />
                                             </VBox.margin>
                                         </HBox>
                                     </children>
@@ -233,20 +229,12 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you requesting a new device?" wrappingWidth="185.0">
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you requesting a new device or do you need a current device repaired??" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="48.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Do you need a current device repaired? " wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="44.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of device do you need service for" wrappingWidth="185.0">
@@ -254,7 +242,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="26.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the model of the device that you need service for" wrappingWidth="185.0">
@@ -262,7 +250,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="26.0" />
+                                    <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the IT request" wrappingWidth="185.0">

@@ -2,18 +2,25 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ComputerService;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
@@ -35,10 +42,9 @@ public class HoldITController {
   @FXML MFXButton submit;
   @FXML TextField number;
   @FXML SearchableComboBox location;
-  @FXML SearchableComboBox device;
-  @FXML SearchableComboBox repair;
+  @FXML SearchableComboBox service;
   @FXML SearchableComboBox urgency;
-
+  @FXML DatePicker date;
   @FXML TextField type;
   @FXML TextField model;
   @FXML TextField description;
@@ -74,8 +80,7 @@ public class HoldITController {
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
     location.setItems(observableList);
-    device.getItems().addAll("Yes", "No");
-    repair.getItems().addAll("Yes", "No");
+    service.getItems().addAll("Are you requesting a new device?", "Are you requesting a current device repaired?");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
   }
 
@@ -89,24 +94,27 @@ public class HoldITController {
       // check
       if (number.getText().equals("")
           || location.getValue().toString().equals("")
-          || device.getValue().toString().equals("")
-          || repair.getValue().toString().equals("")
+          || service.getValue().toString().equals("")
           || type.getText().equals("")
           || model.getText().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
+      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      String deviceTypeEnumString = type.getText().toUpperCase().replace(" ", "_");
+      String serviceTypeEnumString = service.getValue().toString().toUpperCase().replace(" ", "_");
 
       ComputerService informationTechnology = new ComputerService();
-      // this needs to be updated when database is fixed
-      /*informationTechnology.setNumber(number.getText());
+      informationTechnology.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
       informationTechnology.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      informationTechnology.setNewDevice(device.getValue().toString());
-      informationTechnology.setRepair(repair.getValue().toString());
-      informationTechnology.setDeviceType(type.getText()) ;
-      informationTechnology.setModel(model.getText());
+      informationTechnology.setDate(dateNeeded);
+      informationTechnology.setDateOfSubmission(Date.from(Instant.now()));
       informationTechnology.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      informationTechnology.setDescription(description.getText());*/
+      informationTechnology.setDescription(description.getText());
+      informationTechnology.setDeviceType(ComputerService.DeviceType.valueOf(deviceTypeEnumString));
+      informationTechnology.setServiceType(ComputerService.ServiceType.valueOf(serviceTypeEnumString));
+      informationTechnology.setBestContact(number.getText());
+
       try {
         session.persist(informationTechnology);
         transaction.commit();
@@ -131,8 +139,7 @@ public class HoldITController {
   public void handleClear(ActionEvent actionEvent) throws IOException {
     number.setText("");
     location.valueProperty().set(null);
-    device.valueProperty().set(null);
-    repair.valueProperty().set(null);
+    service.valueProperty().set(null);
     type.setText("");
     model.setText("");
     urgency.valueProperty().set(null);

@@ -2,12 +2,16 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.Security;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +27,7 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 
 public class HoldSecurityController {
 
@@ -43,7 +48,6 @@ public class HoldSecurityController {
   @FXML Text h6;
   @FXML Text h7;
   @FXML SearchableComboBox location;
-  @FXML SearchableComboBox type;
   @FXML SearchableComboBox threat;
   @FXML SearchableComboBox urgency;
   @FXML DatePicker date;
@@ -72,9 +76,6 @@ public class HoldSecurityController {
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
     location.setItems(observableList);
-    type.getItems()
-        .addAll(
-            "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
     threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
   }
@@ -89,7 +90,6 @@ public class HoldSecurityController {
 
       // check
       if (location.getValue().toString().equals("")
-          || type.getValue().toString().equals("")
           || threat.getValue().toString().equals("")
           || date.getValue().toString().equals("")
           || time.getText().equals("")
@@ -100,15 +100,17 @@ public class HoldSecurityController {
       Date dateOfRequest =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
+      String threatTypeEnumString = threat.getValue().toString().toUpperCase().replace(" ", "_");
+
       Security securityRequest = new Security();
-      // this needs to be updated when database is fixed
-      /*securityRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      securityRequest.setLocationType(type.getValue().toString());
-      securityRequest.setThreat(threat.getValue().toString());
+
+      securityRequest.setIncidentReport(description.getText());
+      securityRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
+      securityRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
+      securityRequest.setThreatType(Security.ThreatType.valueOf(threatTypeEnumString));
+      securityRequest.setDate(dateOfRequest);
+      securityRequest.setDateOfSubmission(Date.from(Instant.now()));
       securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      securityRequest.setDateOfIncident(dateOfRequest);
-      securityRequest.setTime(timeString);
-      securityRequest.setDescription(description.getText());*/
       try {
         session.persist(securityRequest);
         transaction.commit();
@@ -132,7 +134,6 @@ public class HoldSecurityController {
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
     location.valueProperty().set(null);
-    type.valueProperty().set(null);
     threat.valueProperty().set(null);
     urgency.valueProperty().set(null);
     date.valueProperty().set(null);
@@ -180,7 +181,6 @@ public class HoldSecurityController {
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "SecurityService");
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {

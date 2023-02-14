@@ -2,12 +2,17 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.AudioVisual;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.ORM.User;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +28,7 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import java.util.Date;
 
 public class HoldAVController {
 
@@ -38,7 +44,6 @@ public class HoldAVController {
   @FXML SearchableComboBox location;
   @FXML SearchableComboBox type;
   @FXML TextField device;
-  @FXML TextField model;
   @FXML TextField reason;
   @FXML DatePicker date;
   @FXML TextField time;
@@ -98,7 +103,6 @@ public class HoldAVController {
       if (location.getValue().toString().equals("")
           || type.getValue().toString().equals("")
           || device.getText().equals("")
-          || model.getText().equals("")
           || reason.getText().equals("")
           || date.getValue().toString().equals("")
           || description.getText().equals("")) {
@@ -108,16 +112,16 @@ public class HoldAVController {
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       AudioVisual audioVisual = new AudioVisual();
-      // this needs to be updated when database is fixed
-      /*audioVisual.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      audioVisual.setLocationType(type.getValue().toString());
-      audioVisual.setDeviceType(device.getText());
-      audioVisual.setDeviceModel(model.getText());
-      audioVisual.setReason(reason.getText());
-      audioVisual.setDateOfIncident(dateNeeded);
-      audioVisual.setTime(time.getText());
+      User user = new User();
+
+      audioVisual.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
+      audioVisual.setDate(dateNeeded);
+      audioVisual.setDateOfSubmission(Date.from(Instant.now()));
       audioVisual.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      audioVisual.setDescription(reason.getText());*/
+      audioVisual.setDeviceType(device.getText());
+      audioVisual.setReason(reason.getText());
+      audioVisual.setDescription(reason.getText());
+      audioVisual.setLocation(session.find(LocationName.class, location.getValue().toString()));
       try {
         session.persist(audioVisual);
         transaction.commit();
@@ -143,7 +147,6 @@ public class HoldAVController {
     location.valueProperty().set(null);
     type.valueProperty().set(null);
     device.setText("");
-    model.setText("");
     date.valueProperty().set(null);
     time.setText("");
     urgency.valueProperty().set(null);

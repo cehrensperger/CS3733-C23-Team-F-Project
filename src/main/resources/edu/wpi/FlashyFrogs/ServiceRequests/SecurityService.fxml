@@ -121,14 +121,6 @@
                                     <Font size="10.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of location needs security" textAlignment="RIGHT" wrappingWidth="185.0">
-                                 <VBox.margin>
-                                    <Insets top="32.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                              </Text>
                            </children>
                         </VBox>
                                 <VBox prefHeight="400.0" prefWidth="200.0">
@@ -144,11 +136,6 @@
                                         <SearchableComboBox fx:id="location" promptText="Location of Request">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
-                                        <SearchableComboBox fx:id="type" promptText="Location Type">
-                                            <VBox.margin>
-                                                <Insets />
                                             </VBox.margin>
                                         </SearchableComboBox>
                                     </children>
@@ -178,11 +165,6 @@
                                             </VBox.margin>
                                         </SearchableComboBox>
                                         <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date Preference" />
-                                        <TextField fx:id="time" promptText="Time Preference (00:00 AM/PM)">
-                                            <VBox.margin>
-                                                <Insets top="18.0" />
-                                            </VBox.margin>
-                                        </TextField>
                                         <TextField fx:id="description" promptText="Description of Request">
                                             <VBox.margin>
                                                 <Insets bottom="216.0" top="18.0" />
@@ -210,7 +192,7 @@
                                                 </HBox>
                                             </children>
                                             <VBox.margin>
-                                                <Insets top="18.0" />
+                                                <Insets top="72.0" />
                                             </VBox.margin>
                                         </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="136.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -239,7 +221,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="40.0" />
+                                    <Insets top="42.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the security request" wrappingWidth="185.0">
@@ -247,7 +229,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="26.0" />
+                                    <Insets top="28.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific date that security will be needed" wrappingWidth="185.0">
@@ -255,15 +237,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="24.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific time that security will be needed" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="18.0" />
+                                    <Insets top="26.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Explain why security is needed" wrappingWidth="185.0">
@@ -271,7 +245,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="26.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
