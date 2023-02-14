@@ -95,7 +95,6 @@ public class HomeController implements IController {
 
       refreshTable();
     }
-
   }
 
   @FXML
@@ -235,68 +234,68 @@ public class HomeController implements IController {
     List<Move> moves;
     if (!isAdmin) {
       serviceRequests =
-              session
-                      .createQuery(
-                              "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp", ServiceRequest.class)
-                      .setParameter("emp", currentUser)
-                      .getResultList();
+          session
+              .createQuery(
+                  "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp", ServiceRequest.class)
+              .setParameter("emp", currentUser)
+              .getResultList();
       moveTable.setOpacity(0);
     } else {
       serviceRequests =
-              session
-                      .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
-                      .getResultList();
+          session
+              .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+              .getResultList();
 
       moves =
-              session
-                      .createQuery("SELECT m from Move m WHERE m.moveDate > current timestamp", Move.class)
-                      .getResultList();
+          session
+              .createQuery("SELECT m from Move m WHERE m.moveDate > current timestamp", Move.class)
+              .getResultList();
       moveTable.setItems(FXCollections.observableList(moves));
     }
 
     // refill based on filter
     filterProperty.addListener(
-            (observable, oldValue, newValue) -> {
-              if (newValue.equals("All")) {
-                if (!isAdmin) {
-                  requestTable.setItems(
-                          FXCollections.observableList(
-                                  session
-                                          .createQuery(
-                                                  "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
-                                                  ServiceRequest.class)
-                                          .setParameter("type", newValue)
-                                          .setParameter("emp", currentUser)
-                                          .getResultList()));
-                } else {
-                  requestTable.setItems(
-                          FXCollections.observableList(
-                                  session
-                                          .createQuery(
-                                                  "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
-                                                  ServiceRequest.class)
-                                          .setParameter("type", newValue)
-                                          .getResultList()));
-                }
-              } else {
-                if (!isAdmin) {
-                  requestTable.setItems(
-                          FXCollections.observableList(
-                                  session
-                                          .createQuery(
-                                                  "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
-                                                  ServiceRequest.class)
-                                          .setParameter("emp", currentUser)
-                                          .getResultList()));
-                } else {
-                  requestTable.setItems(
-                          FXCollections.observableList(
-                                  session
-                                          .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
-                                          .getResultList()));
-                }
-              }
-            });
+        (observable, oldValue, newValue) -> {
+          if (newValue.equals("All")) {
+            if (!isAdmin) {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
+                              ServiceRequest.class)
+                          .setParameter("type", newValue)
+                          .setParameter("emp", currentUser)
+                          .getResultList()));
+            } else {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
+                              ServiceRequest.class)
+                          .setParameter("type", newValue)
+                          .getResultList()));
+            }
+          } else {
+            if (!isAdmin) {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
+                              ServiceRequest.class)
+                          .setParameter("emp", currentUser)
+                          .getResultList()));
+            } else {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+                          .getResultList()));
+            }
+          }
+        });
     session.close();
   }
 
@@ -313,13 +312,13 @@ public class HomeController implements IController {
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
 
-        popOver
-                .showingProperty()
-                .addListener(
-                        (observable, oldValue, newValue) -> {
-                          if (!newValue) {
-                            refreshTable();
-                          }
-                        });
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                refreshTable();
+              }
+            });
   }
 }
