@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.ServiceRequests;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
@@ -28,6 +29,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@GeneratedExclusion
 public class SecurityServiceController extends ServiceRequestController {
 
   @FXML private MFXTextField incidentReportEntry;
@@ -133,7 +135,7 @@ public class SecurityServiceController extends ServiceRequestController {
       //      securityRequest.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
       //
       // securityRequest.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
-      securityRequest.setTargetDate(dateOfIncident);
+      // securityRequest.setTargetDate(dateOfIncident);
       securityRequest.setDateOfSubmission(Date.from(Instant.now()));
       securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyEnumString));
       securityRequest.setLocation(session.find(LocationName.class, locationEntry.getText()));

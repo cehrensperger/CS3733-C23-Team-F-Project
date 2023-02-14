@@ -2,6 +2,8 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import java.io.IOException;
+
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
+@GeneratedExclusion
 public class NavBarController {
 
   @FXML private AnchorPane anchorPane;

@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.PathFinding;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
@@ -36,6 +37,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class PathfindingController implements IController {
 
   @FXML private SearchableComboBox<String> startingBox;

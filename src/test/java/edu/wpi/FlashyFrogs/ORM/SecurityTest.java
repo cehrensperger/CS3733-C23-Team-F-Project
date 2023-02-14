@@ -248,6 +248,20 @@ public class SecurityTest {
     assertEquals(sanToString, testSecurity.getClass().getSimpleName() + "_" + testSecurity.getId());
   }
 
+  /** Checks to se if toString makes a string in the same format specified in Security.java */
+  @Test
+  void testThreatToString() {
+    Security.ThreatType none = Security.ThreatType.NONE;
+    Security.ThreatType intruder = Security.ThreatType.INTRUDER;
+    Security.ThreatType weapon = Security.ThreatType.WEAPON;
+    Security.ThreatType patient = Security.ThreatType.PATIENT;
+
+    assertEquals("No Threat", none.toString());
+    assertEquals("Intruder", intruder.toString());
+    assertEquals("Weapon", weapon.toString());
+    assertEquals("Patient", patient.toString());
+  }
+
   /**
    * Tests the equals and hash code methods for the AudioVisual class, ensures that fetched objects
    * are equal
