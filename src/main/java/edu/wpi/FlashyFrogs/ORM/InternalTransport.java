@@ -104,6 +104,7 @@ public class InternalTransport extends ServiceRequest {
    * Creates a new InternalTransport with a generated id and the specified fields
    *
    * @param patientID the ID of the patient to transport
+   * @param hearing the hearing status of the patient
    * @param vision the vision status of the patient
    * @param consciousness the consciousness of the patient
    * @param condition the condition of the patient
@@ -122,6 +123,7 @@ public class InternalTransport extends ServiceRequest {
   public InternalTransport(
       @NonNull String patientID,
       @NonNull VisionStatus vision,
+      @NonNull HearingStatus hearing,
       @NonNull ConsciousnessStatus consciousness,
       @NonNull HealthStatus condition,
       LocationName sourceLocation,
@@ -137,6 +139,7 @@ public class InternalTransport extends ServiceRequest {
       @NonNull String reason) {
     this.patientID = patientID;
     this.vision = vision;
+    this.hearing = hearing;
     this.consciousness = consciousness;
     this.healthStatus = condition;
     this.targetLocation = endLocation;
