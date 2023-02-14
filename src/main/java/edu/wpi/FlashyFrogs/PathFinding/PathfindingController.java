@@ -11,6 +11,7 @@ import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
+import edu.wpi.FlashyFrogs.controllers.NextFloorPopupController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.Collection;
@@ -22,11 +23,9 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -224,8 +223,8 @@ public class PathfindingController implements IController {
             line.setStrokeWidth(5);
           }
         }
-        //nodes = (LinkedList<Node>)nodes;
-        for (int i = 0; i < nodes.size(); i ++) {
+        // nodes = (LinkedList<Node>)nodes;
+        for (int i = 0; i < nodes.size(); i++) {
           Node node = nodes.get(i);
           // get the circle that represents the node from the mapController
           Circle circle = mapController.getNodeToCircleMap().get(node);
@@ -236,44 +235,46 @@ public class PathfindingController implements IController {
             // set hover behavior for each circle
             // TODO: change this to click behavior like in the map data editor
 
-          }
-          // get location name of the node in the path to check against the start and end locations
-          // getCurrentLocation() creates its own session but map already has one running,
-          // so we have to use that one
+            // get location name of the node in the path to check against the start and end
+            // locations
+            // getCurrentLocation() creates its own session but map already has one running,
+            // so we have to use that one
 
-          Collection<LocationName> locationNames =
-              node.getCurrentLocation(mapController.getMapSession());
-          for (int j = 0; j < locationNames.size(); j++) {
-            LocationName nodeLocation = ((List<LocationName>) locationNames).get(j);
-            LocationName.LocationType locationType = nodeLocation.getLocationType();
-            // if the node location is null, don't attempt to check it against the start and end
-            // text
-            if (nodeLocation != null
-                && i == nodes.size() - 1) {
-              circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-              setHoverBehavior(circle, node);
-              circle.setOpacity(1);
-            } else if (nodeLocation != null
-                && i == 0) {
-              circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-              setHoverBehavior(circle, node);
-              circle.setOpacity(1);
-          } else if (nodeLocation != null
-              && locationType.equals(LocationName.LocationType.ELEV)) {
-              // node is an elevator and not the end node
+            Collection<LocationName> locationNames =
+                node.getCurrentLocation(mapController.getMapSession());
+            for (int j = 0; j < locationNames.size(); j++) {
+              LocationName nodeLocation = ((List<LocationName>) locationNames).get(j);
+              LocationName.LocationType locationType = nodeLocation.getLocationType();
+              // if the node location is null, don't attempt to check it against the start and end
+              // text
+              if (nodeLocation != null && i == nodes.size() - 1) {
+                circle.setFill(Paint.valueOf(Color.GREEN.toString()));
+                setHoverBehavior(circle, node);
+                circle.setOpacity(1);
+              } else if (nodeLocation != null && i == 0) {
+                circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+                setHoverBehavior(circle, node);
+                circle.setOpacity(1);
+              } else if (nodeLocation != null
+                  && locationType.equals(LocationName.LocationType.ELEV)) {
+                circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+                circle.setOpacity(1);
+                // node is an elevator and not the end node
 
-              // set circle on hover to a popup that gives the
-              // user the option to go to the floor that the next node is at
+                // set circle on hover to a popup that gives the
+                // user the option to go to the floor that the next node is at
 
-              String nextFloor = nodes.get(i + 1).getFloor().floorNum;
-              PopOver goToNext = new PopOver();
-              circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                  //attatc
-                  goToNext.show(circle);
-                }
-              });
+                String nextFloor = nodes.get(i + 1).getFloor().floorNum;
+                FXMLLoader loader =
+                    new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
+                PopOver goToNext = new PopOver(loader.load());
+                NextFloorPopupController controller = loader.getController();
+                controller.setPathfindingController(this);
+                controller.setMessage("Go to floor: " + nextFloor + "?");
+                goToNext.show(circle);
+                goToNext.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+                goToNext.setTitle("");
+              }
             }
           }
         }
@@ -392,5 +393,13 @@ public class PathfindingController implements IController {
 
   public void onClose() {
     mapController.exit();
+  }
+
+  public void setFloor(String nextFloor) throws IOException {
+    nextFloor = nextFloor.substring(0, nextFloor.length() - 1);
+    String[] parts = nextFloor.split(" ");
+    System.out.println(parts[parts.length - 1]);
+    mapController.setFloor(Objects.requireNonNull(Node.Floor.getEnum(parts[parts.length - 1])));
+    handleGetPath();
   }
 }

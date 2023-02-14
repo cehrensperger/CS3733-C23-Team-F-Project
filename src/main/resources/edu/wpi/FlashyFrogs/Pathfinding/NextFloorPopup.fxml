@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="102.0" prefWidth="108.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.NextFloorPopupController">
+   <children>
+      <Label fx:id="message" alignment="CENTER" layoutX="285.0" layoutY="76.0" prefHeight="17.0" prefWidth="28.0" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0" />
+      <MFXButton fx:id="yesButton" layoutX="94.0" layoutY="137.0" onAction="#handleYesButton" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Yes" textFill="WHITE" AnchorPane.bottomAnchor="14.600000000000001" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+   </children>
+</AnchorPane>
