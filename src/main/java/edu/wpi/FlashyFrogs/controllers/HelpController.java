@@ -62,47 +62,6 @@ public class HelpController {
   }
 
   @FXML
-  public void handleQAudioVisual() throws IOException {
-    e1.setText(
-        "Patient: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the patient");
-    e2.setText("Current Location - The location where the audio/visual request is needed");
-    e3.setText("Type of Accommodation - Whether the patient needs audio or visual aid");
-    e4.setText("Urgency - The urgency of the request");
-    e5.setText(
-        "Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee submitting the request");
-    e6.setText(
-        "Assigned Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee being assigned to the request");
-    e7.setText(
-        "All Audio/Visual Requests - Allows the user to view all previously submitted audio and visual requests");
-    e8.setText("Clear - Clears all of the fields on the page");
-    e9.setText("Back - Brings the user back to the service requests page");
-    e10.setText("Submit - Submits the form");
-    e11.setText("");
-    e12.setText("");
-    e13.setText("");
-  }
-
-  @FXML
-  public void handleQIT() throws IOException {
-    e1.setText("Device Type: Enter the type of the device that needs IT service");
-    e2.setText("Device Model: Enter the type of the device that needs IT service");
-    e3.setText("Type of Service - The type of service needed on the device");
-    e4.setText("Issue Description - Describe the issue you are having with your device");
-    e5.setText("Urgency - The urgency of the request");
-    e6.setText(
-        "Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee submitting the request");
-    e7.setText(
-        "Assigned Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee being assigned to the request");
-    e8.setText(
-        "All Computer Service Requests - Allows the user to view all previously submitted computer service requests");
-    e9.setText("Clear - Clears all of the fields on the page");
-    e10.setText("Back - Brings the user back to the service requests page");
-    e11.setText("Submit - Submits the form");
-    e12.setText("");
-    e13.setText("");
-  }
-
-  @FXML
   public void handleQConfirmation() throws IOException {
     e1.setText("Home - Brings you back to the home page");
     e2.setText("");
@@ -118,24 +77,6 @@ public class HelpController {
     e12.setText("");
     e13.setText("");
   }
-
-  // DBTableEditor is now obsolete
-  //  @FXML
-  //  public void handleQDBTableEditor() throws IOException {
-  //    e1.setText("someone pls add help info to this cuz idk");
-  //    e2.setText("");
-  //    e3.setText("");
-  //    e4.setText("");
-  //    e5.setText("");
-  //    e6.setText("");
-  //    e7.setText("");
-  //    e8.setText("");
-  //    e9.setText("");
-  //    e10.setText("");
-  //    e11.setText("");
-  //    e12.setText("");
-  //    e13.setText("");
-  //  }
 
   @FXML
   public void handleQFeedback() throws IOException {
@@ -209,69 +150,6 @@ public class HelpController {
     e9.setText("");
     e10.setText("");
     e11.setText("");
-    e12.setText("");
-    e13.setText("");
-  }
-
-  @FXML
-  public void handleQSanitation() throws IOException {
-    e1.setText("Request Type - The type of sanitation needed");
-    e2.setText(
-        "Location and Date - The location and the date of the incident needing the sanitation");
-    e3.setText("Urgency - The urgency of the request");
-    e4.setText(
-        "Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee submitting the request");
-    e5.setText(
-        "Assigned Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee being assigned to the request");
-    e6.setText(
-        "All Sanitation Service Requests - Allows the user to view all previously submitted sanitation service requests");
-    e7.setText("Clear - Clears all of the fields on the page");
-    e8.setText("Back - Brings the user back to the service requests page");
-    e9.setText("Submit - Submits the form");
-    e10.setText("");
-    e11.setText("");
-    e12.setText("");
-    e13.setText("");
-  }
-
-  @FXML
-  public void handleQSecurity() throws IOException {
-    e1.setText("Description of Incident - Describe the incident needing security");
-    e2.setText(
-        "Location and Date - The location and the date of the incident needing the sanitation");
-    e3.setText("Urgency - The urgency of the request");
-    e4.setText(
-        "Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee submitting the request");
-    e5.setText(
-        "Assigned Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee being assigned to the request");
-    e6.setText(
-        "All Sanitation Service Requests - Allows the user to view all previously submitted sanitation service requests");
-    e7.setText("Clear - Clears all of the fields on the page");
-    e8.setText("Back - Brings the user back to the service requests page");
-    e9.setText("Submit - Submits the form");
-    e10.setText("");
-    e11.setText("");
-    e12.setText("");
-    e13.setText("");
-  }
-
-  @FXML
-  public void handleQTransport() throws IOException {
-    e1.setText(
-        "Patient: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the patient");
-    e2.setText("Current Location - The location where the patient currently is");
-    e3.setText("New Location - The location where the patient is being transported to");
-    e4.setText("Urgency - The urgency of the request");
-    e5.setText("Date of Transport - The date the patient will need to be transported");
-    e6.setText(
-        "Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee submitting the request");
-    e7.setText(
-        "Assigned Employee: First, Middle, Last, and Date of Birth - Enter the first name, middle name, last name, and date of birth of the employee being assigned to the request");
-    e8.setText(
-        "All Internal Patient Transportation Requests - Allows the user to view all previously submitted internal; patient transportation requests");
-    e9.setText("Clear - Clears all of the fields on the page");
-    e10.setText("Back - Brings the user back to the service requests page");
-    e11.setText("Submit - Submits the form");
     e12.setText("");
     e13.setText("");
   }

@@ -1,6 +1,7 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
@@ -23,11 +24,11 @@ public class CreditsController implements IController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ITService");
+    Fapp.setScene("ServiceRequests", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "TransportService");
+    Fapp.setScene("ServiceRequests", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
@@ -39,7 +40,7 @@ public class CreditsController implements IController {
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Credits");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {

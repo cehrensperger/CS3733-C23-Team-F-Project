@@ -75,11 +75,6 @@ public class HomeController implements IController {
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
 
-    Session session = CONNECTION.getSessionFactory().openSession();
-
-    // todo: remove when login is implemented
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(session.find(User.class, 2));
-
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
@@ -96,6 +91,7 @@ public class HomeController implements IController {
 
       tableText2.setText("Future Moves");
     }
+    Session session = CONNECTION.getSessionFactory().openSession();
 
     // FILL TABLES
     List<ServiceRequest> serviceRequests;
@@ -332,4 +328,8 @@ public class HomeController implements IController {
   public void manageAnnouncements(ActionEvent event) throws IOException {}
 
   public void onClose() {}
+
+  public void viewLogins(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Accounts", "LoginAdministrator");
+  }
 }

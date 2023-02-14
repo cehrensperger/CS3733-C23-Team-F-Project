@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HoldTransportController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.TransportController">
    <children>
       <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -256,11 +256,6 @@
                                  </VBox.margin>
                               </SearchableComboBox>
                               <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date Preference" />
-                              <TextField fx:id="time" promptText="Time Preference (00:00 AM/PM)">
-                                 <VBox.margin>
-                                    <Insets top="18.0" />
-                                 </VBox.margin>
-                              </TextField>
                               <SearchableComboBox fx:id="mode" promptText="Mode of Transfer">
                                  <VBox.margin>
                                     <Insets bottom="18.0" top="18.0" />
@@ -303,14 +298,14 @@
                                     </HBox>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="18.0" />
+                                    <Insets top="54.0" />
                                  </VBox.margin>
                               </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="112.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="errorMessage">
                                        <HBox.margin>
-                                          <Insets top="10.0" />
+                                          <Insets top="5.0" />
                                        </HBox.margin>
                                        <font>
                                           <Font size="16.0" />
@@ -367,15 +362,7 @@
                                     <Insets top="26.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h11" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the preferred time of the transport" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="33.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="How will the patient be transported" wrappingWidth="185.0">
+                              <Text fx:id="h11" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="How will the patient be transported" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -383,7 +370,7 @@
                                     <Insets top="32.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h13" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="185.0">
+                              <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -391,7 +378,7 @@
                                     <Insets top="20.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h14" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="185.0">
+                              <Text fx:id="h13" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -399,7 +386,7 @@
                                     <Insets top="14.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h15" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Explain why this patient is being transported" wrappingWidth="185.0">
+                              <Text fx:id="h14" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Explain why this patient is being transported" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
