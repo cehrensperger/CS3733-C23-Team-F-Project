@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -227,7 +226,6 @@ public class PathfindingController implements IController {
 
           if (circle != null) { // TODO: fix this garbage
             circle.setOpacity(0);
-
           }
           // get location name of the node in the path to check against the start and end locations
           // getCurrentLocation() creates its own session but map already has one running,

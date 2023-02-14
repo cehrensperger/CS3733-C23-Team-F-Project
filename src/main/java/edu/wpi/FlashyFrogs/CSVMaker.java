@@ -1,9 +1,7 @@
 package edu.wpi.FlashyFrogs;
 
-import edu.wpi.FlashyFrogs.ORM.Edge;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Move;
-import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ORM.*;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,6 +17,7 @@ public class CSVMaker {
     makeNodesCSV(session);
     makeMovesCSV(session);
     makeLocationsCSV(session);
+    makeServiceRequestCSV(session);
   }
 
   private static void makeEdgesCSV(Session session) {
@@ -101,4 +100,201 @@ public class CSVMaker {
       throw new RuntimeException(e);
     }
   }
+
+  private static void makeServiceRequestCSV(Session session) {
+    List<ServiceRequest> serviceRequests = session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+    File movesFile = new File("serviceRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(movesFile);
+      //fileWriter.write("nodeType,longName,shortName\n");
+
+      for (ServiceRequest serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getId() + ",");
+        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
+        fileWriter.write(serviceRequest.getRequestType() + ",");
+        fileWriter.write(serviceRequest.getStatus() + ",");
+        fileWriter.write(serviceRequest.getUrgency() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
+        fileWriter.write(serviceRequest.getEmp() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static void makeAudioVisualCSV(Session session) {
+    List<AudioVisual> serviceRequests = session.createQuery("SELECT e FROM AudioVisual e", AudioVisual.class).getResultList();
+    File movesFile = new File("audioVisualRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(movesFile);
+      //fileWriter.write("nodeType,longName,shortName\n");
+
+      for (AudioVisual serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getPatientFirstName() + ",");
+        fileWriter.write(serviceRequest.getPatientMiddleName() + ",");
+        fileWriter.write(serviceRequest.getPatientLastName() + ",");
+        fileWriter.write(serviceRequest.getLocation() + ",");
+        fileWriter.write(serviceRequest.getAccommodationType().AccommodationType + ",");
+        fileWriter.write(serviceRequest.getDateOfBirth() + ",");
+        fileWriter.write(serviceRequest.getDateOfBirth() + ",");
+
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static void makeComputerServiceCSV(Session session) {
+    List<ServiceRequest> serviceRequests = session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+    File movesFile = new File("computerServiceRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(movesFile);
+      //fileWriter.write("nodeType,longName,shortName\n");
+
+      for (ServiceRequest serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getId() + ",");
+        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
+        fileWriter.write(serviceRequest.getRequestType() + ",");
+        fileWriter.write(serviceRequest.getStatus() + ",");
+        fileWriter.write(serviceRequest.getUrgency() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
+        fileWriter.write(serviceRequest.getEmp() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+
+  private static void makeInternalTransportCSV(Session session) {
+    List<ServiceRequest> serviceRequests = session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+    File movesFile = new File("internalTransportRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(movesFile);
+      //fileWriter.write("nodeType,longName,shortName\n");
+
+      for (ServiceRequest serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getId() + ",");
+        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
+        fileWriter.write(serviceRequest.getRequestType() + ",");
+        fileWriter.write(serviceRequest.getStatus() + ",");
+        fileWriter.write(serviceRequest.getUrgency() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
+        fileWriter.write(serviceRequest.getEmp() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static void makeSanitationCSV(Session session) {
+    List<ServiceRequest> serviceRequests = session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+    File movesFile = new File("sanitationRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(movesFile);
+      //fileWriter.write("nodeType,longName,shortName\n");
+
+      for (ServiceRequest serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getId() + ",");
+        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
+        fileWriter.write(serviceRequest.getRequestType() + ",");
+        fileWriter.write(serviceRequest.getStatus() + ",");
+        fileWriter.write(serviceRequest.getUrgency() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
+        fileWriter.write(serviceRequest.getEmp() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static void makeSecurityCSV(Session session) {
+    List<ServiceRequest> serviceRequests = session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+    File movesFile = new File("securityRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(movesFile);
+      //fileWriter.write("nodeType,longName,shortName\n");
+
+      for (ServiceRequest serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getId() + ",");
+        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
+        fileWriter.write(serviceRequest.getRequestType() + ",");
+        fileWriter.write(serviceRequest.getStatus() + ",");
+        fileWriter.write(serviceRequest.getUrgency() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
+        fileWriter.write(serviceRequest.getEmp() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
+        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
+        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 }
