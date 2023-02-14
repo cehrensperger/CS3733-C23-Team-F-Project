@@ -2,7 +2,9 @@ package edu.wpi.FlashyFrogs.Accounts;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 // import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -74,6 +76,7 @@ public class LoginController implements IController {
         } else { // Username and Password match database
           Fapp.setScene("views", "Home");
           Fapp.logIn();
+          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
         }
         ses.close();
       } catch (Exception e) {
