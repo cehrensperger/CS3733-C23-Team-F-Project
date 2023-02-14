@@ -275,7 +275,12 @@ public class PathfindingController implements IController {
                   controller.setMessage("Go to floor: " + nextFloor + "?");
                   goToNext.show(circle);
                   goToNext.setAutoHide(false);
-
+                  goToNext.setAutoFix(false);
+                  goToNext.detach();
+                  goToNext.setX(250);
+                  goToNext.setY(20);
+                  //                  goToNext.setAnchorX(circle.getCenterX());
+                  //                  goToNext.setAnchorY(circle.getCenterY());
                   goToNext.setTitle("");
                 }
               }
