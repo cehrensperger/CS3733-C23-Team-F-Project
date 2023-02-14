@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="400.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
+   <children>
+      <MFXButton layoutX="259.0" layoutY="294.0" prefHeight="25.0" prefWidth="150.0" text="Upload File(s)" AnchorPane.bottomAnchor="74.0" AnchorPane.rightAnchor="48.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+      <MFXButton layoutX="44.0" layoutY="345.0" prefHeight="25.0" prefWidth="150.0" text="Cancel">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+      <MFXButton layoutX="259.0" layoutY="345.0" prefHeight="25.0" prefWidth="150.0" text="Continue">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+      <MFXButton layoutX="44.0" layoutY="294.0" prefHeight="25.0" prefWidth="150.0" text="Backup CSVs">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+   </children>
 </AnchorPane>
