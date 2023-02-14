@@ -2,8 +2,8 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
@@ -71,8 +71,11 @@ public class HomeController implements IController {
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
 
-    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    // User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    // boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+
+    User currentUser = new User("a", "a", "a", User.EmployeeType.ADMIN, new Department());
+    boolean isAdmin = true;
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");

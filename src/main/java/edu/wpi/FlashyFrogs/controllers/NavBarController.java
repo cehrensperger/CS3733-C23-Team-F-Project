@@ -21,7 +21,7 @@ public class NavBarController {
   @FXML private MenuButton menu;
 
   @FXML
-  public void initialize() {
+  /*public void initialize() {
     menu.setDisable(true);
     menu.hide();
     srButton.setOpacity(0);
@@ -32,7 +32,7 @@ public class NavBarController {
     helpButton.setDisable(true);
     line1.setOpacity(0);
     line2.setOpacity(0);
-  }
+  }*/
 
   public void logIn() {
     menu.show();
