@@ -29,10 +29,8 @@ public class Sanitation extends ServiceRequest {
               name = "location_name_fk",
               foreignKeyDefinition =
                   "FOREIGN KEY (location) REFERENCES locationname(longName) "
-                      + "ON UPDATE CASCADE ON DELETE SET NULL"),
-      nullable = false)
-  @NonNull
-  @ManyToOne(optional = false)
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
+  @ManyToOne
   @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   private LocationName location;
 
@@ -54,11 +52,11 @@ public class Sanitation extends ServiceRequest {
    */
   public Sanitation(
       @NonNull SanitationType theType,
-      @NonNull User emp,
+      User emp,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,
-      @NonNull LocationName location) {
+      LocationName location) {
     this.type = theType;
     super.setEmp(emp);
     super.setDateOfIncident(dateOfIncident);

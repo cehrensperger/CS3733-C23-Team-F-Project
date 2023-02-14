@@ -1,5 +1,6 @@
-package edu.wpi.FlashyFrogs;
+package edu.wpi.FlashyFrogs.MapEditor;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import java.util.HashMap;
