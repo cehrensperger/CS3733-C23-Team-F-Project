@@ -262,9 +262,7 @@ public class AnnouncementTest {
     session.close(); // Session close
   }
 
-  /**
-   * Equals on Announcement should return false for other classes and null
-   */
+  /** Equals on Announcement should return false for other classes and null */
   @Test
   public void equalsOtherTest() {
     assertNotEquals(new Announcement(new Date(), null, "B"), null);
