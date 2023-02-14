@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -13,7 +14,7 @@
     <children>
         <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
-                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
+                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" styleClass="rectangle" BorderPane.alignment="TOP_LEFT">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="155.66615295410156">
                             <VBox.margin>
@@ -22,14 +23,23 @@
                             <font>
                                 <Font size="24.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="inter" />
+                        <String fx:value="title" />
+                     </styleClass>
                         </Text>
-                        <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual        " textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual                      " textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="16.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="serviceRequestButtons" />
+                        <String fx:value="round" />
+                        <String fx:value="inter" />
+                     </styleClass>
                         </MFXButton>
                         <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Information Technology" textFill="WHITE" wrapText="true">
                             <VBox.margin>
@@ -38,6 +48,11 @@
                             <font>
                                 <Font size="16.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="serviceRequestButtons" />
+                        <String fx:value="round" />
+                        <String fx:value="inter" />
+                     </styleClass>
                         </MFXButton>
                         <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
                             <VBox.margin>
@@ -46,22 +61,37 @@
                             <font>
                                 <Font size="16.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="serviceRequestButtons" />
+                        <String fx:value="round" />
+                        <String fx:value="inter" />
+                     </styleClass>
                         </MFXButton>
-                        <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Sanitation            " textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Sanitation                             " textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="16.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="serviceRequestButtons" />
+                        <String fx:value="round" />
+                        <String fx:value="inter" />
+                     </styleClass>
                         </MFXButton>
-                        <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Security                " textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Security                                        " textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="16.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="serviceRequestButtons" />
+                        <String fx:value="round" />
+                        <String fx:value="inter" />
+                     </styleClass>
                         </MFXButton>
                         <AnchorPane VBox.vgrow="ALWAYS">
                             <children>
@@ -74,6 +104,11 @@
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
+                                 <styleClass>
+                                    <String fx:value="credits" />
+                                    <String fx:value="round" />
+                                    <String fx:value="inter" />
+                                 </styleClass>
                                         </MFXButton>
                                         <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Back" textFill="#012d5a">
                                             <VBox.margin>
@@ -82,6 +117,11 @@
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
+                                 <styleClass>
+                                    <String fx:value="back" />
+                                    <String fx:value="round" />
+                                    <String fx:value="inter" />
+                                 </styleClass>
                                         </MFXButton>
                                     </children>
                                 </VBox>
@@ -93,7 +133,7 @@
             <center>
                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Credits" wrappingWidth="708.447021484375">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Descriptions and Credits" wrappingWidth="708.447021484375">
                             <font>
                                 <Font size="28.0" />
                             </font>
@@ -101,11 +141,58 @@
                                 <Insets top="55.0" />
                             </VBox.margin>
                         </Text>
-                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="TOP_RIGHT" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <VBox prefHeight="573.0" prefWidth="609.0">
+                        <VBox prefHeight="586.0" prefWidth="167.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Ian Wright and Owen Krause" wrappingWidth="137.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Kyla Driscoll Lindsey Mraz" wrappingWidth="137.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="38.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Audrey Mongillo and Emre Sabaz" wrappingWidth="137.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="42.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Connor Ehrensperger and Jonathan Golden" wrappingWidth="137.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="42.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Joseph Carderelli and Connor Ehrensperger" wrappingWidth="137.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </VBox>
+                                <VBox prefHeight="580.0" prefWidth="795.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Audio/Visual" wrappingWidth="125.341796875">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -113,7 +200,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Request for devices like TVs, speakers, and others">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -121,7 +208,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Information Technology">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Information Technology">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -129,7 +216,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Request for devices or software to be installed or fixed">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -137,7 +224,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transportation">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Internal Patient Transportation">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -145,7 +232,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Request for patients to be transported to a new location in a variety of ways">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -153,7 +240,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Sanitation">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -161,7 +248,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Request for spills biohazards, furniture, clothes, and other items to be cleaned">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -169,7 +256,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Security">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Security">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -177,7 +264,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name 1/Name 2">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Request for various levels of threats to be naturalized">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
