@@ -76,6 +76,7 @@ public class AVController {
 
     location.setItems(observableList);
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {

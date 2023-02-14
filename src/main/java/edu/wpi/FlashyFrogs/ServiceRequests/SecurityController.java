@@ -72,6 +72,7 @@ public class SecurityController {
     location.setItems(observableList);
     threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {

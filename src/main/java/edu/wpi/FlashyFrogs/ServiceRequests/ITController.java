@@ -81,6 +81,7 @@ public class ITController {
         .addAll(
             "Are you requesting a new device?", "Are you requesting a current device repaired?");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
