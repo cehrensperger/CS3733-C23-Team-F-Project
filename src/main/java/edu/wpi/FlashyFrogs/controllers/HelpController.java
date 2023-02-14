@@ -1,9 +1,12 @@
 package edu.wpi.FlashyFrogs.controllers;
 
 import java.io.IOException;
+
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
+@GeneratedExclusion
 public class HelpController {
 
   @FXML private Text e1;

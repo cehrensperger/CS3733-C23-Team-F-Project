@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -22,6 +23,7 @@ import lombok.SneakyThrows;
 import org.hibernate.Session;
 
 /** Controller for the node info */
+@GeneratedExclusion
 public class NodeInfoController {
   @FXML private ColumnConstraints thirdColumn;
   @FXML private ColumnConstraints fourthColumn;

@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs;
 
+@GeneratedExclusion
 public class Main {
 
   public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -16,6 +17,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class AddMoveController {
   @FXML private SearchableComboBox<String> locationNameField;
   @FXML private SearchableComboBox<String> nodeIDField;

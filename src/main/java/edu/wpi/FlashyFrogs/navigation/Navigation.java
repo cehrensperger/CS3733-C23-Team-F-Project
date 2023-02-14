@@ -2,8 +2,11 @@ package edu.wpi.FlashyFrogs.navigation;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import java.io.IOException;
+
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import javafx.fxml.FXMLLoader;
 
+@GeneratedExclusion
 public class Navigation {
 
   public static void navigate(final Screen screen) {

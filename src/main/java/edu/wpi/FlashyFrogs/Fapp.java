@@ -19,6 +19,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@GeneratedExclusion
 public class Fapp extends Application {
   @Setter @Getter
   private static boolean isLightMode =

@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.Accounts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 // import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -22,6 +23,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class LoginController implements IController {
 
   @FXML private AnchorPane rootPane;

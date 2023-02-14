@@ -1,5 +1,8 @@
 package edu.wpi.FlashyFrogs.navigation;
 
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
+
+@GeneratedExclusion
 public enum Screen {
   ROOT("views/RequestsHome.fxml"),
   HOME("views/RequestsHome.fxml"),
