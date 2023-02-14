@@ -11,7 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import org.controlsfx.control.PopOver;
 
-public class FeedbackController {
+public class FeedbackController implements IController {
 
   @FXML private MFXTextField feedback;
   @FXML private MFXTextField first;
@@ -56,11 +56,13 @@ public class FeedbackController {
 
   @FXML
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Home");
+    Fapp.handleBack();
   }
 
   @FXML
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("views", "Confirmation");
   }
+
+  public void onClose() {}
 }

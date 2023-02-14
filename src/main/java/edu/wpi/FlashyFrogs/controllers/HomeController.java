@@ -4,11 +4,14 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,9 +21,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
-public class HomeController {
+public class HomeController implements IController {
   @FXML protected TableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected TableColumn<ServiceRequest, String> requestIDCol;
   @FXML protected TableColumn<ServiceRequest, String> initEmpCol;
@@ -28,12 +32,31 @@ public class HomeController {
   @FXML protected TableColumn<ServiceRequest, String> subDateCol;
   @FXML protected TableColumn<ServiceRequest, String> urgencyCol;
   @FXML protected TableColumn<ServiceRequest, String> summaryCol;
-  @FXML protected MFXButton manageButton;
-
   @FXML protected TableView<ServiceRequest> requestTable;
+
+  @FXML protected TableColumn<Move, String> nodeIDCol;
+  @FXML protected TableColumn<Move, String> locationNameCol;
+  @FXML protected TableColumn<Move, Date> dateCol;
+  @FXML protected TableView<Move> moveTable;
+
+  @FXML protected MFXButton manageButton;
   @FXML protected Label tableText;
+  @FXML protected Label tableText2;
+
+  @FXML protected SearchableComboBox<String> filterBox;
+
+  ObjectProperty<String> filterProperty = new SimpleObjectProperty<>("");
 
   public void initialize() {
+    Fapp.resetStack();
+
+    List<String> filters = new ArrayList<String>();
+    filters.add("AudioVisual");
+    filters.add("ComputerService");
+    filters.add("InternalTransport");
+    filters.add("Sanitation");
+    filters.add("Security");
+    filterBox.setItems(FXCollections.observableList(filters));
 
     // need to be the names of the fields
     requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
@@ -44,10 +67,13 @@ public class HomeController {
     urgencyCol.setCellValueFactory(new PropertyValueFactory<>("urgency"));
     summaryCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+    nodeIDCol.setCellValueFactory(new PropertyValueFactory<>("node"));
+    locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+    dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
+
     Session session = CONNECTION.getSessionFactory().openSession();
 
     // todo: remove when login is implemented
-
     CurrentUserEntity.CURRENT_USER.setCurrentUser(session.find(User.class, 2));
 
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
@@ -57,28 +83,66 @@ public class HomeController {
       tableText.setText("Assigned Service Requests");
       manageButton.disarm();
       manageButton.setOpacity(0);
+
+      tableText2.setText("");
     } else {
       tableText.setText("All Service Requests");
       manageButton.arm();
       manageButton.setOpacity(1);
+
+      tableText2.setText("Future Moves");
     }
 
     // FILL TABLES
-    List<ServiceRequest> objects;
+    List<ServiceRequest> serviceRequests;
+    List<Move> moves;
     if (!isAdmin) {
-      objects =
+      serviceRequests =
           session
               .createQuery(
                   "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp", ServiceRequest.class)
               .setParameter("emp", currentUser)
               .getResultList();
+      moveTable.setOpacity(0);
     } else {
-      objects =
+      serviceRequests =
           session
               .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
               .getResultList();
-      requestTable.setItems(FXCollections.observableList(objects));
+
+      moves =
+          session
+              .createQuery("SELECT m from Move m WHERE m.moveDate > current timestamp", Move.class)
+              .getResultList();
+      moveTable.setItems(FXCollections.observableList(moves));
     }
+
+    // refill based on filter
+    filterProperty.addListener(
+        (observable, oldValue, newValue) -> {
+          if (!isAdmin) {
+            requestTable.setItems(
+                FXCollections.observableList(
+                    session
+                        .createQuery(
+                            "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
+                            ServiceRequest.class)
+                        .setParameter("type", newValue)
+                        .setParameter("emp", currentUser)
+                        .getResultList()));
+          } else {
+            requestTable.setItems(
+                FXCollections.observableList(
+                    session
+                        .createQuery(
+                            "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
+                            ServiceRequest.class)
+                        .setParameter("type", newValue)
+                        .setParameter("emp", currentUser)
+                        .getResultList()));
+          }
+        });
+    session.close();
   }
 
   @FXML
@@ -244,4 +308,6 @@ public class HomeController {
   }
 
   public void manageAnnouncements(ActionEvent event) throws IOException {}
+
+  public void onClose() {}
 }

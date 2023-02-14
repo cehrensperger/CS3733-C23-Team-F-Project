@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class NavBarController {
 
@@ -24,11 +25,17 @@ public class NavBarController {
 
   @FXML
   private void handleServiceRequestsButton(ActionEvent event) throws IOException {
-    Fapp.setScene("views", "Sa2");
+    Fapp.setScene("views", "Credits");
   }
 
   @FXML
   private void handleHelpButton(ActionEvent event) throws IOException {
     Fapp.setScene("views", "Help");
+  }
+
+  @FXML
+  private void closeApp() {
+    Stage stage = (Stage) anchorPane.getScene().getWindow();
+    stage.close();
   }
 }

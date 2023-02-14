@@ -126,7 +126,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="requestTable" layoutX="240.0" layoutY="157.0" prefHeight="298.0" prefWidth="1000.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="157.0">
+      <TableView fx:id="requestTable" layoutX="240.0" layoutY="157.0" prefHeight="280.0" prefWidth="1020.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="157.0">
         <columns>
           <TableColumn fx:id="requestTypeCol" prefWidth="100.0" text="Request Type" />
           <TableColumn fx:id="requestIDCol" prefWidth="100.0" text="Request ID" />
@@ -134,7 +134,7 @@
             <TableColumn fx:id="assignedEmpCol" prefWidth="120.0" text="Assigned Employee" />
             <TableColumn fx:id="subDateCol" prefWidth="100.0" text="Date Submitted" />
             <TableColumn fx:id="urgencyCol" text="Urgency" />
-            <TableColumn fx:id="summaryCol" prefWidth="399.0" text="Summary" />
+            <TableColumn fx:id="summaryCol" prefWidth="475.0" text="Summary" />
         </columns>
       </TableView>
       <ImageView fitHeight="112.0" fitWidth="1638.0" layoutX="219.0" pickOnBounds="true" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="-577.0" AnchorPane.topAnchor="0.0">
@@ -142,11 +142,23 @@
             <Image url="@Brigham-Womens-TO-USE.jpg" />
          </image>
       </ImageView>
-      <SearchableComboBox layoutX="240.0" layoutY="470.0" prefHeight="25.0" prefWidth="89.0" promptText="Filter" />
+      <SearchableComboBox fx:id="filterBox" layoutX="1171.0" layoutY="120.0" prefHeight="25.0" prefWidth="164.0" promptText="Filter" AnchorPane.rightAnchor="20.0" />
       <MFXButton fx:id="manageButton" onAction="#manageAnnouncements" prefHeight="60.0" prefWidth="150.0" text="Manage Announcements" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
          </font>
       </MFXButton>
+      <TableView fx:id="moveTable" layoutX="243.0" layoutY="501.0" prefHeight="213.0" prefWidth="756.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="281.0">
+         <columns>
+            <TableColumn fx:id="nodeIDCol" prefWidth="144.0" text="Node ID" />
+            <TableColumn fx:id="locationNameCol" prefWidth="331.0" text="Location Name" />
+            <TableColumn fx:id="dateCol" minWidth="0.0" prefWidth="375.0" text="Date Effective" />
+         </columns>
+      </TableView>
+      <Label fx:id="tableText2" layoutX="240.0" layoutY="459.0" text="Future Moves">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

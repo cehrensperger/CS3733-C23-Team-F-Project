@@ -1,8 +1,10 @@
 package edu.wpi.FlashyFrogs;
 
+import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Stack;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,6 +27,10 @@ public class Fapp extends Application {
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
   private static NavBarController controller;
+
+  private static IController iController;
+
+  public static Stack<String> prevPage = new Stack<String>();
 
   @Override
   public void init() {
@@ -60,10 +66,19 @@ public class Fapp extends Application {
 
   @SneakyThrows
   public static void setScene(String packageName, String sceneName) {
-    Parent root =
-        FXMLLoader.load(
+    prevPage.push(packageName + "," + sceneName);
+
+    if (iController != null) {
+      iController.onClose();
+    }
+
+    FXMLLoader loader =
+        new FXMLLoader(
             Objects.requireNonNull(
                 Fapp.class.getResource(packageName + "/" + sceneName + ".fxml")));
+    Parent root = loader.load();
+    iController = loader.getController();
+
     AnchorPane mainAnchorPane = controller.getAnchorPane();
 
     mainAnchorPane.getChildren().clear();
@@ -72,6 +87,7 @@ public class Fapp extends Application {
     AnchorPane.setBottomAnchor(root, 0.0);
     AnchorPane.setLeftAnchor(root, 0.0);
     AnchorPane.setRightAnchor(root, 0.0);
+
     // Scene scene = new Scene(root);
     // apply CSS styling to pages whenever we switch to them
     //    rootPane
@@ -98,6 +114,17 @@ public class Fapp extends Application {
     //    primaryStage.setScene(scene);
     //    primaryStage.setMaximized(true);
     //    primaryStage.show();
+  }
+
+  public static void handleBack() throws IOException {
+    prevPage.pop();
+    String[] page = prevPage.pop().split(",");
+    Fapp.setScene(page[0], page[1]);
+  }
+
+  public static void resetStack() {
+    prevPage.clear();
+    prevPage.push("views,Home");
   }
 
   @Override
