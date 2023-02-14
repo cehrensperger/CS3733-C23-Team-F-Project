@@ -207,24 +207,27 @@ public class PathfindingController implements IController {
             // set hover behavior for each circle
             // TODO: change this to click behavior like in the map data editor
 
-          }
-          // get location name of the node in the path to check against the start and end locations
-          // getCurrentLocation() creates its own session but map already has one running,
-          // so we have to use that one
+            // get location name of the node in the path to check against the start and end
+            // locations
+            // getCurrentLocation() creates its own session but map already has one running,
+            // so we have to use that one
 
-          LocationName nodeLocation = node.getCurrentLocation(mapController.getMapSession()).get(0);
+            LocationName nodeLocation =
+                node.getCurrentLocation(mapController.getMapSession()).get(0);
 
-          // if the node location is null, don't attempt to check it against the start and end text
-          if (nodeLocation != null
-              && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
-            circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-            setHoverBehavior(circle, node);
-            circle.setOpacity(1);
-          } else if (nodeLocation != null
-              && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
-            circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-            setHoverBehavior(circle, node);
-            circle.setOpacity(1);
+            // if the node location is null, don't attempt to check it against the start and end
+            // text
+            if (nodeLocation != null
+                && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
+              circle.setFill(Paint.valueOf(Color.GREEN.toString()));
+              setHoverBehavior(circle, node);
+              circle.setOpacity(1);
+            } else if (nodeLocation != null
+                && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
+              circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+              setHoverBehavior(circle, node);
+              circle.setOpacity(1);
+            }
           }
         }
       }
