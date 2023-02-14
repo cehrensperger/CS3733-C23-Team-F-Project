@@ -19,6 +19,8 @@ public class CSVMaker {
     makeNodesCSV(session);
     makeMovesCSV(session);
     makeLocationsCSV(session);
+
+    session.close();
   }
 
   private static void makeEdgesCSV(Session session) {

@@ -12,6 +12,12 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NextFloorPopupController;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -29,12 +35,6 @@ import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
-
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 @GeneratedExclusion
 public class PathfindingController implements IController {
@@ -122,7 +122,11 @@ public class PathfindingController implements IController {
 
           // If the last path is valid
           if (lastPath != null) {
-            drawPath(); // Draw it
+            try {
+              drawPath(); // Draw it
+            } catch (IOException e) {
+              throw new RuntimeException(e); // change to display error message maybe?
+            }
           }
         });
 
@@ -204,10 +208,37 @@ public class PathfindingController implements IController {
   }
 
   /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */
-  private void drawPath() {
+  private void drawPath() throws IOException {
     // Color any edges on the map
+    Node prevNode = lastPath.get(0);
     for (int i = 1; i < lastPath.size(); i++) { // For each line in the path
-      Node thisNode = lastPath.get(i); // Get the ndoe
+      Node thisNode = lastPath.get(i); // Get the node
+
+      String nextFloor = thisNode.getFloor().floorNum;
+
+      if (!nextFloor.equals(this.floorProperty.getValue().toString())) {
+        FXMLLoader loader =
+            new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
+        PopOver goToNext = new PopOver(loader.load());
+
+        NextFloorPopupController controller = loader.getController();
+        controller.setPathfindingController(this);
+        //        controller.setMessage("Your path goes to Floor " + nextFloor + ".");
+
+        Circle circle = mapController.getNodeToCircleMap().get(prevNode);
+        if (circle != null) {
+          circle.setFill(Paint.valueOf(Color.YELLOW.toString()));
+          circle.setOpacity(1);
+
+          goToNext.show(circle);
+          goToNext.setAutoHide(false);
+          goToNext.setAutoFix(false);
+          goToNext.detach();
+          goToNext.setX(250);
+          goToNext.setY(20);
+          goToNext.setTitle("Your path goes to \nFloor " + nextFloor + ".");
+        }
+      }
 
       // If the node is on this floor
       if (thisNode.getFloor().equals(mapController.getFloor())) {
@@ -237,6 +268,7 @@ public class PathfindingController implements IController {
           line.setStrokeWidth(5);
         }
       }
+      prevNode = thisNode;
     }
 
     // Get the first node, to draw it
