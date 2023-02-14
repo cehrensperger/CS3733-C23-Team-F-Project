@@ -10,6 +10,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -34,7 +35,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
-public class PathfindingController {
+public class PathfindingController implements IController {
 
   @FXML private SearchableComboBox<String> startingBox;
   @FXML private SearchableComboBox<String> destinationBox;
@@ -132,8 +133,7 @@ public class PathfindingController {
   }
 
   public void handleBack() throws IOException {
-    mapController.exit();
-    Fapp.setScene("views", "Home");
+    Fapp.handleBack();
   }
 
   private void hideAll() {
@@ -334,5 +334,9 @@ public class PathfindingController {
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
+  }
+
+  public void onClose() {
+    mapController.exit();
   }
 }

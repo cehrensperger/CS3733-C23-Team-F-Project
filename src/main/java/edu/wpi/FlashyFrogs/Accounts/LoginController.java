@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -16,7 +17,7 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 
-public class LoginController {
+public class LoginController implements IController {
 
   @FXML private AnchorPane rootPane;
   @FXML private TextField username;
@@ -90,4 +91,6 @@ public class LoginController {
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("views", "LoginAdministrator");
   }
+
+  public void onClose() {}
 }

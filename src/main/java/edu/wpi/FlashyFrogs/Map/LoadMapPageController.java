@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.*;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class LoadMapPageController {
+public class LoadMapPageController implements IController {
   @FXML private Label nodesFileLabel;
   @FXML private Label edgesFileLabel;
   @FXML private Label locationsFileLabel;
@@ -113,4 +114,6 @@ public class LoadMapPageController {
     Node node = (Node) event.getSource();
     popOver.show(node.getScene().getWindow());
   }
+
+  public void onClose() {}
 }

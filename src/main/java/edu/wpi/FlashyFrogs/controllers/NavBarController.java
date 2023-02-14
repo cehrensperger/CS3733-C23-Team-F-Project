@@ -25,7 +25,7 @@ public class NavBarController {
 
   @FXML
   private void handleServiceRequestsButton(ActionEvent event) throws IOException {
-    Fapp.setScene("views", "Sa2");
+    Fapp.setScene("views", "Credits");
   }
 
   @FXML

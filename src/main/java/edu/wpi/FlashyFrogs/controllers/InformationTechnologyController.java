@@ -1,6 +1,3 @@
 package edu.wpi.FlashyFrogs.controllers;
 
-public class InformationTechnologyController {
-
-
-}
+public class InformationTechnologyController {}

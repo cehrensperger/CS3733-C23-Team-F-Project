@@ -1,18 +1,15 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.ComputerService;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import jakarta.persistence.RollbackException;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.Connection;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.RollbackException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,8 +21,6 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 public class HoldITController {
 
@@ -72,7 +67,7 @@ public class HoldITController {
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
-            session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
     objects.sort(String::compareTo);
 
@@ -93,18 +88,17 @@ public class HoldITController {
 
       // check
       if (number.getText().equals("")
-              || location.getValue().toString().equals("")
-              || device.getValue().toString().equals("")
-              || repair.getValue().toString().equals("")
-              || type.getText().equals("")
-              ||  model.getText().equals("")
-              || description.getText().equals("")) {
+          || location.getValue().toString().equals("")
+          || device.getValue().toString().equals("")
+          || repair.getValue().toString().equals("")
+          || type.getText().equals("")
+          || model.getText().equals("")
+          || description.getText().equals("")) {
         throw new NullPointerException();
       }
 
-
       ComputerService informationTechnology = new ComputerService();
-      //this needs to be updated when database is fixed
+      // this needs to be updated when database is fixed
       /*informationTechnology.setNumber(number.getText());
       informationTechnology.setLocation(session.find(LocationName.class, location.getValue().toString()));
       informationTechnology.setNewDevice(device.getValue().toString());
@@ -195,6 +189,8 @@ public class HoldITController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Home");
+    Fapp.handleBack();
   }
+
+  public void onClose() {}
 }
