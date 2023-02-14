@@ -47,7 +47,7 @@ public class CSVUploadController {
       fileChooser
           .getExtensionFilters()
           .addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-      File selectedFile = fileChooser.showOpenDialog(null);
+      File selectedFile = fileChooser.showOpenDialog(popOver);
       try {
         Scanner fileScanner = new Scanner(selectedFile);
         if (fileScanner.hasNextLine()) {
@@ -89,8 +89,8 @@ public class CSVUploadController {
       Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
       Transaction deleteTransaction = session.beginTransaction(); // Clearing transaction
 
-      session.createMutationQuery("DELETE FROM Edge").executeUpdate(); // Drop edge
       session.createMutationQuery("DELETE FROM Move").executeUpdate(); // Drop move
+      session.createMutationQuery("DELETE FROM Edge").executeUpdate(); // Drop edge
       session.createMutationQuery("DELETE FROM LocationName").executeUpdate(); // Drop location
       session.createMutationQuery("DELETE FROM Node").executeUpdate(); // Drop node
 
@@ -107,20 +107,10 @@ public class CSVUploadController {
       } catch (FileNotFoundException e) {
         throw new RuntimeException(e);
       }
-
-      try {
-        CSVParser.readFiles(
-            fileData.getNodesFile(),
-            fileData.getEdgesFile(),
-            fileData.getLocationsFile(),
-            fileData.getMovesFile(),
-            DBConnection.CONNECTION.getSessionFactory());
-      } catch (FileNotFoundException e) {
-        throw new RuntimeException(e);
-      }
     } else {
       errorMessage.setText("Please select 4 files with the proper column headers.");
     }
+    popOver.hide();
   }
 
   public void handleBackup() {
@@ -132,7 +122,6 @@ public class CSVUploadController {
     fileData.setEdgesFile(null);
     fileData.setLocationsFile(null);
     fileData.setMovesFile(null);
-
     popOver.hide();
   }
 

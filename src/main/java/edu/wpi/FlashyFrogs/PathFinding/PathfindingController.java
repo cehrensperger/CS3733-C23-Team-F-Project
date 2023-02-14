@@ -1,6 +1,5 @@
 package edu.wpi.FlashyFrogs.PathFinding;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
@@ -132,7 +131,8 @@ public class PathfindingController implements IController {
         });
 
     // Get whether the user is an admin
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    //    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    boolean isAdmin = true;
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
