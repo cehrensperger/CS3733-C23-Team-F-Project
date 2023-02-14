@@ -77,6 +77,7 @@ public class HoldSecurityController {
             "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
     threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {

@@ -115,6 +115,7 @@ public class HoldTransportController {
     equipment.getItems().addAll("None", "Cane", "Walker", "Wheel Chair", "Bed");
     mode.getItems().addAll("Self", "With Help", "Equipment Needed");
     isolation.getItems().addAll("Yes", "No");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {

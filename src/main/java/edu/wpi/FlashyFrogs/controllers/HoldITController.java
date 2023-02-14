@@ -77,6 +77,7 @@ public class HoldITController {
     device.getItems().addAll("Yes", "No");
     repair.getItems().addAll("Yes", "No");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {

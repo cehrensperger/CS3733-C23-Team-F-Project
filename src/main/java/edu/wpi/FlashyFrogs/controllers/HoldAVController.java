@@ -84,6 +84,7 @@ public class HoldAVController {
         .addAll(
             "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {

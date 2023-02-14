@@ -85,6 +85,7 @@ public class HoldSanitationController {
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     isolation.getItems().addAll("Yes", "No");
     biohazard.getItems().addAll("Yes", "No");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
