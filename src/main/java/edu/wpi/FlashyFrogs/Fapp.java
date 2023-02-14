@@ -127,6 +127,10 @@ public class Fapp extends Application {
     prevPage.push("views,Home");
   }
 
+  public static void logIn() {
+    controller.logIn();
+  }
+
   @Override
   public void stop() {
     log.info("Shutting Down");
