@@ -39,13 +39,6 @@ public class ComputerService extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  private String reason;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
   private String description;
 
   @Basic
@@ -69,7 +62,6 @@ public class ComputerService extends ServiceRequest {
    * @param dateNeededBy the Date the Computer Service is needed by
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
-   * @param reason the String to use in the issue field
    * @param description the String to use in the issue field
    * @param deviceType the deviceTyper to use in the deviceType field
    * @param serviceType the ServiceType to use in the serviceType field
@@ -83,7 +75,6 @@ public class ComputerService extends ServiceRequest {
       @NonNull Urgency urgency,
       @NonNull DeviceType deviceType,
       @NonNull String model,
-      @NonNull String reason,
       @NonNull String description,
       @NonNull ServiceType serviceType,
       @NonNull String bestContact) {
@@ -96,7 +87,6 @@ public class ComputerService extends ServiceRequest {
     super.setRequestType("ComputerService");
     this.deviceType = deviceType;
     this.model = model;
-    this.reason = reason;
     this.description = description;
     this.serviceType = serviceType;
     this.bestContact = bestContact;
