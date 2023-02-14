@@ -16,7 +16,6 @@ public class NavBarController {
   @FXML private AnchorPane anchorPane;
   @FXML private Line line1;
   @FXML private Line line2;
-  @FXML private MFXButton closeButton;
   @FXML private Button homeButton;
   @FXML private Button helpButton;
   @FXML private Button srButton;
@@ -24,31 +23,29 @@ public class NavBarController {
 
   @FXML
   public void initialize() {
+    menu.setDisable(true);
     menu.hide();
     srButton.setOpacity(0);
-    srButton.disarm();
+    srButton.setDisable(true);
     homeButton.setOpacity(0);
-    homeButton.disarm();
+    homeButton.setDisable(true);
     helpButton.setOpacity(0);
-    helpButton.disarm();
+    helpButton.setDisable(true);
     line1.setOpacity(0);
     line2.setOpacity(0);
   }
 
   public void logIn() {
     menu.show();
+    menu.setDisable(false);
     srButton.setOpacity(1);
-    srButton.arm();
+    srButton.setDisable(false);
     homeButton.setOpacity(1);
-    homeButton.arm();
+    homeButton.setDisable(false);
     helpButton.setOpacity(1);
-    helpButton.arm();
+    helpButton.setDisable(false);
     line1.setOpacity(1);
     line2.setOpacity(1);
-
-    closeButton.setOpacity(0);
-    closeButton.disarm();
-    closeButton.setMouseTransparent(true);
   }
 
   public AnchorPane getAnchorPane() {
@@ -58,6 +55,11 @@ public class NavBarController {
   @FXML
   private void handleHomeButton(ActionEvent event) throws IOException {
     Fapp.setScene("views", "Home");
+  }
+
+  @FXML
+  private void handleSignOut(ActionEvent event) throws IOException {
+    Fapp.setScene("Account", "Login");
   }
 
   @FXML
