@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import lombok.Getter;
@@ -29,6 +28,8 @@ class MapEntity {
   private final Map<Edge, Line> edgeToLineMap = new HashMap<>(); // Map for edge to lien
 
   @Setter private BiConsumer<Node, Circle> nodeCreation; // Callback to be called on node creation
+
+  @Setter private BiConsumer<Edge, Line> edgeCreation; // Callback to be called on edge creation
 
   @Getter @NonNull
   private final Session mapSession = DBConnection.CONNECTION.getSessionFactory().openSession();
@@ -77,7 +78,7 @@ class MapEntity {
     List<Edge> edgesToRemove =
         edgeToLineMap.keySet().stream()
             .filter((edge) -> (edge.getNode1().equals(node) || edge.getNode2().equals(node)))
-            .collect(Collectors.toList());
+            .toList();
 
     // For each edge to remove
     for (Edge toRemove : edgesToRemove) {
@@ -93,6 +94,11 @@ class MapEntity {
    */
   void addEdge(@NonNull Edge edge, @NonNull Line line) {
     edgeToLineMap.put(edge, line); // Put the edge into the map
+
+    // If the edge creation is valid
+    if (edgeCreation != null) {
+      edgeCreation.accept(edge, line); // Call it
+    }
   }
 
   /**

@@ -64,7 +64,10 @@ public class SanitationTest {
           new Date(2023 - 1 - 31),
           new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT,
-          new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"));
+          new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"),
+          true,
+          Sanitation.BiohazardLevel.BSL4,
+          "somethign spilled");
 
   /** Reset testSan after each test */
   @BeforeEach
@@ -80,10 +83,13 @@ public class SanitationTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testSan.setAssignedEmp(assignedEmp);
-    testSan.setDateOfIncident(new Date(2023 - 1 - 31));
+    testSan.setDate(new Date(2023 - 1 - 31));
     testSan.setDateOfSubmission(new Date(2023 - 2 - 1));
     testSan.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
     testSan.setLocation(new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"));
+    testSan.setIsolation(false);
+    testSan.setBiohazard(Sanitation.BiohazardLevel.BSL4);
+    testSan.setDescription("somethign spilled");
   }
 
   /** Tests setter for sanitationType */
@@ -118,7 +124,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            new LocationName("A", LocationName.LocationType.BATH, "B"));
+            new LocationName("A", LocationName.LocationType.BATH, "B"),
+            false,
+            Sanitation.BiohazardLevel.BSL4,
+            "bb");
     test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -135,7 +144,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.VERY_URGENT,
-            null);
+            null,
+            true,
+            Sanitation.BiohazardLevel.BSL4,
+            "b");
     test.setEmp(null);
 
     // Assert that the location is correct
@@ -168,7 +180,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.MODERATELY_URGENT,
-            null);
+            null,
+            false,
+            Sanitation.BiohazardLevel.BSL1,
+            "false");
     test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -185,7 +200,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            new LocationName("B", LocationName.LocationType.INFO, "E"));
+            new LocationName("B", LocationName.LocationType.INFO, "E"),
+            false,
+            Sanitation.BiohazardLevel.BSL4,
+            "something happened idk what");
     test.setAssignedEmp(null);
     test.setAssignedEmp(null);
 
@@ -195,10 +213,10 @@ public class SanitationTest {
 
   /** Tests setter for dateOfIncident */
   @Test
-  void setDateOfIncidentTest() {
+  void setDateTest() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testSan.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testSan.getDateOfIncident());
+    testSan.setDate(newDOI);
+    assertEquals(newDOI, testSan.getDate());
   }
 
   /** Tests setter for dateOfSubmission */
@@ -241,7 +259,10 @@ public class SanitationTest {
             Date.from(Instant.ofEpochSecond(100)),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            null);
+            null,
+            false,
+            Sanitation.BiohazardLevel.BSL4,
+            "BAD");
     test.setLocation(new LocationName("a", LocationName.LocationType.INFO, "B"));
 
     // Assert that the location is correct
@@ -258,11 +279,35 @@ public class SanitationTest {
             new Date(),
             Date.from(Instant.ofEpochSecond(10000)),
             ServiceRequest.Urgency.MODERATELY_URGENT,
-            null);
+            null,
+            false,
+            Sanitation.BiohazardLevel.BSL4,
+            "B");
     test.setLocation(null);
 
     // Assert that the location is correct
     assertNull(test.getLocation());
+  }
+
+  /** Test that ensures setting isolation works */
+  @Test
+  public void setIsolationTest() {
+    testSan.setIsolation(true);
+    assertEquals(true, testSan.getIsolation());
+  }
+
+  /** Test that ensures setting biohazard level works */
+  @Test
+  public void setBiohazardLevelTest() {
+    testSan.setBiohazard(Sanitation.BiohazardLevel.BSL2);
+    assertEquals(Sanitation.BiohazardLevel.BSL2, testSan.getBiohazard());
+  }
+
+  /** Test that ensures that the description is set correctly */
+  @Test
+  public void setDescriptionTest() {
+    testSan.setDescription("bbb");
+    assertEquals("bbb", testSan.getDescription());
   }
 
   /** Checks to see if toString makes a string in the same format specified in Sanitation.java */
@@ -270,6 +315,32 @@ public class SanitationTest {
   void toStringTest() {
     String sanToString = testSan.toString();
     assertEquals(sanToString, testSan.getClass().getSimpleName() + "_" + testSan.getId());
+  }
+
+  /** Checks to see if toString in Biohazard returns correct value */
+  @Test
+  void testBiohazardToString() {
+    Sanitation.BiohazardLevel bsl1 = Sanitation.BiohazardLevel.BSL1;
+    Sanitation.BiohazardLevel bsl2 = Sanitation.BiohazardLevel.BSL2;
+    Sanitation.BiohazardLevel bsl3 = Sanitation.BiohazardLevel.BSL3;
+    Sanitation.BiohazardLevel bsl4 = Sanitation.BiohazardLevel.BSL4;
+
+    assertEquals("BSL-1", bsl1.toString());
+    assertEquals("BSL-2", bsl2.toString());
+    assertEquals("BSL-3", bsl3.toString());
+    assertEquals("BSL-4", bsl4.toString());
+  }
+
+  /** Checks to see if toString in SanitationType returns correct value */
+  @Test
+  void testSanitationTypeToString() {
+    Sanitation.SanitationType mopping = Sanitation.SanitationType.MOPPING;
+    Sanitation.SanitationType sweeping = Sanitation.SanitationType.SWEEPING;
+    Sanitation.SanitationType vacuuming = Sanitation.SanitationType.VACUUMING;
+
+    assertEquals("mopping", mopping.toString());
+    assertEquals("sweeping", sweeping.toString());
+    assertEquals("vacuuming", vacuuming.toString());
   }
 
   /**
@@ -294,7 +365,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.VERY_URGENT,
-            location);
+            location,
+            true,
+            Sanitation.BiohazardLevel.BSL2,
+            "goode");
     session.persist(av);
 
     // Assert that the one thing in the database matches this
@@ -311,7 +385,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.VERY_URGENT,
-            location);
+            location,
+            true,
+            Sanitation.BiohazardLevel.BSL2,
+            "goode");
     session.persist(av2); // Load av2 into the DB, set its ID
 
     assertNotEquals(av, av2); // Assert av and av2 aren't equal
@@ -327,7 +404,10 @@ public class SanitationTest {
             Date.from(Instant.ofEpochSecond(100000)),
             Date.from(Instant.EPOCH),
             ServiceRequest.Urgency.NOT_URGENT,
-            null);
+            null,
+            false,
+            Sanitation.BiohazardLevel.BSL3,
+            "description");
     session.persist(av3); // Load av3 into the DB, set its ID
 
     assertNotEquals(av, av3); // Assert av and av3 aren't equal
@@ -356,7 +436,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.MODERATELY_URGENT,
-            location);
+            location,
+            false,
+            Sanitation.BiohazardLevel.BSL4,
+            "asdf");
     session.persist(av);
 
     // Remove the location
@@ -394,7 +477,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.VERY_URGENT,
-            location);
+            location,
+            true,
+            Sanitation.BiohazardLevel.BSL1,
+            "description");
     session.persist(av);
 
     // Change the location
@@ -434,7 +520,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            location);
+            location,
+            false,
+            Sanitation.BiohazardLevel.BSL4,
+            "asdf");
     session.persist(av);
 
     session.flush();
@@ -472,7 +561,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.VERY_URGENT,
-            null);
+            null,
+            true,
+            Sanitation.BiohazardLevel.BSL1,
+            "asdf");
     session.persist(av);
 
     // Change the enp
@@ -515,7 +607,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            null);
+            null,
+            true,
+            Sanitation.BiohazardLevel.BSL4,
+            "asdf");
     session.persist(av);
 
     // Commit stuff so we can access it later (it's persisted)
@@ -565,7 +660,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.MODERATELY_URGENT,
-            location);
+            location,
+            true,
+            Sanitation.BiohazardLevel.BSL3,
+            "BSL3");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -608,7 +706,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            null);
+            null,
+            true,
+            Sanitation.BiohazardLevel.BSL2,
+            "asdf");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -660,7 +761,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            location);
+            location,
+            false,
+            Sanitation.BiohazardLevel.BSL2,
+            "asdf");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -705,7 +809,10 @@ public class SanitationTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            location);
+            location,
+            true,
+            Sanitation.BiohazardLevel.BSL4,
+            "asdf");
     av.setAssignedEmp(emp);
     session.persist(av);
 

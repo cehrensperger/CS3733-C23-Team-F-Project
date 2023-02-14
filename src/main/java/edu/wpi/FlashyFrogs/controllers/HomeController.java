@@ -2,8 +2,9 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
@@ -24,6 +25,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class HomeController implements IController {
   @FXML protected TableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected TableColumn<ServiceRequest, String> requestIDCol;
@@ -73,13 +75,10 @@ public class HomeController implements IController {
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
 
-    Session session = CONNECTION.getSessionFactory().openSession();
-
-    // todo: remove when login is implemented
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(session.find(User.class, 2));
-
-    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    User currentUser = new User("a", "a", "a", User.EmployeeType.ADMIN, new Department());
+    boolean isAdmin = true;
+    //    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    //    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
@@ -94,6 +93,7 @@ public class HomeController implements IController {
 
       tableText2.setText("Future Moves");
     }
+    Session session = CONNECTION.getSessionFactory().openSession();
 
     // FILL TABLES
     List<ServiceRequest> serviceRequests;
@@ -191,52 +191,6 @@ public class HomeController implements IController {
     popOver.show(node.getScene().getWindow());
   }
 
-  @FXML
-  public void handleClose(ActionEvent event) throws IOException {
-    //    stage = (Stage) rootPane.getScene().getWindow();
-    //    stage.close();
-  }
-
-  public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "RequestsHome");
-  }
-
-  public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "MapEditorView");
-  }
-
-  public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "PathFinding");
-  }
-
-  public void handleSecurityMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SecurityService");
-  }
-
-  public void handleTransportMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Transport");
-  }
-
-  public void handleSanitationMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SanitationService");
-  }
-
-  public void handleAudioVisualMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AudioVisualService");
-  }
-
-  public void handleComputerMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ComputerService");
-  }
-
-  public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "LoadMapPage");
-  }
-
-  public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Feedback");
-  }
-
   /**
    * Change the color theme to Light Mode when the Color Scheme > Light Mode option is selected on
    * EmployeeHome.fxml.
@@ -330,4 +284,31 @@ public class HomeController implements IController {
   public void manageAnnouncements(ActionEvent event) throws IOException {}
 
   public void onClose() {}
+
+  public void viewLogins(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Accounts", "LoginAdministrator");
+  }
+
+  public void handleManageCSV(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/CSVUpload.fxml"));
+    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+
+    popOver.setTitle("CSV Manager");
+    CSVUploadController controller = newLoad.getController();
+    controller.setPopOver(popOver);
+
+    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    javafx.scene.Node node =
+        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
+    popOver.show(node); // display the popover
+
+    //    popOver
+    //            .showingProperty()
+    //            .addListener(
+    //                    (observable, oldValue, newValue) -> {
+    //                      if (!newValue) {
+    //                        floorSelectorButton.setDisable(false);
+    //                      }
+    //                    });
+  }
 }

@@ -18,6 +18,9 @@ public class CSVMaker {
     makeMovesCSV(session);
     makeLocationsCSV(session);
     makeServiceRequestCSV(session);
+
+    session.close();
+
   }
 
   private static void makeEdgesCSV(Session session) {
@@ -111,7 +114,7 @@ public class CSVMaker {
       for (ServiceRequest serviceRequest : serviceRequests) {
 
         fileWriter.write(serviceRequest.getId() + ",");
-        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        //fileWriter.write(serviceRequest.getDateOfIncident() + ",");
         fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
         fileWriter.write(serviceRequest.getRequestType() + ",");
         fileWriter.write(serviceRequest.getStatus() + ",");
@@ -144,13 +147,13 @@ public class CSVMaker {
 
       for (AudioVisual serviceRequest : serviceRequests) {
 
-        fileWriter.write(serviceRequest.getPatientFirstName() + ",");
-        fileWriter.write(serviceRequest.getPatientMiddleName() + ",");
-        fileWriter.write(serviceRequest.getPatientLastName() + ",");
-        fileWriter.write(serviceRequest.getLocation() + ",");
-        fileWriter.write(serviceRequest.getAccommodationType().AccommodationType + ",");
-        fileWriter.write(serviceRequest.getDateOfBirth() + ",");
-        fileWriter.write(serviceRequest.getDateOfBirth() + ",");
+//        fileWriter.write(serviceRequest.getPatientFirstName() + ",");
+//        fileWriter.write(serviceRequest.getPatientMiddleName() + ",");
+//        fileWriter.write(serviceRequest.getPatientLastName() + ",");
+//        fileWriter.write(serviceRequest.getLocation() + ",");
+//        fileWriter.write(serviceRequest.getAccommodationType().AccommodationType + ",");
+//        fileWriter.write(serviceRequest.getDateOfBirth() + ",");
+//        fileWriter.write(serviceRequest.getDateOfBirth() + ",");
 
       }
 
@@ -170,7 +173,7 @@ public class CSVMaker {
       for (ServiceRequest serviceRequest : serviceRequests) {
 
         fileWriter.write(serviceRequest.getId() + ",");
-        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        //fileWriter.write(serviceRequest.getDateOfIncident() + ",");
         fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
         fileWriter.write(serviceRequest.getRequestType() + ",");
         fileWriter.write(serviceRequest.getStatus() + ",");
@@ -205,7 +208,7 @@ public class CSVMaker {
       for (ServiceRequest serviceRequest : serviceRequests) {
 
         fileWriter.write(serviceRequest.getId() + ",");
-        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        //fileWriter.write(serviceRequest.getDateOfIncident() + ",");
         fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
         fileWriter.write(serviceRequest.getRequestType() + ",");
         fileWriter.write(serviceRequest.getStatus() + ",");
@@ -239,7 +242,7 @@ public class CSVMaker {
       for (ServiceRequest serviceRequest : serviceRequests) {
 
         fileWriter.write(serviceRequest.getId() + ",");
-        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        //fileWriter.write(serviceRequest.getDateOfIncident() + ",");
         fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
         fileWriter.write(serviceRequest.getRequestType() + ",");
         fileWriter.write(serviceRequest.getStatus() + ",");
@@ -273,7 +276,7 @@ public class CSVMaker {
       for (ServiceRequest serviceRequest : serviceRequests) {
 
         fileWriter.write(serviceRequest.getId() + ",");
-        fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        //fileWriter.write(serviceRequest.getDateOfIncident() + ",");
         fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
         fileWriter.write(serviceRequest.getRequestType() + ",");
         fileWriter.write(serviceRequest.getStatus() + ",");

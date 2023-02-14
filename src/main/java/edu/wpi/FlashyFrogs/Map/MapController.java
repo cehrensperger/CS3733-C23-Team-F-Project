@@ -1,11 +1,13 @@
 package edu.wpi.FlashyFrogs.Map;
 
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -23,12 +25,18 @@ import org.hibernate.Session;
  * want to use this. Listens for additions/removals of nodes/edges/locations in order to
  * automatically display changes to the map
  */
+@GeneratedExclusion
 public class MapController {
   @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
   private Pane currentDrawingPane; // The current drawing pane to use to draw nodes/edges
 
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
+
+  public void initialize() {
+    gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
+    Platform.runLater(() -> gesturePane.zoomTo(0.001, new javafx.geometry.Point2D(2500, 1700)));
+  }
 
   /**
    * Sets the node creation function
@@ -37,6 +45,15 @@ public class MapController {
    */
   public void setNodeCreation(BiConsumer<Node, Circle> function) {
     mapEntity.setNodeCreation(function);
+  }
+
+  /**
+   * Set the edge creation function
+   *
+   * @param function the function to set the edge creation to. May be null
+   */
+  public void setEdgeCreation(BiConsumer<Edge, Line> function) {
+    mapEntity.setEdgeCreation(function);
   }
 
   /**
