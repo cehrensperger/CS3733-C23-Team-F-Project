@@ -60,6 +60,7 @@ public class InternalTransportTest {
       new InternalTransport(
           "patient id",
           InternalTransport.VisionStatus.GLASSES,
+          InternalTransport.HearingStatus.AID_BOTH,
           InternalTransport.ConsciousnessStatus.MODERATE,
           InternalTransport.HealthStatus.HEALTHY,
           new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
@@ -80,6 +81,7 @@ public class InternalTransportTest {
   public void resetTestInternalTransport() {
     testIntTransp.setPatientID("patient id");
     testIntTransp.setVision(InternalTransport.VisionStatus.GLASSES);
+    testIntTransp.setHearing(InternalTransport.HearingStatus.AID_BOTH);
     testIntTransp.setConsciousness(InternalTransport.ConsciousnessStatus.MODERATE);
     testIntTransp.setHealthStatus(InternalTransport.HealthStatus.HEALTHY);
     testIntTransp.setLocation(
@@ -128,6 +130,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
@@ -154,6 +157,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
@@ -196,6 +200,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
@@ -222,6 +227,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
@@ -265,6 +271,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             null,
@@ -291,6 +298,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             null,
@@ -334,6 +342,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
@@ -361,6 +370,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
@@ -435,6 +445,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             loc1,
@@ -466,6 +477,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             loc1,
@@ -489,6 +501,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id 2",
             InternalTransport.VisionStatus.BLIND,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.GOOD,
             InternalTransport.HealthStatus.MODERATE,
             loc2,
@@ -538,6 +551,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             null,
@@ -587,10 +601,11 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
-            newLocation,
             location,
+            newLocation,
             ServiceRequest.Urgency.MODERATELY_URGENT,
             InternalTransport.Equipment.NONE,
             new Date(2023 - 1 - 31),
@@ -640,6 +655,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             location,
@@ -689,6 +705,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             location,
@@ -708,7 +725,7 @@ public class InternalTransportTest {
     session
         .createMutationQuery(
             "UPDATE LocationName SET longName = 'newName' WHERE longName = :oldName")
-        .setParameter("oldName", location.getLongName())
+        .setParameter("oldName", newLocation.getLongName())
         .executeUpdate();
 
     // Update the request
@@ -742,6 +759,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             location,
@@ -790,6 +808,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             location,
@@ -842,6 +861,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             null,
@@ -891,6 +911,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             location,
@@ -945,6 +966,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             location,
@@ -1004,6 +1026,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             null,
@@ -1058,6 +1081,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             location,
@@ -1119,6 +1143,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             null,
@@ -1173,6 +1198,7 @@ public class InternalTransportTest {
         new InternalTransport(
             "patient id",
             InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
             InternalTransport.ConsciousnessStatus.MODERATE,
             InternalTransport.HealthStatus.HEALTHY,
             location,
