@@ -57,13 +57,15 @@ public class ComputerServiceTest {
   ComputerService testCS =
       new ComputerService(
           emp,
+          new LocationName("Name", LocationName.LocationType.EXIT, "name"),
           new Date(2023 - 1 - 31),
           new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT,
           ComputerService.DeviceType.LAPTOP,
           "Lenovo Rogue",
           "Bad battery life",
-          ComputerService.ServiceType.HARDWARE_REPAIR);
+          ComputerService.ServiceType.HARDWARE_REPAIR,
+          "email@example.com");
 
   /** Reset testSan after each test */
   @BeforeEach
@@ -78,13 +80,15 @@ public class ComputerServiceTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testCS.setAssignedEmp(assignedEmp);
-    testCS.setTargetDate(new Date(2023 - 1 - 31));
+    testCS.setLocation(new LocationName("Name", LocationName.LocationType.EXIT, "name"));
+    testCS.setDate(new Date(2023 - 1 - 31));
     testCS.setDateOfSubmission(new Date(2023 - 2 - 1));
     testCS.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
     testCS.setDeviceType(ComputerService.DeviceType.LAPTOP);
     testCS.setModel("Lenovo Rogue");
-    testCS.setIssue("Bad battery life");
+    testCS.setDescription("Bad battery life");
     testCS.setServiceType(ComputerService.ServiceType.HARDWARE_REPAIR);
+    testCS.setBestContact("email@example.com");
   }
 
   /** Tests setter for emp */
@@ -108,13 +112,15 @@ public class ComputerServiceTest {
     ComputerService test =
         new ComputerService(
             null,
+            new LocationName("Name", LocationName.LocationType.EXIT, "name"),
             new Date(),
             new Date(),
             ServiceRequest.Urgency.VERY_URGENT,
             ComputerService.DeviceType.PERSONAL,
             "a",
             "b",
-            ComputerService.ServiceType.CONNECTION_ISSUE);
+            ComputerService.ServiceType.CONNECTION_ISSUE,
+            "email@example.com");
     test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -127,13 +133,15 @@ public class ComputerServiceTest {
     ComputerService test =
         new ComputerService(
             null,
+            new LocationName("Name", LocationName.LocationType.EXIT, "name"),
             new Date(),
             new Date(),
             ServiceRequest.Urgency.VERY_URGENT,
             ComputerService.DeviceType.KIOSK,
             "a",
             "b",
-            ComputerService.ServiceType.MISC);
+            ComputerService.ServiceType.MISC,
+            "email@example.com");
     test.setEmp(null);
 
     // Assert that the location is correct
@@ -162,13 +170,15 @@ public class ComputerServiceTest {
     ComputerService test =
         new ComputerService(
             assignedEmp,
+            new LocationName("Name", LocationName.LocationType.EXIT, "name"),
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
             ComputerService.DeviceType.PERSONAL,
             "a",
             "b",
-            ComputerService.ServiceType.MISC);
+            ComputerService.ServiceType.MISC,
+            "email@example.com");
     test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -181,13 +191,15 @@ public class ComputerServiceTest {
     ComputerService test =
         new ComputerService(
             null,
+            new LocationName("Name", LocationName.LocationType.EXIT, "name"),
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
             ComputerService.DeviceType.KIOSK,
             "b",
             "as",
-            ComputerService.ServiceType.SOFTWARE_REPAIR);
+            ComputerService.ServiceType.SOFTWARE_REPAIR,
+            "email@example.com");
     test.setAssignedEmp(null);
     test.setAssignedEmp(null);
 
@@ -199,8 +211,8 @@ public class ComputerServiceTest {
   @Test
   void setDateOfIncident() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testCS.setTargetDate(newDOI);
-    assertEquals(newDOI, testCS.getTargetDate());
+    testCS.setDate(newDOI);
+    assertEquals(newDOI, testCS.getDate());
   }
 
   /** Tests setter for dateOfSubmission */
@@ -235,8 +247,8 @@ public class ComputerServiceTest {
   /** Tests setter for Issue */
   @Test
   void setIssue() {
-    testCS.setIssue("OONGA BOONGA");
-    assertEquals("OONGA BOONGA", testCS.getIssue());
+    testCS.setDescription("OONGA BOONGA");
+    assertEquals("OONGA BOONGA", testCS.getDescription());
   }
 
   /** Tests setter for serviceType */
@@ -262,13 +274,15 @@ public class ComputerServiceTest {
     ComputerService cs =
         new ComputerService(
             emp,
+            new LocationName("Name", LocationName.LocationType.EXIT, "name"),
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT,
             ComputerService.DeviceType.LAPTOP,
             "Lenovo Rogue",
             "Bad battery life",
-            ComputerService.ServiceType.HARDWARE_REPAIR);
+            ComputerService.ServiceType.HARDWARE_REPAIR,
+            "email@example.com");
     session.persist(cs);
 
     // Assert that the one thing in the database matches this
@@ -285,13 +299,15 @@ public class ComputerServiceTest {
     ComputerService cs2 =
         new ComputerService(
             emp,
+            new LocationName("Name", LocationName.LocationType.EXIT, "name"),
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT,
             ComputerService.DeviceType.LAPTOP,
             "Lenovo Rogue",
             "Bad battery life",
-            ComputerService.ServiceType.HARDWARE_REPAIR);
+            ComputerService.ServiceType.HARDWARE_REPAIR,
+            "email@example.com");
     session.persist(cs2); // Load acs2 into the DB, set its ID
 
     assertNotEquals(cs, cs2); // Assert cs and cs2 aren't equal
@@ -301,13 +317,15 @@ public class ComputerServiceTest {
     ComputerService cs3 =
         new ComputerService(
             emp,
+            new LocationName("Name", LocationName.LocationType.EXIT, "name"),
             new Date(2024 - 2 - 20),
             new Date(2024 - 3 - 21),
             ServiceRequest.Urgency.VERY_URGENT,
             ComputerService.DeviceType.DESKTOP,
             "MacBook Pro",
             "No internet",
-            ComputerService.ServiceType.CONNECTION_ISSUE);
+            ComputerService.ServiceType.CONNECTION_ISSUE,
+            "email@example.com");
     session.persist(cs3); // Load cs3 into the DB, set its ID
 
     assertNotEquals(cs, cs3); // Assert cs and cs3 aren't equal
@@ -336,19 +354,19 @@ public class ComputerServiceTest {
     session.persist(emp);
     session.persist(location);
     // Create the av request we will use
-    AudioVisual av =
-        new AudioVisual(
+    ComputerService cs =
+        new ComputerService(
             emp,
-            new Date(201674 - 2 - 14),
-            new Date(20126 - 1 - 12),
-            ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
-            "a",
-            "d",
-            "jh",
             location,
-            new Date(2002 - 10 - 8));
-    session.persist(av);
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            ComputerService.DeviceType.LAPTOP,
+            "Lenovo Rogue",
+            "Bad battery life",
+            ComputerService.ServiceType.HARDWARE_REPAIR,
+            "email@example.com");
+    session.persist(cs);
 
     session.flush();
 
@@ -358,11 +376,11 @@ public class ComputerServiceTest {
     session.flush();
 
     // Update the request
-    session.refresh(av);
+    session.refresh(cs);
 
     // Assert the location is actually gone
     assertNull(session.find(User.class, emp.getId()));
-    assertNull(av.getEmp()); // Assert the location is null
+    assertNull(cs.getEmp()); // Assert the location is null
 
     transaction.rollback();
     session.close();
@@ -383,13 +401,15 @@ public class ComputerServiceTest {
     ComputerService sr =
         new ComputerService(
             emp,
+            location,
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
             ComputerService.DeviceType.PERSONAL,
             "a",
             "d",
-            ComputerService.ServiceType.MISC);
+            ComputerService.ServiceType.MISC,
+            "email@example.com");
     session.persist(sr);
 
     // Change the enp
@@ -430,13 +450,15 @@ public class ComputerServiceTest {
     ComputerService sr =
         new ComputerService(
             emp,
+            location,
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
             ComputerService.DeviceType.KIOSK,
             "a",
             "d",
-            ComputerService.ServiceType.HARDWARE_REPAIR);
+            ComputerService.ServiceType.HARDWARE_REPAIR,
+            "email@example.com");
     session.persist(sr);
 
     // Commit stuff so we can access it later (it's persisted)
@@ -482,13 +504,15 @@ public class ComputerServiceTest {
     ComputerService sr =
         new ComputerService(
             assignedEmp,
+            location,
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
             ComputerService.DeviceType.PERSONAL,
             "a",
             "d",
-            ComputerService.ServiceType.CONNECTION_ISSUE);
+            ComputerService.ServiceType.CONNECTION_ISSUE,
+            "email@example.com");
     sr.setAssignedEmp(emp);
     session.persist(sr);
 
@@ -529,13 +553,15 @@ public class ComputerServiceTest {
     ComputerService av =
         new ComputerService(
             assignedEmp,
+            location,
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
             ComputerService.DeviceType.PERSONAL,
             "a",
             "d",
-            ComputerService.ServiceType.HARDWARE_REPAIR);
+            ComputerService.ServiceType.HARDWARE_REPAIR,
+            "email@example.com");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -583,13 +609,15 @@ public class ComputerServiceTest {
     ComputerService sr =
         new ComputerService(
             emp,
+            location,
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
             ComputerService.DeviceType.PERSONAL,
             "a",
             "d",
-            ComputerService.ServiceType.CONNECTION_ISSUE);
+            ComputerService.ServiceType.CONNECTION_ISSUE,
+            "email@exampl.com");
     sr.setAssignedEmp(emp);
     session.persist(sr);
 
@@ -630,13 +658,15 @@ public class ComputerServiceTest {
     ComputerService av =
         new ComputerService(
             emp,
+            location,
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
             ComputerService.DeviceType.PERSONAL,
             "a",
             "d",
-            ComputerService.ServiceType.HARDWARE_REPAIR);
+            ComputerService.ServiceType.HARDWARE_REPAIR,
+            "email@example.com");
     av.setAssignedEmp(emp);
     session.persist(av);
 
