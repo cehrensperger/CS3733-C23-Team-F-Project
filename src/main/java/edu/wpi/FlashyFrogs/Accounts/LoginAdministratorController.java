@@ -31,7 +31,7 @@ public class LoginAdministratorController implements IController {
   @FXML private Button addNewUser;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("Accounts", "Login.fxml");
+    Fapp.handleBack();
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
