@@ -62,6 +62,27 @@ public class Fapp extends Application {
     primaryStage.setFullScreen(true);
     primaryStage.show();
 
+    // apply CSS styling to pages whenever we switch to them
+    rootPane
+        .getStylesheets()
+        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off
+    // all
+    //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
+    scene
+        .getStylesheets()
+        .add(
+            Fapp.class
+                .getResource("views/style2.css")
+                .toExternalForm()); // apply Light Mode styling
+    //    } else { // we are not in Light Mode, so
+    //      scene
+    //          .getStylesheets()
+    //          .add(
+    //              Fapp.class
+    //                  .getResource("views/dark-mode.css")
+    //                  .toExternalForm()); // apply Dark Mode styling
+    //    }
+
     // Navigation.navigate(Screen.HOME);
   }
 
