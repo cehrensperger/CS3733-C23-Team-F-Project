@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
@@ -9,7 +9,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
-import java.awt.*;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
@@ -29,7 +29,7 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class HoldITController {
+public class ITController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -169,11 +169,11 @@ public class HoldITController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ITService");
+    Fapp.setScene("ServiceRequests", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "TransportService");
+    Fapp.setScene("ServiceRequests", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
@@ -185,7 +185,7 @@ public class HoldITController {
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Credits");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {

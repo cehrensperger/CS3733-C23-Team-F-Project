@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
@@ -28,7 +28,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 
-public class HoldSanitationController {
+public class SanitationController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -179,11 +179,11 @@ public class HoldSanitationController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ITService");
+    Fapp.setScene("ServiceRequests", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "TransportService");
+    Fapp.setScene("ServiceRequests", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
@@ -195,10 +195,10 @@ public class HoldSanitationController {
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Credits");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Home");
+    Fapp.handleBack();
   }
 }
