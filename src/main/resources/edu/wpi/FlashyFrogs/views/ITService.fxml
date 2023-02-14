@@ -2,7 +2,6 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HoldSanitationController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HoldITController">
     <children>
         <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
@@ -27,7 +26,7 @@
                                 <Font size="24.0" />
                             </font>
                         </Text>
-                        <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: 012D5A;" text="Audio/Visual        " wrapText="true">
+                        <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual        " textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -35,7 +34,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" text="Information Technology" wrapText="true">
+                        <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Information Technology" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -43,7 +42,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" text="Internal Patient Transportation" wrapText="true">
+                        <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -51,7 +50,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" text="Sanitation            " wrapText="true">
+                        <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Sanitation            " textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -59,7 +58,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" text="Security                " wrapText="true">
+                        <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Security                " textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -97,7 +96,7 @@
             <center>
                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Service Request">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Information Technology Service Request">
                             <font>
                                 <Font size="28.0" />
                             </font>
@@ -112,27 +111,27 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Where is the sanitation needed" textAlignment="RIGHT" wrappingWidth="185.0">
+                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the best contact number for the owner of the device" textAlignment="RIGHT" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="48.0" />
+                                    <Insets top="40.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of location needs sanitation" textAlignment="RIGHT" wrappingWidth="185.0">
+                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Where is the device located" textAlignment="RIGHT" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="158.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
                         </VBox>
                                 <VBox prefHeight="400.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Information">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -140,16 +139,20 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox fx:id="location" promptText="Location of Request" style="-fx-background-color: FFFFFF;">
+                                        <TextField fx:id="number" promptText="Patient ID" text="Best Contact Number">
                                             <VBox.margin>
-                                                <Insets bottom="18.0" />
+                                                <Insets bottom="105.0" />
                                             </VBox.margin>
-                                        </SearchableComboBox>
-                                        <SearchableComboBox fx:id="type" promptText="Location Type">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
+                                        </TextField>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Information">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <SearchableComboBox fx:id="location" promptText="Location of Request" />
                                     </children>
                                     <HBox.margin>
                                         <Insets right="100.0" />
@@ -158,7 +161,7 @@
                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="470.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                 <VBox prefHeight="159.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Device Information">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -166,33 +169,36 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox fx:id="sanitationType" promptText="Sanitation Type">
+                                        <SearchableComboBox fx:id="device" promptText="Do you need a new device?">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
-                                        <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date" />
-                                        <TextField fx:id="time" promptText="Time Preference (00:00 AM/PM)">
+                                        <SearchableComboBox fx:id="repair" promptText="Do you need a repair?">
                                             <VBox.margin>
-                                                <Insets bottom="18.0" top="18.0" />
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                        <TextField fx:id="type" promptText="Time Preference (00:00 AM/PM)" text="Device Type">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </TextField>
+                              <TextField fx:id="model" promptText="Time Preference (00:00 AM/PM)" text="Device Model">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </TextField>
                                         <SearchableComboBox fx:id="urgency" promptText="Urgency">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
-                              <SearchableComboBox fx:id="isolation" promptText="Isolation/Precaution">
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </SearchableComboBox>
-                              <SearchableComboBox fx:id="biohazard" promptText="Biohazard">
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </SearchableComboBox>
-                              <TextField fx:id="description" prefWidth="200.0" text="Description of Request" />
+                                        <TextField fx:id="description" promptText="Reason For Transfer" text="Description of Request">
+                                            <VBox.margin>
+                                                <Insets bottom="162.0" />
+                                            </VBox.margin>
+                                        </TextField>
                                         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
@@ -215,7 +221,7 @@
                                                 </HBox>
                                             </children>
                                             <VBox.margin>
-                                                <Insets top="144.0" />
+                                                <Insets top="18.0" />
                                             </VBox.margin>
                                         </HBox>
                                     </children>
@@ -227,60 +233,52 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of sanitation is needed" wrappingWidth="185.0">
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you requesting a new device?" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="50.0" />
+                                    <Insets top="48.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific date the sanitation will be needed" wrappingWidth="185.0">
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Do you need a current device repaired? " wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="24.0" />
+                                    <Insets top="32.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific time the sanitation will be needed" wrappingWidth="185.0">
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of device do you need service for" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets top="32.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the sanitation request" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are there any isolation or precautionary measures that need to be taken during this sanitatino" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="14.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h8" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a biohazard associated with this sanitation" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="14.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h9" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the sanitation being requested" wrappingWidth="185.0">
+                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the model of the device that you need service for" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets top="26.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the IT request" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="26.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h8" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the IT request" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="32.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
