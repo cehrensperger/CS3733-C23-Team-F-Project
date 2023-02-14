@@ -22,9 +22,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -222,8 +224,9 @@ public class PathfindingController implements IController {
             line.setStrokeWidth(5);
           }
         }
-
-        for (Node node : nodes) {
+        //nodes = (LinkedList<Node>)nodes;
+        for (int i = 0; i < nodes.size(); i ++) {
+          Node node = nodes.get(i);
           // get the circle that represents the node from the mapController
           Circle circle = mapController.getNodeToCircleMap().get(node);
 
@@ -240,21 +243,37 @@ public class PathfindingController implements IController {
 
           Collection<LocationName> locationNames =
               node.getCurrentLocation(mapController.getMapSession());
-          for (int i = 0; i < locationNames.size(); i++) {
-            LocationName nodeLocation = ((List<LocationName>) locationNames).get(i);
-
+          for (int j = 0; j < locationNames.size(); j++) {
+            LocationName nodeLocation = ((List<LocationName>) locationNames).get(j);
+            LocationName.LocationType locationType = nodeLocation.getLocationType();
             // if the node location is null, don't attempt to check it against the start and end
             // text
             if (nodeLocation != null
-                && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
+                && i == nodes.size() - 1) {
               circle.setFill(Paint.valueOf(Color.GREEN.toString()));
               setHoverBehavior(circle, node);
               circle.setOpacity(1);
             } else if (nodeLocation != null
-                && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
+                && i == 0) {
               circle.setFill(Paint.valueOf(Color.BLUE.toString()));
               setHoverBehavior(circle, node);
               circle.setOpacity(1);
+          } else if (nodeLocation != null
+              && locationType.equals(LocationName.LocationType.ELEV)) {
+              // node is an elevator and not the end node
+
+              // set circle on hover to a popup that gives the
+              // user the option to go to the floor that the next node is at
+
+              String nextFloor = nodes.get(i + 1).getFloor().floorNum;
+              PopOver goToNext = new PopOver();
+              circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                  //attatc
+                  goToNext.show(circle);
+                }
+              });
             }
           }
         }
