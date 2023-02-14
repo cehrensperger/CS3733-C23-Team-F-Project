@@ -6,7 +6,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class CreditsController {
+public class CreditsController implements IController {
 
   @FXML MFXButton credits;
   @FXML MFXButton back;
@@ -41,6 +41,8 @@ public class CreditsController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Home");
+    Fapp.handleBack();
   }
+
+  public void onClose() {}
 }

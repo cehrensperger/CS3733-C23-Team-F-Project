@@ -4,9 +4,10 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
 import io.github.palexdev.materialfx.dialogs.MFXStageDialogBuilder;
@@ -15,11 +16,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -33,14 +37,16 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
-public class MapEditorController {
+public class MapEditorController implements IController {
   public AnchorPane mapPane;
-  @FXML private MFXComboBox<Node.Floor> floorSelector;
+  @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
+
+  ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>(Node.Floor.L1);
 
   /** Initializes the map editor, adds the map onto it */
   @SneakyThrows
@@ -110,7 +116,7 @@ public class MapEditorController {
         new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
     Pane map = mapLoader.load(); // Load the map
-    mapPane.getChildren().add(map); // Put the map loader into the editor box
+    mapPane.getChildren().add(0, map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
     mapController.setFloor(Node.Floor.L1);
 
@@ -170,18 +176,15 @@ public class MapEditorController {
               });
         });
 
-    floorSelector
-        .getItems()
-        .addAll(Node.Floor.values()); // Add all the floors to the floor selector
+    floorSelector.setText("Floor " + Node.Floor.L1.name());
 
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
-    floorSelector
-        .valueProperty()
-        .addListener((observable, oldValue, newValue) -> mapController.setFloor(newValue));
-
-    floorSelector.setValue(Node.Floor.L2); // Set the base floor
-
-    floorSelector.setText(Node.Floor.L2.name()); // Set the floor text
+    floorProperty.addListener(
+        (observable, oldValue, newValue) -> {
+          mapController.setFloor(newValue);
+          // drawNodesAndEdges(); // Re-draw pop-ups
+          floorSelector.setText("Floor " + newValue.floorNum);
+        }); // Set the floor text
   }
 
   /**
@@ -350,18 +353,24 @@ public class MapEditorController {
                 Map.entry(
                     new MFXButton("Discard Changes and Exit"),
                     (event) -> {
-                      mapController.exit(); // Exit the controller
                       stageBuilder.get().close(); // Close the pop-pu
-                      Fapp.setScene("views", "home"); // Go back
+                      try {
+                        Fapp.handleBack(); // go home
+                      } catch (IOException e) {
+                        throw new RuntimeException(e);
+                      } // Go back
                     }),
                 // Action to save
                 Map.entry(
                     new MFXButton("Save Changes and Exit"),
                     (event) -> {
                       handleSave(null); // handle the save
-                      mapController.exit(); // exit
                       stageBuilder.get().close(); // Close the pop-up
-                      Fapp.setScene("views", "home"); // go home
+                      try {
+                        Fapp.handleBack(); // go home
+                      } catch (IOException e) {
+                        throw new RuntimeException(e);
+                      }
                     }))
             .get();
     dialog.getStylesheets().clear(); // Clear the style
@@ -398,5 +407,39 @@ public class MapEditorController {
    */
   public void handleSave(ActionEvent actionEvent) {
     mapController.saveChanges(); // On save just save
+  }
+
+  @FXML
+  public void upFloor() {
+    int floorLevel = floorProperty.getValue().ordinal() + 1;
+    if (floorLevel > Node.Floor.values().length - 1) floorLevel = 0;
+
+    floorProperty.setValue(Node.Floor.values()[floorLevel]);
+  }
+
+  @FXML
+  public void downFloor() {
+    int floorLevel = floorProperty.getValue().ordinal() - 1;
+    if (floorLevel < 0) floorLevel = Node.Floor.values().length - 1;
+
+    floorProperty.setValue(Node.Floor.values()[floorLevel]);
+  }
+
+  @FXML
+  public void openFloorSelector(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
+    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+
+    FloorSelectorController floorPopup = newLoad.getController();
+    floorPopup.setFloorProperty(this.floorProperty);
+
+    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    javafx.scene.Node node =
+        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
+    popOver.show(node); // display the popover
+  }
+
+  public void onClose() {
+    mapController.exit();
   }
 }

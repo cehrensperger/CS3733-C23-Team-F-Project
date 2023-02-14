@@ -36,7 +36,7 @@
               <items>
                 <MenuItem mnemonicParsing="false" text="User Preferences                 " />
                 <MenuItem mnemonicParsing="false" text="Sign Out" />
-                  <MenuItem mnemonicParsing="false" text="Close Application" />
+                  <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />
               </items>
             </MenuButton>
             <AnchorPane fx:id="SVGPane" minHeight="0.0" minWidth="0.0" prefHeight="18.0" prefWidth="165.0">

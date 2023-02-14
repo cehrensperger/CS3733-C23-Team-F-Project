@@ -189,6 +189,8 @@ public class HoldITController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Home");
+    Fapp.handleBack();
   }
+
+  public void onClose() {}
 }
