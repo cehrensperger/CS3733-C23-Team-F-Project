@@ -92,77 +92,10 @@ public class HomeController implements IController {
       manageButton.setOpacity(1);
 
       tableText2.setText("Future Moves");
-    }
-    Session session = CONNECTION.getSessionFactory().openSession();
 
-    // FILL TABLES
-    List<ServiceRequest> serviceRequests;
-    List<Move> moves;
-    if (!isAdmin) {
-      serviceRequests =
-          session
-              .createQuery(
-                  "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp", ServiceRequest.class)
-              .setParameter("emp", currentUser)
-              .getResultList();
-      moveTable.setOpacity(0);
-    } else {
-      serviceRequests =
-          session
-              .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
-              .getResultList();
-
-      moves =
-          session
-              .createQuery("SELECT m from Move m WHERE m.moveDate > current timestamp", Move.class)
-              .getResultList();
-      moveTable.setItems(FXCollections.observableList(moves));
+      refreshTable();
     }
 
-    // refill based on filter
-    filterProperty.addListener(
-        (observable, oldValue, newValue) -> {
-          if (newValue.equals("All")) {
-            if (!isAdmin) {
-              requestTable.setItems(
-                  FXCollections.observableList(
-                      session
-                          .createQuery(
-                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
-                              ServiceRequest.class)
-                          .setParameter("type", newValue)
-                          .setParameter("emp", currentUser)
-                          .getResultList()));
-            } else {
-              requestTable.setItems(
-                  FXCollections.observableList(
-                      session
-                          .createQuery(
-                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
-                              ServiceRequest.class)
-                          .setParameter("type", newValue)
-                          .getResultList()));
-            }
-          } else {
-            if (!isAdmin) {
-              requestTable.setItems(
-                  FXCollections.observableList(
-                      session
-                          .createQuery(
-                              "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
-                              ServiceRequest.class)
-                          .setParameter("emp", currentUser)
-                          .getResultList()));
-            } else {
-              requestTable.setItems(
-                  FXCollections.observableList(
-                      session
-                          .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
-                          .getResultList()));
-            }
-          }
-        });
-    session.close();
   }
 
   @FXML
@@ -289,6 +222,84 @@ public class HomeController implements IController {
     Fapp.setScene("Accounts", "LoginAdministrator");
   }
 
+  public void refreshTable() {
+    User currentUser = new User("a", "a", "a", User.EmployeeType.ADMIN, new Department());
+    boolean isAdmin = true;
+    //    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    //    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    // FILL TABLES
+    List<ServiceRequest> serviceRequests;
+    List<Move> moves;
+    if (!isAdmin) {
+      serviceRequests =
+              session
+                      .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp", ServiceRequest.class)
+                      .setParameter("emp", currentUser)
+                      .getResultList();
+      moveTable.setOpacity(0);
+    } else {
+      serviceRequests =
+              session
+                      .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+                      .getResultList();
+
+      moves =
+              session
+                      .createQuery("SELECT m from Move m WHERE m.moveDate > current timestamp", Move.class)
+                      .getResultList();
+      moveTable.setItems(FXCollections.observableList(moves));
+    }
+
+    // refill based on filter
+    filterProperty.addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.equals("All")) {
+                if (!isAdmin) {
+                  requestTable.setItems(
+                          FXCollections.observableList(
+                                  session
+                                          .createQuery(
+                                                  "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
+                                                  ServiceRequest.class)
+                                          .setParameter("type", newValue)
+                                          .setParameter("emp", currentUser)
+                                          .getResultList()));
+                } else {
+                  requestTable.setItems(
+                          FXCollections.observableList(
+                                  session
+                                          .createQuery(
+                                                  "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
+                                                  ServiceRequest.class)
+                                          .setParameter("type", newValue)
+                                          .getResultList()));
+                }
+              } else {
+                if (!isAdmin) {
+                  requestTable.setItems(
+                          FXCollections.observableList(
+                                  session
+                                          .createQuery(
+                                                  "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
+                                                  ServiceRequest.class)
+                                          .setParameter("emp", currentUser)
+                                          .getResultList()));
+                } else {
+                  requestTable.setItems(
+                          FXCollections.observableList(
+                                  session
+                                          .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+                                          .getResultList()));
+                }
+              }
+            });
+    session.close();
+  }
+
   public void handleManageCSV(ActionEvent event) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/CSVUpload.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
@@ -302,13 +313,13 @@ public class HomeController implements IController {
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
 
-    //    popOver
-    //            .showingProperty()
-    //            .addListener(
-    //                    (observable, oldValue, newValue) -> {
-    //                      if (!newValue) {
-    //                        floorSelectorButton.setDisable(false);
-    //                      }
-    //                    });
+        popOver
+                .showingProperty()
+                .addListener(
+                        (observable, oldValue, newValue) -> {
+                          if (!newValue) {
+                            refreshTable();
+                          }
+                        });
   }
 }
