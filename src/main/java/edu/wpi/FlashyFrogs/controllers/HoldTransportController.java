@@ -50,7 +50,6 @@ public class HoldTransportController {
   @FXML SearchableComboBox urgency;
   @FXML SearchableComboBox equipment;
   @FXML DatePicker date;
-  @FXML TextField time;
   @FXML SearchableComboBox mode;
   @FXML SearchableComboBox isolation;
   @FXML TextField personal;
@@ -71,7 +70,6 @@ public class HoldTransportController {
   @FXML Text h12;
   @FXML Text h13;
   @FXML Text h14;
-  @FXML Text h15;
   @FXML private Label errorMessage;
 
   boolean hDone = false;
@@ -92,7 +90,6 @@ public class HoldTransportController {
     h12.setVisible(false);
     h13.setVisible(false);
     h14.setVisible(false);
-    h15.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
@@ -128,7 +125,6 @@ public class HoldTransportController {
 
     try {
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-      String timeString = time.getText().toUpperCase().replace(" ", "_");
 
       // check
       if (patient.getText().equals("")
@@ -208,7 +204,6 @@ public class HoldTransportController {
     urgency.valueProperty().set(null);
     equipment.valueProperty().set(null);
     date.valueProperty().set(null);
-    time.setText("");
     mode.valueProperty().set(null);
     isolation.valueProperty().set(null);
     personal.setText("");
@@ -259,7 +254,6 @@ public class HoldTransportController {
       h12.setVisible(true);
       h13.setVisible(true);
       h14.setVisible(true);
-      h15.setVisible(true);
       hDone = true;
     }
     if (hDone = true) {
@@ -277,7 +271,6 @@ public class HoldTransportController {
       h12.setVisible(false);
       h13.setVisible(false);
       h14.setVisible(false);
-      h15.setVisible(false);
       hDone = false;
     }
   }

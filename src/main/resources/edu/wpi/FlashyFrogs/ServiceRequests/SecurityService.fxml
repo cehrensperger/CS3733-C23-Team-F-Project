@@ -195,9 +195,9 @@
                                                 <Insets top="72.0" />
                                             </VBox.margin>
                                         </HBox>
-                              <HBox alignment="TOP_CENTER" prefHeight="136.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                              <HBox alignment="TOP_CENTER" prefHeight="180.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
-                                    <Insets top="10.0" />
+                                    <Insets top="5.0" />
                                  </VBox.margin>
                                  <children>
                                     <Label fx:id="errorMessage">
@@ -216,7 +216,7 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific threat security is needed for" wrappingWidth="185.0">
+                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific threat security is needed for" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -224,7 +224,7 @@
                                     <Insets top="42.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the security request" wrappingWidth="185.0">
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the security request" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -232,7 +232,7 @@
                                     <Insets top="28.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific date that security will be needed" wrappingWidth="185.0">
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific date that security will be needed" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -240,7 +240,7 @@
                                     <Insets top="26.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Explain why security is needed" wrappingWidth="185.0">
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Explain why security is needed" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>

@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -195,7 +196,7 @@
                                                 <Insets bottom="162.0" />
                                             </VBox.margin>
                                         </TextField>
-                                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                        <HBox alignment="TOP_CENTER" prefHeight="32.0" prefWidth="200.0">
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                     <children>
@@ -237,7 +238,7 @@
                                     <Insets top="44.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of device do you need service for" wrappingWidth="185.0">
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of device do you need service for" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -245,7 +246,7 @@
                                     <Insets top="26.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the model of the device that you need service for" wrappingWidth="185.0">
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the model of the device that you need service for" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -253,7 +254,7 @@
                                     <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the IT request" wrappingWidth="185.0">
+                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the IT request" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -261,7 +262,7 @@
                                     <Insets top="26.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h8" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the IT request" wrappingWidth="185.0">
+                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the IT request" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -280,5 +281,17 @@
                 </VBox>
             </center>
         </BorderPane>
+      <HBox alignment="TOP_CENTER" layoutX="862.0" layoutY="649.0" prefHeight="149.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="errorMessage">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
     </children>
 </AnchorPane>

@@ -46,7 +46,6 @@ public class HoldITController {
   @FXML SearchableComboBox urgency;
   @FXML DatePicker date;
   @FXML TextField type;
-  @FXML TextField model;
   @FXML TextField description;
   @FXML Text h1;
   @FXML Text h2;
@@ -55,7 +54,6 @@ public class HoldITController {
   @FXML Text h5;
   @FXML Text h6;
   @FXML Text h7;
-  @FXML Text h8;
   @FXML private Label errorMessage;
 
   boolean hDone = false;
@@ -69,7 +67,6 @@ public class HoldITController {
     h5.setVisible(false);
     h6.setVisible(false);
     h7.setVisible(false);
-    h8.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
@@ -96,7 +93,6 @@ public class HoldITController {
           || location.getValue().toString().equals("")
           || service.getValue().toString().equals("")
           || type.getText().equals("")
-          || model.getText().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
@@ -141,7 +137,6 @@ public class HoldITController {
     location.valueProperty().set(null);
     service.valueProperty().set(null);
     type.setText("");
-    model.setText("");
     urgency.valueProperty().set(null);
     description.setText("");
   }
@@ -155,7 +150,6 @@ public class HoldITController {
       h5.setVisible(true);
       h6.setVisible(true);
       h7.setVisible(true);
-      h8.setVisible(true);
       hDone = true;
     }
     if (hDone = true) {
@@ -166,7 +160,6 @@ public class HoldITController {
       h5.setVisible(false);
       h6.setVisible(false);
       h7.setVisible(false);
-      h8.setVisible(false);
       hDone = false;
     }
   }

@@ -42,11 +42,9 @@ public class HoldAVController {
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
   @FXML SearchableComboBox location;
-  @FXML SearchableComboBox type;
   @FXML TextField device;
   @FXML TextField reason;
   @FXML DatePicker date;
-  @FXML TextField time;
   @FXML SearchableComboBox urgency;
   @FXML TextField description;
 
@@ -56,10 +54,6 @@ public class HoldAVController {
   @FXML Text h4;
   @FXML Text h5;
   @FXML Text h6;
-  @FXML Text h7;
-  @FXML Text h8;
-  @FXML Text h9;
-
   @FXML private Label errorMessage;
 
   boolean hDone = false;
@@ -72,9 +66,6 @@ public class HoldAVController {
     h4.setVisible(false);
     h5.setVisible(false);
     h6.setVisible(false);
-    h7.setVisible(false);
-    h8.setVisible(false);
-    h9.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
@@ -85,9 +76,6 @@ public class HoldAVController {
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
     location.setItems(observableList);
-    type.getItems()
-        .addAll(
-            "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
   }
 
@@ -97,11 +85,9 @@ public class HoldAVController {
 
     try {
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-      String timeString = time.getText().toUpperCase().replace(" ", "_");
 
       // check
       if (location.getValue().toString().equals("")
-          || type.getValue().toString().equals("")
           || device.getText().equals("")
           || reason.getText().equals("")
           || date.getValue().toString().equals("")
@@ -145,10 +131,8 @@ public class HoldAVController {
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
     location.valueProperty().set(null);
-    type.valueProperty().set(null);
     device.setText("");
     date.valueProperty().set(null);
-    time.setText("");
     urgency.valueProperty().set(null);
     description.setText("");
   }
@@ -161,9 +145,6 @@ public class HoldAVController {
       h4.setVisible(true);
       h5.setVisible(true);
       h6.setVisible(true);
-      h7.setVisible(true);
-      h8.setVisible(true);
-      h9.setVisible(true);
       hDone = true;
     }
     if (hDone = true) {
@@ -173,9 +154,6 @@ public class HoldAVController {
       h4.setVisible(false);
       h5.setVisible(false);
       h6.setVisible(false);
-      h7.setVisible(false);
-      h8.setVisible(false);
-      h9.setVisible(false);
       hDone = false;
     }
   }

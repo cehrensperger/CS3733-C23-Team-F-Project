@@ -47,12 +47,9 @@ public class HoldSanitationController {
   @FXML Text h5;
   @FXML Text h6;
   @FXML Text h7;
-  @FXML Text h8;
-  @FXML Text h9;
   @FXML SearchableComboBox location;
   @FXML SearchableComboBox sanitationType;
   @FXML DatePicker date;
-  @FXML TextField time;
   @FXML SearchableComboBox urgency;
   @FXML SearchableComboBox isolation;
   @FXML SearchableComboBox biohazard;
@@ -69,8 +66,6 @@ public class HoldSanitationController {
     h5.setVisible(false);
     h6.setVisible(false);
     h7.setVisible(false);
-    h8.setVisible(false);
-    h9.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
@@ -99,7 +94,6 @@ public class HoldSanitationController {
       if (location.getValue().toString().equals("")
           || sanitationType.getValue().toString().equals("")
           || date.getValue().toString().equals("")
-          || time.getText().equals("")
           || isolation.getValue().toString().equals("")
           || biohazard.getValue().toString().equals("")
           || description.getText().equals("")) {
@@ -151,7 +145,6 @@ public class HoldSanitationController {
     location.valueProperty().set(null);
     sanitationType.valueProperty().set(null);
     date.valueProperty().set(null);
-    time.setText("");
     urgency.valueProperty().set(null);
     isolation.valueProperty().set(null);
     biohazard.valueProperty().set(null);
@@ -167,8 +160,6 @@ public class HoldSanitationController {
       h5.setVisible(true);
       h6.setVisible(true);
       h7.setVisible(true);
-      h8.setVisible(true);
-      h9.setVisible(true);
       hDone = true;
     }
     if (hDone = true) {
@@ -179,8 +170,6 @@ public class HoldSanitationController {
       h5.setVisible(false);
       h6.setVisible(false);
       h7.setVisible(false);
-      h8.setVisible(false);
-      h9.setVisible(false);
       hDone = false;
     }
   }

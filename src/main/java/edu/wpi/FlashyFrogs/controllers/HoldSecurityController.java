@@ -45,13 +45,10 @@ public class HoldSecurityController {
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
-  @FXML Text h6;
-  @FXML Text h7;
   @FXML SearchableComboBox location;
   @FXML SearchableComboBox threat;
   @FXML SearchableComboBox urgency;
   @FXML DatePicker date;
-  @FXML TextField time;
   @FXML TextField description;
   @FXML private Label errorMessage;
 
@@ -64,8 +61,6 @@ public class HoldSecurityController {
     h3.setVisible(false);
     h4.setVisible(false);
     h5.setVisible(false);
-    h6.setVisible(false);
-    h7.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
@@ -86,13 +81,11 @@ public class HoldSecurityController {
 
     try {
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-      String timeString = time.getText().toUpperCase().replace(" ", "_");
 
       // check
       if (location.getValue().toString().equals("")
           || threat.getValue().toString().equals("")
           || date.getValue().toString().equals("")
-          || time.getText().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
@@ -137,7 +130,6 @@ public class HoldSecurityController {
     threat.valueProperty().set(null);
     urgency.valueProperty().set(null);
     date.valueProperty().set(null);
-    time.setText("");
     description.setText("");
   }
 
@@ -148,8 +140,6 @@ public class HoldSecurityController {
       h3.setVisible(true);
       h4.setVisible(true);
       h5.setVisible(true);
-      h6.setVisible(true);
-      h7.setVisible(true);
       hDone = true;
     }
     if (hDone = true) {
@@ -158,8 +148,6 @@ public class HoldSecurityController {
       h3.setVisible(false);
       h4.setVisible(false);
       h5.setVisible(false);
-      h6.setVisible(false);
-      h7.setVisible(false);
       hDone = false;
     }
   }

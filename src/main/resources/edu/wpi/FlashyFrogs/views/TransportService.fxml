@@ -305,7 +305,7 @@
                                  <children>
                                     <Label fx:id="errorMessage">
                                        <HBox.margin>
-                                          <Insets top="10.0" />
+                                          <Insets top="5.0" />
                                        </HBox.margin>
                                        <font>
                                           <Font size="16.0" />
@@ -362,7 +362,7 @@
                                     <Insets top="26.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="How will the patient be transported" wrappingWidth="185.0">
+                              <Text fx:id="h11" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="How will the patient be transported" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -370,7 +370,7 @@
                                     <Insets top="32.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h13" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="185.0">
+                              <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -378,7 +378,7 @@
                                     <Insets top="20.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h14" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="185.0">
+                              <Text fx:id="h13" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -386,7 +386,7 @@
                                     <Insets top="14.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h15" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Explain why this patient is being transported" wrappingWidth="185.0">
+                              <Text fx:id="h14" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Explain why this patient is being transported" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
