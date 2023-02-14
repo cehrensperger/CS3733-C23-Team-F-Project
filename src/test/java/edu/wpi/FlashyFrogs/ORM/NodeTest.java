@@ -486,15 +486,15 @@ public class NodeTest {
   @Test
   public void floorEnumTest() {
     assertEquals(Node.Floor.L1, Node.Floor.getEnum("L1"));
-    assertEquals("L1", Node.Floor.L1.floorNum);
+    assertEquals("L1", Node.Floor.L1.toString());
     assertEquals(Node.Floor.L2, Node.Floor.getEnum("L2"));
-    assertEquals("L2", Node.Floor.L2.floorNum);
+    assertEquals("L2", Node.Floor.L2.toString());
     assertEquals(Node.Floor.ONE, Node.Floor.getEnum("1"));
-    assertEquals("1", Node.Floor.ONE.floorNum);
+    assertEquals("1", Node.Floor.ONE.toString());
     assertEquals(Node.Floor.TWO, Node.Floor.getEnum("2"));
-    assertEquals("2", Node.Floor.TWO.floorNum);
+    assertEquals("2", Node.Floor.TWO.toString());
     assertEquals(Node.Floor.THREE, Node.Floor.getEnum("3"));
-    assertEquals("3", Node.Floor.THREE.floorNum);
+    assertEquals("3", Node.Floor.THREE.toString());
 
     assertNull(Node.Floor.getEnum("adsfasdfasf"));
     assertNull(Node.Floor.getEnum(""));

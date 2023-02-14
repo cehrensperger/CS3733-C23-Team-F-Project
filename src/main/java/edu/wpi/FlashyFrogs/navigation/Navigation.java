@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.Navigation;
+package edu.wpi.FlashyFrogs.navigation;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.navigation.Screen;
