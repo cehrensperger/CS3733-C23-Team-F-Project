@@ -42,6 +42,15 @@ public class MapController {
   }
 
   /**
+   * Set the edge creation function
+   *
+   * @param function the function to set the edge creation to. May be null
+   */
+  public void setEdgeCreation(BiConsumer<Edge, Line> function) {
+    mapEntity.setEdgeCreation(function);
+  }
+
+  /**
    * Zooms the map to the given coordinates
    *
    * @param x the x-coordinate to zoom to
