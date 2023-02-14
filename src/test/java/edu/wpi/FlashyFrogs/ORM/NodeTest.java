@@ -242,7 +242,9 @@ public class NodeTest {
 
     assertEquals(
         location,
-        node.getCurrentLocation().stream().findFirst().orElseThrow()); // Assert the location is valid
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is valid
     assertEquals(
         location,
         node.getCurrentLocation(session).stream()
@@ -343,7 +345,9 @@ public class NodeTest {
 
     assertEquals(
         currentLocation,
-        node.getCurrentLocation().stream().findFirst().orElseThrow()); // Assert the location is right
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
     assertEquals(
         currentLocation,
         node.getCurrentLocation(session).stream()
@@ -440,19 +444,17 @@ public class NodeTest {
             .orElseThrow()); // Assert the location is right
 
     assertEquals(
-        oldLocation,
-        correctNode.getCurrentLocation().toArray()[1]); // Assert the location is right
+        oldLocation, correctNode.getCurrentLocation().toArray()[1]); // Assert the location is right
 
     assertEquals(
         correctLocation,
         correctNode.getCurrentLocation(session).stream()
             .findFirst()
-                .orElseThrow()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
 
     assertEquals(
         oldLocation,
-        correctNode.getCurrentLocation(session)
-            .toArray()[1]); // Assert the location is right
+        correctNode.getCurrentLocation(session).toArray()[1]); // Assert the location is right
 
     assertEquals(2, correctNode.getCurrentLocation().size());
   }
@@ -480,9 +482,7 @@ public class NodeTest {
     assertEquals(2, node.getCurrentLocation(session).size());
   }
 
-  /**
-   * Tests the get enum method for Node and the to string method for that
-   */
+  /** Tests the get enum method for Node and the to string method for that */
   @Test
   public void floorEnumTest() {
     assertEquals(Node.Floor.L1, Node.Floor.getEnum("L1"));
