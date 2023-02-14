@@ -9,7 +9,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "ServiceRequest")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class ServiceRequest {
+public abstract class ServiceRequest {
   @Basic
   @Id
   @Column(nullable = false)

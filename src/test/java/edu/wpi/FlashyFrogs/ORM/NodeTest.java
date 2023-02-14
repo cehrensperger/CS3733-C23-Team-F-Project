@@ -66,7 +66,7 @@ public class NodeTest {
   @BeforeEach
   @AfterEach
   public void resetTestNode() {
-    Node testNode = new Node("Test", "Building", Node.Floor.L2, 0, 1);
+    testNode = new Node("Test", "Building", Node.Floor.L2, 0, 1);
   }
 
   /** Tests if the equals in Node.java correctly compares two Node objects */
@@ -242,12 +242,14 @@ public class NodeTest {
 
     assertEquals(
         location,
-        node.getCurrentLocation().stream().findFirst().get()); // Assert the location is valid
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is valid
     assertEquals(
         location,
         node.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Assert the location is valid
+            .orElseThrow()); // Assert the location is valid
     assertEquals(1, node.getCurrentLocation().size());
   }
 
@@ -278,9 +280,9 @@ public class NodeTest {
         currentLocation,
         node.getCurrentLocation().stream()
             .findFirst()
-            .get()); // Assert the correct location is gotten
+            .orElseThrow()); // Assert the correct location is gotten
 
-    assertEquals(midLocation, node.getCurrentLocation().stream().toArray()[1]);
+    assertEquals(midLocation, node.getCurrentLocation().toArray()[1]);
 
     assertEquals(2, node.getCurrentLocation().size());
   }
@@ -307,12 +309,12 @@ public class NodeTest {
         location,
         theNode.getCurrentLocation().stream()
             .findFirst()
-            .get()); // Check that the location is correct
+            .orElseThrow()); // Check that the location is correct
     assertEquals(
         location,
         theNode.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Check that the location is correct
+            .orElseThrow()); // Check that the location is correct
     assertEquals(1, theNode.getCurrentLocation().size());
   }
 
@@ -343,12 +345,14 @@ public class NodeTest {
 
     assertEquals(
         currentLocation,
-        node.getCurrentLocation().stream().findFirst().get()); // Assert the location is right
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
     assertEquals(
         currentLocation,
         node.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
     assertEquals(1, node.getCurrentLocation().size());
   }
 
@@ -386,12 +390,12 @@ public class NodeTest {
         location,
         currentNode.getCurrentLocation().stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
     assertEquals(
         location,
         currentNode.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
     assertEquals(1, currentNode.getCurrentLocation().size());
   }
 
@@ -437,22 +441,20 @@ public class NodeTest {
         correctLocation,
         correctNode.getCurrentLocation().stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
 
     assertEquals(
-        oldLocation,
-        correctNode.getCurrentLocation().stream().toArray()[1]); // Assert the location is right
+        oldLocation, correctNode.getCurrentLocation().toArray()[1]); // Assert the location is right
 
     assertEquals(
         correctLocation,
         correctNode.getCurrentLocation(session).stream()
             .findFirst()
-            .get()); // Assert the location is right
+            .orElseThrow()); // Assert the location is right
 
     assertEquals(
         oldLocation,
-        correctNode.getCurrentLocation(session).stream()
-            .toArray()[1]); // Assert the location is right
+        correctNode.getCurrentLocation(session).toArray()[1]); // Assert the location is right
 
     assertEquals(2, correctNode.getCurrentLocation().size());
   }
@@ -480,26 +482,21 @@ public class NodeTest {
     assertEquals(2, node.getCurrentLocation(session).size());
   }
 
-  //  @Test
-  //  public void idk () {
-  //    Node node = new Node("n", "b", Node.Floor.THREE, 0, 0); // Create the node
-  //    LocationName currentLocation1 =
-  //            new LocationName("curr1", LocationName.LocationType.CONF, "cur1");
-  //    LocationName currentLocation2 =
-  //            new LocationName("curr2", LocationName.LocationType.ELEV, "cur2");
-  //    // LocationName furtherFut = new LocationName("ff", LocationName.LocationType.SERV, "");
-  //    Move currentNode1 =
-  //            new Move(node, currentLocation1, Date.from(Instant.now())); // Move for right now
-  //    Move currentNode2 = new Move(node, currentLocation2, Date.from(Instant.now()));
-  //
-  //    Transaction commitTransaction = session.beginTransaction();
-  //    session.persist(node);
-  //    session.persist(currentLocation1);
-  //    session.persist(currentLocation2);
-  //    session.persist(currentNode1);
-  //    session.persist(currentNode2);
-  //    commitTransaction.commit();
-  //
-  //    assertEquals(2, node.getCurrentLocation(session).size());
-  //  }
+  /** Tests the get enum method for Node and the to string method for that */
+  @Test
+  public void floorEnumTest() {
+    assertEquals(Node.Floor.L1, Node.Floor.getEnum("L1"));
+    assertEquals("L1", Node.Floor.L1.floorNum);
+    assertEquals(Node.Floor.L2, Node.Floor.getEnum("L2"));
+    assertEquals("L2", Node.Floor.L2.floorNum);
+    assertEquals(Node.Floor.ONE, Node.Floor.getEnum("1"));
+    assertEquals("1", Node.Floor.ONE.floorNum);
+    assertEquals(Node.Floor.TWO, Node.Floor.getEnum("2"));
+    assertEquals("2", Node.Floor.TWO.floorNum);
+    assertEquals(Node.Floor.THREE, Node.Floor.getEnum("3"));
+    assertEquals("3", Node.Floor.THREE.floorNum);
+
+    assertNull(Node.Floor.getEnum("adsfasdfasf"));
+    assertNull(Node.Floor.getEnum(""));
+  }
 }
