@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.ORM;
 import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.FlashyFrogs.DBConnection;
-import java.time.Instant;
 import java.util.Date;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -464,22 +463,22 @@ public class InternalTransportTest {
 
     // Identical transport request that should have a different ID
     InternalTransport it2 =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    loc1,
-                    loc2,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            loc1,
+            loc2,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(it2); // Load it2 into the DB, set its ID
 
     assertNotEquals(it, it2); // Assert it and it2 aren't equal
@@ -500,9 +499,9 @@ public class InternalTransportTest {
             new Date(2023 - 2 - 1),
             emp,
             InternalTransport.ModeOfTransport.HELP,
-                true,
-                "non personal items",
-                "not a reason");
+            true,
+            "non personal items",
+            "not a reason");
     session.persist(it3); // Load it3 into the DB, set its ID
 
     assertNotEquals(it, it3); // Assert it and it3 aren't equal
@@ -536,22 +535,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    null,
-                    location,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            null,
+            location,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Remove the location
@@ -585,22 +584,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    newLocation,
-                    location,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            newLocation,
+            location,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Change the location
@@ -638,22 +637,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-                new InternalTransport(
-                        "patient id",
-                        InternalTransport.VisionStatus.GLASSES,
-                        InternalTransport.ConsciousnessStatus.MODERATE,
-                        InternalTransport.HealthStatus.HEALTHY,
-                        location,
-                        null,
-                        ServiceRequest.Urgency.MODERATELY_URGENT,
-                        InternalTransport.Equipment.NONE,
-                        new Date(2023 - 1 - 31),
-                        new Date(2023 - 2 - 1),
-                        emp,
-                        InternalTransport.ModeOfTransport.EQUIPMENT,
-                        false,
-                        "personal items",
-                        "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            location,
+            null,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Remove the location
@@ -687,22 +686,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    location,
-                    newLocation,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            location,
+            newLocation,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Change the location
@@ -740,22 +739,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    location,
-                    location,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            location,
+            location,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Remove the location
@@ -788,22 +787,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    location,
-                    location,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            location,
+            location,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Change the location
@@ -820,7 +819,8 @@ public class InternalTransportTest {
         new LocationName("newName", LocationName.LocationType.EXIT, "name"),
         av.getLocation()); // Assert the location is null
     assertEquals(
-        new LocationName("newName", LocationName.LocationType.EXIT, "name"), av.getTargetLocation());
+        new LocationName("newName", LocationName.LocationType.EXIT, "name"),
+        av.getTargetLocation());
 
     transaction.rollback();
     session.close();
@@ -839,22 +839,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    null,
-                    location,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            null,
+            location,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     session.flush();
@@ -888,22 +888,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    location,
-                    location,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            location,
+            location,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Change the enp
@@ -942,22 +942,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    location,
-                    null,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            location,
+            null,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Commit stuff so we can access it later (it's persisted)
@@ -1001,22 +1001,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    null,
-                    null,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            null,
+            null,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -1055,22 +1055,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    location,
-                    location,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            location,
+            location,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -1116,22 +1116,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    null,
-                    null,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            null,
+            null,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -1170,22 +1170,22 @@ public class InternalTransportTest {
     session.persist(location);
     // Create the av request we will use
     InternalTransport av =
-            new InternalTransport(
-                    "patient id",
-                    InternalTransport.VisionStatus.GLASSES,
-                    InternalTransport.ConsciousnessStatus.MODERATE,
-                    InternalTransport.HealthStatus.HEALTHY,
-                    location,
-                    location,
-                    ServiceRequest.Urgency.MODERATELY_URGENT,
-                    InternalTransport.Equipment.NONE,
-                    new Date(2023 - 1 - 31),
-                    new Date(2023 - 2 - 1),
-                    emp,
-                    InternalTransport.ModeOfTransport.EQUIPMENT,
-                    false,
-                    "personal items",
-                    "reason");
+        new InternalTransport(
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            location,
+            location,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     av.setAssignedEmp(emp);
     session.persist(av);
 
