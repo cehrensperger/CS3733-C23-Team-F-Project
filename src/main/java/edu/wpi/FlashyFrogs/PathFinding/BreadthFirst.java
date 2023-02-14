@@ -4,6 +4,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.hibernate.Session;
 
@@ -17,7 +18,8 @@ public class BreadthFirst implements IFindPath {
     nodeQueue.add(start);
     while (!visited.contains(end) && !queue.isEmpty()) {
       List<Node> neighbors =
-          PathFinder.getNeighbors(currentNodeWrapper.node, session).stream().toList();
+          PathFinder.getNeighbors(currentNodeWrapper.node, session).stream()
+              .collect(Collectors.toList());
       for (Node node : neighbors) {
         if (node.equals(end)) {
           queue.clear();

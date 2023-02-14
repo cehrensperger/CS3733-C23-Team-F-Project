@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.util.*;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -26,9 +27,18 @@ public class AudioVisualTest {
   @AfterEach
   public void teardownTable() {
     // If the prior test is open
-    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
-    if (priorSession != null && priorSession.isOpen()) {
-      priorSession.close(); // Close it, so we can create new ones
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
+
+        // If the transaction is still active
+        if (priorSession.getTransaction().isActive()) {
+          priorSession.getTransaction().rollback(); // Roll it back
+        }
+
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
     }
 
     // Use a closure to manage the session to use
@@ -55,12 +65,10 @@ public class AudioVisualTest {
           new Date(2023 - 1 - 31),
           new Date(2023 - 2 - 1),
           ServiceRequest.Urgency.MODERATELY_URGENT,
-          AudioVisual.AccommodationType.AUDIO,
-          "Emre",
-          "Rusen",
-          "Sabaz",
-          new LocationName("Name", LocationName.LocationType.EXIT, "name"),
-          new Date(2001 - 12 - 8));
+          "Headphones",
+          "Connors Fault",
+          "Connor destroyed my headphones :(",
+          new LocationName("Name", LocationName.LocationType.EXIT, "name"));
 
   /** Reset testSan after each test */
   @BeforeEach
@@ -77,15 +85,13 @@ public class AudioVisualTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testAV.setAssignedEmp(assignedEmp);
-    testAV.setDateOfIncident(new Date(2023 - 1 - 31));
+    testAV.setDate(new Date(2023 - 1 - 31));
     testAV.setDateOfSubmission(new Date(2023 - 2 - 1));
     testAV.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
-    testAV.setAccommodationType(AudioVisual.AccommodationType.AUDIO);
-    testAV.setPatientFirstName("Emre");
-    testAV.setPatientMiddleName("Rusen");
-    testAV.setPatientLastName("Sabaz");
+    testAV.setDeviceType("Headphones");
+    testAV.setReason("Connors Fault");
+    testAV.setDescription("Connor destroyed my headphones :(");
     testAV.setLocation(new LocationName("Name", LocationName.LocationType.EXIT, "name"));
-    testAV.setDateOfBirth(new Date(2001 - 12 - 8));
   }
 
   /** Tests setter for emp */
@@ -108,16 +114,7 @@ public class AudioVisualTest {
   public void setEmpTest() {
     AudioVisual test =
         new AudioVisual(
-            assignedEmp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.BOTH,
-            "a",
-            "b",
-            "c",
-            null,
-            new Date());
+            null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT, "a", "b", "c", null);
     test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -129,16 +126,7 @@ public class AudioVisualTest {
   public void nullToNullEmployeeTest() {
     AudioVisual test =
         new AudioVisual(
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.BOTH,
-            "b",
-            "as",
-            "qwer",
-            null,
-            new Date());
+            null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT, "A", "B", "C", null);
     test.setEmp(null);
 
     // Assert that the location is correct
@@ -166,16 +154,7 @@ public class AudioVisualTest {
   public void setAssignedEmpTest() {
     AudioVisual test =
         new AudioVisual(
-            assignedEmp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.BOTH,
-            "a",
-            "b",
-            "c",
-            null,
-            new Date());
+            null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT, "L", "a", "b", null);
     test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -191,12 +170,11 @@ public class AudioVisualTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.BOTH,
             "b",
             "as",
             "qwer",
-            null,
-            new Date());
+            null);
+    test.setAssignedEmp(null);
     test.setAssignedEmp(null);
 
     // Assert that the location is correct
@@ -205,10 +183,10 @@ public class AudioVisualTest {
 
   /** Tests setter for dateOfIncident */
   @Test
-  public void setDateOfIncidentTest() {
+  public void setDateTest() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testAV.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testAV.getDateOfIncident());
+    testAV.setDate(newDOI);
+    assertEquals(newDOI, newDOI);
   }
 
   /** Tests setter for dateOfSubmission */
@@ -228,30 +206,23 @@ public class AudioVisualTest {
 
   /** Tests setter for accoommodationType */
   @Test
-  public void setAccommodationTypeTest() {
-    testAV.setAccommodationType(AudioVisual.AccommodationType.BOTH);
-    assertEquals(AudioVisual.AccommodationType.BOTH, testAV.getAccommodationType());
+  public void setDeviceTypeTest() {
+    testAV.setDeviceType("bbb");
+    assertEquals("bbb", testAV.getDeviceType());
   }
 
   /** Tests setter for patientFirstName */
   @Test
-  public void setPatientFirstTest() {
-    testAV.setPatientFirstName("Steve");
-    assertEquals("Steve", testAV.getPatientFirstName());
+  public void setReasonTest() {
+    testAV.setReason("Steve");
+    assertEquals("Steve", testAV.getReason());
   }
 
   /** Tests setter for patientMiddleName */
   @Test
-  public void setPatientMiddleTest() {
-    testAV.setPatientMiddleName("Does");
-    assertEquals("Does", testAV.getPatientMiddleName());
-  }
-
-  /** Tests setter for patientLastName */
-  @Test
-  public void setPatientLastTest() {
-    testAV.setPatientLastName("Jobs");
-    assertEquals("Jobs", testAV.getPatientLastName());
+  public void setDescriptionTest() {
+    testAV.setDescription("description");
+    assertEquals("description", testAV.getDescription());
   }
 
   /** Tests setter for location */
@@ -278,12 +249,10 @@ public class AudioVisualTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.BOTH,
             "a",
             "b",
             "c",
-            null,
-            new Date());
+            null);
     test.setLocation(new LocationName("a", LocationName.LocationType.INFO, "B"));
 
     // Assert that the location is correct
@@ -299,22 +268,14 @@ public class AudioVisualTest {
             new Date(),
             new Date(),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.BOTH,
             "b",
             "as",
             "qwer",
-            null,
-            new Date());
+            null);
     test.setLocation(null);
 
     // Assert that the location is correct
     assertNull(test.getLocation());
-  }
-
-  @Test
-  public void setDateOfBirthTest() {
-    testAV.setDateOfBirth(new Date(2001 - 1 - 1));
-    assertEquals(new Date(2001 - 1 - 1), testAV.getDateOfBirth());
   }
 
   /** Checks to see if toString makes a string in the same format specified in Sanitation.java */
@@ -346,12 +307,10 @@ public class AudioVisualTest {
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT,
-            AudioVisual.AccommodationType.AUDIO,
             "Emre",
             "Rusen",
             "Sabaz",
-            location,
-            new Date(2001 - 12 - 8));
+            location);
     session.persist(av);
 
     // Assert that the one thing in the database matches this
@@ -367,12 +326,10 @@ public class AudioVisualTest {
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
             ServiceRequest.Urgency.MODERATELY_URGENT,
-            AudioVisual.AccommodationType.AUDIO,
             "Emre",
             "Rusen",
             "Sabaz",
-            location,
-            new Date(2001 - 12 - 8));
+            location);
     session.persist(av2); // Load av2 into the DB, set its ID
 
     assertNotEquals(av, av2); // Assert av and av2 aren't equal
@@ -385,12 +342,10 @@ public class AudioVisualTest {
             new Date(2024 - 2 - 20),
             new Date(2024 - 3 - 21),
             ServiceRequest.Urgency.VERY_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
             "Owen",
             "Matthew",
             "Krause",
-            location,
-            new Date(2002 - 11 - 2));
+            location);
     session.persist(av3); // Load av3 into the DB, set its ID
 
     assertNotEquals(av, av3); // Assert av and av3 aren't equal
@@ -419,12 +374,10 @@ public class AudioVisualTest {
             new Date(2014 - 2 - 14),
             new Date(2026 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
             "ab",
             "cd",
             "gjh",
-            location,
-            new Date(2002 - 12 - 8));
+            location);
     session.persist(av);
 
     // Remove the location
@@ -462,12 +415,10 @@ public class AudioVisualTest {
             new Date(2014 - 2 - 14),
             new Date(2026 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
             "aasfdfb",
             "cghd",
             "gwerjh",
-            location,
-            new Date(2002 - 12 - 8));
+            location);
     session.persist(av);
 
     // Change the location
@@ -507,12 +458,10 @@ public class AudioVisualTest {
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
             "a",
             "d",
             "jh",
-            location,
-            new Date(2002 - 10 - 8));
+            location);
     session.persist(av);
 
     session.flush();
@@ -552,12 +501,10 @@ public class AudioVisualTest {
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
             "a",
             "d",
             "jh",
-            location,
-            new Date(2002 - 10 - 8));
+            location);
     session.persist(av);
 
     // Change the enp
@@ -602,12 +549,10 @@ public class AudioVisualTest {
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
             "a",
             "d",
             "jh",
-            location,
-            new Date(2002 - 10 - 8));
+            location);
     session.persist(av);
 
     // Commit stuff so we can access it later (it's persisted)
@@ -657,12 +602,10 @@ public class AudioVisualTest {
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
             "a",
             "d",
             "jh",
-            location,
-            new Date(2002 - 10 - 8));
+            location);
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -703,16 +646,14 @@ public class AudioVisualTest {
     // Create the av request we will use
     AudioVisual av =
         new AudioVisual(
-            emp,
+            assignedEmp,
             new Date(201674 - 2 - 14),
             new Date(20126 - 1 - 12),
             ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.VISUAL,
             "a",
             "d",
             "jh",
-            location,
-            new Date(2002 - 10 - 8));
+            location);
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -740,6 +681,112 @@ public class AudioVisualTest {
     // Assert the location is not actually gone
     assertEquals(emp, session.find(User.class, emp.getId()));
     assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void bothEmpDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(assignedEmp);
+    session.persist(endDept);
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    AudioVisual av =
+        new AudioVisual(
+            emp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            "a",
+            "d",
+            "jh",
+            location);
+    av.setAssignedEmp(emp);
+    session.persist(av);
+
+    // Change the enp
+    session
+        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .setParameter("id", emp.getId())
+        .executeUpdate();
+
+    // Update the request
+    session.refresh(av);
+
+    // Assert the location is actually gone
+    assertNull(
+        session
+            .createQuery("FROM User WHERE id = :id", User.class)
+            .setParameter("id", emp.getId())
+            .uniqueResult());
+    assertNull(av.getAssignedEmp()); // Assert the location is null
+    assertNull(av.getEmp());
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that updating the employee results in a cascade update failure */
+  @Test
+  public void bothEmpUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(endDept);
+    session.persist(assignedEmp);
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    AudioVisual av =
+        new AudioVisual(
+            emp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            "a",
+            "d",
+            "jh",
+            location);
+    av.setAssignedEmp(emp);
+    session.persist(av);
+
+    transaction.commit(); // Commit what we have, so that we can get it after the failure
+
+    transaction = session.beginTransaction(); // Open a new transaction
+    // Change the enp
+    assertThrows(
+        Exception.class,
+        () ->
+            session
+                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .setParameter("id", emp.getId())
+                .executeUpdate());
+
+    session.flush();
+
+    transaction.rollback(); // End that transaction
+
+    transaction = session.beginTransaction();
+
+    // Update the request
+    session.refresh(av);
+
+    // Assert the location is not actually gone
+    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
+    assertEquals(emp, av.getEmp());
 
     transaction.rollback();
     session.close();
