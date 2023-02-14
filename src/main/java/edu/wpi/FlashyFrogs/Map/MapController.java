@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.ResourceDictionary;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -29,6 +30,11 @@ public class MapController {
   private Pane currentDrawingPane; // The current drawing pane to use to draw nodes/edges
 
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
+
+  public void initialize() {
+    gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
+    Platform.runLater(() -> gesturePane.zoomTo(0.001, new javafx.geometry.Point2D(2500, 1700)));
+  }
 
   /**
    * Sets the node creation function
