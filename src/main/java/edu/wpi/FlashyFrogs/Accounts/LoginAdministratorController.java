@@ -7,8 +7,6 @@ import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
 import java.util.List;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,15 +45,9 @@ public class LoginAdministratorController implements IController {
     popOver
         .showingProperty()
         .addListener(
-            new ChangeListener<Boolean>() {
-              @Override
-              public void changed(
-                  ObservableValue<? extends Boolean> observable,
-                  Boolean oldValue,
-                  Boolean newValue) {
-                if (!newValue) {
-                  addNewUser.setDisable(false);
-                }
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                addNewUser.setDisable(false);
               }
             });
   }
