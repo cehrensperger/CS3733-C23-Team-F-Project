@@ -10,6 +10,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
+import edu.wpi.FlashyFrogs.controllers.NextFloorPopupController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -370,5 +371,12 @@ public class PathfindingController implements IController {
 
   public void onClose() {
     mapController.exit();
+  }
+
+  public void setFloor(String nextFloor) throws IOException {
+    nextFloor = nextFloor.substring(0, nextFloor.length() - 1);
+    String[] parts = nextFloor.split(" ");
+    // System.out.println(parts[parts.length - 1]);
+    floorProperty.setValue(Objects.requireNonNull(Node.Floor.getEnum(parts[parts.length - 1])));
   }
 }
