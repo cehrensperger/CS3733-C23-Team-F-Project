@@ -24,6 +24,9 @@
 
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
+<!--        <property name="cache.use_second_level_cache">true</property>-->
+<!--        <property name="cache.region.factory_class">EhCache"</property>-->
+
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">false</property>
 

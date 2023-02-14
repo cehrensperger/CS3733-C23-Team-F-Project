@@ -2,13 +2,15 @@ package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.github.palexdev.materialfx.utils.others.TriConsumer;
+import java.util.*;
 import java.util.function.BiConsumer;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -30,6 +32,21 @@ class MapEntity {
   @Setter private BiConsumer<Node, Circle> nodeCreation; // Callback to be called on node creation
 
   @Setter private BiConsumer<Edge, Line> edgeCreation; // Callback to be called on edge creation
+
+  @Getter @NonNull
+  private final Map<LocationName, Text> locationNameToTextMap =
+      new HashMap<>(); // Location name to text
+
+  @Getter @NonNull
+  private final Map<Node, Set<LocationName>> nodeToLocationNameMap =
+      new HashMap<>(); // Node to location
+
+  @Getter @NonNull
+  private final Map<Node, VBox> nodeToLocationBox = new HashMap<>(); // Node to location box
+
+  @Setter
+  private TriConsumer<Node, LocationName, Text>
+      locationCreation; // Callback to be called on location creation
 
   @Getter @NonNull
   private final Session mapSession = DBConnection.CONNECTION.getSessionFactory().openSession();
@@ -59,9 +76,44 @@ class MapEntity {
   void addNode(@NonNull Node node, @NonNull Circle circle) {
     nodeToCircleMap.put(node, circle); // Put the node into the map
 
+    // Put the node into the locations map
+    nodeToLocationNameMap.put(node, new HashSet<>()); // Add the set
+
+    // Add the vbox that will hold the locations
+    nodeToLocationBox.put(node, new VBox());
+
     // If the node we're creating is valid
     if (nodeCreation != null) {
       nodeCreation.accept(node, circle); // Preform the callback on it
+    }
+  }
+
+  /**
+   * Adds a location to the map, including node to location and location to text. Also adds the
+   * location to the node box
+   *
+   * @param node the node that holds the text
+   * @param location the location
+   * @param text the text
+   */
+  void addLocation(@NonNull Node node, @NonNull LocationName location, @NonNull Text text) {
+    locationNameToTextMap.put(location, text); // Add the location
+
+    // Check to make sure we're adding a second node (and not more)
+    if (nodeToLocationNameMap.get(node).size() >= 2) {
+      // If so, throw an exception
+      throw new IllegalStateException("Node already has two locations associated with it!");
+    }
+
+    // Otherwise, add it
+    nodeToLocationNameMap.get(node).add(location);
+
+    // Add the text to the box
+    nodeToLocationBox.get(node).getChildren().add(text);
+
+    // If the location creator exists
+    if (locationCreation != null) { // If the location creator exists
+      locationCreation.accept(node, location, text); // Call it
     }
   }
 
@@ -83,6 +135,14 @@ class MapEntity {
     // For each edge to remove
     for (Edge toRemove : edgesToRemove) {
       removeEdge(toRemove); // Delete it
+    }
+
+    // If there is a location name, remove it
+    if (nodeToLocationNameMap.containsKey(node)) {
+      // For each location name, remove it
+      nodeToLocationNameMap.get(node).forEach(this::removeLocationName);
+
+      nodeToLocationBox.remove(node); // Remove the node to location name box
     }
   }
 
@@ -108,6 +168,28 @@ class MapEntity {
    */
   void removeEdge(@NonNull Edge edge) {
     edgeToLineMap.remove(edge);
+  }
+
+  /**
+   * Handles removing the location name from the map, including removing it from the parent box
+   *
+   * @param locationName the location to remove
+   */
+  void removeLocationName(@NonNull LocationName locationName) {
+    // Find the node that contain the location name
+    Node toDelete =
+        nodeToLocationNameMap.keySet().stream()
+            .filter((node) -> nodeToLocationNameMap.get(node).contains(locationName))
+            .findFirst()
+            .orElseThrow();
+
+    // Delete it from the mapping, don't remove the location name map
+    nodeToLocationNameMap.get(toDelete).remove(locationName);
+
+    // Remove the location from its parent box
+    nodeToLocationBox.get(toDelete).getChildren().remove(locationNameToTextMap.get(locationName));
+
+    locationNameToTextMap.remove(locationName); // Remove the location name in the text mapping
   }
 
   /** Commits any changes that have been made using the map session */

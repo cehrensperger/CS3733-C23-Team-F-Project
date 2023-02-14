@@ -2,19 +2,23 @@ package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Edge;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import lombok.NonNull;
 import net.kurobako.gesturefx.GesturePane;
 import org.hibernate.Session;
@@ -71,6 +75,20 @@ public class MapController {
     currentDrawingPane.getChildren().add(circleToDraw); // Draw the circle
 
     mapEntity.addNode(node, circleToDraw); // Add the circle to the entity
+
+    // Now that we have the box, get it
+    VBox locationBox = getNodeToLocationBox().get(node);
+    // Add the box to the map
+    currentDrawingPane.getChildren().add(locationBox);
+
+    // Set it's coordinates
+    locationBox.setLayoutX(node.getXCoord());
+    locationBox.setLayoutY(node.getYCoord());
+
+    // For each location belonging to this node
+    for (LocationName nodeLocation : node.getCurrentLocation(getMapSession())) {
+      addLocationName(nodeLocation, node); // Add it
+    }
   }
 
   /**
@@ -95,7 +113,11 @@ public class MapController {
       }
     }
 
-    mapEntity.removeNode(node); // Remove the node, this also handles removing the edges
+    // Remove the location box
+    currentDrawingPane.getChildren().remove(getNodeToLocationBox().get(node));
+
+    mapEntity.removeNode(
+        node); // Remove the node, this also handles removing the edges and locations
   }
 
   /**
@@ -149,6 +171,46 @@ public class MapController {
   }
 
   /**
+   * Adds a location name to the map, including setting its text
+   *
+   * @param locationName the location name to add
+   * @param node the node to add the location onto
+   */
+  public void addLocationName(@NonNull LocationName locationName, @NonNull Node node) {
+    Text locationToAdd = new Text(locationName.getShortName());
+    locationToAdd.setStyle("-fx-font-size: 6");
+
+    // Add the text to the map
+    mapEntity.addLocation(node, locationName, locationToAdd);
+  }
+
+  /**
+   * Updates the text of a location name on the map
+   *
+   * @param oldLocation the old location
+   * @param newLocation the new location
+   * @param node the node the locations belong to
+   */
+  public void updateLocationName(
+      @NonNull LocationName oldLocation, @NonNull LocationName newLocation, @NonNull Node node) {
+    // Remove the old location
+    removeLocationName(oldLocation);
+
+    // Add the new location
+    addLocationName(newLocation, node);
+  }
+
+  /**
+   * Remove the location name from the map (physically). Does not handle DB issues
+   *
+   * @param locationName the location name
+   */
+  public void removeLocationName(@NonNull LocationName locationName) {
+    // Remove the location name from the map backing
+    mapEntity.removeLocationName(locationName);
+  }
+
+  /**
    * Gets the map relating nodes to circles on the map
    *
    * @return the map relating node to circles on the map
@@ -166,6 +228,36 @@ public class MapController {
   @NonNull
   public Map<Edge, Line> getEdgeToLineMap() {
     return mapEntity.getEdgeToLineMap();
+  }
+
+  /**
+   * Gets the map relating nodes to location names
+   *
+   * @return the map relating node to location names
+   */
+  @NonNull
+  public Map<Node, Set<LocationName>> getNodeToLocationNameMap() {
+    return mapEntity.getNodeToLocationNameMap();
+  }
+
+  /**
+   * Gets the location name to text mapping
+   *
+   * @return the location name to text mapping
+   */
+  @NonNull
+  public Map<LocationName, Text> getLocationNameToTextMap() {
+    return mapEntity.getLocationNameToTextMap();
+  }
+
+  /**
+   * Gets the node to location box mapping
+   *
+   * @return the node to location box mapping
+   */
+  @NonNull
+  public Map<Node, VBox> getNodeToLocationBox() {
+    return mapEntity.getNodeToLocationBox();
   }
 
   /**

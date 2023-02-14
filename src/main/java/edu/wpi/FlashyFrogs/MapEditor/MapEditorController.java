@@ -121,7 +121,6 @@ public class MapEditorController implements IController {
     Pane map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(0, map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
-    mapController.setFloor(Node.Floor.L1);
 
     // make the anchor pane resizable
     AnchorPane.setTopAnchor(map, 0.0);
@@ -172,13 +171,18 @@ public class MapEditorController implements IController {
                       mapPopOver.getAndSet(null).hide(); // And get the pop-up
                     },
                     (oldLocation) -> locationTable.getItems().remove(oldLocation),
-                    this::updateLocationInTable, // Update when locations update
+                    (oldLocation, newLocation, locationNode) -> {
+                      updateLocationInTable(oldLocation, newLocation); // Update the table
+                      // Update the location node
+                      mapController.updateLocationName(oldLocation, newLocation, locationNode);
+                    }, // Update when locations update
                     false); // Delete on delete
 
                 mapPopOver.get().show(circle); // Show the pop-over
               });
         });
 
+    mapController.setFloor(Node.Floor.L1);
     floorSelector.setText("Floor " + Node.Floor.L1.name());
 
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
@@ -239,6 +243,11 @@ public class MapEditorController implements IController {
     PopOver popOver = new PopOver(newLoad.load()); // create the new popOver
 
     AddMoveController addMove = newLoad.getController(); // get the controllers
+    addMove.setAddMove(
+        () -> {
+          mapController
+              .redraw(); // Redraw the map, to handle the new location name -> node permutations
+        });
     addMove.setPopOver(popOver); // pass the popOver
     addMove.setSession(mapController.getMapSession()); // pass the session
 
@@ -316,8 +325,12 @@ public class MapEditorController implements IController {
           mapController.addNode(newNode);
           popOver.hide();
         }, // On create new one, process it
-        (oldLocation) -> {},
-        (oldLocation, newLocation) -> {}, // No location processing, no locations
+        (oldLocation) -> {
+          mapController.removeLocationName(oldLocation);
+        },
+        (oldLocation, newLocation, node) -> {
+          mapController.updateLocationName(oldLocation, newLocation, node);
+        }, // No location processing, no locations
         true); // This is a new node
 
     popOver.detach(); // Detatch the pop-up, so it's not stuck to the button

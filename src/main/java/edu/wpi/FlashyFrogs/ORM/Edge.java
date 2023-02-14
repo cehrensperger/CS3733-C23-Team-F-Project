@@ -4,10 +4,13 @@ import jakarta.persistence.*;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Edge")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Edge {
   @Id
   @JoinColumn(

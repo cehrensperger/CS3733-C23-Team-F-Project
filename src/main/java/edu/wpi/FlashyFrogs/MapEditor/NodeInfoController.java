@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.beans.property.ObjectProperty;
@@ -102,7 +103,7 @@ public class NodeInfoController {
       @NonNull Consumer<Node> onNodeDelete,
       @NonNull BiConsumer<Node, Node> onNodeUpdate,
       @NonNull Consumer<LocationName> onLocationDelete,
-      @NonNull BiConsumer<LocationName, LocationName> onLocationChange,
+      @NonNull TriConsumer<LocationName, LocationName, Node> onLocationChange,
       boolean isNewNode) {
     String[] originalID = new String[1]; // Original ID for the node
     originalID[0] = node.getId(); // Set the original ID
@@ -162,7 +163,7 @@ public class NodeInfoController {
       LocationName location =
           node.getCurrentLocation(session).stream()
               .findFirst()
-              .get(); // Get the location for the node
+              .orElse(null); // Get the location for the node
 
       if (location != null) { // If the location exists
 
@@ -176,6 +177,13 @@ public class NodeInfoController {
         LocationNameInfoController controller =
             locationNameLoader.getController(); // Load the controller
 
+        // Get this node to use with the location change handler
+        Node original =
+            session
+                .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                .setParameter("originalID", originalID[0])
+                .uniqueResult();
+
         // Set the location name, make sure that table updates are processed
         controller.setLocationName(
             location,
@@ -184,7 +192,9 @@ public class NodeInfoController {
               locationPane.getChildren().clear();
               onLocationDelete.accept(oldLocation);
             },
-            onLocationChange, // Handle location updates
+            (oldLocation, newLocation) -> {
+              onLocationChange.accept(oldLocation, newLocation, original);
+            }, // Handle location updates
             false); // On delete clear
       }
     } else {
