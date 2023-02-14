@@ -2,14 +2,18 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.Session;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "LocationName")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LocationName {
   @Id
   @Column(nullable = false)
@@ -76,6 +80,16 @@ public class LocationName {
     LocationType(@NonNull String name) {
       this.name = name; // The name to provide
     }
+
+    /**
+     * Override for the toString, returns the type as a string
+     *
+     * @return the type as a string
+     */
+    @Override
+    public String toString() {
+      return this.name;
+    }
   }
 
   /**
@@ -128,6 +142,7 @@ public class LocationName {
     // there
     //     is no
     //     result
+
     Node node =
         session
             .createQuery(
@@ -145,7 +160,7 @@ public class LocationName {
     // if the node isn't null
     if (node != null) {
       // Check the move it has most recently
-      LocationName nodeLocation =
+      Collection<LocationName> locations =
           session
               .createQuery(
                   """
@@ -153,14 +168,14 @@ public class LocationName {
                 FROM Move
                 WHERE node = :node AND moveDate <= current timestamp
                 ORDER BY moveDate DESC
-                LIMIT 1
+                LIMIT 2
                 """,
                   LocationName.class)
               .setParameter("node", node)
-              .uniqueResult();
+              .getResultList();
 
       // If that is this
-      if (nodeLocation.equals(this)) {
+      if (locations.contains(this)) {
         return node; // Then this location is associated with the node
       }
     }

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.SanitationController">
+    <children>
+        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="155.66615295410156">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Text>
+                        <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual        " textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Information Technology" textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Sanitation            " textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Security                " textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets left="18.0" top="18.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </MFXButton>
+                        <AnchorPane VBox.vgrow="ALWAYS">
+                            <children>
+                                <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
+                                    <children>
+                                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Credits" textFill="WHITE">
+                                            <VBox.margin>
+                                                <Insets left="18.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </MFXButton>
+                                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Back" textFill="#012d5a">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" left="18.0" top="18.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </MFXButton>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Service Request">
+                            <font>
+                                <Font size="28.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="55.0" />
+                            </VBox.margin>
+                        </Text>
+                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" style="-fx-background-color: #f1f1f1;" VBox.vgrow="ALWAYS">
+                            <children>
+                        <VBox prefHeight="200.0" prefWidth="185.0">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Where is the sanitation needed" textAlignment="RIGHT" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="48.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                                <VBox prefHeight="400.0" prefWidth="200.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Information">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                                        <SearchableComboBox fx:id="location" promptText="Location of Request" style="-fx-background-color: #F1F1F1;">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets right="100.0" />
+                                    </HBox.margin>
+                                </VBox>
+                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="470.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                <VBox prefHeight="159.0" prefWidth="200.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation Information">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                                        <SearchableComboBox fx:id="sanitationType" promptText="Sanitation Type">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                        <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date Preference" />
+                                        <SearchableComboBox fx:id="urgency" promptText="Urgency">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" top="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                              <SearchableComboBox fx:id="isolation" promptText="Isolation/Precaution">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </SearchableComboBox>
+                              <SearchableComboBox fx:id="biohazard" promptText="Biohazard">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </SearchableComboBox>
+                              <TextField fx:id="description" prefWidth="200.0" text="Description of Request" />
+                                        <HBox alignment="TOP_CENTER" prefHeight="19.0" prefWidth="200.0">
+                                            <children>
+                                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                        <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Clear" textFill="#b6000b">
+                                                            <font>
+                                                                <Font size="16.0" />
+                                                            </font>
+                                                        </MFXButton>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                                                            <font>
+                                                                <Font size="16.0" />
+                                                            </font>
+                                                        </MFXButton>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets top="198.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="errorMessage">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets left="100.0" />
+                                    </HBox.margin></VBox>
+                        <VBox prefHeight="200.0" prefWidth="185.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of sanitation is needed" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="50.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific date the sanitation will be needed" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="24.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the sanitation request" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are there any isolation or precautionary measures that need to be taken during this sanitatino" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="14.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a biohazard associated with this sanitation" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="14.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the sanitation being requested" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="26.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="50.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

@@ -5,14 +5,16 @@ import java.util.Date;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Move")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Move {
   @Id
   @Getter
-  @Setter
   @JoinColumn(
       name = "node_id",
       foreignKey =
@@ -22,12 +24,12 @@ public class Move {
                   "foreign key (node_id) REFERENCES node(id) ON UPDATE CASCADE ON DELETE CASCADE"),
       nullable = false)
   @NonNull
-  @ManyToOne(cascade = CascadeType.ALL)
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
+  @ManyToOne(optional = false)
   private Node node;
 
   @Id
   @Getter
-  @Setter
   @JoinColumn(
       name = "longName",
       foreignKey =
@@ -38,7 +40,8 @@ public class Move {
                       + "locationname(longName) ON UPDATE CASCADE ON DELETE CASCADE"),
       nullable = false)
   @NonNull
-  @ManyToOne
+  @ManyToOne(optional = false)
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   private LocationName location;
 
   @Temporal(TemporalType.TIMESTAMP)
@@ -46,7 +49,6 @@ public class Move {
   @Column(nullable = false)
   @NonNull
   @Getter
-  @Setter
   private Date moveDate;
 
   /** Creates a new Move with empty fields */

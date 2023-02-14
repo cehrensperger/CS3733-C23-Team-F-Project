@@ -10,78 +10,58 @@ import org.hibernate.annotations.Cascade;
 @Entity
 @Table(name = "ServiceRequest")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class ServiceRequest {
+public abstract class ServiceRequest {
   @Basic
   @Id
-  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   @Column(nullable = false)
   @Getter
-  @Setter
   @GeneratedValue
-  private long id;
+  private long id; // UUID for the request
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  private Status status;
+  private Status status; // Status for the request
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
-  private String empFirstName;
+  @JoinColumn(
+      name = "location",
+      foreignKey =
+          @ForeignKey(
+              name = "location_name1_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (location) REFERENCES locationname(longName) "
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
+  @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+  @ManyToOne
+  private LocationName location; // Location the request is needed for (source)
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
-  private String empMiddleName;
+  @JoinColumn(
+      name = "empid",
+      foreignKey =
+          @ForeignKey(
+              name = "empid_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (empid) REFERENCES " + "\"user\"(id) ON DELETE SET NULL"))
+  @ManyToOne
+  private User emp; // Initiating employee
 
-  @Basic
-  @Column(nullable = false)
-  @NonNull
   @Getter
   @Setter
-  private String empLastName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private EmpDept empDept;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String assignedEmpFirstName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String assignedEmpMiddleName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String assignedEmpLastName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private EmpDept assignedEmpDept;
+  @JoinColumn(
+      name = "assignedempid",
+      foreignKey =
+          @ForeignKey(
+              name = "assignedempid_fk",
+              foreignKeyDefinition =
+                  "FOREIGN KEY (assignedempid) REFERENCES " + "\"user\"(id) ON DELETE SET NULL"))
+  @ManyToOne
+  private User assignedEmp; // Assigned employee
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
@@ -89,7 +69,7 @@ public class ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  private Date dateOfIncident;
+  private Date date; // Date, this is dependent on the subtype
 
   @Basic
   @Temporal(TemporalType.DATE)
@@ -97,21 +77,21 @@ public class ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  private Date dateOfSubmission;
+  private Date dateOfSubmission; // Submission date
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  private Urgency urgency;
+  private Urgency urgency; // Urgency
 
   @Basic
   @Column(nullable = false)
   @NonNull
   @Getter
   @Setter
-  private String requestType;
+  private String requestType; // Request type
 
   /** Enumerated type for the possible statuses we can create */
   public enum Status {
@@ -128,6 +108,16 @@ public class ServiceRequest {
      */
     Status(@NonNull String statusVal) {
       status = statusVal;
+    }
+
+    /**
+     * Override for the toString, returns the status as a string
+     *
+     * @return the status as a string
+     */
+    @Override
+    public String toString() {
+      return this.status;
     }
   }
 
@@ -149,6 +139,16 @@ public class ServiceRequest {
     EmpDept(@NonNull String dept) {
       EmpDept = dept;
     }
+
+    /**
+     * Override for the toString, returns the department as a string
+     *
+     * @return the department as a string
+     */
+    @Override
+    public String toString() {
+      return this.EmpDept;
+    }
   }
 
   /** Enumerated type for the possible urgencies we can create */
@@ -166,6 +166,16 @@ public class ServiceRequest {
      */
     Urgency(@NonNull String urgency) {
       Urgency = urgency;
+    }
+
+    /**
+     * Override for the toString, returns the urgency as a string
+     *
+     * @return the urgency as a string
+     */
+    @Override
+    public String toString() {
+      return this.Urgency;
     }
   }
 
@@ -186,14 +196,13 @@ public class ServiceRequest {
   }
 
   /**
-   * Overrides the default hashCode method with one that uses the id and dateOfSubmission of the
-   * object
+   * Overrides the default hashCode method with one that uses the id of the object
    *
    * @return the new hashcode
    */
   @Override
   public int hashCode() {
-    return Objects.hash(this.id, this.dateOfSubmission);
+    return Objects.hash(this.id);
   }
 
   /**

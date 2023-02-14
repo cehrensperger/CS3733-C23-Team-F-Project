@@ -39,7 +39,14 @@ public class ComputerService extends ServiceRequest {
   @NonNull
   @Getter
   @Setter
-  private String issue;
+  private String description;
+
+  @Basic
+  @Column(nullable = false)
+  @NonNull
+  @Getter
+  @Setter
+  private String bestContact;
 
   /** Creates a new ComputerService with a generated id */
   public ComputerService() {
@@ -50,56 +57,39 @@ public class ComputerService extends ServiceRequest {
   /**
    * Creates a new ComputerService with a generated id and the specified fields
    *
-   * @param empFirstName the String to use in the empFirstName field
-   * @param empMiddleName the String to use in the empMiddleName field
-   * @param empLastName the String to use in the empLastName field
-   * @param assignedEmpFirstName the String to use in the assignedEmpFirstName field
-   * @param assignedEmpMiddleName the String to use in the assignedEmpMiddleName field
-   * @param assignedEmpLastName the String to use in the assignedEmpLastName field
-   * @param empDept the EmpDept to use in the empDept field
-   * @param assignedEmpDept the EmpDept to use in the assignedEmpDept field
-   * @param dateOfIncident the Date to use in the dateOfIncident field
+   * @param emp the User to use in the emp field
+   * @param location the Location of the service request
+   * @param dateNeededBy the Date the Computer Service is needed by
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
-   * @param issue the String to use in the issue field
-   * @param model the String to use in the issue field
-   * @param deviceType the String to use in the deviceType field
+   * @param description the String to use in the issue field
+   * @param deviceType the deviceTyper to use in the deviceType field
    * @param serviceType the ServiceType to use in the serviceType field
+   * @param bestContact the String to use in the bestContact field
    */
   public ComputerService(
-      @NonNull String empFirstName,
-      @NonNull String empMiddleName,
-      @NonNull String empLastName,
-      @NonNull String assignedEmpFirstName,
-      @NonNull String assignedEmpMiddleName,
-      @NonNull String assignedEmpLastName,
-      @NonNull EmpDept empDept,
-      @NonNull EmpDept assignedEmpDept,
-      @NonNull Date dateOfIncident,
+      User emp,
+      LocationName location,
+      @NonNull Date dateNeededBy,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,
       @NonNull DeviceType deviceType,
       @NonNull String model,
-      @NonNull String issue,
-      @NonNull ServiceType serviceType) {
-    super.setEmpFirstName(empFirstName);
-    super.setEmpMiddleName(empMiddleName);
-    super.setEmpLastName(empLastName);
-    ;
-    super.setEmpDept(empDept);
-    super.setAssignedEmpFirstName(assignedEmpFirstName);
-    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
-    super.setAssignedEmpLastName(assignedEmpLastName);
-    super.setAssignedEmpDept(assignedEmpDept);
-    super.setDateOfIncident(dateOfIncident);
+      @NonNull String description,
+      @NonNull ServiceType serviceType,
+      @NonNull String bestContact) {
+    super.setEmp(emp);
+    super.setLocation(location);
+    super.setDate(dateNeededBy);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);
     super.setRequestType("ComputerService");
     this.deviceType = deviceType;
     this.model = model;
-    this.issue = issue;
+    this.description = description;
     this.serviceType = serviceType;
+    this.bestContact = bestContact;
   }
 
   /** Enumerated type for the possible serviceTypes we can create */
@@ -118,6 +108,16 @@ public class ComputerService extends ServiceRequest {
      */
     ServiceType(@NonNull String serviceType) {
       ServiceType = serviceType;
+    }
+
+    /**
+     * Override for the toString, returns the type as a string
+     *
+     * @return the type as a string
+     */
+    @Override
+    public String toString() {
+      return this.ServiceType;
     }
   }
 

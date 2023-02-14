@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
  * directly in an FXML file, this is unnecessary as JFX will preload it (or load it) quickly anyway.
  * This is useful for runtime switching, where that cannot happen
  */
+@GeneratedExclusion
 public enum ResourceDictionary {
   L2("floors/L2.png"), // L2 hospital map image
   L1("floors/L1.png"), // , // L1 hospital map image

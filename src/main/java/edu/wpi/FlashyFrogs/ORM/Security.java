@@ -19,20 +19,12 @@ public class Security extends ServiceRequest {
   @Setter
   private String incidentReport;
 
+  @Basic
+  @Column(nullable = false)
+  @NonNull
   @Getter
   @Setter
-  @JoinColumn(
-      name = "location",
-      foreignKey =
-          @ForeignKey(
-              name = "location_name_fk",
-              foreignKeyDefinition =
-                  "FOREIGN KEY (location) REFERENCES locationname(longname) "
-                      + "ON UPDATE CASCADE ON DELETE SET NULL"),
-      nullable = false)
-  @NonNull
-  @ManyToOne
-  private LocationName location;
+  private ThreatType threatType;
 
   /** Creates a new Security object with a generated id */
   public Security() {
@@ -45,47 +37,51 @@ public class Security extends ServiceRequest {
    *
    * @param theIncidentReport the String to use in the incidentReport field
    * @param theLocation the LocationName to use in the location field
-   * @param empFirstName the String to use in the empFirstName field
-   * @param empMiddleName the String to use in the empMiddleName field
-   * @param empLastName the String to use in the empLastName field
-   * @param assignedEmpFirstName the String to use in the assignedEmpFirstName field
-   * @param assignedEmpMiddleName the String to use in the assignedEmpMiddleName field
-   * @param assignedEmpLastName the String to use in the assignedEmpLastName field
-   * @param empDept the EmpDept to use in the empDept field
-   * @param assignedEmpDept the EmpDept to use in the assignedEmpDept field
-   * @param dateOfIncident the Date to use in the dateOfIncident field
+   * @param emp the User to use in the emp field
+   * @param datePreference the Date to use in the dateOfIncident field
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
    */
   public Security(
       @NonNull String theIncidentReport,
-      @NonNull LocationName theLocation,
-      @NonNull String empFirstName,
-      @NonNull String empMiddleName,
-      @NonNull String empLastName,
-      @NonNull String assignedEmpFirstName,
-      @NonNull String assignedEmpMiddleName,
-      @NonNull String assignedEmpLastName,
-      @NonNull EmpDept empDept,
-      @NonNull EmpDept assignedEmpDept,
-      @NonNull Date dateOfIncident,
+      LocationName theLocation,
+      User emp,
+      @NonNull Date datePreference,
       @NonNull Date dateOfSubmission,
-      @NonNull Urgency urgency) {
+      @NonNull Urgency urgency,
+      @NonNull ThreatType threatType) {
     this.incidentReport = theIncidentReport;
-    this.location = theLocation;
-    super.setEmpFirstName(empFirstName);
-    super.setEmpMiddleName(empMiddleName);
-    super.setEmpLastName(empLastName);
-    ;
-    super.setEmpDept(empDept);
-    super.setAssignedEmpFirstName(assignedEmpFirstName);
-    super.setAssignedEmpMiddleName(assignedEmpMiddleName);
-    super.setAssignedEmpLastName(assignedEmpLastName);
-    super.setAssignedEmpDept(assignedEmpDept);
-    super.setDateOfIncident(dateOfIncident);
+    super.setLocation(theLocation);
+    super.setEmp(emp);
+    super.setDate(datePreference);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);
     super.setRequestType("Security");
+    this.threatType = threatType;
+  }
+
+  /** Enumerated type for the possible types we can create */
+  public enum ThreatType {
+    NONE("No Threat"),
+    INTRUDER("Intruder"),
+    WEAPON("Weapon"),
+    PATIENT("Patient");
+
+    @NonNull public final String ThreatType;
+
+    /**
+     * Creates a new status with the given String backing
+     *
+     * @param threatType the type to create. Must not be null
+     */
+    ThreatType(@NonNull String threatType) {
+      ThreatType = threatType;
+    }
+
+    @Override
+    public String toString() {
+      return this.ThreatType;
+    }
   }
 }

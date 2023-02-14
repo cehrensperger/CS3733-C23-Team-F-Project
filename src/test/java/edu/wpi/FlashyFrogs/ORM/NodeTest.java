@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.time.Instant;
 import java.util.Date;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -36,6 +37,21 @@ public class NodeTest {
   /** Cleans up the DB tables and closes the test session */
   @AfterEach
   public void cleanupDatabase() {
+    // If the prior test is open
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
+
+        // If the transaction is still active
+        if (priorSession.getTransaction().isActive()) {
+          priorSession.getTransaction().rollback(); // Roll it back
+        }
+
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
+    }
+
     Transaction cleanupTransaction =
         session.beginTransaction(); // Create a transaction to cleanup with
     session.createMutationQuery("DELETE FROM Move").executeUpdate(); // Delete moves
@@ -50,11 +66,7 @@ public class NodeTest {
   @BeforeEach
   @AfterEach
   public void resetTestNode() {
-    testNode.setId("Test");
-    testNode.setBuilding("Building");
-    testNode.setFloor(Node.Floor.L2);
-    testNode.setXCoord(0);
-    testNode.setYCoord(1);
+    testNode = new Node("Test", "Building", Node.Floor.L2, 0, 1);
   }
 
   /** Tests if the equals in Node.java correctly compares two Node objects */
@@ -76,18 +88,8 @@ public class NodeTest {
   /** Tests to see that HashCode changes when attributes that determine HashCode changes */
   @Test
   void testHashCode() {
-    int originalHash = testNode.hashCode();
-    testNode.setId("NewID");
-    testNode.setXCoord(100);
-    testNode.setYCoord(100000);
-    assertNotEquals(testNode.hashCode(), originalHash);
-  }
-
-  /** Tests setter for id */
-  @Test
-  void setId() {
-    testNode.setId("Changed");
-    assertEquals("Changed", testNode.getId());
+    Node testNode2 = new Node("NewID", "Building", Node.Floor.L2, 100, 100000);
+    assertNotEquals(testNode2.hashCode(), testNode.hashCode());
   }
 
   /** Tests setter for xCoord */
@@ -121,8 +123,9 @@ public class NodeTest {
   /** If a node isn't in the database, querying for it should return null */
   @Test
   public void nodeNotPersistedTest() {
-    assertNull(testNode.getCurrentLocation()); // Assert the test node has a null location
-    assertNull(testNode.getCurrentLocation(session)); // Assert the test node has a null location
+    assertTrue(testNode.getCurrentLocation().isEmpty()); // Assert the test node has a null location
+    assertTrue(
+        testNode.getCurrentLocation(session).isEmpty()); // Assert the test node has a null location
   }
 
   /** Tests that a node with no mapping in move does not return a location */
@@ -135,8 +138,8 @@ public class NodeTest {
     session.persist(testNode); // Persist the node
     commitTransaction.commit(); // Commit
 
-    assertNull(testNode.getCurrentLocation());
-    assertNull(testNode.getCurrentLocation(session));
+    assertTrue(testNode.getCurrentLocation().isEmpty());
+    assertTrue(testNode.getCurrentLocation(session).isEmpty());
   }
 
   /**
@@ -157,8 +160,8 @@ public class NodeTest {
     session.persist(testMove);
     commitTransaction.commit(); // Commit
 
-    assertNull(testNode.getCurrentLocation()); // Assert the location is null
-    assertNull(testNode.getCurrentLocation(session)); // Assert the location is null
+    assertTrue(testNode.getCurrentLocation().isEmpty()); // Assert the location is null
+    assertTrue(testNode.getCurrentLocation(session).isEmpty()); // Assert the location is null
   }
 
   /** Tests that if the correct location is remapped, null is returned */
@@ -179,8 +182,8 @@ public class NodeTest {
     session.persist(newMove);
     commitTransaction.commit(); // Commit
 
-    assertNull(thisNode.getCurrentLocation()); // Assert the location is null
-    assertNull(thisNode.getCurrentLocation(session)); // Assert the location is null
+    assertTrue(thisNode.getCurrentLocation().isEmpty()); // Assert the location is null
+    assertTrue(thisNode.getCurrentLocation(session).isEmpty()); // Assert the location is null
   }
 
   /**
@@ -191,26 +194,36 @@ public class NodeTest {
   public void locationRemappedFallbackTest() {
     Node thisNode = new Node("p", "i", Node.Floor.L1, 99, 0); // Random node
     Node otherNode = new Node("h", "i", Node.Floor.L2, 0, 99); // Bad node
-    LocationName theLocation = new LocationName("a", LocationName.LocationType.SERV, "b");
-    LocationName badLocation = new LocationName("b", LocationName.LocationType.INFO, "b");
+    LocationName newestLocation = new LocationName("newest", LocationName.LocationType.SERV, "n");
+    LocationName middleLocation = new LocationName("middle", LocationName.LocationType.INFO, "m");
+    LocationName oldestLocation = new LocationName("oldest", LocationName.LocationType.SERV, "o");
+
     Move fallbackMove =
-        new Move(thisNode, badLocation, Date.from(Instant.ofEpochSecond(10))); // Old
+        new Move(thisNode, oldestLocation, Date.from(Instant.ofEpochSecond(10))); // Old
     Move oldMove =
-        new Move(thisNode, theLocation, Date.from(Instant.ofEpochSecond(22))); // Old move
+        new Move(thisNode, middleLocation, Date.from(Instant.ofEpochSecond(22))); // middle move
+
+    Move oldMove1 =
+        new Move(thisNode, newestLocation, Date.from(Instant.ofEpochSecond(33))); // new move
+
     Move newMove =
-        new Move(otherNode, theLocation, Date.from(Instant.ofEpochSecond(100))); // New move
+        new Move(otherNode, newestLocation, Date.from(Instant.ofEpochSecond(100))); // New move
+    Move newestMove = new Move(otherNode, middleLocation, Date.from(Instant.ofEpochSecond(200)));
 
     Transaction commitTransaction = session.beginTransaction(); // Session to commit these
     session.persist(thisNode);
     session.persist(otherNode);
-    session.persist(theLocation);
-    session.persist(badLocation);
+    session.persist(oldestLocation);
+    session.persist(middleLocation);
+    session.persist(newestLocation);
     session.persist(fallbackMove);
     session.persist(oldMove);
+    session.persist(oldMove1);
     session.persist(newMove);
+    session.persist(newestMove);
     commitTransaction.commit(); // Commit
 
-    assertNull(thisNode.getCurrentLocation()); // Assert the location is null
+    assertTrue(thisNode.getCurrentLocation().isEmpty()); // Assert the location is null
   }
 
   /** Tests that a simple mapping (one location, one node) works as expected */
@@ -227,8 +240,17 @@ public class NodeTest {
     session.persist(move);
     commitTransaction.commit(); // Commit the transaction
 
-    assertEquals(location, node.getCurrentLocation()); // Assert the location is valid
-    assertEquals(location, node.getCurrentLocation(session)); // Assert the location is valid
+    assertEquals(
+        location,
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is valid
+    assertEquals(
+        location,
+        node.getCurrentLocation(session).stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is valid
+    assertEquals(1, node.getCurrentLocation().size());
   }
 
   /** Tests that old mappings of this node -> a location are ignored */
@@ -255,7 +277,14 @@ public class NodeTest {
     commitTransaction.commit(); // Commit everything
 
     assertEquals(
-        currentLocation, node.getCurrentLocation()); // Assert the correct location is gotten
+        currentLocation,
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the correct location is gotten
+
+    assertEquals(midLocation, node.getCurrentLocation().toArray()[1]);
+
+    assertEquals(2, node.getCurrentLocation().size());
   }
 
   /** Tests that old mappings of the current location -> a node are ignored */
@@ -276,9 +305,17 @@ public class NodeTest {
     session.persist(oldMove);
     commitTransaction.commit(); // Commit everything
 
-    assertEquals(location, theNode.getCurrentLocation()); // Check that the location is correct
     assertEquals(
-        location, theNode.getCurrentLocation(session)); // Check that the location is correct
+        location,
+        theNode.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Check that the location is correct
+    assertEquals(
+        location,
+        theNode.getCurrentLocation(session).stream()
+            .findFirst()
+            .orElseThrow()); // Check that the location is correct
+    assertEquals(1, theNode.getCurrentLocation().size());
   }
 
   /** Tests for a case where the node is remapped in the future, ignores the future locations */
@@ -306,8 +343,17 @@ public class NodeTest {
     session.persist(moreFuture);
     commitTransaction.commit(); // Commit the transaction
 
-    assertEquals(currentLocation, node.getCurrentLocation()); // Assert the location is right
-    assertEquals(currentLocation, node.getCurrentLocation(session)); // Assert the location is right
+    assertEquals(
+        currentLocation,
+        node.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
+    assertEquals(
+        currentLocation,
+        node.getCurrentLocation(session).stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
+    assertEquals(1, node.getCurrentLocation().size());
   }
 
   /** Test for a case where the location is remapped in the future */
@@ -340,8 +386,17 @@ public class NodeTest {
     session.persist(furthestFuture);
     commitTransaction.commit(); // Commit the transaction
 
-    assertEquals(location, currentNode.getCurrentLocation()); // Assert the location is right
-    assertEquals(location, currentNode.getCurrentLocation(session)); // Assert the location is right
+    assertEquals(
+        location,
+        currentNode.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
+    assertEquals(
+        location,
+        currentNode.getCurrentLocation(session).stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
+    assertEquals(1, currentNode.getCurrentLocation().size());
   }
 
   /**
@@ -382,8 +437,66 @@ public class NodeTest {
     session.persist(currentNodeToOldLocation);
     commitTransaction.commit(); // Commit the transaction
 
-    assertEquals(correctLocation, correctNode.getCurrentLocation()); // Assert the location is right
     assertEquals(
-        correctLocation, correctNode.getCurrentLocation(session)); // Assert the location is right
+        correctLocation,
+        correctNode.getCurrentLocation().stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
+
+    assertEquals(
+        oldLocation, correctNode.getCurrentLocation().toArray()[1]); // Assert the location is right
+
+    assertEquals(
+        correctLocation,
+        correctNode.getCurrentLocation(session).stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
+
+    assertEquals(
+        oldLocation,
+        correctNode.getCurrentLocation(session).toArray()[1]); // Assert the location is right
+
+    assertEquals(2, correctNode.getCurrentLocation().size());
+  }
+
+  @Test
+  public void twoLocationsAtOnce() {
+    Node node = new Node("n", "b", Node.Floor.THREE, 0, 0); // Create the node
+    LocationName currentLocation1 =
+        new LocationName("curr1", LocationName.LocationType.CONF, "cur1");
+    LocationName currentLocation2 =
+        new LocationName("curr2", LocationName.LocationType.ELEV, "cur2");
+    // LocationName furtherFut = new LocationName("ff", LocationName.LocationType.SERV, "");
+    Move currentNode1 =
+        new Move(node, currentLocation1, Date.from(Instant.now())); // Move for right now
+    Move currentNode2 = new Move(node, currentLocation2, Date.from(Instant.now()));
+
+    Transaction commitTransaction = session.beginTransaction();
+    session.persist(node);
+    session.persist(currentLocation1);
+    session.persist(currentLocation2);
+    session.persist(currentNode1);
+    session.persist(currentNode2);
+    commitTransaction.commit();
+
+    assertEquals(2, node.getCurrentLocation(session).size());
+  }
+
+  /** Tests the get enum method for Node and the to string method for that */
+  @Test
+  public void floorEnumTest() {
+    assertEquals(Node.Floor.L1, Node.Floor.getEnum("L1"));
+    assertEquals("L1", Node.Floor.L1.toString());
+    assertEquals(Node.Floor.L2, Node.Floor.getEnum("L2"));
+    assertEquals("L2", Node.Floor.L2.toString());
+    assertEquals(Node.Floor.ONE, Node.Floor.getEnum("1"));
+    assertEquals("1", Node.Floor.ONE.toString());
+    assertEquals(Node.Floor.TWO, Node.Floor.getEnum("2"));
+    assertEquals("2", Node.Floor.TWO.toString());
+    assertEquals(Node.Floor.THREE, Node.Floor.getEnum("3"));
+    assertEquals("3", Node.Floor.THREE.toString());
+
+    assertNull(Node.Floor.getEnum("adsfasdfasf"));
+    assertNull(Node.Floor.getEnum(""));
   }
 }

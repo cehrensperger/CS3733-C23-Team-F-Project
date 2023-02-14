@@ -2,20 +2,24 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.Session;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "Node")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Node {
   @Id
   @Column(nullable = false)
   @NonNull
   @Getter
-  @Setter
   private String id;
 
   @Basic
@@ -89,12 +93,22 @@ public class Node {
       floorNum = floor; // The floor to create
     }
 
-    public static Floor getEnum(String value) {
+    public static Floor getEnum(@NonNull String value) {
       for (Floor f : Floor.values()) {
 
         if (f.floorNum.equals(value)) return f;
       }
       return null;
+    }
+
+    /**
+     * Override for the toString, returns the floor num as a string
+     *
+     * @return the floor num as a string
+     */
+    @Override
+    public String toString() {
+      return this.floorNum;
     }
   }
 
@@ -144,13 +158,28 @@ public class Node {
    * @param session the session to use for the lookup
    * @return either the location this node is storing, or null if there is none
    */
-  public LocationName getCurrentLocation(@NonNull Session session) {
+  public List<LocationName> getCurrentLocation(@NonNull Session session) {
+
+    // associate location with a node
+    // then associate that location with a new node
+    // don't delete previous node to location association
+    // when getting location of node, get most recent location associated with this node
+    // also check that the location returned has this as the most recent associated node as well
+
+    // now instead get two most recent locations associated with this node if they are on the same
+    // day
+    // check that they aren't null
+    // also check that list of locations' most recent associated nodes are both this
+
     // Try getting the location first. This gets the most recent location that is the node and not
     // in the future
     // sorts by move date, and then limits by one. Unique result ensures that this either gets the
     // one result,
     // or null
-    LocationName location =
+
+    // If the past two locations for this node are on the same day, return both.
+    // Otherwise, return the most recent.
+    List<LocationName> locations =
         session
             .createQuery(
                 """
@@ -158,37 +187,18 @@ public class Node {
                                         FROM Move
                                         WHERE node = :node AND moveDate <= current timestamp
                                         ORDER BY moveDate DESC
-                                        LIMIT 1
+                                        LIMIT 2
                                         """,
                 LocationName.class)
             .setParameter("node", this)
-            .uniqueResult();
-
-    // If the location isn't null
-    if (location != null) {
-      // Get the node most recently associated with this location
-      Node locationNode =
-          session
-              .createQuery(
-                  """
-                                            SELECT node
-                                            FROM Move
-                                            WHERE location = :location AND moveDate <= current timestamp
-                                            ORDER BY moveDate DESC
-                                            LIMIT 1
-                                            """,
-                  Node.class)
-              .setParameter("location", location)
-              .uniqueResult();
-
-      // If that locations most recent node is this
-      if (locationNode.equals(this)) {
-        return location; // Return the location
-      }
+            .getResultList();
+    if (locations.isEmpty()) {
+      return locations;
     }
 
-    // Otherwise, just return null
-    return null;
+    locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
+
+    return locations;
   }
 
   /**
@@ -199,7 +209,7 @@ public class Node {
    *
    * @return either the location this node is storing, or null if there is none
    */
-  public LocationName getCurrentLocation() {
+  public Collection<LocationName> getCurrentLocation() {
     // Trys to create a connection, auto-closing it when this is done. This also re-throws any
     // exceptions that
     // may occur
