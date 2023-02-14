@@ -69,7 +69,7 @@ public class ComputerService extends ServiceRequest {
       @NonNull String issue,
       @NonNull ServiceType serviceType) {
     super.setEmp(emp);
-    super.setDateOfIncident(dateOfIncident);
+    super.setTargetDate(dateOfIncident);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);

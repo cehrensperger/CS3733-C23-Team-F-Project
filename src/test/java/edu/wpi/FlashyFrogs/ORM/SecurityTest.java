@@ -82,7 +82,7 @@ public class SecurityTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testSecurity.setAssignedEmp(assignedEmp);
-    testSecurity.setDateOfIncident(new Date(2023 - 1 - 31));
+    testSecurity.setTargetDate(new Date(2023 - 1 - 31));
     testSecurity.setDateOfSubmission(new Date(2023 - 2 - 1));
     testSecurity.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
   }
@@ -195,8 +195,8 @@ public class SecurityTest {
   @Test
   void setDateOfIncident() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testSecurity.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testSecurity.getDateOfIncident());
+    testSecurity.setTargetDate(newDOI);
+    assertEquals(newDOI, testSecurity.getTargetDate());
   }
 
   /** Tests setter for dateOfSubmission */

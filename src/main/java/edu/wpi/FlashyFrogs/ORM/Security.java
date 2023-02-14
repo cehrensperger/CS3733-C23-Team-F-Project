@@ -60,7 +60,7 @@ public class Security extends ServiceRequest {
     this.incidentReport = theIncidentReport;
     this.location = theLocation;
     super.setEmp(emp);
-    super.setDateOfIncident(dateOfIncident);
+    super.setTargetDate(dateOfIncident);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);

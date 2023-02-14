@@ -59,7 +59,7 @@ public class Sanitation extends ServiceRequest {
       LocationName location) {
     this.type = theType;
     super.setEmp(emp);
-    super.setDateOfIncident(dateOfIncident);
+    super.setTargetDate(dateOfIncident);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);

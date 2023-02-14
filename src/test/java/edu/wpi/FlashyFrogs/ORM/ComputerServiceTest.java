@@ -78,7 +78,7 @@ public class ComputerServiceTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testCS.setAssignedEmp(assignedEmp);
-    testCS.setDateOfIncident(new Date(2023 - 1 - 31));
+    testCS.setTargetDate(new Date(2023 - 1 - 31));
     testCS.setDateOfSubmission(new Date(2023 - 2 - 1));
     testCS.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
     testCS.setDeviceType(ComputerService.DeviceType.LAPTOP);
@@ -199,8 +199,8 @@ public class ComputerServiceTest {
   @Test
   void setDateOfIncident() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testCS.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testCS.getDateOfIncident());
+    testCS.setTargetDate(newDOI);
+    assertEquals(newDOI, testCS.getTargetDate());
   }
 
   /** Tests setter for dateOfSubmission */

@@ -107,7 +107,7 @@ public class InternalTransport extends ServiceRequest {
     this.patientMiddleName = thePatientMiddleName;
     this.patientLastName = thePatientLastName;
     super.setEmp(emp);
-    super.setDateOfIncident(dateOfIncident);
+    super.setTargetDate(dateOfIncident);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);

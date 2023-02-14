@@ -91,7 +91,7 @@ public class InternalTransportTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testIntTransp.setAssignedEmp(assignedEmp);
-    testIntTransp.setDateOfIncident(new Date(2023 - 1 - 31));
+    testIntTransp.setTargetDate(new Date(2023 - 1 - 31));
     testIntTransp.setDateOfSubmission(new Date(2023 - 2 - 1));
     testIntTransp.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
   }
@@ -351,8 +351,8 @@ public class InternalTransportTest {
   @Test
   void setDateOfIncidentTest() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testIntTransp.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testIntTransp.getDateOfIncident());
+    testIntTransp.setTargetDate(newDOI);
+    assertEquals(newDOI, testIntTransp.getTargetDate());
   }
 
   /** Tests setter for dateOfSubmission */

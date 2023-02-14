@@ -159,7 +159,7 @@ public class TransportController extends ServiceRequestController {
       //      transport.setEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString));
       //      transport.setAssignedEmpDept(ServiceRequest.EmpDept.valueOf(departmentEnumString2));
       transport.setDateOfBirth(dateOfBirth);
-      transport.setDateOfIncident(dateOfTransport);
+      transport.setTargetDate(dateOfTransport);
       transport.setDateOfSubmission(Date.from(Instant.now()));
       transport.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
       transport.setNewLoc(session.find(LocationName.class, newLocationComboBox.getText()));

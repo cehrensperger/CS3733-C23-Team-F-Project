@@ -80,7 +80,7 @@ public class SanitationTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testSan.setAssignedEmp(assignedEmp);
-    testSan.setDateOfIncident(new Date(2023 - 1 - 31));
+    testSan.setTargetDate(new Date(2023 - 1 - 31));
     testSan.setDateOfSubmission(new Date(2023 - 2 - 1));
     testSan.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
     testSan.setLocation(new LocationName("LongName", LocationName.LocationType.HALL, "ShortName"));
@@ -197,8 +197,8 @@ public class SanitationTest {
   @Test
   void setDateOfIncidentTest() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testSan.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testSan.getDateOfIncident());
+    testSan.setTargetDate(newDOI);
+    assertEquals(newDOI, testSan.getTargetDate());
   }
 
   /** Tests setter for dateOfSubmission */

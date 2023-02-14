@@ -2,10 +2,8 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
 import java.util.Date;
-import lombok.Getter;
+
 import lombok.NonNull;
-import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "AudioVisual")
@@ -13,55 +11,6 @@ import org.hibernate.annotations.Cascade;
     name = "service_request_id",
     foreignKey = @ForeignKey(name = "service_request_id_fk"))
 public class AudioVisual extends ServiceRequest {
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String patientFirstName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String patientMiddleName;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private String patientLastName;
-
-  @Getter
-  @Setter
-  @JoinColumn(
-      name = "location",
-      foreignKey =
-          @ForeignKey(
-              name = "location_name1_fk",
-              foreignKeyDefinition =
-                  "FOREIGN KEY (location) REFERENCES locationname(longName) "
-                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
-  @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-  @ManyToOne
-  private LocationName location;
-
-  @Basic
-  @Column(nullable = false)
-  @NonNull
-  @Getter
-  @Setter
-  private AccommodationType accommodationType;
-
-  @Column(nullable = false)
-  @NonNull
-  @Temporal(TemporalType.TIMESTAMP)
-  @Getter
-  @Setter
-  private Date dateOfBirth;
-
   /** Creates a new AudioVisual with a generated id */
   public AudioVisual() {
     super.setStatus(Status.BLANK);
@@ -93,7 +42,7 @@ public class AudioVisual extends ServiceRequest {
       LocationName location,
       @NonNull Date dateOfBirth) {
     super.setEmp(emp);
-    super.setDateOfIncident(dateOfIncident);
+    super.setTargetDate(dateOfIncident);
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);
@@ -104,22 +53,5 @@ public class AudioVisual extends ServiceRequest {
     this.patientMiddleName = patientMiddleName;
     this.patientLastName = patientLastName;
     this.dateOfBirth = dateOfBirth;
-  }
-
-  public enum AccommodationType {
-    AUDIO("audio"),
-    VISUAL("visual"),
-    BOTH("both");
-
-    @NonNull public final String AccommodationType;
-
-    /**
-     * Creates a new AcomodationType with the given String backing
-     *
-     * @param accommodationType the AcomodationType to create. Must not be null
-     */
-    AccommodationType(@NonNull String accommodationType) {
-      AccommodationType = accommodationType;
-    }
   }
 }

@@ -87,7 +87,7 @@ public class AudioVisualTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testAV.setAssignedEmp(assignedEmp);
-    testAV.setDateOfIncident(new Date(2023 - 1 - 31));
+    testAV.setTargetDate(new Date(2023 - 1 - 31));
     testAV.setDateOfSubmission(new Date(2023 - 2 - 1));
     testAV.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
     testAV.setAccommodationType(AudioVisual.AccommodationType.AUDIO);
@@ -218,8 +218,8 @@ public class AudioVisualTest {
   @Test
   public void setDateOfIncidentTest() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testAV.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testAV.getDateOfIncident());
+    testAV.setTargetDate(newDOI);
+    assertEquals(newDOI, testAV.getTargetDate());
   }
 
   /** Tests setter for dateOfSubmission */
