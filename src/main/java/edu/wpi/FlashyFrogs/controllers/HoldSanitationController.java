@@ -185,7 +185,7 @@ public class HoldSanitationController implements IController {
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AudioVisualService");
+    Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
@@ -197,11 +197,11 @@ public class HoldSanitationController implements IController {
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SanitationService");
+    Fapp.setScene("ServiceRequests", "SanitationService");
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SecurityService");
+    Fapp.setScene("ServiceRequests", "SecurityService");
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {

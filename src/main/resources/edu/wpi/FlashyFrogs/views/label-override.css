@@ -1,7 +1,0 @@
-.label {
-    -fx-text-fill: #f1f1f1;
-}
-/*
-Usually, the text color in label elements is black in Light Mode, but the upper left menu on some pages
-would be hard to read with black text, so we use this .css file to change the label text color to white.
- */
