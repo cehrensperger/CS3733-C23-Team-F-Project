@@ -7,12 +7,15 @@ import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
 import java.util.List;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,13 +28,14 @@ public class LoginAdministratorController implements IController {
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, String> userName;
   @FXML private TableColumn<UserLogin, String> password;
+  @FXML private Button addNewUser;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Login");
+    Fapp.setScene("Accounts", "Login.fxml");
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/NewUser.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../Accounts/NewUser.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     NewUserController newUser = newLoad.getController();
     newUser.setPopOver(popOver);
@@ -39,6 +43,21 @@ public class LoginAdministratorController implements IController {
     popOver.detach();
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
+    addNewUser.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            new ChangeListener<Boolean>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends Boolean> observable,
+                  Boolean oldValue,
+                  Boolean newValue) {
+                if (!newValue) {
+                  addNewUser.setDisable(false);
+                }
+              }
+            });
   }
 
   public void initialize() throws Exception {

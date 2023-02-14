@@ -10,7 +10,6 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
-import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.Collection;
@@ -36,7 +35,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
-public class PathfindingController implements IController {
+public class PathfindingController {
 
   @FXML private SearchableComboBox<String> startingBox;
   @FXML private SearchableComboBox<String> destinationBox;
@@ -44,6 +43,8 @@ public class PathfindingController implements IController {
   @FXML private AnchorPane mapPane;
   @FXML private Label floorSelector;
   @FXML private MFXButton mapEditorButton;
+  @FXML private MFXButton floorSelectorButton;
+
   //  @FXML private Label error;
 
   private MapController mapController;
@@ -134,7 +135,6 @@ public class PathfindingController implements IController {
   }
 
   public void handleBack() throws IOException {
-
     Fapp.handleBack();
   }
 
@@ -362,6 +362,7 @@ public class PathfindingController implements IController {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
+    popOver.setTitle("");
     FloorSelectorController floorPopup = newLoad.getController();
     floorPopup.setFloorProperty(this.floorProperty);
 
@@ -369,9 +370,15 @@ public class PathfindingController implements IController {
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
-  }
 
-  public void onClose() {
-    mapController.exit();
+    floorSelectorButton.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                floorSelectorButton.setDisable(false);
+              }
+            });
   }
 }

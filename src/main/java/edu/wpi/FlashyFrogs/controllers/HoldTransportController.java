@@ -25,7 +25,7 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class HoldTransportController implements IController {
+public class HoldTransportController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -204,7 +204,7 @@ public class HoldTransportController implements IController {
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AudioVisualService");
+    Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
@@ -216,11 +216,11 @@ public class HoldTransportController implements IController {
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SanitationService");
+    Fapp.setScene("ServiceRequests", "SanitationService");
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SecurityService");
+    Fapp.setScene("ServiceRequests", "SecurityService");
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
@@ -228,7 +228,7 @@ public class HoldTransportController implements IController {
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
+    Fapp.setScene("views", "Home");
   }
 
   public void help() {
@@ -269,6 +269,4 @@ public class HoldTransportController implements IController {
       hDone = false;
     }
   }
-
-  public void onClose() {}
 }

@@ -44,7 +44,8 @@ public class Fapp extends Application {
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
 
     final BorderPane root = loader.load();
-    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("views/Home.fxml"));
+    final FXMLLoader homePage =
+        new FXMLLoader(Fapp.class.getResource("Accounts/LoginAdministrator.fxml"));
     controller = ((NavBarController) loader.getController());
     AnchorPane mainAnchorPane = controller.getAnchorPane();
     AnchorPane innerAnchorPane = homePage.load();
@@ -125,6 +126,10 @@ public class Fapp extends Application {
   public static void resetStack() {
     prevPage.clear();
     prevPage.push("views,Home");
+  }
+
+  public static void logIn() {
+    controller.logIn();
   }
 
   @Override
