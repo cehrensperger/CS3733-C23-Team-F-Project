@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import java.util.*;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.*;
@@ -26,15 +27,23 @@ public class ComputerServiceTest {
   @AfterEach
   public void teardownTable() {
     // If the prior test is open
-    Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
-    if (priorSession != null && priorSession.isOpen()) {
-      priorSession.close(); // Close it, so we can create new ones
-    }
+    try {
+      Session priorSession = DBConnection.CONNECTION.getSessionFactory().getCurrentSession();
+      if (priorSession != null && priorSession.isOpen()) {
 
+        // If the transaction is still active
+        if (priorSession.getTransaction().isActive()) {
+          priorSession.getTransaction().rollback(); // Roll it back
+        }
+
+        priorSession.close(); // Close it, so we can create new ones
+      }
+    } catch (HibernateException ignored) {
+    }
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
-      connection.createMutationQuery("DELETE FROM AudioVisual").executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM ComputerService").executeUpdate(); // Do the drop
       connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
       connection.createMutationQuery("DELETE FROM LocationName").executeUpdate();
       connection.createMutationQuery("DELETE FROM User").executeUpdate();
@@ -180,6 +189,7 @@ public class ComputerServiceTest {
             "as",
             ComputerService.ServiceType.SOFTWARE_REPAIR);
     test.setAssignedEmp(null);
+    test.setAssignedEmp(null);
 
     // Assert that the location is correct
     assertNull(test.getAssignedEmp());
@@ -312,5 +322,360 @@ public class ComputerServiceTest {
   void testToString() {
     String sanToString = testCS.toString();
     assertEquals(sanToString, testCS.getClass().getSimpleName() + "_" + testCS.getId());
+  }
+
+  /** Tests that deleting the emp this is referenced to sets it to null */
+  @Test
+  public void empDeleteCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    AudioVisual av =
+        new AudioVisual(
+            emp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            AudioVisual.AccommodationType.VISUAL,
+            "a",
+            "d",
+            "jh",
+            location,
+            new Date(2002 - 10 - 8));
+    session.persist(av);
+
+    session.flush();
+
+    // Change the emp
+    session.remove(emp);
+
+    session.flush();
+
+    // Update the request
+    session.refresh(av);
+
+    // Assert the location is actually gone
+    assertNull(session.find(User.class, emp.getId()));
+    assertNull(av.getEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void empDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    ComputerService sr =
+        new ComputerService(
+            emp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "d",
+            ComputerService.ServiceType.MISC);
+    session.persist(sr);
+
+    // Change the enp
+    session
+        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .setParameter("id", emp.getId())
+        .executeUpdate();
+
+    session.flush();
+
+    // Update the request
+    session.refresh(sr);
+
+    // Assert the location is actually gone
+    assertNull(
+        session
+            .createQuery("FROM User WHERE id = :id", User.class)
+            .setParameter("id", emp.getId())
+            .uniqueResult());
+    assertNull(sr.getEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that updating the employee results in a cascade update failure */
+  @Test
+  public void empUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    ComputerService sr =
+        new ComputerService(
+            emp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.KIOSK,
+            "a",
+            "d",
+            ComputerService.ServiceType.HARDWARE_REPAIR);
+    session.persist(sr);
+
+    // Commit stuff so we can access it later (it's persisted)
+    transaction.commit();
+    transaction = session.beginTransaction();
+
+    // Change the enp
+    assertThrows(
+        Exception.class,
+        () ->
+            session
+                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .setParameter("id", emp.getId())
+                .executeUpdate());
+
+    transaction.rollback(); // This transaction is trash due to the SQL error
+    transaction = session.beginTransaction(); // Create a new transaction
+
+    // Update the request
+    sr = session.createQuery("FROM ComputerService", ComputerService.class).getSingleResult();
+
+    // Assert the location is not actually gone
+    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, sr.getEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void assignedEmpDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(assignedEmp);
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    ComputerService sr =
+        new ComputerService(
+            assignedEmp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "d",
+            ComputerService.ServiceType.CONNECTION_ISSUE);
+    sr.setAssignedEmp(emp);
+    session.persist(sr);
+
+    // Change the enp
+    session
+        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .setParameter("id", emp.getId())
+        .executeUpdate();
+
+    // Update the request
+    session.refresh(sr);
+
+    // Assert the location is actually gone
+    assertNull(
+        session
+            .createQuery("FROM User WHERE id = :id", User.class)
+            .setParameter("id", emp.getId())
+            .uniqueResult());
+    assertNull(sr.getAssignedEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that updating the employee results in a cascade update failure */
+  @Test
+  public void assignedEmpUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(assignedEmp);
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    ComputerService av =
+        new ComputerService(
+            assignedEmp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "d",
+            ComputerService.ServiceType.HARDWARE_REPAIR);
+    av.setAssignedEmp(emp);
+    session.persist(av);
+
+    transaction.commit(); // Commit what we have, so that we can get it after the failure
+
+    transaction = session.beginTransaction(); // Open a new transaction
+    // Change the enp
+    assertThrows(
+        Exception.class,
+        () ->
+            session
+                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .setParameter("id", emp.getId())
+                .executeUpdate());
+
+    session.flush();
+
+    transaction.rollback(); // End that transaction
+
+    transaction = session.beginTransaction();
+
+    // Update the request
+    session.refresh(av);
+
+    // Assert the location is not actually gone
+    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void bothEmpDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    ComputerService sr =
+        new ComputerService(
+            emp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "d",
+            ComputerService.ServiceType.CONNECTION_ISSUE);
+    sr.setAssignedEmp(emp);
+    session.persist(sr);
+
+    // Change the enp
+    session
+        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .setParameter("id", emp.getId())
+        .executeUpdate();
+
+    // Update the request
+    session.refresh(sr);
+
+    // Assert the location is actually gone
+    assertNull(
+        session
+            .createQuery("FROM User WHERE id = :id", User.class)
+            .setParameter("id", emp.getId())
+            .uniqueResult());
+    assertNull(sr.getAssignedEmp()); // Assert the location is null
+    assertNull(sr.getEmp());
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that updating the employee results in a cascade update failure */
+  @Test
+  public void bothEmpUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
+
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    ComputerService av =
+        new ComputerService(
+            emp,
+            new Date(201674 - 2 - 14),
+            new Date(20126 - 1 - 12),
+            ServiceRequest.Urgency.NOT_URGENT,
+            ComputerService.DeviceType.PERSONAL,
+            "a",
+            "d",
+            ComputerService.ServiceType.HARDWARE_REPAIR);
+    av.setAssignedEmp(emp);
+    session.persist(av);
+
+    transaction.commit(); // Commit what we have, so that we can get it after the failure
+
+    transaction = session.beginTransaction(); // Open a new transaction
+    // Change the enp
+    assertThrows(
+        Exception.class,
+        () ->
+            session
+                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .setParameter("id", emp.getId())
+                .executeUpdate());
+
+    session.flush();
+
+    transaction.rollback(); // End that transaction
+
+    transaction = session.beginTransaction();
+
+    // Update the request
+    session.refresh(av);
+
+    // Assert the location is not actually gone
+    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
+    assertEquals(emp, av.getEmp());
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests the to string for service type */
+  @Test
+  public void serviceTypeToStringTest() {
+    assertEquals("hardware repair", ComputerService.ServiceType.HARDWARE_REPAIR.toString());
+    assertEquals("software repair", ComputerService.ServiceType.SOFTWARE_REPAIR.toString());
+    assertEquals("connection issue", ComputerService.ServiceType.CONNECTION_ISSUE.toString());
+    assertEquals("miscellaneous", ComputerService.ServiceType.MISC.toString());
   }
 }

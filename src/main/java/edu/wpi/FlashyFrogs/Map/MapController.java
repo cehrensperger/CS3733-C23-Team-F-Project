@@ -206,15 +206,15 @@ public class MapController {
               .setParameter("floor", mapEntity.getMapFloor())
               .getResultList();
 
-      // For each node in the nodes to draw
-      for (Node node : nodes) {
-        addNode(node); // Add the node
-      }
-
       // For each edge in the edges to draw
       for (Edge edge : edges) {
         // Create the edge
         addEdge(edge);
+      }
+
+      // For each node in the nodes to draw
+      for (Node node : nodes) {
+        addNode(node); // Add the node
       }
 
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out

@@ -29,10 +29,8 @@ public class Security extends ServiceRequest {
               name = "location_name_fk",
               foreignKeyDefinition =
                   "FOREIGN KEY (location) REFERENCES locationname(longname) "
-                      + "ON UPDATE CASCADE ON DELETE SET NULL"),
-      nullable = false)
-  @NonNull
-  @ManyToOne(optional = false)
+                      + "ON UPDATE CASCADE ON DELETE SET NULL"))
+  @ManyToOne
   @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   private LocationName location;
 
@@ -54,8 +52,8 @@ public class Security extends ServiceRequest {
    */
   public Security(
       @NonNull String theIncidentReport,
-      @NonNull LocationName theLocation,
-      @NonNull User emp,
+      LocationName theLocation,
+      User emp,
       @NonNull Date dateOfIncident,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency) {

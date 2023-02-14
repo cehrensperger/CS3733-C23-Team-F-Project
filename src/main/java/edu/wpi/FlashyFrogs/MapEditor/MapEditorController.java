@@ -431,6 +431,7 @@ public class MapEditorController implements IController {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
+    popOver.setTitle("");
     FloorSelectorController floorPopup = newLoad.getController();
     floorPopup.setFloorProperty(this.floorProperty);
 
