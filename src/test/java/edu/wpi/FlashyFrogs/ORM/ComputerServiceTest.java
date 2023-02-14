@@ -52,6 +52,7 @@ public class ComputerServiceTest {
     }
   }
 
+  private final Department sourceDept = new Department("a", "b");
   User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
   User assignedEmp = new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   ComputerService testCS =
@@ -330,6 +331,92 @@ public class ComputerServiceTest {
 
     assertNotEquals(cs, cs3); // Assert cs and cs3 aren't equal
     assertNotEquals(cs.hashCode(), cs3.hashCode()); // Assert their hash codes are different
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Tests that deleting the emp this is associated to with a query sets it to null */
+  @Test
+  public void locationDeleteCascadeQueryTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("b", "a", "d", User.EmployeeType.MEDICAL, sourceDept);
+    LocationName location = new LocationName("q", LocationName.LocationType.EXIT, "name");
+
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    ComputerService cs =
+        new ComputerService(
+            emp,
+            location,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            ComputerService.DeviceType.LAPTOP,
+            "Lenovo Rogue",
+            "Bad battery life",
+            ComputerService.ServiceType.HARDWARE_REPAIR,
+            "email@example.com");
+    session.persist(cs);
+
+    // Remove the location
+    session.createMutationQuery("DELETE FROM LocationName").executeUpdate();
+
+    session.flush();
+
+    // Update the request
+    session.refresh(cs);
+
+    // Assert the location is actually gone
+    assertNull(session.createQuery("FROM LocationName", LocationName.class).uniqueResult());
+    assertNull(cs.getLocation()); // Assert the location is null
+
+    transaction.rollback();
+    session.close();
+  }
+
+  /** Test that updating the location cascades */
+  @Test
+  public void locationUpdateCascadeTest() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
+    Transaction transaction = session.beginTransaction(); // Begin a transaction
+
+    User emp = new User("jhj", "aew", "hgfd", User.EmployeeType.ADMIN, sourceDept);
+    LocationName location = new LocationName("b", LocationName.LocationType.EXIT, "a");
+
+    session.persist(emp);
+    session.persist(location);
+    // Create the av request we will use
+    ComputerService cs =
+        new ComputerService(
+            emp,
+            location,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            ComputerService.DeviceType.LAPTOP,
+            "Lenovo Rogue",
+            "Bad battery life",
+            ComputerService.ServiceType.HARDWARE_REPAIR,
+            "email@example.com");
+    session.persist(cs);
+
+    // Change the location
+    session.createMutationQuery("UPDATE LocationName SET longName = 'newName'").executeUpdate();
+
+    // Update the request
+    session.refresh(cs);
+
+    // Assert the location is actually gone
+    assertEquals(
+        new LocationName("newName", LocationName.LocationType.EXIT, "name"),
+        session.find(LocationName.class, "newName"));
+    assertEquals(
+        new LocationName("newName", LocationName.LocationType.EXIT, "name"),
+        cs.getLocation()); // Assert the location is null
 
     transaction.rollback();
     session.close();

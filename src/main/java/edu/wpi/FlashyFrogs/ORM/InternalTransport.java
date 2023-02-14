@@ -120,11 +120,20 @@ public class InternalTransport extends ServiceRequest {
    * @param reason the reason for the transport
    */
   public InternalTransport(
-      @NonNull String patientID, @NonNull VisionStatus vision,
-      @NonNull ConsciousnessStatus consciousness, @NonNull HealthStatus condition,
-      LocationName sourceLocation, LocationName endLocation, @NonNull Urgency urgency,
-      @NonNull Equipment equipment, @NonNull Date dateTimePreference, @NonNull Date submissionDate, User emp,
-      @NonNull ModeOfTransport modeOfTransport, boolean isolation, @NonNull String personalItems,
+      @NonNull String patientID,
+      @NonNull VisionStatus vision,
+      @NonNull ConsciousnessStatus consciousness,
+      @NonNull HealthStatus condition,
+      LocationName sourceLocation,
+      LocationName endLocation,
+      @NonNull Urgency urgency,
+      @NonNull Equipment equipment,
+      @NonNull Date dateTimePreference,
+      @NonNull Date submissionDate,
+      User emp,
+      @NonNull ModeOfTransport modeOfTransport,
+      boolean isolation,
+      @NonNull String personalItems,
       @NonNull String reason) {
     this.patientID = patientID;
     this.vision = vision;
@@ -145,9 +154,7 @@ public class InternalTransport extends ServiceRequest {
     super.setRequestType("InternalTransport");
   }
 
-  /**
-   * Enumerated type for vision status
-   */
+  /** Enumerated type for vision status */
   public enum VisionStatus {
     GOOD("Good"),
     POOR("Poor"),
@@ -159,6 +166,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Creates the status string
+     *
      * @param status the status string
      */
     VisionStatus(@NonNull String status) {
@@ -167,6 +175,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Returns the string representation of the status
+     *
      * @return the string representation of the status
      */
     @Override
@@ -175,9 +184,7 @@ public class InternalTransport extends ServiceRequest {
     }
   }
 
-  /**
-   * Enumerated type for internal transport status
-   */
+  /** Enumerated type for internal transport status */
   public enum HearingStatus {
     GOOD("Good"),
     POOR("Poor"),
@@ -191,6 +198,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Creates the status string
+     *
      * @param status the status string
      */
     HearingStatus(@NonNull String status) {
@@ -199,6 +207,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Returns the string representation of the status
+     *
      * @return the string representation of the status
      */
     @Override
@@ -207,9 +216,7 @@ public class InternalTransport extends ServiceRequest {
     }
   }
 
-  /**
-   * Consciousness status for the patient
-   */
+  /** Consciousness status for the patient */
   public enum ConsciousnessStatus {
     GOOD("Good"),
     MODERATE("Moderate"),
@@ -220,6 +227,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Creates the status string
+     *
      * @param status the status string
      */
     ConsciousnessStatus(@NonNull String status) {
@@ -228,6 +236,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Returns the string representation of the status
+     *
      * @return the string representation of the status
      */
     @Override
@@ -236,9 +245,7 @@ public class InternalTransport extends ServiceRequest {
     }
   }
 
-  /**
-   * Health status for the patient
-   */
+  /** Health status for the patient */
   public enum HealthStatus {
     HEALTHY("Healthy"),
     MODERATE("Moderate"),
@@ -249,6 +256,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Creates the status string
+     *
      * @param status the status string
      */
     HealthStatus(@NonNull String status) {
@@ -257,6 +265,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Returns the string representation of the status
+     *
      * @return the string representation of the status
      */
     @Override
@@ -265,9 +274,7 @@ public class InternalTransport extends ServiceRequest {
     }
   }
 
-  /**
-   * Equipment status for the patient (what they need to be transported)
-   */
+  /** Equipment status for the patient (what they need to be transported) */
   public enum Equipment {
     NONE("None"),
     CANE("Cane"),
@@ -280,6 +287,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Creates the status string
+     *
      * @param status the status string
      */
     Equipment(@NonNull String status) {
@@ -288,6 +296,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Returns the string representation of the status
+     *
      * @return the string representation of the status
      */
     @Override
@@ -296,9 +305,7 @@ public class InternalTransport extends ServiceRequest {
     }
   }
 
-  /**
-   * Mode for the patient, e.g., how much they need to be assisted
-   */
+  /** Mode for the patient, e.g., how much they need to be assisted */
   public enum ModeOfTransport {
     SELF("Self"),
     HELP("With Help"),
@@ -309,6 +316,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Creates the status string
+     *
      * @param status the status string
      */
     ModeOfTransport(@NonNull String status) {
@@ -317,6 +325,7 @@ public class InternalTransport extends ServiceRequest {
 
     /**
      * Returns the string representation of the status
+     *
      * @return the string representation of the status
      */
     @Override
