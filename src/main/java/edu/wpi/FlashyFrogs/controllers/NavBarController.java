@@ -24,6 +24,11 @@ public class NavBarController {
   }
 
   @FXML
+  private void handleSignOut(ActionEvent event) throws IOException {
+    Fapp.setScene("Account", "Login");
+  }
+
+  @FXML
   private void handleServiceRequestsButton(ActionEvent event) throws IOException {
     Fapp.setScene("views", "Credits");
   }
