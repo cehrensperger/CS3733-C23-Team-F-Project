@@ -265,15 +265,19 @@ public class PathfindingController implements IController {
                 // user the option to go to the floor that the next node is at
 
                 String nextFloor = nodes.get(i + 1).getFloor().floorNum;
-                FXMLLoader loader =
-                    new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
-                PopOver goToNext = new PopOver(loader.load());
-                NextFloorPopupController controller = loader.getController();
-                controller.setPathfindingController(this);
-                controller.setMessage("Go to floor: " + nextFloor + "?");
-                goToNext.show(circle);
-                goToNext.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
-                goToNext.setTitle("");
+
+                if (!nextFloor.equals(this.floorProperty.getValue().toString())) {
+                  FXMLLoader loader =
+                      new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
+                  PopOver goToNext = new PopOver(loader.load());
+                  NextFloorPopupController controller = loader.getController();
+                  controller.setPathfindingController(this);
+                  controller.setMessage("Go to floor: " + nextFloor + "?");
+                  goToNext.show(circle);
+                  goToNext.setAutoHide(false);
+
+                  goToNext.setTitle("");
+                }
               }
             }
           }
@@ -398,8 +402,7 @@ public class PathfindingController implements IController {
   public void setFloor(String nextFloor) throws IOException {
     nextFloor = nextFloor.substring(0, nextFloor.length() - 1);
     String[] parts = nextFloor.split(" ");
-    System.out.println(parts[parts.length - 1]);
-    mapController.setFloor(Objects.requireNonNull(Node.Floor.getEnum(parts[parts.length - 1])));
-    handleGetPath();
+    // System.out.println(parts[parts.length - 1]);
+    floorProperty.setValue(Objects.requireNonNull(Node.Floor.getEnum(parts[parts.length - 1])));
   }
 }
