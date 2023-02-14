@@ -59,7 +59,6 @@ public class HelpController {
     e13.setText("");
   }
 
-
   @FXML
   public void handleQConfirmation() throws IOException {
     e1.setText("Home - Brings you back to the home page");
@@ -76,7 +75,6 @@ public class HelpController {
     e12.setText("");
     e13.setText("");
   }
-
 
   @FXML
   public void handleQFeedback() throws IOException {
@@ -153,8 +151,6 @@ public class HelpController {
     e12.setText("");
     e13.setText("");
   }
-
-
 
   // write help things
   @FXML
