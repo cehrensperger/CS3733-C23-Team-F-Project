@@ -144,6 +144,7 @@ public class MapController {
                       + "WHERE node1.floor = :thisFloor AND node2.floor = :thisFloor AND "
                       + "(node1 = :thisNode OR node2 = :thisNode)",
                   Edge.class)
+              .setHint("org.hibernate.cacheable", true)
               .setParameter("thisFloor", this.getFloor())
               .setParameter("thisNode", newNode)
               .getResultList();
@@ -298,6 +299,7 @@ public class MapController {
       List<Node> nodes =
           getMapSession()
               .createQuery("FROM Node n WHERE n.floor = :floor", Node.class)
+              .setHint("org.hibernate.cacheable", true)
               .setParameter("floor", mapEntity.getMapFloor())
               .getResultList();
 
@@ -307,6 +309,7 @@ public class MapController {
               .createQuery(
                   "FROM Edge WHERE node1.floor = :floor AND node2.floor = :floor", Edge.class)
               .setParameter("floor", mapEntity.getMapFloor())
+              .setHint("org.hibernate.cacheable", true)
               .getResultList();
 
       // For each edge in the edges to draw
