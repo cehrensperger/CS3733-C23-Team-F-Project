@@ -9,6 +9,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.*;
@@ -41,6 +42,7 @@ public class HomeController implements IController {
   @FXML protected TableColumn<Move, Date> dateCol;
   @FXML protected TableView<Move> moveTable;
   @FXML protected MFXButton manageLoginsButton;
+  @FXML protected MFXButton manageCSVButton;
 
   @FXML protected MFXButton manageAnnouncementsButton;
   @FXML protected Label tableText;
@@ -82,18 +84,22 @@ public class HomeController implements IController {
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
-      manageAnnouncementsButton.disarm();
+      manageAnnouncementsButton.setDisable(true);
       manageAnnouncementsButton.setOpacity(0);
-      manageLoginsButton.disarm();
+      manageLoginsButton.setDisable(true);
       manageLoginsButton.setOpacity(0);
+      manageCSVButton.setDisable(true);
+      manageCSVButton.setOpacity(0);
 
       tableText2.setText("");
     } else {
       tableText.setText("All Service Requests");
-      manageAnnouncementsButton.arm();
+      manageAnnouncementsButton.setDisable(false);
       manageAnnouncementsButton.setOpacity(1);
-      manageLoginsButton.arm();
+      manageLoginsButton.setDisable(false);
       manageLoginsButton.setOpacity(1);
+      manageCSVButton.setDisable(false);
+      manageCSVButton.setOpacity(1);
 
       tableText2.setText("Future Moves");
     }

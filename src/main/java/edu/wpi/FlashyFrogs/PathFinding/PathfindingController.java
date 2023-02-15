@@ -135,10 +135,10 @@ public class PathfindingController implements IController {
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
-      mapEditorButton.disarm();
+      mapEditorButton.setDisable(true);
       mapEditorButton.setOpacity(0);
     } else {
-      mapEditorButton.arm();
+      mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
   }
