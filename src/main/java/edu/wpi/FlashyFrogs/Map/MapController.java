@@ -2,10 +2,11 @@ package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Edge;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,9 +14,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import lombok.NonNull;
 import net.kurobako.gesturefx.GesturePane;
 import org.hibernate.Session;
@@ -30,7 +33,6 @@ public class MapController {
   @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
   private Pane currentDrawingPane; // The current drawing pane to use to draw nodes/edges
-
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
 
   public void initialize() {
@@ -71,12 +73,31 @@ public class MapController {
    * NOTE: Assumes that the Node has no edges, and thus does not draw them
    *
    * @param node the node to draw on the map
+   * @param addLocations whether locations should be added here. This is useful
    */
-  public void addNode(@NonNull Node node) {
+  public void addNode(@NonNull Node node, boolean addLocations) {
     Circle circleToDraw = new Circle(node.getXCoord(), node.getYCoord(), 5, Color.BLACK);
     currentDrawingPane.getChildren().add(circleToDraw); // Draw the circle
 
     mapEntity.addNode(node, circleToDraw); // Add the circle to the entity
+
+    // Now that we have the box, get it
+    VBox locationBox = getNodeToLocationBox().get(node);
+    // Add the box to the map
+    currentDrawingPane.getChildren().add(locationBox);
+
+    // Set it's coordinates
+    locationBox.setLayoutX(node.getXCoord() + 2.5);
+    locationBox.setLayoutY(node.getYCoord() - 20);
+
+    locationBox.setRotate(-45);
+
+    if (addLocations) {
+      // For each location belonging to this node
+      for (LocationName nodeLocation : node.getCurrentLocation(getMapSession())) {
+        addLocationName(nodeLocation, node); // Add it
+      }
+    }
   }
 
   /**
@@ -101,7 +122,11 @@ public class MapController {
       }
     }
 
-    mapEntity.removeNode(node); // Remove the node, this also handles removing the edges
+    // Remove the location box
+    currentDrawingPane.getChildren().remove(getNodeToLocationBox().get(node));
+
+    mapEntity.removeNode(
+        node); // Remove the node, this also handles removing the edges and locations
   }
 
   /**
@@ -118,7 +143,7 @@ public class MapController {
     if (newNode
         .getFloor()
         .equals(this.getFloor())) { // If the floors are equal (we should draw this)
-      addNode(newNode); // Add the new node
+      addNode(newNode, true); // Add the new node
 
       // For each edge in the edges on this floor and associated with this node
       List<Edge> newEdges =
@@ -128,6 +153,7 @@ public class MapController {
                       + "WHERE node1.floor = :thisFloor AND node2.floor = :thisFloor AND "
                       + "(node1 = :thisNode OR node2 = :thisNode)",
                   Edge.class)
+              .setCacheable(true)
               .setParameter("thisFloor", this.getFloor())
               .setParameter("thisNode", newNode)
               .getResultList();
@@ -155,6 +181,46 @@ public class MapController {
   }
 
   /**
+   * Adds a location name to the map, including setting its text
+   *
+   * @param locationName the location name to add
+   * @param node the node to add the location onto
+   */
+  public void addLocationName(@NonNull LocationName locationName, @NonNull Node node) {
+    Text locationToAdd = new Text(locationName.getShortName());
+    locationToAdd.setStyle("-fx-font-size: 6");
+
+    // Add the text to the map
+    mapEntity.addLocation(node, locationName, locationToAdd);
+  }
+
+  /**
+   * Updates the text of a location name on the map
+   *
+   * @param oldLocation the old location
+   * @param newLocation the new location
+   * @param node the node the locations belong to
+   */
+  public void updateLocationName(
+      @NonNull LocationName oldLocation, @NonNull LocationName newLocation, @NonNull Node node) {
+    // Remove the old location
+    removeLocationName(oldLocation);
+
+    // Add the new location
+    addLocationName(newLocation, node);
+  }
+
+  /**
+   * Remove the location name from the map (physically). Does not handle DB issues
+   *
+   * @param locationName the location name
+   */
+  public void removeLocationName(@NonNull LocationName locationName) {
+    // Remove the location name from the map backing
+    mapEntity.removeLocationName(locationName);
+  }
+
+  /**
    * Gets the map relating nodes to circles on the map
    *
    * @return the map relating node to circles on the map
@@ -172,6 +238,36 @@ public class MapController {
   @NonNull
   public Map<Edge, Line> getEdgeToLineMap() {
     return mapEntity.getEdgeToLineMap();
+  }
+
+  /**
+   * Gets the map relating nodes to location names
+   *
+   * @return the map relating node to location names
+   */
+  @NonNull
+  public Map<Node, Set<LocationName>> getNodeToLocationNameMap() {
+    return mapEntity.getNodeToLocationNameMap();
+  }
+
+  /**
+   * Gets the location name to text mapping
+   *
+   * @return the location name to text mapping
+   */
+  @NonNull
+  public Map<LocationName, Text> getLocationNameToTextMap() {
+    return mapEntity.getLocationNameToTextMap();
+  }
+
+  /**
+   * Gets the node to location box mapping
+   *
+   * @return the node to location box mapping
+   */
+  @NonNull
+  public Map<Node, VBox> getNodeToLocationBox() {
+    return mapEntity.getNodeToLocationBox();
   }
 
   /**
@@ -212,6 +308,7 @@ public class MapController {
       List<Node> nodes =
           getMapSession()
               .createQuery("FROM Node n WHERE n.floor = :floor", Node.class)
+              .setCacheable(true)
               .setParameter("floor", mapEntity.getMapFloor())
               .getResultList();
 
@@ -221,6 +318,7 @@ public class MapController {
               .createQuery(
                   "FROM Edge WHERE node1.floor = :floor AND node2.floor = :floor", Edge.class)
               .setParameter("floor", mapEntity.getMapFloor())
+              .setCacheable(true)
               .getResultList();
 
       // For each edge in the edges to draw
@@ -231,7 +329,35 @@ public class MapController {
 
       // For each node in the nodes to draw
       for (Node node : nodes) {
-        addNode(node); // Add the node
+        addNode(node, false); // Add the node
+      }
+
+      Date now = new Date();
+
+      // Get the moves before now
+      List<Move> moves =
+          getMapSession()
+              .createQuery("FROM Move WHERE node.floor = :floor ORDER BY moveDate DESC", Move.class)
+              .setParameter("floor", getFloor())
+              .setCacheable(true)
+              .stream()
+              .filter((move) -> move.getMoveDate().before(now))
+              .distinct()
+              .toList();
+
+      HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
+
+      // For each location belonging to this node
+      for (Move move : moves) {
+        if (nodeToLocationCount.containsKey(move.getNode())
+            && nodeToLocationCount.get(move.getNode()) == 1) {
+          nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
+
+          addLocationName(move.getLocation(), move.getNode());
+        } else if (!nodeToLocationCount.containsKey(move.getNode()))
+          nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
+
+        addLocationName(move.getLocation(), move.getNode());
       }
 
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out
@@ -243,7 +369,7 @@ public class MapController {
    *
    * @param floor the new floor to display. Must not be null
    */
-  public void setFloor(@NonNull Node.Floor floor) {
+  public void setFloor(Node.Floor floor) {
     Point2D currentCenter =
         this.gesturePane.targetPointAtViewportCentre(); // Get the current center
 

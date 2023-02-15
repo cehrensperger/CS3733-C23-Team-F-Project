@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -27,8 +28,8 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class NodeInfoController {
 
+  @FXML private ColumnConstraints secondColumn;
   @FXML private ColumnConstraints thirdColumn;
-  @FXML private ColumnConstraints fourthColumn;
 
   @FXML private Text nodeLocationText;
   @FXML private Text secondLocation;
@@ -106,7 +107,7 @@ public class NodeInfoController {
       @NonNull Consumer<Node> onNodeDelete,
       @NonNull BiConsumer<Node, Node> onNodeUpdate,
       @NonNull Consumer<LocationName> onLocationDelete,
-      @NonNull BiConsumer<LocationName, LocationName> onLocationChange,
+      @NonNull TriConsumer<LocationName, LocationName, Node> onLocationChange,
       boolean isNewNode) {
     String[] originalID = new String[1]; // Original ID for the node
     originalID[0] = node.getId(); // Set the original ID
@@ -168,6 +169,7 @@ public class NodeInfoController {
 
       if (!locations.isEmpty()) { // If the location exists
         if (locations.size() < 2) {
+
           locationPane2.setVisible(false); // hide the location frame2
           thirdColumn.setMaxWidth(0); // hide the columns
           secondLocation.setVisible(false); // hide the 2nd location name
@@ -190,7 +192,15 @@ public class NodeInfoController {
               locationPane.getChildren().clear();
               onLocationDelete.accept(oldLocation);
             },
-            onLocationChange, // Handle location updates
+            (oldLocation, newLocation) -> {
+              onLocationChange.accept(
+                  oldLocation,
+                  newLocation,
+                  session
+                      .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                      .setParameter("originalID", originalID[0])
+                      .uniqueResult());
+            }, // Handle location updates
             false); // On delete clear
         if (locations.size() > 1) { // if node has more than 1 location
           FXMLLoader locationNameLoader2 =
@@ -208,7 +218,15 @@ public class NodeInfoController {
                 locationPane2.getChildren().clear();
                 onLocationDelete.accept(oldLocation);
               },
-              onLocationChange,
+              (oldLocation, newLocation) -> {
+                onLocationChange.accept(
+                    oldLocation,
+                    newLocation,
+                    session
+                        .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                        .setParameter("originalID", originalID[0])
+                        .uniqueResult());
+              },
               false);
         }
       }
@@ -217,8 +235,8 @@ public class NodeInfoController {
       locationPane2.setVisible(false); // hide the location frame2
       locationPane.setVisible(false); // hide the location frame
       secondLocation.setVisible(false); // hide the 2nd location name
+      secondColumn.setMaxWidth(0); // hide the columns
       thirdColumn.setMaxWidth(0); // hide the columns
-      fourthColumn.setMaxWidth(0); // hide the other one
     }
 
     // Set the callback for the delete button

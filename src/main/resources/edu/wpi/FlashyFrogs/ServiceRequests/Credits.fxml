@@ -141,7 +141,7 @@
                                     <Insets top="165.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Kyla Driscoll Lindsey Mraz" wrappingWidth="317.1355285644531">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Kyla Driscoll and Lindsey Mraz" wrappingWidth="317.1355285644531">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -244,7 +244,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Request for spills biohazards, furniture, clothes, and other items to be cleaned">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Request for spills, biohazards, furniture, clothes, and other items to be cleaned">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -260,7 +260,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Request for various levels of threats to be naturalized">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Request for various levels of threats to be neutralized">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
