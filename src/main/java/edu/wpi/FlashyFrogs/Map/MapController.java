@@ -358,7 +358,7 @@ public class MapController {
         } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
-        addLocationName(move.getLocation(), move.getNode());
+          addLocationName(move.getLocation(), move.getNode());
         }
       }
 
