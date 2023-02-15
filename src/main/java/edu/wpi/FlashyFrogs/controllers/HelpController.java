@@ -176,4 +176,8 @@ public class HelpController {
     e12.setText("To edit nodes, click on them on the map.");
     e13.setText("");
   }
+
+  public void onClose() {
+    System.out.println("nothing to be done");
+  }
 }
