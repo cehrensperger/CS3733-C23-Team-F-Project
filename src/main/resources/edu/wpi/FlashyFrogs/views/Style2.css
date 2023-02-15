@@ -1,7 +1,7 @@
 @font-face {
     src: url("FontsFree-Net-Inter-Bold.ttf");
 }
-
+.
 .text-area
 {
     -fx-font-family: "Inter";
@@ -11,6 +11,7 @@
 {
     -fx-font-family: "Inter";
 }
+
 
 .b1
 {
@@ -37,12 +38,25 @@
 .back
 {
     -fx-border-radius: 10px;
-    -fx-background-color:#f1f1f1;
+    -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
     -fx-font-family: "Inter";
     -fx-text-fill: #012D5A;
     -fx-font-size: 16pt;
     -fx-pref-width: 100px;
+
+
+}
+
+.back2
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#d1d1d1;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Inter";
+    -fx-text-fill: #012D5A;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 175px;
 
 
 }
@@ -58,6 +72,13 @@
     -fx-border-radius: 10px !important;
 }
 
+.round2
+{
+    -fx-border-color:#f1f1f1;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px !important;
+    -fx-border-insets: -3px;
+}
 /*.inter
 {
     -fx-font-family: "Inter";
@@ -98,15 +119,49 @@
 
 }
 
+.blue
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light ";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 175px;
+
+}
+
+.blue2
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light ";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 180px;
+
+}
+
+
 .rectangle
 {
     -fx-background-color: #d1d1d1 !important;
 }
 
+
+/*styles the popover title*/
 .title{
+    -fx-font-weight: transparent;
+    -fx-font-size: 18pt;
+    -fx-text-fill: #012D5A;
+}
+
+.titleText{
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 28pt;
+    -fx-text-fill:#012D5A;
 }
 
 
@@ -148,7 +203,18 @@
     -fx-font-size: 12pt;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
-    -fx-background-color: transparent;
+    -fx-background-color: #f1f1f1;
+    -fx-border-insets: -1px;
+    -fx-border-radius: 10px !important;
+    -fx-prompt-text-fill: #012D5A;
+}
+
+.fields2{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
+    -fx-border-color:#012D5A;
+    -fx-text-fill: #012D5A;
+    -fx-background-color: #d1d1d1;
     -fx-border-insets: -1px;
     -fx-border-radius: 10px !important;
     -fx-prompt-text-fill: #012D5A;
@@ -164,6 +230,19 @@
     -fx-text-innercolor: #b6000b;
     -fx-border-radius: 10px;
     -fx-pref-width: 100px;
+    -fx-pref-height: 25;
+}
+
+.cancel{
+    -fx-background-color: #f1f1f1;
+    -fx-border-color:#b6000b;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16pt;
+    -fx-text-fill: #b6000b;
+    -fx-background-radius: 10px;
+    -fx-text-innercolor: #b6000b;
+    -fx-border-radius: 10px;
+    -fx-pref-width: 175px;
     -fx-pref-height: 25;
 }
 
@@ -214,4 +293,40 @@
 .combo-box .cell {
 
     -fx-text-fill: #012D5A;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: #012d5a;
+    -fx-background-radius: 0px 0px 0px 0px;
+    -fx-padding: 0px 0px 7px 0px;
+
+
+}
+
+.table-view .table-cell{
+    -fx-border-color: transparent;
+    -fx-padding: 2 0 2 10px;
+}
+.table-view .column-header {
+    -fx-background-color: #f1f1f1;
+}
+
+.table-row-cell{
+    -fx-background-color: #f1f1f1;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+    -fx-text-background-color: #012d5a;
+    -fx-text-fill: #012d5a;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #012d5a;
+    -fx-text-background-color: #ffffff;
+    -fx-text-fill: #ffffff;
+}
+.table-view .virtual-flow .scroll-bar:vertical .thumb{
+    -fx-background-color: #012d5a;
+}
+.table-view .virtual-flow .scroll-bar:horizontal .thumb {
+    -fx-background-color: #012d5a;
 }

@@ -7,6 +7,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -81,22 +84,37 @@
                         <Insets top="12.0" />
                      </VBox.margin>
                   </VBox>
-                  <HBox alignment="BOTTOM_RIGHT" onMouseClicked="#forgotPass" prefHeight="113.0" prefWidth="1280.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <AnchorPane>
-                           <children>
-                              <StackPane layoutX="1011.0" layoutY="486.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
-                                 <children>
-                                    <Button fx:id="button" mnemonicParsing="false" onAction="#forgotPass" prefHeight="216.0" prefWidth="262.0" text="Button" />
-                                 </children>
-                              </StackPane>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </HBox>
                </children>
             </VBox>
          </center>
       </BorderPane>
+      <StackPane layoutX="1021.0" layoutY="496.0" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <VBox prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;">
+               <children>
+                  <Label onMouseClicked="#openPathfinding" text="Pathfinding" textFill="WHITE" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../floors/one.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </VBox>
+            <Button mnemonicParsing="false" onAction="#openPathfinding" opacity="0.0" prefHeight="216.0" prefWidth="262.0" text="Button" />
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>

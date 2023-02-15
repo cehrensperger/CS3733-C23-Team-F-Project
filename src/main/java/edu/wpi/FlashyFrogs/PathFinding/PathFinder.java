@@ -11,19 +11,13 @@ public class PathFinder {
 
   private IFindPath algorithm;
 
-  public PathFinder(Session session) {
-    this.session = session;
-  }
   /**
-   * Converts a String location name to the LocationName object associated with it. MAY return Null
-   * if no location has that name
+   * Creates a path finder with the given session
    *
-   * @param locationName the string location name to find the LocationName object of
-   * @param session the session to execute the query on
-   * @return the LocationName object associated with the queried name
+   * @param session the session
    */
-  private LocationName longNameToLocation(@NonNull String locationName, @NonNull Session session) {
-    return session.get(LocationName.class, locationName); // Query the session for the name
+  public PathFinder(@NonNull Session session) {
+    this.session = session;
   }
 
   /**
@@ -32,7 +26,7 @@ public class PathFinder {
    */
   public List<LocationName> nodeListToLocation(
       @NonNull List<Node> nodes, @NonNull Session session) {
-    List<LocationName> locations = new ArrayList<>();
+    List<LocationName> locations = new ArrayList<>(nodes.size());
     for (Node node : nodes) {
       locations.add(node.getCurrentLocation(session).get(0));
     }
@@ -64,6 +58,7 @@ public class PathFinder {
                                         WHERE node1 = :node""",
                 Node.class)
             .setParameter("node", node)
+            .setCacheable(true)
             .getResultList());
   }
 
@@ -80,15 +75,9 @@ public class PathFinder {
    * @throws NullPointerException if the lookup for a location (or node associated with the
    *     location) fails
    */
-  public List<Node> findPath(@NonNull String start, @NonNull String end) {
-    List<Node> path;
-
-    // Query location names and return nodes to send to aStar function
-    LocationName startLocation = longNameToLocation(start, session);
-    LocationName endLocation = longNameToLocation(end, session);
-
-    Node startNode = startLocation.getCurrentNode(session);
-    Node endNode = endLocation.getCurrentNode(session);
+  public List<Node> findPath(@NonNull LocationName start, @NonNull LocationName end) {
+    Node startNode = start.getCurrentNode(session);
+    Node endNode = end.getCurrentNode(session);
 
     // Find the path with the algorithm
     return algorithm.findPath(startNode, endNode, session); // Return the path

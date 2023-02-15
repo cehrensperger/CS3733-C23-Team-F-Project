@@ -27,6 +27,9 @@ public class AddMoveController {
   @Setter private PopOver popOver;
   private Session session;
 
+  // Function to call when the location is updated
+  @Setter Runnable addMove;
+
   void setSession(Session session) {
     this.session = session;
     fillBoxes(); // fill the dropdown boxes
@@ -56,7 +59,7 @@ public class AddMoveController {
     try {
       if (locationNameField.valueProperty().getValue().equals("") // if any fields are empty
           || nodeIDField.valueProperty().getValue().equals("")
-          || moveDatePicker.valueProperty().getValue().equals("")) {
+          || moveDatePicker.valueProperty().getValue().toString().equals("")) {
         throw new Exception(); // throw exception
       }
       // create the objects for the Move constructor
@@ -74,6 +77,9 @@ public class AddMoveController {
 
       // else persist the move and close the popOver
       session.persist(move);
+
+      addMove.run(); // handle adding the move
+
       popOver.hide();
 
       // tell the user what they did wrong

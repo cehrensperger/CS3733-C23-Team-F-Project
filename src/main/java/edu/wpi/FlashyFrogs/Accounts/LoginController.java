@@ -4,6 +4,8 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.Department;
+import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 // import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
@@ -36,6 +38,7 @@ public class LoginController implements IController {
   @FXML private Label errorMessage;
 
   public void initialize() {
+    Fapp.resetStackLogin();
     rootPane
         .getStylesheets()
         .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off all
@@ -111,6 +114,14 @@ public class LoginController implements IController {
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("views", "LoginAdministrator");
+  }
+
+  @FXML
+  public void openPathfinding(ActionEvent event) throws IOException {
+    System.out.println("opening pathfinding");
+    CurrentUserEntity.CURRENT_USER.setCurrentUser(
+        new User("a", "a", "a", User.EmployeeType.STAFF, new Department()));
+    Fapp.setScene("Pathfinding", "Pathfinding");
   }
 
   public void onClose() {}

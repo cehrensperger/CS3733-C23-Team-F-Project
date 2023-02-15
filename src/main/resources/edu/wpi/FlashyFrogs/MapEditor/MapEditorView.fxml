@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -15,11 +16,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="763.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.MapEditorController">
+<AnchorPane prefHeight="763.0" prefWidth="1124.0" stylesheets="@../views/Style2.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.MapEditorController">
    <children>
       <VBox prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Editor">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Map Editor">
                <VBox.margin>
                   <Insets bottom="44.0" />
                </VBox.margin>
@@ -32,32 +33,44 @@
                 <TableColumn fx:id="longName" prefWidth="170.0" resizable="false" text="Location" />
               </columns>
                <VBox.margin>
-                  <Insets bottom="44.0" />
+                  <Insets bottom="22.0" />
                </VBox.margin>
             </TableView>
-            <Button fx:id="addLocation" mnemonicParsing="false" onAction="#popupLocation" prefHeight="39.0" prefWidth="223.0" text="Add Location">
+            <Button fx:id="addLocation" mnemonicParsing="false" onAction="#popupLocation" prefHeight="25.0" prefWidth="223.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location">
                <VBox.margin>
-                  <Insets bottom="44.0" />
+                  <Insets bottom="22.0" />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
                </font>
+               <styleClass>
+                  <String fx:value="round" />
+                  <String fx:value="body" />
+               </styleClass>
             </Button>
-            <Button fx:id="addNode" mnemonicParsing="false" onAction="#popupNode" prefHeight="39.0" prefWidth="179.0" text="Add Node">
+            <Button fx:id="addNode" mnemonicParsing="false" onAction="#popupNode" prefHeight="40.0" prefWidth="179.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Add Node">
                <VBox.margin>
-                  <Insets bottom="44.0" />
+                  <Insets bottom="22.0" />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
                </font>
+               <styleClass>
+                  <String fx:value="round" />
+                  <String fx:value="body" />
+               </styleClass>
             </Button>
-            <Button fx:id="addMove" mnemonicParsing="false" onAction="#popupMove" text="Link Node and Location Name" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="addMove" mnemonicParsing="false" onAction="#popupMove" prefHeight="80.0" prefWidth="183.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location Name" textAlignment="CENTER" wrapText="true">
                <VBox.margin>
                   <Insets bottom="44.0" />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
                </font>
+               <styleClass>
+                  <String fx:value="round" />
+                  <String fx:value="body" />
+               </styleClass>
             </Button>
          </children>
          <padding>
@@ -68,6 +81,11 @@
          <font>
             <Font size="18.0" />
          </font>
+         <styleClass>
+            <String fx:value="back" />
+            <String fx:value="round" />
+            <String fx:value="body" />
+         </styleClass>
       </Button>
       <StackPane layoutX="257.0" layoutY="28.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -105,15 +123,28 @@
                         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
                      </children>
                   </StackPane>
-                  <Button mnemonicParsing="false" onAction="#handleSave" prefWidth="85.0" text="Save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="120.0">
+                  <Button mnemonicParsing="false" onAction="#handleSave" prefWidth="85.0" text="Save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="150.0">
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="credits" />
+                        <String fx:value="round" />
+                        <String fx:value="body" />
+                     </styleClass>
+                     <opaqueInsets>
+                        <Insets left="20.0" />
+                     </opaqueInsets>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="85.0" text="Cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="clear" />
+                        <String fx:value="background" />
+                        <String fx:value="body" />
+                     </styleClass>
                   </Button>
                </children>
             </AnchorPane>

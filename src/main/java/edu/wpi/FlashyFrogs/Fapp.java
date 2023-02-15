@@ -1,8 +1,11 @@
 package edu.wpi.FlashyFrogs;
 
+import edu.wpi.FlashyFrogs.Map.MapController;
+import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 import javafx.application.Application;
@@ -17,6 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 
 @Slf4j
 @GeneratedExclusion
@@ -38,8 +42,71 @@ public class Fapp extends Application {
     log.info("Starting Up");
   }
 
+  /**
+   * Method to pre-load resources on program startup. Uses threads to improve resources without
+   * making the app take forever to launch
+   */
+  private void preloadResources() {
+    // Map loader
+    new Thread(
+            () -> {
+              // Pre-fill the L2 Cache for the map, so use the map FXML
+              FXMLLoader fxmlLoader = new FXMLLoader(MapController.class.getResource("Map.fxml"));
+              try {
+                fxmlLoader.load(); // Load the FXML
+              } catch (IOException e) {
+                throw new RuntimeException(e);
+              }
+              MapController mapController = fxmlLoader.getController(); // Load the map controller
+
+              // For each floor
+              for (Node.Floor floor : Node.Floor.values()) {
+                mapController.setFloor(floor); // Cache it
+              }
+
+              mapController.exit(); // Exit the map controller
+            })
+        .start();
+
+    // Pre-load the various pathfinding elements
+    new Thread(
+            () -> {
+              // Create a session
+              Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
+
+              // Get all nodes
+              List<Node> nodes = session.createQuery("FROM Node", Node.class).getResultList();
+
+              // For each one
+              for (Node node : nodes) {
+                // Create a query (for the sake of caching it) that gets its neighbors
+                session
+                    .createQuery(
+                        """
+                                        SELECT node1
+                                        FROM Edge
+                                        WHERE node2 = :node
+                                        UNION
+                                        SELECT node2
+                                        FROM Edge
+                                        WHERE node1 = :node
+""",
+                        Node.class)
+                    .setParameter("node", node)
+                    .setCacheable(true)
+                    .getResultList();
+              }
+
+              // End the session
+              session.close();
+            })
+        .start();
+  }
+
+  @SneakyThrows
   @Override
   public void start(Stage primaryStage) throws IOException {
+    preloadResources();
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
@@ -59,21 +126,15 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
     primaryStage.setScene(scene);
+    // getStylesheets.add() is used frequently, so clear all stylesheets so we don't accumulate an
+    // infinite list of them
+    rootPane.getStylesheets().clear();
+    // apply CSS styling to pages whenever we switch to them
+    scene.getStylesheets().add(Fapp.class.getResource("views/style2.css").toExternalForm());
     primaryStage.setFullScreen(true);
     primaryStage.show();
 
-    // apply CSS styling to pages whenever we switch to them
-    rootPane
-        .getStylesheets()
-        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off
-    // all
-    //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
-    scene
-        .getStylesheets()
-        .add(
-            Fapp.class
-                .getResource("views/style2.css")
-                .toExternalForm()); // apply Light Mode styling
+    // apply Light Mode styling
     //    } else { // we are not in Light Mode, so
     //      scene
     //          .getStylesheets()
@@ -111,7 +172,8 @@ public class Fapp extends Application {
     AnchorPane.setRightAnchor(root, 0.0);
   }
 
-  public static void handleBack() throws IOException {
+  @SneakyThrows
+  public static void handleBack() {
     prevPage.pop();
     String[] page = prevPage.pop().split(",");
     Fapp.setScene(page[0], page[1]);
@@ -120,6 +182,11 @@ public class Fapp extends Application {
   public static void resetStack() {
     prevPage.clear();
     prevPage.push("views,Home");
+  }
+
+  public static void resetStackLogin() {
+    prevPage.clear();
+    prevPage.push("Accounts,Login");
   }
 
   public static void logIn() {

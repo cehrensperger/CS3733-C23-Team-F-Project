@@ -8,9 +8,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.Session;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "LocationName")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LocationName {
   @Id
   @Column(nullable = false)
@@ -152,6 +155,7 @@ public class LocationName {
                 """,
                 Node.class)
             .setParameter("location", this)
+            .setCacheable(true)
             .uniqueResult();
 
     // if the node isn't null
@@ -168,6 +172,7 @@ public class LocationName {
                 LIMIT 2
                 """,
                   LocationName.class)
+              .setCacheable(true)
               .setParameter("node", node)
               .getResultList();
 

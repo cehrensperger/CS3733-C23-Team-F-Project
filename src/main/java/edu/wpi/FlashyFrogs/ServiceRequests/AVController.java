@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -42,11 +42,11 @@ public class AVController implements IController {
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
-  @FXML SearchableComboBox<String> locationBox;
+  @FXML SearchableComboBox<LocationName> locationBox;
   @FXML TextField device;
   @FXML TextField reason;
   @FXML DatePicker date;
-  @FXML SearchableComboBox<String> urgency;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
   @FXML TextField description;
 
   @FXML Text h1;
@@ -70,15 +70,13 @@ public class AVController implements IController {
 
     Session session = CONNECTION.getSessionFactory().openSession();
 
-    List<String> objects =
-        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    List<LocationName> locations =
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
-    objects.sort(String::compareTo);
+    locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    ObservableList<String> observableList = FXCollections.observableList(objects);
-
-    locationBox.setItems(observableList);
-    urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    locationBox.setItems(FXCollections.observableArrayList(locations));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
   }
 
@@ -87,8 +85,6 @@ public class AVController implements IController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-
       // check
       if (locationBox.getValue().toString().equals("")
           || device.getText().equals("")
@@ -100,16 +96,17 @@ public class AVController implements IController {
 
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      AudioVisual audioVisual = new AudioVisual();
+      AudioVisual audioVisual =
+          new AudioVisual(
+              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              dateNeeded,
+              Date.from(Instant.now()),
+              urgency.getValue(),
+              device.getText(),
+              reason.getText(),
+              description.getText(),
+              locationBox.getValue());
 
-      audioVisual.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
-      audioVisual.setDate(dateNeeded);
-      audioVisual.setDateOfSubmission(Date.from(Instant.now()));
-      audioVisual.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      audioVisual.setDeviceType(device.getText());
-      audioVisual.setReason(reason.getText());
-      audioVisual.setDescription(reason.getText());
-      audioVisual.setLocation(session.find(LocationName.class, locationBox.getValue().toString()));
       try {
         session.persist(audioVisual);
         transaction.commit();
