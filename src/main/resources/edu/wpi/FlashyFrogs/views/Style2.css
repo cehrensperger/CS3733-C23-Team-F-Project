@@ -291,13 +291,13 @@
 
 .clear{
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: #f1f1f1;
-    -fx-border-color:#b6000b;
+    -fx-background-color: #f1f1f1 !important;
+    -fx-border-color:#b6000b !important;
     -fx-font-family: "Roboto";
     -fx-font-size: 10pt;
-    -fx-text-fill: #b6000b;
+    -fx-text-fill: #b6000b !important;
     -fx-background-radius: 10px;
-    -fx-text-innercolor: #b6000b;
+    -fx-text-innercolor: #b6000b !important;
     -fx-border-radius: 10px;
     -fx-pref-width: 100px;
     -fx-pref-height: 25;
@@ -440,17 +440,24 @@
     -fx-text-fill: white;
     -fx-font-family: "Roboto";
 }
-.alertTopBox{
+.alertTopBox {
     -fx-fill: #012d5a;
     -stroke: #012d5a;
     -strokeType: inside;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px !important;
+    -fx-font-size: 14pt;
+    -fx-text-fill: white;
+}
+.alertTopBoxCategoryText {
+    -fx-font-size: 10pt;
+    -fx-text-fill: #D1D1D1;
 }
 .navBar {
     -fx-background-color: #012d5a;
     -fx-text-fill: white;
+    -fx-font-size: 13px;
 }
-.navBarLines{
+.navBarLines {
     -fx-stroke: #34587a;
 }
