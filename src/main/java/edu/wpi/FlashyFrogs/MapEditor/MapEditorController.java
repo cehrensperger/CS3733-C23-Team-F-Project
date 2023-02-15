@@ -24,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -32,11 +33,19 @@ import org.hibernate.Session;
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 @GeneratedExclusion
 public class MapEditorController implements IController {
-  public AnchorPane mapPane;
+  @FXML private AnchorPane mapPane;
+  @FXML private Button backButton;
   @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
   @FXML private MFXButton floorSelectorButton;
+
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+
+  boolean hDone = false;
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
@@ -47,6 +56,10 @@ public class MapEditorController implements IController {
   @SneakyThrows
   @FXML
   private void initialize() {
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -347,11 +360,22 @@ public class MapEditorController implements IController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ExitConfirmation.fxml"));
 
     // Create a confirm exit dialog
-    PopOver popOver = new PopOver(loader.load());
+    Pane root = loader.load();
+    PopOver popOver = new PopOver(root);
+
+    this.backButton.setDisable(true);
 
     ExitConfirmationController exitController = loader.getController();
 
-    exitController.getContinueEditing().setOnAction((action) -> popOver.hide());
+    popOver.setOnHidden((action) -> this.backButton.setDisable(false));
+
+    exitController
+        .getContinueEditing()
+        .setOnAction(
+            (action) -> {
+              this.backButton.setDisable(false);
+              popOver.hide();
+            });
     exitController
         .getSave()
         .setOnAction(
@@ -442,6 +466,18 @@ public class MapEditorController implements IController {
 
   @Override
   public void help() {
-    // TODO: help for this page
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      hDone = false;
+    }
   }
 }

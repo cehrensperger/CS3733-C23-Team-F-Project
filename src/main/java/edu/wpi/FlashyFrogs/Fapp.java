@@ -110,18 +110,18 @@ public class Fapp extends Application {
   /**
    * Sets the application theme
    *
-   * @param theme the theme to set
+   * @param themeName the theme to set
    */
-  public void setTheme(@NonNull Theme theme) {
+  public static void setTheme(@NonNull Theme themeName) {
     // Get the sheets for the app
     ObservableList<String> sheets = Fapp.primaryStage.getScene().getStylesheets();
 
     sheets.clear(); // Clear the sheets
 
     // Add the sheets
-    sheets.add(theme.resource.toExternalForm());
+    sheets.add(themeName.resource.toExternalForm());
 
-    Fapp.theme = theme;
+    theme = themeName;
   }
 
   @SneakyThrows
@@ -147,11 +147,11 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
     primaryStage.setScene(scene);
-
     setTheme(Theme.LIGHT_THEME);
-
     primaryStage.setFullScreen(true);
     primaryStage.show();
+
+    setTheme(Theme.LIGHT_THEME);
   }
 
   @SneakyThrows
