@@ -121,25 +121,22 @@
                   <Insets />
                </VBox.margin>
             </VBox>
-            <Label styleClass="title" text="Alerts">
-               <VBox.margin>
-                  <Insets left="18.0" top="18.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
             <AnchorPane VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="184.0" prefHeight="200.0" prefWidth="190.0" AnchorPane.bottomAnchor="8.0">
                      <children>
-                        <MFXButton onAction="#handleManageCSV" prefHeight="60.0" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
+                        <MFXButton onAction="#handleManageCSV" prefHeight="32.0" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
+                           <styleClass>
+                              <String fx:value="blue2" />
+                              <String fx:value="round" />
+                              <String fx:value="body" />
+                           </styleClass>
                         </MFXButton>
                         <MFXButton fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Logins" textAlignment="CENTER" wrapText="true">
                            <font>
