@@ -62,7 +62,14 @@ public class NewUserController implements IController {
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    if (username.getText().equals("") || pass1.getText().equals("") || pass2.getText().equals("")) {
+    if (username.getText().equals("")
+        || pass1.getText().equals("")
+        || pass2.getText().equals("")
+        || firstName.getText().equals("")
+        || middleName.getText().equals("")
+        || lastName.getText().equals("")
+        || deptBox.getValue() == null
+        || employeeType.getValue() == null) {
       // One of the values is left null
       errorMessage.setText("Please fill out all fields!");
       errorMessage.setVisible(true);
