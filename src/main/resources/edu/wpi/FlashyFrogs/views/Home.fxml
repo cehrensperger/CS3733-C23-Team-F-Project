@@ -21,13 +21,13 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
    <children>
       <StackPane layoutX="1011.0" layoutY="486.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <VBox prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;">
+            <VBox styleClass="pathfindingPopup" prefHeight="213.0" prefWidth="260.0">
                <children>
-                  <Label onMouseClicked="#openPathfinding" text="Pathfinding" textFill="WHITE" VBox.vgrow="ALWAYS">
+                  <Label styleClass="pathfindingPopup" onMouseClicked="#openPathfinding" text="Pathfinding" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -51,7 +51,7 @@
             <Button mnemonicParsing="false" onAction="#openPathfinding" opacity="0.0" prefHeight="216.0" prefWidth="262.0" text="Button" />
          </children>
       </StackPane>
-      <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox styleClass="rectangle" prefHeight="720.0" prefWidth="220.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Alerts">
                <VBox.margin>
