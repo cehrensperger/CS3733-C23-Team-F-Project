@@ -12,6 +12,7 @@
     -fx-font-family: "Inter";
 }
 
+
 .b1
 {
     -fx-border-radius: 10px;
@@ -149,16 +150,18 @@
 }
 
 
+/*styles the popover title*/
 .title{
     -fx-font-weight: transparent;
-    -fx-font-size: 0pt;
-    -fx-text-fill: #d1d1d1;
+    -fx-font-size: 18pt;
+    -fx-text-fill: #012D5A;
 }
 
 .titleText{
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 28pt;
+    -fx-text-fill:#012D5A;
 }
 
 

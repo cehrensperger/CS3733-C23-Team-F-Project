@@ -236,7 +236,7 @@ public class PathfindingController implements IController {
           goToNext.detach();
           goToNext.setX(250);
           goToNext.setY(20);
-          goToNext.setTitle("Your path goes to \nFloor " + nextFloor + ".");
+          goToNext.setTitle("   Your path goes to Floor " + nextFloor + ".");
         }
       }
       prevNode = thisNode;
