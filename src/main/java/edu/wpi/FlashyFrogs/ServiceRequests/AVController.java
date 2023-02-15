@@ -1,14 +1,19 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.AudioVisual;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +31,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class HoldAVController {
+public class AVController implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;
@@ -37,14 +42,11 @@ public class HoldAVController {
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox type;
+  @FXML SearchableComboBox<String> locationBox;
   @FXML TextField device;
-  @FXML TextField model;
   @FXML TextField reason;
   @FXML DatePicker date;
-  @FXML TextField time;
-  @FXML SearchableComboBox urgency;
+  @FXML SearchableComboBox<String> urgency;
   @FXML TextField description;
 
   @FXML Text h1;
@@ -53,10 +55,6 @@ public class HoldAVController {
   @FXML Text h4;
   @FXML Text h5;
   @FXML Text h6;
-  @FXML Text h7;
-  @FXML Text h8;
-  @FXML Text h9;
-
   @FXML private Label errorMessage;
 
   boolean hDone = false;
@@ -69,11 +67,9 @@ public class HoldAVController {
     h4.setVisible(false);
     h5.setVisible(false);
     h6.setVisible(false);
-    h7.setVisible(false);
-    h8.setVisible(false);
-    h9.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
+
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
@@ -81,11 +77,9 @@ public class HoldAVController {
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
-    location.setItems(observableList);
-    type.getItems()
-        .addAll(
-            "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
+    locationBox.setItems(observableList);
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -94,13 +88,10 @@ public class HoldAVController {
 
     try {
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-      String timeString = time.getText().toUpperCase().replace(" ", "_");
 
       // check
-      if (location.getValue().toString().equals("")
-          || type.getValue().toString().equals("")
+      if (locationBox.getValue().toString().equals("")
           || device.getText().equals("")
-          || model.getText().equals("")
           || reason.getText().equals("")
           || date.getValue().toString().equals("")
           || description.getText().equals("")) {
@@ -110,16 +101,15 @@ public class HoldAVController {
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       AudioVisual audioVisual = new AudioVisual();
-      // this needs to be updated when database is fixed
-      /*audioVisual.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      audioVisual.setLocationType(type.getValue().toString());
-      audioVisual.setDeviceType(device.getText());
-      audioVisual.setDeviceModel(model.getText());
-      audioVisual.setReason(reason.getText());
-      audioVisual.setDateOfIncident(dateNeeded);
-      audioVisual.setTime(time.getText());
+
+      audioVisual.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
+      audioVisual.setDate(dateNeeded);
+      audioVisual.setDateOfSubmission(Date.from(Instant.now()));
       audioVisual.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      audioVisual.setDescription(reason.getText());*/
+      audioVisual.setDeviceType(device.getText());
+      audioVisual.setReason(reason.getText());
+      audioVisual.setDescription(reason.getText());
+      audioVisual.setLocation(session.find(LocationName.class, locationBox.getValue().toString()));
       try {
         session.persist(audioVisual);
         transaction.commit();
@@ -142,12 +132,9 @@ public class HoldAVController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    location.valueProperty().set(null);
-    type.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
     device.setText("");
-    model.setText("");
     date.valueProperty().set(null);
-    time.setText("");
     urgency.valueProperty().set(null);
     description.setText("");
   }
@@ -160,9 +147,6 @@ public class HoldAVController {
       h4.setVisible(true);
       h5.setVisible(true);
       h6.setVisible(true);
-      h7.setVisible(true);
-      h8.setVisible(true);
-      h9.setVisible(true);
       hDone = true;
     }
     if (hDone = true) {
@@ -172,9 +156,6 @@ public class HoldAVController {
       h4.setVisible(false);
       h5.setVisible(false);
       h6.setVisible(false);
-      h7.setVisible(false);
-      h8.setVisible(false);
-      h9.setVisible(false);
       hDone = false;
     }
   }
@@ -184,11 +165,11 @@ public class HoldAVController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ITService");
+    Fapp.setScene("ServiceRequests", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "TransportService");
+    Fapp.setScene("ServiceRequests", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
@@ -200,10 +181,13 @@ public class HoldAVController {
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Credits");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Home");
+    Fapp.handleBack();
   }
+
+  @Override
+  public void onClose() {}
 }

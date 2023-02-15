@@ -1,14 +1,19 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.Security;
+import edu.wpi.FlashyFrogs.ORM.ComputerService;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -26,17 +31,24 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class HoldSecurityController {
+public class ITController implements IController {
 
-  @FXML MFXButton clear;
-  @FXML MFXButton submit;
-  @FXML MFXButton credits;
-  @FXML MFXButton back;
   @FXML MFXButton AV;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
+  @FXML MFXButton credits;
+  @FXML MFXButton back;
+  @FXML MFXButton clear;
+  @FXML MFXButton submit;
+  @FXML TextField number;
+  @FXML SearchableComboBox<String> locationBox;
+  @FXML SearchableComboBox<String> service;
+  @FXML SearchableComboBox<String> urgency;
+  @FXML DatePicker date;
+  @FXML TextField type;
+  @FXML TextField description;
   @FXML Text h1;
   @FXML Text h2;
   @FXML Text h3;
@@ -44,13 +56,6 @@ public class HoldSecurityController {
   @FXML Text h5;
   @FXML Text h6;
   @FXML Text h7;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox type;
-  @FXML SearchableComboBox threat;
-  @FXML SearchableComboBox urgency;
-  @FXML DatePicker date;
-  @FXML TextField time;
-  @FXML TextField description;
   @FXML private Label errorMessage;
 
   boolean hDone = false;
@@ -73,12 +78,13 @@ public class HoldSecurityController {
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
-    location.setItems(observableList);
-    type.getItems()
+    locationBox.setItems(observableList);
+    service
+        .getItems()
         .addAll(
-            "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
-    threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
+            "Are you requesting a new device?", "Are you requesting a current device repaired?");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -87,32 +93,34 @@ public class HoldSecurityController {
 
     try {
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-      String timeString = time.getText().toUpperCase().replace(" ", "_");
 
       // check
-      if (location.getValue().toString().equals("")
-          || type.getValue().toString().equals("")
-          || threat.getValue().toString().equals("")
-          || date.getValue().toString().equals("")
-          || time.getText().equals("")
+      if (number.getText().equals("")
+          || locationBox.getValue().toString().equals("")
+          || service.getValue().toString().equals("")
+          || type.getText().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
+      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      String deviceTypeEnumString = type.getText().toUpperCase().replace(" ", "_");
+      String serviceTypeEnumString = service.getValue().toString().toUpperCase().replace(" ", "_");
 
-      Date dateOfRequest =
-          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      ComputerService informationTechnology = new ComputerService();
+      informationTechnology.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
+      informationTechnology.setLocation(
+          session.find(LocationName.class, locationBox.getValue().toString()));
+      informationTechnology.setDate(dateNeeded);
+      informationTechnology.setDateOfSubmission(Date.from(Instant.now()));
+      informationTechnology.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
+      informationTechnology.setDescription(description.getText());
+      informationTechnology.setDeviceType(ComputerService.DeviceType.valueOf(deviceTypeEnumString));
+      informationTechnology.setServiceType(
+          ComputerService.ServiceType.valueOf(serviceTypeEnumString));
+      informationTechnology.setBestContact(number.getText());
 
-      Security securityRequest = new Security();
-      // this needs to be updated when database is fixed
-      /*securityRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      securityRequest.setLocationType(type.getValue().toString());
-      securityRequest.setThreat(threat.getValue().toString());
-      securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      securityRequest.setDateOfIncident(dateOfRequest);
-      securityRequest.setTime(timeString);
-      securityRequest.setDescription(description.getText());*/
       try {
-        session.persist(securityRequest);
+        session.persist(informationTechnology);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
@@ -133,12 +141,11 @@ public class HoldSecurityController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    location.valueProperty().set(null);
-    type.valueProperty().set(null);
-    threat.valueProperty().set(null);
+    number.setText("");
+    locationBox.valueProperty().set(null);
+    service.valueProperty().set(null);
+    type.setText("");
     urgency.valueProperty().set(null);
-    date.valueProperty().set(null);
-    time.setText("");
     description.setText("");
   }
 
@@ -170,11 +177,11 @@ public class HoldSecurityController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ITService");
+    Fapp.setScene("ServiceRequests", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "TransportService");
+    Fapp.setScene("ServiceRequests", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
@@ -186,10 +193,12 @@ public class HoldSecurityController {
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Credits");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Home");
+    Fapp.handleBack();
   }
+
+  public void onClose() {}
 }

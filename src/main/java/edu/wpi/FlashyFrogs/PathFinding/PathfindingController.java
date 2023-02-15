@@ -4,7 +4,6 @@ import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
-import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -50,8 +48,6 @@ public class PathfindingController implements IController {
   //  @FXML private Label error;
 
   private MapController mapController;
-  AtomicReference<PopOver> mapPopOver =
-      new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
   ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>(Node.Floor.L1);
 
@@ -248,12 +244,10 @@ public class PathfindingController implements IController {
               if (nodeLocation != null
                   && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
                 circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-                setHoverBehavior(circle, node);
                 circle.setOpacity(1);
               } else if (nodeLocation != null
                   && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
                 circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-                setHoverBehavior(circle, node);
                 circle.setOpacity(1);
               }
             }
@@ -284,39 +278,6 @@ public class PathfindingController implements IController {
         line.setStrokeWidth(5);
       }
     }
-  }
-
-  private void setHoverBehavior(Circle circle, Node node) {
-    circle
-        .hoverProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              // If we're no longer hovering and the pop-over exists, delete it. We will
-              // either create a new one
-              // or, keep it deleted
-              if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
-                mapPopOver.get().hide(); // Hide it
-                mapPopOver.set(null); // And delete it (set it to null)
-              }
-
-              // If we should draw a new pop-up
-              if (newValue) {
-                // Get the node info in FXML form
-                FXMLLoader nodeLocationNamePopUp =
-                    new FXMLLoader(Fapp.class.getResource("Map/NodeLocationNamePopUp.fxml"));
-
-                try {
-                  // Try creating the pop-over
-                  mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
-                } catch (IOException e) {
-                  throw new RuntimeException(e); // If it fails, throw an exception
-                }
-                NodeLocationNamePopUpController controller = nodeLocationNamePopUp.getController();
-                controller.setNode(node, mapController.getMapSession());
-
-                mapPopOver.get().show(circle); // Show the pop-over
-              }
-            });
   }
 
   @FXML

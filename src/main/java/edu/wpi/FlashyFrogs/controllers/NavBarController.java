@@ -1,7 +1,9 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +23,7 @@ public class NavBarController {
   @FXML private Button helpButton;
   @FXML private Button srButton;
   @FXML private MenuButton menu;
+  @FXML private MFXButton closeButton;
 
   @FXML
   public void initialize() {
@@ -39,6 +42,7 @@ public class NavBarController {
   public void logIn() {
     menu.show();
     menu.setDisable(false);
+    menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentuser().getFirstName());
     srButton.setOpacity(1);
     srButton.setDisable(false);
     homeButton.setOpacity(1);
@@ -47,6 +51,9 @@ public class NavBarController {
     helpButton.setDisable(false);
     line1.setOpacity(1);
     line2.setOpacity(1);
+    closeButton.setDisable(true);
+    closeButton.setOpacity(0);
+    closeButton.setMouseTransparent(true);
   }
 
   public AnchorPane getAnchorPane() {
@@ -65,7 +72,7 @@ public class NavBarController {
 
   @FXML
   private void handleServiceRequestsButton(ActionEvent event) throws IOException {
-    Fapp.setScene("views", "Credits");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   @FXML

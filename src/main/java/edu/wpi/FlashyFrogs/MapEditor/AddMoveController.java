@@ -4,7 +4,7 @@ import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.text.DateFormat;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -48,7 +48,7 @@ public class AddMoveController {
    * @param event the event triggering this (unused)
    */
   @FXML
-  private void saveMove(ActionEvent event) {
+  private void saveMove(ActionEvent event) throws Exception {
 
     // If there are two moves on the same move and same location,
     // show and error message and don't add.
@@ -63,7 +63,8 @@ public class AddMoveController {
       LocationName location =
           session.find(LocationName.class, locationNameField.valueProperty().getValue());
       Node node = session.find(Node.class, nodeIDField.valueProperty().getValue());
-      Date date = DateFormat.getDateInstance().parse(moveDatePicker.getValue().toString());
+      Date date =
+          Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       // create the new move
       Move move = new Move(node, location, date);
@@ -80,6 +81,7 @@ public class AddMoveController {
       errorMessage.setText("This move already exists.");
     } catch (Exception e) {
       errorMessage.setText("Please fill all fields.");
+      throw (e);
     }
   }
 

@@ -121,7 +121,6 @@ public class MapEditorController implements IController {
     Pane map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(0, map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
-    mapController.setFloor(Node.Floor.L1);
 
     // make the anchor pane resizable
     AnchorPane.setTopAnchor(map, 0.0);
@@ -139,6 +138,7 @@ public class MapEditorController implements IController {
     mapController.setNodeCreation(
         (node, circle) -> {
           // Set the on-click processor
+
           circle.setOnMouseClicked(
               (event) -> {
                 // If we're no longer hovering and the pop over exists, delete it. We will
@@ -180,7 +180,7 @@ public class MapEditorController implements IController {
         });
 
     floorSelector.setText("Floor " + Node.Floor.L1.name());
-
+    mapController.setFloor(Node.Floor.L1);
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorProperty.addListener(
         (observable, oldValue, newValue) -> {
