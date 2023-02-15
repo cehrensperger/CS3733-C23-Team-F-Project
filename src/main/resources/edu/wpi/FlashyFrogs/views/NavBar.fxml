@@ -17,7 +17,7 @@
          <children>
             <HBox alignment="TOP_CENTER" layoutX="66.0" layoutY="28.0" prefHeight="37.0" prefWidth="800.0" style="-fx-background-color: #012D5A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox alignment="CENTER">
+                  <HBox fx:id="header" alignment="CENTER">
                      <children>
                         <Button fx:id="homeButton" mnemonicParsing="false" onAction="#handleHomeButton" style="-fx-background-color: #012D5A; -fx-border-color: #012D5A;" text="Home" textFill="WHITE" />
                         <Line fx:id="line1" endX="100.0" startX="100.0" startY="14.8928861618042" stroke="#34587a" />
