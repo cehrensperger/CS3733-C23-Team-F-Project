@@ -138,15 +138,14 @@ public class SecurityController implements IController {
   }
 
   public void help() {
-    if (hDone = false) {
+    if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
       h3.setVisible(true);
       h4.setVisible(true);
       h5.setVisible(true);
       hDone = true;
-    }
-    if (hDone = true) {
+    } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
