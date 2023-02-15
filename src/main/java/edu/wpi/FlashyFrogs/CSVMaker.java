@@ -17,6 +17,11 @@ public class CSVMaker {
     makeMovesCSV(session);
     makeLocationsCSV(session);
     makeServiceRequestCSV(session);
+    makeAudioVisualCSV(session);
+    makeComputerServiceCSV(session);
+    makeInternalTransportCSV(session);
+    makeSanitationCSV(session);
+    makeSecurityCSV(session);
 
     session.close();
   }
@@ -113,21 +118,15 @@ public class CSVMaker {
       for (ServiceRequest serviceRequest : serviceRequests) {
 
         fileWriter.write(serviceRequest.getId() + ",");
-        // fileWriter.write(serviceRequest.getDateOfIncident() + ",");
+        fileWriter.write(serviceRequest.getDate() + ",");
         fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
         fileWriter.write(serviceRequest.getRequestType() + ",");
         fileWriter.write(serviceRequest.getStatus() + ",");
         fileWriter.write(serviceRequest.getUrgency() + ",");
         fileWriter.write(serviceRequest.getAssignedEmp() + ",");
         fileWriter.write(serviceRequest.getEmp() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getLocation() + ",");
+
       }
 
       fileWriter.close();
@@ -142,18 +141,13 @@ public class CSVMaker {
     File movesFile = new File("audioVisualRequests.csv");
     try {
       FileWriter fileWriter = new FileWriter(movesFile);
-      // fileWriter.write("nodeType,longName,shortName\n");
 
       for (AudioVisual serviceRequest : serviceRequests) {
 
-        //        fileWriter.write(serviceRequest.getPatientFirstName() + ",");
-        //        fileWriter.write(serviceRequest.getPatientMiddleName() + ",");
-        //        fileWriter.write(serviceRequest.getPatientLastName() + ",");
-        //        fileWriter.write(serviceRequest.getLocation() + ",");
-        //        fileWriter.write(serviceRequest.getAccommodationType().AccommodationType + ",");
-        //        fileWriter.write(serviceRequest.getDateOfBirth() + ",");
-        //        fileWriter.write(serviceRequest.getDateOfBirth() + ",");
-
+        fileWriter.write(serviceRequest.getDeviceType() + ",");
+        fileWriter.write(serviceRequest.getReason() + ",");
+        fileWriter.write(serviceRequest.getDescription() + ",");
+        fileWriter.write(serviceRequest.getDescription());
       }
 
       fileWriter.close();
@@ -163,31 +157,21 @@ public class CSVMaker {
   }
 
   private static void makeComputerServiceCSV(Session session) {
-    List<ServiceRequest> serviceRequests =
-        session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+    List<ComputerService> serviceRequests =
+        session
+            .createQuery("SELECT e FROM ComputerService e", ComputerService.class)
+            .getResultList();
     File movesFile = new File("computerServiceRequests.csv");
     try {
       FileWriter fileWriter = new FileWriter(movesFile);
-      // fileWriter.write("nodeType,longName,shortName\n");
 
-      for (ServiceRequest serviceRequest : serviceRequests) {
+      for (ComputerService serviceRequest : serviceRequests) {
 
-        fileWriter.write(serviceRequest.getId() + ",");
-        // fileWriter.write(serviceRequest.getDateOfIncident() + ",");
-        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
-        fileWriter.write(serviceRequest.getRequestType() + ",");
-        fileWriter.write(serviceRequest.getStatus() + ",");
-        fileWriter.write(serviceRequest.getUrgency() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
-        fileWriter.write(serviceRequest.getEmp() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getDeviceType() + ",");
+        fileWriter.write(serviceRequest.getModel() + ",");
+        fileWriter.write(serviceRequest.getServiceType().ServiceType + ",");
+        fileWriter.write(serviceRequest.getDescription() + ",");
+        fileWriter.write(serviceRequest.getBestContact());
       }
 
       fileWriter.close();
@@ -197,31 +181,28 @@ public class CSVMaker {
   }
 
   private static void makeInternalTransportCSV(Session session) {
-    List<ServiceRequest> serviceRequests =
-        session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+    List<InternalTransport> serviceRequests =
+        session
+            .createQuery("SELECT e FROM InternalTransport e", InternalTransport.class)
+            .getResultList();
     File movesFile = new File("internalTransportRequests.csv");
     try {
       FileWriter fileWriter = new FileWriter(movesFile);
       // fileWriter.write("nodeType,longName,shortName\n");
 
-      for (ServiceRequest serviceRequest : serviceRequests) {
+      for (InternalTransport serviceRequest : serviceRequests) {
 
-        fileWriter.write(serviceRequest.getId() + ",");
-        // fileWriter.write(serviceRequest.getDateOfIncident() + ",");
-        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
-        fileWriter.write(serviceRequest.getRequestType() + ",");
-        fileWriter.write(serviceRequest.getStatus() + ",");
-        fileWriter.write(serviceRequest.getUrgency() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
-        fileWriter.write(serviceRequest.getEmp() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getPatientID() + ",");
+        fileWriter.write(serviceRequest.getTargetLocation() + ",");
+        fileWriter.write(serviceRequest.getVision() + ",");
+        fileWriter.write(serviceRequest.getHearing() + ",");
+        fileWriter.write(serviceRequest.getConsciousness() + ",");
+        fileWriter.write(serviceRequest.getHealthStatus() + ",");
+        fileWriter.write(serviceRequest.getEquipment() + ",");
+        fileWriter.write(serviceRequest.getMode() + ",");
+        fileWriter.write(serviceRequest.isIsolation() + ",");
+        fileWriter.write(serviceRequest.getPersonalItems() + ",");
+        fileWriter.write(serviceRequest.getReason());
       }
 
       fileWriter.close();
@@ -231,31 +212,20 @@ public class CSVMaker {
   }
 
   private static void makeSanitationCSV(Session session) {
-    List<ServiceRequest> serviceRequests =
-        session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+
+    List<Sanitation> serviceRequests =
+        session.createQuery("SELECT e FROM Sanitation e", Sanitation.class).getResultList();
     File movesFile = new File("sanitationRequests.csv");
     try {
       FileWriter fileWriter = new FileWriter(movesFile);
       // fileWriter.write("nodeType,longName,shortName\n");
 
-      for (ServiceRequest serviceRequest : serviceRequests) {
+      for (Sanitation serviceRequest : serviceRequests) {
 
-        fileWriter.write(serviceRequest.getId() + ",");
-        // fileWriter.write(serviceRequest.getDateOfIncident() + ",");
-        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
-        fileWriter.write(serviceRequest.getRequestType() + ",");
-        fileWriter.write(serviceRequest.getStatus() + ",");
-        fileWriter.write(serviceRequest.getUrgency() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
-        fileWriter.write(serviceRequest.getEmp() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getType() + ",");
+        fileWriter.write(serviceRequest.getIsolation() + ",");
+        fileWriter.write(serviceRequest.getBiohazard().BiohazardLevel + ",");
+        fileWriter.write(serviceRequest.getDescription());
       }
 
       fileWriter.close();
@@ -265,31 +235,17 @@ public class CSVMaker {
   }
 
   private static void makeSecurityCSV(Session session) {
-    List<ServiceRequest> serviceRequests =
-        session.createQuery("SELECT e FROM ServiceRequest e", ServiceRequest.class).getResultList();
+    List<Security> serviceRequests =
+        session.createQuery("SELECT e FROM Security e", Security.class).getResultList();
     File movesFile = new File("securityRequests.csv");
     try {
       FileWriter fileWriter = new FileWriter(movesFile);
       // fileWriter.write("nodeType,longName,shortName\n");
 
-      for (ServiceRequest serviceRequest : serviceRequests) {
+      for (Security serviceRequest : serviceRequests) {
 
-        fileWriter.write(serviceRequest.getId() + ",");
-        // fileWriter.write(serviceRequest.getDateOfIncident() + ",");
-        fileWriter.write(serviceRequest.getDateOfSubmission() + ",");
-        fileWriter.write(serviceRequest.getRequestType() + ",");
-        fileWriter.write(serviceRequest.getStatus() + ",");
-        fileWriter.write(serviceRequest.getUrgency() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp() + ",");
-        fileWriter.write(serviceRequest.getEmp() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getAssignedEmp().getMiddleName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getDepartment() + ",");
-        fileWriter.write(serviceRequest.getEmp().getFirstName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getLastName() + ",");
-        fileWriter.write(serviceRequest.getEmp().getMiddleName() + ",");
+        fileWriter.write(serviceRequest.getIncidentReport() + ",");
+        fileWriter.write(serviceRequest.getThreatType().ThreatType);
       }
 
       fileWriter.close();
