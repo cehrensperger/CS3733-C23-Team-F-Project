@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+<AnchorPane prefHeight="217.0" prefWidth="364.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.AddEdgeController">
+    <children>
+        <VBox layoutX="227.0" layoutY="74.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Node One:" wrappingWidth="224.953125">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Text>
+                <SearchableComboBox fx:id="edgeOneField" prefHeight="25.0" styleClass="fields">
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
+                </SearchableComboBox>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Node Two:" wrappingWidth="207.90625">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Text>
+                <SearchableComboBox fx:id="edgeTwoField" styleClass="fields">
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
+                </SearchableComboBox>
+            <Text fx:id="errorText" strokeType="OUTSIDE" strokeWidth="0.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Text>
+                <HBox prefHeight="38.0" prefWidth="314.0">
+                    <children>
+                  <HBox prefHeight="38.0" prefWidth="157.0" HBox.hgrow="ALWAYS">
+                     <children>
+                              <Button mnemonicParsing="false" onAction="#cancel" prefHeight="31.0" prefWidth="78.0" text="Cancel">
+                                  <font>
+                                      <Font size="16.0" />
+                                  </font>
+                                  <HBox.margin>
+                                      <Insets />
+                                  </HBox.margin>
+                           <styleClass>
+                              <String fx:value="clear" />
+                              <String fx:value="round" />
+                              <String fx:value="body" />
+                           </styleClass>
+                              </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                              <Button mnemonicParsing="false" onAction="#save" prefHeight="31.0" prefWidth="71.0" text="Submit" HBox.hgrow="ALWAYS">
+                                  <font>
+                                      <Font size="16.0" />
+                                  </font>
+                                  <HBox.margin>
+                                      <Insets />
+                                  </HBox.margin>
+                           <styleClass>
+                              <String fx:value="credits" />
+                              <String fx:value="body" />
+                              <String fx:value="round" />
+                           </styleClass>
+                              </Button>
+                     </children>
+                  </HBox>
+                    </children>
+                </HBox>
+            <Label fx:id="errorMessage" prefHeight="17.0" prefWidth="402.0" textFill="#830000" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
