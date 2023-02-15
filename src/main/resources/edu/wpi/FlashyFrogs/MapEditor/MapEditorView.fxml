@@ -64,7 +64,7 @@
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </padding>
       </VBox>
-      <Button mnemonicParsing="false" onAction="#handleBackButton" prefHeight="39.0" prefWidth="70.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0">
+      <Button mnemonicParsing="false" onAction="#handleBackButton" prefHeight="25.0" prefWidth="85.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0">
          <font>
             <Font size="18.0" />
          </font>
@@ -105,6 +105,16 @@
                         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
                      </children>
                   </StackPane>
+                  <Button mnemonicParsing="false" onAction="#handleSave" prefWidth="85.0" text="Save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="120.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="85.0" text="Cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
          </children>
