@@ -4,8 +4,8 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -31,7 +31,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class HoldSanitationController implements IController{
+public class SanitationController implements IController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;

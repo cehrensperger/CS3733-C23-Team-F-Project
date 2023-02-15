@@ -31,7 +31,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class HoldAVController implements IController{
+public class AVController implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;

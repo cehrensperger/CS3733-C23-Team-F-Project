@@ -244,12 +244,10 @@ public class PathfindingController implements IController {
               if (nodeLocation != null
                   && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
                 circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-                setHoverBehavior(circle, node);
                 circle.setOpacity(1);
               } else if (nodeLocation != null
                   && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
                 circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-                setHoverBehavior(circle, node);
                 circle.setOpacity(1);
               }
             }

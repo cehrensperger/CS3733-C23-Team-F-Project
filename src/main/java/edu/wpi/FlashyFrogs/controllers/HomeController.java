@@ -2,8 +2,8 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
@@ -74,8 +74,6 @@ public class HomeController implements IController {
     nodeIDCol.setCellValueFactory(new PropertyValueFactory<>("node"));
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
-
-
 
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
