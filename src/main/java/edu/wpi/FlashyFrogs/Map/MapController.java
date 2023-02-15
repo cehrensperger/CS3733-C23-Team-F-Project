@@ -354,10 +354,11 @@ public class MapController {
           nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
 
           addLocationName(move.getLocation(), move.getNode());
-        } else if (!nodeToLocationCount.containsKey(move.getNode()))
+        } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
         addLocationName(move.getLocation(), move.getNode());
+        }
       }
 
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out
