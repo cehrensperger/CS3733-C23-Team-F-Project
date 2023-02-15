@@ -126,7 +126,7 @@
                <children>
                   <VBox alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="188.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0">
                      <children>
-                        <MFXButton onAction="#handleManageCSV" prefHeight="60.0" prefWidth="150.0" text="Manage CSVs" textAlignment="CENTER" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" wrapText="true">
+                        <MFXButton onAction="#handleManageCSV" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -142,7 +142,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </MFXButton>
-                        <MFXButton fx:id="manageAnnouncementsButton" minWidth="150.0" onAction="#manageAnnouncements" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Announcements" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageAnnouncementsButton" minHeight="55.0" minWidth="150.0" onAction="#manageAnnouncements" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Announcements" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
