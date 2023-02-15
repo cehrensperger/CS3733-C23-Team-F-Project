@@ -68,10 +68,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="alertTopBox" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
+                              <Label styleClass="alertTopBox" text="Fire Alarm Testing" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
                               </Label>
                            </children>
                            <StackPane.margin>
