@@ -49,6 +49,7 @@
 .navBar {
     -fx-background-color: #0067B1;
     -fx-text-fill: white;
+    -fx-font-size: 13px;
 }
 .navBarLines {
     -fx-stroke: #58A0E3;
@@ -59,11 +60,13 @@
     -fx-background-radius: 0px 0px 0px 0px;
     -fx-padding: 0px 0px 7px 0px;
 }
+.combo-box> {
+    -fx-background-radius: 10 0 0 10;
+}
 
 .table-view .table-cell{
     -fx-border-color: transparent;
     -fx-padding: 2 0 2 10px;
-    -fx-text-fill: white;
 }
 .table-view .column-header {
     -fx-background-color: #2F2F2F;

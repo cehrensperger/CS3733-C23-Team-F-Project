@@ -430,6 +430,7 @@
 .navBar {
     -fx-background-color: #012d5a;
     -fx-text-fill: white;
+    -fx-font-size: 13px;
 }
 .navBarLines {
     -fx-stroke: #34587a;
