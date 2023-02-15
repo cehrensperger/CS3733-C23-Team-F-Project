@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.Editors.SecurityEditor">
+    <children>
+        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" stylesheets="@../views/Style2.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <center>
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f1f1f1;" BorderPane.alignment="CENTER">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Security Service Request">
+                            <font>
+                                <Font size="28.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="55.0" />
+                            </VBox.margin>
+                        </Text>
+                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
+                            <children>
+                        <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="185.0">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Where is the security needed" textAlignment="RIGHT" wrappingWidth="185.0">
+                                 <VBox.margin>
+                                    <Insets top="60.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                                <VBox prefHeight="400.0" prefWidth="200.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Location Information" wrappingWidth="250.0">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                                        <SearchableComboBox fx:id="locationBox" promptText="Location of Request" styleClass="fields">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Admin Information" wrappingWidth="250.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <SearchableComboBox fx:id="assignedBox" promptText="Assigned User">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </SearchableComboBox>
+                              <SearchableComboBox fx:id="statusBox" promptText="Status" />
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets right="100.0" />
+                                    </HBox.margin>
+                                </VBox>
+                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#012d5a" height="500.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+                                <VBox prefHeight="159.0" prefWidth="200.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Security Information" wrappingWidth="250.0">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </Text>
+                                        <SearchableComboBox fx:id="threat" promptText="Threat Type" styleClass="fields">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                        <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
+                                            <VBox.margin>
+                                                <Insets bottom="18.0" />
+                                            </VBox.margin>
+                                        </SearchableComboBox>
+                                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="368.0" promptText="Date Preference" styleClass="fields" />
+                                        <TextField fx:id="description" promptText="Description of Request" styleClass="fields">
+                                            <VBox.margin>
+                                                <Insets bottom="216.0" top="18.0" />
+                                            </VBox.margin>
+                                        </TextField>
+                                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: F1F1F1;" text="Clear" textFill="#b6000b">
+                                                            <font>
+                                                                <Font size="16.0" />
+                                                            </font>
+                                             <styleClass>
+                                                <String fx:value="clear" />
+                                                <String fx:value="round" />
+                                                <String fx:value="body" />
+                                             </styleClass>
+                                                        </MFXButton>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                                                            <font>
+                                                                <Font size="16.0" />
+                                                            </font>
+                                             <styleClass>
+                                                <String fx:value="credits" />
+                                                <String fx:value="round" />
+                                                <String fx:value="body" />
+                                             </styleClass>
+                                                        </MFXButton>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets top="85.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                              <HBox alignment="TOP_CENTER" prefHeight="180.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label fx:id="errorMessage">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets left="100.0" />
+                                    </HBox.margin></VBox>
+                        <VBox prefHeight="200.0" prefWidth="185.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Is there a specific threat security is needed for" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="53.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="What is the urgency of the security request" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="24.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Is there a specific date that security will be needed" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="24.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Explain why security is needed" wrappingWidth="185.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="30.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="50.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </center>
+         <padding>
+            <Insets right="220.0" />
+         </padding>
+        </BorderPane>
+    </children>
+</AnchorPane>
