@@ -106,10 +106,10 @@ public class CSVUploadController {
       } catch (FileNotFoundException e) {
         throw new RuntimeException(e);
       }
+      popOver.hide();
     } else {
       errorMessage.setText("Please select 4 files with the proper column headers.");
     }
-    popOver.hide();
   }
 
   public void handleBackup() {

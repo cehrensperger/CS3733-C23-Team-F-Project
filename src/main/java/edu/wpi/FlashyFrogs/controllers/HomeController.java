@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
@@ -222,10 +223,8 @@ public class HomeController implements IController {
   }
 
   public void refreshTable() {
-    User currentUser = new User("a", "a", "a", User.EmployeeType.ADMIN, new Department());
-    boolean isAdmin = true;
-    //    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
-    //    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
     Session session = CONNECTION.getSessionFactory().openSession();
 

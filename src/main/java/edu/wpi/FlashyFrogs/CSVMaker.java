@@ -50,7 +50,7 @@ public class CSVMaker {
     File nodesFile = new File("nodes.csv");
     try {
       FileWriter fileWriter = new FileWriter(nodesFile);
-      fileWriter.write("NodeID,xcoord,ycoord,floor,building\n");
+      fileWriter.write("nodeID,xcoord,ycoord,floor,building\n");
 
       for (Node node : nodes) {
 
@@ -72,12 +72,13 @@ public class CSVMaker {
     File movesFile = new File("moves.csv");
     try {
       FileWriter fileWriter = new FileWriter(movesFile);
-      fileWriter.write("nodeID,longName\n");
+      fileWriter.write("nodeID,longName,moveDate\n");
 
       for (Move move : moves) {
 
         fileWriter.write(move.getNode().getId() + ",");
-        fileWriter.write(move.getLocation().getLongName() + "\n");
+        fileWriter.write(move.getLocation().getLongName() + ",");
+        fileWriter.write(move.getMoveDate() + "\n");
       }
 
       fileWriter.close();
@@ -126,7 +127,6 @@ public class CSVMaker {
         fileWriter.write(serviceRequest.getAssignedEmp() + ",");
         fileWriter.write(serviceRequest.getEmp() + ",");
         fileWriter.write(serviceRequest.getLocation() + ",");
-
       }
 
       fileWriter.close();
