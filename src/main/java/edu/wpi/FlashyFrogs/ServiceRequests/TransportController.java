@@ -4,9 +4,11 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
@@ -28,7 +30,8 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class TransportController {
+@GeneratedExclusion
+public class TransportController implements IController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -39,17 +42,17 @@ public class TransportController {
   @FXML MFXButton back;
 
   @FXML TextField patient;
-  @FXML SearchableComboBox vision;
-  @FXML SearchableComboBox hearing;
-  @FXML SearchableComboBox consciousness;
-  @FXML SearchableComboBox condition;
-  @FXML SearchableComboBox to;
-  @FXML SearchableComboBox from;
-  @FXML SearchableComboBox urgency;
-  @FXML SearchableComboBox equipment;
+  @FXML SearchableComboBox<String> vision;
+  @FXML SearchableComboBox<String> hearing;
+  @FXML SearchableComboBox<String> consciousness;
+  @FXML SearchableComboBox<String> condition;
+  @FXML SearchableComboBox<String> to;
+  @FXML SearchableComboBox<String> from;
+  @FXML SearchableComboBox<String> urgency;
+  @FXML SearchableComboBox<String> equipment;
   @FXML DatePicker date;
-  @FXML SearchableComboBox mode;
-  @FXML SearchableComboBox isolation;
+  @FXML SearchableComboBox<String> mode;
+  @FXML SearchableComboBox<String> isolation;
   @FXML TextField personal;
   @FXML TextField reason;
   @FXML MFXButton clear;
@@ -276,4 +279,7 @@ public class TransportController {
       hDone = false;
     }
   }
+
+  @Override
+  public void onClose() {}
 }

@@ -21,13 +21,17 @@
          <left>
             <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Service Requests" wrappingWidth="155.66615295410156">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="155.66615295410156">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
                      <font>
                         <Font size="24.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="inter" />
+                        <String fx:value="titleSize" />
+                     </styleClass>
                   </Text>
                   <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual        " textFill="WHITE" wrapText="true">
                      <VBox.margin>
@@ -134,6 +138,10 @@
                      <VBox.margin>
                         <Insets top="55.0" />
                      </VBox.margin>
+                     <styleClass>
+                        <String fx:value="inter" />
+                        <String fx:value="titleSize" />
+                     </styleClass>
                   </Text>
                   <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
                      <children>

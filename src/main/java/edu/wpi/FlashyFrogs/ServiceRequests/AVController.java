@@ -4,10 +4,11 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.AudioVisual;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
@@ -29,7 +30,8 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class AVController {
+@GeneratedExclusion
+public class AVController implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;
@@ -40,11 +42,11 @@ public class AVController {
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
-  @FXML SearchableComboBox location;
+  @FXML SearchableComboBox<String> locationBox;
   @FXML TextField device;
   @FXML TextField reason;
   @FXML DatePicker date;
-  @FXML SearchableComboBox urgency;
+  @FXML SearchableComboBox<String> urgency;
   @FXML TextField description;
 
   @FXML Text h1;
@@ -67,6 +69,7 @@ public class AVController {
     h6.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
+
     List<String> objects =
         session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
 
@@ -74,8 +77,9 @@ public class AVController {
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
-    location.setItems(observableList);
+    locationBox.setItems(observableList);
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -86,7 +90,7 @@ public class AVController {
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
 
       // check
-      if (location.getValue().toString().equals("")
+      if (locationBox.getValue().toString().equals("")
           || device.getText().equals("")
           || reason.getText().equals("")
           || date.getValue().toString().equals("")
@@ -97,7 +101,6 @@ public class AVController {
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       AudioVisual audioVisual = new AudioVisual();
-      User user = new User();
 
       audioVisual.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
       audioVisual.setDate(dateNeeded);
@@ -106,7 +109,7 @@ public class AVController {
       audioVisual.setDeviceType(device.getText());
       audioVisual.setReason(reason.getText());
       audioVisual.setDescription(reason.getText());
-      audioVisual.setLocation(session.find(LocationName.class, location.getValue().toString()));
+      audioVisual.setLocation(session.find(LocationName.class, locationBox.getValue().toString()));
       try {
         session.persist(audioVisual);
         transaction.commit();
@@ -129,7 +132,7 @@ public class AVController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    location.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
     device.setText("");
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
@@ -184,4 +187,7 @@ public class AVController {
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
   }
+
+  @Override
+  public void onClose() {}
 }

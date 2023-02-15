@@ -4,9 +4,11 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.ComputerService;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
@@ -28,7 +30,8 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class ITController {
+@GeneratedExclusion
+public class ITController implements IController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -40,9 +43,9 @@ public class ITController {
   @FXML MFXButton clear;
   @FXML MFXButton submit;
   @FXML TextField number;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox service;
-  @FXML SearchableComboBox urgency;
+  @FXML SearchableComboBox<String> locationBox;
+  @FXML SearchableComboBox<String> service;
+  @FXML SearchableComboBox<String> urgency;
   @FXML DatePicker date;
   @FXML TextField type;
   @FXML TextField description;
@@ -75,12 +78,13 @@ public class ITController {
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
-    location.setItems(observableList);
+    locationBox.setItems(observableList);
     service
         .getItems()
         .addAll(
             "Are you requesting a new device?", "Are you requesting a current device repaired?");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -92,7 +96,7 @@ public class ITController {
 
       // check
       if (number.getText().equals("")
-          || location.getValue().toString().equals("")
+          || locationBox.getValue().toString().equals("")
           || service.getValue().toString().equals("")
           || type.getText().equals("")
           || description.getText().equals("")) {
@@ -105,7 +109,7 @@ public class ITController {
       ComputerService informationTechnology = new ComputerService();
       informationTechnology.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
       informationTechnology.setLocation(
-          session.find(LocationName.class, location.getValue().toString()));
+          session.find(LocationName.class, locationBox.getValue().toString()));
       informationTechnology.setDate(dateNeeded);
       informationTechnology.setDateOfSubmission(Date.from(Instant.now()));
       informationTechnology.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
@@ -138,7 +142,7 @@ public class ITController {
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
     number.setText("");
-    location.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
     service.valueProperty().set(null);
     type.setText("");
     urgency.valueProperty().set(null);

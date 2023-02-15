@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -27,6 +28,10 @@
                             <font>
                                 <Font size="24.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="titleSize" />
+                        <String fx:value="inter" />
+                     </styleClass>
                         </Text>
                         <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual        " textFill="WHITE" wrapText="true">
                             <VBox.margin>
@@ -105,6 +110,10 @@
                             <VBox.margin>
                                 <Insets top="55.0" />
                             </VBox.margin>
+                     <styleClass>
+                        <String fx:value="inter" />
+                        <String fx:value="titleSize" />
+                     </styleClass>
                         </Text>
                         <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
                             <children>
@@ -125,7 +134,7 @@
                         </VBox>
                                 <VBox prefHeight="400.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="inter" text="Location Information">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -133,7 +142,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox fx:id="location" promptText="Location of Request">
+                                        <SearchableComboBox fx:id="locationBox" promptText="Location of Request">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>

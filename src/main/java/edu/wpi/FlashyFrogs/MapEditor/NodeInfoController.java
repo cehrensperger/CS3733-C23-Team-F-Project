@@ -3,9 +3,7 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.util.List;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -16,29 +14,35 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
 /** Controller for the node info */
 @GeneratedExclusion
 public class NodeInfoController {
+
   @FXML private ColumnConstraints thirdColumn;
   @FXML private ColumnConstraints fourthColumn;
 
   @FXML private Text nodeLocationText;
-  @FXML private MFXTextField buildingField;
+  @FXML private Text secondLocation;
+  @FXML private TextField buildingField;
   @FXML private Text errorText;
-  @FXML private MFXButton deleteButton;
-  @FXML private MFXButton saveButton;
+  @FXML private Button deleteButton;
+  @FXML private Button saveButton;
   @FXML private AnchorPane locationPane;
-  @FXML private MFXTextField nodeIDField;
-  @FXML private MFXTextField xCoordinateField;
-  @FXML private MFXTextField yCoordinateField;
-  @FXML private MFXComboBox<Node.Floor> floorField;
+  @FXML private AnchorPane locationPane2;
+  @FXML private TextField nodeIDField;
+  @FXML private TextField xCoordinateField;
+  @FXML private TextField yCoordinateField;
+  @FXML private SearchableComboBox<Node.Floor> floorField;
 
   /**
    * Tries validating the x-coord, y-coord, and floor from string to value. If it works, generates a
@@ -143,7 +147,8 @@ public class NodeInfoController {
 
     // Set the floor items
     floorField.setItems(FXCollections.observableArrayList(Node.Floor.values()));
-    floorField.setText(floor.get().toString()); // Set the text manually because MFX is mean
+    floorField.setValue(
+        Node.Floor.valueOf(floor.get().toString())); // Set the text manually because MFX is mean
 
     // Listen for field changes
     floorField.valueProperty().addListener((observable, oldValue, newValue) -> onFieldChange.run());
@@ -160,13 +165,14 @@ public class NodeInfoController {
 
     // If it's not a new node
     if (!isNewNode) {
-      LocationName location =
-          node.getCurrentLocation(session).stream()
-              .findFirst()
-              .orElse(null); // Get the location for the node
+      List<LocationName> locations = node.getCurrentLocation(session);
 
-      if (location != null) { // If the location exists
-
+      if (!locations.isEmpty()) { // If the location exists
+        if (locations.size() < 2) {
+          locationPane2.setVisible(false); // hide the location frame2
+          thirdColumn.setMaxWidth(0); // hide the columns
+          secondLocation.setVisible(false); // hide the 2nd location name
+        }
         // Set its fields
         FXMLLoader locationNameLoader =
             new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
@@ -177,29 +183,52 @@ public class NodeInfoController {
         LocationNameInfoController controller =
             locationNameLoader.getController(); // Load the controller
 
-        // Get this node to use with the location change handler
-        Node original =
-            session
-                .createQuery("FROM Node WHERE id = :originalID", Node.class)
-                .setParameter("originalID", originalID[0])
-                .uniqueResult();
-
         // Set the location name, make sure that table updates are processed
         controller.setLocationName(
-            location,
+            locations.get(0),
             session,
             (oldLocation) -> {
               locationPane.getChildren().clear();
               onLocationDelete.accept(oldLocation);
             },
             (oldLocation, newLocation) -> {
-              onLocationChange.accept(oldLocation, newLocation, original);
+              onLocationChange.accept(oldLocation, newLocation, session
+                .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                .setParameter("originalID", originalID[0])
+                .uniqueResult());
             }, // Handle location updates
             false); // On delete clear
+        if (locations.size() > 1) { // if node has more than 1 location
+          System.out.println("Im here");
+          FXMLLoader locationNameLoader2 =
+              new FXMLLoader(getClass().getResource("LocationInfo.fxml"));
+          // Load the file and set it to be on the location panes children
+          locationPane2.getChildren().add(locationNameLoader2.load());
+
+          LocationNameInfoController controller2 =
+              locationNameLoader2.getController(); // load controller
+          // set tje second location name, make sure that table updates are processed
+          controller2.setLocationName(
+              locations.get(1),
+              session,
+              (oldLocation) -> {
+                locationPane2.getChildren().clear();
+                onLocationDelete.accept(oldLocation);
+              },
+              (oldLocation, newLocation) -> {
+              onLocationChange.accept(oldLocation, newLocation, session
+                .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                .setParameter("originalID", originalID[0])
+                .uniqueResult());
+            },
+              false);
+        }
       }
     } else {
       nodeLocationText.setVisible(false); // hide the location name
+      locationPane2.setVisible(false); // hide the location frame2
       locationPane.setVisible(false); // hide the location frame
+      secondLocation.setVisible(false); // hide the 2nd location name
       thirdColumn.setMaxWidth(0); // hide the columns
       fourthColumn.setMaxWidth(0); // hide the other one
     }

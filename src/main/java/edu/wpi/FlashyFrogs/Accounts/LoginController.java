@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 // import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
+import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
@@ -92,7 +93,7 @@ public class LoginController implements IController {
   public void forgotPass(MouseEvent event) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/ForgotPass.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
-    //    ForgotPassController forgotPass = newLoad.getController();
+    ForgotPassController forgotPass = newLoad.getController();
     popOver.detach();
     Node node = (Node) event.getSource();
     popOver.show(node.getScene().getWindow());
