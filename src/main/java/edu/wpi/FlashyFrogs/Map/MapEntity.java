@@ -65,6 +65,9 @@ class MapEntity {
 
     nodeToCircleMap.clear();
     edgeToLineMap.clear();
+    locationNameToTextMap.clear();
+    nodeToLocationNameMap.clear();
+    nodeToLocationBox.clear();
   }
 
   /**
