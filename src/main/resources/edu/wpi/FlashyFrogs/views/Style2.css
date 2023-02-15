@@ -47,6 +47,9 @@
 
 
 }
+.bar{
+    -fx-background-color:#012D5A;
+}
 
 .back2
 {
@@ -161,7 +164,7 @@
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 28pt;
-    -fx-text-fill:#012D5A;
+    -fx-text-fill:#000000;
 }
 
 
@@ -324,9 +327,5 @@
     -fx-text-background-color: #ffffff;
     -fx-text-fill: #ffffff;
 }
-.table-view .virtual-flow .scroll-bar:vertical .thumb{
-    -fx-background-color: #012d5a;
-}
-.table-view .virtual-flow .scroll-bar:horizontal .thumb {
-    -fx-background-color: #012d5a;
-}
+
+
