@@ -187,11 +187,11 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
-                                        <TextField fx:id="type" promptText="Device Type" styleClass="fields">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </TextField>
+                              <SearchableComboBox fx:id="type" promptText="Device Type" styleClass="fields">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </SearchableComboBox>
                               <DatePicker fx:id="date" prefHeight="31.0" prefWidth="287.0" promptText="Date (needed by)" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
