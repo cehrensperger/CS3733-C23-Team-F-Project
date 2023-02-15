@@ -14,10 +14,13 @@ public class Main {
 
     // Pre-fill the L2 Cache
     Session fillCacheSession = DBConnection.CONNECTION.getSessionFactory().openSession();
-    fillCacheSession.createQuery("FROM Node", Node.class).setHint("org.hibernate.cacheable", true).getResultList();
-    fillCacheSession.createQuery("FROM Edge", Edge.class).setHint("org.hibernate.cacheable", true).getResultList();
-    fillCacheSession.createQuery("FROM Move", Move.class).setHint("org.hibernate.cacheable", true).getResultList();
-    fillCacheSession.createQuery("FROM LocationName", LocationName.class).setHint("org.hibernate.cacheable", true).getResultList();
+    fillCacheSession.createQuery("FROM Node", Node.class).setCacheable(true).getResultList();
+    fillCacheSession.createQuery("FROM Edge", Edge.class).setCacheable(true).getResultList();
+    fillCacheSession.createQuery("FROM Move", Move.class).setCacheable(true).getResultList();
+    fillCacheSession
+        .createQuery("FROM LocationName", LocationName.class)
+        .setCacheable(true)
+        .getResultList();
 
     fillCacheSession.close();
 

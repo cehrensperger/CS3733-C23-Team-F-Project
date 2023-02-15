@@ -82,8 +82,10 @@ public class MapController {
     currentDrawingPane.getChildren().add(locationBox);
 
     // Set it's coordinates
-    locationBox.setLayoutX(node.getXCoord());
-    locationBox.setLayoutY(node.getYCoord());
+    locationBox.setLayoutX(node.getXCoord() + 2.5);
+    locationBox.setLayoutY(node.getYCoord() - 20);
+
+    locationBox.setRotate(-45);
 
     // For each location belonging to this node
     for (LocationName nodeLocation : node.getCurrentLocation(getMapSession())) {
@@ -144,7 +146,7 @@ public class MapController {
                       + "WHERE node1.floor = :thisFloor AND node2.floor = :thisFloor AND "
                       + "(node1 = :thisNode OR node2 = :thisNode)",
                   Edge.class)
-              .setHint("org.hibernate.cacheable", true)
+              .setCacheable(true)
               .setParameter("thisFloor", this.getFloor())
               .setParameter("thisNode", newNode)
               .getResultList();
@@ -299,7 +301,7 @@ public class MapController {
       List<Node> nodes =
           getMapSession()
               .createQuery("FROM Node n WHERE n.floor = :floor", Node.class)
-              .setHint("org.hibernate.cacheable", true)
+              .setCacheable(true)
               .setParameter("floor", mapEntity.getMapFloor())
               .getResultList();
 
@@ -309,7 +311,7 @@ public class MapController {
               .createQuery(
                   "FROM Edge WHERE node1.floor = :floor AND node2.floor = :floor", Edge.class)
               .setParameter("floor", mapEntity.getMapFloor())
-              .setHint("org.hibernate.cacheable", true)
+              .setCacheable(true)
               .getResultList();
 
       // For each edge in the edges to draw
