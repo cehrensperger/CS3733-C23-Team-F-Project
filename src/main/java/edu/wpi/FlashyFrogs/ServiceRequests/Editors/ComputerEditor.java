@@ -2,7 +2,6 @@ package edu.wpi.FlashyFrogs.ServiceRequests.Editors;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
@@ -94,7 +93,10 @@ public class ComputerEditor extends ServiceRequestController implements IControl
     urgency.setValue(itReq.getUrgency());
     type.setValue(itReq.getDeviceType());
     description.setText(itReq.getDescription());
-    date.setValue(Instant.ofEpochMilli(itReq.getDate().getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
+    date.setValue(
+        Instant.ofEpochMilli(itReq.getDate().getTime())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -120,7 +122,6 @@ public class ComputerEditor extends ServiceRequestController implements IControl
       itReq.setDeviceType(type.getValue());
       itReq.setDescription(description.getText());
       itReq.setDate(dateNeeded);
-
 
       try {
         session.merge(itReq);
@@ -154,9 +155,7 @@ public class ComputerEditor extends ServiceRequestController implements IControl
   }
 
   @Override
-  protected void handleBack(ActionEvent event) throws IOException {
-
-  }
+  protected void handleBack(ActionEvent event) throws IOException {}
 
   public void help() {
     if (!hDone) {
