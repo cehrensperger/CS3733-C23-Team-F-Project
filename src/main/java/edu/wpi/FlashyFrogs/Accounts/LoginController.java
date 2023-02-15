@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.Accounts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 // import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
@@ -23,6 +24,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class LoginController implements IController {
 
   @FXML private AnchorPane rootPane;
@@ -73,12 +75,14 @@ public class LoginController implements IController {
             password.getText())) { // Username's Password is not equal to what was inputted
           throw new Exception();
         } else { // Username and Password match database
+          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
           Fapp.setScene("views", "Home");
           Fapp.logIn();
           CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
         }
         ses.close();
       } catch (Exception e) {
+        System.out.println(e);
         errorMessage.setText("Invalid Username or Password.");
         errorMessage.setVisible(true);
         ses.close();

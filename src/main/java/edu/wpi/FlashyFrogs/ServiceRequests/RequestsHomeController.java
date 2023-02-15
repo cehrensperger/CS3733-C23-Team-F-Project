@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
+@GeneratedExclusion
 public class RequestsHomeController {
 
   @FXML private BorderPane rootPane;

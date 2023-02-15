@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -37,6 +38,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
+@GeneratedExclusion
 public class MapEditorController implements IController {
   public AnchorPane mapPane;
   @FXML private Label floorSelector;

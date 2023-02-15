@@ -113,10 +113,6 @@ jar {
 def codeCoverageExcludes = [
         'edu.wpi.FlashyFrogs.App',
         'edu.wpi.FlashyFrogs.Main',
-        'edu.wpi.FlashyFrogs.controllers.*',
-        'edu.wpi.FlashyFrogs.navigation.*',
-        'edu.wpi.FlashyFrogs.ResourceDictionary',
-        'edu.wpi.FlashyFrogs.Fapp',
 ]
 
 jacoco {
@@ -140,7 +136,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.25
+                minimum = 1.0
             }
             excludes = codeCoverageExcludes
         }
@@ -150,7 +146,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimum = 0.25
+                minimum = 1.0
             }
             excludes = codeCoverageExcludes
         }

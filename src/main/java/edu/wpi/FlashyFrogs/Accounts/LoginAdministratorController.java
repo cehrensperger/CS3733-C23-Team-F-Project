@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.Accounts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
@@ -23,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class LoginAdministratorController implements IController {
 
   @FXML private TableView<UserLogin> tableView;
