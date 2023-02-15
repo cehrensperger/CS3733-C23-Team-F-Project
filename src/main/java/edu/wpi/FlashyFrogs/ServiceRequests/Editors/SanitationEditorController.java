@@ -208,7 +208,7 @@ public class SanitationEditorController extends ServiceRequestController impleme
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ITService");
+    Fapp.setScene("ServiceRequests", "ComputerService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {

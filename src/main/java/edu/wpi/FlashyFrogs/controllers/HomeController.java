@@ -287,6 +287,8 @@ public class HomeController implements IController {
       manageLoginsButton.setOpacity(0);
       manageCSVButton.setDisable(true);
       manageCSVButton.setOpacity(0);
+      editMovesButton.setDisable(true);
+      editMovesButton.setOpacity(0);
 
       tableText2.setText("");
     } else {
@@ -297,6 +299,8 @@ public class HomeController implements IController {
       manageLoginsButton.setOpacity(1);
       manageCSVButton.setDisable(false);
       manageCSVButton.setOpacity(1);
+      editMovesButton.setDisable(false);
+      editMovesButton.setOpacity(1);
 
       tableText2.setText("Future Moves");
     }
