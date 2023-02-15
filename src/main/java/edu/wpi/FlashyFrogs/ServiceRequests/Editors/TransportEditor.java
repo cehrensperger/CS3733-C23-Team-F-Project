@@ -1,7 +1,8 @@
 package edu.wpi.FlashyFrogs.ServiceRequests.Editors;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
-import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
@@ -10,6 +11,13 @@ import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,16 +30,6 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 @GeneratedExclusion
 public class TransportEditor implements IController {
