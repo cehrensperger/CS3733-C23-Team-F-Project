@@ -62,6 +62,7 @@ public class HomeController implements IController {
     filters.add("Security");
     filterBox.setItems(FXCollections.observableList(filters));
     filterBox.setValue("All");
+    filterBox.valueProperty().setValue("All");
 
     // need to be the names of the fields
     requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
@@ -97,6 +98,7 @@ public class HomeController implements IController {
       tableText2.setText("Future Moves");
     }
     refreshTable();
+    setListener();
   }
 
   @FXML
@@ -256,10 +258,20 @@ public class HomeController implements IController {
 
     // refill based on filter
     if (!filterCreated) {
-      filterBox
-          .valueProperty()
-          .addListener(
-              (observable, oldValue, newValue) -> {
+
+      session.close();
+    }
+  }
+
+  public void setListener() {
+    filterBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue.equals(null)) {
+                Session session = CONNECTION.getSessionFactory().openSession();
+                User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+                boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
                 if (!newValue.equals("All")) {
                   if (!isAdmin) {
                     requestTable.setItems(
@@ -299,10 +311,9 @@ public class HomeController implements IController {
                                 .getResultList()));
                   }
                 }
-              });
-      filterCreated = true;
-    }
-    session.close();
+                session.close();
+              }
+            });
   }
 
   public void handleManageCSV(ActionEvent event) throws IOException {
@@ -327,4 +338,6 @@ public class HomeController implements IController {
               }
             });
   }
+
+  public void srEditorPopOver() {}
 }
