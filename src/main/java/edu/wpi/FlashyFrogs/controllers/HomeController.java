@@ -2,8 +2,8 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
@@ -45,18 +45,20 @@ public class HomeController implements IController {
 
   @FXML protected SearchableComboBox<String> filterBox;
 
-  ObjectProperty<String> filterProperty = new SimpleObjectProperty<>("");
+  ObjectProperty<String> filterProperty = new SimpleObjectProperty<>("All");
 
   public void initialize() {
     Fapp.resetStack();
 
     List<String> filters = new ArrayList<String>();
+    filters.add("All");
     filters.add("AudioVisual");
     filters.add("ComputerService");
     filters.add("InternalTransport");
     filters.add("Sanitation");
     filters.add("Security");
     filterBox.setItems(FXCollections.observableList(filters));
+    filterBox.setValue("All");
 
     // need to be the names of the fields
     requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
@@ -71,9 +73,11 @@ public class HomeController implements IController {
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
 
+    // User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    // boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
-    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    User currentUser = new User("a", "a", "a", User.EmployeeType.ADMIN, new Department());
+    boolean isAdmin = true;
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
@@ -117,26 +121,44 @@ public class HomeController implements IController {
     // refill based on filter
     filterProperty.addListener(
         (observable, oldValue, newValue) -> {
-          if (!isAdmin) {
-            requestTable.setItems(
-                FXCollections.observableList(
-                    session
-                        .createQuery(
-                            "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
-                            ServiceRequest.class)
-                        .setParameter("type", newValue)
-                        .setParameter("emp", currentUser)
-                        .getResultList()));
+          if (newValue.equals("All")) {
+            if (!isAdmin) {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
+                              ServiceRequest.class)
+                          .setParameter("type", newValue)
+                          .setParameter("emp", currentUser)
+                          .getResultList()));
+            } else {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
+                              ServiceRequest.class)
+                          .setParameter("type", newValue)
+                          .getResultList()));
+            }
           } else {
-            requestTable.setItems(
-                FXCollections.observableList(
-                    session
-                        .createQuery(
-                            "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
-                            ServiceRequest.class)
-                        .setParameter("type", newValue)
-                        .setParameter("emp", currentUser)
-                        .getResultList()));
+            if (!isAdmin) {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
+                              ServiceRequest.class)
+                          .setParameter("emp", currentUser)
+                          .getResultList()));
+            } else {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+                          .getResultList()));
+            }
           }
         });
     session.close();
@@ -307,4 +329,8 @@ public class HomeController implements IController {
   public void manageAnnouncements(ActionEvent event) throws IOException {}
 
   public void onClose() {}
+
+  public void viewLogins(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Accounts", "LoginAdministrator");
+  }
 }

@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.ORM;
 import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.FlashyFrogs.DBConnection;
-import java.time.Instant;
 import java.util.Date;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -59,29 +58,40 @@ public class InternalTransportTest {
       new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
   private final InternalTransport testIntTransp =
       new InternalTransport(
-          new Date(2002 - 10 - 2),
-          new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
+          "patient id",
+          InternalTransport.VisionStatus.GLASSES,
+          InternalTransport.HearingStatus.AID_BOTH,
+          InternalTransport.ConsciousnessStatus.MODERATE,
+          InternalTransport.HealthStatus.HEALTHY,
           new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
-          "John",
-          "B",
-          "Doe",
-          emp,
+          new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
+          ServiceRequest.Urgency.MODERATELY_URGENT,
+          InternalTransport.Equipment.NONE,
           new Date(2023 - 1 - 31),
           new Date(2023 - 2 - 1),
-          ServiceRequest.Urgency.MODERATELY_URGENT);
+          emp,
+          InternalTransport.ModeOfTransport.EQUIPMENT,
+          false,
+          "personal items",
+          "reason");
 
   /** Reset testInternalTransport after each test */
   @BeforeEach
   @AfterEach
   public void resetTestInternalTransport() {
-    testIntTransp.setDateOfBirth(new Date(2002 - 10 - 2));
-    testIntTransp.setNewLoc(
+    testIntTransp.setPatientID("patient id");
+    testIntTransp.setVision(InternalTransport.VisionStatus.GLASSES);
+    testIntTransp.setHearing(InternalTransport.HearingStatus.AID_BOTH);
+    testIntTransp.setConsciousness(InternalTransport.ConsciousnessStatus.MODERATE);
+    testIntTransp.setHealthStatus(InternalTransport.HealthStatus.HEALTHY);
+    testIntTransp.setLocation(
         new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"));
-    testIntTransp.setOldLoc(
+    testIntTransp.setTargetLocation(
         new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"));
-    testIntTransp.setPatientFirstName("John");
-    testIntTransp.setPatientMiddleName("B");
-    testIntTransp.setPatientLastName("Doe");
+    testIntTransp.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
+    testIntTransp.setEquipment(InternalTransport.Equipment.NONE);
+    testIntTransp.setDate(new Date(2023 - 1 - 31));
+    testIntTransp.setDateOfSubmission(new Date(2023 - 2 - 1));
     emp.setFirstName("Wilson");
     emp.setMiddleName("Softeng");
     emp.setLastName("Wong");
@@ -90,10 +100,12 @@ public class InternalTransportTest {
     assignedEmp.setLastName("Golden");
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
+    testIntTransp.setEmp(emp);
     testIntTransp.setAssignedEmp(assignedEmp);
-    testIntTransp.setDateOfIncident(new Date(2023 - 1 - 31));
-    testIntTransp.setDateOfSubmission(new Date(2023 - 2 - 1));
-    testIntTransp.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
+    testIntTransp.setMode(InternalTransport.ModeOfTransport.EQUIPMENT);
+    testIntTransp.setIsolation(false);
+    testIntTransp.setPersonalItems("personal items");
+    testIntTransp.setReason("reason");
   }
 
   /** Tests setter for emp */
@@ -116,16 +128,22 @@ public class InternalTransportTest {
   public void setEmpTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
+            new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             null,
-            null,
-            "a",
-            "b",
-            "c",
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.VERY_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -137,16 +155,22 @@ public class InternalTransportTest {
   public void nullToNullEmployeeTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
+            new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             null,
-            null,
-            "b",
-            "c",
-            "d",
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.VERY_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     test.setEmp(null);
 
     // Assert that the location is correct
@@ -174,16 +198,22 @@ public class InternalTransportTest {
   public void setAssignedEmpTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(),
-            new LocationName("A", LocationName.LocationType.INFO, "B"),
-            null,
-            "A",
-            "B",
-            "C",
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
+            new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -195,16 +225,22 @@ public class InternalTransportTest {
   public void nullToNullAssignedEmployeeTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(),
-            null,
-            new LocationName("b", LocationName.LocationType.SERV, "B"),
-            "D",
-            "E",
-            "F",
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
+            new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     test.setAssignedEmp(null);
     test.setAssignedEmp(null);
 
@@ -212,28 +248,20 @@ public class InternalTransportTest {
     assertNull(test.getAssignedEmp());
   }
 
-  /** Tests setter for dateOfBirth */
-  @Test
-  void setDateOfBirthTest() {
-    Date newDate = new Date(2002 - 1 - 17);
-    testIntTransp.setDateOfBirth(newDate);
-    assertEquals(newDate, testIntTransp.getDateOfBirth());
-  }
-
   /** Tests setter for location */
   @Test
   public void updateOldLocationLocationTest() {
-    testIntTransp.setOldLoc(new LocationName("Hello", LocationName.LocationType.CONF, "Hello"));
+    testIntTransp.setLocation(new LocationName("Hello", LocationName.LocationType.CONF, "Hello"));
     assertEquals(
         new LocationName("Hello", LocationName.LocationType.CONF, "Hello"),
-        testIntTransp.getOldLoc());
+        testIntTransp.getLocation());
   }
 
   /** Tests that the department clears (something -> null) correctly */
   @Test
   public void clearOldLocationTest() {
-    testIntTransp.setOldLoc(null);
-    assertNull(testIntTransp.getOldLoc());
+    testIntTransp.setLocation(null);
+    assertNull(testIntTransp.getLocation());
   }
 
   /** Starts the location as null, then sets it to be something */
@@ -241,20 +269,26 @@ public class InternalTransportTest {
   public void setOldLocationTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             null,
-            null,
-            "a",
-            "b",
-            "c",
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.VERY_URGENT);
-    test.setOldLoc(new LocationName("a", LocationName.LocationType.INFO, "B"));
+            new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
+    test.setLocation(new LocationName("a", LocationName.LocationType.INFO, "B"));
 
     // Assert that the location is correct
-    assertEquals(new LocationName("a", LocationName.LocationType.INFO, "B"), test.getOldLoc());
+    assertEquals(new LocationName("a", LocationName.LocationType.INFO, "B"), test.getLocation());
   }
 
   /** Starts the location name as null and sets it to null */
@@ -262,36 +296,43 @@ public class InternalTransportTest {
   public void nullToNullOldLocationTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             null,
-            null,
-            "b",
-            "c",
-            "d",
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.VERY_URGENT);
-    test.setOldLoc(null);
+            new LocationName("NewLocLongName", LocationName.LocationType.DEPT, "NewLocShortName"),
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
+    test.setLocation(null);
 
     // Assert that the location is correct
-    assertNull(test.getOldLoc());
+    assertNull(test.getLocation());
   }
 
   /** Tests setter for location */
   @Test
   public void updateNewLocationLocationTest() {
-    testIntTransp.setNewLoc(new LocationName("Hello", LocationName.LocationType.CONF, "Hello"));
+    testIntTransp.setTargetLocation(
+        new LocationName("Hello", LocationName.LocationType.CONF, "Hello"));
     assertEquals(
         new LocationName("Hello", LocationName.LocationType.CONF, "Hello"),
-        testIntTransp.getNewLoc());
+        testIntTransp.getTargetLocation());
   }
 
   /** Tests that the department clears (something -> null) correctly */
   @Test
   public void clearNewLocationTest() {
-    testIntTransp.setNewLoc(null);
-    assertNull(testIntTransp.getNewLoc());
+    testIntTransp.setTargetLocation(null);
+    assertNull(testIntTransp.getTargetLocation());
   }
 
   /** Starts the location as null, then sets it to be something */
@@ -299,20 +340,27 @@ public class InternalTransportTest {
   public void setNewLocationTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
             null,
-            null,
-            "a",
-            "b",
-            "c",
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.VERY_URGENT);
-    test.setNewLoc(new LocationName("a", LocationName.LocationType.INFO, "B"));
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
+    test.setTargetLocation(new LocationName("a", LocationName.LocationType.INFO, "B"));
 
     // Assert that the location is correct
-    assertEquals(new LocationName("a", LocationName.LocationType.INFO, "B"), test.getNewLoc());
+    assertEquals(
+        new LocationName("a", LocationName.LocationType.INFO, "B"), test.getTargetLocation());
   }
 
   /** Starts the location name as null and sets it to null */
@@ -320,39 +368,42 @@ public class InternalTransportTest {
   public void nullToNullNewLocationTest() {
     InternalTransport test =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
+            new LocationName("OldLocLongName", LocationName.LocationType.HALL, "OldLocShortName"),
             null,
-            new LocationName("A", LocationName.LocationType.BATH, "C"),
-            "b",
-            "c",
-            "d",
-            null,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.VERY_URGENT);
-    test.setNewLoc(null);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
+    test.setTargetLocation(null);
 
     // Assert that the location is correct
-    assertNull(test.getNewLoc());
+    assertNull(test.getTargetLocation());
   }
 
-  /** Tests setter for patientName */
+  /** Tests setter for patientID */
   @Test
   void setPatientNameTest() {
-    String patientFirstName = "Jimboo";
-    String patientLastName = "Jones";
-    testIntTransp.setPatientFirstName(patientFirstName);
-    testIntTransp.setPatientLastName(patientLastName);
-    assertEquals(patientFirstName, testIntTransp.getPatientFirstName());
-    assertEquals(patientLastName, testIntTransp.getPatientLastName());
+    String patientID = "Jimboo";
+    testIntTransp.setPatientID(patientID);
+    assertEquals(patientID, testIntTransp.getPatientID());
   }
 
-  /** Tests setter for dateOfIncident */
+  /** Tests setter for date */
   @Test
-  void setDateOfIncidentTest() {
+  void setDate() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testIntTransp.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testIntTransp.getDateOfIncident());
+    testIntTransp.setDate(newDOI);
+    assertEquals(newDOI, testIntTransp.getDate());
   }
 
   /** Tests setter for dateOfSubmission */
@@ -392,16 +443,22 @@ public class InternalTransportTest {
     // Create the transport request we will use
     InternalTransport it =
         new InternalTransport(
-            new Date(2002 - 10 - 2),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             loc1,
             loc2,
-            "John",
-            "B",
-            "Doe",
-            emp,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(it);
 
     // Assert that the one thing in the database matches this
@@ -418,16 +475,22 @@ public class InternalTransportTest {
     // Identical transport request that should have a different ID
     InternalTransport it2 =
         new InternalTransport(
-            new Date(2002 - 10 - 2),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             loc1,
             loc2,
-            "John",
-            "B",
-            "Doe",
-            emp,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(it2); // Load it2 into the DB, set its ID
 
     assertNotEquals(it, it2); // Assert it and it2 aren't equal
@@ -436,16 +499,22 @@ public class InternalTransportTest {
     // Completely different transport request
     InternalTransport it3 =
         new InternalTransport(
-            new Date(2001 - 11 - 22),
+            "patient id 2",
+            InternalTransport.VisionStatus.BLIND,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.GOOD,
+            InternalTransport.HealthStatus.MODERATE,
             loc2,
             loc1,
-            "Jane",
-            "L",
-            "Smith",
-            emp,
+            ServiceRequest.Urgency.VERY_URGENT,
+            InternalTransport.Equipment.WALKER,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.VERY_URGENT);
+            emp,
+            InternalTransport.ModeOfTransport.HELP,
+            true,
+            "non personal items",
+            "not a reason");
     session.persist(it3); // Load it3 into the DB, set its ID
 
     assertNotEquals(it, it3); // Assert it and it3 aren't equal
@@ -480,16 +549,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             null,
             location,
-            "B",
-            "C",
-            "D",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Remove the location
@@ -502,7 +577,7 @@ public class InternalTransportTest {
 
     // Assert the location is actually gone
     assertNull(session.createQuery("FROM LocationName", LocationName.class).uniqueResult());
-    assertNull(av.getOldLoc()); // Assert the location is null
+    assertNull(av.getTargetLocation()); // Assert the location is null
 
     transaction.rollback();
     session.close();
@@ -524,16 +599,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
-            newLocation,
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
-            "D",
-            "A",
-            "D",
+            newLocation,
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            Date.from(Instant.ofEpochSecond(100)),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Change the location
@@ -552,7 +633,7 @@ public class InternalTransportTest {
         session.find(LocationName.class, "newName"));
     assertEquals(
         new LocationName("newName", LocationName.LocationType.EXIT, "name"),
-        av.getOldLoc()); // Assert the location is null
+        av.getLocation()); // Assert the location is null
 
     transaction.rollback();
     session.close();
@@ -572,16 +653,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
             null,
-            "B",
-            "C",
-            "D",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Remove the location
@@ -594,7 +681,7 @@ public class InternalTransportTest {
 
     // Assert the location is actually gone
     assertNull(session.createQuery("FROM LocationName", LocationName.class).uniqueResult());
-    assertNull(av.getNewLoc()); // Assert the location is null
+    assertNull(av.getTargetLocation()); // Assert the location is null
 
     transaction.rollback();
     session.close();
@@ -616,23 +703,29 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
             newLocation,
-            "D",
-            "A",
-            "D",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            Date.from(Instant.ofEpochSecond(100)),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Change the location
     session
         .createMutationQuery(
             "UPDATE LocationName SET longName = 'newName' WHERE longName = :oldName")
-        .setParameter("oldName", location.getLongName())
+        .setParameter("oldName", newLocation.getLongName())
         .executeUpdate();
 
     // Update the request
@@ -644,7 +737,7 @@ public class InternalTransportTest {
         session.find(LocationName.class, "newName"));
     assertEquals(
         new LocationName("newName", LocationName.LocationType.EXIT, "name"),
-        av.getNewLoc()); // Assert the location is null
+        av.getTargetLocation()); // Assert the location is null
 
     transaction.rollback();
     session.close();
@@ -664,16 +757,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
             location,
-            "B",
-            "C",
-            "D",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Remove the location
@@ -686,8 +785,8 @@ public class InternalTransportTest {
 
     // Assert the location is actually gone
     assertNull(session.createQuery("FROM LocationName", LocationName.class).uniqueResult());
-    assertNull(av.getOldLoc()); // Assert the location is null
-    assertNull(av.getNewLoc());
+    assertNull(av.getLocation()); // Assert the location is null
+    assertNull(av.getTargetLocation());
 
     transaction.rollback();
     session.close();
@@ -707,16 +806,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
             location,
-            "D",
-            "A",
-            "D",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            Date.from(Instant.ofEpochSecond(100)),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Change the location
@@ -731,9 +836,10 @@ public class InternalTransportTest {
         session.find(LocationName.class, "newName"));
     assertEquals(
         new LocationName("newName", LocationName.LocationType.EXIT, "name"),
-        av.getOldLoc()); // Assert the location is null
+        av.getLocation()); // Assert the location is null
     assertEquals(
-        new LocationName("newName", LocationName.LocationType.EXIT, "name"), av.getNewLoc());
+        new LocationName("newName", LocationName.LocationType.EXIT, "name"),
+        av.getTargetLocation());
 
     transaction.rollback();
     session.close();
@@ -753,16 +859,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             null,
             location,
-            "D",
-            "A",
-            "D",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            Date.from(Instant.ofEpochSecond(100)),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     session.flush();
@@ -797,16 +909,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
             location,
-            "B",
-            "C",
-            "E",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.VERY_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Change the enp
@@ -846,16 +964,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
             null,
-            "something",
-            "b",
-            "jim",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     session.persist(av);
 
     // Commit stuff so we can access it later (it's persisted)
@@ -900,16 +1024,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             null,
             null,
-            "b",
-            "c",
-            "d",
-            assignedEmp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -949,16 +1079,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
             location,
-            "E",
-            "G",
-            "H",
-            assignedEmp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
+            emp,
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -1005,16 +1141,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             null,
             null,
-            "b",
-            "c",
-            "d",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     av.setAssignedEmp(emp);
     session.persist(av);
 
@@ -1054,16 +1196,22 @@ public class InternalTransportTest {
     // Create the av request we will use
     InternalTransport av =
         new InternalTransport(
-            new Date(),
+            "patient id",
+            InternalTransport.VisionStatus.GLASSES,
+            InternalTransport.HearingStatus.AID_BOTH,
+            InternalTransport.ConsciousnessStatus.MODERATE,
+            InternalTransport.HealthStatus.HEALTHY,
             location,
             location,
-            "E",
-            "G",
-            "H",
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            InternalTransport.Equipment.NONE,
+            new Date(2023 - 1 - 31),
+            new Date(2023 - 2 - 1),
             emp,
-            new Date(),
-            new Date(),
-            ServiceRequest.Urgency.NOT_URGENT);
+            InternalTransport.ModeOfTransport.EQUIPMENT,
+            false,
+            "personal items",
+            "reason");
     av.setAssignedEmp(emp);
     session.persist(av);
 

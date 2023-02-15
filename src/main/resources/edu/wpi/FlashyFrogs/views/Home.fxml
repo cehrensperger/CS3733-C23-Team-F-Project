@@ -143,6 +143,11 @@
          </image>
       </ImageView>
       <SearchableComboBox fx:id="filterBox" layoutX="1171.0" layoutY="120.0" prefHeight="25.0" prefWidth="164.0" promptText="Filter" AnchorPane.rightAnchor="20.0" />
+      <MFXButton fx:id="viewLoginsButton" layoutX="18.0" layoutY="570.0" onAction="#viewLogins" prefHeight="60.0" prefWidth="150.0" text="Manage Logins" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="18.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
       <MFXButton fx:id="manageButton" onAction="#manageAnnouncements" prefHeight="60.0" prefWidth="150.0" text="Manage Announcements" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />

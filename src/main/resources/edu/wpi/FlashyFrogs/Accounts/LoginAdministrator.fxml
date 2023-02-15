@@ -1,76 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.LoginAdministratorController">
    <children>
-      <BorderPane prefHeight="600.0" prefWidth="800.0">
-         <top>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login Manager" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="20.0" top="8.0" />
-               </BorderPane.margin>
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Text>
-         </top>
-         <bottom>
-            <AnchorPane prefWidth="800.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox alignment="BOTTOM_RIGHT" prefWidth="800.0">
-                     <children>
-                        <MFXButton fx:id="back" onAction="#handleBack" prefWidth="100.0" text="Back">
-                           <VBox.margin>
-                              <Insets bottom="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                        </MFXButton>
-                        <Accordion />
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
-         </bottom>
-         <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox prefWidth="200.0">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="400.0" prefWidth="791.0">
-                           <children>
-                              <TableView fx:id="userLoginTable" prefHeight="400.0" prefWidth="719.0">
-                                <columns>
-                                  <TableColumn fx:id="userName" prefWidth="395.0" text="Username" />
-                                  <TableColumn fx:id="password" minWidth="0.0" prefWidth="384.0" text="Password" />
-                                </columns>
-                              </TableView>
-                           </children>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin></VBox>
-                     </children>
-                  </HBox>
-                  <MFXButton fx:id="addNewUser" onAction="#handleNewUser" text="Add New User">
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </MFXButton>
-               </children>
-               <BorderPane.margin>
-                  <Insets left="10.0" top="10.0" />
-               </BorderPane.margin>
-            </VBox>
-         </center>
-      </BorderPane>
+      <Label alignment="CENTER" layoutX="280.0" layoutY="14.0" text="Login Manager" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="279.2" AnchorPane.topAnchor="14.0">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <TableView fx:id="userLoginTable" layoutY="75.0" prefHeight="382.0" prefWidth="800.0" AnchorPane.bottomAnchor="143.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
+        <columns>
+          <TableColumn fx:id="userName" prefWidth="395.0" text="Username" />
+          <TableColumn fx:id="password" minWidth="0.0" prefWidth="384.0" text="Password" />
+        </columns>
+      </TableView>
+      <MFXButton fx:id="addNewUser" layoutX="14.0" layoutY="474.0" onAction="#handleNewUser" text="Add New User" AnchorPane.bottomAnchor="100.39999999999998" AnchorPane.leftAnchor="14.0" />
+      <MFXButton fx:id="back" layoutX="686.0" layoutY="560.0" onAction="#handleBack" prefWidth="100.0" text="Back" AnchorPane.bottomAnchor="14.399999999999977" AnchorPane.rightAnchor="14.0" />
    </children>
 </AnchorPane>
