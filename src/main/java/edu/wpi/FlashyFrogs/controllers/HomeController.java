@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -237,19 +238,25 @@ public class HomeController implements IController {
                   FXMLLoader newLoad =
                       new FXMLLoader(
                           Fapp.class.getResource(
-                              "ServiceRequest/" + row.getItem().getRequestType() + "Editor.fxml"));
-                  ServiceRequestController controller = newLoad.getController();
-                  controller.setRequest(row.getItem());
+                              "ServiceRequests/Editors/"
+                                  + row.getItem().getRequestType()
+                                  + "Editor.fxml"));
+
+                  Parent root = null;
                   try {
-                    PopOver popOver = new PopOver(newLoad.load());
+                    root = newLoad.load();
+                    PopOver popOver = new PopOver(root);
                     popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-                    javafx.scene.Node node =
-                        (javafx.scene.Node)
-                            event.getSource(); // Get the node representation of what called this
+                    Node node =
+                        (Node) event.getSource(); // Get the node representation of what called this
                     popOver.show(node);
                   } catch (IOException e) {
                     throw new RuntimeException(e);
                   }
+
+                  ServiceRequestController controller = newLoad.getController();
+                  controller.setRequest(row.getItem());
+                  controller.updateFields();
                 }
               });
           return row;

@@ -77,6 +77,7 @@ public class SanitationEditorController extends ServiceRequestController impleme
     h7.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
     List<LocationName> locations =
         session.createQuery("FROM LocationName", LocationName.class).getResultList();
     locations.sort(Comparator.comparing(LocationName::getShortName));
@@ -90,8 +91,12 @@ public class SanitationEditorController extends ServiceRequestController impleme
     biohazard.setItems(FXCollections.observableArrayList(Sanitation.BiohazardLevel.values()));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     assignedBox.setItems(FXCollections.observableArrayList(users));
-    session.close();
 
+    session.close();
+  }
+
+  public void updateFields() {
+    System.out.println(sanitationReq.getLocation());
     locationBox.setValue(sanitationReq.getLocation());
     sanitationType.setValue(sanitationReq.getType());
     urgency.setValue(sanitationReq.getUrgency());
@@ -103,6 +108,9 @@ public class SanitationEditorController extends ServiceRequestController impleme
             .toLocalDate());
     isolation.setSelected(sanitationReq.getIsolation());
     description.setText(sanitationReq.getDescription());
+    if (sanitationReq.getAssignedEmp() != null) {
+      assignedBox.setValue(sanitationReq.getAssignedEmp());
+    }
   }
 
   public void setRequest(ServiceRequest serviceRequest) {
