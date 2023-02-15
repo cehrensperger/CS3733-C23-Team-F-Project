@@ -120,6 +120,8 @@ public class Fapp extends Application {
 
     // Add the sheets
     sheets.add(theme.resource.toExternalForm());
+
+    Fapp.theme = theme;
   }
 
   @SneakyThrows
