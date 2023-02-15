@@ -16,7 +16,7 @@
             <left>
                 <VBox prefWidth="220.0" styleClass="rectangle" BorderPane.alignment="TOP_LEFT">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Service Requests" wrappingWidth="160.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="160.0">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -165,7 +165,7 @@
                                     <Insets top="70.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Joseph Carderelli and Connor Ehrensperger" wrappingWidth="315.5272521972656">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Joseph Cardarelli and Connor Ehrensperger" wrappingWidth="315.5272521972656">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -180,7 +180,7 @@
                         </VBox>
                                 <VBox prefHeight="670.0" prefWidth="479.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Descriptions and Credits" wrappingWidth="434.7284240722656" VBox.vgrow="ALWAYS">
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Descriptions and Credits" wrappingWidth="434.7284240722656" VBox.vgrow="ALWAYS">
                                         <font>
                                             <Font size="28.0" />
                                         </font>

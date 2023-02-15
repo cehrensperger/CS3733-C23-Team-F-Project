@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -23,7 +24,15 @@
                   </MFXTextField>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <MFXButton prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="submited" text="Successfully Submited!" />
+                           </children>
+                           <HBox.margin>
+                              <Insets top="6.0" />
+                           </HBox.margin>
+                        </HBox>
+                        <MFXButton onAction="#handleSubmit" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
                            <HBox.margin>
                               <Insets bottom="18.0" right="18.0" />
                            </HBox.margin>

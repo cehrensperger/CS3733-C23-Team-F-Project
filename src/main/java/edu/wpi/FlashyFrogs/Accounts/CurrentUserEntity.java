@@ -11,7 +11,7 @@ public enum CurrentUserEntity {
   }
 
   public boolean getAdmin() {
-    return true;
+    return this.currentUser.getEmployeeType().equals(User.EmployeeType.ADMIN);
   }
 
   public void setCurrentUser(User user) {

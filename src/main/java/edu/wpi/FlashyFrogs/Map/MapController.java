@@ -8,6 +8,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -343,7 +344,7 @@ public class MapController {
               .stream()
               .filter((move) -> move.getMoveDate().before(now))
               .distinct()
-              .toList();
+              .collect(Collectors.toList());
 
       HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
 

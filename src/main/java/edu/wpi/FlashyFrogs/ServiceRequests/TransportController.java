@@ -15,12 +15,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -42,17 +43,17 @@ public class TransportController implements IController {
   @FXML MFXButton back;
 
   @FXML TextField patient;
-  @FXML SearchableComboBox<String> vision;
-  @FXML SearchableComboBox<String> hearing;
-  @FXML SearchableComboBox<String> consciousness;
-  @FXML SearchableComboBox<String> condition;
-  @FXML SearchableComboBox<String> to;
-  @FXML SearchableComboBox<String> from;
-  @FXML SearchableComboBox<String> urgency;
-  @FXML SearchableComboBox<String> equipment;
+  @FXML SearchableComboBox<InternalTransport.VisionStatus> vision;
+  @FXML SearchableComboBox<InternalTransport.HearingStatus> hearing;
+  @FXML SearchableComboBox<InternalTransport.ConsciousnessStatus> consciousness;
+  @FXML SearchableComboBox<InternalTransport.HealthStatus> condition;
+  @FXML SearchableComboBox<LocationName> to;
+  @FXML SearchableComboBox<LocationName> from;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
+  @FXML SearchableComboBox<InternalTransport.Equipment> equipment;
   @FXML DatePicker date;
-  @FXML SearchableComboBox<String> mode;
-  @FXML SearchableComboBox<String> isolation;
+  @FXML SearchableComboBox<InternalTransport.ModeOfTransport> mode;
+  @FXML CheckBox isolation;
   @FXML TextField personal;
   @FXML TextField reason;
   @FXML MFXButton clear;
@@ -93,31 +94,21 @@ public class TransportController implements IController {
     h14.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<String> objects =
-        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    List<LocationName> locations =
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
-    objects.sort(String::compareTo);
+    locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    ObservableList<String> observableList = FXCollections.observableList(objects);
-
-    to.setItems(observableList);
-    from.setItems(observableList);
-    vision.getItems().addAll("Good", "Poor", "Blind", "Glasses");
-    hearing
-        .getItems()
-        .addAll(
-            "Good",
-            "Poor",
-            "Deaf",
-            "Hearing Aid (Left)",
-            "Hearing Aid (Right)",
-            "Hearing Aid (Both)");
-    consciousness.getItems().addAll("Good", "Moderate", "Poor");
-    condition.getItems().addAll("Healthy", "Moderate", "Poor");
-    urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
-    equipment.getItems().addAll("None", "Cane", "Walker", "Wheel Chair", "Bed");
-    mode.getItems().addAll("Self", "With Help", "Equipment Needed");
-    isolation.getItems().addAll("Yes", "No");
+    to.setItems(FXCollections.observableArrayList(locations));
+    from.setItems(FXCollections.observableArrayList(locations));
+    vision.setItems(FXCollections.observableArrayList(InternalTransport.VisionStatus.values()));
+    hearing.setItems(FXCollections.observableArrayList(InternalTransport.HearingStatus.values()));
+    consciousness.setItems(
+        FXCollections.observableArrayList(InternalTransport.ConsciousnessStatus.values()));
+    condition.setItems(FXCollections.observableArrayList(InternalTransport.HealthStatus.values()));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
+    equipment.setItems(FXCollections.observableArrayList(InternalTransport.Equipment.values()));
+    mode.setItems(FXCollections.observableArrayList(InternalTransport.ModeOfTransport.values()));
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -125,8 +116,6 @@ public class TransportController implements IController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-
       // check
       if (patient.getText().equals("")
           || vision.getValue().toString().equals("")
@@ -138,7 +127,6 @@ public class TransportController implements IController {
           || equipment.getValue().toString().equals("")
           || date.getValue().toString().equals("")
           || mode.getValue().toString().equals("")
-          || isolation.getValue().toString().equals("")
           || personal.getText().equals("")
           || reason.getText().equals("")) {
         throw new NullPointerException();
@@ -146,37 +134,26 @@ public class TransportController implements IController {
 
       Date dateOfTransport =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-      String visionEnumString = vision.getValue().toString().toUpperCase().replace(" ", "_");
-      String hearingEnumString = hearing.getValue().toString().toUpperCase().replace(" ", "_");
-      String consciousnessEnumString =
-          consciousness.getValue().toString().toUpperCase().replace(" ", "_");
-      String conditionEnumString = condition.getValue().toString().toUpperCase().replace(" ", "_");
-      String equipmentEnumString = equipment.getValue().toString().toUpperCase().replace(" ", "_");
-      String modeEnumString = mode.getValue().toString().toUpperCase().replace(" ", "_");
-      boolean isIsolation = false;
-      if (isolation.getValue().toString().equals("Yes")) {
-        isIsolation = true;
-      }
 
-      InternalTransport transport = new InternalTransport();
-      // this needs to be updated when database is fixed
-      transport.setPatientID(patient.getText());
-      transport.setVision(InternalTransport.VisionStatus.valueOf(visionEnumString));
-      transport.setHearing(InternalTransport.HearingStatus.valueOf(hearingEnumString));
-      transport.setConsciousness(
-          InternalTransport.ConsciousnessStatus.valueOf(consciousnessEnumString));
-      transport.setHealthStatus(InternalTransport.HealthStatus.valueOf(conditionEnumString));
-      transport.setLocation(session.find(LocationName.class, from.getValue().toString()));
-      transport.setTargetLocation(session.find(LocationName.class, to.getValue().toString()));
-      transport.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      transport.setEquipment(InternalTransport.Equipment.valueOf(equipmentEnumString));
-      transport.setDate(dateOfTransport);
-      transport.setDateOfSubmission(Date.from(Instant.now()));
-      transport.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
-      transport.setMode(InternalTransport.ModeOfTransport.valueOf(modeEnumString));
-      transport.setIsolation(isIsolation);
-      transport.setPersonalItems(personal.getText());
-      transport.setReason(reason.getText());
+      InternalTransport transport =
+          new InternalTransport(
+              patient.getText(),
+              vision.getValue(),
+              hearing.getValue(),
+              consciousness.getValue(),
+              condition.getValue(),
+              from.getValue(),
+              to.getValue(),
+              urgency.getValue(),
+              equipment.getValue(),
+              dateOfTransport,
+              Date.from(Instant.now()),
+              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              mode.getValue(),
+              isolation.isSelected(),
+              personal.getText(),
+              reason.getText());
+
       try {
         session.persist(transport);
         transaction.commit();
@@ -210,7 +187,7 @@ public class TransportController implements IController {
     equipment.valueProperty().set(null);
     date.valueProperty().set(null);
     mode.valueProperty().set(null);
-    isolation.valueProperty().set(null);
+    isolation.setSelected(false);
     personal.setText("");
     reason.setText("");
   }
