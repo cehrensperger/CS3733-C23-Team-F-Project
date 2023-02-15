@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -47,9 +48,9 @@ public class SecurityController implements IController {
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
-  @FXML SearchableComboBox<String> locationBox;
-  @FXML SearchableComboBox<String> threat;
-  @FXML SearchableComboBox<String> urgency;
+  @FXML SearchableComboBox<LocationName> locationBox;
+  @FXML SearchableComboBox<Security.ThreatType> threat;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
   @FXML DatePicker date;
   @FXML TextField description;
   @FXML private Label errorMessage;
@@ -65,16 +66,14 @@ public class SecurityController implements IController {
     h5.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<String> objects =
-        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    List<LocationName> locations =
+            session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
-    objects.sort(String::compareTo);
+    locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    ObservableList<String> observableList = FXCollections.observableList(objects);
-
-    locationBox.setItems(observableList);
-    threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
-    urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    locationBox.setItems(FXCollections.observableArrayList(locations));
+    threat.setItems(FXCollections.observableArrayList(Security.ThreatType.values()));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
   }
 
@@ -83,8 +82,6 @@ public class SecurityController implements IController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-
       // check
       if (locationBox.getValue().toString().equals("")
           || threat.getValue().toString().equals("")
@@ -96,18 +93,8 @@ public class SecurityController implements IController {
       Date dateOfRequest =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      String threatTypeEnumString = threat.getValue().toString().toUpperCase().replace(" ", "_");
+      Security securityRequest = new Security(description.getText(), locationBox.getValue(), CurrentUserEntity.CURRENT_USER.getCurrentuser(), dateOfRequest, Date.from(Instant.now()), urgency.getValue(), threat.getValue());
 
-      Security securityRequest = new Security();
-
-      securityRequest.setIncidentReport(description.getText());
-      securityRequest.setLocation(
-          session.find(LocationName.class, locationBox.getValue().toString()));
-      securityRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
-      securityRequest.setThreatType(Security.ThreatType.valueOf(threatTypeEnumString));
-      securityRequest.setDate(dateOfRequest);
-      securityRequest.setDateOfSubmission(Date.from(Instant.now()));
-      securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
       try {
         session.persist(securityRequest);
         transaction.commit();
