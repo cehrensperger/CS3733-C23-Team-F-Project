@@ -74,3 +74,19 @@
 .table-view .column-header .label {
     -fx-text-fill: white;
 }
+.fields{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
+    -fx-background-color: #2F2F2F;
+    -fx-border-insets: -1px;
+    -fx-border-radius: 10px !important;
+    -fx-prompt-text-fill: white;
+}
+.combo-box .arrow{
+    -fx-background-color:#D1D1D1;
+}
+.combo-box .cell {
+    -fx-text-fill: #D1D1D1;
+}
