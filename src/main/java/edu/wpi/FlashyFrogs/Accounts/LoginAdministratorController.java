@@ -35,6 +35,7 @@ public class LoginAdministratorController implements IController {
   @FXML private TableColumn<UserLogin, User.EmployeeType> empTypeCol;
   @FXML private TableColumn<UserLogin, Department> deptCol;
   @FXML private Button addNewUser;
+  @FXML private Button back;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
@@ -50,12 +51,14 @@ public class LoginAdministratorController implements IController {
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
     addNewUser.setDisable(true);
+    back.setDisable(true);
     popOver
         .showingProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
               if (!newValue) {
                 addNewUser.setDisable(false);
+                back.setDisable(false);
               }
             });
   }
@@ -107,10 +110,7 @@ public class LoginAdministratorController implements IController {
       throw e;
     }
   }
-  // s.user.id, s.userName, "
-  //                      + "s.user.firstName || ' ' || s.user.middleName || ' ' || s.user.lastName
-  // AS Name, "
-  //                      + "s.user.employeeType, s.user.department
+
   public void onClose() {}
 
   @Override
