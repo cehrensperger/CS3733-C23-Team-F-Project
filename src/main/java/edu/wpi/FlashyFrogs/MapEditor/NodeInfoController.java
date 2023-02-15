@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -106,7 +107,7 @@ public class NodeInfoController {
       @NonNull Consumer<Node> onNodeDelete,
       @NonNull BiConsumer<Node, Node> onNodeUpdate,
       @NonNull Consumer<LocationName> onLocationDelete,
-      @NonNull BiConsumer<LocationName, LocationName> onLocationChange,
+      @NonNull TriConsumer<LocationName, LocationName, Node> onLocationChange,
       boolean isNewNode) {
     String[] originalID = new String[1]; // Original ID for the node
     originalID[0] = node.getId(); // Set the original ID
@@ -191,7 +192,15 @@ public class NodeInfoController {
               locationPane.getChildren().clear();
               onLocationDelete.accept(oldLocation);
             },
-            onLocationChange, // Handle location updates
+            (oldLocation, newLocation) -> {
+              onLocationChange.accept(
+                  oldLocation,
+                  newLocation,
+                  session
+                      .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                      .setParameter("originalID", originalID[0])
+                      .uniqueResult());
+            }, // Handle location updates
             false); // On delete clear
         if (locations.size() > 1) { // if node has more than 1 location
           FXMLLoader locationNameLoader2 =
@@ -209,7 +218,15 @@ public class NodeInfoController {
                 locationPane2.getChildren().clear();
                 onLocationDelete.accept(oldLocation);
               },
-              onLocationChange,
+              (oldLocation, newLocation) -> {
+                onLocationChange.accept(
+                    oldLocation,
+                    newLocation,
+                    session
+                        .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                        .setParameter("originalID", originalID[0])
+                        .uniqueResult());
+              },
               false);
         }
       }
