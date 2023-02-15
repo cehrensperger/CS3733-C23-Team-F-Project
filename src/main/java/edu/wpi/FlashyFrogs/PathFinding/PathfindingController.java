@@ -10,7 +10,9 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
+import edu.wpi.FlashyFrogs.controllers.NextFloorPopupController;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -49,6 +52,13 @@ public class PathfindingController implements IController {
   //  @FXML private Label error;
 
   private MapController mapController;
+
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+
+  boolean hDone = false;
   AtomicReference<PopOver> mapPopOver =
       new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
@@ -59,6 +69,11 @@ public class PathfindingController implements IController {
    */
   @SneakyThrows
   public void initialize() {
+
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -120,7 +135,11 @@ public class PathfindingController implements IController {
 
           // If the last path is valid
           if (lastPath != null) {
-            drawPath(); // Draw it
+            try {
+              drawPath(); // Draw it
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
           }
         });
 
@@ -129,10 +148,10 @@ public class PathfindingController implements IController {
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
-      mapEditorButton.disarm();
+      mapEditorButton.setDisable(true);
       mapEditorButton.setOpacity(0);
     } else {
-      mapEditorButton.arm();
+      mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
   }
@@ -202,10 +221,38 @@ public class PathfindingController implements IController {
   }
 
   /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */
-  private void drawPath() {
+  private void drawPath() throws IOException {
     // Color any edges on the map
+    Node prevNode = lastPath.get(0);
     for (int i = 1; i < lastPath.size(); i++) { // For each line in the path
-      Node thisNode = lastPath.get(i); // Get the ndoe
+      Node thisNode = lastPath.get(i); // Get the node
+
+      String nextFloor = thisNode.getFloor().floorNum;
+
+      if (!nextFloor.equals(prevNode.getFloor().floorNum)) {
+        FXMLLoader loader =
+            new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
+        PopOver goToNext = new PopOver(loader.load());
+
+        NextFloorPopupController controller = loader.getController();
+        controller.setPathfindingController(this);
+        controller.setFloor(thisNode.getFloor());
+
+        Circle circle = mapController.getNodeToCircleMap().get(prevNode);
+        if (circle != null) {
+          circle.setFill(Paint.valueOf(Color.YELLOW.toString()));
+          circle.setOpacity(1);
+
+          goToNext.show(circle);
+          goToNext.setAutoHide(false);
+          goToNext.setAutoFix(false);
+          goToNext.detach();
+          goToNext.setX(250);
+          goToNext.setY(20);
+          goToNext.setTitle("   Your path goes to Floor " + nextFloor + ".");
+        }
+      }
+      prevNode = thisNode;
 
       // If the node is on this floor
       if (thisNode.getFloor().equals(mapController.getFloor())) {
@@ -255,7 +302,7 @@ public class PathfindingController implements IController {
     }
   }
 
-  /** Method that handles drawing a new path (A/K/A the submit button handler) */
+  /** Method that handles drawing a new path (AKA the submit button handler) */
   @SneakyThrows
   public void handleGetPath() {
     // get start and end locations from text fields
@@ -367,7 +414,28 @@ public class PathfindingController implements IController {
             });
   }
 
+  public void setFloor(Node.Floor floor) {
+    floorProperty.setValue(Objects.requireNonNull(floor));
+  }
+
   public void onClose() {
     mapController.exit();
+  }
+
+  @Override
+  public void help() {
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      hDone = false;
+    }
   }
 }

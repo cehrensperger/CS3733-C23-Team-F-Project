@@ -191,6 +191,7 @@ public class Node {
                                         """,
                 LocationName.class)
             .setParameter("node", this)
+            .setCacheable(true)
             .getResultList();
     if (locations.isEmpty()) {
       return locations;

@@ -4,21 +4,24 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -28,7 +31,8 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class SanitationController {
+@GeneratedExclusion
+public class SanitationController implements IController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -47,12 +51,12 @@ public class SanitationController {
   @FXML Text h5;
   @FXML Text h6;
   @FXML Text h7;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox sanitationType;
+  @FXML SearchableComboBox<LocationName> locationBox;
+  @FXML SearchableComboBox<Sanitation.SanitationType> sanitationType;
   @FXML DatePicker date;
-  @FXML SearchableComboBox urgency;
-  @FXML SearchableComboBox isolation;
-  @FXML SearchableComboBox biohazard;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
+  @FXML CheckBox isolation;
+  @FXML SearchableComboBox<Sanitation.BiohazardLevel> biohazard;
   @FXML TextField description;
   boolean hDone = false;
   @FXML private Label errorMessage;
@@ -68,18 +72,16 @@ public class SanitationController {
     h7.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<String> objects =
-        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    List<LocationName> locations =
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
-    objects.sort(String::compareTo);
+    locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    ObservableList<String> observableList = FXCollections.observableList(objects);
-
-    location.setItems(observableList);
-    sanitationType.getItems().addAll("Sweeping", "Mopping", "Sanitizing");
-    urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
-    isolation.getItems().addAll("Yes", "No");
-    biohazard.getItems().addAll("Yes", "No");
+    locationBox.setItems(FXCollections.observableArrayList(locations));
+    sanitationType.setItems(FXCollections.observableArrayList(Sanitation.SanitationType.values()));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
+    biohazard.setItems(FXCollections.observableArrayList(Sanitation.BiohazardLevel.values()));
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -88,42 +90,29 @@ public class SanitationController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String[] parts;
-      String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-
-      if (location.getValue().toString().equals("")
+      if (locationBox.getValue().toString().equals("")
           || sanitationType.getValue().toString().equals("")
           || date.getValue().toString().equals("")
-          || isolation.getValue().toString().equals("")
           || biohazard.getValue().toString().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
 
-      // String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
-
       Date dateOfIncident =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      String sanitationTypeEnumString =
-          sanitationType.getValue().toString().toUpperCase().replace(" ", "_");
-      boolean isIsolation = false;
-      if (isolation.getValue().toString().equals("Yes")) {
-        isIsolation = true;
-      }
-      String bioTypeEnumString = biohazard.getValue().toString().toUpperCase().replace(" ", "_");
+      Sanitation sanitationRequest =
+          new Sanitation(
+              sanitationType.getValue(),
+              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              dateOfIncident,
+              Date.from(Instant.now()),
+              urgency.getValue(),
+              locationBox.getValue(),
+              isolation.isSelected(),
+              biohazard.getValue(),
+              description.getText());
 
-      Sanitation sanitationRequest = new Sanitation();
-      sanitationRequest.setLocation(
-          session.find(LocationName.class, location.getValue().toString()));
-      sanitationRequest.setType(Sanitation.SanitationType.valueOf(sanitationTypeEnumString));
-      sanitationRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
-      sanitationRequest.setDate(dateOfIncident);
-      sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
-      sanitationRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      sanitationRequest.setIsolation(isIsolation);
-      sanitationRequest.setBiohazard(Sanitation.BiohazardLevel.valueOf(bioTypeEnumString));
-      sanitationRequest.setDescription(description.getText());
       try {
         session.persist(sanitationRequest);
         transaction.commit();
@@ -146,17 +135,17 @@ public class SanitationController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    location.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
     sanitationType.valueProperty().set(null);
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
-    isolation.valueProperty().set(null);
+    isolation.setSelected(false);
     biohazard.valueProperty().set(null);
     description.setText("");
   }
 
   public void help() {
-    if (hDone = false) {
+    if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
       h3.setVisible(true);
@@ -165,8 +154,7 @@ public class SanitationController {
       h6.setVisible(true);
       h7.setVisible(true);
       hDone = true;
-    }
-    if (hDone = true) {
+    } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
@@ -183,7 +171,7 @@ public class SanitationController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ITService");
+    Fapp.setScene("ServiceRequests", "ComputerService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
@@ -205,4 +193,7 @@ public class SanitationController {
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
   }
+
+  @Override
+  public void onClose() {}
 }

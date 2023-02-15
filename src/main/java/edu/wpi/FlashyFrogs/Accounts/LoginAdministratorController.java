@@ -4,12 +4,13 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.Department;
+import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
 import java.util.List;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
@@ -28,9 +30,16 @@ public class LoginAdministratorController implements IController {
 
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
-  @FXML private TableColumn<UserLogin, String> userName;
-  @FXML private TableColumn<UserLogin, String> password;
+  @FXML private TableColumn<UserLogin, Number> idCol;
+  @FXML private TableColumn<UserLogin, String> userNameCol;
+  @FXML private TableColumn<UserLogin, String> nameCol;
+  @FXML private TableColumn<UserLogin, User.EmployeeType> empTypeCol;
+  @FXML private TableColumn<UserLogin, Department> deptCol;
   @FXML private Button addNewUser;
+  @FXML private Button back;
+
+  @FXML Text h1;
+  boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
@@ -45,31 +54,49 @@ public class LoginAdministratorController implements IController {
     popOver.detach();
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
+
     addNewUser.setDisable(true);
+    back.setDisable(true);
     popOver
         .showingProperty()
         .addListener(
-            new ChangeListener<Boolean>() {
-              @Override
-              public void changed(
-                  ObservableValue<? extends Boolean> observable,
-                  Boolean oldValue,
-                  Boolean newValue) {
-                if (!newValue) {
-                  addNewUser.setDisable(false);
-                }
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                addNewUser.setDisable(false);
+                back.setDisable(false);
               }
             });
   }
 
   public void initialize() throws Exception {
+    h1.setVisible(false);
 
     // Clear old table before init
     userLoginTable.getItems().clear();
     // set columns userlogin
 
-    userName.setCellValueFactory(new PropertyValueFactory<>("userName"));
-    password.setCellValueFactory(new PropertyValueFactory<>("hash"));
+    idCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleLongProperty(user.getId());
+        });
+    userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+    nameCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleStringProperty(
+              user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
+        });
+    empTypeCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleObjectProperty(user.getEmployeeType());
+        });
+    deptCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleObjectProperty(user.getDepartment());
+        });
 
     // create logIn table
     // open session
@@ -91,4 +118,15 @@ public class LoginAdministratorController implements IController {
   }
 
   public void onClose() {}
+
+  @Override
+  public void help() {
+    if (!hDone) {
+      h1.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      hDone = false;
+    }
+  }
 }

@@ -4,19 +4,21 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.ComputerService;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -28,7 +30,8 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class ITController {
+@GeneratedExclusion
+public class ITController implements IController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -40,11 +43,11 @@ public class ITController {
   @FXML MFXButton clear;
   @FXML MFXButton submit;
   @FXML TextField number;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox service;
-  @FXML SearchableComboBox urgency;
+  @FXML SearchableComboBox<LocationName> locationBox;
+  @FXML SearchableComboBox<ComputerService.ServiceType> service;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
+  @FXML SearchableComboBox<ComputerService.DeviceType> type;
   @FXML DatePicker date;
-  @FXML TextField type;
   @FXML TextField description;
   @FXML Text h1;
   @FXML Text h2;
@@ -68,19 +71,16 @@ public class ITController {
     h7.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<String> objects =
-        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    List<LocationName> locations =
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
-    objects.sort(String::compareTo);
+    locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    ObservableList<String> observableList = FXCollections.observableList(objects);
-
-    location.setItems(observableList);
-    service
-        .getItems()
-        .addAll(
-            "Are you requesting a new device?", "Are you requesting a current device repaired?");
-    urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    locationBox.setItems(FXCollections.observableArrayList(locations));
+    service.setItems(FXCollections.observableArrayList(ComputerService.ServiceType.values()));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
+    type.setItems(FXCollections.observableArrayList(ComputerService.DeviceType.values()));
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -88,32 +88,28 @@ public class ITController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-
       // check
       if (number.getText().equals("")
-          || location.getValue().toString().equals("")
+          || locationBox.getValue().toString().equals("")
           || service.getValue().toString().equals("")
-          || type.getText().equals("")
+          || type.getValue().toString().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-      String deviceTypeEnumString = type.getText().toUpperCase().replace(" ", "_");
-      String serviceTypeEnumString = service.getValue().toString().toUpperCase().replace(" ", "_");
 
-      ComputerService informationTechnology = new ComputerService();
-      informationTechnology.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
-      informationTechnology.setLocation(
-          session.find(LocationName.class, location.getValue().toString()));
-      informationTechnology.setDate(dateNeeded);
-      informationTechnology.setDateOfSubmission(Date.from(Instant.now()));
-      informationTechnology.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      informationTechnology.setDescription(description.getText());
-      informationTechnology.setDeviceType(ComputerService.DeviceType.valueOf(deviceTypeEnumString));
-      informationTechnology.setServiceType(
-          ComputerService.ServiceType.valueOf(serviceTypeEnumString));
-      informationTechnology.setBestContact(number.getText());
+      ComputerService informationTechnology =
+          new ComputerService(
+              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              locationBox.getValue(),
+              dateNeeded,
+              Date.from(Instant.now()),
+              urgency.getValue(),
+              type.getValue(),
+              "temp",
+              description.getText(),
+              service.getValue(),
+              number.getText());
 
       try {
         session.persist(informationTechnology);
@@ -138,15 +134,16 @@ public class ITController {
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
     number.setText("");
-    location.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
     service.valueProperty().set(null);
-    type.setText("");
+    type.valueProperty().set(null);
+    date.valueProperty().set(null);
     urgency.valueProperty().set(null);
     description.setText("");
   }
 
   public void help() {
-    if (hDone = false) {
+    if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
       h3.setVisible(true);
@@ -155,8 +152,7 @@ public class ITController {
       h6.setVisible(true);
       h7.setVisible(true);
       hDone = true;
-    }
-    if (hDone = true) {
+    } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
@@ -173,7 +169,7 @@ public class ITController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ITService");
+    Fapp.setScene("ServiceRequests", "ComputerService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {

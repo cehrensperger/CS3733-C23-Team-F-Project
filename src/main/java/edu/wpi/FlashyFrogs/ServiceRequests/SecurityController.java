@@ -4,19 +4,21 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -28,7 +30,8 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class SecurityController {
+@GeneratedExclusion
+public class SecurityController implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;
@@ -44,9 +47,9 @@ public class SecurityController {
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox threat;
-  @FXML SearchableComboBox urgency;
+  @FXML SearchableComboBox<LocationName> locationBox;
+  @FXML SearchableComboBox<Security.ThreatType> threat;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
   @FXML DatePicker date;
   @FXML TextField description;
   @FXML private Label errorMessage;
@@ -62,16 +65,15 @@ public class SecurityController {
     h5.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<String> objects =
-        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    List<LocationName> locations =
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
-    objects.sort(String::compareTo);
+    locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    ObservableList<String> observableList = FXCollections.observableList(objects);
-
-    location.setItems(observableList);
-    threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
-    urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    locationBox.setItems(FXCollections.observableArrayList(locations));
+    threat.setItems(FXCollections.observableArrayList(Security.ThreatType.values()));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -79,10 +81,8 @@ public class SecurityController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-
       // check
-      if (location.getValue().toString().equals("")
+      if (locationBox.getValue().toString().equals("")
           || threat.getValue().toString().equals("")
           || date.getValue().toString().equals("")
           || description.getText().equals("")) {
@@ -92,17 +92,16 @@ public class SecurityController {
       Date dateOfRequest =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      String threatTypeEnumString = threat.getValue().toString().toUpperCase().replace(" ", "_");
+      Security securityRequest =
+          new Security(
+              description.getText(),
+              locationBox.getValue(),
+              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              dateOfRequest,
+              Date.from(Instant.now()),
+              urgency.getValue(),
+              threat.getValue());
 
-      Security securityRequest = new Security();
-
-      securityRequest.setIncidentReport(description.getText());
-      securityRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      securityRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
-      securityRequest.setThreatType(Security.ThreatType.valueOf(threatTypeEnumString));
-      securityRequest.setDate(dateOfRequest);
-      securityRequest.setDateOfSubmission(Date.from(Instant.now()));
-      securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
       try {
         session.persist(securityRequest);
         transaction.commit();
@@ -125,7 +124,7 @@ public class SecurityController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    location.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
     threat.valueProperty().set(null);
     urgency.valueProperty().set(null);
     date.valueProperty().set(null);
@@ -133,15 +132,14 @@ public class SecurityController {
   }
 
   public void help() {
-    if (hDone = false) {
+    if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
       h3.setVisible(true);
       h4.setVisible(true);
       h5.setVisible(true);
       hDone = true;
-    }
-    if (hDone = true) {
+    } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
@@ -156,7 +154,7 @@ public class SecurityController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ITService");
+    Fapp.setScene("ServiceRequests", "ComputerService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
@@ -178,4 +176,7 @@ public class SecurityController {
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
   }
+
+  @Override
+  public void onClose() {}
 }

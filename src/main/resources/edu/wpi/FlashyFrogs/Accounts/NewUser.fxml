@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -11,34 +12,83 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="442.0" prefWidth="581.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.NewUserController">
+<AnchorPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.NewUserController">
    <children>
-      <HBox layoutY="74.0" prefHeight="325.0" prefWidth="582.0">
+      <HBox alignment="CENTER" layoutY="74.0" prefHeight="325.0" prefWidth="582.0">
          <children>
-            <VBox prefHeight="326.0" prefWidth="299.0">
+            <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <MFXTextField fx:id="firstName" alignment="TOP_LEFT" floatingText="First Name:" prefWidth="200.0" />
-                  <MFXTextField fx:id="middleName" alignment="TOP_RIGHT" floatingText="Middle Name:" prefWidth="200.0" />
-                  <MFXTextField fx:id="lastName" alignment="TOP_RIGHT" floatingText="Last Name:" prefWidth="200.0" />
-                  <SearchableComboBox prefHeight="26.0" prefWidth="178.0" promptText="Department:" />
+                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="middleName" promptText="Middle Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="lastName" promptText="Last Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <SearchableComboBox fx:id="deptBox" prefHeight="26.0" prefWidth="211.0" promptText="Department:" styleClass="fields">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></SearchableComboBox>
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="50.0" right="10.0" top="20.0" />
+               </HBox.margin>
             </VBox>
-            <VBox prefHeight="326.0" prefWidth="294.0">
+            <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <MFXTextField fx:id="username" alignment="TOP_RIGHT" floatingText="Username:" prefWidth="200.0" />
-                  <MFXPasswordField fx:id="pass1" floatingText="Password:" prefWidth="200.0" />
-                  <MFXPasswordField fx:id="pass2" floatingText="Confirm Password:" prefWidth="200.0" />
-                  <SearchableComboBox promptText="Employee Type:" />
+                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="pass1" promptText="Password">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="pass2" promptText="Confirm Password">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="293.0" promptText="Employee Type:" styleClass="fields">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></SearchableComboBox>
                </children>
+               <HBox.margin>
+                  <Insets left="10.0" right="50.0" top="20.0" />
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>
-      <Text layoutX="177.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add New User" wrappingWidth="228.462890625">
+      <Text layoutX="37.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Add New User" textAlignment="CENTER" wrappingWidth="507.462890625">
          <font>
             <Font size="36.0" />
          </font>
       </Text>
-      <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" />
-      <MFXButton fx:id="newUser" layoutX="257.0" layoutY="408.0" onAction="#handleNewUser" text="Add User" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
+      <HBox alignment="CENTER" layoutY="386.0" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0">
+         <children>
+            <MFXButton fx:id="newUser" onAction="#handleNewUser" text="Add User">
+               <styleClass>
+                  <String fx:value="blue" />
+                  <String fx:value="body" />
+                  <String fx:value="round" />
+               </styleClass>
+            </MFXButton>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

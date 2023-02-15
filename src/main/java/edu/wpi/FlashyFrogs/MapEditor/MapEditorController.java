@@ -9,12 +9,8 @@ import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
-import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
-import io.github.palexdev.materialfx.dialogs.MFXStageDialogBuilder;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.beans.property.ObjectProperty;
@@ -24,14 +20,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
+import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -40,11 +33,19 @@ import org.hibernate.Session;
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 @GeneratedExclusion
 public class MapEditorController implements IController {
-  public AnchorPane mapPane;
+  @FXML private AnchorPane mapPane;
+  @FXML private Button backButton;
   @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
   @FXML private MFXButton floorSelectorButton;
+
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+
+  boolean hDone = false;
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
@@ -55,6 +56,10 @@ public class MapEditorController implements IController {
   @SneakyThrows
   @FXML
   private void initialize() {
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -81,7 +86,7 @@ public class MapEditorController implements IController {
 
                 // Load the location name info view
                 FXMLLoader locationNameLoader =
-                    new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
+                    new FXMLLoader(getClass().getResource("LocationNameNormal.fxml"));
 
                 // Load the resource
                 try {
@@ -98,7 +103,10 @@ public class MapEditorController implements IController {
                     row.getItem(), // Set it to the rows item
                     mapController.getMapSession(),
                     (oldName) -> {
-                      locationTable.getItems().remove(oldName); // Remove the old name
+                      {
+                        locationTable.getItems().remove(oldName);
+                        mapController.removeLocationName(oldName);
+                      } // Remove the old name
                       tablePopOver.get().hide(); // Remove the pop-over
                     },
                     // Set the original saved row number to be the new location name
@@ -138,6 +146,7 @@ public class MapEditorController implements IController {
     mapController.setNodeCreation(
         (node, circle) -> {
           // Set the on-click processor
+
           circle.setOnMouseClicked(
               (event) -> {
                 // If we're no longer hovering and the pop over exists, delete it. We will
@@ -187,7 +196,7 @@ public class MapEditorController implements IController {
 
     mapController.setFloor(Node.Floor.L1);
     floorSelector.setText("Floor " + Node.Floor.L1.name());
-
+    mapController.setFloor(Node.Floor.L1);
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorProperty.addListener(
         (observable, oldValue, newValue) -> {
@@ -267,7 +276,7 @@ public class MapEditorController implements IController {
   @SneakyThrows
   @FXML
   private void popupLocation(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("LocationNameNormal.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popover
 
     LocationNameInfoController addLoc = newLoad.getController(); // get the controller
@@ -325,7 +334,7 @@ public class MapEditorController implements IController {
         mapController.getMapSession(), // Get the map session
         (oldNode) -> popOver.hide(), // On delete we do nothing but hide
         (oldNode, newNode) -> {
-          mapController.addNode(newNode);
+          mapController.addNode(newNode, false);
           popOver.hide();
         }, // On create new one, process it
         (oldLocation) -> mapController.removeLocationName(oldLocation),
@@ -346,65 +355,51 @@ public class MapEditorController implements IController {
    *
    * @param actionEvent the event signaling the back press, not used
    */
+  @SneakyThrows
   public void handleBackButton(ActionEvent actionEvent) {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("ExitConfirmation.fxml"));
+
     // Create a confirm exit dialog
+    Pane root = loader.load();
+    PopOver popOver = new PopOver(root);
 
-    MFXStageDialogBuilder stageBuilder =
-        MFXGenericDialogBuilder.build().toStageDialogBuilder(); // Convert to stage for exit
-    stageBuilder.setTitle("Confirm Exit"); // Give it a name
-    stageBuilder.setAlwaysOnTop(true); // Always on top
-    stageBuilder.initModality(Modality.APPLICATION_MODAL); // Only the pop-up can be used
-    MFXGenericDialog dialog =
-        MFXGenericDialogBuilder.build() // Build the dialog
-            .setHeaderText("Confirm Exit")
-            .setOnMinimize((event) -> stageBuilder.get().close()) // On minimize, just close
-            .setOnClose((event) -> stageBuilder.get().close()) // On close, just close
-            // Set content/body text
-            .setContentText(
-                "You may have unsaved changes!\n"
-                    + "Select what you'd like to do with any unsaved map edits")
-            .addActions(
-                // Action to exit (use map.entry cuz)
-                Map.entry(new MFXButton("Continue Editing"), (event) -> stageBuilder.get().close()),
-                // Action to discard and exit
-                Map.entry(
-                    new MFXButton("Discard Changes and Exit"),
-                    (event) -> {
-                      stageBuilder.get().close(); // Close the pop-pu
-                      try {
-                        Fapp.handleBack(); // go home
-                      } catch (IOException e) {
-                        throw new RuntimeException(e);
-                      } // Go back
-                    }),
-                // Action to save
-                Map.entry(
-                    new MFXButton("Save Changes and Exit"),
-                    (event) -> {
-                      handleSave(null); // handle the save
-                      stageBuilder.get().close(); // Close the pop-up
-                      try {
-                        Fapp.handleBack(); // go home
-                      } catch (IOException e) {
-                        throw new RuntimeException(e);
-                      }
-                    }))
-            .get();
-    dialog.getStylesheets().clear(); // Clear the style
+    popOver.setTitle("Confirm Exit?");
 
-    // Set style based on mode
-    dialog
-        .getStylesheets()
-        .add(
-            (Objects.requireNonNull(
-                    Fapp.isLightMode()
-                        ? // if light mode
-                        Fapp.class.getResource("views/Css.css")
-                        : // Set light mode
-                        Fapp.class.getResource("views/dark-mode.css"))) // Otherwise, dark
-                .toExternalForm());
-    stageBuilder.setContent(dialog); // Set the dialog to be the built dialog
-    stageBuilder.get().showDialog(); // Show everything
+    this.backButton.setDisable(true);
+
+    ExitConfirmationController exitController = loader.getController();
+
+    popOver.setOnHidden((action) -> this.backButton.setDisable(false));
+
+    exitController
+        .getContinueEditing()
+        .setOnAction(
+            (action) -> {
+              this.backButton.setDisable(false);
+              popOver.hide();
+            });
+    exitController
+        .getSave()
+        .setOnAction(
+            (action) -> {
+              popOver.hide();
+              mapController.saveChanges();
+              mapController.exit();
+              Fapp.handleBack();
+            });
+
+    exitController
+        .getDiscard()
+        .setOnAction(
+            (action) -> {
+              popOver.hide();
+              mapController.exit();
+              Fapp.handleBack();
+            });
+
+    // Set the pop-up content
+    popOver.setDetached(true);
+    popOver.show(locationTable.getScene().getWindow()); // And show it
   }
 
   /**
@@ -469,5 +464,22 @@ public class MapEditorController implements IController {
 
   public void onClose() {
     mapController.exit();
+  }
+
+  @Override
+  public void help() {
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      hDone = false;
+    }
   }
 }
