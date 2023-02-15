@@ -21,13 +21,13 @@
 .titleText {
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
-    -fx-font-size: 28;
+    -fx-font-size: 28pt;
     -fx-fill: white;
 }
 .headerBold{
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
-    -fx-font-size: 20;
+    -fx-font-size: 20pt;
     -fx-text-fill: white;
 }
 .alertTopBox {
@@ -36,6 +36,12 @@
     -strokeType: inside;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px !important;
+    -fx-font-size: 14pt;
+    -fx-text-fill: white;
+}
+.alertTopBoxCategoryText {
+    -fx-font-size: 10pt;
+    -fx-text-fill: #D1D1D1;
 }
 .navBar {
     -fx-background-color: #0067B1;

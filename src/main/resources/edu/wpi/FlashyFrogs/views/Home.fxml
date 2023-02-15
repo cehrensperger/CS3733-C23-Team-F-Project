@@ -62,13 +62,13 @@
                         <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" styleClass="alertTopBox" width="190.0" />
                         <AnchorPane prefHeight="50.0" prefWidth="176.0" styleClass="round">
                            <children>
-                              <Label styleClass="middle" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+                              <Label styleClass="alertTopBoxCategoryText" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
                               <Label text="!!!" textFill="#F6BD38" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="5.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="body" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
+                              <Label styleClass="alertTopBox" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
