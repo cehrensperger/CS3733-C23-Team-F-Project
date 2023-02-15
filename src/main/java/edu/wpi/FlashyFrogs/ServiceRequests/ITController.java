@@ -98,7 +98,6 @@ public class ITController implements IController {
       }
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-
       ComputerService informationTechnology =
           new ComputerService(
               CurrentUserEntity.CURRENT_USER.getCurrentuser(),
