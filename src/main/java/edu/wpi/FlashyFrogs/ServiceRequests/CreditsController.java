@@ -48,4 +48,9 @@ public class CreditsController implements IController {
   }
 
   public void onClose() {}
+
+  @Override
+  public void help() {
+    // TODO: help for this page
+  }
 }

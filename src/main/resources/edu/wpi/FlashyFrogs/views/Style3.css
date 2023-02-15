@@ -1,0 +1,95 @@
+.text-area
+{
+    -fx-font-family: "Inter";
+}
+
+.text-field
+{
+    -fx-font-family: "Inter";
+}
+
+.b1
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Inter Black";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16pt;
+
+}
+
+.b2
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#f1f1f1;
+    -fx-border-color:#B6000B;
+    -fx-font-family: "Inter";
+    -fx-text-fill: #B6000B;
+    -fx-font-size: 16pt;
+
+}
+
+.back
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#f1f1f1;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Inter";
+    -fx-text-fill: #012D5A;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 100px;
+
+}
+
+.credits
+{
+    -fx-border-radius: 16px;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Inter";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 100px;
+
+}
+
+.background
+{
+    -fx-background-color:#f1f1f1;
+}
+
+.round
+{
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px !important;
+}
+
+.inter
+{
+    -fx-font-family: "Inter";
+}
+
+.titleSize
+{
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}
+
+.serviceRequestButtons
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Inter";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12pt;
+    -fx-pref-height: 80px;
+    -fx-pref-width: 200px;
+    -fx-text-alignment: left !important;
+}
+
+.rectangle
+{
+    -fx-background-color: #d1d1d1 !important;
+}

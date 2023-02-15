@@ -3,12 +3,16 @@ package edu.wpi.FlashyFrogs.Accounts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -28,8 +32,8 @@ public class NewUserController implements IController {
   @FXML private MFXTextField firstName;
   @FXML private MFXTextField middleName;
   @FXML private MFXTextField lastName;
-  @FXML private SearchableComboBox department;
-  @FXML private SearchableComboBox employeeType;
+  @FXML private SearchableComboBox<Department> deptBox;
+  @FXML private SearchableComboBox<User.EmployeeType> employeeType;
   @FXML private Label errorMessage;
 
   public NewUserController() {}
@@ -43,30 +47,29 @@ public class NewUserController implements IController {
   }
 
   public void initialize() {
-    /*Session session = CONNECTION.getSessionFactory().openSession();
-    List<String> objects =
-        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+    Session session = CONNECTION.getSessionFactory().openSession();
+    List<Department> objects =
+        session.createQuery("SELECT d FROM Department d", Department.class).getResultList();
 
-    objects.sort(String::compareTo);
+    // objects.sort(String::compareTo);
 
-    ObservableList<String> observableList = FXCollections.observableList(objects);
-
-    to.setItems(observableList);
-    from.setItems(observableList);
-    vision.getItems().addAll("Good", "Poor", "Blind", "Glasses");
-    hearing
+    ObservableList<Department> observableList = FXCollections.observableList(objects);
+    deptBox.setItems(observableList);
+    employeeType
         .getItems()
-        .addAll(
-            "Good",
-            "Poor",
-            "Deaf",
-            "Hearing Aid (Left)",
-            "Hearing Aid (Right)",
-            "Hearing Aid (Both)");*/
+        .addAll(User.EmployeeType.ADMIN, User.EmployeeType.MEDICAL, User.EmployeeType.STAFF);
+    session.close();
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    if (username.getText().equals("") || pass1.getText().equals("") || pass2.getText().equals("")) {
+    if (username.getText().equals("")
+        || pass1.getText().equals("")
+        || pass2.getText().equals("")
+        || firstName.getText().equals("")
+        || middleName.getText().equals("")
+        || lastName.getText().equals("")
+        || deptBox.getValue() == null
+        || employeeType.getValue() == null) {
       // One of the values is left null
       errorMessage.setText("Please fill out all fields!");
       errorMessage.setVisible(true);
@@ -78,7 +81,12 @@ public class NewUserController implements IController {
       // Save Username and Password to db
       errorMessage.setVisible(false);
       User userFK =
-          new User("test", "DELETE ME", "test", User.EmployeeType.ADMIN, null); // update department
+          new User(
+              firstName.getText(),
+              middleName.getText(),
+              lastName.getText(),
+              employeeType.getValue(),
+              deptBox.getValue()); // update department
       UserLogin newUser = new UserLogin(userFK, username.getText(), pass1.getText());
       Session ses = CONNECTION.getSessionFactory().openSession();
       Transaction transaction = ses.beginTransaction();
@@ -99,4 +107,9 @@ public class NewUserController implements IController {
   }
 
   public void onClose() {}
+
+  @Override
+  public void help() {
+    // TODO: help for this page
+  }
 }

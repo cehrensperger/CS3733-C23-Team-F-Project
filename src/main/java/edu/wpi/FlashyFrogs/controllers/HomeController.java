@@ -41,8 +41,9 @@ public class HomeController implements IController {
   @FXML protected TableColumn<Move, String> locationNameCol;
   @FXML protected TableColumn<Move, Date> dateCol;
   @FXML protected TableView<Move> moveTable;
+  @FXML protected MFXButton manageLoginsButton;
 
-  @FXML protected MFXButton manageButton;
+  @FXML protected MFXButton manageAnnouncementsButton;
   @FXML protected Label tableText;
   @FXML protected Label tableText2;
 
@@ -83,14 +84,18 @@ public class HomeController implements IController {
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
-      manageButton.disarm();
-      manageButton.setOpacity(0);
+      manageAnnouncementsButton.disarm();
+      manageAnnouncementsButton.setOpacity(0);
+      manageLoginsButton.disarm();
+      manageLoginsButton.setOpacity(0);
 
       tableText2.setText("");
     } else {
       tableText.setText("All Service Requests");
-      manageButton.arm();
-      manageButton.setOpacity(1);
+      manageAnnouncementsButton.arm();
+      manageAnnouncementsButton.setOpacity(1);
+      manageLoginsButton.arm();
+      manageLoginsButton.setOpacity(1);
 
       tableText2.setText("Future Moves");
 
@@ -217,6 +222,11 @@ public class HomeController implements IController {
   public void manageAnnouncements(ActionEvent event) throws IOException {}
 
   public void onClose() {}
+
+  @Override
+  public void help() {
+    // TODO: help for this page
+  }
 
   public void viewLogins(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Accounts", "LoginAdministrator");

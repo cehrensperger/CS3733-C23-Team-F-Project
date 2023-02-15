@@ -56,6 +56,10 @@ public class FeedbackController implements IController {
     popOver.show(node.getScene().getWindow());
   }
 
+  public void help() {
+    // TODO: help for this page
+  }
+
   @FXML
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();

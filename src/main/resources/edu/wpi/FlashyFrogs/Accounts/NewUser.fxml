@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,21 +16,36 @@
    <children>
       <HBox layoutY="74.0" prefHeight="325.0" prefWidth="582.0">
          <children>
-            <VBox prefHeight="326.0" prefWidth="299.0">
+            <VBox alignment="TOP_CENTER" prefHeight="326.0" prefWidth="299.0" spacing="25.0">
                <children>
-                  <MFXTextField fx:id="firstName" alignment="TOP_LEFT" floatingText="First Name:" prefWidth="200.0" />
-                  <MFXTextField fx:id="middleName" alignment="TOP_RIGHT" floatingText="Middle Name:" prefWidth="200.0" />
-                  <MFXTextField fx:id="lastName" alignment="TOP_RIGHT" floatingText="Last Name:" prefWidth="200.0" />
-                  <SearchableComboBox prefHeight="26.0" prefWidth="178.0" promptText="Department:" />
+                  <MFXTextField fx:id="firstName" floatingText="First Name:" prefWidth="200.0" />
+                  <MFXTextField fx:id="middleName" floatingText="Middle Name:" prefWidth="200.0" />
+                  <MFXTextField fx:id="lastName" floatingText="Last Name:" prefWidth="200.0" />
+                  <SearchableComboBox fx:id="deptBox" prefHeight="26.0" prefWidth="200.0" promptText="Department:">
+                     <VBox.margin>
+                        <Insets left="46.0" right="46.0" />
+                     </VBox.margin></SearchableComboBox>
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
             </VBox>
-            <VBox prefHeight="326.0" prefWidth="294.0">
+            <VBox alignment="TOP_CENTER" prefHeight="326.0" prefWidth="294.0" spacing="25.0">
                <children>
-                  <MFXTextField fx:id="username" alignment="TOP_RIGHT" floatingText="Username:" prefWidth="200.0" />
+                  <MFXTextField fx:id="username" floatingText="Username:" prefWidth="200.0" />
                   <MFXPasswordField fx:id="pass1" floatingText="Password:" prefWidth="200.0" />
-                  <MFXPasswordField fx:id="pass2" floatingText="Confirm Password:" prefWidth="200.0" />
-                  <SearchableComboBox promptText="Employee Type:" />
+                  <MFXPasswordField fx:id="pass2" floatingText="Confirm Password:" onAction="#handleNewUser" prefWidth="200.0" />
+                  <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="226.0" promptText="Employee Type:">
+                     <VBox.margin>
+                        <Insets left="46.0" right="46.0" />
+                     </VBox.margin></SearchableComboBox>
                </children>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>
@@ -38,7 +54,7 @@
             <Font size="36.0" />
          </font>
       </Text>
-      <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" />
-      <MFXButton fx:id="newUser" layoutX="257.0" layoutY="408.0" onAction="#handleNewUser" text="Add User" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
+      <MFXButton fx:id="newUser" layoutX="257.0" layoutY="387.0" onAction="#handleNewUser" text="Add User" />
    </children>
 </AnchorPane>
