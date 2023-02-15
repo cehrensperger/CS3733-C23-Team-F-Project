@@ -124,7 +124,7 @@
             </VBox>
             <AnchorPane VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="184.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="185.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0">
                      <children>
                         <MFXButton onAction="#handleManageCSV" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #012d5a; -fx-text-fill: #ffffff;" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
                            <font>
