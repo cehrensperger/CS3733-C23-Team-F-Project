@@ -185,7 +185,7 @@
                                             <Font size="28.0" />
                                         </font>
                                         <VBox.margin>
-                                            <Insets bottom="20.0" top="40.0" />
+                                            <Insets bottom="40.0" top="40.0" />
                                         </VBox.margin>
                                     </Text>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Audio/Visual" wrappingWidth="215.40960693359375">
