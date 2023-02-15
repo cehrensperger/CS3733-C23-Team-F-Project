@@ -28,36 +28,27 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class ComputerEditor extends ServiceRequestController implements IController {
+public class SecurityEditorController extends ServiceRequestController implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;
-  @FXML TextField number;
-  @FXML SearchableComboBox<LocationName> locationBox;
-  @FXML SearchableComboBox<User> assignedBox;
-  @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
-  @FXML SearchableComboBox<ComputerService.ServiceType> service;
-  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
-  @FXML SearchableComboBox<ComputerService.DeviceType> type;
-  @FXML DatePicker date;
-  @FXML TextField description;
   @FXML Text h1;
   @FXML Text h2;
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
-  @FXML Text h6;
-  @FXML Text h7;
+  @FXML SearchableComboBox<LocationName> locationBox;
+  @FXML SearchableComboBox<User> assignedBox;
+  @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
+  @FXML SearchableComboBox<Security.ThreatType> threat;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
+  @FXML DatePicker date;
+  @FXML TextField description;
   @FXML private Label errorMessage;
 
   boolean hDone = false;
   private Connection connection = null;
-
-  private ComputerService itReq = new ComputerService();
-
-  public void setRequest(ServiceRequest serviceRequest) {
-    itReq = (ComputerService) serviceRequest;
-  }
+  private Security secReq = new Security();
 
   public void initialize() {
     h1.setVisible(false);
@@ -65,8 +56,6 @@ public class ComputerEditor extends ServiceRequestController implements IControl
     h3.setVisible(false);
     h4.setVisible(false);
     h5.setVisible(false);
-    h6.setVisible(false);
-    h7.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<LocationName> locations =
@@ -81,22 +70,25 @@ public class ComputerEditor extends ServiceRequestController implements IControl
     locationBox.setItems(FXCollections.observableArrayList(locations));
     assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
-    service.setItems(FXCollections.observableArrayList(ComputerService.ServiceType.values()));
+    threat.setItems(FXCollections.observableArrayList(Security.ThreatType.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
-    type.setItems(FXCollections.observableArrayList(ComputerService.DeviceType.values()));
     session.close();
+  }
 
-    locationBox.setValue(itReq.getLocation());
-    assignedBox.setValue(itReq.getAssignedEmp());
-    statusBox.setValue(itReq.getStatus());
-    service.setValue(itReq.getServiceType());
-    urgency.setValue(itReq.getUrgency());
-    type.setValue(itReq.getDeviceType());
-    description.setText(itReq.getDescription());
+  public void updateFields() {
+    locationBox.setValue(secReq.getLocation());
+    urgency.setValue(secReq.getUrgency());
+    statusBox.setValue(secReq.getStatus());
     date.setValue(
-        Instant.ofEpochMilli(itReq.getDate().getTime())
+        Instant.ofEpochMilli(secReq.getDate().getTime())
             .atZone(ZoneId.systemDefault())
             .toLocalDate());
+    threat.setValue(secReq.getThreatType());
+    statusBox.setValue(secReq.getStatus());
+    description.setText(secReq.getIncidentReport());
+    if (secReq.getAssignedEmp() != null) {
+      assignedBox.setValue(secReq.getAssignedEmp());
+    }
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -105,26 +97,26 @@ public class ComputerEditor extends ServiceRequestController implements IControl
 
     try {
       // check
-      if (number.getText().equals("")
-          || locationBox.getValue().toString().equals("")
-          || service.getValue().toString().equals("")
-          || type.getValue().toString().equals("")
+      if (locationBox.getValue().toString().equals("")
+          || threat.getValue().toString().equals("")
+          || date.getValue().toString().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
-      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      itReq.setLocation(locationBox.getValue());
-      itReq.setAssignedEmp(assignedBox.getValue());
-      itReq.setStatus(statusBox.getValue());
-      itReq.setServiceType(service.getValue());
-      itReq.setUrgency(urgency.getValue());
-      itReq.setDeviceType(type.getValue());
-      itReq.setDescription(description.getText());
-      itReq.setDate(dateNeeded);
+      Date dateOfRequest =
+          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+      secReq.setIncidentReport(description.getText());
+      secReq.setAssignedEmp(assignedBox.getValue());
+      secReq.setUrgency(urgency.getValue());
+      secReq.setStatus(statusBox.getValue());
+      secReq.setLocation(locationBox.getValue());
+      secReq.setThreatType(threat.getValue());
+      secReq.setDate(dateOfRequest);
 
       try {
-        session.merge(itReq);
+        session.merge(secReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
@@ -144,13 +136,14 @@ public class ComputerEditor extends ServiceRequestController implements IControl
     }
   }
 
+  @Override
+  public void setRequest(ServiceRequest request) {}
+
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    number.setText("");
     locationBox.valueProperty().set(null);
-    service.valueProperty().set(null);
-    type.valueProperty().set(null);
-    date.valueProperty().set(null);
+    threat.valueProperty().set(null);
     urgency.valueProperty().set(null);
+    date.valueProperty().set(null);
     description.setText("");
   }
 
@@ -164,8 +157,6 @@ public class ComputerEditor extends ServiceRequestController implements IControl
       h3.setVisible(true);
       h4.setVisible(true);
       h5.setVisible(true);
-      h6.setVisible(true);
-      h7.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
@@ -173,11 +164,10 @@ public class ComputerEditor extends ServiceRequestController implements IControl
       h3.setVisible(false);
       h4.setVisible(false);
       h5.setVisible(false);
-      h6.setVisible(false);
-      h7.setVisible(false);
       hDone = false;
     }
   }
 
+  @Override
   public void onClose() {}
 }

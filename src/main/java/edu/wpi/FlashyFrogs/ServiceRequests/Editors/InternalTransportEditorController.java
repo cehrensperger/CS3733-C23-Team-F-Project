@@ -8,6 +8,7 @@ import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -32,7 +33,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class TransportEditor implements IController {
+public class InternalTransportEditorController extends ServiceRequestController
+    implements IController {
   @FXML TextField patient;
   @FXML SearchableComboBox<InternalTransport.VisionStatus> vision;
   @FXML SearchableComboBox<InternalTransport.HearingStatus> hearing;
@@ -69,6 +71,7 @@ public class TransportEditor implements IController {
 
   boolean hDone = false;
   private Connection connection = null;
+  private InternalTransport tpReq = new InternalTransport();
 
   public void initialize() {
     h1.setVisible(false);
@@ -108,6 +111,32 @@ public class TransportEditor implements IController {
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     equipment.setItems(FXCollections.observableArrayList(InternalTransport.Equipment.values()));
     mode.setItems(FXCollections.observableArrayList(InternalTransport.ModeOfTransport.values()));
+    session.close();
+  }
+
+  public void updateFields() {
+    to.setValue(tpReq.getTargetLocation());
+    from.setValue(tpReq.getLocation());
+    urgency.setValue(tpReq.getUrgency());
+    statusBox.setValue(tpReq.getStatus());
+    date.setValue(
+        Instant.ofEpochMilli(tpReq.getDate().getTime())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
+    statusBox.setValue(tpReq.getStatus());
+    reason.setText(tpReq.getReason());
+    vision.setValue(tpReq.getVision());
+    hearing.setValue(tpReq.getHearing());
+    consciousness.setValue(tpReq.getConsciousness());
+    condition.setValue(tpReq.getHealthStatus());
+    equipment.setValue(tpReq.getEquipment());
+    mode.setValue(tpReq.getMode());
+    isolation.setSelected(tpReq.isIsolation());
+    personal.setText(tpReq.getPersonalItems());
+    patient.setText(tpReq.getPatientID());
+    if (tpReq.getAssignedEmp() != null) {
+      assignedBox.setValue(tpReq.getAssignedEmp());
+    }
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -153,8 +182,26 @@ public class TransportEditor implements IController {
               personal.getText(),
               reason.getText());
 
+      tpReq.setReason(reason.getText());
+      tpReq.setAssignedEmp(assignedBox.getValue());
+      tpReq.setUrgency(urgency.getValue());
+      tpReq.setStatus(statusBox.getValue());
+      tpReq.setLocation(from.getValue());
+      tpReq.setPatientID(patient.getText());
+      tpReq.setVision(vision.getValue());
+      tpReq.setHearing(hearing.getValue());
+      tpReq.setConsciousness(consciousness.getValue());
+      tpReq.setHealthStatus(condition.getValue());
+      tpReq.setLocation(from.getValue());
+      tpReq.setTargetLocation(to.getValue());
+      tpReq.setEquipment(equipment.getValue());
+      tpReq.setDate(dateOfTransport);
+      tpReq.setMode(mode.getValue());
+      tpReq.setPersonalItems(personal.getText());
+      tpReq.setIsolation(isolation.isSelected());
+
       try {
-        session.persist(transport);
+        session.merge(tpReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
@@ -174,6 +221,11 @@ public class TransportEditor implements IController {
     }
   }
 
+  @Override
+  public void setRequest(ServiceRequest request) {
+    tpReq = (InternalTransport) request;
+  }
+
   public void handleClear(ActionEvent actionEvent) throws IOException {
     patient.setText("");
     vision.valueProperty().set(null);
@@ -190,6 +242,9 @@ public class TransportEditor implements IController {
     personal.setText("");
     reason.setText("");
   }
+
+  @Override
+  protected void handleBack(ActionEvent event) throws IOException {}
 
   public void help() {
     if (!hDone) {

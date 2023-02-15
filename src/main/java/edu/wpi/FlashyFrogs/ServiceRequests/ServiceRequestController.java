@@ -31,4 +31,6 @@ public abstract class ServiceRequestController {
   public abstract void handleSubmit(ActionEvent event) throws IOException;
 
   public abstract void setRequest(ServiceRequest request);
+
+  public abstract void updateFields();
 }
