@@ -77,10 +77,7 @@ public class HomeController implements IController {
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
 
-    User currentUser = new User("a", "a", "a", User.EmployeeType.ADMIN, new Department());
-    boolean isAdmin = true;
-    //    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
-    //    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+        boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
