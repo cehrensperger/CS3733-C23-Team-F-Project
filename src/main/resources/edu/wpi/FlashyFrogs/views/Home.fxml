@@ -160,10 +160,15 @@
             <TableColumn fx:id="dateCol" minWidth="0.0" prefWidth="375.0" text="Date Effective" />
          </columns>
       </TableView>
-      <Label fx:id="tableText2" layoutX="240.0" layoutY="459.0" text="Future Moves">
+      <Label fx:id="tableText2" layoutX="240.0" layoutY="459.0" text="Future Moves" AnchorPane.bottomAnchor="226.0" AnchorPane.leftAnchor="240.0">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
+      <MFXButton layoutX="28.0" layoutY="580.0" onAction="#handleManageCSV" prefHeight="60.0" prefWidth="150.0" text="Manage CSVs" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="162.0" AnchorPane.leftAnchor="18.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
    </children>
 </AnchorPane>

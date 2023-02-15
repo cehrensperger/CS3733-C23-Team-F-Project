@@ -1,31 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
+<AnchorPane prefHeight="350.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
    <children>
-      <MFXButton layoutX="259.0" layoutY="294.0" prefHeight="25.0" prefWidth="150.0" text="Upload File(s)" AnchorPane.bottomAnchor="74.0" AnchorPane.rightAnchor="48.0">
+      <MFXButton layoutX="267.0" layoutY="294.0" onAction="#handleChooseFiles" prefHeight="25.0" prefWidth="150.0" text="Select Files" AnchorPane.bottomAnchor="74.0" AnchorPane.rightAnchor="40.0">
          <font>
             <Font size="16.0" />
          </font>
       </MFXButton>
-      <MFXButton layoutX="44.0" layoutY="345.0" prefHeight="25.0" prefWidth="150.0" text="Cancel">
+      <MFXButton layoutX="259.0" layoutY="345.0" onAction="#handleUpload" prefHeight="25.0" prefWidth="150.0" text="Upload CSVs" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="40.0">
          <font>
             <Font size="16.0" />
          </font>
       </MFXButton>
-      <MFXButton layoutX="259.0" layoutY="345.0" prefHeight="25.0" prefWidth="150.0" text="Continue">
+      <MFXButton layoutX="44.0" layoutY="345.0" onAction="#handleBackup" prefHeight="25.0" prefWidth="150.0" text="Backup CSVs" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="40.0">
          <font>
             <Font size="16.0" />
          </font>
       </MFXButton>
-      <MFXButton layoutX="44.0" layoutY="294.0" prefHeight="25.0" prefWidth="150.0" text="Backup CSVs">
+      <MFXButton layoutX="40.0" layoutY="294.0" onAction="#handleCancel" prefHeight="25.0" prefWidth="150.0" text="Cancel" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="40.0">
          <font>
             <Font size="16.0" />
          </font>
       </MFXButton>
+      <VBox layoutX="179.0" layoutY="54.0" prefHeight="146.0" prefWidth="377.0" spacing="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Label fx:id="nodeFileLabel" layoutX="10.0" layoutY="127.0" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 1:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="edgeFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 2:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="locationFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 3:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="moveFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" text=" File 4:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="215.0" layoutY="20.0" prefHeight="17.0" prefWidth="28.0" textFill="RED" AnchorPane.bottomAnchor="313.0" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>

@@ -27,6 +27,8 @@
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">false</property>
 
+        <property name="hibernate.jdbc.batch_size">700</property>
+
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create-drop</property>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Edge"/>

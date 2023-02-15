@@ -2,9 +2,9 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
@@ -75,8 +75,10 @@ public class HomeController implements IController {
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
 
-    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    User currentUser = new User("a", "a", "a", User.EmployeeType.ADMIN, new Department());
+    boolean isAdmin = true;
+    //    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    //    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
@@ -90,77 +92,9 @@ public class HomeController implements IController {
       manageButton.setOpacity(1);
 
       tableText2.setText("Future Moves");
+
+      refreshTable();
     }
-    Session session = CONNECTION.getSessionFactory().openSession();
-
-    // FILL TABLES
-    List<ServiceRequest> serviceRequests;
-    List<Move> moves;
-    if (!isAdmin) {
-      serviceRequests =
-          session
-              .createQuery(
-                  "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp", ServiceRequest.class)
-              .setParameter("emp", currentUser)
-              .getResultList();
-      moveTable.setOpacity(0);
-    } else {
-      serviceRequests =
-          session
-              .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
-              .getResultList();
-
-      moves =
-          session
-              .createQuery("SELECT m from Move m WHERE m.moveDate > current timestamp", Move.class)
-              .getResultList();
-      moveTable.setItems(FXCollections.observableList(moves));
-    }
-
-    // refill based on filter
-    filterProperty.addListener(
-        (observable, oldValue, newValue) -> {
-          if (newValue.equals("All")) {
-            if (!isAdmin) {
-              requestTable.setItems(
-                  FXCollections.observableList(
-                      session
-                          .createQuery(
-                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
-                              ServiceRequest.class)
-                          .setParameter("type", newValue)
-                          .setParameter("emp", currentUser)
-                          .getResultList()));
-            } else {
-              requestTable.setItems(
-                  FXCollections.observableList(
-                      session
-                          .createQuery(
-                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
-                              ServiceRequest.class)
-                          .setParameter("type", newValue)
-                          .getResultList()));
-            }
-          } else {
-            if (!isAdmin) {
-              requestTable.setItems(
-                  FXCollections.observableList(
-                      session
-                          .createQuery(
-                              "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
-                              ServiceRequest.class)
-                          .setParameter("emp", currentUser)
-                          .getResultList()));
-            } else {
-              requestTable.setItems(
-                  FXCollections.observableList(
-                      session
-                          .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
-                          .getResultList()));
-            }
-          }
-        });
-    session.close();
   }
 
   @FXML
@@ -187,52 +121,6 @@ public class HomeController implements IController {
     popOver.detach();
     Node node = (Node) event.getSource();
     popOver.show(node.getScene().getWindow());
-  }
-
-  @FXML
-  public void handleClose(ActionEvent event) throws IOException {
-    //    stage = (Stage) rootPane.getScene().getWindow();
-    //    stage.close();
-  }
-
-  public void handleServiceRequestsButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "RequestsHome");
-  }
-
-  public void handleMapDataEditorButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "MapEditorView");
-  }
-
-  public void handlePathfindingButton(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "PathFinding");
-  }
-
-  public void handleSecurityMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SecurityService");
-  }
-
-  public void handleTransportMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Transport");
-  }
-
-  public void handleSanitationMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SanitationService");
-  }
-
-  public void handleAudioVisualMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AudioVisualService");
-  }
-
-  public void handleComputerMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ComputerService");
-  }
-
-  public void handleLoadMapMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "LoadMapPage");
-  }
-
-  public void handleFeedbackMenuItem(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Feedback");
   }
 
   /**
@@ -331,5 +219,106 @@ public class HomeController implements IController {
 
   public void viewLogins(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Accounts", "LoginAdministrator");
+  }
+
+  public void refreshTable() {
+    User currentUser = new User("a", "a", "a", User.EmployeeType.ADMIN, new Department());
+    boolean isAdmin = true;
+    //    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    //    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    // FILL TABLES
+    List<ServiceRequest> serviceRequests;
+    List<Move> moves;
+    if (!isAdmin) {
+      serviceRequests =
+          session
+              .createQuery(
+                  "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp", ServiceRequest.class)
+              .setParameter("emp", currentUser)
+              .getResultList();
+      moveTable.setOpacity(0);
+    } else {
+      serviceRequests =
+          session
+              .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+              .getResultList();
+
+      moves =
+          session
+              .createQuery("SELECT m from Move m WHERE m.moveDate > current timestamp", Move.class)
+              .getResultList();
+      moveTable.setItems(FXCollections.observableList(moves));
+    }
+
+    // refill based on filter
+    filterProperty.addListener(
+        (observable, oldValue, newValue) -> {
+          if (newValue.equals("All")) {
+            if (!isAdmin) {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
+                              ServiceRequest.class)
+                          .setParameter("type", newValue)
+                          .setParameter("emp", currentUser)
+                          .getResultList()));
+            } else {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
+                              ServiceRequest.class)
+                          .setParameter("type", newValue)
+                          .getResultList()));
+            }
+          } else {
+            if (!isAdmin) {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
+                              ServiceRequest.class)
+                          .setParameter("emp", currentUser)
+                          .getResultList()));
+            } else {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+                          .getResultList()));
+            }
+          }
+        });
+    session.close();
+  }
+
+  public void handleManageCSV(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/CSVUpload.fxml"));
+    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+
+    popOver.setTitle("CSV Manager");
+    CSVUploadController controller = newLoad.getController();
+    controller.setPopOver(popOver);
+
+    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    javafx.scene.Node node =
+        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
+    popOver.show(node); // display the popover
+
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                refreshTable();
+              }
+            });
   }
 }
