@@ -10,7 +10,9 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
+import edu.wpi.FlashyFrogs.controllers.NextFloorPopupController;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -120,7 +122,11 @@ public class PathfindingController implements IController {
 
           // If the last path is valid
           if (lastPath != null) {
-            drawPath(); // Draw it
+            try {
+              drawPath(); // Draw it
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
           }
         });
 
@@ -202,10 +208,38 @@ public class PathfindingController implements IController {
   }
 
   /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */
-  private void drawPath() {
+  private void drawPath() throws IOException {
     // Color any edges on the map
+    Node prevNode = lastPath.get(0);
     for (int i = 1; i < lastPath.size(); i++) { // For each line in the path
-      Node thisNode = lastPath.get(i); // Get the ndoe
+      Node thisNode = lastPath.get(i); // Get the node
+
+      String nextFloor = thisNode.getFloor().floorNum;
+
+      if (!nextFloor.equals(prevNode.getFloor().floorNum)) {
+        FXMLLoader loader =
+            new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
+        PopOver goToNext = new PopOver(loader.load());
+
+        NextFloorPopupController controller = loader.getController();
+        controller.setPathfindingController(this);
+        controller.setFloor(thisNode.getFloor());
+
+        Circle circle = mapController.getNodeToCircleMap().get(prevNode);
+        if (circle != null) {
+          circle.setFill(Paint.valueOf(Color.YELLOW.toString()));
+          circle.setOpacity(1);
+
+          goToNext.show(circle);
+          goToNext.setAutoHide(false);
+          goToNext.setAutoFix(false);
+          goToNext.detach();
+          goToNext.setX(250);
+          goToNext.setY(20);
+          goToNext.setTitle("Your path goes to \nFloor " + nextFloor + ".");
+        }
+      }
+      prevNode = thisNode;
 
       // If the node is on this floor
       if (thisNode.getFloor().equals(mapController.getFloor())) {
@@ -255,7 +289,7 @@ public class PathfindingController implements IController {
     }
   }
 
-  /** Method that handles drawing a new path (A/K/A the submit button handler) */
+  /** Method that handles drawing a new path (AKA the submit button handler) */
   @SneakyThrows
   public void handleGetPath() {
     // get start and end locations from text fields
@@ -367,10 +401,8 @@ public class PathfindingController implements IController {
             });
   }
 
-  public void setFloor(String nextFloor) {
-    nextFloor = nextFloor.substring(0, nextFloor.length() - 1);
-    String[] parts = nextFloor.split(" ");
-    floorProperty.setValue(Objects.requireNonNull(Node.Floor.getEnum(parts[parts.length - 1])));
+  public void setFloor(Node.Floor floor) {
+    floorProperty.setValue(Objects.requireNonNull(floor));
   }
 
   public void onClose() {

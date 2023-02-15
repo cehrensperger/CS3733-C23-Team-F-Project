@@ -153,7 +153,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="requestTable" layoutX="240.0" layoutY="157.0" prefHeight="280.0" prefWidth="1020.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="157.0">
+      <TableView fx:id="requestTable" layoutX="240.0" layoutY="157.0" prefHeight="280.0" prefWidth="1020.0" AnchorPane.bottomAnchor="283.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="157.0">
         <columns>
           <TableColumn fx:id="requestTypeCol" prefWidth="100.0" text="Request Type" />
           <TableColumn fx:id="requestIDCol" prefWidth="100.0" text="Request ID" />
