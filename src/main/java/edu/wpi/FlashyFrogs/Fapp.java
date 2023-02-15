@@ -103,7 +103,8 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
     primaryStage.setScene(scene);
-    // getStylesheets.add() is used frequently, so clear all stylesheets so we don't accumulate an infinite list of them
+    // getStylesheets.add() is used frequently, so clear all stylesheets so we don't accumulate an
+    // infinite list of them
     rootPane.getStylesheets().clear();
     // apply CSS styling to pages whenever we switch to them
     scene.getStylesheets().add(Fapp.class.getResource("views/style2.css").toExternalForm());
