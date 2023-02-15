@@ -27,6 +27,9 @@ import org.hibernate.Session;
 @Slf4j
 @GeneratedExclusion
 public class Fapp extends Application {
+  @Setter @Getter
+  private static boolean isLightMode =
+      true; // keeps track of whether we are in Light Mode or Dark Mode
 
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
@@ -147,6 +150,8 @@ public class Fapp extends Application {
     setTheme(Theme.LIGHT_THEME);
     primaryStage.setFullScreen(true);
     primaryStage.show();
+
+    setTheme(Theme.LIGHT_THEME);
   }
 
   @SneakyThrows

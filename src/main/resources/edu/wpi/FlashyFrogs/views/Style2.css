@@ -12,6 +12,7 @@
     -fx-font-family: "Inter";
 }
 
+
 .b1
 {
     -fx-border-radius: 10px;
@@ -45,6 +46,9 @@
     -fx-pref-width: 100px;
 
 
+}
+.bar{
+    -fx-background-color:#012D5A;
 }
 
 .back2
@@ -149,16 +153,18 @@
 }
 
 
+/*styles the popover title*/
 .title{
     -fx-font-weight: transparent;
-    -fx-font-size: 0pt;
-    -fx-text-fill: #d1d1d1;
+    -fx-font-size: 18pt;
+    -fx-text-fill: #012D5A;
 }
 
 .titleText{
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 28pt;
+    -fx-text-fill:#000000;
 }
 
 
@@ -314,7 +320,6 @@
     -fx-padding: 0.0em;
     -fx-text-background-color: #012d5a;
     -fx-text-fill: #012d5a;
-    -fx-font-family: "Arial Black";
 }
 
 .table-row-cell:hover {
@@ -322,9 +327,5 @@
     -fx-text-background-color: #ffffff;
     -fx-text-fill: #ffffff;
 }
-.table-view .virtual-flow .scroll-bar:vertical .thumb{
-    -fx-background-color: #012d5a;
-}
-.table-view .virtual-flow .scroll-bar:horizontal .thumb {
-    -fx-background-color: #012d5a;
-}
+
+
