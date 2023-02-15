@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane styleClass="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="root" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
    <children>
       <StackPane layoutX="1011.0" layoutY="486.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -31,9 +31,6 @@
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
                   </Label>
                   <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                      <VBox.margin>
@@ -53,7 +50,7 @@
       </StackPane>
       <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" styleClass="rectangle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Alerts">
+            <Text styleClass="titleText" text="Alerts">
                <VBox.margin>
                   <Insets left="18.0" top="18.0" />
                </VBox.margin>
@@ -64,7 +61,7 @@
                      <children>
                         <StackPane maxWidth="190.0" prefHeight="50.0" prefWidth="190.0">
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#012d5a" strokeType="INSIDE" styleClass="round" width="190.0" />
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" styleClass="alertTopBox" width="190.0" />
                               <StackPane prefHeight="150.0" prefWidth="200.0">
                                  <children>
                                     <AnchorPane prefHeight="50.0" prefWidth="176.0" styleClass="round">
@@ -133,11 +130,19 @@
                   <Insets />
                </VBox.margin>
             </VBox>
+            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="New alearts appear in the sidebar. Click on them for more information" textAlignment="CENTER" wrappingWidth="188.0">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
             <AnchorPane VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="185.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="149.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="18.0">
                      <children>
-                        <MFXButton onAction="#changeMode" prefHeight="43.0" prefWidth="170.0" style="-fx-background-color: #012d5a; -fx-text-fill: #ffffff;" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
+                        <MFXButton onAction="#changeMode" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -147,7 +152,7 @@
                               <String fx:value="body" />
                            </styleClass>
                         </MFXButton>
-                        <MFXButton onAction="#handleManageCSV" prefHeight="43.0" prefWidth="170.0" style="-fx-background-color: #012d5a; -fx-text-fill: #ffffff;" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
+                        <MFXButton onAction="#handleManageCSV" prefHeight="8.0" prefWidth="150.0" styleClass="button" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -160,7 +165,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </MFXButton>
-                        <MFXButton fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Logins" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Manage Logins" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -173,12 +178,12 @@
                               <String fx:value="body" />
                            </styleClass>
                         </MFXButton>
-                        <MFXButton fx:id="manageAnnouncementsButton" minWidth="150.0" onAction="#manageAnnouncements" prefHeight="25.0" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Alerts" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageAnnouncementsButton" minWidth="150.0" onAction="#manageAnnouncements" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Manage Alerts" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="18.0" top="20.0" />
+                              <Insets bottom="6.0" top="20.0" />
                            </VBox.margin>
                            <styleClass>
                               <String fx:value="blue2" />
@@ -230,5 +235,25 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Text fx:id="h2" fill="#b6000b" layoutX="575.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all submitted service requests. Look in the table to find details about each request.">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
+      <Text fx:id="h3" fill="#b6000b" layoutX="417.0" layoutY="778.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all future moves of hospital location. Look in the table to find details about each move.">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
+      <Text fx:id="h4" fill="#b6000b" layoutX="1317.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Use this dropdown to filter through submitted service requests" wrappingWidth="150.0">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
+      <Text fx:id="h5" fill="#b6000b" layoutX="1454.0" layoutY="777.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click path finding to find paths through the hospital" wrappingWidth="229.396484375">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

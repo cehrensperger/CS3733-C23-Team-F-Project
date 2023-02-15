@@ -33,12 +33,20 @@
                 <TableColumn fx:id="longName" prefWidth="170.0" resizable="false" text="Location" />
               </columns>
                <VBox.margin>
-                  <Insets bottom="22.0" />
+                  <Insets />
                </VBox.margin>
             </TableView>
-            <Button fx:id="addLocation" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupLocation" prefHeight="25.0" prefWidth="223.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location">
+            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="View current locations in the map" wrappingWidth="170.0">
                <VBox.margin>
-                  <Insets bottom="22.0" />
+                  <Insets bottom="16.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Button fx:id="addLocation" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupLocation" prefHeight="12.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location">
+               <VBox.margin>
+                  <Insets />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
@@ -48,9 +56,17 @@
                   <String fx:value="body" />
                </styleClass>
             </Button>
-            <Button fx:id="addNode" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupNode" prefHeight="40.0" prefWidth="179.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Add Node">
+            <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to add a new location to the map" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
                <VBox.margin>
-                  <Insets bottom="22.0" />
+                  <Insets bottom="16.0" />
+               </VBox.margin>
+            </Text>
+            <Button fx:id="addNode" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupNode" prefHeight="13.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Add Node">
+               <VBox.margin>
+                  <Insets />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
@@ -60,9 +76,18 @@
                   <String fx:value="body" />
                </styleClass>
             </Button>
+            <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to add a new node to the map" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
             <Button fx:id="addMove" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupMove" prefHeight="40.0" prefWidth="183.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location" wrapText="true">
                <VBox.margin>
-                  <Insets bottom="44.0" />
+                  <Insets bottom="16.0" />
+               </VBox.margin>
+            </Text>
+            <Button fx:id="addMove" mnemonicParsing="false" onAction="#popupMove" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location Name" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
@@ -72,6 +97,11 @@
                   <String fx:value="body" />
                </styleClass>
             </Button>
+            <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to link specific nodes with specific location names" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
          </children>
          <padding>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

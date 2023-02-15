@@ -129,7 +129,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="50.0" />
+                                    <Insets top="56.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
@@ -238,7 +238,7 @@
                                     </HBox.margin></VBox>
                         <VBox prefHeight="200.0" prefWidth="185.0">
                            <HBox.margin>
-                              <Insets left="10.0" top="48.0" />
+                              <Insets left="10.0" top="58.0" />
                            </HBox.margin>
                            <children>
                               <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of device do you need" wrappingWidth="185.0">
@@ -254,7 +254,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="33.0" />
+                                    <Insets top="37.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What date is the device needed by" wrappingWidth="185.0">
@@ -262,7 +262,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="38.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of this request" wrappingWidth="185.0">
@@ -270,7 +270,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="40.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the request" wrappingWidth="185.0">
@@ -278,7 +278,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="42.0" />
                                  </VBox.margin>
                               </Text>
                            </children>

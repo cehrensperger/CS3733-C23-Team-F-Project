@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
@@ -51,7 +52,21 @@ public class HomeController implements IController {
 
   boolean filterCreated = false;
 
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+  @FXML Text h5;
+  boolean hDone = false;
+
   public void initialize() {
+
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
+    h5.setVisible(false);
+
     Fapp.resetStack();
 
     List<String> filters = new ArrayList<String>();
@@ -149,7 +164,21 @@ public class HomeController implements IController {
 
   @Override
   public void help() {
-    // TODO: help for this page
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      h5.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      h5.setVisible(false);
+      hDone = false;
+    }
   }
 
   public void viewLogins(ActionEvent actionEvent) throws IOException {

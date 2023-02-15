@@ -11,15 +11,16 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
    <children>
-      <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="720.0" prefWidth="220.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label styleClass="title" text="Pathfinder">
                <VBox.margin>
-                  <Insets left="18.0" top="18.0" />
+                  <Insets bottom="25.0" left="18.0" top="18.0" />
                </VBox.margin>
                <font>
                   <Font name="System Bold" size="24.0" />
@@ -30,16 +31,31 @@
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </SearchableComboBox>
+            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a starting location for your path" wrappingWidth="190.0">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+            </Text>
             <SearchableComboBox fx:id="destinationBox" promptText="Destination:" styleClass="fields2">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </SearchableComboBox>
+            <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose an ending location for your path" wrappingWidth="190.0">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+            </Text>
             <SearchableComboBox fx:id="algorithmBox" promptText="Algorithm:" styleClass="fields2">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </SearchableComboBox>
+            <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose an algorithm to generate your path with" wrappingWidth="190.0">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+            </Text>
             <MFXButton alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" style="-fx-text-fill: #ffffff; -fx-background-color: #012d5a;" text="Generate Path">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
@@ -53,6 +69,11 @@
                   <String fx:value="dropshadow" />
                </styleClass>
             </MFXButton>
+            <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to generate the path!">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+            </Text>
          </children>
       </VBox>
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
@@ -105,7 +126,7 @@
             <String fx:value="body" />
          </styleClass>
       </MFXButton>
-      <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="43.0" prefWidth="184.0" style="-fx-background-color: #012d5a; -fx-text-fill: #f1f1f1;" text="Map Editor" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
+      <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="19.0" prefWidth="184.0" style="-fx-background-color: #012d5a; -fx-text-fill: #f1f1f1;" text="Map Editor" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
          </font>

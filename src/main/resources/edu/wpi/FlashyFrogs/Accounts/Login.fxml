@@ -75,7 +75,7 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="393.0" style="-fx-background-color: #f1f1f1;" styleClass="b2" text="Clear" textFill="#b6000b">
+                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="393.0" style="-fx-background-color: #f1f1f1; -fx-text-fill: #b6000b; -fx-border-color: #b6000b; -fx-border-radius: 10px; -fx-background-radius: 10px;" styleClass="b2" text="Clear">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -104,15 +104,12 @@
       </BorderPane>
       <StackPane layoutX="1021.0" layoutY="496.0" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <VBox prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;">
+            <VBox prefHeight="213.0" prefWidth="260.0" styleClass="pathfindingPopup">
                <children>
-                  <Label onMouseClicked="#openPathfinding" text="Pathfinding" textFill="WHITE" VBox.vgrow="ALWAYS">
+                  <Label styleClass="pathfindingPopup" onMouseClicked="#openPathfinding" text="Pathfinding" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
                   </Label>
                   <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                      <VBox.margin>

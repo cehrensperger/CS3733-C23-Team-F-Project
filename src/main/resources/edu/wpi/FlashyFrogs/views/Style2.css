@@ -46,7 +46,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
-    -fx-background-color:#f1f1f1;
+    -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
@@ -225,7 +225,7 @@
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 28pt;
-    -fx-text-fill:#000000;
+    -fx-fill:#000000;
 }
 
 
@@ -234,6 +234,7 @@
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 20pt;
+    -fx-text-fill:#000000;
 }
 
 .header{
@@ -431,4 +432,25 @@
 .pathfindingPopup {
     -fx-background-color: #6B6D6F;
     -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-family: "Roboto";
+}
+.button {
+    -fx-background-color: #012D5A;
+    -fx-text-fill: white;
+    -fx-font-family: "Roboto";
+}
+.alertTopBox{
+    -fx-fill: #012d5a;
+    -stroke: #012d5a;
+    -strokeType: inside;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px !important;
+}
+.navBar {
+    -fx-background-color: #012d5a;
+    -fx-text-fill: white;
+}
+.navBarLines{
+    -fx-stroke: #34587a;
 }
