@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.Navigation;
+package edu.wpi.FlashyFrogs.navigation;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 
 public class Navigation {
 
-  public static void navigate(final Screen screen) {
+  public static void navigate(final edu.wpi.FlashyFrogs.Navigation.Screen screen) {
     final String filename = screen.getFilename();
 
     try {
