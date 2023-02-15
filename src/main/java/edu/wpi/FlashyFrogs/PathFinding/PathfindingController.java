@@ -110,7 +110,7 @@ public class PathfindingController implements IController {
 
     // get the list of all location names from the database
     List<LocationName> objects =
-        session.createQuery("FROM LocationName l", LocationName.class).getResultList();
+        session.createQuery("SELECT location FROM Move", LocationName.class).getResultList();
 
     // sort the locations alphabetically, algorithms already alphabetical
     objects.sort(Comparator.comparing(LocationName::getLongName));
