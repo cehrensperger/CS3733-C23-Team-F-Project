@@ -1,3 +1,6 @@
+.root {
+    -fx-background-color: #F1F1F1;
+}
 @font-face {
     src: url("FontsFree-Net-Inter-Bold.ttf");
 }
@@ -38,7 +41,7 @@
 .back
 {
     -fx-border-radius: 10px;
-    -fx-background-color:#d1d1d1;
+    -fx-background-color:#f1f1f1;
     -fx-border-color:#012D5A;
     -fx-font-family: "Inter";
     -fx-text-fill: #012D5A;
@@ -196,14 +199,6 @@
     -fx-pref-width: 204px;
 
 }
-
-
-
-.rectangle
-{
-    -fx-background-color: #d1d1d1 !important;
-}
-
 
 /*styles the popover title*/
 .title{
@@ -407,5 +402,11 @@
     -fx-text-background-color: #ffffff;
     -fx-text-fill: #ffffff;
 }
-
-
+.rectangle
+{
+    -fx-background-color: #d1d1d1 !important;
+}
+.pathfindingPopup {
+    -fx-background-color: #6B6D6F;
+    -fx-text-fill: white;
+}
