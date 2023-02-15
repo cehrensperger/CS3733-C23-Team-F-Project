@@ -80,18 +80,11 @@
                <font>
                   <Font size="10.0" />
                </font>
+            </Text>
             <Button fx:id="addMove" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupMove" prefHeight="40.0" prefWidth="183.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location" wrapText="true">
                <VBox.margin>
                   <Insets bottom="16.0" />
                </VBox.margin>
-            </Text>
-            <Button fx:id="addMove" mnemonicParsing="false" onAction="#popupMove" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location Name" textAlignment="CENTER" wrapText="true">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="18.0" />
-               </font>
                <styleClass>
                   <String fx:value="round" />
                   <String fx:value="body" />
@@ -114,7 +107,6 @@
          <styleClass>
             <String fx:value="back" />
             <String fx:value="round" />
-            <String fx:value="body" />
          </styleClass>
       </Button>
       <StackPane layoutX="257.0" layoutY="28.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
