@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="350.0" prefWidth="457.0" stylesheets="@Style2.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
+<AnchorPane prefHeight="350.0" prefWidth="457.0"  xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
    <children>
       <MFXButton layoutX="40.0" layoutY="235.0" onAction="#handleChooseFiles" prefHeight="25.0" prefWidth="150.0" text="Select Files" AnchorPane.bottomAnchor="72.0" AnchorPane.rightAnchor="242.0">
          <font>

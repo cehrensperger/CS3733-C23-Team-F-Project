@@ -35,8 +35,7 @@ public class Fapp extends Application {
   @Setter @Getter private static Pane rootPane;
   private static NavBarController controller;
 
-  @Getter
-  private static Theme theme;
+  @Getter private static Theme theme;
 
   public static IController iController;
 
@@ -110,6 +109,7 @@ public class Fapp extends Application {
 
   /**
    * Sets the application theme
+   *
    * @param theme the theme to set
    */
   public void setTheme(@NonNull Theme theme) {
@@ -146,10 +146,10 @@ public class Fapp extends Application {
     final Scene scene = new Scene(root);
     primaryStage.setScene(scene);
 
+    setTheme(Theme.LIGHT_THEME);
+
     primaryStage.setFullScreen(true);
     primaryStage.show();
-
-    setTheme(Theme.LIGHT_THEME);
   }
 
   @SneakyThrows
