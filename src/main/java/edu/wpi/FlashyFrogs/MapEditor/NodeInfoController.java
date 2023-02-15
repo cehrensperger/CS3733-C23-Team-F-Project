@@ -54,7 +54,8 @@ public class NodeInfoController {
    * @return the string representing the new ID for the provided info
    * @throws IllegalArgumentException if the provided information does not constitute a valid node
    */
-  private static String processNodeUpdate(String xCoord, String yCoord, Node.Floor floor) {
+  private static String processNodeUpdate(
+      @NonNull String xCoord, @NonNull String yCoord, @NonNull Node.Floor floor) {
     // Integers for the coordiantes
     int xCoordInt;
     int yCoordInt;
@@ -122,6 +123,11 @@ public class NodeInfoController {
     // Runnable to be run when a field is changed, validates everything
     Runnable onFieldChange =
         () -> {
+          // Short-circuit for a bug with the searchablecombobox
+          if (floor.get() == null) {
+            return;
+          }
+
           errorText.setText("Node Info"); // Clear text to start
 
           try {
@@ -147,8 +153,7 @@ public class NodeInfoController {
 
     // Set the floor items
     floorField.setItems(FXCollections.observableArrayList(Node.Floor.values()));
-    floorField.setValue(
-        Node.Floor.valueOf(floor.get().toString())); // Set the text manually because MFX is mean
+    floorField.setValue(floor.get()); // Set the text manually because MFX is mean
 
     // Listen for field changes
     floorField.valueProperty().addListener((observable, oldValue, newValue) -> onFieldChange.run());
@@ -163,10 +168,14 @@ public class NodeInfoController {
     floorField.valueProperty().bindBidirectional(floor); // Bind floor
     buildingField.textProperty().bindBidirectional(building); // Bind building
 
+    onFieldChange.run(); // Pre-fill everything
+    errorText.setText("Node Info"); // Empty error text
+
     // If it's not a new node
     if (!isNewNode) {
       List<LocationName> locations = node.getCurrentLocation(session);
 
+      System.out.println(locations.size());
       if (!locations.isEmpty()) { // If the location exists
         if (locations.size() < 2) {
 
@@ -229,6 +238,13 @@ public class NodeInfoController {
               },
               false);
         }
+      } else {
+        nodeLocationText.setVisible(false); // hide the location name
+        locationPane2.setVisible(false); // hide the location frame2
+        locationPane.setVisible(false); // hide the location frame
+        secondLocation.setVisible(false); // hide the 2nd location name
+        secondColumn.setMaxWidth(0); // hide the columns
+        thirdColumn.setMaxWidth(0); // hide the columns
       }
     } else {
       nodeLocationText.setVisible(false); // hide the location name
@@ -264,7 +280,8 @@ public class NodeInfoController {
         event -> {
           onFieldChange.run(); // Validate the input
 
-          if (!errorText.getText().equals("")) { // If validating created an error
+          if (!errorText.getText().equals("")
+              && !errorText.getText().equals("Node Info")) { // If validating created an error
             return; // Stop
           }
 
