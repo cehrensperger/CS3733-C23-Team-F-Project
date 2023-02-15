@@ -26,7 +26,7 @@ public class PathFinder {
    */
   public List<LocationName> nodeListToLocation(
       @NonNull List<Node> nodes, @NonNull Session session) {
-    List<LocationName> locations = new ArrayList<>();
+    List<LocationName> locations = new ArrayList<>(nodes.size());
     for (Node node : nodes) {
       locations.add(node.getCurrentLocation(session).get(0));
     }
@@ -58,6 +58,7 @@ public class PathFinder {
                                         WHERE node1 = :node""",
                 Node.class)
             .setParameter("node", node)
+            .setCacheable(true)
             .getResultList());
   }
 
