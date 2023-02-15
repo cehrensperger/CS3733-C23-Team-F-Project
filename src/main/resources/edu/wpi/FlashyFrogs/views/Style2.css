@@ -37,7 +37,7 @@
 .back
 {
     -fx-border-radius: 10px;
-    -fx-background-color:#f1f1f1;
+    -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
     -fx-font-family: "Inter";
     -fx-text-fill: #012D5A;
@@ -154,6 +154,17 @@
     -fx-prompt-text-fill: #012D5A;
 }
 
+.fields2{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
+    -fx-border-color:#012D5A;
+    -fx-text-fill: #012D5A;
+    -fx-background-color: #d1d1d1;
+    -fx-border-insets: -1px;
+    -fx-border-radius: 10px !important;
+    -fx-prompt-text-fill: #012D5A;
+}
+
 .clear{
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
@@ -240,7 +251,7 @@
 .table-row-cell:hover {
     -fx-background-color: #012d5a;
     -fx-text-background-color: #012d5a;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #012d5a;
 }
 .table-view .virtual-flow .scroll-bar:vertical .thumb{
     -fx-background-color: #012d5a;
