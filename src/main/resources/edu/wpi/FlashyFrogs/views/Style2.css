@@ -413,3 +413,10 @@
     -fx-text-fill: white;
     -fx-font-family: "Roboto";
 }
+.alertTopBox{
+    -fx-fill: #012d5a;
+    -stroke: #012d5a;
+    -strokeType: inside;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px !important;
+}

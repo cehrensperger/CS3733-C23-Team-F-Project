@@ -27,3 +27,10 @@
     -fx-font-size: 20;
     -fx-text-fill: white;
 }
+.alertTopBox{
+    -fx-fill: #0067B1;
+    -stroke: #0067B1;
+    -strokeType: inside;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px !important;
+}

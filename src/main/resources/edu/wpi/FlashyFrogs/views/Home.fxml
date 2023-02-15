@@ -59,7 +59,7 @@
                <children>
                   <StackPane maxWidth="190.0" prefHeight="50.0" prefWidth="190.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#012d5a" strokeType="INSIDE" styleClass="round" width="190.0" />
+                        <Rectangle styleClass="alertTopBox" arcHeight="5.0" arcWidth="5.0" height="50.0" width="190.0" />
                         <AnchorPane prefHeight="50.0" prefWidth="176.0" styleClass="round">
                            <children>
                               <Label styleClass="middle" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
