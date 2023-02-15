@@ -16,8 +16,11 @@
       </Label>
       <TableView fx:id="userLoginTable" layoutY="75.0" prefHeight="382.0" prefWidth="800.0" AnchorPane.bottomAnchor="143.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
         <columns>
-          <TableColumn fx:id="userName" prefWidth="395.0" text="Username" />
-          <TableColumn fx:id="password" minWidth="0.0" prefWidth="384.0" text="Password" />
+            <TableColumn fx:id="idCol" maxWidth="50.0" prefWidth="50.0" text="ID" />
+          <TableColumn fx:id="userNameCol" prefWidth="187.5" text="Username" />
+          <TableColumn fx:id="nameCol" prefWidth="187.5" text="Name" />
+            <TableColumn fx:id="empTypeCol" prefWidth="187.5" text="Employee Type" />
+            <TableColumn fx:id="deptCol" prefWidth="187.5" text="Department" />
         </columns>
       </TableView>
       <MFXButton fx:id="addNewUser" layoutX="14.0" layoutY="474.0" onAction="#handleNewUser" text="Add New User" AnchorPane.bottomAnchor="100.39999999999998" AnchorPane.leftAnchor="14.0" />

@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -22,7 +23,14 @@ public class NewUserController implements IController {
   @FXML private MFXTextField username;
   @FXML private MFXPasswordField pass1;
   @FXML private MFXPasswordField pass2;
+  @FXML private MFXTextField firstName;
+  @FXML private MFXTextField middleName;
+  @FXML private MFXTextField lastName;
+  @FXML private SearchableComboBox department;
+  @FXML private SearchableComboBox employeeType;
   @FXML private Label errorMessage;
+
+  public NewUserController() {}
 
   public void setPopOver(PopOver thePopOver) {
     this.popOver = thePopOver;
@@ -32,7 +40,28 @@ public class NewUserController implements IController {
     this.loginAdministratorController = adminController;
   }
 
-  public void initialize() {}
+  public void initialize() {
+    /*Session session = CONNECTION.getSessionFactory().openSession();
+    List<String> objects =
+        session.createQuery("SELECT longName FROM LocationName", String.class).getResultList();
+
+    objects.sort(String::compareTo);
+
+    ObservableList<String> observableList = FXCollections.observableList(objects);
+
+    to.setItems(observableList);
+    from.setItems(observableList);
+    vision.getItems().addAll("Good", "Poor", "Blind", "Glasses");
+    hearing
+        .getItems()
+        .addAll(
+            "Good",
+            "Poor",
+            "Deaf",
+            "Hearing Aid (Left)",
+            "Hearing Aid (Right)",
+            "Hearing Aid (Both)");*/
+  }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
     if (username.getText().equals("") || pass1.getText().equals("") || pass2.getText().equals("")) {

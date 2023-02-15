@@ -3,6 +3,8 @@ package edu.wpi.FlashyFrogs.Accounts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Department;
+import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
@@ -24,8 +26,11 @@ public class LoginAdministratorController implements IController {
 
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
-  @FXML private TableColumn<UserLogin, String> userName;
-  @FXML private TableColumn<UserLogin, String> password;
+  @FXML private TableColumn<UserLogin, Integer> idCol;
+  @FXML private TableColumn<UserLogin, String> userNameCol;
+  @FXML private TableColumn<UserLogin, String> nameCol;
+  @FXML private TableColumn<UserLogin, User.EmployeeType> empTypeCol;
+  @FXML private TableColumn<UserLogin, Department> deptCol;
   @FXML private Button addNewUser;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -58,8 +63,11 @@ public class LoginAdministratorController implements IController {
     userLoginTable.getItems().clear();
     // set columns userlogin
 
-    userName.setCellValueFactory(new PropertyValueFactory<>("userName"));
-    password.setCellValueFactory(new PropertyValueFactory<>("hash"));
+    idCol.setCellValueFactory(new PropertyValueFactory<>("user.id"));
+    userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+    nameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+    empTypeCol.setCellValueFactory(new PropertyValueFactory<>("user.employeeType"));
+    deptCol.setCellValueFactory(new PropertyValueFactory<>("shortName"));
 
     // create logIn table
     // open session
@@ -79,6 +87,9 @@ public class LoginAdministratorController implements IController {
       throw e;
     }
   }
-
+  // s.user.id, s.userName, "
+  //                      + "s.user.firstName || ' ' || s.user.middleName || ' ' || s.user.lastName
+  // AS Name, "
+  //                      + "s.user.employeeType, s.user.department
   public void onClose() {}
 }
