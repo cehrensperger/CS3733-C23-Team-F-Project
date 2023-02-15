@@ -148,6 +148,19 @@
 
 }
 
+.credits3
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light ";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 200px;
+    -fx-pref-height: 25;
+
+}
+
 .blue
 {
     -fx-border-radius: 10px;
@@ -275,6 +288,19 @@
     -fx-pref-height: 25;
 }
 
+.clear2{
+    -fx-background-color: #f1f1f1;
+    -fx-border-color:#b6000b;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16pt;
+    -fx-text-fill: #b6000b;
+    -fx-background-radius: 10px;
+    -fx-text-innercolor: #b6000b;
+    -fx-border-radius: 10px;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 25;
+}
+
 .cancel{
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
@@ -285,6 +311,19 @@
     -fx-text-innercolor: #b6000b;
     -fx-border-radius: 10px;
     -fx-pref-width: 175px;
+    -fx-pref-height: 25;
+}
+
+.cancel2{
+    -fx-background-color: #f1f1f1;
+    -fx-border-color:#b6000b;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16pt;
+    -fx-text-fill: #b6000b;
+    -fx-background-radius: 10px;
+    -fx-text-innercolor: #b6000b;
+    -fx-border-radius: 10px;
+    -fx-pref-width: 200px;
     -fx-pref-height: 25;
 }
 
