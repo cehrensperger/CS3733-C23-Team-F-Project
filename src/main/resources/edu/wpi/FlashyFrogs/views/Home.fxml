@@ -89,15 +89,18 @@
                   </StackPane>
                   <StackPane maxWidth="190.0" prefHeight="165.0" prefWidth="190.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="165.0" stroke="#ebdddd" strokeType="INSIDE" width="190.0">
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="165.0" stroke="WHITE" strokeType="INSIDE" width="190.0">
                            <StackPane.margin>
                               <Insets />
                            </StackPane.margin>
                         </Rectangle>
                         <VBox maxWidth="190.0" minWidth="190.0" prefHeight="165.0" prefWidth="190.0" spacing="5.0">
                            <children>
-                              <TextArea editable="false" maxWidth="190.0" prefHeight="207.0" prefWidth="190.0" text="Attention Employees,&#10;&#10;There will be fire alarm testing today in Shapiro in conjunction with the Boston Fire Department. Alarms will sound during the tests. " wrapText="true" />
-                              <Line endX="90.0" startX="-100.0" />
+                              <TextArea style="-focus-color: transparent; -fx-text-box-border: transparent;" editable="false" maxWidth="190.0" prefHeight="207.0" prefWidth="190.0" text="Attention Employees,&#10;&#10;There will be fire alarm testing today in Shapiro in conjunction with the Boston Fire Department. Alarms will sound during the tests. " wrapText="true" />
+                              <Line endX="170.0">
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </VBox.margin></Line>
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0" VBox.vgrow="NEVER">
                                  <children>
                                     <Label text="Author: Wilson Wong" HBox.hgrow="NEVER" />
