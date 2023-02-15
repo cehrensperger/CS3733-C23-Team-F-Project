@@ -193,9 +193,8 @@ public class NodeInfoController {
             onLocationChange, // Handle location updates
             false); // On delete clear
         if (locations.size() > 1) { // if node has more than 1 location
-          System.out.println("Im here");
           FXMLLoader locationNameLoader2 =
-              new FXMLLoader(getClass().getResource("LocationInfo.fxml"));
+              new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
           // Load the file and set it to be on the location panes children
           locationPane2.getChildren().add(locationNameLoader2.load());
 
