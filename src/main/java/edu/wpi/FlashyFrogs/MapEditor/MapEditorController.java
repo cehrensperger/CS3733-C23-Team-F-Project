@@ -20,13 +20,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -348,24 +345,31 @@ public class MapEditorController implements IController {
   @SneakyThrows
   public void handleBackButton(ActionEvent actionEvent) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ExitConfirmation.fxml"));
-    ExitConfirmationController exitController = loader.getController();
 
     // Create a confirm exit dialog
     PopOver popOver = new PopOver(loader.load());
 
-    exitController.getContinueEditing().setOnAction((action) -> popOver.hide());
-    exitController.getSave().setOnAction((action) -> {
-        popOver.hide();
-        mapController.saveChanges();
-        mapController.exit();
-        Fapp.handleBack();
-    });
+    ExitConfirmationController exitController = loader.getController();
 
-    exitController.getDiscard().setOnAction((action) -> {
-        popOver.hide();
-        mapController.exit();
-        Fapp.handleBack();
-    });
+    exitController.getContinueEditing().setOnAction((action) -> popOver.hide());
+    exitController
+        .getSave()
+        .setOnAction(
+            (action) -> {
+              popOver.hide();
+              mapController.saveChanges();
+              mapController.exit();
+              Fapp.handleBack();
+            });
+
+    exitController
+        .getDiscard()
+        .setOnAction(
+            (action) -> {
+              popOver.hide();
+              mapController.exit();
+              Fapp.handleBack();
+            });
 
     // Set the pop-up content
     popOver.setDetached(true);
