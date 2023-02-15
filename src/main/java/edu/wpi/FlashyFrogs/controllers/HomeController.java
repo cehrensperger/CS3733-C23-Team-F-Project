@@ -61,6 +61,7 @@ public class HomeController implements IController {
   @FXML protected Label tableText2;
 
   @FXML protected SearchableComboBox<String> filterBox;
+  @FXML protected MFXButton editMovesButton;
 
   protected boolean canEditMoves = false;
 
@@ -460,6 +461,8 @@ public class HomeController implements IController {
     canEditMoves = !canEditMoves;
     if (canEditMoves) {
       tableText2.setText("All Moves");
+    } else {
+      tableText2.setText("Future Moves");
     }
     refreshTable();
   }

@@ -226,6 +226,6 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <MFXButton layoutX="944.0" layoutY="464.0" onAction="#handleEditMovesButton" text="Toggle" AnchorPane.bottomAnchor="230.8" AnchorPane.rightAnchor="282.8" />
+      <MFXButton fx:id="editMovesButton" layoutX="944.0" layoutY="464.0" onAction="#handleEditMovesButton" text="Toggle Edit All" AnchorPane.bottomAnchor="230.8" AnchorPane.rightAnchor="282.8" />
    </children>
 </AnchorPane>
