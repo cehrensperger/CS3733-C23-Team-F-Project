@@ -28,7 +28,7 @@ public class Fapp extends Application {
   @Setter @Getter private static Pane rootPane;
   private static NavBarController controller;
 
-  private static IController iController;
+  public static IController iController;
 
   public static Stack<String> prevPage = new Stack<String>();
 

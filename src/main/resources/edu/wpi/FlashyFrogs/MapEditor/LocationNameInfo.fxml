@@ -10,9 +10,9 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="342.0" prefWidth="338.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.LocationNameInfoController">
+<AnchorPane prefHeight="272.0" prefWidth="338.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.LocationNameInfoController">
     <children>
-        <VBox layoutX="164.0" layoutY="63.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+        <VBox layoutX="164.0" layoutY="63.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location name:">
                     <font>
@@ -53,7 +53,8 @@
                         <Insets bottom="20.0" />
                     </VBox.margin>
                 </SearchableComboBox>
-                <HBox prefHeight="40.0" prefWidth="288.0">
+                <Text fx:id="errorText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="287.13671875" />
+                <HBox prefHeight="35.0" prefWidth="288.0">
                     <children>
                         <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="133.0" text="Delete Location" textAlignment="CENTER">
                             <font>
@@ -70,7 +71,6 @@
                         </Button>
                     </children>
                 </HBox>
-                <Text fx:id="errorText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="287.13671875" />
             </children>
         </VBox>
     </children>

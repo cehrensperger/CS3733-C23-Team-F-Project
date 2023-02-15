@@ -154,7 +154,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <SearchableComboBox fx:id="location" promptText="Location of Request" />
+                              <SearchableComboBox fx:id="locationBox" promptText="Location of Request" />
                                     </children>
                                     <HBox.margin>
                                         <Insets right="100.0" />

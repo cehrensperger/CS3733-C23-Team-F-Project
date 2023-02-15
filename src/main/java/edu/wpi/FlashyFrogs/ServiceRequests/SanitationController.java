@@ -7,6 +7,7 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
@@ -28,7 +29,7 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class SanitationController {
+public class SanitationController implements IController {
 
   @FXML MFXButton AV;
   @FXML MFXButton IT;
@@ -47,12 +48,12 @@ public class SanitationController {
   @FXML Text h5;
   @FXML Text h6;
   @FXML Text h7;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox sanitationType;
+  @FXML SearchableComboBox<String> locationBox;
+  @FXML SearchableComboBox<String> sanitationType;
   @FXML DatePicker date;
-  @FXML SearchableComboBox urgency;
-  @FXML SearchableComboBox isolation;
-  @FXML SearchableComboBox biohazard;
+  @FXML SearchableComboBox<String> urgency;
+  @FXML SearchableComboBox<String> isolation;
+  @FXML SearchableComboBox<String> biohazard;
   @FXML TextField description;
   boolean hDone = false;
   @FXML private Label errorMessage;
@@ -75,11 +76,12 @@ public class SanitationController {
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
-    location.setItems(observableList);
+    locationBox.setItems(observableList);
     sanitationType.getItems().addAll("Sweeping", "Mopping", "Sanitizing");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
     isolation.getItems().addAll("Yes", "No");
     biohazard.getItems().addAll("Yes", "No");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -91,7 +93,7 @@ public class SanitationController {
       String[] parts;
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
 
-      if (location.getValue().toString().equals("")
+      if (locationBox.getValue().toString().equals("")
           || sanitationType.getValue().toString().equals("")
           || date.getValue().toString().equals("")
           || isolation.getValue().toString().equals("")
@@ -115,7 +117,7 @@ public class SanitationController {
 
       Sanitation sanitationRequest = new Sanitation();
       sanitationRequest.setLocation(
-          session.find(LocationName.class, location.getValue().toString()));
+          session.find(LocationName.class, locationBox.getValue().toString()));
       sanitationRequest.setType(Sanitation.SanitationType.valueOf(sanitationTypeEnumString));
       sanitationRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
       sanitationRequest.setDate(dateOfIncident);
@@ -146,7 +148,7 @@ public class SanitationController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    location.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
     sanitationType.valueProperty().set(null);
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
@@ -205,4 +207,7 @@ public class SanitationController {
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
   }
+
+  @Override
+  public void onClose() {}
 }

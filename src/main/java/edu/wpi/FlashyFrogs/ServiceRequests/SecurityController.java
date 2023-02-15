@@ -7,6 +7,7 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
@@ -28,7 +29,7 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class SecurityController {
+public class SecurityController implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;
@@ -44,9 +45,9 @@ public class SecurityController {
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox threat;
-  @FXML SearchableComboBox urgency;
+  @FXML SearchableComboBox<String> locationBox;
+  @FXML SearchableComboBox<String> threat;
+  @FXML SearchableComboBox<String> urgency;
   @FXML DatePicker date;
   @FXML TextField description;
   @FXML private Label errorMessage;
@@ -69,9 +70,10 @@ public class SecurityController {
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
-    location.setItems(observableList);
+    locationBox.setItems(observableList);
     threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -82,7 +84,7 @@ public class SecurityController {
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
 
       // check
-      if (location.getValue().toString().equals("")
+      if (locationBox.getValue().toString().equals("")
           || threat.getValue().toString().equals("")
           || date.getValue().toString().equals("")
           || description.getText().equals("")) {
@@ -97,7 +99,8 @@ public class SecurityController {
       Security securityRequest = new Security();
 
       securityRequest.setIncidentReport(description.getText());
-      securityRequest.setLocation(session.find(LocationName.class, location.getValue().toString()));
+      securityRequest.setLocation(
+          session.find(LocationName.class, locationBox.getValue().toString()));
       securityRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
       securityRequest.setThreatType(Security.ThreatType.valueOf(threatTypeEnumString));
       securityRequest.setDate(dateOfRequest);
@@ -125,7 +128,7 @@ public class SecurityController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    location.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
     threat.valueProperty().set(null);
     urgency.valueProperty().set(null);
     date.valueProperty().set(null);
@@ -178,4 +181,7 @@ public class SecurityController {
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
   }
+
+  @Override
+  public void onClose() {}
 }
