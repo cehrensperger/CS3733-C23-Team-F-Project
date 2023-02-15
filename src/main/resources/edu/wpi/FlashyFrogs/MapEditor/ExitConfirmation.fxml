@@ -10,11 +10,12 @@
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Confirm Exit?" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Changes you made may not be saved!" />
-      <Button fx:id="continueEditing" cancelButton="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="204.0" text="Continue Editing">
+      <Button fx:id="continueEditing" cancelButton="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="204.0" text="Continue Editing" styleClass="no_background_black">
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
          <styleClass>
+            <String fx:value="left-alight" />
             <String fx:value="round" />
             <String fx:value="blueOutline" />
             <String fx:value="body" />
@@ -25,9 +26,8 @@
             <Insets top="10.0" />
          </VBox.margin>
          <styleClass>
-            <String fx:value="body" />
-            <String fx:value="blueOutline" />
-            <String fx:value="round" />
+            <String fx:value="b2"/>
+            <String fx:value="left-alight"/>
          </styleClass>
       </Button>
       <Button fx:id="save" mnemonicParsing="false" prefHeight="26.0" prefWidth="204.0" text="Save Changes and Exit">
@@ -38,6 +38,7 @@
             <String fx:value="blue3" />
             <String fx:value="body" />
             <String fx:value="round" />
+            <String fx:value="left-alight"/>
          </styleClass>
       </Button>
    </children>

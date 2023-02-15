@@ -32,7 +32,8 @@ import org.hibernate.Session;
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 @GeneratedExclusion
 public class MapEditorController implements IController {
-  public AnchorPane mapPane;
+  @FXML private AnchorPane mapPane;
+  @FXML public Button backButton;
   @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
@@ -347,11 +348,22 @@ public class MapEditorController implements IController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ExitConfirmation.fxml"));
 
     // Create a confirm exit dialog
-    PopOver popOver = new PopOver(loader.load());
+    Pane root = loader.load();
+    PopOver popOver = new PopOver(root);
+
+    this.backButton.setDisable(true);
 
     ExitConfirmationController exitController = loader.getController();
 
-    exitController.getContinueEditing().setOnAction((action) -> popOver.hide());
+    popOver.setOnHidden((action) -> this.backButton.setDisable(false));
+
+    exitController
+        .getContinueEditing()
+        .setOnAction(
+            (action) -> {
+              this.backButton.setDisable(false);
+              popOver.hide();
+            });
     exitController
         .getSave()
         .setOnAction(

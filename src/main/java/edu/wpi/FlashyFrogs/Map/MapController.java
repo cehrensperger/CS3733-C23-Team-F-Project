@@ -188,7 +188,7 @@ public class MapController {
    */
   public void addLocationName(@NonNull LocationName locationName, @NonNull Node node) {
     Text locationToAdd = new Text(locationName.getShortName());
-    locationToAdd.setStyle("-fx-font-size: 6");
+    locationToAdd.getStyleClass().add("map-location-name");
 
     // Add the text to the map
     mapEntity.addLocation(node, locationName, locationToAdd);
