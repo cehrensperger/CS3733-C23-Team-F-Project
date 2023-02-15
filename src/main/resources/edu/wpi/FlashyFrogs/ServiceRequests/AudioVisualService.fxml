@@ -21,7 +21,7 @@
             <left>
                 <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" styleClass="rectangle" BorderPane.alignment="TOP_LEFT">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Service Requests" wrappingWidth="176.66615295410156">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="176.66615295410156">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -109,7 +109,7 @@
             <center>
                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f1f1f1;" stylesheets="@../views/Style2.css" BorderPane.alignment="CENTER">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Audio/Visual Service Request">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Audio/Visual Service Request">
                             <font>
                                 <Font size="28.0" />
                             </font>

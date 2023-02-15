@@ -1,7 +1,7 @@
 @font-face {
     src: url("FontsFree-Net-Inter-Bold.ttf");
 }
-
+.
 .text-area
 {
     -fx-font-family: "Inter";
@@ -71,6 +71,13 @@
     -fx-border-radius: 10px !important;
 }
 
+.round2
+{
+    -fx-border-color:#f1f1f1;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px !important;
+    -fx-border-insets: -3px;
+}
 /*.inter
 {
     -fx-font-family: "Inter";
@@ -141,7 +148,14 @@
     -fx-background-color: #d1d1d1 !important;
 }
 
+
 .title{
+    -fx-font-weight: transparent;
+    -fx-font-size: 0pt;
+    -fx-text-fill: #d1d1d1;
+}
+
+.titleText{
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 28pt;
@@ -280,9 +294,12 @@
 
 .table-view .column-header-background{
     -fx-background-color: #012d5a;
+    -fx-background-radius: 0px 0px 0px 0px;
+    -fx-padding: 0px 0px 7px 0px;
 
-    -fx-padding: 0 0 5px 0;
+
 }
+
 .table-view .table-cell{
     -fx-border-color: transparent;
     -fx-padding: 2 0 2 10px;
