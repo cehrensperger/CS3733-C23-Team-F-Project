@@ -67,7 +67,7 @@
                         <AnchorPane prefHeight="50.0" prefWidth="176.0">
                            <children>
                               <Label text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
-                              <Label text="!!!" textFill="#c31d1d" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="5.0">
+                              <Label text="!!!" textFill="#F6BD38" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="5.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
