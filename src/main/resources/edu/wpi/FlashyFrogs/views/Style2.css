@@ -7,12 +7,12 @@
 .
 .text-area
 {
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
 }
 
 .text-field
 {
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
 }
 
 
@@ -21,9 +21,9 @@
     -fx-border-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Inter Black";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
 
 }
 
@@ -32,9 +32,9 @@
     -fx-border-radius: 10px;
     -fx-background-color:#f1f1f1;
     -fx-border-color:#B6000B;
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #B6000B;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
 
 }
 
@@ -43,9 +43,9 @@
     -fx-border-radius: 10px;
     -fx-background-color:#f1f1f1;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 100px;
 
 
@@ -59,9 +59,9 @@
     -fx-border-radius: 10px;
     -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 175px;
 
 
@@ -72,9 +72,9 @@
     -fx-border-radius: 10px;
     -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 204px;
 
 
@@ -98,11 +98,6 @@
     -fx-border-radius: 10px !important;
     -fx-border-insets: -3px;
 }
-/*.inter
-{
-    -fx-font-family: "Inter";
-}*/
-
 /*.titleSize
 {
     -fx-font-size: 36px;
@@ -116,12 +111,12 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-height: 75px;
     -fx-pref-width: 184px;
     -fx-text-alignment: left !important;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px !important;
 }
@@ -133,7 +128,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 100px;
 
 }
@@ -145,7 +140,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 175px;
     -fx-pref-height: 25;
 
@@ -158,7 +153,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 200px;
     -fx-pref-height: 25;
 
@@ -171,7 +166,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 175px;
 
 }
@@ -183,7 +178,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 180px;
 
 }
@@ -195,7 +190,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 204px;
 
 }
@@ -229,7 +224,7 @@
 
 .body{
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
 }
 
 .subtext{
@@ -274,7 +269,7 @@
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
@@ -287,7 +282,7 @@
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
@@ -300,7 +295,7 @@
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
@@ -313,7 +308,7 @@
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
