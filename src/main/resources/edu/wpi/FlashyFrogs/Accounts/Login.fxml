@@ -25,7 +25,7 @@
          <center>
             <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="TOP_CENTER" fillHeight="false" prefHeight="117.0" prefWidth="400.0">
+                  <HBox alignment="TOP_CENTER" fillHeight="false" prefHeight="55.0" prefWidth="400.0">
                      <children>
                         <SVGPath content="M3.8 44.1H0v12.4h3.8zM8.2 44.1v12.4h3.9V44.1zM16.5 44.1v12.4h3.8V44.1zM0 41.7h28.6v-3.5H0zM14.3 28.7 0 33.4v3.7l14.3-4.8 14.3 4.8v-3.7zM28.6 56.2c-.1.2-1.5 2.6-10.6 2.6h-7.4C1.2 58.9.2 60.1 0 60.2v3.6c.2-.1 1.2-1.3 10.6-1.4H18c9.1 0 10.5-2.4 10.6-2.6v-3.6zM28.6 62.1c-.1.2-1.5 2.6-10.6 2.6h-7.4C1.2 64.8.2 66 0 66.1v3.6c.2-.1 1.2-1.3 10.6-1.4H18c9.1 0 10.5-2.4 10.6-2.6v-3.6zM24.7 44.1v11.8c3.1-.7 3.8-1.8 3.8-2v-9.8h-3.8z" style="-fx-fill: #019CA6;">
                            <HBox.margin>
@@ -39,23 +39,31 @@
                      </VBox.margin>
                   </HBox>
                   <Label fx:id="errorMessage" />
-                  <TextField fx:id="username" prefHeight="38.0" prefWidth="424.0" promptText="Username" styleClass="round">
+                  <TextField fx:id="username" prefHeight="38.0" prefWidth="389.0" promptText="Username">
                      <VBox.margin>
                         <Insets bottom="15.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="round" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
                   </TextField>
-                  <PasswordField fx:id="password" prefHeight="38.0" prefWidth="424.0" promptText="Password" styleClass="round">
+                  <PasswordField fx:id="password" prefHeight="38.0" prefWidth="391.0" promptText="Password">
                      <VBox.margin>
                         <Insets bottom="30.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="round" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
                   </PasswordField>
-                  <MFXButton fx:id="login" onAction="#loginButton" prefHeight="38.0" prefWidth="424.0" style="-fx-background-color: #012D5A;" text="Log In" textFill="WHITE">
+                  <MFXButton fx:id="login" onAction="#loginButton" prefHeight="38.0" prefWidth="392.0" style="-fx-background-color: #012D5A;" text="Log In" textFill="WHITE">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -67,10 +75,13 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="424.0" style="-fx-background-color: #f1f1f1;" styleClass="b2" text="Clear" textFill="#b6000b">
+                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="393.0" style="-fx-background-color: #f1f1f1; -fx-text-fill: #b6000b; -fx-border-color: #b6000b; -fx-border-radius: 10px; -fx-background-radius: 10px;" styleClass="b2" text="Clear">
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </MFXButton>
                   <VBox prefHeight="29.0" prefWidth="424.0">
                      <children>
@@ -78,6 +89,9 @@
                            <font>
                               <Font size="12.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
                         </Text>
                      </children>
                      <VBox.margin>
@@ -90,15 +104,12 @@
       </BorderPane>
       <StackPane layoutX="1021.0" layoutY="496.0" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <VBox prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;">
+            <VBox prefHeight="213.0" prefWidth="260.0" styleClass="pathfindingPopup">
                <children>
-                  <Label onMouseClicked="#openPathfinding" text="Pathfinding" textFill="WHITE" VBox.vgrow="ALWAYS">
+                  <Label styleClass="pathfindingPopup" onMouseClicked="#openPathfinding" text="Pathfinding" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
                   </Label>
                   <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                      <VBox.margin>

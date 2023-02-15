@@ -28,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -66,6 +67,7 @@ public class SanitationEditorController extends ServiceRequestController impleme
   private Connection connection = null;
 
   private Sanitation sanitationReq = new Sanitation();
+  PopOver popOver;
 
   public void initialize() {
     h1.setVisible(false);
@@ -93,6 +95,11 @@ public class SanitationEditorController extends ServiceRequestController impleme
     assignedBox.setItems(FXCollections.observableArrayList(users));
 
     session.close();
+  }
+
+  @Override
+  public void setPopOver(PopOver popOver) {
+    this.popOver = popOver;
   }
 
   public void updateFields() {
@@ -149,8 +156,7 @@ public class SanitationEditorController extends ServiceRequestController impleme
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
+        popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
         errorMessage.setTextFill(Paint.valueOf("#b6000b"));

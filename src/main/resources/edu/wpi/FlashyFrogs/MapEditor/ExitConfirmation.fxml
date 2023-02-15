@@ -8,29 +8,28 @@
 
 <VBox spacing="5.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.ExitConfirmationController">
    <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Confirm Exit?" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Changes you made may not be saved!" />
-      <Button fx:id="continueEditing" cancelButton="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="204.0" text="Continue Editing" styleClass="no_background_black">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Changes you made may not be saved!" />
+      <Button fx:id="continueEditing" alignment="BASELINE_LEFT" cancelButton="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="240.0" styleClass="no_background_black" text="Continue Editing">
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
          <styleClass>
-            <String fx:value="left-alight" />
             <String fx:value="round" />
             <String fx:value="blueOutline" />
             <String fx:value="body" />
          </styleClass>
       </Button>
-      <Button fx:id="discard" mnemonicParsing="false" prefHeight="26.0" prefWidth="204.0" text="Discard Changes and Exit">
+      <Button fx:id="discard" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="26.0" prefWidth="240.0" text="Discard Changes and Exit">
          <VBox.margin>
             <Insets top="10.0" />
          </VBox.margin>
          <styleClass>
-            <String fx:value="b2"/>
-            <String fx:value="left-alight"/>
+            <String fx:value="cancel" />
+            <String fx:value="body" />
+            <String fx:value="round" />
          </styleClass>
       </Button>
-      <Button fx:id="save" mnemonicParsing="false" prefHeight="26.0" prefWidth="204.0" text="Save Changes and Exit">
+      <Button fx:id="save" alignment="BASELINE_LEFT" defaultButton="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="240.0" text="Save Changes and Exit">
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
@@ -38,7 +37,6 @@
             <String fx:value="blue3" />
             <String fx:value="body" />
             <String fx:value="round" />
-            <String fx:value="left-alight"/>
          </styleClass>
       </Button>
    </children>

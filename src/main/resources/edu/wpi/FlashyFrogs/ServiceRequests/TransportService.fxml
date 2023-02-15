@@ -42,7 +42,7 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" text="Information Technology" textFill="WHITE" wrapText="true">
+                  <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" text="Information Technology" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>

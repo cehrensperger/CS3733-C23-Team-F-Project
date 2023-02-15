@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
@@ -36,6 +37,9 @@ public class LoginAdministratorController implements IController {
   @FXML private TableColumn<UserLogin, Department> deptCol;
   @FXML private Button addNewUser;
   @FXML private Button back;
+
+  @FXML Text h1;
+  boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
@@ -65,6 +69,7 @@ public class LoginAdministratorController implements IController {
   }
 
   public void initialize() throws Exception {
+    h1.setVisible(false);
 
     // Clear old table before init
     userLoginTable.getItems().clear();
@@ -116,6 +121,12 @@ public class LoginAdministratorController implements IController {
 
   @Override
   public void help() {
-    // TODO: help for this page
+    if (!hDone) {
+      h1.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      hDone = false;
+    }
   }
 }

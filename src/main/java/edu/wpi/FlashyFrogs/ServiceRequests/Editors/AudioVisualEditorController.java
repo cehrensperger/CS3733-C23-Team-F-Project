@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -50,6 +51,7 @@ public class AudioVisualEditorController extends ServiceRequestController implem
   private Connection connection = null;
 
   private AudioVisual avReq = new AudioVisual();
+  PopOver popOver;
 
   public void setRequest(ServiceRequest serviceRequest) {
     avReq = (AudioVisual) serviceRequest;
@@ -79,6 +81,11 @@ public class AudioVisualEditorController extends ServiceRequestController implem
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
+  }
+
+  @Override
+  public void setPopOver(PopOver popOver) {
+    this.popOver = popOver;
   }
 
   public void updateFields() {
@@ -127,8 +134,7 @@ public class AudioVisualEditorController extends ServiceRequestController implem
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
+        popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
         errorMessage.setTextFill(Paint.valueOf("#b6000b"));
