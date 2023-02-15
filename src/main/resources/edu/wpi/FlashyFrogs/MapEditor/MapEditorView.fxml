@@ -123,7 +123,7 @@
                         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
                      </children>
                   </StackPane>
-                  <Button layoutX="166.0" layoutY="664.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="85.0" text="Save" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="166.0">
+                  <Button mnemonicParsing="false" onAction="#handleSave" prefWidth="85.0" text="Save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="150.0">
                      <font>
                         <Font size="16.0" />
                      </font>

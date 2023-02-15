@@ -20,7 +20,7 @@
 
         <property name="default_schema">production</property>
 
-        <property name="connection.pool_size">1</property>
+        <property name="connection.pool_size">3</property>
 
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
