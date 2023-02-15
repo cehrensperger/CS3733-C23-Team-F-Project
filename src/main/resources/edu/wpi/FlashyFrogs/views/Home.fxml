@@ -170,7 +170,7 @@
          </image>
       </ImageView>
       <SearchableComboBox fx:id="filterBox" layoutX="1171.0" layoutY="120.0" prefHeight="25.0" prefWidth="164.0" promptText="Filter" AnchorPane.rightAnchor="20.0" />
-      <TableView fx:id="moveTable" layoutX="243.0" layoutY="501.0" prefHeight="213.0" prefWidth="756.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="281.0">
+      <TableView fx:id="moveTable" editable="true" layoutX="243.0" layoutY="501.0" prefHeight="213.0" prefWidth="756.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="281.0">
          <columns>
             <TableColumn fx:id="nodeIDCol" prefWidth="144.0" text="Node ID" />
             <TableColumn fx:id="locationNameCol" prefWidth="331.0" text="Location Name" />
@@ -187,5 +187,6 @@
             <Font size="16.0" />
          </font>
       </MFXButton>
+      <MFXButton layoutX="921.0" layoutY="463.0" onAction="#handleEditMovesButton" text="Edit Moves" AnchorPane.bottomAnchor="231.8" AnchorPane.rightAnchor="281.8" />
    </children>
 </AnchorPane>
