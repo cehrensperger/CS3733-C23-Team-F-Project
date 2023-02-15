@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.PathFinding;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
@@ -12,7 +13,6 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +34,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class PathfindingController implements IController {
 
   @FXML private SearchableComboBox<String> startingBox;
@@ -222,30 +223,33 @@ public class PathfindingController implements IController {
 
         for (Node node : nodes) {
           // get the circle that represents the node from the mapController
-          Circle circle = mapController.getNodeToCircleMap().get(node);
 
-          if (circle != null) { // TODO: fix this garbage
+          if (node.getFloor().equals(mapController.getFloor())) {
+            Circle circle = mapController.getNodeToCircleMap().get(node);
+
             circle.setOpacity(0);
-          }
-          // get location name of the node in the path to check against the start and end locations
-          // getCurrentLocation() creates its own session but map already has one running,
-          // so we have to use that one
 
-          Collection<LocationName> locationNames =
-              node.getCurrentLocation(mapController.getMapSession());
-          for (int i = 0; i < locationNames.size(); i++) {
-            LocationName nodeLocation = ((List<LocationName>) locationNames).get(i);
+            // get location name of the node in the path to check against the start and end
+            // locations
+            // getCurrentLocation() creates its own session but map already has one running,
+            // so we have to use that one
 
-            // if the node location is null, don't attempt to check it against the start and end
-            // text
-            if (nodeLocation != null
-                && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
-              circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-              circle.setOpacity(1);
-            } else if (nodeLocation != null
-                && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
-              circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-              circle.setOpacity(1);
+            List<LocationName> locationNames =
+                node.getCurrentLocation(mapController.getMapSession());
+            for (int i = 0; i < locationNames.size(); i++) {
+              LocationName nodeLocation = locationNames.get(i);
+
+              // if the node location is null, don't attempt to check it against the start and end
+              // text
+              if (nodeLocation != null
+                  && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
+                circle.setFill(Paint.valueOf(Color.GREEN.toString()));
+                circle.setOpacity(1);
+              } else if (nodeLocation != null
+                  && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
+                circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+                circle.setOpacity(1);
+              }
             }
           }
         }
@@ -341,5 +345,10 @@ public class PathfindingController implements IController {
 
   public void onClose() {
     mapController.exit();
+  }
+
+  @Override
+  public void help() {
+    // TODO: help for this page
   }
 }

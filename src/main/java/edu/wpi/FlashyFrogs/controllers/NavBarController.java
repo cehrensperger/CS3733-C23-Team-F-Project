@@ -1,6 +1,9 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
+@GeneratedExclusion
 public class NavBarController {
 
   @FXML private AnchorPane anchorPane;
@@ -19,9 +23,10 @@ public class NavBarController {
   @FXML private Button helpButton;
   @FXML private Button srButton;
   @FXML private MenuButton menu;
+  @FXML private MFXButton closeButton;
 
   @FXML
-  /*public void initialize() {
+  public void initialize() {
     menu.setDisable(true);
     menu.hide();
     srButton.setOpacity(0);
@@ -32,11 +37,12 @@ public class NavBarController {
     helpButton.setDisable(true);
     line1.setOpacity(0);
     line2.setOpacity(0);
-  }*/
+  }
 
   public void logIn() {
     menu.show();
     menu.setDisable(false);
+    menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentuser().getFirstName());
     srButton.setOpacity(1);
     srButton.setDisable(false);
     homeButton.setOpacity(1);
@@ -45,6 +51,9 @@ public class NavBarController {
     helpButton.setDisable(false);
     line1.setOpacity(1);
     line2.setOpacity(1);
+    closeButton.setDisable(true);
+    closeButton.setOpacity(0);
+    closeButton.setMouseTransparent(true);
   }
 
   public AnchorPane getAnchorPane() {
@@ -68,7 +77,9 @@ public class NavBarController {
 
   @FXML
   private void handleHelpButton(ActionEvent event) throws IOException {
-    Fapp.setScene("views", "Help");
+    if (Fapp.iController != null) {
+      Fapp.iController.help();
+    }
   }
 
   @FXML

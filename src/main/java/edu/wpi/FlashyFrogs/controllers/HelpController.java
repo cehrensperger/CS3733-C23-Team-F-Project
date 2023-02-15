@@ -1,9 +1,11 @@
 package edu.wpi.FlashyFrogs.controllers;
 
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
+@GeneratedExclusion
 public class HelpController {
 
   @FXML private Text e1;
@@ -175,5 +177,9 @@ public class HelpController {
     e11.setText("To edit locations, click on them in the table.");
     e12.setText("To edit nodes, click on them on the map.");
     e13.setText("");
+  }
+
+  public void onClose() {
+    System.out.println("nothing to be done");
   }
 }

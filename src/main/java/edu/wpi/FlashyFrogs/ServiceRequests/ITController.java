@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.ComputerService;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
@@ -29,6 +30,7 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@GeneratedExclusion
 public class ITController implements IController {
 
   @FXML MFXButton AV;
@@ -148,7 +150,7 @@ public class ITController implements IController {
   }
 
   public void help() {
-    if (hDone = false) {
+    if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
       h3.setVisible(true);
@@ -157,8 +159,7 @@ public class ITController implements IController {
       h6.setVisible(true);
       h7.setVisible(true);
       hDone = true;
-    }
-    if (hDone = true) {
+    } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);

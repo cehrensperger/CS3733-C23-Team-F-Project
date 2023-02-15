@@ -16,6 +16,7 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@GeneratedExclusion
 public class LoadMapPageController implements IController {
   @FXML private Label nodesFileLabel;
   @FXML private Label edgesFileLabel;
@@ -116,4 +117,8 @@ public class LoadMapPageController implements IController {
   }
 
   public void onClose() {}
+
+  public void help() {
+    // TODO: help for this page
+  }
 }
