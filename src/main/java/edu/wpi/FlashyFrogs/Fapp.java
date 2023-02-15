@@ -42,29 +42,47 @@ public class Fapp extends Application {
     log.info("Starting Up");
   }
 
-  @Override
-  public void start(Stage primaryStage) throws IOException {
-    // Pre-fill the L2 Cache for the map, so use the map FXML
-    FXMLLoader fxmlLoader = new FXMLLoader(MapController.class.getResource("Map.fxml"));
-    fxmlLoader.load(); // Load the FXML
-    MapController mapController = fxmlLoader.getController(); // Load the map controller
+  /**
+   * Method to pre-load resources on program startup. Uses threads to improve resources without
+   * making the app take forever to launch
+   */
+  private void preloadResources() {
+    // Map loader
+    new Thread(
+            () -> {
+              // Pre-fill the L2 Cache for the map, so use the map FXML
+              FXMLLoader fxmlLoader = new FXMLLoader(MapController.class.getResource("Map.fxml"));
+              try {
+                fxmlLoader.load(); // Load the FXML
+              } catch (IOException e) {
+                throw new RuntimeException(e);
+              }
+              MapController mapController = fxmlLoader.getController(); // Load the map controller
 
-    // For each floor
-    for (Node.Floor floor : Node.Floor.values()) {
-      mapController.setFloor(floor); // Cache it
-    }
+              // For each floor
+              for (Node.Floor floor : Node.Floor.values()) {
+                mapController.setFloor(floor); // Cache it
+              }
 
-    Session session = mapController.getMapSession(); // Get the map session
+              mapController.exit(); // Exit the map controller
+            })
+        .start();
 
-    // Get all nodes
-    List<Node> nodes = session.createQuery("FROM Node", Node.class).getResultList();
+    // Pre-load the various pathfinding elements
+    new Thread(
+            () -> {
+              // Create a session
+              Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
 
-    // For each one
-    for (Node node : nodes) {
-      // Create a query (for the sake of caching it) that gets its neighbors
-      session
-          .createQuery(
-              """
+              // Get all nodes
+              List<Node> nodes = session.createQuery("FROM Node", Node.class).getResultList();
+
+              // For each one
+              for (Node node : nodes) {
+                // Create a query (for the sake of caching it) that gets its neighbors
+                session
+                    .createQuery(
+                        """
                                         SELECT node1
                                         FROM Edge
                                         WHERE node2 = :node
@@ -73,17 +91,22 @@ public class Fapp extends Application {
                                         FROM Edge
                                         WHERE node1 = :node
 """,
-              Node.class)
-          .setParameter("node", node)
-          .setCacheable(true)
-          .getResultList();
-    }
+                        Node.class)
+                    .setParameter("node", node)
+                    .setCacheable(true)
+                    .getResultList();
+              }
 
-    mapController.exit(); // Exit the map controller to free its resources
+              // End the session
+              session.close();
+            })
+        .start();
+  }
 
-    ResourceDictionary[] resources =
-        ResourceDictionary.values(); // Pre-cache the dictionary, for performance
-
+  @SneakyThrows
+  @Override
+  public void start(Stage primaryStage) throws IOException {
+    preloadResources();
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
