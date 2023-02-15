@@ -64,7 +64,8 @@ public class SecurityTest {
           emp,
           new Date(2023 - 1 - 31),
           new Date(2023 - 2 - 1),
-          ServiceRequest.Urgency.MODERATELY_URGENT);
+          ServiceRequest.Urgency.MODERATELY_URGENT,
+          Security.ThreatType.INTRUDER);
 
   /** Reset testSecurity after each test */
   @BeforeEach
@@ -82,9 +83,10 @@ public class SecurityTest {
     emp.setEmployeeType(User.EmployeeType.MEDICAL);
     assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
     testSecurity.setAssignedEmp(assignedEmp);
-    testSecurity.setDateOfIncident(new Date(2023 - 1 - 31));
+    testSecurity.setDate(new Date(2023 - 1 - 31));
     testSecurity.setDateOfSubmission(new Date(2023 - 2 - 1));
     testSecurity.setUrgency(ServiceRequest.Urgency.MODERATELY_URGENT);
+    testSecurity.setThreatType(Security.ThreatType.INTRUDER);
   }
 
   /** Tests setter for incidentReport */
@@ -113,7 +115,14 @@ public class SecurityTest {
   @Test
   public void setEmpTest() {
     Security test =
-        new Security("R", null, null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT);
+        new Security(
+            "R",
+            null,
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.NOT_URGENT,
+            Security.ThreatType.PATIENT);
     test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -125,7 +134,13 @@ public class SecurityTest {
   public void nullToNullEmployeeTest() {
     Security test =
         new Security(
-            "BSDFSDF", null, null, new Date(), new Date(), ServiceRequest.Urgency.VERY_URGENT);
+            "BSDFSDF",
+            null,
+            null,
+            new Date(),
+            new Date(),
+            ServiceRequest.Urgency.VERY_URGENT,
+            Security.ThreatType.WEAPON);
     test.setEmp(null);
 
     // Assert that the location is correct
@@ -151,18 +166,16 @@ public class SecurityTest {
   /** Starts the location as null, then sets it to be something */
   @Test
   public void setAssignedEmpTest() {
-    AudioVisual test =
-        new AudioVisual(
+    Security test =
+        new Security(
+            "there is a goose",
+            null,
             assignedEmp,
             new Date(),
             new Date(),
-            ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.BOTH,
-            "a",
-            "b",
-            "c",
-            null,
-            new Date());
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.INTRUDER);
+    test.setAssignedEmp(null);
     test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
@@ -172,18 +185,15 @@ public class SecurityTest {
   /** Starts the location name as null and sets it to null */
   @Test
   public void nullToNullAssignedEmployeeTest() {
-    AudioVisual test =
-        new AudioVisual(
-            null,
+    Security test =
+        new Security(
+            "incident",
+            new LocationName("b", LocationName.LocationType.INFO, "a"),
+            new User("b", "a", "b", User.EmployeeType.ADMIN, null),
             new Date(),
             new Date(),
-            ServiceRequest.Urgency.NOT_URGENT,
-            AudioVisual.AccommodationType.BOTH,
-            "b",
-            "as",
-            "qwer",
-            null,
-            new Date());
+            ServiceRequest.Urgency.VERY_URGENT,
+            Security.ThreatType.WEAPON);
     test.setAssignedEmp(null);
     test.setAssignedEmp(null);
 
@@ -195,8 +205,8 @@ public class SecurityTest {
   @Test
   void setDateOfIncident() {
     Date newDOI = new Date(2002 - 1 - 17);
-    testSecurity.setDateOfIncident(newDOI);
-    assertEquals(newDOI, testSecurity.getDateOfIncident());
+    testSecurity.setDate(newDOI);
+    assertEquals(newDOI, testSecurity.getDate());
   }
 
   /** Tests setter for dateOfSubmission */
@@ -238,6 +248,20 @@ public class SecurityTest {
     assertEquals(sanToString, testSecurity.getClass().getSimpleName() + "_" + testSecurity.getId());
   }
 
+  /** Checks to se if toString makes a string in the same format specified in Security.java */
+  @Test
+  void testThreatToString() {
+    Security.ThreatType none = Security.ThreatType.NONE;
+    Security.ThreatType intruder = Security.ThreatType.INTRUDER;
+    Security.ThreatType weapon = Security.ThreatType.WEAPON;
+    Security.ThreatType patient = Security.ThreatType.PATIENT;
+
+    assertEquals("No Threat", none.toString());
+    assertEquals("Intruder", intruder.toString());
+    assertEquals("Weapon", weapon.toString());
+    assertEquals("Patient", patient.toString());
+  }
+
   /**
    * Tests the equals and hash code methods for the AudioVisual class, ensures that fetched objects
    * are equal
@@ -261,7 +285,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.WEAPON);
     session.persist(sec);
 
     // Assert that the one thing in the database matches this
@@ -278,7 +303,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.WEAPON);
     session.persist(sec2); // Load sec2 into the DB, set its ID
 
     assertNotEquals(sec, sec2); // Assert sec and sec2 aren't equal
@@ -292,7 +318,8 @@ public class SecurityTest {
             emp,
             new Date(2022 - 5 - 26),
             new Date(2022 - 6 - 2),
-            ServiceRequest.Urgency.VERY_URGENT);
+            ServiceRequest.Urgency.VERY_URGENT,
+            Security.ThreatType.INTRUDER);
     session.persist(sec3); // Load sec3 into the DB, set its ID
 
     assertNotEquals(sec, sec3); // Assert sec and sec3 aren't equal
@@ -322,7 +349,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.NONE);
     session.persist(sec);
 
     // Remove the location
@@ -361,7 +389,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.PATIENT);
     session.persist(sec);
 
     // Change the location
@@ -402,7 +431,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.PATIENT);
     session.persist(sec);
 
     session.flush();
@@ -443,7 +473,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.PATIENT);
     session.persist(sec);
 
     // Change the enp
@@ -489,7 +520,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.PATIENT);
     session.persist(sec);
 
     // Commit stuff so we can access it later (it's persisted)
@@ -540,7 +572,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.NONE);
     sec.setAssignedEmp(emp);
     session.persist(sec);
 
@@ -586,7 +619,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.NONE);
     sec.setAssignedEmp(emp);
     session.persist(sec);
 
@@ -640,7 +674,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.WEAPON);
     sec.setAssignedEmp(emp);
     session.persist(sec);
 
@@ -687,7 +722,8 @@ public class SecurityTest {
             emp,
             new Date(2023 - 1 - 31),
             new Date(2023 - 2 - 1),
-            ServiceRequest.Urgency.MODERATELY_URGENT);
+            ServiceRequest.Urgency.MODERATELY_URGENT,
+            Security.ThreatType.NONE);
     sec.setAssignedEmp(emp);
     session.persist(sec);
 

@@ -1,17 +1,17 @@
 .root{
     -fx-background-color:#f1f1f1;
     -fx-text-fill: #000000;
-
+    -fx-font-family: "Inter";
 }
 
 .label{
     -fx-font-size: 12;
-    -fx-font-family: "Arial Black";
+    -fx-font-family: "Inter Black";
     -fx-text-fill: #000000;
 }
 
 .mfx-combo-box.combo{
-    -fx-background-color:#3079ed ;
+    -fx-background-color:#f1f1f1 ;
 }
 .mfx-text-field:hover{
     -fx-border-color:#3079ed;
@@ -40,7 +40,7 @@
     -fx-text-fill: #33343b ;
 }
 .menu-button:hover{
-    -fx-background-color:#0067b1;
+    -fx-background-color:#F6BD38;
 }
 .menu-bar{
     -fx-background-color:#012d5a;
@@ -96,7 +96,7 @@
 }
 .table-row-cell:hover {
     -fx-background-color: #f1f1f1;
-        -fx-text-background-color: #012d5a;
+    -fx-text-background-color: #012d5a;
 }
 .table-view .virtual-flow .scroll-bar:vertical .thumb{
     -fx-background-color:  linear-gradient(to bottom, #0067b1, #012d5a);

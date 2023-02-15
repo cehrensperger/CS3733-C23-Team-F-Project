@@ -1,13 +1,19 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.AudioVisual;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.Sanitation;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -24,26 +30,18 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class HoldAVController implements IController {
+@GeneratedExclusion
+public class SanitationController implements IController {
 
-  @FXML MFXButton clear;
-  @FXML MFXButton submit;
-  @FXML MFXButton credits;
-  @FXML MFXButton back;
   @FXML MFXButton AV;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox type;
-  @FXML TextField device;
-  @FXML TextField model;
-  @FXML TextField reason;
-  @FXML DatePicker date;
-  @FXML TextField time;
-  @FXML SearchableComboBox urgency;
-  @FXML TextField description;
+  @FXML MFXButton credits;
+  @FXML MFXButton back;
+  @FXML MFXButton clear;
+  @FXML MFXButton submit;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -52,12 +50,15 @@ public class HoldAVController implements IController {
   @FXML Text h5;
   @FXML Text h6;
   @FXML Text h7;
-  @FXML Text h8;
-  @FXML Text h9;
-
-  @FXML private Label errorMessage;
-
+  @FXML SearchableComboBox<String> locationBox;
+  @FXML SearchableComboBox<String> sanitationType;
+  @FXML DatePicker date;
+  @FXML SearchableComboBox<String> urgency;
+  @FXML SearchableComboBox<String> isolation;
+  @FXML SearchableComboBox<String> biohazard;
+  @FXML TextField description;
   boolean hDone = false;
+  @FXML private Label errorMessage;
   private Connection connection = null;
 
   public void initialize() {
@@ -68,8 +69,6 @@ public class HoldAVController implements IController {
     h5.setVisible(false);
     h6.setVisible(false);
     h7.setVisible(false);
-    h8.setVisible(false);
-    h9.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
@@ -79,55 +78,66 @@ public class HoldAVController implements IController {
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
-    location.setItems(observableList);
-    type.getItems()
-        .addAll(
-            "Lobby", "Waiting Room", "Patient Room", "Hallway", "Stairway", "Elevator", "Other");
+    locationBox.setItems(observableList);
+    sanitationType.getItems().addAll("Sweeping", "Mopping", "Sanitizing");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    isolation.getItems().addAll("Yes", "No");
+    biohazard.getItems().addAll("Yes", "No");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
+
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
     try {
+      String[] parts;
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
-      String timeString = time.getText().toUpperCase().replace(" ", "_");
 
-      // check
-      if (location.getValue().toString().equals("")
-          || type.getValue().toString().equals("")
-          || device.getText().equals("")
-          || model.getText().equals("")
-          || reason.getText().equals("")
+      if (locationBox.getValue().toString().equals("")
+          || sanitationType.getValue().toString().equals("")
           || date.getValue().toString().equals("")
+          || isolation.getValue().toString().equals("")
+          || biohazard.getValue().toString().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
 
-      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      // String requestTypeEnumString = requestTypeDropDown.getText().toUpperCase();
 
-      AudioVisual audioVisual = new AudioVisual();
-      // this needs to be updated when database is fixed
-      /*audioVisual.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      audioVisual.setLocationType(type.getValue().toString());
-      audioVisual.setDeviceType(device.getText());
-      audioVisual.setDeviceModel(model.getText());
-      audioVisual.setReason(reason.getText());
-      audioVisual.setDateOfIncident(dateNeeded);
-      audioVisual.setTime(time.getText());
-      audioVisual.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      audioVisual.setDescription(reason.getText());*/
+      Date dateOfIncident =
+          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+      String sanitationTypeEnumString =
+          sanitationType.getValue().toString().toUpperCase().replace(" ", "_");
+      boolean isIsolation = false;
+      if (isolation.getValue().toString().equals("Yes")) {
+        isIsolation = true;
+      }
+      String bioTypeEnumString = biohazard.getValue().toString().toUpperCase().replace(" ", "_");
+
+      Sanitation sanitationRequest = new Sanitation();
+      sanitationRequest.setLocation(
+          session.find(LocationName.class, locationBox.getValue().toString()));
+      sanitationRequest.setType(Sanitation.SanitationType.valueOf(sanitationTypeEnumString));
+      sanitationRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
+      sanitationRequest.setDate(dateOfIncident);
+      sanitationRequest.setDateOfSubmission(Date.from(Instant.now()));
+      sanitationRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
+      sanitationRequest.setIsolation(isIsolation);
+      sanitationRequest.setBiohazard(Sanitation.BiohazardLevel.valueOf(bioTypeEnumString));
+      sanitationRequest.setDescription(description.getText());
       try {
-        session.persist(audioVisual);
+        session.persist(sanitationRequest);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
+        errorMessage.setTextFill(Paint.valueOf("#012D5A"));
         errorMessage.setText("Successfully submitted.");
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
+        errorMessage.setTextFill(Paint.valueOf("#b6000b"));
         errorMessage.setText("Please fill all fields.");
         session.close();
       }
@@ -140,13 +150,12 @@ public class HoldAVController implements IController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    location.valueProperty().set(null);
-    type.valueProperty().set(null);
-    device.setText("");
-    model.setText("");
+    locationBox.valueProperty().set(null);
+    sanitationType.valueProperty().set(null);
     date.valueProperty().set(null);
-    time.setText("");
     urgency.valueProperty().set(null);
+    isolation.valueProperty().set(null);
+    biohazard.valueProperty().set(null);
     description.setText("");
   }
 
@@ -159,8 +168,6 @@ public class HoldAVController implements IController {
       h5.setVisible(true);
       h6.setVisible(true);
       h7.setVisible(true);
-      h8.setVisible(true);
-      h9.setVisible(true);
       hDone = true;
     }
     if (hDone = true) {
@@ -171,39 +178,38 @@ public class HoldAVController implements IController {
       h5.setVisible(false);
       h6.setVisible(false);
       h7.setVisible(false);
-      h8.setVisible(false);
-      h9.setVisible(false);
       hDone = false;
     }
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AudioVisualService");
+    Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ITService");
+    Fapp.setScene("ServiceRequests", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "TransportService");
+    Fapp.setScene("ServiceRequests", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SanitationService");
+    Fapp.setScene("ServiceRequests", "SanitationService");
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SecurityService");
+    Fapp.setScene("ServiceRequests", "SecurityService");
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Credits");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
   }
 
+  @Override
   public void onClose() {}
 }

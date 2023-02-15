@@ -2,8 +2,8 @@ package edu.wpi.FlashyFrogs.PathFinding;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
-import edu.wpi.FlashyFrogs.Map.NodeLocationNamePopUpController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -11,14 +11,11 @@ import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import edu.wpi.FlashyFrogs.controllers.NextFloorPopupController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -37,6 +34,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class PathfindingController implements IController {
 
   @FXML private SearchableComboBox<String> startingBox;
@@ -45,11 +43,11 @@ public class PathfindingController implements IController {
   @FXML private AnchorPane mapPane;
   @FXML private Label floorSelector;
   @FXML private MFXButton mapEditorButton;
+  @FXML private MFXButton floorSelectorButton;
+
   //  @FXML private Label error;
 
   private MapController mapController;
-  AtomicReference<PopOver> mapPopOver =
-      new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
   ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>(Node.Floor.L1);
 
@@ -135,7 +133,6 @@ public class PathfindingController implements IController {
   }
 
   public void handleBack() throws IOException {
-
     Fapp.handleBack();
   }
 
@@ -223,66 +220,35 @@ public class PathfindingController implements IController {
             line.setStrokeWidth(5);
           }
         }
-        // nodes = (LinkedList<Node>)nodes;
-        for (int i = 0; i < nodes.size(); i++) {
-          Node node = nodes.get(i);
+
+        for (Node node : nodes) {
           // get the circle that represents the node from the mapController
-          Circle circle = mapController.getNodeToCircleMap().get(node);
 
-          if (circle != null) { // TODO: fix this garbage
+          if (node.getFloor().equals(mapController.getFloor())) {
+            Circle circle = mapController.getNodeToCircleMap().get(node);
+
             circle.setOpacity(0);
-
-            // set hover behavior for each circle
-            // TODO: change this to click behavior like in the map data editor
 
             // get location name of the node in the path to check against the start and end
             // locations
             // getCurrentLocation() creates its own session but map already has one running,
             // so we have to use that one
 
-            Collection<LocationName> locationNames =
+            List<LocationName> locationNames =
                 node.getCurrentLocation(mapController.getMapSession());
-            for (int j = 0; j < locationNames.size(); j++) {
-              LocationName nodeLocation = ((List<LocationName>) locationNames).get(j);
-              LocationName.LocationType locationType = nodeLocation.getLocationType();
+            for (int i = 0; i < locationNames.size(); i++) {
+              LocationName nodeLocation = locationNames.get(i);
+
               // if the node location is null, don't attempt to check it against the start and end
               // text
-              if (nodeLocation != null && i == nodes.size() - 1) {
+              if (nodeLocation != null
+                  && nodeLocation.toString().equals(destinationBox.valueProperty().get())) {
                 circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-                setHoverBehavior(circle, node);
-                circle.setOpacity(1);
-              } else if (nodeLocation != null && i == 0) {
-                circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-                setHoverBehavior(circle, node);
                 circle.setOpacity(1);
               } else if (nodeLocation != null
-                  && locationType.equals(LocationName.LocationType.ELEV)) {
+                  && nodeLocation.toString().equals(startingBox.valueProperty().get())) {
                 circle.setFill(Paint.valueOf(Color.BLUE.toString()));
                 circle.setOpacity(1);
-                // node is an elevator and not the end node
-
-                // set circle on hover to a popup that gives the
-                // user the option to go to the floor that the next node is at
-
-                String nextFloor = nodes.get(i + 1).getFloor().floorNum;
-
-                if (!nextFloor.equals(this.floorProperty.getValue().toString())) {
-                  FXMLLoader loader =
-                      new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
-                  PopOver goToNext = new PopOver(loader.load());
-                  NextFloorPopupController controller = loader.getController();
-                  controller.setPathfindingController(this);
-                  controller.setMessage("Go to floor: " + nextFloor + "?");
-                  goToNext.show(circle);
-                  goToNext.setAutoHide(false);
-                  goToNext.setAutoFix(false);
-                  goToNext.detach();
-                  goToNext.setX(250);
-                  goToNext.setY(20);
-                  //                  goToNext.setAnchorX(circle.getCenterX());
-                  //                  goToNext.setAnchorY(circle.getCenterY());
-                  goToNext.setTitle("");
-                }
               }
             }
           }
@@ -314,42 +280,8 @@ public class PathfindingController implements IController {
     }
   }
 
-  private void setHoverBehavior(Circle circle, Node node) {
-    circle
-        .hoverProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              // If we're no longer hovering and the pop-over exists, delete it. We will
-              // either create a new one
-              // or, keep it deleted
-              if (mapPopOver.get() != null && (!mapPopOver.get().isFocused() || newValue)) {
-                mapPopOver.get().hide(); // Hide it
-                mapPopOver.set(null); // And delete it (set it to null)
-              }
-
-              // If we should draw a new pop-up
-              if (newValue) {
-                // Get the node info in FXML form
-                FXMLLoader nodeLocationNamePopUp =
-                    new FXMLLoader(Fapp.class.getResource("Map/NodeLocationNamePopUp.fxml"));
-
-                try {
-                  // Try creating the pop-over
-                  mapPopOver.set(new PopOver(nodeLocationNamePopUp.load()));
-                } catch (IOException e) {
-                  throw new RuntimeException(e); // If it fails, throw an exception
-                }
-                NodeLocationNamePopUpController controller = nodeLocationNamePopUp.getController();
-                controller.setNode(node, mapController.getMapSession());
-
-                mapPopOver.get().show(circle); // Show the pop-over
-              }
-            });
-  }
-
   @FXML
   public void openMapEditor() {
-    mapController.exit();
     Fapp.setScene("MapEditor", "MapEditorView");
   }
 
@@ -391,6 +323,7 @@ public class PathfindingController implements IController {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
+    popOver.setTitle("");
     FloorSelectorController floorPopup = newLoad.getController();
     floorPopup.setFloorProperty(this.floorProperty);
 
@@ -398,16 +331,19 @@ public class PathfindingController implements IController {
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
+
+    floorSelectorButton.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                floorSelectorButton.setDisable(false);
+              }
+            });
   }
 
   public void onClose() {
     mapController.exit();
-  }
-
-  public void setFloor(String nextFloor) throws IOException {
-    nextFloor = nextFloor.substring(0, nextFloor.length() - 1);
-    String[] parts = nextFloor.split(" ");
-    // System.out.println(parts[parts.length - 1]);
-    floorProperty.setValue(Objects.requireNonNull(Node.Floor.getEnum(parts[parts.length - 1])));
   }
 }

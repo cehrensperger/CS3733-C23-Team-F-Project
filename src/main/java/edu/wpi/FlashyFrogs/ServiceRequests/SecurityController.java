@@ -1,19 +1,27 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.ComputerService;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.Security;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
-import java.awt.*;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
@@ -22,34 +30,28 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class HoldITController {
+@GeneratedExclusion
+public class SecurityController implements IController {
 
+  @FXML MFXButton clear;
+  @FXML MFXButton submit;
+  @FXML MFXButton credits;
+  @FXML MFXButton back;
   @FXML MFXButton AV;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
-  @FXML MFXButton credits;
-  @FXML MFXButton back;
-  @FXML MFXButton clear;
-  @FXML MFXButton submit;
-  @FXML TextField number;
-  @FXML SearchableComboBox location;
-  @FXML SearchableComboBox device;
-  @FXML SearchableComboBox repair;
-  @FXML SearchableComboBox urgency;
-
-  @FXML TextField type;
-  @FXML TextField model;
-  @FXML TextField description;
   @FXML Text h1;
   @FXML Text h2;
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
-  @FXML Text h6;
-  @FXML Text h7;
-  @FXML Text h8;
+  @FXML SearchableComboBox<String> locationBox;
+  @FXML SearchableComboBox<String> threat;
+  @FXML SearchableComboBox<String> urgency;
+  @FXML DatePicker date;
+  @FXML TextField description;
   @FXML private Label errorMessage;
 
   boolean hDone = false;
@@ -61,9 +63,6 @@ public class HoldITController {
     h3.setVisible(false);
     h4.setVisible(false);
     h5.setVisible(false);
-    h6.setVisible(false);
-    h7.setVisible(false);
-    h8.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<String> objects =
@@ -73,10 +72,10 @@ public class HoldITController {
 
     ObservableList<String> observableList = FXCollections.observableList(objects);
 
-    location.setItems(observableList);
-    device.getItems().addAll("Yes", "No");
-    repair.getItems().addAll("Yes", "No");
+    locationBox.setItems(observableList);
+    threat.getItems().addAll("No Threat", "Intruder", "Weapon", "Patient");
     urgency.getItems().addAll("Very Urgent", "Moderately Urgent", "Not Urgent");
+    session.close();
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -87,28 +86,30 @@ public class HoldITController {
       String urgencyString = urgency.getValue().toString().toUpperCase().replace(" ", "_");
 
       // check
-      if (number.getText().equals("")
-          || location.getValue().toString().equals("")
-          || device.getValue().toString().equals("")
-          || repair.getValue().toString().equals("")
-          || type.getText().equals("")
-          || model.getText().equals("")
+      if (locationBox.getValue().toString().equals("")
+          || threat.getValue().toString().equals("")
+          || date.getValue().toString().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
 
-      ComputerService informationTechnology = new ComputerService();
-      // this needs to be updated when database is fixed
-      /*informationTechnology.setNumber(number.getText());
-      informationTechnology.setLocation(session.find(LocationName.class, location.getValue().toString()));
-      informationTechnology.setNewDevice(device.getValue().toString());
-      informationTechnology.setRepair(repair.getValue().toString());
-      informationTechnology.setDeviceType(type.getText()) ;
-      informationTechnology.setModel(model.getText());
-      informationTechnology.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
-      informationTechnology.setDescription(description.getText());*/
+      Date dateOfRequest =
+          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+      String threatTypeEnumString = threat.getValue().toString().toUpperCase().replace(" ", "_");
+
+      Security securityRequest = new Security();
+
+      securityRequest.setIncidentReport(description.getText());
+      securityRequest.setLocation(
+          session.find(LocationName.class, locationBox.getValue().toString()));
+      securityRequest.setEmp(CurrentUserEntity.CURRENT_USER.getCurrentuser());
+      securityRequest.setThreatType(Security.ThreatType.valueOf(threatTypeEnumString));
+      securityRequest.setDate(dateOfRequest);
+      securityRequest.setDateOfSubmission(Date.from(Instant.now()));
+      securityRequest.setUrgency(ServiceRequest.Urgency.valueOf(urgencyString));
       try {
-        session.persist(informationTechnology);
+        session.persist(securityRequest);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
@@ -129,13 +130,10 @@ public class HoldITController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    number.setText("");
-    location.valueProperty().set(null);
-    device.valueProperty().set(null);
-    repair.valueProperty().set(null);
-    type.setText("");
-    model.setText("");
+    locationBox.valueProperty().set(null);
+    threat.valueProperty().set(null);
     urgency.valueProperty().set(null);
+    date.valueProperty().set(null);
     description.setText("");
   }
 
@@ -146,9 +144,6 @@ public class HoldITController {
       h3.setVisible(true);
       h4.setVisible(true);
       h5.setVisible(true);
-      h6.setVisible(true);
-      h7.setVisible(true);
-      h8.setVisible(true);
       hDone = true;
     }
     if (hDone = true) {
@@ -157,40 +152,38 @@ public class HoldITController {
       h3.setVisible(false);
       h4.setVisible(false);
       h5.setVisible(false);
-      h6.setVisible(false);
-      h7.setVisible(false);
-      h8.setVisible(false);
       hDone = false;
     }
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "AudioVisualService");
+    Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "ITService");
+    Fapp.setScene("ServiceRequests", "ITService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "TransportService");
+    Fapp.setScene("ServiceRequests", "TransportService");
   }
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SanitationService");
+    Fapp.setScene("ServiceRequests", "SanitationService");
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "SecurityService");
+    Fapp.setScene("ServiceRequests", "SecurityService");
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Credits");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
   }
 
+  @Override
   public void onClose() {}
 }

@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HoldSanitationController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.SanitationController">
     <children>
         <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
@@ -120,14 +121,6 @@
                                     <Insets top="48.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of location needs sanitation" textAlignment="RIGHT" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="32.0" />
-                                 </VBox.margin>
-                              </Text>
                            </children>
                         </VBox>
                                 <VBox prefHeight="400.0" prefWidth="200.0">
@@ -140,12 +133,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox fx:id="location" promptText="Location of Request" style="-fx-background-color: #F1F1F1;">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </SearchableComboBox>
-                                        <SearchableComboBox fx:id="type" promptText="Location Type">
+                                        <SearchableComboBox fx:id="locationBox" promptText="Location of Request" style="-fx-background-color: #F1F1F1;">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
@@ -172,14 +160,9 @@
                                             </VBox.margin>
                                         </SearchableComboBox>
                                         <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date Preference" />
-                                        <TextField fx:id="time" promptText="Time Preference (00:00 AM/PM)">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" top="18.0" />
-                                            </VBox.margin>
-                                        </TextField>
                                         <SearchableComboBox fx:id="urgency" promptText="Urgency">
                                             <VBox.margin>
-                                                <Insets bottom="18.0" />
+                                                <Insets bottom="18.0" top="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
                               <SearchableComboBox fx:id="isolation" promptText="Isolation/Precaution">
@@ -193,7 +176,7 @@
                                  </VBox.margin>
                               </SearchableComboBox>
                               <TextField fx:id="description" prefWidth="200.0" text="Description of Request" />
-                                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                        <HBox alignment="TOP_CENTER" prefHeight="19.0" prefWidth="200.0">
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                     <children>
@@ -215,9 +198,21 @@
                                                 </HBox>
                                             </children>
                                             <VBox.margin>
-                                                <Insets top="144.0" />
+                                                <Insets top="198.0" />
                                             </VBox.margin>
                                         </HBox>
+                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="errorMessage">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
                                     </children>
                                     <HBox.margin>
                                         <Insets left="100.0" />
@@ -227,7 +222,7 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of sanitation is needed" wrappingWidth="185.0">
+                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of sanitation is needed" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -235,7 +230,7 @@
                                     <Insets top="50.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific date the sanitation will be needed" wrappingWidth="185.0">
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific date the sanitation will be needed" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -243,7 +238,7 @@
                                     <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a specific time the sanitation will be needed" wrappingWidth="185.0">
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the sanitation request" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -251,15 +246,7 @@
                                     <Insets top="20.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of the sanitation request" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are there any isolation or precautionary measures that need to be taken during this sanitatino" wrappingWidth="185.0">
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Are there any isolation or precautionary measures that need to be taken during this sanitatino" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -267,7 +254,7 @@
                                     <Insets top="14.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h8" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a biohazard associated with this sanitation" wrappingWidth="185.0">
+                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Is there a biohazard associated with this sanitation" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -275,7 +262,7 @@
                                     <Insets top="14.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h9" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the sanitation being requested" wrappingWidth="185.0">
+                              <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the sanitation being requested" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>

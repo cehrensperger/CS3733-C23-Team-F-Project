@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -37,11 +38,13 @@ import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
+@GeneratedExclusion
 public class MapEditorController implements IController {
   public AnchorPane mapPane;
   @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
+  @FXML private MFXButton floorSelectorButton;
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
@@ -118,7 +121,6 @@ public class MapEditorController implements IController {
     Pane map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(0, map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
-    mapController.setFloor(Node.Floor.L1);
 
     // make the anchor pane resizable
     AnchorPane.setTopAnchor(map, 0.0);
@@ -136,6 +138,7 @@ public class MapEditorController implements IController {
     mapController.setNodeCreation(
         (node, circle) -> {
           // Set the on-click processor
+
           circle.setOnMouseClicked(
               (event) -> {
                 // If we're no longer hovering and the pop over exists, delete it. We will
@@ -177,7 +180,7 @@ public class MapEditorController implements IController {
         });
 
     floorSelector.setText("Floor " + Node.Floor.L1.name());
-
+    mapController.setFloor(Node.Floor.L1);
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorProperty.addListener(
         (observable, oldValue, newValue) -> {
@@ -382,7 +385,7 @@ public class MapEditorController implements IController {
             (Objects.requireNonNull(
                     Fapp.isLightMode()
                         ? // if light mode
-                        Fapp.class.getResource("views/light-mode.css")
+                        Fapp.class.getResource("views/Css.css")
                         : // Set light mode
                         Fapp.class.getResource("views/dark-mode.css"))) // Otherwise, dark
                 .toExternalForm());
@@ -430,6 +433,7 @@ public class MapEditorController implements IController {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
+    popOver.setTitle("");
     FloorSelectorController floorPopup = newLoad.getController();
     floorPopup.setFloorProperty(this.floorProperty);
 
@@ -437,6 +441,16 @@ public class MapEditorController implements IController {
     javafx.scene.Node node =
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
+
+    floorSelectorButton.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                floorSelectorButton.setDisable(false);
+              }
+            });
   }
 
   public void onClose() {

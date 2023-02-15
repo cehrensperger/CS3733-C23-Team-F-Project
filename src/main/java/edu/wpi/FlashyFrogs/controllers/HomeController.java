@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
@@ -24,6 +25,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class HomeController implements IController {
   @FXML protected TableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected TableColumn<ServiceRequest, String> requestIDCol;
@@ -45,18 +47,20 @@ public class HomeController implements IController {
 
   @FXML protected SearchableComboBox<String> filterBox;
 
-  ObjectProperty<String> filterProperty = new SimpleObjectProperty<>("");
+  ObjectProperty<String> filterProperty = new SimpleObjectProperty<>("All");
 
   public void initialize() {
     Fapp.resetStack();
 
     List<String> filters = new ArrayList<String>();
+    filters.add("All");
     filters.add("AudioVisual");
     filters.add("ComputerService");
     filters.add("InternalTransport");
     filters.add("Sanitation");
     filters.add("Security");
     filterBox.setItems(FXCollections.observableList(filters));
+    filterBox.setValue("All");
 
     // need to be the names of the fields
     requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
@@ -70,11 +74,6 @@ public class HomeController implements IController {
     nodeIDCol.setCellValueFactory(new PropertyValueFactory<>("node"));
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("location"));
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
-
-    Session session = CONNECTION.getSessionFactory().openSession();
-
-    // todo: remove when login is implemented
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(session.find(User.class, 2));
 
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
@@ -92,6 +91,7 @@ public class HomeController implements IController {
 
       tableText2.setText("Future Moves");
     }
+    Session session = CONNECTION.getSessionFactory().openSession();
 
     // FILL TABLES
     List<ServiceRequest> serviceRequests;
@@ -120,26 +120,44 @@ public class HomeController implements IController {
     // refill based on filter
     filterProperty.addListener(
         (observable, oldValue, newValue) -> {
-          if (!isAdmin) {
-            requestTable.setItems(
-                FXCollections.observableList(
-                    session
-                        .createQuery(
-                            "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
-                            ServiceRequest.class)
-                        .setParameter("type", newValue)
-                        .setParameter("emp", currentUser)
-                        .getResultList()));
+          if (newValue.equals("All")) {
+            if (!isAdmin) {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
+                              ServiceRequest.class)
+                          .setParameter("type", newValue)
+                          .setParameter("emp", currentUser)
+                          .getResultList()));
+            } else {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
+                              ServiceRequest.class)
+                          .setParameter("type", newValue)
+                          .getResultList()));
+            }
           } else {
-            requestTable.setItems(
-                FXCollections.observableList(
-                    session
-                        .createQuery(
-                            "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
-                            ServiceRequest.class)
-                        .setParameter("type", newValue)
-                        .setParameter("emp", currentUser)
-                        .getResultList()));
+            if (!isAdmin) {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery(
+                              "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
+                              ServiceRequest.class)
+                          .setParameter("emp", currentUser)
+                          .getResultList()));
+            } else {
+              requestTable.setItems(
+                  FXCollections.observableList(
+                      session
+                          .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
+                          .getResultList()));
+            }
           }
         });
     session.close();
@@ -241,7 +259,7 @@ public class HomeController implements IController {
     //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
     //    rootPane
     //        .getStylesheets()
-    //        .add("edu/wpi/FlashyFrogs/views/light-mode.css"); // add the light mode CSS
+    //        .add("edu/wpi/FlashyFrogs/views/Css.css"); // add the light mode CSS
     //    AboutText.setBlendMode(
     //        BlendMode.DARKEN); // change the Blend Mode on the text box describing the hospital,
     // as the
@@ -310,4 +328,8 @@ public class HomeController implements IController {
   public void manageAnnouncements(ActionEvent event) throws IOException {}
 
   public void onClose() {}
+
+  public void viewLogins(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("Accounts", "LoginAdministrator");
+  }
 }

@@ -3,35 +3,45 @@ package edu.wpi.FlashyFrogs.Accounts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.Department;
+import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
 import java.util.List;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
+@GeneratedExclusion
 public class LoginAdministratorController implements IController {
 
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
-  @FXML private TableColumn<UserLogin, String> userName;
-  @FXML private TableColumn<UserLogin, String> password;
+  @FXML private TableColumn<UserLogin, Number> idCol;
+  @FXML private TableColumn<UserLogin, String> userNameCol;
+  @FXML private TableColumn<UserLogin, String> nameCol;
+  @FXML private TableColumn<UserLogin, User.EmployeeType> empTypeCol;
+  @FXML private TableColumn<UserLogin, Department> deptCol;
+  @FXML private Button addNewUser;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Login");
+    Fapp.handleBack();
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../views/NewUser.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../Accounts/NewUser.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     NewUserController newUser = newLoad.getController();
     newUser.setPopOver(popOver);
@@ -39,6 +49,15 @@ public class LoginAdministratorController implements IController {
     popOver.detach();
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
+    addNewUser.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                addNewUser.setDisable(false);
+              }
+            });
   }
 
   public void initialize() throws Exception {
@@ -47,8 +66,28 @@ public class LoginAdministratorController implements IController {
     userLoginTable.getItems().clear();
     // set columns userlogin
 
-    userName.setCellValueFactory(new PropertyValueFactory<>("userName"));
-    password.setCellValueFactory(new PropertyValueFactory<>("hash"));
+    idCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleLongProperty(user.getId());
+        });
+    userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+    nameCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleStringProperty(
+              user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
+        });
+    empTypeCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleObjectProperty(user.getEmployeeType());
+        });
+    deptCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleObjectProperty(user.getDepartment());
+        });
 
     // create logIn table
     // open session
@@ -68,6 +107,9 @@ public class LoginAdministratorController implements IController {
       throw e;
     }
   }
-
+  // s.user.id, s.userName, "
+  //                      + "s.user.firstName || ' ' || s.user.middleName || ' ' || s.user.lastName
+  // AS Name, "
+  //                      + "s.user.employeeType, s.user.department
   public void onClose() {}
 }
