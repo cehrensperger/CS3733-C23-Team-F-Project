@@ -77,12 +77,20 @@ public class NavBarController {
 
   @FXML
   private void handleHelpButton(ActionEvent event) throws IOException {
-    Fapp.setScene("views", "Help");
+    if (Fapp.iController != null) {
+      Fapp.iController.help();
+    }
   }
 
   @FXML
   private void closeApp() {
     Stage stage = (Stage) anchorPane.getScene().getWindow();
     stage.close();
+  }
+
+  @FXML
+  private void signOut() {
+    CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
+    Fapp.setScene("Accounts", "Login");
   }
 }

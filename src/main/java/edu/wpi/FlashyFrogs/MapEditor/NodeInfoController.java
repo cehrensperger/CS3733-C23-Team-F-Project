@@ -28,8 +28,8 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class NodeInfoController {
 
+  @FXML private ColumnConstraints secondColumn;
   @FXML private ColumnConstraints thirdColumn;
-  @FXML private ColumnConstraints fourthColumn;
 
   @FXML private Text nodeLocationText;
   @FXML private Text secondLocation;
@@ -169,6 +169,7 @@ public class NodeInfoController {
 
       if (!locations.isEmpty()) { // If the location exists
         if (locations.size() < 2) {
+
           locationPane2.setVisible(false); // hide the location frame2
           thirdColumn.setMaxWidth(0); // hide the columns
           secondLocation.setVisible(false); // hide the 2nd location name
@@ -202,9 +203,8 @@ public class NodeInfoController {
             }, // Handle location updates
             false); // On delete clear
         if (locations.size() > 1) { // if node has more than 1 location
-          System.out.println("Im here");
           FXMLLoader locationNameLoader2 =
-              new FXMLLoader(getClass().getResource("LocationInfo.fxml"));
+              new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
           // Load the file and set it to be on the location panes children
           locationPane2.getChildren().add(locationNameLoader2.load());
 
@@ -235,8 +235,8 @@ public class NodeInfoController {
       locationPane2.setVisible(false); // hide the location frame2
       locationPane.setVisible(false); // hide the location frame
       secondLocation.setVisible(false); // hide the 2nd location name
+      secondColumn.setMaxWidth(0); // hide the columns
       thirdColumn.setMaxWidth(0); // hide the columns
-      fourthColumn.setMaxWidth(0); // hide the other one
     }
 
     // Set the callback for the delete button

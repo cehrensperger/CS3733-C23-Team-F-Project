@@ -36,6 +36,7 @@
         <!-- Drop and re-create the database schema on startup -->
 
         <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.jdbc.batch_size">700</property>
 
         <mapping class="edu.wpi.FlashyFrogs.ORM.Edge"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Move"/>

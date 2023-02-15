@@ -81,7 +81,7 @@ public class MapEditorController implements IController {
 
                 // Load the location name info view
                 FXMLLoader locationNameLoader =
-                    new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
+                    new FXMLLoader(getClass().getResource("LocationNameNormal.fxml"));
 
                 // Load the resource
                 try {
@@ -271,7 +271,7 @@ public class MapEditorController implements IController {
   @SneakyThrows
   @FXML
   private void popupLocation(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("LocationNameNormal.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the new popover
 
     LocationNameInfoController addLoc = newLoad.getController(); // get the controller
@@ -462,5 +462,10 @@ public class MapEditorController implements IController {
 
   public void onClose() {
     mapController.exit();
+  }
+
+  @Override
+  public void help() {
+    // TODO: help for this page
   }
 }

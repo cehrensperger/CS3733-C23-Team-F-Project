@@ -160,7 +160,7 @@ public class SanitationController implements IController {
   }
 
   public void help() {
-    if (hDone = false) {
+    if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
       h3.setVisible(true);
@@ -169,8 +169,7 @@ public class SanitationController implements IController {
       h6.setVisible(true);
       h7.setVisible(true);
       hDone = true;
-    }
-    if (hDone = true) {
+    } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);

@@ -367,7 +367,18 @@ public class PathfindingController implements IController {
             });
   }
 
+  public void setFloor(String nextFloor) {
+    nextFloor = nextFloor.substring(0, nextFloor.length() - 1);
+    String[] parts = nextFloor.split(" ");
+    floorProperty.setValue(Objects.requireNonNull(Node.Floor.getEnum(parts[parts.length - 1])));
+  }
+
   public void onClose() {
     mapController.exit();
+  }
+
+  @Override
+  public void help() {
+    // TODO: help for this page
   }
 }
