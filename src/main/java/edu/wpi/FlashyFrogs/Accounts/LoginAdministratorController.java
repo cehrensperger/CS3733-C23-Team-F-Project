@@ -112,4 +112,9 @@ public class LoginAdministratorController implements IController {
   // AS Name, "
   //                      + "s.user.employeeType, s.user.department
   public void onClose() {}
+
+  @Override
+  public void help() {
+    // TODO: help for this page
+  }
 }

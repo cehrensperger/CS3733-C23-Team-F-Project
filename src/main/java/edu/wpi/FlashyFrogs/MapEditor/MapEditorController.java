@@ -456,4 +456,9 @@ public class MapEditorController implements IController {
   public void onClose() {
     mapController.exit();
   }
+
+  @Override
+  public void help() {
+    // TODO: help for this page
+  }
 }

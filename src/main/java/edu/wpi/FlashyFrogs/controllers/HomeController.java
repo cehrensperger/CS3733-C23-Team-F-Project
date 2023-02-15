@@ -329,6 +329,11 @@ public class HomeController implements IController {
 
   public void onClose() {}
 
+  @Override
+  public void help() {
+    // TODO: help for this page
+  }
+
   public void viewLogins(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("Accounts", "LoginAdministrator");
   }

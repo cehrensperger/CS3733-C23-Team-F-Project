@@ -117,4 +117,8 @@ public class LoadMapPageController implements IController {
   }
 
   public void onClose() {}
+
+  public void help() {
+    // TODO: help for this page
+  }
 }

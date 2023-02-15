@@ -77,7 +77,8 @@ public class NavBarController {
 
   @FXML
   private void handleHelpButton(ActionEvent event) throws IOException {
-    Fapp.setScene("views", "Help");
+    //    Fapp.setScene("views", "Help");
+    Fapp.iController.help();
   }
 
   @FXML
