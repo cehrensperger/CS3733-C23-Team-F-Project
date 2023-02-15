@@ -378,19 +378,19 @@ public class MapEditorController implements IController {
             .get();
     dialog.getStylesheets().clear(); // Clear the style
 
-    // Set style based on mode
-    dialog
-        .getStylesheets()
-        .add(
-            (Objects.requireNonNull(
-                    Fapp.isLightMode()
-                        ? // if light mode
-                        Fapp.class.getResource("views/Css.css")
-                        : // Set light mode
-                        Fapp.class.getResource("views/dark-mode.css"))) // Otherwise, dark
-                .toExternalForm());
-    stageBuilder.setContent(dialog); // Set the dialog to be the built dialog
-    stageBuilder.get().showDialog(); // Show everything
+    //    // Set style based on mode
+    //    dialog
+    //        .getStylesheets()
+    //        .add(
+    //            (Objects.requireNonNull(
+    //                    Fapp.isLightMode()
+    //                        ? // if light mode
+    //                        Fapp.class.getResource("views/Css.css")
+    //                        : // Set light mode
+    //                        Fapp.class.getResource("views/dark-mode.css"))) // Otherwise, dark
+    //                .toExternalForm());
+    //    stageBuilder.setContent(dialog); // Set the dialog to be the built dialog
+    //    stageBuilder.get().showDialog(); // Show everything
   }
 
   /**

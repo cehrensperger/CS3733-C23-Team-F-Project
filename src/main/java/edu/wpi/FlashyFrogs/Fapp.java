@@ -122,6 +122,11 @@ public class Fapp extends Application {
     prevPage.push("views,Home");
   }
 
+  public static void resetStackLogin() {
+    prevPage.clear();
+    prevPage.push("Accounts,Login");
+  }
+
   public static void logIn() {
     controller.logIn();
   }

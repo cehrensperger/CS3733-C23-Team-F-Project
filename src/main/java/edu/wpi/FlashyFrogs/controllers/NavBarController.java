@@ -87,4 +87,10 @@ public class NavBarController {
     Stage stage = (Stage) anchorPane.getScene().getWindow();
     stage.close();
   }
+
+  @FXML
+  private void signOut() {
+    CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
+    Fapp.setScene("Accounts", "Login");
+  }
 }
