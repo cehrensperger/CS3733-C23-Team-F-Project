@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;"  xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
    <children>
       <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -40,7 +40,7 @@
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </SearchableComboBox>
-            <MFXButton onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" style="-fx-text-fill: #ffffff; -fx-background-color: #012d5a;" text="Generate Path">
+            <MFXButton alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" style="-fx-text-fill: #ffffff; -fx-background-color: #012d5a;" text="Generate Path">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
@@ -50,6 +50,7 @@
                <styleClass>
                   <String fx:value="round" />
                   <String fx:value="body" />
+                  <String fx:value="dropshadow" />
                </styleClass>
             </MFXButton>
          </children>
@@ -111,6 +112,7 @@
          <styleClass>
             <String fx:value="round" />
             <String fx:value="body" />
+            <String fx:value="dropshadow" />
          </styleClass>
       </MFXButton>
    </children>

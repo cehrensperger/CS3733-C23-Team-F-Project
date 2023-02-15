@@ -1,7 +1,7 @@
 @font-face {
     src: url("FontsFree-Net-Inter-Bold.ttf");
 }
-.
+
 .text-area
 {
     -fx-font-family: "Inter";
@@ -15,6 +15,7 @@
 
 .b1
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
@@ -26,7 +27,9 @@
 
 .b2
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#f1f1f1;
     -fx-border-color:#B6000B;
     -fx-font-family: "Inter";
@@ -37,7 +40,9 @@
 
 .back
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
     -fx-font-family: "Inter";
@@ -47,13 +52,20 @@
 
 
 }
+
+.dropshadow {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+}
+
 .bar{
     -fx-background-color:#012D5A;
 }
 
 .back2
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
     -fx-font-family: "Inter";
@@ -66,13 +78,15 @@
 
 .blueOutline
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
     -fx-font-family: "Inter";
     -fx-text-fill: #012D5A;
     -fx-font-size: 16pt;
-    -fx-pref-width: 204px;
+    -fx-pref-width: 225px;
 
 
 }
@@ -84,14 +98,14 @@
 
 .round
 {
-    -fx-background-radius: 10px;
+    -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
 }
 
 .round2
 {
     -fx-border-color:#f1f1f1;
-    -fx-background-radius: 10px;
+    -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
     -fx-border-insets: -3px;
 }
@@ -108,7 +122,9 @@
 
 .serviceRequestButtons
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
@@ -117,15 +133,13 @@
     -fx-pref-height: 75px;
     -fx-pref-width: 184px;
     -fx-text-alignment: left !important;
-    -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
-    -fx-background-radius: 10px;
-    -fx-border-radius: 10px !important;
 }
 
 .credits
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
@@ -137,6 +151,8 @@
 
 .credits2
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+    -fx-background-radius: 10px;
     -fx-border-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
@@ -150,7 +166,9 @@
 
 .credits3
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
@@ -163,7 +181,9 @@
 
 .blue
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
@@ -175,7 +195,9 @@
 
 .blue2
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
@@ -187,13 +209,15 @@
 
 .blue3
 {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
     -fx-font-size: 16pt;
-    -fx-pref-width: 204px;
+    -fx-pref-width: 225px;
 
 }
 
@@ -234,7 +258,7 @@
 
 .body{
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
 }
 
 .subtext{
@@ -254,6 +278,7 @@
 }
 
 .fields{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-font-family: "Roboto";
     -fx-font-size: 12pt;
     -fx-border-color:#012D5A;
@@ -261,10 +286,12 @@
     -fx-background-color: #f1f1f1;
     -fx-border-insets: -1px;
     -fx-border-radius: 10px !important;
+    -fx-background-radius: 10px !important;
     -fx-prompt-text-fill: #012D5A;
 }
 
 .fields2{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-font-family: "Roboto";
     -fx-font-size: 12pt;
     -fx-border-color:#012D5A;
@@ -272,14 +299,16 @@
     -fx-background-color: #d1d1d1;
     -fx-border-insets: -1px;
     -fx-border-radius: 10px !important;
+    -fx-background-radius: 10px !important;
     -fx-prompt-text-fill: #012D5A;
 }
 
 .clear{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
@@ -289,6 +318,7 @@
 }
 
 .clear2{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
@@ -302,19 +332,20 @@
 }
 
 .cancel{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
     -fx-border-radius: 10px;
-    -fx-pref-width: 175px;
+    -fx-pref-width: 225px;
     -fx-pref-height: 25;
 }
 
 .cancel2{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
@@ -330,6 +361,7 @@
 
 
 .date-picker {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10 10 10 10;
 }
 .date-picker > .text-field {
@@ -345,6 +377,7 @@
 
 
 .searchable-combo-box> {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10 0 0 10;
     -fx-prompt-text-fill: #012D5A;
     -fx-text-fill: #012D5A;

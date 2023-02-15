@@ -25,9 +25,9 @@
    <children>
       <StackPane layoutX="1011.0" layoutY="486.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <VBox styleClass="pathfindingPopup" prefHeight="213.0" prefWidth="260.0">
+            <VBox prefHeight="213.0" prefWidth="260.0" styleClass="pathfindingPopup">
                <children>
-                  <Label styleClass="pathfindingPopup" onMouseClicked="#openPathfinding" text="Pathfinding" VBox.vgrow="ALWAYS">
+                  <Label onMouseClicked="#openPathfinding" styleClass="pathfindingPopup" text="Pathfinding" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -51,7 +51,7 @@
             <Button mnemonicParsing="false" onAction="#openPathfinding" opacity="0.0" prefHeight="216.0" prefWidth="262.0" text="Button" />
          </children>
       </StackPane>
-      <VBox styleClass="rectangle" prefHeight="720.0" prefWidth="220.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" styleClass="rectangle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Alerts">
                <VBox.margin>
@@ -60,75 +60,79 @@
             </Text>
             <VBox alignment="CENTER" prefHeight="180.0" prefWidth="220.0">
                <children>
-                  <StackPane maxWidth="190.0" prefHeight="50.0" prefWidth="190.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#012d5a" strokeType="INSIDE" styleClass="round" width="190.0" />
-                        <AnchorPane prefHeight="50.0" prefWidth="176.0" styleClass="round">
+                        <StackPane maxWidth="190.0" prefHeight="50.0" prefWidth="190.0">
                            <children>
-                              <Label styleClass="middle" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
-                              <Label text="!!!" textFill="#F6BD38" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="5.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label styleClass="body" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <StackPane.margin>
-                              <Insets />
-                           </StackPane.margin>
-                        </AnchorPane>
-                     </children>
-                     <VBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </VBox.margin>
-                  </StackPane>
-                  <StackPane maxWidth="190.0" prefHeight="165.0" prefWidth="190.0">
-                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f1f1f1" height="165.0" stroke="#f1f1f1" strokeType="INSIDE" width="190.0">
-                           <StackPane.margin>
-                              <Insets />
-                           </StackPane.margin>
-                        </Rectangle>
-                        <VBox maxWidth="190.0" minWidth="190.0" prefHeight="165.0" prefWidth="190.0" spacing="5.0">
-                           <children>
-                              <TextArea editable="false" maxWidth="190.0" prefHeight="207.0" prefWidth="190.0" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-text-box-border: transparent; -fx-background-color: #f1f1f1; -fx-control-inner-background: #f1f1f1; -fx-background-radius: 0px;" text="Attention Employees,&#10;&#10;There will be fire alarm testing today in Shapiro in conjunction with the Boston Fire Department. Alarms will sound during the tests. " wrapText="true" />
-                              <Line endX="170.0">
-                                 <VBox.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </VBox.margin></Line>
-                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0" VBox.vgrow="NEVER">
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#012d5a" strokeType="INSIDE" styleClass="round" width="190.0" />
+                              <StackPane prefHeight="150.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Author: Wilson Wong" HBox.hgrow="NEVER" />
-                                    <Label alignment="CENTER_RIGHT" minWidth="60.0" prefHeight="17.0" prefWidth="60.0" text="2/10/2023" textAlignment="RIGHT" />
+                                    <AnchorPane prefHeight="50.0" prefWidth="176.0" styleClass="round">
+                                       <children>
+                                          <Label styleClass="middle" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+                                          <Label text="!!!" textFill="#F6BD38" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="5.0">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label styleClass="body" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <StackPane.margin>
+                                          <Insets />
+                                       </StackPane.margin>
+                                    </AnchorPane>
                                  </children>
-                                 <VBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </VBox.margin>
-                              </HBox>
+                              </StackPane>
                            </children>
-                        </VBox>
+                           <VBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane maxWidth="190.0" prefHeight="165.0" prefWidth="190.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f1f1f1" height="165.0" stroke="#f1f1f1" strokeType="INSIDE" width="190.0">
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                              </Rectangle>
+                              <VBox maxWidth="190.0" minWidth="190.0" prefHeight="165.0" prefWidth="190.0" spacing="5.0">
+                                 <children>
+                                    <TextArea editable="false" maxWidth="190.0" prefHeight="207.0" prefWidth="190.0" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-text-box-border: transparent; -fx-background-color: #f1f1f1; -fx-control-inner-background: #f1f1f1; -fx-background-radius: 0px;" text="Attention Employees,&#10;&#10;There will be fire alarm testing today in Shapiro in conjunction with the Boston Fire Department. Alarms will sound during the tests. " wrapText="true" />
+                                    <Line endX="170.0">
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </VBox.margin>
+                                    </Line>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0" VBox.vgrow="NEVER">
+                                       <children>
+                                          <Label text="Author: Wilson Wong" HBox.hgrow="NEVER" />
+                                          <Label alignment="CENTER_RIGHT" minWidth="60.0" prefHeight="17.0" prefWidth="60.0" text="2/10/2023" textAlignment="RIGHT" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </VBox.margin>
+                        </StackPane>
                      </children>
-                     <VBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </VBox.margin>
-                  </StackPane>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </VBox>
                </children>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </VBox>
-            <Label styleClass="title" text="Alerts">
-               <VBox.margin>
-                  <Insets left="18.0" top="18.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
             <AnchorPane VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="185.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0">

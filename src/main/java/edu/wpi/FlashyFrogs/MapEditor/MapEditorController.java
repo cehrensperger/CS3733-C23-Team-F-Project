@@ -351,6 +351,8 @@ public class MapEditorController implements IController {
     Pane root = loader.load();
     PopOver popOver = new PopOver(root);
 
+    popOver.setTitle("Confirm Exit?");
+
     this.backButton.setDisable(true);
 
     ExitConfirmationController exitController = loader.getController();
