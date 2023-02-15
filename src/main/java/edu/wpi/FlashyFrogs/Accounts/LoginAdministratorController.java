@@ -109,6 +109,17 @@ public class LoginAdministratorController implements IController {
       ses.close();
       throw e;
     }
+    userLoginTable.setOnMouseClicked(
+        event -> {
+          // Make sure the user clicked on a populated item
+          if (userLoginTable.getSelectionModel().getSelectedItem() != null) {
+            System.out.println(
+                "You clicked on "
+                    + userLoginTable.getSelectionModel().getSelectedItem().getUserName());
+            PopOver editUser = new PopOver();
+            editUser.detach();
+          }
+        });
   }
 
   public void onClose() {}
