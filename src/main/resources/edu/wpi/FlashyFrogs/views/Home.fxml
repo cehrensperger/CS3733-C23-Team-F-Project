@@ -25,9 +25,9 @@
    <children>
       <StackPane layoutX="1011.0" layoutY="486.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <VBox styleClass="pathfindingPopup" prefHeight="213.0" prefWidth="260.0">
+            <VBox prefHeight="213.0" prefWidth="260.0" styleClass="pathfindingPopup">
                <children>
-                  <Label styleClass="pathfindingPopup" onMouseClicked="#openPathfinding" text="Pathfinding" VBox.vgrow="ALWAYS">
+                  <Label onMouseClicked="#openPathfinding" styleClass="pathfindingPopup" text="Pathfinding" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -51,7 +51,7 @@
             <Button mnemonicParsing="false" onAction="#openPathfinding" opacity="0.0" prefHeight="216.0" prefWidth="262.0" text="Button" />
          </children>
       </StackPane>
-      <VBox styleClass="rectangle" prefHeight="720.0" prefWidth="220.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" styleClass="rectangle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Alerts">
                <VBox.margin>
@@ -121,14 +121,14 @@
                   <Insets />
                </VBox.margin>
             </VBox>
-            <Label styleClass="title" text="Alerts">
+            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="New alearts appear in the sidebar. Click on them for more information" textAlignment="CENTER" wrappingWidth="188.0">
                <VBox.margin>
-                  <Insets left="18.0" top="18.0" />
+                  <Insets left="18.0" />
                </VBox.margin>
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font size="10.0" />
                </font>
-            </Label>
+            </Text>
             <AnchorPane VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="185.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0">
@@ -226,5 +226,25 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Text fx:id="h2" fill="#b6000b" layoutX="575.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all submitted service requests. Look in the table to find details about each request.">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
+      <Text fx:id="h3" fill="#b6000b" layoutX="417.0" layoutY="778.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all future moves of hospital location. Look in the table to find details about each move.">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
+      <Text fx:id="h4" fill="#b6000b" layoutX="1317.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Use this dropdown to filter through submitted service requests" wrappingWidth="150.0">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
+      <Text fx:id="h5" fill="#b6000b" layoutX="1297.0" layoutY="778.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click path finding to find paths through the hospital" wrappingWidth="229.396484375">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

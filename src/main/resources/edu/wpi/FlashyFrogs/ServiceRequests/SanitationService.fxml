@@ -130,7 +130,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="50.0" />
+                                    <Insets top="60.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
@@ -252,7 +252,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="48.0" />
+                                    <Insets top="86.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Is there a specific date the sanitation will be needed" wrappingWidth="185.0">
@@ -260,7 +260,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="27.0" />
+                                    <Insets top="33.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="What is the urgency of the sanitation request" wrappingWidth="185.0">
@@ -268,7 +268,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets top="22.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Is there a biohazard associated with this sanitation" wrappingWidth="185.0">
@@ -276,7 +276,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets top="22.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Describe the sanitation being requested" wrappingWidth="185.0">
@@ -284,7 +284,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="25.0" />
+                                    <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Are there any isolation or precautionary measures that need to be taken during this sanitatino" wrappingWidth="185.0">
@@ -292,7 +292,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
                            </children>

@@ -7,6 +7,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 
 @GeneratedExclusion
 public class CreditsController implements IController {
@@ -18,6 +19,12 @@ public class CreditsController implements IController {
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
+  @FXML Text h1;
+  boolean hDone = false;
+
+  public void initialize() {
+    h1.setVisible(false);
+  }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
@@ -51,6 +58,12 @@ public class CreditsController implements IController {
 
   @Override
   public void help() {
-    // TODO: help for this page
+    if (!hDone) {
+      h1.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      hDone = false;
+    }
   }
 }

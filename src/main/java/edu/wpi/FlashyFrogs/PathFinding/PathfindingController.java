@@ -31,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -51,6 +52,13 @@ public class PathfindingController implements IController {
   //  @FXML private Label error;
 
   private MapController mapController;
+
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+
+  boolean hDone = false;
   AtomicReference<PopOver> mapPopOver =
       new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
@@ -61,6 +69,11 @@ public class PathfindingController implements IController {
    */
   @SneakyThrows
   public void initialize() {
+
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -411,6 +424,18 @@ public class PathfindingController implements IController {
 
   @Override
   public void help() {
-    // TODO: help for this page
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      hDone = false;
+    }
   }
 }
