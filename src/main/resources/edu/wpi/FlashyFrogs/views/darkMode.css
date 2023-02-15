@@ -7,4 +7,30 @@
 .pathfindingPopup {
     -fx-background-color: #6B6D6F;
     -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-family: "Roboto";
+}
+.button {
+    -fx-background-color: #0067B1;
+    -fx-text-fill: white;
+    -fx-font-family: "Roboto";
+}
+.titleText {
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-font-size: 28;
+    -fx-fill: white;
+}
+.headerBold{
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+}
+.alertTopBox{
+    -fx-fill: #0067B1;
+    -stroke: #0067B1;
+    -strokeType: inside;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px !important;
 }

@@ -67,7 +67,7 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="424.0" style="-fx-background-color: #f1f1f1;" styleClass="b2" text="Clear" textFill="#b6000b">
+                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="424.0" style="-fx-background-color: #f1f1f1; -fx-text-fill: #b6000b; -fx-border-color: #b6000b; -fx-border-radius: 2px; -fx-background-radius: 2px;" styleClass="b2" text="Clear">
                      <font>
                         <Font size="16.0" />
                      </font>
