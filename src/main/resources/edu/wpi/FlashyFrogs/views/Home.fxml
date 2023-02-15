@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" stylesheets="@Style2.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
    <children>
       <StackPane layoutX="1011.0" layoutY="486.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -51,7 +51,7 @@
       </StackPane>
       <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="Announcements">
+            <Label styleClass="title" text="Alerts">
                <VBox.margin>
                   <Insets left="18.0" top="18.0" />
                </VBox.margin>
@@ -66,13 +66,13 @@
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#012d5a" strokeType="INSIDE" width="190.0" />
                         <AnchorPane prefHeight="50.0" prefWidth="176.0">
                            <children>
-                              <Label text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+                              <Label styleClass="middle" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
                               <Label text="!!!" textFill="#F6BD38" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="5.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
+                              <Label styleClass="body" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -89,14 +89,14 @@
                   </StackPane>
                   <StackPane maxWidth="190.0" prefHeight="165.0" prefWidth="190.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f1f1f1" height="165.0" stroke="#f1f1f1" strokeType="INSIDE" width="190.0">
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="165.0" stroke="WHITE" strokeType="INSIDE" width="190.0">
                            <StackPane.margin>
                               <Insets />
                            </StackPane.margin>
                         </Rectangle>
                         <VBox maxWidth="190.0" minWidth="190.0" prefHeight="165.0" prefWidth="190.0" spacing="5.0">
                            <children>
-                              <TextArea editable="false" maxWidth="190.0" prefHeight="207.0" prefWidth="190.0" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-text-box-border: transparent; -fx-background-color: #f1f1f1; -fx-control-inner-background: #f1f1f1; -fx-background-radius: 0px;" text="Attention Employees,&#10;&#10;There will be fire alarm testing today in Shapiro in conjunction with the Boston Fire Department. Alarms will sound during the tests. " wrapText="true" />
+                              <TextArea editable="false" maxWidth="190.0" prefHeight="207.0" prefWidth="190.0" style="-focus-color: transparent; -fx-text-box-border: transparent;" text="Attention Employees,&#10;&#10;There will be fire alarm testing today in Shapiro in conjunction with the Boston Fire Department. Alarms will sound during the tests. " wrapText="true" />
                               <Line endX="170.0">
                                  <VBox.margin>
                                     <Insets left="10.0" right="10.0" />
@@ -124,17 +124,14 @@
             </VBox>
             <AnchorPane VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="188.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="184.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0">
                      <children>
-                        <MFXButton onAction="#handleManageCSV" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
+                        <MFXButton onAction="#handleManageCSV" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #012d5a; -fx-text-fill: #ffffff;" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
                         </MFXButton>
-                        <MFXButton fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Logins" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefHeight="25.0" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Logins" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -142,7 +139,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </MFXButton>
-                        <MFXButton fx:id="manageAnnouncementsButton" minHeight="55.0" minWidth="150.0" onAction="#manageAnnouncements" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Announcements" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageAnnouncementsButton" minWidth="150.0" onAction="#manageAnnouncements" prefHeight="25.0" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Alerts" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -156,12 +153,12 @@
             </AnchorPane>
          </children>
       </VBox>
-      <Label fx:id="tableText" layoutX="240.0" layoutY="115.0" text="All Service Requests">
+      <Label fx:id="tableText" layoutX="240.0" layoutY="115.0" styleClass="headerBold" text="All Service Requests">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="requestTable" layoutX="240.0" layoutY="157.0" prefHeight="280.0" prefWidth="1020.0" AnchorPane.bottomAnchor="283.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="157.0">
+      <TableView fx:id="requestTable" layoutX="240.0" layoutY="157.0" prefHeight="280.0" prefWidth="1020.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="157.0">
         <columns>
           <TableColumn fx:id="requestTypeCol" prefWidth="100.0" text="Request Type" />
           <TableColumn fx:id="requestIDCol" prefWidth="100.0" text="Request ID" />
@@ -177,7 +174,7 @@
             <Image url="@Brigham-Womens-TO-USE.jpg" />
          </image>
       </ImageView>
-      <SearchableComboBox fx:id="filterBox" layoutX="1171.0" layoutY="120.0" prefHeight="25.0" prefWidth="164.0" promptText="Filter" AnchorPane.rightAnchor="20.0" />
+      <SearchableComboBox fx:id="filterBox" layoutX="1171.0" layoutY="120.0" prefHeight="25.0" prefWidth="164.0" promptText="Filter" styleClass="fields" AnchorPane.rightAnchor="20.0" />
       <TableView fx:id="moveTable" layoutX="243.0" layoutY="501.0" prefHeight="213.0" prefWidth="756.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="281.0">
          <columns>
             <TableColumn fx:id="nodeIDCol" prefWidth="144.0" text="Node ID" />
@@ -185,7 +182,7 @@
             <TableColumn fx:id="dateCol" minWidth="0.0" prefWidth="375.0" text="Date Effective" />
          </columns>
       </TableView>
-      <Label fx:id="tableText2" layoutX="240.0" layoutY="459.0" text="Future Moves" AnchorPane.bottomAnchor="226.0" AnchorPane.leftAnchor="240.0">
+      <Label fx:id="tableText2" layoutX="240.0" layoutY="459.0" styleClass="headerBold" text="Future Moves" AnchorPane.bottomAnchor="226.0" AnchorPane.leftAnchor="240.0">
          <font>
             <Font size="24.0" />
          </font>

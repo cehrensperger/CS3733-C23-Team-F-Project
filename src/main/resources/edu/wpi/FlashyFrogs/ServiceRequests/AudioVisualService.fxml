@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -16,11 +17,11 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.AVController">
     <children>
-        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" stylesheets="@../views/Style2.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
-                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
+                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" styleClass="rectangle" BorderPane.alignment="TOP_LEFT">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="155.66615295410156">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Service Requests" wrappingWidth="176.66615295410156">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -28,7 +29,7 @@
                                 <Font size="24.0" />
                             </font>
                         </Text>
-                        <MFXButton fx:id="AV" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual        " textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" styleClass="serviceRequestButtons" text="Audio/Visual" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -36,7 +37,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Information Technology" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" styleClass="serviceRequestButtons" text="Information Technology" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -44,7 +45,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="IPT" alignment="BASELINE_LEFT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" styleClass="serviceRequestButtons" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -52,7 +53,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="sanitation" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Sanitation            " textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" styleClass="serviceRequestButtons" text="Sanitation" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -60,7 +61,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="security" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Security                " textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" styleClass="serviceRequestButtons" text="Security" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -74,19 +75,29 @@
                                     <children>
                                         <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Credits" textFill="WHITE">
                                             <VBox.margin>
-                                                <Insets left="18.0" />
+                                                <Insets left="20.0" />
                                             </VBox.margin>
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
+                                 <styleClass>
+                                    <String fx:value="credits" />
+                                    <String fx:value="round" />
+                                    <String fx:value="body" />
+                                 </styleClass>
                                         </MFXButton>
                                         <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Back" textFill="#012d5a">
                                             <VBox.margin>
-                                                <Insets bottom="18.0" left="18.0" top="18.0" />
+                                                <Insets bottom="18.0" left="20.0" top="18.0" />
                                             </VBox.margin>
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
+                                 <styleClass>
+                                    <String fx:value="back" />
+                                    <String fx:value="round" />
+                                    <String fx:value="body" />
+                                 </styleClass>
                                         </MFXButton>
                                     </children>
                                 </VBox>
@@ -96,9 +107,9 @@
                 </VBox>
             </left>
             <center>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f1f1f1;" stylesheets="@../views/Style2.css" BorderPane.alignment="CENTER">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual Service Request">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Audio/Visual Service Request">
                             <font>
                                 <Font size="28.0" />
                             </font>
@@ -118,14 +129,14 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="48.0" />
+                                    <Insets top="58.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
                         </VBox>
                                 <VBox prefHeight="400.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Location Information" wrappingWidth="250.0">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -133,7 +144,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <SearchableComboBox fx:id="locationBox" promptText="Location of Request" style="-fx-background-color: FFFFFF;">
+                                        <SearchableComboBox fx:id="locationBox" promptText="Location of Request" style="-fx-background-color: FFFFFF;" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
@@ -143,10 +154,10 @@
                                         <Insets right="100.0" />
                                     </HBox.margin>
                                 </VBox>
-                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="470.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#012d5a" height="500.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
                                 <VBox prefHeight="159.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Device Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Device Information" wrappingWidth="250.0">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -154,23 +165,23 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <TextField fx:id="device" promptText="Reason For Transfer" text="Device Type">
+                                        <TextField fx:id="device" promptText="Device Type" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </TextField>
-                              <TextField fx:id="reason" text="Reason for Request">
+                              <TextField fx:id="reason" promptText="Reason for Request" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </TextField>
-                                        <DatePicker fx:id="date" prefHeight="26.0" prefWidth="218.0" promptText="Date (needed by)" />
-                                        <SearchableComboBox fx:id="urgency" promptText="Urgency">
+                                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="378.0" promptText="Date (needed by)" styleClass="fields" />
+                                        <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" top="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
-                                        <TextField fx:id="description" prefWidth="200.0" text="Description of Request">
+                                        <TextField fx:id="description" prefWidth="200.0" promptText="Description of Request" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="108.0" />
                                  </VBox.margin></TextField>
@@ -182,6 +193,11 @@
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
+                                             <styleClass>
+                                                <String fx:value="clear" />
+                                                <String fx:value="round" />
+                                                <String fx:value="body" />
+                                             </styleClass>
                                                         </MFXButton>
                                                     </children>
                                                 </HBox>
@@ -191,6 +207,11 @@
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
+                                             <styleClass>
+                                                <String fx:value="credits" />
+                                                <String fx:value="round" />
+                                                <String fx:value="body" />
+                                             </styleClass>
                                                         </MFXButton>
                                                     </children>
                                                 </HBox>
@@ -225,7 +246,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets />
+                                    <Insets top="10.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the reason for the device requested" wrappingWidth="185.0">
@@ -233,7 +254,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="34.0" />
+                                    <Insets top="38.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What date is the device needed by" wrappingWidth="185.0">
@@ -241,7 +262,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="38.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of this request" wrappingWidth="185.0">
@@ -249,7 +270,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="30.0" />
+                                    <Insets top="36.0" />
                                  </VBox.margin>
                               </Text>
                               <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the request" wrappingWidth="185.0">
@@ -257,7 +278,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="38.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
@@ -268,6 +289,9 @@
                             </VBox.margin>
                         </HBox>
                     </children>
+               <BorderPane.margin>
+                  <Insets right="220.0" />
+               </BorderPane.margin>
                 </VBox>
             </center>
         </BorderPane>

@@ -144,7 +144,7 @@
                         </VBox>
                                 <VBox prefHeight="400.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Contact Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Contact Information" wrappingWidth="250.0">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -152,7 +152,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                                        <TextField fx:id="number" promptText="Patient ID" styleClass="fields" text="Best Contact Number">
+                                        <TextField fx:id="number" promptText="Best Contact Number" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="105.0" />
                                             </VBox.margin>
@@ -174,7 +174,7 @@
                                 <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#012d5a" height="500.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" />
                                 <VBox prefHeight="159.0" prefWidth="200.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Request Information">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Request Information" wrappingWidth="250.0">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -187,12 +187,12 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
-                                        <TextField fx:id="type" promptText="Time Preference (00:00 AM/PM)" styleClass="fields" text="Device Type">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </TextField>
-                              <DatePicker fx:id="date" prefHeight="26.0" prefWidth="244.0" promptText="Date (needed by)" styleClass="fields">
+                              <SearchableComboBox fx:id="type" promptText="Device Type" styleClass="fields">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </SearchableComboBox>
+                              <DatePicker fx:id="date" prefHeight="31.0" prefWidth="287.0" promptText="Date (needed by)" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
@@ -202,7 +202,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
-                                        <TextField fx:id="description" promptText="Reason For Transfer" styleClass="fields" text="Description of Request">
+                                        <TextField fx:id="description" promptText="Description of Request" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="162.0" />
                                             </VBox.margin>
@@ -218,6 +218,7 @@
                                              <styleClass>
                                                 <String fx:value="round" />
                                                 <String fx:value="body" />
+                                                <String fx:value="clear" />
                                              </styleClass>
                                                         </MFXButton>
                                                     </children>
@@ -238,9 +239,21 @@
                                                 </HBox>
                                             </children>
                                             <VBox.margin>
-                                                <Insets top="72.0" />
+                                                <Insets top="90.0" />
                                             </VBox.margin>
                                         </HBox>
+                              <HBox alignment="TOP_CENTER" prefHeight="140.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="errorMessage">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
                                     </children>
                                     <HBox.margin>
                                         <Insets left="100.0" />
@@ -304,17 +317,5 @@
                 </VBox>
             </center>
         </BorderPane>
-      <HBox alignment="TOP_CENTER" layoutX="862.0" layoutY="649.0" prefHeight="149.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="errorMessage">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <HBox.margin>
-                  <Insets top="5.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
     </children>
 </AnchorPane>
