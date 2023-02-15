@@ -36,7 +36,7 @@
             <MenuButton fx:id="menu" mnemonicParsing="false" style="-fx-background-color: #012D5A; -fx-text-fill: #FFF;" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
               <items>
                 <MenuItem mnemonicParsing="false" text="User Preferences                 " />
-                <MenuItem mnemonicParsing="false" text="Sign Out" />
+                <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
                   <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />
               </items>
             </MenuButton>

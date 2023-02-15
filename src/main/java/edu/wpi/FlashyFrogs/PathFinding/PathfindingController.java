@@ -343,6 +343,13 @@ public class PathfindingController implements IController {
             });
   }
 
+  public void setFloor(String nextFloor) throws IOException {
+    nextFloor = nextFloor.substring(0, nextFloor.length() - 1);
+    String[] parts = nextFloor.split(" ");
+    // System.out.println(parts[parts.length - 1]);
+    floorProperty.setValue(Objects.requireNonNull(Node.Floor.getEnum(parts[parts.length - 1])));
+  }
+
   public void onClose() {
     mapController.exit();
   }
