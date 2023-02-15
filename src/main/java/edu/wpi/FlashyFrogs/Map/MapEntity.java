@@ -60,7 +60,7 @@ class MapEntity {
    *
    * @param mapFloor the new floor to set
    */
-  void setMapFloor(@NonNull Node.Floor mapFloor) {
+  void setMapFloor(Node.Floor mapFloor) {
     this.mapFloor = mapFloor;
 
     nodeToCircleMap.clear();

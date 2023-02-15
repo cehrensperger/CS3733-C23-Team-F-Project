@@ -98,7 +98,10 @@ public class MapEditorController implements IController {
                     row.getItem(), // Set it to the rows item
                     mapController.getMapSession(),
                     (oldName) -> {
-                      locationTable.getItems().remove(oldName); // Remove the old name
+                      {
+                        locationTable.getItems().remove(oldName);
+                        mapController.removeLocationName(oldName);
+                      } // Remove the old name
                       tablePopOver.get().hide(); // Remove the pop-over
                     },
                     // Set the original saved row number to be the new location name
@@ -326,7 +329,7 @@ public class MapEditorController implements IController {
         mapController.getMapSession(), // Get the map session
         (oldNode) -> popOver.hide(), // On delete we do nothing but hide
         (oldNode, newNode) -> {
-          mapController.addNode(newNode);
+          mapController.addNode(newNode, false);
           popOver.hide();
         }, // On create new one, process it
         (oldLocation) -> mapController.removeLocationName(oldLocation),
@@ -393,17 +396,6 @@ public class MapEditorController implements IController {
             .get();
     dialog.getStylesheets().clear(); // Clear the style
 
-    // Set style based on mode
-    dialog
-        .getStylesheets()
-        .add(
-            (Objects.requireNonNull(
-                    Fapp.isLightMode()
-                        ? // if light mode
-                        Fapp.class.getResource("views/Css.css")
-                        : // Set light mode
-                        Fapp.class.getResource("views/dark-mode.css"))) // Otherwise, dark
-                .toExternalForm());
     stageBuilder.setContent(dialog); // Set the dialog to be the built dialog
     stageBuilder.get().showDialog(); // Show everything
   }

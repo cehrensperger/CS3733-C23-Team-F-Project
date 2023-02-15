@@ -59,7 +59,7 @@ public class AddMoveController {
     try {
       if (locationNameField.valueProperty().getValue().equals("") // if any fields are empty
           || nodeIDField.valueProperty().getValue().equals("")
-          || moveDatePicker.valueProperty().getValue().equals("")) {
+          || moveDatePicker.valueProperty().getValue().toString().equals("")) {
         throw new Exception(); // throw exception
       }
       // create the objects for the Move constructor

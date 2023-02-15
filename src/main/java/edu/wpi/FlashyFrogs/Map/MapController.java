@@ -3,11 +3,10 @@ package edu.wpi.FlashyFrogs.Map;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -33,7 +32,6 @@ public class MapController {
   @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
   private Pane currentDrawingPane; // The current drawing pane to use to draw nodes/edges
-
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
 
   /**
@@ -69,8 +67,9 @@ public class MapController {
    * NOTE: Assumes that the Node has no edges, and thus does not draw them
    *
    * @param node the node to draw on the map
+   * @param addLocations whether locations should be added here. This is useful
    */
-  public void addNode(@NonNull Node node) {
+  public void addNode(@NonNull Node node, boolean addLocations) {
     Circle circleToDraw = new Circle(node.getXCoord(), node.getYCoord(), 5, Color.BLACK);
     currentDrawingPane.getChildren().add(circleToDraw); // Draw the circle
 
@@ -87,9 +86,11 @@ public class MapController {
 
     locationBox.setRotate(-45);
 
-    // For each location belonging to this node
-    for (LocationName nodeLocation : node.getCurrentLocation(getMapSession())) {
-      addLocationName(nodeLocation, node); // Add it
+    if (addLocations) {
+      // For each location belonging to this node
+      for (LocationName nodeLocation : node.getCurrentLocation(getMapSession())) {
+        addLocationName(nodeLocation, node); // Add it
+      }
     }
   }
 
@@ -136,7 +137,7 @@ public class MapController {
     if (newNode
         .getFloor()
         .equals(this.getFloor())) { // If the floors are equal (we should draw this)
-      addNode(newNode); // Add the new node
+      addNode(newNode, true); // Add the new node
 
       // For each edge in the edges on this floor and associated with this node
       List<Edge> newEdges =
@@ -322,7 +323,35 @@ public class MapController {
 
       // For each node in the nodes to draw
       for (Node node : nodes) {
-        addNode(node); // Add the node
+        addNode(node, false); // Add the node
+      }
+
+      Date now = new Date();
+
+      // Get the moves before now
+      List<Move> moves =
+          getMapSession()
+              .createQuery("FROM Move WHERE node.floor = :floor ORDER BY moveDate DESC", Move.class)
+              .setParameter("floor", getFloor())
+              .setCacheable(true)
+              .stream()
+              .filter((move) -> move.getMoveDate().before(now))
+              .distinct()
+              .toList();
+
+      HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
+
+      // For each location belonging to this node
+      for (Move move : moves) {
+        if (nodeToLocationCount.containsKey(move.getNode())
+            && nodeToLocationCount.get(move.getNode()) == 1) {
+          nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
+
+          addLocationName(move.getLocation(), move.getNode());
+        } else if (!nodeToLocationCount.containsKey(move.getNode()))
+          nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
+
+        addLocationName(move.getLocation(), move.getNode());
       }
 
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out
@@ -334,7 +363,7 @@ public class MapController {
    *
    * @param floor the new floor to display. Must not be null
    */
-  public void setFloor(@NonNull Node.Floor floor) {
+  public void setFloor(Node.Floor floor) {
     Point2D currentCenter =
         this.gesturePane.targetPointAtViewportCentre(); // Get the current center
 

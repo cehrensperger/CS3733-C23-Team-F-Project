@@ -3,8 +3,8 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.util.List;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.beans.property.ObjectProperty;
@@ -192,10 +192,13 @@ public class NodeInfoController {
               onLocationDelete.accept(oldLocation);
             },
             (oldLocation, newLocation) -> {
-              onLocationChange.accept(oldLocation, newLocation, session
-                .createQuery("FROM Node WHERE id = :originalID", Node.class)
-                .setParameter("originalID", originalID[0])
-                .uniqueResult());
+              onLocationChange.accept(
+                  oldLocation,
+                  newLocation,
+                  session
+                      .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                      .setParameter("originalID", originalID[0])
+                      .uniqueResult());
             }, // Handle location updates
             false); // On delete clear
         if (locations.size() > 1) { // if node has more than 1 location
@@ -216,11 +219,14 @@ public class NodeInfoController {
                 onLocationDelete.accept(oldLocation);
               },
               (oldLocation, newLocation) -> {
-              onLocationChange.accept(oldLocation, newLocation, session
-                .createQuery("FROM Node WHERE id = :originalID", Node.class)
-                .setParameter("originalID", originalID[0])
-                .uniqueResult());
-            },
+                onLocationChange.accept(
+                    oldLocation,
+                    newLocation,
+                    session
+                        .createQuery("FROM Node WHERE id = :originalID", Node.class)
+                        .setParameter("originalID", originalID[0])
+                        .uniqueResult());
+              },
               false);
         }
       }

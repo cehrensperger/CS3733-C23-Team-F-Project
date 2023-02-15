@@ -155,6 +155,7 @@ public class LocationName {
                 """,
                 Node.class)
             .setParameter("location", this)
+            .setCacheable(true)
             .uniqueResult();
 
     // if the node isn't null
@@ -171,6 +172,7 @@ public class LocationName {
                 LIMIT 2
                 """,
                   LocationName.class)
+              .setCacheable(true)
               .setParameter("node", node)
               .getResultList();
 
