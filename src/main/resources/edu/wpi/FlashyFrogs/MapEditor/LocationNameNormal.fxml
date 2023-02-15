@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
@@ -14,7 +15,7 @@
     <children>
         <VBox layoutX="164.0" layoutY="63.0" maxWidth="288.0" prefHeight="288.0" prefWidth="288.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
             <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location name:">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerText" text="Location name:">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -22,12 +23,12 @@
                         <Insets bottom="10.0" />
                     </VBox.margin>
                 </Text>
-                <TextField fx:id="locationNameField">
+                <TextField fx:id="locationNameField" styleClass="fields">
                     <VBox.margin>
                         <Insets bottom="20.0" />
                     </VBox.margin>
                 </TextField>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Short Name:">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerText" text="Short Name:">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -35,12 +36,12 @@
                         <Insets bottom="10.0" />
                     </VBox.margin>
                 </Text>
-                <TextField fx:id="shortNameField">
+                <TextField fx:id="shortNameField" styleClass="fields">
                     <VBox.margin>
                         <Insets bottom="20.0" />
                     </VBox.margin>
                 </TextField>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location Type">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerText" text="Location Type">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -48,7 +49,7 @@
                         <Insets bottom="10.0" />
                     </VBox.margin>
                 </Text>
-                <SearchableComboBox fx:id="locationTypeField">
+                <SearchableComboBox fx:id="locationTypeField" styleClass="fields">
                     <VBox.margin>
                         <Insets bottom="20.0" />
                     </VBox.margin>
@@ -60,6 +61,11 @@
                             <font>
                                 <Font size="16.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="cancel" />
+                        <String fx:value="body" />
+                        <String fx:value="location" />
+                     </styleClass>
                         </Button>
                         <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Save" textAlignment="CENTER">
                             <HBox.margin>
@@ -68,6 +74,11 @@
                             <font>
                                 <Font size="16.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="credits2" />
+                        <String fx:value="body" />
+                        <String fx:value="round" />
+                     </styleClass>
                         </Button>
                     </children>
                 </HBox>
