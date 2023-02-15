@@ -168,7 +168,7 @@ public class NodeInfoController {
 
       if (!locations.isEmpty()) { // If the location exists
         if (locations.size() < 2) {
-          System.out.println("size decreased");
+
           locationPane2.setVisible(false); // hide the location frame2
           thirdColumn.setMaxWidth(0); // hide the columns
           secondLocation.setVisible(false); // hide the 2nd location name
