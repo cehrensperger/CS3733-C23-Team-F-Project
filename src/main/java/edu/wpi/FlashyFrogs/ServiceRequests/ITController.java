@@ -150,7 +150,6 @@ public class ITController implements IController {
   }
 
   public void help() {
-    System.out.println("IT Help");
     if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
@@ -160,8 +159,7 @@ public class ITController implements IController {
       h6.setVisible(true);
       h7.setVisible(true);
       hDone = true;
-    }
-    if (hDone) {
+    } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
