@@ -34,6 +34,7 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class MapEditorController implements IController {
   public Button addEdge;
+  @FXML private Text h41;
   @FXML private AnchorPane mapPane;
   @FXML private Button backButton;
   @FXML private Label floorSelector;
@@ -61,6 +62,7 @@ public class MapEditorController implements IController {
     h2.setVisible(false);
     h3.setVisible(false);
     h4.setVisible(false);
+    h41.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -474,12 +476,14 @@ public class MapEditorController implements IController {
       h2.setVisible(true);
       h3.setVisible(true);
       h4.setVisible(true);
+      h41.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
       h4.setVisible(false);
+      h41.setVisible(false);
       hDone = false;
     }
   }

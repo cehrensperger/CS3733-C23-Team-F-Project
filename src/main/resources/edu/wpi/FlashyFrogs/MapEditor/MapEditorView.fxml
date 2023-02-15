@@ -97,7 +97,7 @@
             </Text>
             <Button fx:id="addEdge" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupEdge" prefHeight="26.0" prefWidth="167.0" text="Link Nodes">
                <VBox.margin>
-                  <Insets bottom="16.0" />
+                  <Insets />
                </VBox.margin>
                <styleClass>
                   <String fx:value="round" />
@@ -105,6 +105,11 @@
                   <String fx:value="body" />
                </styleClass>
             </Button>
+            <Text fx:id="h41" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Clink to link nodes with each other" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
          </children>
          <padding>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
