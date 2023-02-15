@@ -535,6 +535,90 @@ public class InternalTransportTest {
         sanToString, testIntTransp.getClass().getSimpleName() + "_" + testIntTransp.getId());
   }
 
+  /** Checks to see if toString for VisionStatus returns correct values */
+  @Test
+  void toStringVisionStatusTest() {
+    InternalTransport.VisionStatus good = InternalTransport.VisionStatus.GOOD;
+    InternalTransport.VisionStatus poor = InternalTransport.VisionStatus.POOR;
+    InternalTransport.VisionStatus blind = InternalTransport.VisionStatus.BLIND;
+    InternalTransport.VisionStatus glasses = InternalTransport.VisionStatus.GLASSES;
+
+    assertEquals("Good", good.toString());
+    assertEquals("Poor", poor.toString());
+    assertEquals("Blind", blind.toString());
+    assertEquals("Glasses", glasses.toString());
+  }
+
+  /** Checks to see if toString for HearingStatus returns correct values */
+  @Test
+  void toStringHearingStatusTest() {
+    InternalTransport.HearingStatus good = InternalTransport.HearingStatus.GOOD;
+    InternalTransport.HearingStatus poor = InternalTransport.HearingStatus.POOR;
+    InternalTransport.HearingStatus deaf = InternalTransport.HearingStatus.DEAF;
+    InternalTransport.HearingStatus left = InternalTransport.HearingStatus.AID_LEFT;
+    InternalTransport.HearingStatus right = InternalTransport.HearingStatus.AID_RIGHT;
+    InternalTransport.HearingStatus both = InternalTransport.HearingStatus.AID_BOTH;
+
+    assertEquals("Good", good.toString());
+    assertEquals("Poor", poor.toString());
+    assertEquals("Deaf", deaf.toString());
+    assertEquals("Hearing Aid (Left)", left.toString());
+    assertEquals("Hearing Aid (Right)", right.toString());
+    assertEquals("Hearing Aid (Both)", both.toString());
+  }
+
+  /** Checks to see if toString for ConsciousnessStatus returns correct values */
+  @Test
+  void toStringConsciousnessStatusTest() {
+    InternalTransport.ConsciousnessStatus good = InternalTransport.ConsciousnessStatus.GOOD;
+    InternalTransport.ConsciousnessStatus moderate = InternalTransport.ConsciousnessStatus.MODERATE;
+    InternalTransport.ConsciousnessStatus poor = InternalTransport.ConsciousnessStatus.POOR;
+
+    assertEquals("Good", good.toString());
+    assertEquals("Moderate", moderate.toString());
+    assertEquals("Poor", poor.toString());
+  }
+
+  /** Checks to see if toString for HealthStatus returns correct values */
+  @Test
+  void toStringHealthStatusTest() {
+    InternalTransport.HealthStatus healthy = InternalTransport.HealthStatus.HEALTHY;
+    InternalTransport.HealthStatus moderate = InternalTransport.HealthStatus.MODERATE;
+    InternalTransport.HealthStatus poor = InternalTransport.HealthStatus.POOR;
+
+    assertEquals("Healthy", healthy.toString());
+    assertEquals("Moderate", moderate.toString());
+    assertEquals("Poor", poor.toString());
+  }
+
+  /** Checks to see if toString for Equipment returns correct values */
+  @Test
+  void toStringEquipmentTest() {
+    InternalTransport.Equipment none = InternalTransport.Equipment.NONE;
+    InternalTransport.Equipment cane = InternalTransport.Equipment.CANE;
+    InternalTransport.Equipment walker = InternalTransport.Equipment.WALKER;
+    InternalTransport.Equipment chair = InternalTransport.Equipment.WHEEL_CHAIR;
+    InternalTransport.Equipment bed = InternalTransport.Equipment.BED;
+
+    assertEquals("None", none.toString());
+    assertEquals("Cane", cane.toString());
+    assertEquals("Walker", walker.toString());
+    assertEquals("Wheel Chair", chair.toString());
+    assertEquals("Bed", bed.toString());
+  }
+
+  /** Checks to see if toString for ModeOfTransport returns correct values */
+  @Test
+  void toStringModeOfTransportTest() {
+    InternalTransport.ModeOfTransport self = InternalTransport.ModeOfTransport.SELF;
+    InternalTransport.ModeOfTransport help = InternalTransport.ModeOfTransport.HELP;
+    InternalTransport.ModeOfTransport equipment = InternalTransport.ModeOfTransport.EQUIPMENT;
+
+    assertEquals("Self", self.toString());
+    assertEquals("With Help", help.toString());
+    assertEquals("Equipment Needed", equipment.toString());
+  }
+
   /** Tests that deleting the emp this is associated to with a query sets it to null */
   @Test
   public void startLocationDeleteCascadeQueryTest() {

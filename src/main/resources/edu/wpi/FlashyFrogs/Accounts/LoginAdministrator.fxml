@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.LoginAdministratorController">
@@ -14,13 +15,32 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <TableView fx:id="userLoginTable" layoutY="75.0" prefHeight="382.0" prefWidth="800.0" AnchorPane.bottomAnchor="143.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
-        <columns>
-          <TableColumn fx:id="userName" prefWidth="395.0" text="Username" />
-          <TableColumn fx:id="password" minWidth="0.0" prefWidth="384.0" text="Password" />
-        </columns>
-      </TableView>
-      <MFXButton fx:id="addNewUser" layoutX="14.0" layoutY="474.0" onAction="#handleNewUser" text="Add New User" AnchorPane.bottomAnchor="100.39999999999998" AnchorPane.leftAnchor="14.0" />
-      <MFXButton fx:id="back" layoutX="686.0" layoutY="560.0" onAction="#handleBack" prefWidth="100.0" text="Back" AnchorPane.bottomAnchor="14.399999999999977" AnchorPane.rightAnchor="14.0" />
+      <HBox alignment="CENTER" layoutY="102.0" prefHeight="384.0" prefWidth="800.0" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="102.0">
+         <children>
+            <TableView fx:id="userLoginTable" prefHeight="382.0" prefWidth="800.0">
+              <columns>
+                  <TableColumn fx:id="idCol" maxWidth="50.0" prefWidth="50.0" text="ID" />
+                <TableColumn fx:id="userNameCol" prefWidth="187.5" text="Username" />
+                <TableColumn fx:id="nameCol" prefWidth="187.5" text="Name" />
+                  <TableColumn fx:id="empTypeCol" prefWidth="187.5" text="Employee Type" />
+                  <TableColumn fx:id="deptCol" prefWidth="187.5" text="Department" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+      <HBox alignment="BOTTOM_CENTER" layoutY="486.0" prefHeight="86.0" prefWidth="800.0" spacing="600.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" text="Back">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="addNewUser" onAction="#handleNewUser" prefHeight="32.0" prefWidth="146.0" text="Add New User" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

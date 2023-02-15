@@ -43,7 +43,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="addNode" mnemonicParsing="false" onAction="#popupMove" prefHeight="39.0" prefWidth="179.0" text="Add Node">
+            <Button fx:id="addNode" mnemonicParsing="false" onAction="#popupNode" prefHeight="39.0" prefWidth="179.0" text="Add Node">
                <VBox.margin>
                   <Insets bottom="44.0" />
                </VBox.margin>

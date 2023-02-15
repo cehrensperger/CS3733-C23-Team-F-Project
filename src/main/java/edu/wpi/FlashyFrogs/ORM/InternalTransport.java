@@ -194,7 +194,7 @@ public class InternalTransport extends ServiceRequest {
     DEAF("Deaf"),
     AID_LEFT("Hearing Aid (Left)"),
     AID_RIGHT("Hearing Aid (Right)"),
-    AID_BOTH("Hearing Aid(Both");
+    AID_BOTH("Hearing Aid (Both)");
 
     // The string of the status
     public final String status;
