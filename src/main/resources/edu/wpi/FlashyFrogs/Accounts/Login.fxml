@@ -90,7 +90,7 @@
       </BorderPane>
       <StackPane layoutX="1021.0" layoutY="496.0" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <VBox prefHeight="213.0" prefWidth="260.0" style="-fx-background-color: #6B6D6F;">
+            <VBox prefHeight="213.0" prefWidth="260.0" styleClass="pathfindingPopup">
                <children>
                   <Label styleClass="pathfindingPopup" onMouseClicked="#openPathfinding" text="Pathfinding" VBox.vgrow="ALWAYS">
                      <VBox.margin>
