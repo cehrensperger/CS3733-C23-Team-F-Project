@@ -10,11 +10,11 @@
 
 <AnchorPane style="-fx-background-color: #F1F1F1; -fx-opacity: 1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.ForgotPassController">
     <children>
-        <BorderPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #f1f1f1;">
+        <BorderPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #f1f1f1;" stylesheets="@Style2.css">
             <center>
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please contact an administrator" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="column-header" text="Please contact an administrator" />
                         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" />
                     </children>
                 </VBox>
@@ -23,7 +23,7 @@
                 <HBox prefHeight="47.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                     <children>
                         <VBox prefHeight="100.0" prefWidth="328.0" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot Password">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Forgot Password">
                             <font>
                                 <Font name="System Bold" size="28.0" />
                             </font>

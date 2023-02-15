@@ -19,7 +19,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -67,7 +66,7 @@ public class SecurityController implements IController {
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<LocationName> locations =
-            session.createQuery("FROM LocationName", LocationName.class).getResultList();
+        session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
@@ -93,7 +92,15 @@ public class SecurityController implements IController {
       Date dateOfRequest =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      Security securityRequest = new Security(description.getText(), locationBox.getValue(), CurrentUserEntity.CURRENT_USER.getCurrentuser(), dateOfRequest, Date.from(Instant.now()), urgency.getValue(), threat.getValue());
+      Security securityRequest =
+          new Security(
+              description.getText(),
+              locationBox.getValue(),
+              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              dateOfRequest,
+              Date.from(Instant.now()),
+              urgency.getValue(),
+              threat.getValue());
 
       try {
         session.persist(securityRequest);
