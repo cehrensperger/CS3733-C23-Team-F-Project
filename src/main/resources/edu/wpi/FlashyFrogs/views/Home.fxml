@@ -59,7 +59,7 @@
                <children>
                   <StackPane maxWidth="190.0" prefHeight="50.0" prefWidth="190.0">
                      <children>
-                        <Rectangle styleClass="alertTopBox" arcHeight="5.0" arcWidth="5.0" height="50.0" width="190.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" styleClass="alertTopBox" width="190.0" />
                         <AnchorPane prefHeight="50.0" prefWidth="176.0" styleClass="round">
                            <children>
                               <Label styleClass="middle" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
@@ -130,7 +130,7 @@
                <children>
                   <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="149.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="18.0">
                      <children>
-                        <MFXButton styleClass="button" onAction="#changeMode" prefHeight="43.0" prefWidth="170.0" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
+                        <MFXButton onAction="#changeMode" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -140,7 +140,7 @@
                               <String fx:value="body" />
                            </styleClass>
                         </MFXButton>
-                        <MFXButton styleClass="button" onAction="#handleManageCSV" prefHeight="43.0" prefWidth="170.0"  text="Manage CSVs" textAlignment="CENTER" wrapText="true">
+                        <MFXButton onAction="#handleManageCSV" prefHeight="8.0" prefWidth="150.0" styleClass="button" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -153,7 +153,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </MFXButton>
-                        <MFXButton styleClass="button" fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefWidth="150.0" text="Manage Logins" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Manage Logins" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -166,7 +166,7 @@
                               <String fx:value="body" />
                            </styleClass>
                         </MFXButton>
-                        <MFXButton styleClass="button" fx:id="manageAnnouncementsButton" minWidth="150.0" onAction="#manageAnnouncements" prefHeight="25.0" prefWidth="150.0" text="Manage Alerts" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageAnnouncementsButton" minWidth="150.0" onAction="#manageAnnouncements" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Manage Alerts" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -238,7 +238,7 @@
             <Font size="10.0" />
          </font>
       </Text>
-      <Text fx:id="h5" fill="#b6000b" layoutX="1297.0" layoutY="778.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click path finding to find paths through the hospital" wrappingWidth="229.396484375">
+      <Text fx:id="h5" fill="#b6000b" layoutX="1454.0" layoutY="777.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click path finding to find paths through the hospital" wrappingWidth="229.396484375">
          <font>
             <Font size="10.0" />
          </font>
