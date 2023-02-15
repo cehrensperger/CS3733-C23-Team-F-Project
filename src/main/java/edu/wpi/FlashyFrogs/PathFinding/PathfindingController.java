@@ -196,6 +196,13 @@ public class PathfindingController implements IController {
       for (int i = 1; i < lastPath.size(); i++) { // For each edge
         // Get the two nodes in the edge
         Node thisNode = lastPath.get(i);
+
+        // If we're on the right floor
+        if (thisNode.getFloor().equals(mapController.getFloor())) {
+          // Hide
+          mapController.getNodeToCircleMap().get(thisNode).setOpacity(0);
+        }
+
         Node previousNode = lastPath.get(i - 1);
 
         // If both nodes are on this floor
