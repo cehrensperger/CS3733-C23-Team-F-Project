@@ -1,8 +1,10 @@
-.titleText{
-    -fx-font-family: "Times New Roman";
-    -fx-font-weight: lighter;
-    -fx-font-size: 20pt;
+.root {
+    -fx-background-color: #2F2F2F;
 }
 .rectangle {
-    -fx-background-color: red;
+    -fx-background-color: #6B6D6F;
+}
+.pathfindingPopup {
+    -fx-background-color: #6B6D6F;
+    -fx-text-fill: white;
 }
