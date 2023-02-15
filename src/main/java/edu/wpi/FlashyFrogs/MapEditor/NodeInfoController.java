@@ -122,7 +122,7 @@ public class NodeInfoController {
     // Runnable to be run when a field is changed, validates everything
     Runnable onFieldChange =
         () -> {
-          errorText.setText(""); // Clear text to start
+          errorText.setText("Node Info"); // Clear text to start
 
           try {
             // Set the ID

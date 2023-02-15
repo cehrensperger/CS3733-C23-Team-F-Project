@@ -15,7 +15,7 @@
     <children>
         <VBox layoutX="164.0" layoutY="63.0" maxWidth="288.0" prefHeight="288.0" prefWidth="288.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-53.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Location name:">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Location name:">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -28,7 +28,7 @@
                         <Insets bottom="20.0" />
                     </VBox.margin>
                 </TextField>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Short Name:">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Short Name:">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -41,7 +41,7 @@
                         <Insets bottom="20.0" />
                     </VBox.margin>
                 </TextField>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Location Type">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Location Type">
                     <font>
                         <Font size="18.0" />
                     </font>
