@@ -124,7 +124,5 @@ public class LoginController implements IController {
     Fapp.setScene("Pathfinding", "Pathfinding");
   }
 
-  public void onClose() {
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
-  }
+  public void onClose() {}
 }
