@@ -33,7 +33,7 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class MapEditorController implements IController {
   @FXML private AnchorPane mapPane;
-  @FXML public Button backButton;
+  @FXML private Button backButton;
   @FXML private Label floorSelector;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
