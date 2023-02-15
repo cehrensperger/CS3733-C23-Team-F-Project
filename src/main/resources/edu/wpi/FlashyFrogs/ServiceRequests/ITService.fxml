@@ -137,7 +137,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="154.0" />
+                                    <Insets top="166.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
@@ -300,7 +300,7 @@
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="32.0" />
+                                    <Insets top="36.0" />
                                  </VBox.margin>
                               </Text>
                            </children>
