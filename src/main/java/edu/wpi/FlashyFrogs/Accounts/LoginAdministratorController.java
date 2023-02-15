@@ -9,6 +9,7 @@ import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
 import java.util.List;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,7 +27,7 @@ public class LoginAdministratorController implements IController {
 
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
-  @FXML private TableColumn<UserLogin, Integer> idCol;
+  @FXML private TableColumn<UserLogin, Number> idCol;
   @FXML private TableColumn<UserLogin, String> userNameCol;
   @FXML private TableColumn<UserLogin, String> nameCol;
   @FXML private TableColumn<UserLogin, User.EmployeeType> empTypeCol;
@@ -63,11 +64,28 @@ public class LoginAdministratorController implements IController {
     userLoginTable.getItems().clear();
     // set columns userlogin
 
-    idCol.setCellValueFactory(new PropertyValueFactory<>("user.id"));
+    idCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleLongProperty(user.getId());
+        });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
-    nameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-    empTypeCol.setCellValueFactory(new PropertyValueFactory<>("user.employeeType"));
-    deptCol.setCellValueFactory(new PropertyValueFactory<>("shortName"));
+    nameCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleStringProperty(
+              user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
+        });
+    empTypeCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleObjectProperty(user.getEmployeeType());
+        });
+    deptCol.setCellValueFactory(
+        data -> {
+          User user = data.getValue().getUser();
+          return new SimpleObjectProperty(user.getDepartment());
+        });
 
     // create logIn table
     // open session
