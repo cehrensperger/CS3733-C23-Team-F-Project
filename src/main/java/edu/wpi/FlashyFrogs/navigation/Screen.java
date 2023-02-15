@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.navigation;
+package edu.wpi.FlashyFrogs.Navigation;
 
 public enum Screen {
   ROOT("views/RequestsHome.fxml"),
@@ -6,7 +6,7 @@ public enum Screen {
   SERVICE_REQUEST("views/AllServiceRequests.fxml"),
   SANITATION_PAGE("views/SanitationService.fxml"),
   SECURITY_PAGE("views/SecurityService.fxml"),
-  TRANSPORT_PAGE("views/TransportService.fxml");
+  TRANSPORT_PAGE("views/Transport.fxml");
   private final String filename;
 
   Screen(String filename) {
