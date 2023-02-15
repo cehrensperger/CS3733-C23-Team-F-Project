@@ -435,11 +435,7 @@
     -fx-font-size: 16;
     -fx-font-family: "Roboto";
 }
-.button {
-    -fx-background-color: #012D5A;
-    -fx-text-fill: white;
-    -fx-font-family: "Roboto";
-}
+
 .alertTopBox {
     -fx-fill: #012d5a;
     -stroke: #012d5a;

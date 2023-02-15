@@ -134,6 +134,7 @@ public class AVController implements IController {
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
     description.setText("");
+    reason.setText("");
   }
 
   public void help() {
