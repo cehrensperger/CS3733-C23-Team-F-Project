@@ -64,6 +64,19 @@
 
 }
 
+.blueOutline
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#d1d1d1;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Inter";
+    -fx-text-fill: #012D5A;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 204px;
+
+
+}
+
 .background
 {
     -fx-background-color:#f1f1f1;
@@ -122,6 +135,19 @@
 
 }
 
+.credits2
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light ";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 175px;
+    -fx-pref-height: 25;
+
+}
+
 .blue
 {
     -fx-border-radius: 10px;
@@ -145,6 +171,19 @@
     -fx-pref-width: 180px;
 
 }
+
+.blue3
+{
+    -fx-border-radius: 10px;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light ";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16pt;
+    -fx-pref-width: 204px;
+
+}
+
 
 
 .rectangle
@@ -248,6 +287,8 @@
     -fx-pref-width: 175px;
     -fx-pref-height: 25;
 }
+
+
 
 .date-picker {
     -fx-background-radius: 10 10 10 10;
