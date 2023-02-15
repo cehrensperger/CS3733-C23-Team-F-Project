@@ -1,15 +1,18 @@
+.root {
+    -fx-background-color: #F1F1F1;
+}
 @font-face {
     src: url("FontsFree-Net-Inter-Bold.ttf");
 }
 
 .text-area
 {
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
 }
 
 .text-field
 {
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
 }
 
 
@@ -19,7 +22,7 @@
     -fx-border-radius: 10px;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Inter Black";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #ffffff;
     -fx-font-size: 16pt;
 
@@ -32,9 +35,9 @@
     -fx-background-radius: 10px;
     -fx-background-color:#f1f1f1;
     -fx-border-color:#B6000B;
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #B6000B;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
 
 }
 
@@ -43,11 +46,11 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
-    -fx-background-color:#d1d1d1;
+    -fx-background-color:#f1f1f1;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 100px;
 
 
@@ -68,9 +71,9 @@
     -fx-background-radius: 10px;
     -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 175px;
 
 
@@ -83,9 +86,9 @@
     -fx-background-radius: 10px;
     -fx-background-color:#d1d1d1;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Inter";
+    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 225px;
 
 
@@ -109,11 +112,6 @@
     -fx-border-radius: 10px !important;
     -fx-border-insets: -3px;
 }
-/*.inter
-{
-    -fx-font-family: "Inter";
-}*/
-
 /*.titleSize
 {
     -fx-font-size: 36px;
@@ -129,7 +127,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-height: 75px;
     -fx-pref-width: 184px;
     -fx-text-alignment: left !important;
@@ -144,7 +142,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 100px;
 
 }
@@ -158,7 +156,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 175px;
     -fx-pref-height: 25;
 
@@ -173,7 +171,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 200px;
     -fx-pref-height: 25;
 
@@ -188,7 +186,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 175px;
 
 }
@@ -202,7 +200,7 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 180px;
 
 }
@@ -216,18 +214,10 @@
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-pref-width: 225px;
 
 }
-
-
-
-.rectangle
-{
-    -fx-background-color: #d1d1d1 !important;
-}
-
 
 /*styles the popover title*/
 .title{
@@ -322,7 +312,7 @@
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
@@ -336,6 +326,7 @@
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
+    -fx-font-size: 10pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
@@ -349,7 +340,7 @@
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
+    -fx-font-size: 10pt;
     -fx-text-fill: #b6000b;
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
@@ -440,5 +431,11 @@
     -fx-text-background-color: #ffffff;
     -fx-text-fill: #ffffff;
 }
-
-
+.rectangle
+{
+    -fx-background-color: #d1d1d1 !important;
+}
+.pathfindingPopup {
+    -fx-background-color: #6B6D6F;
+    -fx-text-fill: white;
+}
