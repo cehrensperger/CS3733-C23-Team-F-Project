@@ -12,7 +12,7 @@
 <?import org.controlsfx.control.SearchableComboBox?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="581.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="581.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.EditUserController">
    <children>
       <HBox layoutX="-5.0" layoutY="84.0" prefHeight="211.0" prefWidth="582.0">
          <children>
@@ -55,6 +55,6 @@
          </font>
       </Text>
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="212.0" layoutY="61.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
-      <MFXButton fx:id="newUser" layoutX="243.0" layoutY="326.0" onAction="#handleNewUser" text="Update User" />
+      <MFXButton fx:id="updateUser" layoutX="243.0" layoutY="326.0" onAction="#saveChanges" text="Update User" />
    </children>
 </AnchorPane>

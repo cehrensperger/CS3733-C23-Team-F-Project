@@ -122,8 +122,36 @@ public class LoginAdministratorController implements IController {
             System.out.println(
                 "You clicked on "
                     + userLoginTable.getSelectionModel().getSelectedItem().getUserName());
-            PopOver editUser = new PopOver();
-            editUser.detach();
+            FXMLLoader newLoad =
+                new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
+            PopOver popOver = null;
+            try {
+              popOver = new PopOver(newLoad.load());
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+            EditUserController editUser = newLoad.getController();
+            editUser.setPopOver(popOver);
+            editUser.setLoginAdminController(this);
+            editUser.initialize(
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getFirstName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getMiddleName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getLastName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUserName());
+            popOver.detach();
+            Node node = (Node) event.getSource();
+            popOver.show(node.getScene().getWindow());
+            addNewUser.setDisable(true);
+            back.setDisable(true);
+            popOver
+                .showingProperty()
+                .addListener(
+                    (observable, oldValue, newValue) -> {
+                      if (!newValue) {
+                        addNewUser.setDisable(false);
+                        back.setDisable(false);
+                      }
+                    });
           }
         });
   }
