@@ -27,16 +27,12 @@ import org.hibernate.Session;
 @Slf4j
 @GeneratedExclusion
 public class Fapp extends Application {
-  @Setter @Getter
-  private static boolean isLightMode =
-      true; // keeps track of whether we are in Light Mode or Dark Mode
 
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
   private static NavBarController controller;
 
-  @Getter
-  private static Theme theme;
+  @Getter private static Theme theme;
 
   public static IController iController;
 
@@ -110,16 +106,19 @@ public class Fapp extends Application {
 
   /**
    * Sets the application theme
-   * @param theme the theme to set
+   *
+   * @param themeName the theme to set
    */
-  public void setTheme(@NonNull Theme theme) {
+  public static void setTheme(@NonNull Theme themeName) {
     // Get the sheets for the app
     ObservableList<String> sheets = Fapp.primaryStage.getScene().getStylesheets();
 
     sheets.clear(); // Clear the sheets
 
     // Add the sheets
-    sheets.add(theme.resource.toExternalForm());
+    sheets.add(themeName.resource.toExternalForm());
+
+    theme = themeName;
   }
 
   @SneakyThrows
@@ -145,11 +144,9 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
     primaryStage.setScene(scene);
-
+    setTheme(Theme.LIGHT_THEME);
     primaryStage.setFullScreen(true);
     primaryStage.show();
-
-    setTheme(Theme.LIGHT_THEME);
   }
 
   @SneakyThrows
