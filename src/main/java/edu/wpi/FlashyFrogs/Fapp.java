@@ -172,7 +172,8 @@ public class Fapp extends Application {
     AnchorPane.setRightAnchor(root, 0.0);
   }
 
-  public static void handleBack() throws IOException {
+  @SneakyThrows
+  public static void handleBack() {
     prevPage.pop();
     String[] page = prevPage.pop().split(",");
     Fapp.setScene(page[0], page[1]);
