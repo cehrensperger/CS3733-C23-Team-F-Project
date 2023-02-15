@@ -15,8 +15,8 @@
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-        <ColumnConstraints fx:id="thirdColumn" halignment="CENTER" hgrow="SOMETIMES" maxWidth="260.0" minWidth="65.0" prefWidth="230.0" />
-      <ColumnConstraints fx:id="fourthColumn" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="230.0" />
+        <ColumnConstraints fx:id="secondColumn" halignment="CENTER" hgrow="SOMETIMES" maxWidth="260.0" minWidth="65.0" prefWidth="230.0" />
+      <ColumnConstraints fx:id="thirdColumn" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="230.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />

@@ -27,8 +27,8 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class NodeInfoController {
 
+  @FXML private ColumnConstraints secondColumn;
   @FXML private ColumnConstraints thirdColumn;
-  @FXML private ColumnConstraints fourthColumn;
 
   @FXML private Text nodeLocationText;
   @FXML private Text secondLocation;
@@ -168,6 +168,7 @@ public class NodeInfoController {
 
       if (!locations.isEmpty()) { // If the location exists
         if (locations.size() < 2) {
+
           locationPane2.setVisible(false); // hide the location frame2
           thirdColumn.setMaxWidth(0); // hide the columns
           secondLocation.setVisible(false); // hide the 2nd location name
@@ -217,8 +218,8 @@ public class NodeInfoController {
       locationPane2.setVisible(false); // hide the location frame2
       locationPane.setVisible(false); // hide the location frame
       secondLocation.setVisible(false); // hide the 2nd location name
+      secondColumn.setMaxWidth(0); // hide the columns
       thirdColumn.setMaxWidth(0); // hide the columns
-      fourthColumn.setMaxWidth(0); // hide the other one
     }
 
     // Set the callback for the delete button

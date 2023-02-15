@@ -81,7 +81,7 @@ public class MapEditorController implements IController {
 
                 // Load the location name info view
                 FXMLLoader locationNameLoader =
-                    new FXMLLoader(getClass().getResource("LocationNameInfo.fxml"));
+                    new FXMLLoader(getClass().getResource("LocationNameNormal.fxml"));
 
                 // Load the resource
                 try {
