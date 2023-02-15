@@ -2,12 +2,8 @@ package edu.wpi.FlashyFrogs.ServiceRequests.Editors;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.AudioVisual;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import jakarta.persistence.RollbackException;
 import java.io.IOException;
@@ -30,7 +26,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class AVEditor implements IController {
+public class AVEditor extends ServiceRequest implements IController {
 
   @FXML SearchableComboBox<LocationName> locationBox;
   @FXML SearchableComboBox<User> assignedBox;
@@ -51,6 +47,12 @@ public class AVEditor implements IController {
 
   boolean hDone = false;
   private Connection connection = null;
+
+  private AudioVisual avReq = new AudioVisual();
+
+  public void setRequest(ServiceRequest serviceRequest) {
+    avReq = (AudioVisual) serviceRequest;
+  }
 
   public void initialize() {
     h1.setVisible(false);
@@ -76,6 +78,17 @@ public class AVEditor implements IController {
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
+
+    locationBox.setValue(avReq.getLocation());
+    urgency.setValue(avReq.getUrgency());
+    statusBox.setValue(avReq.getStatus());
+    date.setValue(
+        Instant.ofEpochMilli(avReq.getDate().getTime())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
+    description.setText(avReq.getDescription());
+    device.setText(avReq.getDeviceType());
+    reason.setText(avReq.getReason());
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -94,19 +107,17 @@ public class AVEditor implements IController {
 
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      AudioVisual audioVisual =
-          new AudioVisual(
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
-              dateNeeded,
-              Date.from(Instant.now()),
-              urgency.getValue(),
-              device.getText(),
-              reason.getText(),
-              description.getText(),
-              locationBox.getValue());
+      avReq.setDescription(description.getText());
+      avReq.setAssignedEmp(assignedBox.getValue());
+      avReq.setUrgency(urgency.getValue());
+      avReq.setDate(dateNeeded);
+      avReq.setStatus(statusBox.getValue());
+      avReq.setLocation(locationBox.getValue());
+      avReq.setDeviceType(device.getText());
+      avReq.setReason(reason.getText());
 
       try {
-        session.persist(audioVisual);
+        session.merge(avReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);

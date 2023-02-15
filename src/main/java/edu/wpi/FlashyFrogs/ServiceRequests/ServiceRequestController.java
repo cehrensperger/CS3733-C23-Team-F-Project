@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,9 +24,11 @@ public abstract class ServiceRequestController {
     stage.close();
   }
 
-  abstract void handleClear(ActionEvent event) throws IOException;
+  protected abstract void handleClear(ActionEvent event) throws IOException;
 
-  abstract void handleBack(ActionEvent event) throws IOException;
+  protected abstract void handleBack(ActionEvent event) throws IOException;
 
-  abstract void handleSubmit(ActionEvent event) throws IOException;
+  public abstract void handleSubmit(ActionEvent event) throws IOException;
+
+  public abstract void setRequest(ServiceRequest request);
 }
