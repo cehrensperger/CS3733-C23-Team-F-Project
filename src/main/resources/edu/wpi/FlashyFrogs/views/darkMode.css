@@ -17,6 +17,8 @@
     -fx-background-color: #0067B1;
     -fx-text-fill: white;
     -fx-font-family: "Roboto";
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
 }
 .titleText {
     -fx-font-family: "Roboto";
@@ -49,4 +51,30 @@
 }
 .navBarLines {
     -fx-stroke: #58A0E3;
+}
+.combo-box .text-field:focused {
+     -fx-prompt-text-fill: transparent ;
+ }
+.combo-box .arrow{
+    -fx-background-color:#012D5A;
+}
+
+.combo-box .cell {
+
+    -fx-text-fill: #012D5A;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px 0px 0px 0px;
+    -fx-padding: 0px 0px 7px 0px;
+}
+
+.table-view .table-cell{
+    -fx-border-color: transparent;
+    -fx-padding: 2 0 2 10px;
+}
+.table-view .column-header {
+    -fx-background-color: #2F2F2F;
+    -fx-text-fill: white;
 }
