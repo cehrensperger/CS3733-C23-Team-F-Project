@@ -61,7 +61,7 @@
                   <Font size="10.0" />
                </font>
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="8.0" />
                </VBox.margin>
             </Text>
             <Button fx:id="addNode" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupNode" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Add Node">
@@ -80,6 +80,9 @@
                <font>
                   <Font size="10.0" />
                </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Text>
             <Button fx:id="addMove" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupMove" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location" wrapText="true">
                <styleClass>
@@ -87,7 +90,7 @@
                   <String fx:value="body" />
                </styleClass>
                <VBox.margin>
-                  <Insets />
+                  <Insets top="8.0" />
                </VBox.margin>
             </Button>
             <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to link specific nodes with specific location names" wrappingWidth="170.0">
@@ -95,13 +98,12 @@
                   <Font size="10.0" />
                </font>
             </Text>
-            <Button fx:id="addEdge" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupEdge" prefHeight="26.0" prefWidth="167.0" text="Link Nodes">
+            <Button fx:id="addEdge" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupEdge" prefHeight="0.0" prefWidth="167.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Nodes">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <styleClass>
                   <String fx:value="round" />
-                  <String fx:value="blue2" />
                   <String fx:value="body" />
                </styleClass>
             </Button>
