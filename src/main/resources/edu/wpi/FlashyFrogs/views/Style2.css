@@ -301,7 +301,7 @@
 
 .table-row-cell:hover {
     -fx-background-color: #012d5a;
-    -fx-text-background-color: #012d5a;
+    -fx-text-background-color: #ffffff;
     -fx-text-fill: #ffffff;
 }
 .table-view .virtual-flow .scroll-bar:vertical .thumb{
