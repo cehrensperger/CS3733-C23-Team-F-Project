@@ -18,9 +18,21 @@
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name" styleClass="fields" />
-                  <TextField fx:id="middleName" promptText="Middle Name" styleClass="fields" />
-                  <TextField fx:id="lastName" promptText="Last Name" styleClass="fields" />
+                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="middleName" promptText="Middle Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="lastName" promptText="Last Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
                   <SearchableComboBox fx:id="deptBox" prefHeight="26.0" prefWidth="211.0" promptText="Department:" styleClass="fields">
                      <VBox.margin>
                         <Insets />
@@ -35,9 +47,21 @@
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username" styleClass="fields" />
-                  <TextField fx:id="pass1" promptText="Password" styleClass="fields" />
-                  <TextField fx:id="pass2" promptText="Confirm Password" styleClass="fields" />
+                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="pass1" promptText="Password">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="pass2" promptText="Confirm Password">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
                   <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="293.0" promptText="Employee Type:" styleClass="fields">
                      <VBox.margin>
                         <Insets />

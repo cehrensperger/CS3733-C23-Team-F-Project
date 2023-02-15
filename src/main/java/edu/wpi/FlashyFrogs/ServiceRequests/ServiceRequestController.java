@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 
 @GeneratedExclusion
 public abstract class ServiceRequestController {
@@ -33,4 +34,6 @@ public abstract class ServiceRequestController {
   public abstract void setRequest(ServiceRequest request);
 
   public abstract void updateFields();
+
+  public abstract void setPopOver(PopOver popOver);
 }

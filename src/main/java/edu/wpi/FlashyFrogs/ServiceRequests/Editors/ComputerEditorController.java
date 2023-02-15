@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -54,6 +55,7 @@ public class ComputerEditorController extends ServiceRequestController implement
   private Connection connection = null;
 
   private ComputerService itReq = new ComputerService();
+  private PopOver popOver;
 
   public void setRequest(ServiceRequest serviceRequest) {
     itReq = (ComputerService) serviceRequest;
@@ -101,6 +103,12 @@ public class ComputerEditorController extends ServiceRequestController implement
     if (itReq.getAssignedEmp() != null) {
       assignedBox.setValue(itReq.getAssignedEmp());
     }
+    number.setText(itReq.getBestContact());
+  }
+
+  @Override
+  public void setPopOver(PopOver popOver) {
+    this.popOver = popOver;
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -126,14 +134,14 @@ public class ComputerEditorController extends ServiceRequestController implement
       itReq.setDeviceType(type.getValue());
       itReq.setDescription(description.getText());
       itReq.setDate(dateNeeded);
+      itReq.setBestContact(number.getText());
 
       try {
         session.merge(itReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
+        popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
         errorMessage.setTextFill(Paint.valueOf("#b6000b"));

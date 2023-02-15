@@ -15,11 +15,11 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@../views/Style2.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.Editors.ComputerEditorController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.Editors.ComputerEditorController">
     <children>
         <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f1f1f1;" stylesheets="@../views/Style2.css" BorderPane.alignment="CENTER">
+                <VBox alignment="TOP_CENTER" prefHeight="710.0" prefWidth="1147.0" style="-fx-background-color: #f1f1f1;" BorderPane.alignment="CENTER">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Information Technology Service Request">
                             <font>
@@ -89,12 +89,12 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <SearchableComboBox fx:id="assignedBox" promptText="Assigned User">
+                              <SearchableComboBox fx:id="assignedBox" promptText="Assigned User" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </SearchableComboBox>
-                              <SearchableComboBox fx:id="statusBox" promptText="Status">
+                              <SearchableComboBox fx:id="statusBox" promptText="Status" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
@@ -244,9 +244,6 @@
                             </VBox.margin>
                         </HBox>
                     </children>
-               <padding>
-                  <Insets right="220.0" />
-               </padding>
                 </VBox>
             </center>
         </BorderPane>

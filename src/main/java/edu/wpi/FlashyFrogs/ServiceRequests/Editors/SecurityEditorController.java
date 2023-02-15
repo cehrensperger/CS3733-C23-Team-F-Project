@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -49,6 +50,7 @@ public class SecurityEditorController extends ServiceRequestController implement
   boolean hDone = false;
   private Connection connection = null;
   private Security secReq = new Security();
+  PopOver popOver;
 
   public void initialize() {
     h1.setVisible(false);
@@ -91,6 +93,11 @@ public class SecurityEditorController extends ServiceRequestController implement
     }
   }
 
+  @Override
+  public void setPopOver(PopOver popOver) {
+    this.popOver = popOver;
+  }
+
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
@@ -120,8 +127,7 @@ public class SecurityEditorController extends ServiceRequestController implement
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
+        popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
         errorMessage.setTextFill(Paint.valueOf("#b6000b"));
@@ -137,7 +143,9 @@ public class SecurityEditorController extends ServiceRequestController implement
   }
 
   @Override
-  public void setRequest(ServiceRequest request) {}
+  public void setRequest(ServiceRequest request) {
+    secReq = (Security) request;
+  }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
     locationBox.valueProperty().set(null);
