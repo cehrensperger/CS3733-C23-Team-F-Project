@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 public class NavBarController {
 
   @FXML private AnchorPane anchorPane;
+  @FXML private HBox header;
   @FXML private Line line1;
   @FXML private Line line2;
   @FXML private Button homeButton;
@@ -29,28 +31,24 @@ public class NavBarController {
   public void initialize() {
     menu.setDisable(true);
     menu.hide();
-    srButton.setOpacity(0);
-    srButton.setDisable(true);
-    homeButton.setOpacity(0);
-    homeButton.setDisable(true);
-    helpButton.setOpacity(0);
-    helpButton.setDisable(true);
-    line1.setOpacity(0);
-    line2.setOpacity(0);
+    header.setDisable(true);
+    header.setOpacity(0);
+    //    srButton.setOpacity(0);
+    //    srButton.setDisable(true);
+    //    homeButton.setOpacity(0);
+    //    homeButton.setDisable(true);
+    //    helpButton.setOpacity(0);
+    //    helpButton.setDisable(true);
+    //    line1.setOpacity(0);
+    //    line2.setOpacity(0);
   }
 
   public void logIn() {
     menu.show();
     menu.setDisable(false);
     menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentuser().getFirstName());
-    srButton.setOpacity(1);
-    srButton.setDisable(false);
-    homeButton.setOpacity(1);
-    homeButton.setDisable(false);
-    helpButton.setOpacity(1);
-    helpButton.setDisable(false);
-    line1.setOpacity(1);
-    line2.setOpacity(1);
+    header.setDisable(false);
+    header.setOpacity(1);
     closeButton.setDisable(true);
     closeButton.setOpacity(0);
     closeButton.setMouseTransparent(true);
@@ -97,5 +95,7 @@ public class NavBarController {
     closeButton.setDisable(false);
     closeButton.setOpacity(1);
     closeButton.setMouseTransparent(false);
+    header.setDisable(true);
+    header.setOpacity(0);
   }
 }

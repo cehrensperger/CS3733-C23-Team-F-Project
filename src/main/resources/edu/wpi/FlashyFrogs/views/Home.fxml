@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" stylesheets="@Style2.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
    <children>
       <StackPane layoutX="1011.0" layoutY="486.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -131,14 +131,29 @@
             </Label>
             <AnchorPane VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="184.0" prefHeight="200.0" prefWidth="190.0" AnchorPane.bottomAnchor="8.0">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="185.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0">
                      <children>
-                        <MFXButton fx:id="manageCSVButton" onAction="#handleManageCSV" prefHeight="60.0" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
+                        <MFXButton onAction="#changeMode" prefHeight="43.0" prefWidth="170.0" style="-fx-background-color: #012d5a; -fx-text-fill: #ffffff;" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="blue2" />
+                              <String fx:value="round" />
+                              <String fx:value="body" />
+                           </styleClass>
+                        </MFXButton>
+                        <MFXButton onAction="#handleManageCSV" prefHeight="43.0" prefWidth="170.0" style="-fx-background-color: #012d5a; -fx-text-fill: #ffffff;" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="blue2" />
+                              <String fx:value="round" />
+                              <String fx:value="body" />
+                           </styleClass>
                            <VBox.margin>
-                              <Insets />
+                              <Insets top="20.0" />
                            </VBox.margin>
                         </MFXButton>
                         <MFXButton fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefWidth="150.0" style="-fx-text-fill: WHITE; -fx-background-color: #012d5a" text="Manage Logins" textAlignment="CENTER" wrapText="true">
@@ -170,6 +185,9 @@
                      </children>
                   </VBox>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </AnchorPane>
          </children>
       </VBox>
@@ -195,13 +213,8 @@
             <Image url="@Brigham-Womens-TO-USE.jpg" />
          </image>
       </ImageView>
-<<<<<<< HEAD
-      <SearchableComboBox fx:id="filterBox" layoutX="1171.0" layoutY="120.0" prefHeight="25.0" prefWidth="164.0" promptText="Filter" AnchorPane.rightAnchor="20.0" />
-      <TableView fx:id="moveTable" editable="true" layoutX="243.0" layoutY="501.0" prefHeight="213.0" prefWidth="756.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="281.0">
-=======
       <SearchableComboBox fx:id="filterBox" layoutX="1171.0" layoutY="120.0" prefHeight="25.0" prefWidth="164.0" promptText="Filter" styleClass="fields" AnchorPane.rightAnchor="20.0" />
       <TableView fx:id="moveTable" layoutX="243.0" layoutY="501.0" prefHeight="213.0" prefWidth="756.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="281.0">
->>>>>>> 0419cc838bb725c690d0962a529636617413a7bb
          <columns>
             <TableColumn fx:id="nodeIDCol" prefWidth="144.0" text="Node ID" />
             <TableColumn fx:id="locationNameCol" prefWidth="331.0" text="Location Name" />
@@ -213,14 +226,5 @@
             <Font size="24.0" />
          </font>
       </Label>
-<<<<<<< HEAD
-      <MFXButton layoutX="28.0" layoutY="580.0" onAction="#handleManageCSV" prefHeight="60.0" prefWidth="150.0" text="Manage CSVs" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="162.0" AnchorPane.leftAnchor="18.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </MFXButton>
-      <MFXButton layoutX="921.0" layoutY="463.0" onAction="#handleEditMovesButton" text="Edit Moves" AnchorPane.bottomAnchor="231.8" AnchorPane.rightAnchor="281.8" />
-=======
->>>>>>> 0419cc838bb725c690d0962a529636617413a7bb
    </children>
 </AnchorPane>

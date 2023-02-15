@@ -50,6 +50,7 @@ public class LoginAdministratorController implements IController {
     popOver.detach();
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
+
     addNewUser.setDisable(true);
     back.setDisable(true);
     popOver

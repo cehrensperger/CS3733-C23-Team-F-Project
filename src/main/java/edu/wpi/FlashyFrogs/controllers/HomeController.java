@@ -10,6 +10,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.Theme;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.*;
@@ -263,89 +264,20 @@ public class HomeController implements IController {
   }
 
   /**
-   * Change the color theme to Light Mode when the Color Scheme > Light Mode option is selected on
-   * EmployeeHome.fxml.
+   * Change the color theme between Dark and Light Mode when the Switch Color Scheme button is
+   * clicked on Home.fxml.
    *
    * @param actionEvent
    * @throws IOException
    */
-  public void changeToLightMode(ActionEvent actionEvent) throws IOException {
-    //    setToLightMode();
-  }
-
-  /**
-   * Call to set EmployeeHome.fxml to light mode. Also makes some tweaks to JavaFX elements specific
-   * to EmployeeHome.fxml, so not all of this method is generalizable to setting any page to light
-   * mode.
-   */
-  public void setToLightMode() {
-    //    rootPane
-    //        .getStylesheets()
-    //        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off
-    // all
-    //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
-    //    rootPane
-    //        .getStylesheets()
-    //        .add("edu/wpi/FlashyFrogs/views/Css.css"); // add the light mode CSS
-    //    AboutText.setBlendMode(
-    //        BlendMode.DARKEN); // change the Blend Mode on the text box describing the hospital,
-    // as the
-    //    // Blend Mode used for Light Mode does not give the desired appearance
-    //    rootPane
-    //        .getStylesheets()
-    //        .add("edu/wpi/FlashyFrogs/views/label-override.css"); // usually the text color in
-    // label
-    //    // elements is black in Light Mode, but the upper left menu on the Home page would be hard
-    // to
-    //    // read with black text,
-    //    // so for this page we change the label text color to white.
-    //    Fapp.setLightMode(true); // set the isLightMode variable to true, as we switched to Light
-    // Mode
-  }
-
-  /**
-   * Change the color theme to Dark Mode when the Color Scheme > Dark Mode option is selected on
-   * EmployeeHome.fxml.
-   *
-   * @param actionEvent
-   * @throws IOException
-   */
-  public void changeToDarkMode(ActionEvent actionEvent) {
-    // setToDarkMode();
-
-  }
-
-  /**
-   * Call to set EmployeeHome.fxml to dark mode. Also makes some tweaks to JavaFX elements specific
-   * to EmployeeHome.fxml, so not all of this method is generalizable to setting any page to dark
-   * mode.
-   */
-  public void setToDarkMode() {
-    //    rootPane
-    //        .getStylesheets()
-    //        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off
-    // all
-    //    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
-    //    rootPane
-    //        .getStylesheets()
-    //        .add("edu/wpi/FlashyFrogs/views/dark-mode.css"); // add the dark mode CSS
-    //    AboutText.setBlendMode(
-    //        BlendMode.SOFT_LIGHT); // change the Blend Mode on the text box describing the
-    // hospital, as
-    //    // using Light Mode's Blend Mode (DARKEN) on this will make all the text in the box
-    // invisible;
-    //    // SOFT_LIGHT keeps it
-    //    // visible and somewhat preserves the transparency idea shown in Light Mode
-    //    AboutText.setStyle(
-    //        "-fx-text-fill: #2f2f2f;"); // usually the text color in text-area elements is white
-    // in Dark
-    //    // Mode,
-    //    // but the text-area element on this page, the one describing the hospital, would be hard
-    // to
-    //    // read with white, so for
-    //    // this page we change the color to black/gray.
-    //    Fapp.setLightMode(false); // set the isLightMode variable to false, as we switched to Dark
-    // Mode
+  public void changeMode(ActionEvent actionEvent) throws IOException {
+    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
+      Fapp.setTheme(Theme.DARK_THEME);
+      System.out.println("switch to dark");
+    } else {
+      Fapp.setTheme(Theme.LIGHT_THEME);
+      System.out.println("switch to light");
+    }
   }
 
   public void handleLogOut(ActionEvent actionEvent) throws IOException {

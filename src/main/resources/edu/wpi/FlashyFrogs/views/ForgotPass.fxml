@@ -10,7 +10,7 @@
 
 <AnchorPane style="-fx-background-color: #F1F1F1; -fx-opacity: 1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.ForgotPassController">
     <children>
-        <BorderPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #f1f1f1;" stylesheets="@Style2.css">
+        <BorderPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #f1f1f1;" >
             <center>
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>

@@ -1,0 +1,8 @@
+.titleText{
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: lighter;
+    -fx-font-size: 20pt;
+}
+.rectangle {
+    -fx-background-color: red;
+}
