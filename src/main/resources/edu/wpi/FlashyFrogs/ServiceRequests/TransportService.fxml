@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -263,11 +264,6 @@
                                     <Insets bottom="18.0" top="18.0" />
                                  </VBox.margin>
                               </SearchableComboBox>
-                              <SearchableComboBox fx:id="isolation" promptText="Isolation/Precaution" styleClass="fields">
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </SearchableComboBox>
                               <TextField fx:id="personal" promptText="Personal Items to be Sent" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
@@ -278,6 +274,14 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </TextField>
+                              <CheckBox fx:id="isolation" mnemonicParsing="false" prefHeight="32.0" prefWidth="286.0" styleClass="fields" text="Needs Isolation?">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </CheckBox>
                               <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
@@ -382,7 +386,7 @@
                                     <Insets top="28.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="185.0">
+                              <Text fx:id="h13" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -390,15 +394,15 @@
                                     <Insets top="25.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h13" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="185.0">
+                              <Text fx:id="h14" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Explain why this patient is being transported" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="11.0" />
+                                    <Insets top="17.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h14" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Explain why this patient is being transported" wrappingWidth="185.0">
+                              <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
