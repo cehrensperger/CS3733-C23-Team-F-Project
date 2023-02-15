@@ -44,7 +44,7 @@
                   <Font size="10.0" />
                </font>
             </Text>
-            <Button fx:id="addLocation" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupLocation" prefHeight="12.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location">
+            <Button fx:id="addLocation" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupLocation" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -61,10 +61,10 @@
                   <Font size="10.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="16.0" />
+                  <Insets />
                </VBox.margin>
             </Text>
-            <Button fx:id="addNode" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupNode" prefHeight="13.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Add Node">
+            <Button fx:id="addNode" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupNode" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Add Node">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -81,7 +81,7 @@
                   <Font size="10.0" />
                </font>
             </Text>
-            <Button fx:id="addMove" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupMove" prefHeight="40.0" prefWidth="183.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location" wrapText="true">
+            <Button fx:id="addMove" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupMove" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location" wrapText="true">
                <VBox.margin>
                   <Insets bottom="16.0" />
                </VBox.margin>

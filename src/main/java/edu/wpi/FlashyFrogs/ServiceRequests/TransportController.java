@@ -190,6 +190,7 @@ public class TransportController implements IController {
     isolation.setSelected(false);
     personal.setText("");
     reason.setText("");
+    date.valueProperty().set(null);
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
