@@ -20,7 +20,7 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Map Editor">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Map Editor">
                <VBox.margin>
                   <Insets bottom="44.0" />
                </VBox.margin>

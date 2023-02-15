@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import org.controlsfx.control.PopOver;
 
 @GeneratedExclusion
@@ -26,8 +27,10 @@ public class FeedbackController implements IController {
   @FXML private MFXButton back;
   @FXML private MFXButton submit;
   @FXML private MFXButton question;
+  @FXML private Label submited;
 
   public void initialize() {
+    submited.setVisible(false);
     department.getItems().addAll("Nursing", "Cardiology", "Radiology", "Maintenance");
   }
 
@@ -67,7 +70,8 @@ public class FeedbackController implements IController {
 
   @FXML
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("views", "Confirmation");
+    feedback.clear();
+    submit.setVisible(true);
   }
 
   public void onClose() {}
