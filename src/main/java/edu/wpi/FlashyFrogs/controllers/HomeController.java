@@ -75,9 +75,6 @@ public class HomeController implements IController {
 
     Session session = CONNECTION.getSessionFactory().openSession();
 
-    // todo: remove when login is implemented
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(session.find(User.class, 1));
-
     User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
