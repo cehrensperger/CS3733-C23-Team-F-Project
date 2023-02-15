@@ -37,7 +37,7 @@
     -fx-border-color:#B6000B;
     -fx-font-family: "Roboto Light";
     -fx-text-fill: #B6000B;
-    -fx-font-size: 10pt;
+    -fx-font-size: 16pt;
 
 }
 
@@ -74,9 +74,6 @@
     -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
     -fx-font-size: 10pt;
-    -fx-pref-width: 175px;
-
-
 }
 
 .blueOutline
@@ -187,8 +184,6 @@
     -fx-font-family: "Roboto Light ";
     -fx-text-fill: #ffffff;
     -fx-font-size: 10pt;
-    -fx-pref-width: 175px;
-
 }
 
 .blue2
@@ -345,8 +340,6 @@
     -fx-background-radius: 10px;
     -fx-text-innercolor: #b6000b;
     -fx-border-radius: 10px;
-    -fx-pref-width: 200px;
-    -fx-pref-height: 25;
 }
 
 
