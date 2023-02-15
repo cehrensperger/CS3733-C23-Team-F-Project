@@ -6,11 +6,11 @@ import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.time.Instant;
-import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import lombok.SneakyThrows;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -29,6 +29,7 @@ public class CSVParser {
    * @param factory the factory to create a session to access the database
    * @throws FileNotFoundException if any of the files could not be found
    */
+  @SneakyThrows
   public static void readFiles(
       File nodeFile, File edgeFile, File locationFile, File moveFile, SessionFactory factory)
       throws FileNotFoundException {
@@ -112,7 +113,7 @@ public class CSVParser {
             new Move(
                 session.get(Node.class, fields[0]),
                 locations.get(fields[1]),
-                Date.from(Instant.now()));
+                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(fields[2]));
         session.persist(move); // Persist the move
       }
 
