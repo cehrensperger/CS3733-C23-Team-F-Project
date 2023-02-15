@@ -4,10 +4,8 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.ComputerService;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -31,7 +29,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class ComputerEditor implements IController {
+public class ComputerEditor extends ServiceRequestController implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;
@@ -55,6 +53,12 @@ public class ComputerEditor implements IController {
 
   boolean hDone = false;
   private Connection connection = null;
+
+  private ComputerService itReq = new ComputerService();
+
+  public void setRequest(ServiceRequest serviceRequest) {
+    itReq = (ComputerService) serviceRequest;
+  }
 
   public void initialize() {
     h1.setVisible(false);
@@ -82,6 +86,15 @@ public class ComputerEditor implements IController {
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     type.setItems(FXCollections.observableArrayList(ComputerService.DeviceType.values()));
     session.close();
+
+    locationBox.setValue(itReq.getLocation());
+    assignedBox.setValue(itReq.getAssignedEmp());
+    statusBox.setValue(itReq.getStatus());
+    service.setValue(itReq.getServiceType());
+    urgency.setValue(itReq.getUrgency());
+    type.setValue(itReq.getDeviceType());
+    description.setText(itReq.getDescription());
+    date.setValue(Instant.ofEpochMilli(itReq.getDate().getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -99,21 +112,18 @@ public class ComputerEditor implements IController {
       }
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      ComputerService informationTechnology =
-          new ComputerService(
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
-              locationBox.getValue(),
-              dateNeeded,
-              Date.from(Instant.now()),
-              urgency.getValue(),
-              type.getValue(),
-              "temp",
-              description.getText(),
-              service.getValue(),
-              number.getText());
+      itReq.setLocation(locationBox.getValue());
+      itReq.setAssignedEmp(assignedBox.getValue());
+      itReq.setStatus(statusBox.getValue());
+      itReq.setServiceType(service.getValue());
+      itReq.setUrgency(urgency.getValue());
+      itReq.setDeviceType(type.getValue());
+      itReq.setDescription(description.getText());
+      itReq.setDate(dateNeeded);
+
 
       try {
-        session.persist(informationTechnology);
+        session.merge(itReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
@@ -141,6 +151,11 @@ public class ComputerEditor implements IController {
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
     description.setText("");
+  }
+
+  @Override
+  protected void handleBack(ActionEvent event) throws IOException {
+
   }
 
   public void help() {
