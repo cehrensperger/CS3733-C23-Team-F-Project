@@ -35,6 +35,7 @@
             </HBox>
             <MenuButton fx:id="menu" styleClass="navBar" mnemonicParsing="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
               <items>
+                 <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
                 <MenuItem mnemonicParsing="false" text="User Preferences                 " />
                 <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
                   <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />

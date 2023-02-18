@@ -7,12 +7,15 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import lombok.SneakyThrows;
+import org.controlsfx.control.PopOver;
 
 @GeneratedExclusion
 public class NavBarController {
@@ -99,5 +102,14 @@ public class NavBarController {
     closeButton.setMouseTransparent(false);
     header.setDisable(true);
     header.setOpacity(0);
+  }
+
+  @FXML
+  @SneakyThrows
+  private void about() throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/About.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+    popOver.detach();
+    popOver.show(anchorPane.getScene().getWindow());
   }
 }
