@@ -105,7 +105,6 @@ public class NavBarController {
   }
 
   @FXML
-  @SneakyThrows
   private void about() throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/About.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
