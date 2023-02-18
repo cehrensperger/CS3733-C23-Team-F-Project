@@ -32,6 +32,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
@@ -244,10 +245,31 @@ public class MapEditorController implements IController {
                 event.getDragboard().hasString()) {
               /* allow for both copying and moving, whatever user chooses */
               event.acceptTransferModes(TransferMode.COPY);
+              GesturePane gesturePane = mapController.getGesturePane();
+              double scale = gesturePane.getCurrentScale();
+              duplicateCircle.setRadius(5 * scale);
               duplicateCircle.setVisible(true);
-              duplicateCircle.setFill(Paint.valueOf(Color.GREEN.toString()));
+              duplicateCircle.setFill(Paint.valueOf("F6BD38"));
               duplicateCircle.setCenterX(event.getX());
               duplicateCircle.setCenterY(event.getY());
+
+              // X bounds
+              if (event.getX() < 0) {
+                duplicateCircle.setCenterX(0);
+                duplicateCircle.setCenterY(event.getY());
+              } else if (event.getX() > mapPane.getWidth()) {
+                duplicateCircle.setCenterX(mapPane.getWidth());
+                duplicateCircle.setCenterY(event.getY());
+              }
+
+              // Y bounds
+              if (event.getY() < 0) {
+                duplicateCircle.setCenterY(0);
+                duplicateCircle.setCenterX(event.getX());
+              } else if (event.getY() > mapPane.getHeight()) {
+                duplicateCircle.setCenterY(mapPane.getHeight());
+                duplicateCircle.setCenterX(event.getX());
+              }
             }
 
             event.consume();
@@ -258,8 +280,24 @@ public class MapEditorController implements IController {
         new EventHandler<DragEvent>() {
           @Override
           public void handle(DragEvent event) {
-            // System.out.println(event.getX()*scale + xTranslation);
-            // System.out.println(event.getY()*scale + yTranslation);
+
+            GesturePane gesturePane = mapController.getGesturePane();
+            double scale = gesturePane.getCurrentScale();
+            System.out.println("translate X: " + gesturePane.getCurrentX());
+            System.out.println("translate Y: " + gesturePane.getCurrentY());
+            System.out.println("scale factor: " + scale);
+
+            System.out.println(
+                "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
+            System.out.println(
+                "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
+            double x = (event.getX() / scale) + gesturePane.getCurrentX() * -1;
+            double y = (event.getY() / scale) + gesturePane.getCurrentY() * -1;
+            Node newNode =
+                new Node("", floorProperty.getValue(), (int) Math.round(x), (int) Math.round(y));
+            mapController.addNode(newNode, false);
+            mapController.getMapSession().persist(newNode);
+            duplicateCircle.setVisible(false);
           }
         });
   }
