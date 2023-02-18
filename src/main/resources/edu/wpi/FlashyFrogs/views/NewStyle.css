@@ -112,6 +112,22 @@
     -fx-pref-height: 25px;
 }
 
+.blueBackground
+    /** This is a smaller version of the credits button styling (blue background with
+     white text) - ex. select files in Manage CSVs  **/
+{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-background-color: #012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 10pt;
+    -fx-pref-width: 150px;
+    -fx-pref-height: 25px;
+}
+
 .blueBackgroundSideBar
     /** This is used for the sidebar buttons with blue backgrounds - ex. switch color, manage CSVs, etc. **/
 {
@@ -147,14 +163,13 @@
     /** This controls input fields within the app - such as the service requests
     fields and the csv parser inputs **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-border-radius: 10px !important;
     -fx-background-radius: 10px !important;
     -fx-font-family: "Roboto Light";
     -fx-font-size: 12pt;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
-    -fx-background-color: #f1f1f1;
+    -fx-background-color: transparent;
     -fx-border-insets: -1px;
     -fx-prompt-text-fill: #012D5A;
     -fx-font-weight: normal;
@@ -165,8 +180,8 @@
 .date-picker
     /** controls all date picker fields within the app **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10 10 10 10;
+    -fx-text-fill: #012D5A;
 }
 .date-picker > .text-field
     /** controls all date picker fields within the app **/
@@ -183,11 +198,9 @@
     -fx-background-radius: 0 10 10 0;
 }
 
-
 .searchable-combo-box>
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10 10 10 10;
     -fx-prompt-text-fill: #012D5A;
     -fx-text-fill: #012D5A;
@@ -256,6 +269,22 @@
     -fx-text-fill: #b6000b;
     -fx-font-size: 10pt;
     -fx-pref-width: 100px;
+    -fx-pref-height: 25;
+}
+
+.cancelButton
+    /** This is similar styling to the clear buttons in the service requests
+     but it is a bigger button - ex. cancel button Manage CSVs **/
+{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-background-color: #f1f1f1;
+    -fx-border-color:#b6000b;
+    -fx-font-family: "Roboto Light";
+    -fx-text-fill: #b6000b;
+    -fx-font-size: 10pt;
+    -fx-pref-width: 150px;
     -fx-pref-height: 25;
 }
 
@@ -342,12 +371,12 @@
     -fx-text-fill: #000000;
 }
 
-.table-view .column-header-background{
+.table-view .column-header-background
+    /** controls the blue line in the tables above the table entries **/
+{
     -fx-background-color: #012d5a;
     -fx-background-radius: 0px 0px 0px 0px;
     -fx-padding: 0px 0px 7px 0px;
-
-
 }
 
 .table-view .table-cell
@@ -412,14 +441,17 @@
 }
 
 .alertBar
-    /** controls the bar within the alert (the one that seperates the name and date from
+    /** controls the bar within the alert (the one that separates the name and date from
     the rest of the text) **/
 {
     -fx-stroke: #000000;
 }
 
-.pathfindingColor
+.pathfindingPopup
+    /** controls the styling of the path finding popup on the login and home pages **/
 {
-
+    -fx-background-color: #6B6D6F;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-family: "Roboto Light";
 }
-

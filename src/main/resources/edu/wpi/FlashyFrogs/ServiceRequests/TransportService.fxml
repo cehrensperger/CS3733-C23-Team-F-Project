@@ -171,7 +171,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </TextField>
-                              <SearchableComboBox fx:id="vision" promptText="Vision" style="-fx-background-color: FFFFFF;" styleClass="fields">
+                              <SearchableComboBox fx:id="vision" promptText="Vision" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
