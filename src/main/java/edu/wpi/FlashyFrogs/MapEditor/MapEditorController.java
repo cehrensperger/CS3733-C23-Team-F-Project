@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
+import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
@@ -18,15 +19,22 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
@@ -44,8 +52,6 @@ public class MapEditorController implements IController {
 
   @FXML Text h1;
   @FXML Text h2;
-  @FXML Text h3;
-  @FXML Text h4;
 
   boolean hDone = false;
 
@@ -54,14 +60,20 @@ public class MapEditorController implements IController {
 
   ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>(Node.Floor.L1);
 
+  @FXML private Circle nodeToDrag;
+  private Circle duplicateCircle;
+
   /** Initializes the map editor, adds the map onto it */
   @SneakyThrows
   @FXML
   private void initialize() {
+    duplicateCircle = new Circle(5);
+    duplicateCircle.setFill(Color.RED);
+    duplicateCircle.setVisible(false);
+    mapPane.getChildren().add(duplicateCircle);
+
     h1.setVisible(false);
     h2.setVisible(false);
-    h3.setVisible(false);
-    h4.setVisible(false);
     h41.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
@@ -148,10 +160,87 @@ public class MapEditorController implements IController {
     // Set the node creation processor
     mapController.setNodeCreation(
         (node, circle) -> {
-          // Set the on-click processor
 
+          // Variable determining whether this node is currently being dragged. Used to prevent
+          // uncecessary
+          // pop-ups. Must be atomic due to where it exists
+          AtomicReference<Boolean> dragInProgress = new AtomicReference<>(false);
+
+          // Set the on-click processor
+          circle.setOnDragDetected(
+              (event) -> {
+                // Mark that we are dragging
+                dragInProgress.set(true);
+
+                // Disable the gesture pane (obviously)
+                this.mapController.getGesturePane().setGestureEnabled(false);
+              });
+
+          // On drag
+          circle.setOnMouseDragged(
+              (event) -> {
+                // Move the circle to the new position
+                moveCircleToPosition(circle, node, event.getX(), event.getY());
+              });
+
+          // On drag stop, this is the only thing that represents that for some reason
+          circle.setOnMouseReleased(
+              (event) -> {
+                // If a drag isn't in progress (for instance simple release)
+                if (!dragInProgress.get()) {
+                  return; // Do nothing
+                }
+                // Re-enable the gesture pane
+                this.mapController.getGesturePane().setGestureEnabled(true);
+                dragInProgress.set(false); // Mark that we are no longer dragging
+
+                // Cast the coords
+                int newX = (int) Math.round(circle.getCenterX()); // Int rounded
+                int newY = (int) Math.round(circle.getCenterY()); // int rounded
+
+                // Create the new ID. To do that, floor and then coords
+                String newID = node.getFloor() + String.format("X%04dY%04d", newX, newY);
+
+                // First check to make sure that the circles position is unique. If it's not we need
+                // to relocate it.
+                // To do that, check if there are any other nodes at this position on this floor
+                if (mapController
+                        .getMapSession()
+                        .createQuery("FROM Node n WHERE n.id = :id", Node.class)
+                        .setParameter("id", newID)
+                        .uniqueResult()
+                    != null) {
+                  // Reset it to its original position
+                  moveCircleToPosition(circle, node, node.getXCoord(), node.getYCoord());
+
+                  return; // Short-circuit, no need for DB  changes
+                }
+
+                // Create a query to move the node in the DB
+                mapController
+                    .getMapSession()
+                    .createMutationQuery(
+                        "UPDATE Node SET id = :newID, xCoord = "
+                            + ":newXCoord, yCoord = :newYCoord WHERE id = :oldID")
+                    .setParameter("newID", newID)
+                    .setParameter("newXCoord", newX)
+                    .setParameter("newYCoord", newY)
+                    .setParameter("oldID", node.getId())
+                    .executeUpdate();
+
+                Node newNode =
+                    mapController.getMapSession().find(Node.class, newID); // Get the new node
+
+                mapController.moveNode(node, newNode); // Process the node change
+              });
+
+          // On click
           circle.setOnMouseClicked(
               (event) -> {
+                // If we are dragging
+                if (event.isConsumed() || dragInProgress.get()) {
+                  return; // Don't do anything!
+                }
                 // If we're no longer hovering and the pop over exists, delete it. We will
                 // either create a new one
                 // or, keep it deleted
@@ -194,6 +283,17 @@ public class MapEditorController implements IController {
                     false); // Delete on delete
 
                 mapPopOver.get().show(circle); // Show the pop-over
+
+                // Disable the gesture pane (this causes clunkyness when you click on the page after
+                // using the pop-up)
+                mapController.getGesturePane().setGestureEnabled(false);
+
+                // On close of the pop-up
+                mapPopOver
+                    .get()
+                    .setOnHidden(
+                        // Re-enable map gestures
+                        (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
               });
         });
 
@@ -207,6 +307,92 @@ public class MapEditorController implements IController {
           // drawNodesAndEdges(); // Re-draw pop-ups
           floorSelector.setText("Floor " + newValue.floorNum);
         }); // Set the floor text
+
+    nodeToDrag.setOnDragDetected(
+        event -> {
+          Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+          ClipboardContent clipboardContent = new ClipboardContent();
+          clipboardContent.putString("fjbwef");
+          dragboard.setContent(clipboardContent);
+        });
+
+    nodeToDrag.setOnMouseDragged(
+        event -> {
+          event.setDragDetect(true);
+        });
+
+    mapPane.setOnDragOver(
+        new EventHandler<DragEvent>() {
+          @Override
+          public void handle(DragEvent event) {
+            /* data is dragged over the target */
+            /* accept it only if it is not dragged from the same node
+             * and if it has a string data */
+            if (event.getGestureSource() != mapPane
+                &&
+                // image to represent the node?
+                event.getDragboard().hasString()) {
+              /* allow for both copying and moving, whatever user chooses */
+              event.acceptTransferModes(TransferMode.COPY);
+              GesturePane gesturePane = mapController.getGesturePane();
+              double scale = gesturePane.getCurrentScale();
+              duplicateCircle.setRadius(5 * scale);
+              duplicateCircle.setVisible(true);
+              duplicateCircle.setFill(Paint.valueOf("012DFA"));
+              duplicateCircle.setCenterX(event.getX());
+              duplicateCircle.setCenterY(event.getY());
+
+              // X bounds
+              if (event.getX() < 0) {
+                duplicateCircle.setCenterX(0);
+                duplicateCircle.setCenterY(event.getY());
+              } else if (event.getX() > mapPane.getWidth()) {
+                duplicateCircle.setCenterX(mapPane.getWidth());
+                duplicateCircle.setCenterY(event.getY());
+              }
+
+              // Y bounds
+              if (event.getY() < 0) {
+                duplicateCircle.setCenterY(0);
+                duplicateCircle.setCenterX(event.getX());
+              } else if (event.getY() > mapPane.getHeight()) {
+                duplicateCircle.setCenterY(mapPane.getHeight());
+                duplicateCircle.setCenterX(event.getX());
+              }
+            }
+
+            event.consume();
+          }
+        });
+
+    mapPane.setOnDragDropped(
+        new EventHandler<DragEvent>() {
+          @Override
+          public void handle(DragEvent event) {
+
+            GesturePane gesturePane = mapController.getGesturePane();
+            double scale = gesturePane.getCurrentScale();
+            System.out.println("translate X: " + gesturePane.getCurrentX());
+            System.out.println("translate Y: " + gesturePane.getCurrentY());
+            System.out.println("scale factor: " + scale);
+
+            System.out.println(
+                "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
+            System.out.println(
+                "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
+            double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
+            double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
+            Node newNode =
+                new Node("", floorProperty.getValue(), (int) Math.round(x), (int) Math.round(y));
+            mapController.addNode(newNode, false);
+
+            // make sure the circle is within bounds
+            if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
+              System.out.println("out of bounds");
+            }
+            duplicateCircle.setVisible(false);
+          }
+        });
   }
 
   /**
@@ -469,20 +655,18 @@ public class MapEditorController implements IController {
     mapController.exit();
   }
 
+  public void handleQuickDraw() {}
+
   @Override
   public void help() {
     if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
-      h3.setVisible(true);
-      h4.setVisible(true);
       h41.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
-      h3.setVisible(false);
-      h4.setVisible(false);
       h41.setVisible(false);
       hDone = false;
     }
@@ -518,5 +702,38 @@ public class MapEditorController implements IController {
 
     // Show the pop-over
     edgePopOver.show(addEdge.getScene().getWindow());
+  }
+
+  /**
+   * Handles moving a circle to a new position, including updating all edges. Meant for dragging, as
+   * this does not update edge placement
+   *
+   * @param circle the circle to move
+   * @param node the node associated with the circle
+   * @param newX the new x-position of the circle
+   * @param newY the new y-position of the circle
+   */
+  private void moveCircleToPosition(
+      @NonNull Circle circle, @NonNull Node node, double newX, double newY) {
+    // Update the positions
+    circle.setCenterX(newX); // X
+    circle.setCenterY(newY); // Y
+
+    // For every edge
+    for (Edge edge : mapController.getEdgeToLineMap().keySet()) {
+      Line line = mapController.getEdgeToLineMap().get(edge); // Get the edge
+
+      // If the node 1 is this
+      if (edge.getNode1().equals(node)) {
+        line.setStartX(circle.getCenterX()); // Update the X
+        line.setStartY(circle.getCenterY()); // Update the Y
+      }
+
+      // If the node 2 is this
+      if (edge.getNode2().equals(node)) {
+        line.setEndX(circle.getCenterX()); // Update the X
+        line.setEndY(circle.getCenterY()); // Update the Y
+      }
+    }
   }
 }

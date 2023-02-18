@@ -4,13 +4,17 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -22,13 +26,38 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Map Editor">
                <VBox.margin>
-                  <Insets bottom="44.0" />
+                  <Insets bottom="30.0" />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
-            <TableView fx:id="locationTable" prefHeight="324.0" prefWidth="170.0">
+            <Label text="Viewing Date">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <DatePicker>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </DatePicker>
+            <Label text="Add Node" />
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="170.0" spacing="15.0">
+               <children>
+                  <Circle fx:id="nodeToDrag" radius="19.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Line endX="100.0" startX="30.0" strokeWidth="3.0" />
+                  <Polygon points="0.0, 0.0, 29.0, -15.0, 0.0, -31.0" stroke="BLACK" strokeType="INSIDE">
+                     <HBox.margin>
+                        <Insets left="-30.0" />
+                     </HBox.margin>
+                  </Polygon>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </HBox>
+            <TableView fx:id="locationTable" prefHeight="254.0" prefWidth="170.0">
               <columns>
                 <TableColumn fx:id="longName" prefWidth="170.0" resizable="false" text="Location" />
               </columns>
@@ -117,7 +146,7 @@
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </padding>
       </VBox>
-      <Button fx:id="backButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="25.0" prefWidth="85.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0">
+      <Button fx:id="backButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="39.0" prefWidth="170.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0">
          <font>
             <Font size="18.0" />
          </font>
@@ -162,7 +191,7 @@
                         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
                      </children>
                   </StackPane>
-                  <Button mnemonicParsing="false" onAction="#handleSave" prefWidth="85.0" text="Save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="150.0">
+                  <Button layoutX="173.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="39.0" prefWidth="141.0" text="Finalize Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="173.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -175,7 +204,7 @@
                         <Insets left="20.0" />
                      </opaqueInsets>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="85.0" text="Cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+                  <Button layoutX="14.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="39.0" prefWidth="141.0" text="Cancel Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0">
                      <font>
                         <Font size="16.0" />
                      </font>
