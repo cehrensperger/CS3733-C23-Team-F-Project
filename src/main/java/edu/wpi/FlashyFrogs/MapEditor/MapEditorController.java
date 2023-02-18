@@ -18,10 +18,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -204,6 +207,23 @@ public class MapEditorController implements IController {
           // drawNodesAndEdges(); // Re-draw pop-ups
           floorSelector.setText("Floor " + newValue.floorNum);
         }); // Set the floor text
+
+      mapPane.setOnDragOver(new EventHandler<DragEvent>() {
+          @Override
+          public void handle(DragEvent event) {
+              /* data is dragged over the target */
+              /* accept it only if it is not dragged from the same node
+               * and if it has a string data */
+              if (event.getGestureSource() != mapPane &&
+                      // image to represent the node?
+                      event.getDragboard().hasString()) {
+                  /* allow for both copying and moving, whatever user chooses */
+                  event.acceptTransferModes(TransferMode.COPY);
+              }
+
+              event.consume();
+          }
+      });
   }
 
   /**
