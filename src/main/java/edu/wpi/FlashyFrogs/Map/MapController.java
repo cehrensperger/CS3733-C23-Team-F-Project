@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.NonNull;
 import net.kurobako.gesturefx.GesturePane;
 import org.hibernate.Session;
@@ -31,7 +32,7 @@ import org.hibernate.Session;
  */
 @GeneratedExclusion
 public class MapController {
-  @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
+  @FXML @Getter private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
   private Pane currentDrawingPane; // The current drawing pane to use to draw nodes/edges
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
