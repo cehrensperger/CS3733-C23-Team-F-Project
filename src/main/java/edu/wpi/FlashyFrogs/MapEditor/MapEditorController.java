@@ -338,7 +338,7 @@ public class MapEditorController implements IController {
               double scale = gesturePane.getCurrentScale();
               duplicateCircle.setRadius(5 * scale);
               duplicateCircle.setVisible(true);
-              duplicateCircle.setFill(Paint.valueOf("F6BD38"));
+              duplicateCircle.setFill(Paint.valueOf("012DFA"));
               duplicateCircle.setCenterX(event.getX());
               duplicateCircle.setCenterY(event.getY());
 
