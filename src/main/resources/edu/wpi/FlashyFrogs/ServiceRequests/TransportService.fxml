@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -15,13 +16,13 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@../views/Style2.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.TransportController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.TransportController">
    <children>
       <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
             <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Service Requests" wrappingWidth="187.66615295410156">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -29,7 +30,7 @@
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Audio/Visual" textFill="WHITE" wrapText="true">
+                  <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" text="Audio/Visual" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -41,7 +42,7 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="IT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Information Technology" textFill="WHITE" wrapText="true">
+                  <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" text="Information Technology" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -53,7 +54,7 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
+                  <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -65,7 +66,7 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Sanitation" textFill="WHITE" wrapText="true">
+                  <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" text="Sanitation" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -77,7 +78,7 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" style="-fx-background-color: #012D5A;" text="Security" textFill="WHITE" wrapText="true">
+                  <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" text="Security" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets left="18.0" top="18.0" />
                      </VBox.margin>
@@ -93,7 +94,7 @@
                      <children>
                         <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
                            <children>
-                              <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Credits" textFill="WHITE">
+                              <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" text="Credits" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets left="20.0" />
                                  </VBox.margin>
@@ -106,7 +107,7 @@
                                     <String fx:value="body" />
                                  </styleClass>
                               </MFXButton>
-                              <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Back" textFill="#012d5a">
+                              <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" text="Back" textFill="#012d5a">
                                  <VBox.margin>
                                     <Insets bottom="18.0" left="20.0" top="18.0" />
                                  </VBox.margin>
@@ -129,7 +130,7 @@
          <center>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f1f1f1;" BorderPane.alignment="CENTER">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Internal Patient Transport Service Request">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Internal Patient Transport Service Request">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -226,7 +227,7 @@
                               <Insets right="100.0" />
                            </HBox.margin>
                         </VBox>
-                        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#012d5a" height="500.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+                        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#012d5a" height="500.0" stroke="BLACK" strokeType="INSIDE" styleClass="bar" width="10.0" />
                         <VBox prefHeight="159.0" prefWidth="200.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Transfer Information" wrappingWidth="250.0">
@@ -263,11 +264,6 @@
                                     <Insets bottom="18.0" top="18.0" />
                                  </VBox.margin>
                               </SearchableComboBox>
-                              <SearchableComboBox fx:id="isolation" promptText="Isolation/Precaution" styleClass="fields">
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </SearchableComboBox>
                               <TextField fx:id="personal" promptText="Personal Items to be Sent" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
@@ -278,6 +274,14 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </TextField>
+                              <CheckBox fx:id="isolation" mnemonicParsing="false" prefHeight="32.0" prefWidth="286.0" styleClass="fields" text="Needs Isolation?">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </CheckBox>
                               <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
@@ -310,7 +314,7 @@
                                     </HBox>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="38.0" />
+                                    <Insets top="37.0" />
                                  </VBox.margin>
                               </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="112.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -382,7 +386,7 @@
                                     <Insets top="28.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="185.0">
+                              <Text fx:id="h13" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -390,15 +394,15 @@
                                     <Insets top="25.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h13" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="185.0">
+                              <Text fx:id="h14" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Explain why this patient is being transported" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="11.0" />
+                                    <Insets top="17.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h14" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Explain why this patient is being transported" wrappingWidth="185.0">
+                              <Text fx:id="h12" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>

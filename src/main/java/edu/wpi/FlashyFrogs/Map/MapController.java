@@ -8,6 +8,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -188,7 +189,7 @@ public class MapController {
    */
   public void addLocationName(@NonNull LocationName locationName, @NonNull Node node) {
     Text locationToAdd = new Text(locationName.getShortName());
-    locationToAdd.setStyle("-fx-font-size: 6");
+    locationToAdd.getStyleClass().add("map-location-name");
 
     // Add the text to the map
     mapEntity.addLocation(node, locationName, locationToAdd);
@@ -343,7 +344,7 @@ public class MapController {
               .stream()
               .filter((move) -> move.getMoveDate().before(now))
               .distinct()
-              .toList();
+              .collect(Collectors.toList());
 
       HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
 
@@ -354,10 +355,11 @@ public class MapController {
           nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
 
           addLocationName(move.getLocation(), move.getNode());
-        } else if (!nodeToLocationCount.containsKey(move.getNode()))
+        } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
-        addLocationName(move.getLocation(), move.getNode());
+          addLocationName(move.getLocation(), move.getNode());
+        }
       }
 
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out

@@ -114,6 +114,7 @@ public class CSVUploadController {
 
   public void handleBackup() {
     CSVMaker.makeCSVs();
+    popOver.hide();
   }
 
   public void handleCancel() {

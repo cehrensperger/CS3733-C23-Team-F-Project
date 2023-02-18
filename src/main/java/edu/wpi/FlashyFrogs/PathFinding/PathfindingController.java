@@ -31,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -51,6 +52,13 @@ public class PathfindingController implements IController {
   //  @FXML private Label error;
 
   private MapController mapController;
+
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+
+  boolean hDone = false;
   AtomicReference<PopOver> mapPopOver =
       new AtomicReference<>(); // The pop-over the map is using for node highlighting
 
@@ -61,6 +69,11 @@ public class PathfindingController implements IController {
    */
   @SneakyThrows
   public void initialize() {
+
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -97,7 +110,7 @@ public class PathfindingController implements IController {
 
     // get the list of all location names from the database
     List<LocationName> objects =
-        session.createQuery("FROM LocationName l", LocationName.class).getResultList();
+        session.createQuery("SELECT location FROM Move", LocationName.class).getResultList();
 
     // sort the locations alphabetically, algorithms already alphabetical
     objects.sort(Comparator.comparing(LocationName::getLongName));
@@ -135,10 +148,10 @@ public class PathfindingController implements IController {
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
-      mapEditorButton.disarm();
+      mapEditorButton.setDisable(true);
       mapEditorButton.setOpacity(0);
     } else {
-      mapEditorButton.arm();
+      mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
   }
@@ -183,6 +196,13 @@ public class PathfindingController implements IController {
       for (int i = 1; i < lastPath.size(); i++) { // For each edge
         // Get the two nodes in the edge
         Node thisNode = lastPath.get(i);
+
+        // If we're on the right floor
+        if (thisNode.getFloor().equals(mapController.getFloor())) {
+          // Hide
+          mapController.getNodeToCircleMap().get(thisNode).setOpacity(0);
+        }
+
         Node previousNode = lastPath.get(i - 1);
 
         // If both nodes are on this floor
@@ -236,7 +256,7 @@ public class PathfindingController implements IController {
           goToNext.detach();
           goToNext.setX(250);
           goToNext.setY(20);
-          goToNext.setTitle("Your path goes to \nFloor " + nextFloor + ".");
+          goToNext.setTitle("   Your path goes to Floor " + nextFloor + ".");
         }
       }
       prevNode = thisNode;
@@ -411,6 +431,18 @@ public class PathfindingController implements IController {
 
   @Override
   public void help() {
-    // TODO: help for this page
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      hDone = false;
+    }
   }
 }

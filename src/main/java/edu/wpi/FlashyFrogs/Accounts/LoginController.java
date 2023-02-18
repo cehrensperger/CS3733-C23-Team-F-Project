@@ -39,25 +39,6 @@ public class LoginController implements IController {
 
   public void initialize() {
     Fapp.resetStackLogin();
-    rootPane
-        .getStylesheets()
-        .clear(); // getStylesheets.add() is used frequently, so this line exists to clear off all
-    // stylesheets so we don't accumulate an infinite list of the same three stylesheets
-    if (Fapp.isLightMode()) {
-      rootPane
-          .getStylesheets()
-          .add("edu/wpi/FlashyFrogs/views/Css.css"); // apply Light Mode styling
-      rootPane
-          .getStylesheets()
-          .add("edu/wpi/FlashyFrogs/views/label-override.css"); // usually the text color in label
-      // elements is black in Light Mode, but the upper left menu on the Login page would be hard to
-      // read with black text,
-      // so for this page we change the label text color to white.
-    } else { // we are not in Dark Mode, so
-      rootPane
-          .getStylesheets()
-          .add("edu/wpi/FlashyFrogs/views/dark-mode.css"); // apply Dark Mode styling
-    }
   }
 
   public void loginButton(ActionEvent actionEvent) throws Exception {

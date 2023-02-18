@@ -134,6 +134,7 @@ public class AVController implements IController {
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
     description.setText("");
+    reason.setText("");
   }
 
   public void help() {
@@ -161,7 +162,7 @@ public class AVController implements IController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ITService");
+    Fapp.setScene("ServiceRequests", "ComputerService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {

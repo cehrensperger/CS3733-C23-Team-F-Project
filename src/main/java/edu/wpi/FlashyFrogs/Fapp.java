@@ -5,10 +5,12 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +35,8 @@ public class Fapp extends Application {
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
   private static NavBarController controller;
+
+  @Getter private static Theme theme;
 
   public static IController iController;
 
@@ -103,6 +108,23 @@ public class Fapp extends Application {
         .start();
   }
 
+  /**
+   * Sets the application theme
+   *
+   * @param themeName the theme to set
+   */
+  public static void setTheme(@NonNull Theme themeName) {
+    // Get the sheets for the app
+    ObservableList<String> sheets = Fapp.primaryStage.getScene().getStylesheets();
+
+    sheets.clear(); // Clear the sheets
+
+    // Add the sheets
+    sheets.add(themeName.resource.toExternalForm());
+
+    theme = themeName;
+  }
+
   @SneakyThrows
   @Override
   public void start(Stage primaryStage) throws IOException {
@@ -126,30 +148,22 @@ public class Fapp extends Application {
 
     final Scene scene = new Scene(root);
     primaryStage.setScene(scene);
-    // getStylesheets.add() is used frequently, so clear all stylesheets so we don't accumulate an
-    // infinite list of them
-    rootPane.getStylesheets().clear();
-    // apply CSS styling to pages whenever we switch to them
-    scene.getStylesheets().add(Fapp.class.getResource("views/style2.css").toExternalForm());
+    setTheme(Theme.LIGHT_THEME);
     primaryStage.setFullScreen(true);
     primaryStage.show();
 
-    // apply Light Mode styling
-    //    } else { // we are not in Light Mode, so
-    //      scene
-    //          .getStylesheets()
-    //          .add(
-    //              Fapp.class
-    //                  .getResource("views/dark-mode.css")
-    //                  .toExternalForm()); // apply Dark Mode styling
-    //    }
-
-    // Navigation.navigate(Screen.HOME);
+    setTheme(Theme.LIGHT_THEME);
   }
 
   @SneakyThrows
   public static void setScene(String packageName, String sceneName) {
-    prevPage.push(packageName + "," + sceneName);
+    try {
+      if (!prevPage.peek().equals(packageName + "," + sceneName)) {
+        prevPage.push(packageName + "," + sceneName);
+      }
+    } catch (EmptyStackException e) {
+      prevPage.push(packageName + "," + sceneName);
+    }
 
     if (iController != null) {
       iController.onClose();

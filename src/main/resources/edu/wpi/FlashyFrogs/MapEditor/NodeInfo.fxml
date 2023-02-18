@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
@@ -28,49 +29,59 @@
         <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Node Info" textAlignment="CENTER" GridPane.columnSpan="2" />
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Node ID" wrappingWidth="100.0" GridPane.rowIndex="1">
+        <Text fx:id="errorText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Node Info" textAlignment="CENTER" GridPane.columnSpan="2" />
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Node ID" wrappingWidth="100.0" GridPane.rowIndex="1">
             <font>
                 <Font size="16.0" />
             </font></Text>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X-Coordinate" wrappingWidth="100.0" GridPane.rowIndex="2">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="X-Coordinate" wrappingWidth="100.0" GridPane.rowIndex="2">
             <font>
                 <Font size="16.0" />
             </font></Text>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Y-Coordinate" wrappingWidth="100.0" GridPane.rowIndex="3">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Y-Coordinate" wrappingWidth="100.0" GridPane.rowIndex="3">
             <font>
                 <Font size="16.0" />
             </font></Text>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Floor" wrappingWidth="100.0" GridPane.rowIndex="4">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Floor" wrappingWidth="100.0" GridPane.rowIndex="4">
             <font>
                 <Font size="16.0" />
             </font></Text>
         <AnchorPane fx:id="locationPane" prefHeight="236.0" prefWidth="84.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" />
-        <Text fx:id="nodeLocationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Node Location" textAlignment="CENTER" GridPane.columnIndex="2" />
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Building" wrappingWidth="100.0" GridPane.rowIndex="5">
+        <Text fx:id="nodeLocationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Node Location" textAlignment="CENTER" GridPane.columnIndex="2" />
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middle" text="Building" wrappingWidth="100.0" GridPane.rowIndex="5">
             <font>
                 <Font size="16.0" />
             </font></Text>
-        <TextField fx:id="nodeIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="xCoordinateField" />
-        <TextField fx:id="yCoordinateField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <SearchableComboBox fx:id="floorField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-        <TextField fx:id="buildingField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="35.0" text="Delete" GridPane.rowIndex="6">
+        <TextField fx:id="nodeIDField" editable="false" styleClass="fields" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField styleClass="fields" GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="xCoordinateField" />
+        <TextField fx:id="yCoordinateField" styleClass="fields" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <SearchableComboBox fx:id="floorField" styleClass="fields" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <TextField fx:id="buildingField" styleClass="fields" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="35.0" text="Delete" GridPane.rowIndex="7">
             <font>
                 <Font size="16.0" />
             </font>
          <GridPane.margin>
             <Insets right="30.0" />
-         </GridPane.margin></Button>
-        <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="35.0" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         </GridPane.margin>
+         <styleClass>
+            <String fx:value="clear2" />
+            <String fx:value="body" />
+            <String fx:value="round" />
+         </styleClass></Button>
+        <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="35.0" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="7">
             <font>
                 <Font size="16.0" />
             </font>
          <GridPane.margin>
             <Insets left="105.0" />
-         </GridPane.margin></Button>
-        <Text fx:id="secondLocation" strokeType="OUTSIDE" strokeWidth="0.0" text="2nd Node Location" GridPane.columnIndex="3" />
+         </GridPane.margin>
+         <styleClass>
+            <String fx:value="credits" />
+            <String fx:value="body" />
+            <String fx:value="round" />
+         </styleClass></Button>
+        <Text fx:id="secondLocation" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="2nd Node Location" GridPane.columnIndex="3" />
         <AnchorPane fx:id="locationPane2" prefHeight="236.0" prefWidth="117.0" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" />
     </children>
     <padding>
