@@ -5,6 +5,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
@@ -156,7 +157,13 @@ public class Fapp extends Application {
 
   @SneakyThrows
   public static void setScene(String packageName, String sceneName) {
-    prevPage.push(packageName + "," + sceneName);
+    try {
+      if (!prevPage.peek().equals(packageName + "," + sceneName)) {
+        prevPage.push(packageName + "," + sceneName);
+      }
+    } catch (EmptyStackException e) {
+      prevPage.push(packageName + "," + sceneName);
+    }
 
     if (iController != null) {
       iController.onClose();

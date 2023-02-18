@@ -73,7 +73,7 @@
                   <Font size="10.0" />
                </font>
             </Text>
-            <Button fx:id="addLocation" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupLocation" prefHeight="12.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location">
+            <Button fx:id="addLocation" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupLocation" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -90,10 +90,13 @@
                   <Font size="10.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="16.0" />
+                  <Insets bottom="8.0" />
                </VBox.margin>
             </Text>
-            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleQuickDraw" prefHeight="12.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="QuickDraw">
+            <Button fx:id="addNode" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupNode" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Add Node">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                <font>
                   <Font size="18.0" />
                </font>
@@ -102,6 +105,42 @@
                   <String fx:value="body" />
                </styleClass>
             </Button>
+            <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to add a new node to the map" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Text>
+            <Button fx:id="addMove" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupMove" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location" wrapText="true">
+               <styleClass>
+                  <String fx:value="round" />
+                  <String fx:value="body" />
+               </styleClass>
+               <VBox.margin>
+                  <Insets top="8.0" />
+               </VBox.margin>
+            </Button>
+            <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to link specific nodes with specific location names" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Button fx:id="addEdge" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupEdge" prefHeight="0.0" prefWidth="167.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Nodes">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <styleClass>
+                  <String fx:value="round" />
+                  <String fx:value="body" />
+               </styleClass>
+            </Button>
+            <Text fx:id="h41" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Clink to link nodes with each other" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
          </children>
          <padding>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

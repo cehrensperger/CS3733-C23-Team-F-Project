@@ -51,7 +51,7 @@ public class ComputerService extends ServiceRequest {
   /** Creates a new ComputerService with a generated id */
   public ComputerService() {
     super.setStatus(Status.BLANK);
-    super.setRequestType("ComputerService");
+    super.setRequestType("Computer");
   }
 
   /**
@@ -84,7 +84,7 @@ public class ComputerService extends ServiceRequest {
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);
-    super.setRequestType("ComputerService");
+    super.setRequestType("Computer");
     this.deviceType = deviceType;
     this.model = model;
     this.description = description;

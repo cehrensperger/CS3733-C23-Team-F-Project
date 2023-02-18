@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -26,8 +27,8 @@ public class NewUserController implements IController {
   private PopOver popOver;
   private LoginAdministratorController loginAdministratorController;
   @FXML private TextField username;
-  @FXML private TextField pass1;
-  @FXML private TextField pass2;
+  @FXML private PasswordField pass1;
+  @FXML private PasswordField pass2;
   @FXML private TextField firstName;
   @FXML private TextField middleName;
   @FXML private TextField lastName;

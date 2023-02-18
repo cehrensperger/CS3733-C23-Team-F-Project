@@ -1,13 +1,14 @@
-package edu.wpi.FlashyFrogs.ServiceRequests;
+package edu.wpi.FlashyFrogs.ServiceRequests.Editors;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
-import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -27,26 +28,21 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class TransportController implements IController {
-
-  @FXML MFXButton AV;
-  @FXML MFXButton IT;
-  @FXML MFXButton IPT;
-  @FXML MFXButton sanitation;
-  @FXML MFXButton security;
-  @FXML MFXButton credits;
-  @FXML MFXButton back;
-
+public class InternalTransportEditorController extends ServiceRequestController
+    implements IController {
   @FXML TextField patient;
   @FXML SearchableComboBox<InternalTransport.VisionStatus> vision;
   @FXML SearchableComboBox<InternalTransport.HearingStatus> hearing;
   @FXML SearchableComboBox<InternalTransport.ConsciousnessStatus> consciousness;
   @FXML SearchableComboBox<InternalTransport.HealthStatus> condition;
+  @FXML SearchableComboBox<User> assignedBox;
+  @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
   @FXML SearchableComboBox<LocationName> to;
   @FXML SearchableComboBox<LocationName> from;
   @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
@@ -76,6 +72,8 @@ public class TransportController implements IController {
 
   boolean hDone = false;
   private Connection connection = null;
+  private InternalTransport tpReq = new InternalTransport();
+  PopOver popOver;
 
   public void initialize() {
     h1.setVisible(false);
@@ -99,6 +97,10 @@ public class TransportController implements IController {
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
+    List<User> users = session.createQuery("FROM User", User.class).getResultList();
+
+    users.sort(Comparator.comparing(User::getFirstName));
+
     to.setItems(FXCollections.observableArrayList(locations));
     from.setItems(FXCollections.observableArrayList(locations));
     vision.setItems(FXCollections.observableArrayList(InternalTransport.VisionStatus.values()));
@@ -106,9 +108,42 @@ public class TransportController implements IController {
     consciousness.setItems(
         FXCollections.observableArrayList(InternalTransport.ConsciousnessStatus.values()));
     condition.setItems(FXCollections.observableArrayList(InternalTransport.HealthStatus.values()));
+    assignedBox.setItems(FXCollections.observableArrayList(users));
+    statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     equipment.setItems(FXCollections.observableArrayList(InternalTransport.Equipment.values()));
     mode.setItems(FXCollections.observableArrayList(InternalTransport.ModeOfTransport.values()));
+    session.close();
+  }
+
+  public void updateFields() {
+    to.setValue(tpReq.getTargetLocation());
+    from.setValue(tpReq.getLocation());
+    urgency.setValue(tpReq.getUrgency());
+    statusBox.setValue(tpReq.getStatus());
+    date.setValue(
+        Instant.ofEpochMilli(tpReq.getDate().getTime())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
+    statusBox.setValue(tpReq.getStatus());
+    reason.setText(tpReq.getReason());
+    vision.setValue(tpReq.getVision());
+    hearing.setValue(tpReq.getHearing());
+    consciousness.setValue(tpReq.getConsciousness());
+    condition.setValue(tpReq.getHealthStatus());
+    equipment.setValue(tpReq.getEquipment());
+    mode.setValue(tpReq.getMode());
+    isolation.setSelected(tpReq.isIsolation());
+    personal.setText(tpReq.getPersonalItems());
+    patient.setText(tpReq.getPatientID());
+    if (tpReq.getAssignedEmp() != null) {
+      assignedBox.setValue(tpReq.getAssignedEmp());
+    }
+  }
+
+  @Override
+  public void setPopOver(PopOver popOver) {
+    this.popOver = popOver;
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -154,16 +189,33 @@ public class TransportController implements IController {
               personal.getText(),
               reason.getText());
 
+      tpReq.setReason(reason.getText());
+      tpReq.setAssignedEmp(assignedBox.getValue());
+      tpReq.setUrgency(urgency.getValue());
+      tpReq.setStatus(statusBox.getValue());
+      tpReq.setLocation(from.getValue());
+      tpReq.setPatientID(patient.getText());
+      tpReq.setVision(vision.getValue());
+      tpReq.setHearing(hearing.getValue());
+      tpReq.setConsciousness(consciousness.getValue());
+      tpReq.setHealthStatus(condition.getValue());
+      tpReq.setLocation(from.getValue());
+      tpReq.setTargetLocation(to.getValue());
+      tpReq.setEquipment(equipment.getValue());
+      tpReq.setDate(dateOfTransport);
+      tpReq.setMode(mode.getValue());
+      tpReq.setPersonalItems(personal.getText());
+      tpReq.setIsolation(isolation.isSelected());
+
       try {
-        session.persist(transport);
+        session.merge(tpReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
+        popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
+        errorMessage.setTextFill(Paint.valueOf("#b6000b"));
         errorMessage.setText("Please fill all fields.");
         session.close();
       }
@@ -173,6 +225,11 @@ public class TransportController implements IController {
       errorMessage.setText("Please fill all fields.");
       session.close();
     }
+  }
+
+  @Override
+  public void setRequest(ServiceRequest request) {
+    tpReq = (InternalTransport) request;
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
@@ -190,36 +247,10 @@ public class TransportController implements IController {
     isolation.setSelected(false);
     personal.setText("");
     reason.setText("");
-    date.valueProperty().set(null);
   }
 
-  public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "AudioVisualService");
-  }
-
-  public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ComputerService");
-  }
-
-  public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "TransportService");
-  }
-
-  public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "SanitationService");
-  }
-
-  public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "SecurityService");
-  }
-
-  public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "Credits");
-  }
-
-  public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
-  }
+  @Override
+  protected void handleBack(ActionEvent event) throws IOException {}
 
   public void help() {
     if (!hDone) {

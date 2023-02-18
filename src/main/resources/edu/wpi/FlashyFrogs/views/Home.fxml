@@ -152,7 +152,7 @@
                               <String fx:value="body" />
                            </styleClass>
                         </MFXButton>
-                        <MFXButton onAction="#handleManageCSV" prefHeight="8.0" prefWidth="150.0" styleClass="button" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageCSVButton" onAction="#handleManageCSV" prefHeight="0.0" prefWidth="150.0" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -255,5 +255,6 @@
             <Font size="10.0" />
          </font>
       </Text>
+      <MFXButton fx:id="editMovesButton" layoutX="944.0" layoutY="464.0" onAction="#handleEditMovesButton" styleClass="round" text="Toggle Edit All" AnchorPane.bottomAnchor="230.8" AnchorPane.rightAnchor="282.8" />
    </children>
 </AnchorPane>

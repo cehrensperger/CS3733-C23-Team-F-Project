@@ -38,6 +38,8 @@ import org.hibernate.Session;
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 @GeneratedExclusion
 public class MapEditorController implements IController {
+  public Button addEdge;
+  @FXML private Text h41;
   @FXML private AnchorPane mapPane;
   @FXML private Button backButton;
   @FXML private Label floorSelector;
@@ -69,6 +71,8 @@ public class MapEditorController implements IController {
 
     h1.setVisible(false);
     h2.setVisible(false);
+    h41.setVisible(false);
+
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -254,8 +258,8 @@ public class MapEditorController implements IController {
         new EventHandler<DragEvent>() {
           @Override
           public void handle(DragEvent event) {
-            //System.out.println(event.getX()*scale + xTranslation);
-            //System.out.println(event.getY()*scale + yTranslation);
+            // System.out.println(event.getX()*scale + xTranslation);
+            // System.out.println(event.getY()*scale + yTranslation);
           }
         });
   }
@@ -527,11 +531,45 @@ public class MapEditorController implements IController {
     if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
+      h41.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
+      h41.setVisible(false);
       hDone = false;
     }
+  }
+
+  /**
+   * Callback to add an edge
+   *
+   * @param actionEvent the callback triggering this
+   */
+  @SneakyThrows
+  public void popupEdge(ActionEvent actionEvent) {
+    // Get the fxml
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddEdge.fxml"));
+
+    PopOver edgePopOver = new PopOver(fxmlLoader.load()); // Create the pop over
+    edgePopOver.setTitle("Add Edge");
+
+    addEdge.setDisable(true);
+
+    AddEdgeController addController = fxmlLoader.getController(); // Load the controller
+    addController.populate(mapController.getMapSession()); // Populate the fields
+    addController.setOnAdd(
+        () -> {
+          this.mapController.redraw(); // Redraw the map
+          edgePopOver.hide();
+        });
+
+    // Add edge controller
+    addController.setOnCancel(edgePopOver::hide);
+
+    edgePopOver.setOnHidden((handler) -> addEdge.setDisable(false));
+
+    // Show the pop-over
+    edgePopOver.show(addEdge.getScene().getWindow());
   }
 }

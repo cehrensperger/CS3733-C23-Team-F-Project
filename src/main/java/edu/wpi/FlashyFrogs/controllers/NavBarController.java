@@ -46,8 +46,10 @@ public class NavBarController {
   public void logIn() {
     menu.show();
     menu.setDisable(false);
-    menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentuser().getFirstName());
     header.setDisable(false);
+    menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentuser().getFirstName());
+    menu.setStyle("-fx-background-color: white");
+    menu.getStyleClass().add("navBar");
     header.setOpacity(1);
     closeButton.setDisable(true);
     closeButton.setOpacity(0);

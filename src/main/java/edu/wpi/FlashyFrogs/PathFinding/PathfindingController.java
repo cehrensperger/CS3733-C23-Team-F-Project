@@ -110,7 +110,7 @@ public class PathfindingController implements IController {
 
     // get the list of all location names from the database
     List<LocationName> objects =
-        session.createQuery("FROM LocationName l", LocationName.class).getResultList();
+        session.createQuery("SELECT location FROM Move", LocationName.class).getResultList();
 
     // sort the locations alphabetically, algorithms already alphabetical
     objects.sort(Comparator.comparing(LocationName::getLongName));
@@ -148,10 +148,10 @@ public class PathfindingController implements IController {
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
-      mapEditorButton.disarm();
+      mapEditorButton.setDisable(true);
       mapEditorButton.setOpacity(0);
     } else {
-      mapEditorButton.arm();
+      mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
   }
@@ -196,6 +196,13 @@ public class PathfindingController implements IController {
       for (int i = 1; i < lastPath.size(); i++) { // For each edge
         // Get the two nodes in the edge
         Node thisNode = lastPath.get(i);
+
+        // If we're on the right floor
+        if (thisNode.getFloor().equals(mapController.getFloor())) {
+          // Hide
+          mapController.getNodeToCircleMap().get(thisNode).setOpacity(0);
+        }
+
         Node previousNode = lastPath.get(i - 1);
 
         // If both nodes are on this floor

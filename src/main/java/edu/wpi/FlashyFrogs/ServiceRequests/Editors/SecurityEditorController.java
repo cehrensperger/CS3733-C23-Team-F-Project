@@ -1,13 +1,10 @@
-package edu.wpi.FlashyFrogs.ServiceRequests;
+package edu.wpi.FlashyFrogs.ServiceRequests.Editors;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
-import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Security;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -26,28 +23,24 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class SecurityController implements IController {
+public class SecurityEditorController extends ServiceRequestController implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;
-  @FXML MFXButton credits;
-  @FXML MFXButton back;
-  @FXML MFXButton AV;
-  @FXML MFXButton IT;
-  @FXML MFXButton IPT;
-  @FXML MFXButton sanitation;
-  @FXML MFXButton security;
   @FXML Text h1;
   @FXML Text h2;
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
   @FXML SearchableComboBox<LocationName> locationBox;
+  @FXML SearchableComboBox<User> assignedBox;
+  @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
   @FXML SearchableComboBox<Security.ThreatType> threat;
   @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
   @FXML DatePicker date;
@@ -56,6 +49,8 @@ public class SecurityController implements IController {
 
   boolean hDone = false;
   private Connection connection = null;
+  private Security secReq = new Security();
+  PopOver popOver;
 
   public void initialize() {
     h1.setVisible(false);
@@ -70,10 +65,37 @@ public class SecurityController implements IController {
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
+    List<User> users = session.createQuery("FROM User", User.class).getResultList();
+
+    users.sort(Comparator.comparing(User::getFirstName));
+
     locationBox.setItems(FXCollections.observableArrayList(locations));
+    assignedBox.setItems(FXCollections.observableArrayList(users));
+    statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     threat.setItems(FXCollections.observableArrayList(Security.ThreatType.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
+  }
+
+  public void updateFields() {
+    locationBox.setValue(secReq.getLocation());
+    urgency.setValue(secReq.getUrgency());
+    statusBox.setValue(secReq.getStatus());
+    date.setValue(
+        Instant.ofEpochMilli(secReq.getDate().getTime())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
+    threat.setValue(secReq.getThreatType());
+    statusBox.setValue(secReq.getStatus());
+    description.setText(secReq.getIncidentReport());
+    if (secReq.getAssignedEmp() != null) {
+      assignedBox.setValue(secReq.getAssignedEmp());
+    }
+  }
+
+  @Override
+  public void setPopOver(PopOver popOver) {
+    this.popOver = popOver;
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -92,26 +114,23 @@ public class SecurityController implements IController {
       Date dateOfRequest =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      Security securityRequest =
-          new Security(
-              description.getText(),
-              locationBox.getValue(),
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
-              dateOfRequest,
-              Date.from(Instant.now()),
-              urgency.getValue(),
-              threat.getValue());
+      secReq.setIncidentReport(description.getText());
+      secReq.setAssignedEmp(assignedBox.getValue());
+      secReq.setUrgency(urgency.getValue());
+      secReq.setStatus(statusBox.getValue());
+      secReq.setLocation(locationBox.getValue());
+      secReq.setThreatType(threat.getValue());
+      secReq.setDate(dateOfRequest);
 
       try {
-        session.persist(securityRequest);
+        session.merge(secReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
+        popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
+        errorMessage.setTextFill(Paint.valueOf("#b6000b"));
         errorMessage.setText("Please fill all fields.");
         session.close();
       }
@@ -123,6 +142,11 @@ public class SecurityController implements IController {
     }
   }
 
+  @Override
+  public void setRequest(ServiceRequest request) {
+    secReq = (Security) request;
+  }
+
   public void handleClear(ActionEvent actionEvent) throws IOException {
     locationBox.valueProperty().set(null);
     threat.valueProperty().set(null);
@@ -130,6 +154,9 @@ public class SecurityController implements IController {
     date.valueProperty().set(null);
     description.setText("");
   }
+
+  @Override
+  protected void handleBack(ActionEvent event) throws IOException {}
 
   public void help() {
     if (!hDone) {
@@ -147,34 +174,6 @@ public class SecurityController implements IController {
       h5.setVisible(false);
       hDone = false;
     }
-  }
-
-  public void handleAV(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "AudioVisualService");
-  }
-
-  public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ComputerService");
-  }
-
-  public void handleIPT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "TransportService");
-  }
-
-  public void handleSanitation(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "SanitationService");
-  }
-
-  public void handleSecurity(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "SecurityService");
-  }
-
-  public void handleCredits(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "Credits");
-  }
-
-  public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
   }
 
   @Override
