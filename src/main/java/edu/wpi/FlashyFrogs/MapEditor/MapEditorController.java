@@ -42,8 +42,6 @@ public class MapEditorController implements IController {
 
   @FXML Text h1;
   @FXML Text h2;
-  @FXML Text h3;
-  @FXML Text h4;
 
   boolean hDone = false;
 
@@ -58,8 +56,6 @@ public class MapEditorController implements IController {
   private void initialize() {
     h1.setVisible(false);
     h2.setVisible(false);
-    h3.setVisible(false);
-    h4.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -466,19 +462,17 @@ public class MapEditorController implements IController {
     mapController.exit();
   }
 
+  public void handleQuickDraw() {}
+
   @Override
   public void help() {
     if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
-      h3.setVisible(true);
-      h4.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
-      h3.setVisible(false);
-      h4.setVisible(false);
       hDone = false;
     }
   }
