@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.controllers;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 
 @GeneratedExclusion
@@ -28,10 +26,12 @@ public class NavBarController {
   @FXML private Button helpButton;
   @FXML private Button srButton;
   @FXML private MenuButton menu;
-  @FXML private MFXButton closeButton;
+
+  @FXML private MenuButton loggedOutMenu;
 
   @FXML
   public void initialize() {
+    loggedOutMenu.setText("Welcome, Guest");
     menu.setDisable(true);
     menu.hide();
     header.setDisable(true);
@@ -47,6 +47,9 @@ public class NavBarController {
   }
 
   public void logIn() {
+    loggedOutMenu.setDisable(true);
+    loggedOutMenu.hide();
+    loggedOutMenu.setText("");
     menu.show();
     menu.setDisable(false);
     header.setDisable(false);
@@ -54,9 +57,6 @@ public class NavBarController {
     menu.setStyle("-fx-background-color: white");
     menu.getStyleClass().add("navBar");
     header.setOpacity(1);
-    closeButton.setDisable(true);
-    closeButton.setOpacity(0);
-    closeButton.setMouseTransparent(true);
   }
 
   public AnchorPane getAnchorPane() {
@@ -95,11 +95,12 @@ public class NavBarController {
   private void signOut() {
     CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
     Fapp.setScene("Accounts", "Login");
+    menu.setText("");
     menu.setDisable(true);
     menu.hide();
-    closeButton.setDisable(false);
-    closeButton.setOpacity(1);
-    closeButton.setMouseTransparent(false);
+    loggedOutMenu.setDisable(false);
+    loggedOutMenu.setText("Welcome, Guest");
+    loggedOutMenu.show();
     header.setDisable(true);
     header.setOpacity(0);
   }
