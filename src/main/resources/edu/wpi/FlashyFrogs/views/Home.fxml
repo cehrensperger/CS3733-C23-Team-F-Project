@@ -44,7 +44,7 @@
                   <DropShadow />
                </effect>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#openPathfinding" opacity="0.0" prefHeight="216.0" prefWidth="262.0" text="Button" />
+            <Button mnemonicParsing="false" onAction="#openPathfinding" opacity="0.0" prefHeight="216.0" prefWidth="262.0" styleClass="pathfindingColor" text="Button" />
          </children>
       </StackPane>
       <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -237,6 +237,6 @@
             <Font size="10.0" />
          </font>
       </Text>
-      <MFXButton fx:id="editMovesButton" layoutX="944.0" layoutY="464.0" onAction="#handleEditMovesButton" styleClass="round" text="Toggle Edit All" AnchorPane.bottomAnchor="230.8" AnchorPane.rightAnchor="282.8" />
+      <MFXButton fx:id="editMovesButton" layoutX="944.0" layoutY="464.0" onAction="#handleEditMovesButton" styleClass="blueOutline" text="Toggle Edit All" AnchorPane.bottomAnchor="230.8" AnchorPane.rightAnchor="282.8" />
    </children>
 </AnchorPane>

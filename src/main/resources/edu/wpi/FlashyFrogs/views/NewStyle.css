@@ -96,6 +96,22 @@
     -fx-pref-height: 25px;
 }
 
+.blueOutline
+    /** This is a smaller version of the back button styling (transparent background with
+     blue outline) - ex. the toggle all button on the home page **/
+{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-background-color: transparent;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light";
+    -fx-text-fill: #012D5A;
+    -fx-font-size: 10pt;
+    -fx-pref-width: 150px;
+    -fx-pref-height: 25px;
+}
+
 .blueBackgroundSideBar
     /** This is used for the sidebar buttons with blue backgrounds - ex. switch color, manage CSVs, etc. **/
 {
@@ -172,7 +188,7 @@
     /** controls all searchable combo boxes within the app **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10 0 0 10;
+    -fx-background-radius: 10 10 10 10;
     -fx-prompt-text-fill: #012D5A;
     -fx-text-fill: #012D5A;
     -fx-context-menu-enabled: #012D5A;
@@ -364,7 +380,9 @@
     -fx-text-fill: #ffffff;
 }
 
-.alertTopBox {
+.alertTopBox
+    /** controls the top box with the title of the alert in the alert side bar **/
+{
     -fx-fill: #012d5a;
     -stroke: #012d5a;
     -strokeType: inside;
@@ -373,15 +391,35 @@
     -fx-text-fill: white;
 }
 
-.alertBottomBox {
+.alertBottomBox
+    /** controls the bottom box within the alert **/
+{
     -fx-fill: #f1f1f1;
     -fx-background-color: #f1f1f1;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
 }
 
+.alertText
+    /** controls the text area within the alertBottomBox **/
+{
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-text-box-border: transparent;
+    -fx-background-color: #f1f1f1;
+    -fx-control-inner-background: #f1f1f1;
+    -fx-background-radius: 0px;
+}
+
 .alertBar
+    /** controls the bar within the alert (the one that seperates the name and date from
+    the rest of the text) **/
 {
     -fx-stroke: #000000;
+}
+
+.pathfindingColor
+{
+
 }
 
