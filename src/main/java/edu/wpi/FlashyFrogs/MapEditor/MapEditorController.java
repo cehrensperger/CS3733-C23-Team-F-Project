@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
+import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
@@ -29,6 +30,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -73,7 +75,6 @@ public class MapEditorController implements IController {
     h1.setVisible(false);
     h2.setVisible(false);
     h41.setVisible(false);
-
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -159,10 +160,87 @@ public class MapEditorController implements IController {
     // Set the node creation processor
     mapController.setNodeCreation(
         (node, circle) -> {
-          // Set the on-click processor
 
+          // Variable determining whether this node is currently being dragged. Used to prevent
+          // uncecessary
+          // pop-ups. Must be atomic due to where it exists
+          AtomicReference<Boolean> dragInProgress = new AtomicReference<>(false);
+
+          // Set the on-click processor
+          circle.setOnDragDetected(
+              (event) -> {
+                // Mark that we are dragging
+                dragInProgress.set(true);
+
+                // Disable the gesture pane (obviously)
+                this.mapController.getGesturePane().setGestureEnabled(false);
+              });
+
+          // On drag
+          circle.setOnMouseDragged(
+              (event) -> {
+                // Move the circle to the new position
+                moveCircleToPosition(circle, node, event.getX(), event.getY());
+              });
+
+          // On drag stop, this is the only thing that represents that for some reason
+          circle.setOnMouseReleased(
+              (event) -> {
+                // If a drag isn't in progress (for instance simple release)
+                if (!dragInProgress.get()) {
+                  return; // Do nothing
+                }
+                // Re-enable the gesture pane
+                this.mapController.getGesturePane().setGestureEnabled(true);
+                dragInProgress.set(false); // Mark that we are no longer dragging
+
+                // Cast the coords
+                int newX = (int) Math.round(circle.getCenterX()); // Int rounded
+                int newY = (int) Math.round(circle.getCenterY()); // int rounded
+
+                // Create the new ID. To do that, floor and then coords
+                String newID = node.getFloor() + String.format("X%04dY%04d", newX, newY);
+
+                // First check to make sure that the circles position is unique. If it's not we need
+                // to relocate it.
+                // To do that, check if there are any other nodes at this position on this floor
+                if (mapController
+                        .getMapSession()
+                        .createQuery("FROM Node n WHERE n.id = :id", Node.class)
+                        .setParameter("id", newID)
+                        .uniqueResult()
+                    != null) {
+                  // Reset it to its original position
+                  moveCircleToPosition(circle, node, node.getXCoord(), node.getYCoord());
+
+                  return; // Short-circuit, no need for DB  changes
+                }
+
+                // Create a query to move the node in the DB
+                mapController
+                    .getMapSession()
+                    .createMutationQuery(
+                        "UPDATE Node SET id = :newID, xCoord = "
+                            + ":newXCoord, yCoord = :newYCoord WHERE id = :oldID")
+                    .setParameter("newID", newID)
+                    .setParameter("newXCoord", newX)
+                    .setParameter("newYCoord", newY)
+                    .setParameter("oldID", node.getId())
+                    .executeUpdate();
+
+                Node newNode =
+                    mapController.getMapSession().find(Node.class, newID); // Get the new node
+
+                mapController.moveNode(node, newNode); // Process the node change
+              });
+
+          // On click
           circle.setOnMouseClicked(
               (event) -> {
+                // If we are dragging
+                if (event.isConsumed() || dragInProgress.get()) {
+                  return; // Don't do anything!
+                }
                 // If we're no longer hovering and the pop over exists, delete it. We will
                 // either create a new one
                 // or, keep it deleted
@@ -205,6 +283,17 @@ public class MapEditorController implements IController {
                     false); // Delete on delete
 
                 mapPopOver.get().show(circle); // Show the pop-over
+
+                // Disable the gesture pane (this causes clunkyness when you click on the page after
+                // using the pop-up)
+                mapController.getGesturePane().setGestureEnabled(false);
+
+                // On close of the pop-up
+                mapPopOver
+                    .get()
+                    .setOnHidden(
+                        // Re-enable map gestures
+                        (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
               });
         });
 
@@ -291,12 +380,16 @@ public class MapEditorController implements IController {
                 "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
             System.out.println(
                 "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
-            double x = (event.getX() / scale) + gesturePane.getCurrentX() * -1;
-            double y = (event.getY() / scale) + gesturePane.getCurrentY() * -1;
+            double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
+            double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
             Node newNode =
                 new Node("", floorProperty.getValue(), (int) Math.round(x), (int) Math.round(y));
             mapController.addNode(newNode, false);
-            mapController.getMapSession().persist(newNode);
+
+            // make sure the circle is within bounds
+            if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
+              System.out.println("out of bounds");
+            }
             duplicateCircle.setVisible(false);
           }
         });
@@ -609,5 +702,38 @@ public class MapEditorController implements IController {
 
     // Show the pop-over
     edgePopOver.show(addEdge.getScene().getWindow());
+  }
+
+  /**
+   * Handles moving a circle to a new position, including updating all edges. Meant for dragging, as
+   * this does not update edge placement
+   *
+   * @param circle the circle to move
+   * @param node the node associated with the circle
+   * @param newX the new x-position of the circle
+   * @param newY the new y-position of the circle
+   */
+  private void moveCircleToPosition(
+      @NonNull Circle circle, @NonNull Node node, double newX, double newY) {
+    // Update the positions
+    circle.setCenterX(newX); // X
+    circle.setCenterY(newY); // Y
+
+    // For every edge
+    for (Edge edge : mapController.getEdgeToLineMap().keySet()) {
+      Line line = mapController.getEdgeToLineMap().get(edge); // Get the edge
+
+      // If the node 1 is this
+      if (edge.getNode1().equals(node)) {
+        line.setStartX(circle.getCenterX()); // Update the X
+        line.setStartY(circle.getCenterY()); // Update the Y
+      }
+
+      // If the node 2 is this
+      if (edge.getNode2().equals(node)) {
+        line.setEndX(circle.getCenterX()); // Update the X
+        line.setEndY(circle.getCenterY()); // Update the Y
+      }
+    }
   }
 }
