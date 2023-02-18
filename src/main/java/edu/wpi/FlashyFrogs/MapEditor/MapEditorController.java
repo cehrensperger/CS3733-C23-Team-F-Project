@@ -23,10 +23,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -53,10 +55,18 @@ public class MapEditorController implements IController {
 
   ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>(Node.Floor.L1);
 
+  @FXML private Circle nodeToDrag;
+  private Circle duplicateCircle;
+
   /** Initializes the map editor, adds the map onto it */
   @SneakyThrows
   @FXML
   private void initialize() {
+    duplicateCircle = new Circle(5);
+    duplicateCircle.setFill(Color.RED);
+    duplicateCircle.setVisible(false);
+    mapPane.getChildren().add(duplicateCircle);
+
     h1.setVisible(false);
     h2.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
@@ -204,22 +214,50 @@ public class MapEditorController implements IController {
           floorSelector.setText("Floor " + newValue.floorNum);
         }); // Set the floor text
 
-      mapPane.setOnDragOver(new EventHandler<DragEvent>() {
+    nodeToDrag.setOnDragDetected(
+        event -> {
+          Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+          ClipboardContent clipboardContent = new ClipboardContent();
+          clipboardContent.putString("fjbwef");
+          dragboard.setContent(clipboardContent);
+        });
+
+    nodeToDrag.setOnMouseDragged(
+        event -> {
+          event.setDragDetect(true);
+        });
+
+    mapPane.setOnDragOver(
+        new EventHandler<DragEvent>() {
           @Override
           public void handle(DragEvent event) {
-              /* data is dragged over the target */
-              /* accept it only if it is not dragged from the same node
-               * and if it has a string data */
-              if (event.getGestureSource() != mapPane &&
-                      // image to represent the node?
-                      event.getDragboard().hasString()) {
-                  /* allow for both copying and moving, whatever user chooses */
-                  event.acceptTransferModes(TransferMode.COPY);
-              }
+            /* data is dragged over the target */
+            /* accept it only if it is not dragged from the same node
+             * and if it has a string data */
+            if (event.getGestureSource() != mapPane
+                &&
+                // image to represent the node?
+                event.getDragboard().hasString()) {
+              /* allow for both copying and moving, whatever user chooses */
+              event.acceptTransferModes(TransferMode.COPY);
+              duplicateCircle.setVisible(true);
+              duplicateCircle.setFill(Paint.valueOf(Color.GREEN.toString()));
+              duplicateCircle.setCenterX(event.getX());
+              duplicateCircle.setCenterY(event.getY());
+            }
 
-              event.consume();
+            event.consume();
           }
-      });
+        });
+
+    mapPane.setOnDragDropped(
+        new EventHandler<DragEvent>() {
+          @Override
+          public void handle(DragEvent event) {
+            //System.out.println(event.getX()*scale + xTranslation);
+            //System.out.println(event.getY()*scale + yTranslation);
+          }
+        });
   }
 
   /**
