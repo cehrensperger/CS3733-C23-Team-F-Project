@@ -30,6 +30,7 @@ import org.hibernate.Session;
  */
 @GeneratedExclusion
 public class MapController {
+
   @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
   private Pane currentDrawingPane; // The current drawing pane to use to draw nodes/edges
@@ -38,6 +39,9 @@ public class MapController {
   public void initialize() {
     gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
     Platform.runLater(() -> gesturePane.zoomTo(0.001, new javafx.geometry.Point2D(2500, 1700)));
+  }
+  public GesturePane getGesturePane() {
+    return gesturePane;
   }
 
   /**
