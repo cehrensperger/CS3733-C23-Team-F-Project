@@ -38,8 +38,9 @@ public class MapController {
 
   public void initialize() {
     gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
-    Platform.runLater(() -> gesturePane.zoomTo(0.001, new javafx.geometry.Point2D(2500, 1700)));
+    Platform.runLater(() -> gesturePane.zoomTo(0.15, new javafx.geometry.Point2D(2500, 1700)));
   }
+
   public GesturePane getGesturePane() {
     return gesturePane;
   }
