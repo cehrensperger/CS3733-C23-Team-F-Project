@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -48,7 +47,7 @@
             <Button mnemonicParsing="false" onAction="#openPathfinding" opacity="0.0" prefHeight="216.0" prefWidth="262.0" text="Button" />
          </children>
       </StackPane>
-      <VBox styleClass="rectangle" prefHeight="720.0" prefWidth="220.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="720.0" prefWidth="220.0" spacing="25.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text styleClass="titleText" text="Alerts">
                <VBox.margin>
@@ -64,15 +63,15 @@
                               <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" styleClass="alertTopBox" width="190.0" />
                               <StackPane prefHeight="150.0" prefWidth="200.0">
                                  <children>
-                                    <AnchorPane prefHeight="50.0" prefWidth="176.0" styleClass="round">
+                                    <AnchorPane prefHeight="50.0" prefWidth="176.0" styleClass="alertTopBox">
                                        <children>
-                                          <Label styleClass="middle" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+                                          <Label styleClass="body" text="Facilities" textFill="#d1d1d1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
                                           <Label text="!!!" textFill="#F6BD38" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="5.0">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label styleClass="body" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
+                                          <Label styleClass="middle" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -96,10 +95,10 @@
                                     <Insets />
                                  </StackPane.margin>
                               </Rectangle>
-                              <VBox maxWidth="190.0" minWidth="190.0" prefHeight="165.0" prefWidth="190.0" spacing="5.0">
+                              <VBox maxWidth="190.0" minWidth="190.0" prefHeight="165.0" prefWidth="190.0" spacing="5.0" styleClass="alertBottomBox">
                                  <children>
-                                    <TextArea editable="false" maxWidth="190.0" prefHeight="207.0" prefWidth="190.0" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-text-box-border: transparent; -fx-background-color: #f1f1f1; -fx-control-inner-background: #f1f1f1; -fx-background-radius: 0px;" text="Attention Employees,&#10;&#10;There will be fire alarm testing today in Shapiro in conjunction with the Boston Fire Department. Alarms will sound during the tests. " wrapText="true" />
-                                    <Line endX="170.0">
+                                    <TextArea editable="false" maxWidth="190.0" prefHeight="207.0" prefWidth="190.0" styleClass="alertText" text="Attention Employees,&#10;&#10;There will be fire alarm testing today in Shapiro in conjunction with the Boston Fire Department. Alarms will sound during the tests. " wrapText="true" />
+                                    <Line endX="170.0" styleClass="alertBar">
                                        <VBox.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </VBox.margin>
@@ -140,56 +139,39 @@
             </Text>
             <AnchorPane VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="149.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="18.0">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="149.0" prefHeight="200.0" prefWidth="184.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
                      <children>
-                        <MFXButton onAction="#changeMode" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageCSVButton" onAction="#handleManageCSV" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
-                           <styleClass>
-                              <String fx:value="blue2" />
-                              <String fx:value="round" />
-                              <String fx:value="body" />
-                           </styleClass>
-                        </MFXButton>
-                        <MFXButton fx:id="manageCSVButton" onAction="#handleManageCSV" prefHeight="0.0" prefWidth="150.0" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <styleClass>
-                              <String fx:value="blue2" />
-                              <String fx:value="round" />
-                              <String fx:value="body" />
-                           </styleClass>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets />
                            </VBox.margin>
                         </MFXButton>
-                        <MFXButton fx:id="manageLoginsButton" minWidth="150.0" onAction="#viewLogins" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Manage Logins" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageLoginsButton" onAction="#viewLogins" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Manage Logins" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
-                           <styleClass>
-                              <String fx:value="blue2" />
-                              <String fx:value="round" />
-                              <String fx:value="body" />
-                           </styleClass>
                         </MFXButton>
-                        <MFXButton fx:id="manageAnnouncementsButton" minWidth="150.0" onAction="#manageAnnouncements" prefHeight="0.0" prefWidth="150.0" styleClass="button" text="Manage Alerts" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="manageAnnouncementsButton" onAction="#manageAnnouncements" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Manage Alerts" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="6.0" top="20.0" />
+                              <Insets top="20.0" />
                            </VBox.margin>
-                           <styleClass>
-                              <String fx:value="blue2" />
-                              <String fx:value="round" />
-                              <String fx:value="body" />
-                           </styleClass>
+                        </MFXButton>
+                        <MFXButton onAction="#changeMode" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
                         </MFXButton>
                      </children>
                   </VBox>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -17,9 +16,9 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.SecurityController">
     <children>
-        <BorderPane styleClass="background" layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
-                <VBox styleClass="rectangle" prefWidth="220.0"  BorderPane.alignment="TOP_LEFT">
+                <VBox prefWidth="220.0" styleClass="sidebar" BorderPane.alignment="TOP_LEFT">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="184.66615295410156">
                             <VBox.margin>
@@ -29,7 +28,7 @@
                                 <Font size="24.0" />
                             </font>
                         </Text>
-                        <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -37,7 +36,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Information Technology" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Information Technology" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -45,7 +44,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Internal Patient Transportation" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -53,7 +52,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -61,7 +60,7 @@
                                 <Font size="16.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Security" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Security" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
@@ -73,31 +72,21 @@
                             <children>
                                 <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
                                     <children>
-                                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" text="Credits" textFill="WHITE">
+                                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="150.0" styleClass="blueBackgroundSideBar" text="Credits">
                                             <VBox.margin>
                                                 <Insets left="20.0" />
                                             </VBox.margin>
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
-                                 <styleClass>
-                                    <String fx:value="credits" />
-                                    <String fx:value="body" />
-                                    <String fx:value="round" />
-                                 </styleClass>
                                         </MFXButton>
-                                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" text="Back" textFill="#012d5a">
+                                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="150.0" styleClass="backButton" text="Back" textFill="#012d5a">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" left="20.0" top="18.0" />
                                             </VBox.margin>
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
-                                 <styleClass>
-                                    <String fx:value="back" />
-                                    <String fx:value="round" />
-                                    <String fx:value="body" />
-                                 </styleClass>
                                         </MFXButton>
                                     </children>
                                 </VBox>
@@ -107,7 +96,7 @@
                 </VBox>
             </left>
             <center>
-                <VBox styleClass="background" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="background" BorderPane.alignment="CENTER">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Security Service Request">
                             <font>
@@ -117,14 +106,14 @@
                                 <Insets top="55.0" />
                             </VBox.margin>
                         </Text>
-                        <HBox styleClass="background" alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" styleClass="background" VBox.vgrow="ALWAYS">
                             <children>
                         <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="185.0">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Where is the security needed" textAlignment="RIGHT" wrappingWidth="185.0">
+                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Where is the security needed" textAlignment="RIGHT" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="60.0" />
                                  </VBox.margin>
@@ -154,7 +143,7 @@
                                         <Insets right="100.0" />
                                     </HBox.margin>
                                 </VBox>
-                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#012d5a" height="500.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#40ff00" height="500.0" stroke="RED" strokeType="INSIDE" styleClass="bar" width="10.0" />
                                 <VBox prefHeight="159.0" prefWidth="200.0">
                                     <children>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Security Information" wrappingWidth="250.0">
@@ -185,29 +174,19 @@
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" text="Clear">
+                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
-                                             <styleClass>
-                                                <String fx:value="clear" />
-                                                <String fx:value="round" />
-                                                <String fx:value="body" />
-                                             </styleClass>
                                                         </MFXButton>
                                                     </children>
                                                 </HBox>
                                                 <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" text="Submit" textFill="WHITE">
+                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
-                                             <styleClass>
-                                                <String fx:value="credits" />
-                                                <String fx:value="round" />
-                                                <String fx:value="body" />
-                                             </styleClass>
                                                         </MFXButton>
                                                     </children>
                                                 </HBox>
@@ -237,7 +216,7 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Is there a specific threat security is needed for" wrappingWidth="185.0">
+                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Is there a specific threat security is needed for" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -245,7 +224,7 @@
                                     <Insets top="53.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="What is the urgency of the security request" wrappingWidth="185.0">
+                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the urgency of the security request" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -253,7 +232,7 @@
                                     <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Is there a specific date that security will be needed" wrappingWidth="185.0">
+                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Is there a specific date that security will be needed" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -261,7 +240,7 @@
                                     <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="Explain why security is needed" wrappingWidth="185.0">
+                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Explain why security is needed" wrappingWidth="185.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -277,11 +256,11 @@
                             </VBox.margin>
                         </HBox>
                     </children>
+               <padding>
+                  <Insets right="220.0" />
+               </padding>
                 </VBox>
             </center>
-         <padding>
-            <Insets right="220.0" />
-         </padding>
         </BorderPane>
     </children>
 </AnchorPane>

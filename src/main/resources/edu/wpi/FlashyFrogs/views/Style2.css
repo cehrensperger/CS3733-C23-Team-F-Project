@@ -58,7 +58,8 @@
 }
 
 .bar{
-    -fx-background-color:#012D5A;
+    -fx-fill:#012D5A;
+    -fx-stroke: #012D5A;
 }
 
 .back2
