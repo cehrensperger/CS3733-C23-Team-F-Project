@@ -25,10 +25,10 @@ public class PathFinder {
    * @return list of locations that were found
    */
   public List<LocationName> nodeListToLocation(
-      @NonNull List<Node> nodes, @NonNull Session session) {
+      @NonNull List<Node> nodes, @NonNull Session session, Date date) {
     List<LocationName> locations = new ArrayList<>(nodes.size());
     for (Node node : nodes) {
-      locations.add(node.getCurrentLocation(session).get(0));
+      locations.add(node.getCurrentLocation(session, date).get(0));
     }
     return locations;
   }
@@ -75,12 +75,10 @@ public class PathFinder {
    * @throws NullPointerException if the lookup for a location (or node associated with the
    *     location) fails
    */
-  public List<Node> findPath(@NonNull LocationName start, @NonNull LocationName end) {
-    Node startNode = start.getCurrentNode(session);
-    Node endNode = end.getCurrentNode(session);
+  public List<Node> findPath(@NonNull Node start, @NonNull Node end) {
 
     // Find the path with the algorithm
-    return algorithm.findPath(startNode, endNode, session); // Return the path
+    return algorithm.findPath(start, end, session); // Return the path
   }
 
   static class NodeWrapper implements Comparable<NodeWrapper> {

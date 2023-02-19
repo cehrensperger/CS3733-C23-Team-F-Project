@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
+import java.time.Instant;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -101,7 +102,8 @@ public class MapController {
 
     if (addLocations) {
       // For each location belonging to this node
-      for (LocationName nodeLocation : node.getCurrentLocation(getMapSession())) {
+      for (LocationName nodeLocation :
+          node.getCurrentLocation(getMapSession(), Date.from(Instant.now()))) {
         addLocationName(nodeLocation, node); // Add it
       }
     }

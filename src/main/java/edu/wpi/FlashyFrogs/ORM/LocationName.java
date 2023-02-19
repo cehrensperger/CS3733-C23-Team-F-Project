@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.ORM;
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -135,7 +136,7 @@ public class LocationName {
    *
    * @return the Node this location is stored in, or null if there is none
    */
-  public Node getCurrentNode(@NonNull Session session) {
+  public Node getCurrentNode(@NonNull Session session, Date date) {
     //     use the connection to create a query that gets the most recent result that's not in the
     //     future for
     //     this location, limiting by one to get the single most recent result. Returns null if
@@ -149,12 +150,13 @@ public class LocationName {
                 """
                 SELECT node
                 FROM Move
-                WHERE location = :location AND moveDate <= current timestamp
+                WHERE location = :location AND moveDate <= :date
                 ORDER BY moveDate DESC
                 LIMIT 1
                 """,
                 Node.class)
             .setParameter("location", this)
+            .setParameter("date", date)
             .setCacheable(true)
             .uniqueResult();
 
@@ -167,13 +169,14 @@ public class LocationName {
                   """
                 SELECT location
                 FROM Move
-                WHERE node = :node AND moveDate <= current timestamp
+                WHERE node = :node AND moveDate <= :date
                 ORDER BY moveDate DESC
                 LIMIT 2
                 """,
                   LocationName.class)
               .setCacheable(true)
               .setParameter("node", node)
+              .setParameter("date", date)
               .getResultList();
 
       // If that is this
@@ -191,12 +194,12 @@ public class LocationName {
    *
    * @return the Node this location is stored in, or null if there is none
    */
-  public Node getCurrentNode() {
+  public Node getCurrentNode(Date date) {
     // Create a connection. This syntax auto-closes the connection when we're done, and throws an
     // exception if
     // anything goes wrong
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
-      return getCurrentNode(connection);
+      return getCurrentNode(connection, date);
     }
   }
 }

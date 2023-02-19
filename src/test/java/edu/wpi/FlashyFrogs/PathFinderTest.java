@@ -83,22 +83,19 @@ public class PathFinderTest {
         Exception.class,
         () ->
             pathFinder.findPath(
-                new LocationName(),
-                new LocationName())); // Assert that a null pointer exception is thrown
+                new Node(), new Node())); // Assert that a null pointer exception is thrown
     pathFinder.setAlgorithm(breadthFirst);
     assertThrows(
         Exception.class,
         () ->
             pathFinder.findPath(
-                new LocationName(),
-                new LocationName())); // Assert that a null pointer exception is thrown
+                new Node(), new Node())); // Assert that a null pointer exception is thrown
     pathFinder.setAlgorithm(depthFirst);
     assertThrows(
         Exception.class,
         () ->
             pathFinder.findPath(
-                new LocationName(),
-                new LocationName())); // Assert that a null pointer exception is thrown
+                new Node(), new Node())); // Assert that a null pointer exception is thrown
   }
 
   /**
@@ -126,11 +123,11 @@ public class PathFinderTest {
 
     // Assert that the second node results in an exception
     pathFinder.setAlgorithm(aStar);
-    assertThrows(Exception.class, () -> pathFinder.findPath(startLocation, new LocationName()));
+    assertThrows(Exception.class, () -> pathFinder.findPath(startNode, new Node()));
     pathFinder.setAlgorithm(breadthFirst);
-    assertThrows(Exception.class, () -> pathFinder.findPath(startLocation, new LocationName()));
+    assertThrows(Exception.class, () -> pathFinder.findPath(startNode, new Node()));
     pathFinder.setAlgorithm(depthFirst);
-    assertThrows(Exception.class, () -> pathFinder.findPath(startLocation, new LocationName()));
+    assertThrows(Exception.class, () -> pathFinder.findPath(startNode, new Node()));
   }
 
   /**
@@ -151,13 +148,16 @@ public class PathFinderTest {
 
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
+    Node startNode = startLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+    Node endNode = endLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+
     // Assert that finding the path throws an exception
     pathFinder.setAlgorithm(aStar);
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startLocation, endLocation));
+    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(breadthFirst);
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startLocation, endLocation));
+    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(depthFirst);
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startLocation, endLocation));
+    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startNode, endNode));
   }
 
   /** Test for a case where the end move does not exist */
@@ -183,13 +183,15 @@ public class PathFinderTest {
 
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
+    Node endNode = endLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+
     // Assert that finding the path throws an exception
     pathFinder.setAlgorithm(aStar);
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startLocation, endLocation));
+    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(breadthFirst);
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startLocation, endLocation));
+    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(depthFirst);
-    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startLocation, endLocation));
+    assertThrows(NullPointerException.class, () -> pathFinder.findPath(startNode, endNode));
   }
 
   /** Tests for a case where the nodes are valid, however the path to the end does not exist */
@@ -219,13 +221,16 @@ public class PathFinderTest {
 
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
 
+    Node startNode = startLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+    Node endNode = endLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+
     pathFinder.setAlgorithm(aStar);
     // Assert the path returns null
-    assertNull(pathFinder.findPath(startLocation, endLocation));
+    assertNull(pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(breadthFirst);
-    assertNull(pathFinder.findPath(startLocation, endLocation));
+    assertNull(pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(depthFirst);
-    assertNull(pathFinder.findPath(startLocation, endLocation));
+    assertNull(pathFinder.findPath(startNode, endNode));
   }
 
   /** Tests for a line of nodes, ensures that the algorithm reaches the end */
@@ -280,14 +285,17 @@ public class PathFinderTest {
     expectedResult.add(nodeFour);
     expectedResult.add(nodeFive);
 
+    Node startNode = startName.getCurrentNode(testSession, Date.from(Instant.now()));
+    Node endNode = endName.getCurrentNode(testSession, Date.from(Instant.now()));
+
     // Find the path and validate it
     PathFinder pathFinder = new PathFinder(testSession);
     pathFinder.setAlgorithm(aStar);
-    assertEquals(expectedResult, pathFinder.findPath(startName, endName));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(breadthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(startName, endName));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(depthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(startName, endName));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
   }
 
   /**
@@ -358,14 +366,17 @@ public class PathFinderTest {
     expectedResult.add(realStart); // Real start
     expectedResult.add(realEnd); // To real end
 
+    Node startNode = start.getCurrentNode(testSession, Date.from(Instant.now()));
+    Node endNode = end.getCurrentNode(testSession, Date.from(Instant.now()));
+
     // Create the PathFinder
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder
     pathFinder.setAlgorithm(aStar);
-    assertEquals(expectedResult, pathFinder.findPath(start, end)); // Check the path
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode)); // Check the path
     pathFinder.setAlgorithm(breadthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(start, end)); // Check the path
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode)); // Check the path
     pathFinder.setAlgorithm(depthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(start, end)); // Check the path
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode)); // Check the path
   }
 
   /** Tests that paths are bidirectional, e.g., that a path from end->start works */
@@ -405,11 +416,11 @@ public class PathFinderTest {
     // Assert that the path is valid
     PathFinder pathFinder = new PathFinder(testSession);
     pathFinder.setAlgorithm(aStar);
-    assertEquals(expectedResult, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(breadthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(depthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
   }
 
   /**
@@ -451,13 +462,16 @@ public class PathFinderTest {
     expectedPath.add(start);
     expectedPath.add(end);
 
+    Node startNode = startLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+    Node endNode = endLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+
     // Assert that the path matches
     pathFinder.setAlgorithm(aStar);
-    assertEquals(expectedPath, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedPath, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(breadthFirst);
-    assertEquals(expectedPath, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedPath, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(depthFirst);
-    assertEquals(expectedPath, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedPath, pathFinder.findPath(startNode, endNode));
   }
 
   /** Test that when there is a loop before the target, the algorithm still reaches the end */
@@ -506,14 +520,17 @@ public class PathFinderTest {
     expectedResult.add(two);
     expectedResult.add(target);
 
+    Node startNode = startName.getCurrentNode(testSession, Date.from(Instant.now()));
+    Node endNode = endName.getCurrentNode(testSession, Date.from(Instant.now()));
+
     // Create the pathfinder and check the path
     PathFinder pathFinder = new PathFinder(testSession);
     pathFinder.setAlgorithm(aStar);
-    assertEquals(expectedResult, pathFinder.findPath(startName, endName));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(breadthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(startName, endName));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(depthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(startName, endName));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
   }
 
   /**
@@ -575,9 +592,11 @@ public class PathFinderTest {
     resultList.add(leftMiddle);
     resultList.add(endNode);
 
+    Node startNode = startName.getCurrentNode(testSession, Date.from(Instant.now()));
+
     PathFinder pathFinder = new PathFinder(testSession); // Create the path finder to use
     pathFinder.setAlgorithm(aStar);
-    assertEquals(resultList, pathFinder.findPath(startName, endName)); // Find the path
+    assertEquals(resultList, pathFinder.findPath(startNode, endNode)); // Find the path
   }
 
   /**
@@ -718,7 +737,11 @@ public class PathFinderTest {
     // Check that the path finder finds the right path
     PathFinder pathFinder = new PathFinder(testSession);
     pathFinder.setAlgorithm(aStar);
-    assertEquals(expectedResult, pathFinder.findPath(startLocation, endLocation));
+
+    Node startNode = startLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+    Node endNode = endLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
   }
 
   /**
@@ -780,14 +803,18 @@ public class PathFinderTest {
                       // Create the path finder
                       PathFinder pathFinder = new PathFinder(testSession);
 
+                      Node startNode =
+                          startLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+                      Node endNode =
+                          endLocation.getCurrentNode(testSession, Date.from(Instant.now()));
+
                       // Find the path between the nodes
                       pathFinder.setAlgorithm(aStar);
-                      List<Node> resultAStar = pathFinder.findPath(startLocation, endLocation);
+                      List<Node> resultAStar = pathFinder.findPath(startNode, endNode);
                       pathFinder.setAlgorithm(breadthFirst);
-                      List<Node> resultBreadthFirst =
-                          pathFinder.findPath(startLocation, endLocation);
+                      List<Node> resultBreadthFirst = pathFinder.findPath(startNode, endNode);
                       pathFinder.setAlgorithm(depthFirst);
-                      List<Node> resultDepthFirst = pathFinder.findPath(startLocation, endLocation);
+                      List<Node> resultDepthFirst = pathFinder.findPath(startNode, endNode);
 
                       // Transaction to get
                       transaction = testSession.beginTransaction();
@@ -953,7 +980,9 @@ public class PathFinderTest {
                       }
                       commitTransaction.commit();
 
-                      List<LocationName> result = pathFinder.nodeListToLocation(nodes, testSession);
+                      List<LocationName> result =
+                          pathFinder.nodeListToLocation(
+                              nodes, testSession, Date.from(Instant.now()));
 
                       assertEquals(locations, result);
 
@@ -1006,11 +1035,11 @@ public class PathFinderTest {
     // Check that the result is expected
     PathFinder pathFinder = new PathFinder(testSession);
     pathFinder.setAlgorithm(aStar);
-    assertEquals(expectedResult, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(breadthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
     pathFinder.setAlgorithm(depthFirst);
-    assertEquals(expectedResult, pathFinder.findPath(startLocation, endLocation));
+    assertEquals(expectedResult, pathFinder.findPath(startNode, endNode));
   }
 
   /** Tests that the A* algorithm prioritizes elevators over stairs */
@@ -1094,6 +1123,7 @@ public class PathFinderTest {
     // Find the path and validate it
     PathFinder pathFinder = new PathFinder(testSession);
     pathFinder.setAlgorithm(aStar);
-    assertEquals(expectedResult, pathFinder.findPath(startName, endName));
+
+    assertEquals(expectedResult, pathFinder.findPath(start, end));
   }
 }

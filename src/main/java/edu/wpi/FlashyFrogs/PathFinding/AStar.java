@@ -4,10 +4,8 @@ import static edu.wpi.FlashyFrogs.PathFinding.PathFinder.getNeighbors;
 
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.time.Instant;
+import java.util.*;
 import lombok.NonNull;
 import org.hibernate.Session;
 
@@ -55,14 +53,14 @@ public class AStar implements IFindPath {
         if (q.node.getFloor() != child.node.getFloor()) {
           if (child
               .node
-              .getCurrentLocation(session)
+              .getCurrentLocation(session, Date.from(Instant.now()))
               .get(0)
               .getLocationType()
               .equals(LocationName.LocationType.ELEV)) {
             child.g = q.g + 10; // cost for elevator
           } else if (child
               .node
-              .getCurrentLocation(session)
+              .getCurrentLocation(session, Date.from(Instant.now()))
               .get(0)
               .getLocationType()
               .equals(LocationName.LocationType.STAI)) {

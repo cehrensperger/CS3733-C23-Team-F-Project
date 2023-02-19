@@ -13,10 +13,9 @@ import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NextFloorPopupController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -24,6 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -47,6 +47,7 @@ public class PathfindingController implements IController {
   @FXML private Label floorSelector;
   @FXML private MFXButton mapEditorButton;
   @FXML private MFXButton floorSelectorButton;
+  @FXML private DatePicker moveDatePicker;
   private List<Node> lastPath; // The most recently generated path
 
   //  @FXML private Label error;
@@ -57,6 +58,7 @@ public class PathfindingController implements IController {
   @FXML Text h2;
   @FXML Text h3;
   @FXML Text h4;
+  @FXML Text h5;
 
   boolean hDone = false;
   AtomicReference<PopOver> mapPopOver =
@@ -69,11 +71,12 @@ public class PathfindingController implements IController {
    */
   @SneakyThrows
   public void initialize() {
-
+    moveDatePicker.setValue(LocalDate.now());
     h1.setVisible(false);
     h2.setVisible(false);
     h3.setVisible(false);
     h4.setVisible(false);
+    h5.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -330,7 +333,13 @@ public class PathfindingController implements IController {
     hideLastPath(); // hide the last drawn path
 
     // Get the new path from the PathFinder
-    lastPath = pathFinder.findPath(startPath, endPath);
+    Node startNode =
+        startPath.getCurrentNode(
+            Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+    Node endNode =
+        endPath.getCurrentNode(
+            Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+    lastPath = pathFinder.findPath(startNode, endNode);
 
     // Check that we actually got a path
     if (lastPath == null) {
@@ -436,12 +445,14 @@ public class PathfindingController implements IController {
       h2.setVisible(true);
       h3.setVisible(true);
       h4.setVisible(true);
+      h5.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
       h4.setVisible(false);
+      h5.setVisible(false);
       hDone = false;
     }
   }
