@@ -4,7 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class NewUserController implements IController {
   @FXML private TextField middleName;
   @FXML private TextField lastName;
   @FXML private SearchableComboBox<Department> deptBox;
-  @FXML private SearchableComboBox<User.EmployeeType> employeeType;
+  @FXML private SearchableComboBox<HospitalUser.EmployeeType> employeeType;
   @FXML private Label errorMessage;
 
   public NewUserController() {}
@@ -57,7 +57,10 @@ public class NewUserController implements IController {
     deptBox.setItems(observableList);
     employeeType
         .getItems()
-        .addAll(User.EmployeeType.ADMIN, User.EmployeeType.MEDICAL, User.EmployeeType.STAFF);
+        .addAll(
+            HospitalUser.EmployeeType.ADMIN,
+            HospitalUser.EmployeeType.MEDICAL,
+            HospitalUser.EmployeeType.STAFF);
     session.close();
   }
 
@@ -80,8 +83,8 @@ public class NewUserController implements IController {
     } else {
       // Save Username and Password to db
       errorMessage.setVisible(false);
-      User userFK =
-          new User(
+      HospitalUser userFK =
+          new HospitalUser(
               firstName.getText(),
               middleName.getText(),
               lastName.getText(),

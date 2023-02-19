@@ -48,7 +48,7 @@ public class AnnouncementTest {
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
       connection.createMutationQuery("DELETE FROM Announcement").executeUpdate();
-      connection.createMutationQuery("DELETE FROM User").executeUpdate();
+      connection.createMutationQuery("DELETE FROM HospitalUser").executeUpdate();
       connection.createMutationQuery("DELETE FROM Department").executeUpdate();
       cleanupTransaction.commit(); // Commit the cleanup
     }
@@ -65,7 +65,7 @@ public class AnnouncementTest {
     Date testDate = new Date(); // Create a date to use with testing
 
     // Create a user to use
-    User newUser = new User("A", "B", "C", User.EmployeeType.STAFF, null);
+    HospitalUser newUser = new HospitalUser("A", "B", "C", HospitalUser.EmployeeType.STAFF, null);
 
     // Create the string to use
     String announcement = "announce";
@@ -114,7 +114,8 @@ public class AnnouncementTest {
     Date testDate = Date.from(Instant.ofEpochSecond(1000)); // Create a date to use with testing
 
     // Create a user to use
-    User newUser = new User("cxbcvxb", "qwer", "yetuyiu", User.EmployeeType.ADMIN, null);
+    HospitalUser newUser =
+        new HospitalUser("cxbcvxb", "qwer", "yetuyiu", HospitalUser.EmployeeType.ADMIN, null);
 
     // Create the string to use
     String announcement = "something";
@@ -177,7 +178,7 @@ public class AnnouncementTest {
     assertNotEquals(originalAnnouncement.hashCode(), identicalAnnouncement.hashCode());
 
     // User for the completely different announcement
-    User user = new User("a", "b", "c", User.EmployeeType.ADMIN, null);
+    HospitalUser user = new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.ADMIN, null);
 
     Announcement completelyDifferentAnnouncement =
         new Announcement(Date.from(Instant.ofEpochSecond(1)), user, "diff");
@@ -199,7 +200,7 @@ public class AnnouncementTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Create a session
     Transaction transaction = session.beginTransaction(); // Begin the transaction
 
-    User user = new User("A", "B", "C", User.EmployeeType.MEDICAL, null);
+    HospitalUser user = new HospitalUser("A", "B", "C", HospitalUser.EmployeeType.MEDICAL, null);
     session.persist(user);
 
     Announcement announcement = new Announcement(new Date(), user, "mes");
@@ -214,12 +215,12 @@ public class AnnouncementTest {
     // Try creating the query
     assertThrows(
         Exception.class,
-        () -> session.createMutationQuery("UPDATE User SET id=999").executeUpdate());
+        () -> session.createMutationQuery("UPDATE HospitalUser SET id=999").executeUpdate());
 
     transaction.rollback(); // Rollback
 
     transaction = session.beginTransaction(); // Create a new transaction
-    assertEquals(user, session.find(User.class, originalId)); // Find the old user
+    assertEquals(user, session.find(HospitalUser.class, originalId)); // Find the old user
     assertEquals(
         user,
         session.createQuery("FROM Announcement", Announcement.class).getSingleResult().getAuthor());
@@ -234,7 +235,7 @@ public class AnnouncementTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Create a session
     Transaction transaction = session.beginTransaction(); // Begin the transaction
 
-    User user = new User("b", "C", "d", User.EmployeeType.MEDICAL, null);
+    HospitalUser user = new HospitalUser("b", "C", "d", HospitalUser.EmployeeType.MEDICAL, null);
     session.persist(user);
 
     Announcement announcement = new Announcement(new Date(), user, "asdf");
@@ -245,7 +246,7 @@ public class AnnouncementTest {
     transaction = session.beginTransaction(); // Open a new transaction
 
     // Try creating the query
-    session.createMutationQuery("DELETE FROM User").executeUpdate();
+    session.createMutationQuery("DELETE FROM HospitalUser").executeUpdate();
 
     session.flush();
 
@@ -254,7 +255,10 @@ public class AnnouncementTest {
     session.refresh(announcement);
 
     transaction = session.beginTransaction(); // Create a new transaction
-    assertNull(session.createQuery("FROM User", User.class).uniqueResult()); // Find the old user
+    assertNull(
+        session
+            .createQuery("FROM HospitalUser", HospitalUser.class)
+            .uniqueResult()); // Find the old user
     assertNull(
         session.createQuery("FROM Announcement", Announcement.class).getSingleResult().getAuthor());
     transaction.commit();
