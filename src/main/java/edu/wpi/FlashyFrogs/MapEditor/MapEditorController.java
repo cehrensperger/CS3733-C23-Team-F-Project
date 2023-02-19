@@ -27,12 +27,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -199,7 +198,15 @@ public class MapEditorController implements IController {
 
                         // On node delete
                         nodesToDelete.forEach(
-                            (node) -> mapController.deleteNode(node)); // Delete all selected nodes
+                            (node) -> {
+                              // For each node, delete it
+                              mapController
+                                  .getMapSession()
+                                  .createMutationQuery("DELETE FROM " + "Node WHERE id = :id")
+                                  .setParameter("id", node.getId())
+                                  .executeUpdate();
+                              mapController.deleteNode(node); // Delete the node
+                            }); // Delete all selected nodes
                       } else if (event.getCode().equals(KeyCode.DOWN)) { // Reversed top-bottom JFX
                         try {
                           // Try moving up
