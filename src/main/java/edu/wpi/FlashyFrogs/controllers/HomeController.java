@@ -5,11 +5,10 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import edu.wpi.FlashyFrogs.Theme;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -377,7 +376,7 @@ public class HomeController implements IController {
   }
 
   public void refreshTable() {
-    User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
     Session session = CONNECTION.getSessionFactory().openSession();
@@ -427,7 +426,7 @@ public class HomeController implements IController {
             (observable, oldValue, newValue) -> {
               if (!newValue.equals(null)) {
                 Session session = CONNECTION.getSessionFactory().openSession();
-                User currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+                HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
                 boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
                 if (!newValue.equals("All")) {
                   if (!isAdmin) {

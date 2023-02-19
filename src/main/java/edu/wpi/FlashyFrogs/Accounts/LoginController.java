@@ -5,7 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 // import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
@@ -101,7 +101,7 @@ public class LoginController implements IController {
   public void openPathfinding(ActionEvent event) throws IOException {
     System.out.println("opening pathfinding");
     CurrentUserEntity.CURRENT_USER.setCurrentUser(
-        new User("a", "a", "a", User.EmployeeType.STAFF, new Department()));
+        new HospitalUser("a", "a", "a", HospitalUser.EmployeeType.STAFF, new Department()));
     Fapp.setScene("Pathfinding", "Pathfinding");
   }
 

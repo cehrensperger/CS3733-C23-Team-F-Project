@@ -4,10 +4,10 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -41,7 +41,7 @@ public class InternalTransportEditorController extends ServiceRequestController
   @FXML SearchableComboBox<InternalTransport.HearingStatus> hearing;
   @FXML SearchableComboBox<InternalTransport.ConsciousnessStatus> consciousness;
   @FXML SearchableComboBox<InternalTransport.HealthStatus> condition;
-  @FXML SearchableComboBox<User> assignedBox;
+  @FXML SearchableComboBox<HospitalUser> assignedBox;
   @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
   @FXML SearchableComboBox<LocationName> to;
   @FXML SearchableComboBox<LocationName> from;
@@ -97,9 +97,10 @@ public class InternalTransportEditorController extends ServiceRequestController
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    List<User> users = session.createQuery("FROM User", User.class).getResultList();
+    List<HospitalUser> users =
+        session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList();
 
-    users.sort(Comparator.comparing(User::getFirstName));
+    users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     to.setItems(FXCollections.observableArrayList(locations));
     from.setItems(FXCollections.observableArrayList(locations));

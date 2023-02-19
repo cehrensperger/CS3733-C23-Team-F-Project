@@ -132,7 +132,7 @@ public class InternalTransport extends ServiceRequest {
       @NonNull Equipment equipment,
       @NonNull Date dateTimePreference,
       @NonNull Date submissionDate,
-      User emp,
+      HospitalUser emp,
       @NonNull ModeOfTransport modeOfTransport,
       boolean isolation,
       @NonNull String personalItems,

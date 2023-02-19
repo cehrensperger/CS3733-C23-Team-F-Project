@@ -32,8 +32,8 @@ public class Announcement {
           @ForeignKey(
               name = "author_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (author) REFERENCES \"user\"(id) ON DELETE SET NULL"))
-  private User author; // Author for the message
+                  "FOREIGN KEY (author) REFERENCES hospital_user(id) ON DELETE SET NULL"))
+  private HospitalUser author; // Author for the message
 
   @Basic
   @Getter
@@ -52,7 +52,8 @@ public class Announcement {
    * @param author the author of the announcement
    * @param announcement the announcement body to create
    */
-  public Announcement(@NonNull Date creationDate, User author, @NonNull String announcement) {
+  public Announcement(
+      @NonNull Date creationDate, HospitalUser author, @NonNull String announcement) {
     this.creationDate = creationDate;
     this.author = author;
     this.announcement = announcement;
