@@ -111,6 +111,9 @@ public class MapController {
    * @param node the node to delete
    */
   public void deleteNode(@NonNull Node node) {
+    // TODO: remove because everyone hates print statements I guess
+    node.getChildren().forEach(node1 -> System.out.println(node1.getId()));
+
     currentDrawingPane
         .getChildren()
         .remove(getNodeToCircleMap().get(node)); // Remove the nodes circle

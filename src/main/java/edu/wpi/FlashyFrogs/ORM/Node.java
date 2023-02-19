@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -205,7 +206,25 @@ public class Node {
       return locations;
     }
 
-    locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
+    // locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
+    locations.removeIf(
+        location -> {
+          Node mostRecentNode =
+              session
+                  .createQuery(
+                      """
+                                                      SELECT Node
+                                                      FROM Move
+                                                      WHERE location = :loc AND moveDate <= current timestamp
+                                                      ORDER BY moveDate DESC
+                                                      LIMIT 1
+                                                      """,
+                      Node.class)
+                  .setParameter("loc", location)
+                  .setCacheable(true)
+                  .uniqueResult();
+          return mostRecentNode.equals(this);
+        });
 
     return locations;
   }
@@ -225,5 +244,28 @@ public class Node {
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       return getCurrentLocation(connection);
     }
+  }
+
+  public List<Node> getChildren() {
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
+    List<Node> children =
+        session
+            .createQuery(
+                "select e.node1, e.node2 FROM Edge e where Edge.node1 = :node OR Edge.node2 = :node",
+                Node.class)
+            .setParameter("node", this)
+            .getResultList();
+    List<Node> filteredChildren =
+        children.stream()
+            .filter(
+                new Predicate<>() {
+                  @Override
+                  public boolean test(Node childNode) {
+                    return !childNode.equals(this);
+                  }
+                })
+            .toList();
+
+    return filteredChildren;
   }
 }
