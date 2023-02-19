@@ -7,7 +7,8 @@ import lombok.NonNull;
 /** Enumerated type for themes, including the resources associated with them */
 public enum Theme {
   LIGHT_THEME("Light Theme", Objects.requireNonNull(Theme.class.getResource("views/NewStyle.css"))),
-  DARK_THEME("Dark Theme", Objects.requireNonNull(Theme.class.getResource("views/darkMode.css")));
+  DARK_THEME(
+      "Dark Theme", Objects.requireNonNull(Theme.class.getResource("views/NewDarkMode.css")));
 
   @NonNull public final String description; // Description
   @NonNull public final URL resource; // Resource
