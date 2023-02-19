@@ -90,7 +90,6 @@ public class MapEditorController implements IController {
 
     h1.setVisible(false);
     h2.setVisible(false);
-    h41.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -964,6 +963,8 @@ public class MapEditorController implements IController {
    */
   @FXML
   private void toggleQuickDraw(ActionEvent actionEvent) {
+    selectedNodes
+        .clear(); // Clear selected nodes. If was enabled, should be empty. Otherwise, must be
     quickDrawActive = !quickDrawActive; // Toggle quickdraw status
   }
 }
