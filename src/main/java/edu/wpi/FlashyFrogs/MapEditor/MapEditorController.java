@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -167,25 +168,59 @@ public class MapEditorController implements IController {
             });
 
     // Set the delete handler
-    mapController
-        .getGesturePane()
-        .setOnKeyPressed(
-            (event) -> {
-              if (event.getCode().equals(KeyCode.DELETE)
-                  || event
-                      .getCode()
-                      .equals(KeyCode.BACK_SPACE)) { // if the key is delete or backsapce
-                Collection<Node> nodesToDelete =
-                    selectedNodes.stream().toList(); // Get the nodes to delete
+    Platform.runLater(
+        () ->
+            mapController
+                .getGesturePane()
+                .getScene()
+                .setOnKeyPressed(
+                    (event) -> {
+                      boolean shouldConsume = true; // If it's one of what we want, consume
 
-                selectedNodes
-                    .clear(); // Clear the selected nodes. This must happen before deleting in the
+                      if (event.getCode().equals(KeyCode.DELETE)
+                          || event
+                              .getCode()
+                              .equals(KeyCode.BACK_SPACE)) { // if the key is delete or backsapce
+                        Collection<Node> nodesToDelete =
+                            selectedNodes.stream().toList(); // Get the nodes to delete
 
-                // On node delete
-                nodesToDelete.forEach(
-                    (node) -> mapController.deleteNode(node)); // Delete all selected nodes
-              }
-            });
+                        selectedNodes
+                            .clear(); // Clear the selected nodes. This must happen before deleting
+                        // in the
+
+                        // On node delete
+                        nodesToDelete.forEach(
+                            (node) -> mapController.deleteNode(node)); // Delete all selected nodes
+                      } else if (event.getCode().equals(KeyCode.DOWN)) { // Reversed top-bottom JFX
+                        try {
+                          // Try moving up
+                          tryCommitBulkMove(0, 1);
+                        } catch (IllegalArgumentException ignored) {
+                        } // No need to do anything on error
+                      } else if (event.getCode().equals(KeyCode.UP)) { // Reversed top-bottom in JFX
+                        try {
+                          tryCommitBulkMove(0, -1); // See above
+                        } catch (IllegalArgumentException ignored) {
+                        } // See above
+                      } else if (event.getCode().equals(KeyCode.LEFT)) {
+                        try {
+                          tryCommitBulkMove(-1, 0); // See above
+                        } catch (IllegalArgumentException ignored) {
+                        } // See above
+                      } else if (event.getCode().equals(KeyCode.RIGHT)) {
+                        try {
+                          tryCommitBulkMove(1, 0); // See above
+                        } catch (IllegalArgumentException ignored) {
+                        } // See above
+                      } else {
+                        shouldConsume = false; // IF we don't want it, don't consume it
+                      }
+
+                      // If we should
+                      if (shouldConsume) {
+                        event.consume(); // Consume it
+                      }
+                    }));
 
     createLocationNameTable(
         mapController.getMapSession()); // Create the table using the map session
@@ -780,7 +815,7 @@ public class MapEditorController implements IController {
 
       mapController.moveNode(node, newNode); // Process the node change
 
-      // selectedNodes.add(newNode); // Re-add this to the selected
+      selectedNodes.add(newNode); // Re-add this to the selected
     }
   }
 
