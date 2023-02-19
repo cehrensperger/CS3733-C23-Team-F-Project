@@ -29,7 +29,7 @@ public class UserLogin {
   @OneToOne(optional = false)
   @NonNull
   @Getter
-  private User user;
+  private HospitalUser hospitalUser;
 
   @Column(nullable = false, unique = true)
   @NonNull
@@ -54,12 +54,15 @@ public class UserLogin {
   /**
    * Creates a user log in with filled in fields
    *
-   * @param user the user to create the thing for
+   * @param hospitalUser the user to create the thing for
    * @param theUserName the username of the user
    * @param thePassword the password of the user
    */
-  public UserLogin(@NonNull User user, @NonNull String theUserName, @NonNull String thePassword) {
-    this.user = user;
+  public UserLogin(
+      @NonNull HospitalUser hospitalUser,
+      @NonNull String theUserName,
+      @NonNull String thePassword) {
+    this.hospitalUser = hospitalUser;
     this.userName = theUserName;
 
     // Encrypts password with salt
@@ -79,7 +82,7 @@ public class UserLogin {
     if (obj == null) return false;
     if (this.getClass() != obj.getClass()) return false;
     UserLogin other = (UserLogin) obj;
-    return this.user.equals(other.getUser());
+    return this.hospitalUser.equals(other.getHospitalUser());
   }
 
   /**
@@ -90,7 +93,7 @@ public class UserLogin {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(this.user);
+    return Objects.hash(this.hospitalUser);
   }
 
   /**

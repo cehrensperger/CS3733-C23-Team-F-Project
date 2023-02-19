@@ -49,7 +49,7 @@ public abstract class ServiceRequest {
               foreignKeyDefinition =
                   "FOREIGN KEY (empid) REFERENCES " + "\"user\"(id) ON DELETE SET NULL"))
   @ManyToOne
-  private User emp; // Initiating employee
+  private HospitalUser emp; // Initiating employee
 
   @Getter
   @Setter
@@ -61,7 +61,7 @@ public abstract class ServiceRequest {
               foreignKeyDefinition =
                   "FOREIGN KEY (assignedempid) REFERENCES " + "\"user\"(id) ON DELETE SET NULL"))
   @ManyToOne
-  private User assignedEmp; // Assigned employee
+  private HospitalUser assignedEmp; // Assigned employee
 
   @Basic
   @Temporal(TemporalType.TIMESTAMP)

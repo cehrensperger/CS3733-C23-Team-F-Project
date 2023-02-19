@@ -9,8 +9,8 @@ import org.hibernate.annotations.Cascade;
 
 /** Class representing a user in the database */
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "hospital_user")
+public class HospitalUser {
   /**
    * Type representing the unique, auto-generated, employee ID. This should not be mutated while the
    * employee exists, only deleted
@@ -94,7 +94,7 @@ public class User {
   }
 
   /** Empty constructor, required for Hibernate */
-  public User() {}
+  public HospitalUser() {}
 
   /**
    * Creates a user with filled-in fields
@@ -105,7 +105,7 @@ public class User {
    * @param employeeType the type of employee
    * @param department the department
    */
-  public User(
+  public HospitalUser(
       @NonNull String firstName,
       String middleName,
       @NonNull String lastName,
@@ -140,9 +140,9 @@ public class User {
     if (o == null || getClass() != o.getClass())
       return false; // Bad the other one is a different class
 
-    User user = (User) o; // Cast
+    HospitalUser hospitalUser = (HospitalUser) o; // Cast
 
-    return getId() == user.getId(); // Check the cast
+    return getId() == hospitalUser.getId(); // Check the cast
   }
 
   /**

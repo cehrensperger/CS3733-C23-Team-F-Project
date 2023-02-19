@@ -39,7 +39,7 @@ public class SecurityEditorController extends ServiceRequestController implement
   @FXML Text h4;
   @FXML Text h5;
   @FXML SearchableComboBox<LocationName> locationBox;
-  @FXML SearchableComboBox<User> assignedBox;
+  @FXML SearchableComboBox<HospitalUser> assignedBox;
   @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
   @FXML SearchableComboBox<Security.ThreatType> threat;
   @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
@@ -65,12 +65,13 @@ public class SecurityEditorController extends ServiceRequestController implement
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    List<User> users = session.createQuery("FROM User", User.class).getResultList();
+    List<HospitalUser> hospitalUsers =
+        session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList();
 
-    users.sort(Comparator.comparing(User::getFirstName));
+    hospitalUsers.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     locationBox.setItems(FXCollections.observableArrayList(locations));
-    assignedBox.setItems(FXCollections.observableArrayList(users));
+    assignedBox.setItems(FXCollections.observableArrayList(hospitalUsers));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     threat.setItems(FXCollections.observableArrayList(Security.ThreatType.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));

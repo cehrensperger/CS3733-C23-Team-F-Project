@@ -13,7 +13,7 @@
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 28pt;
-    -fx-fill:#ffffff;
+    -fx-fill:#000000;
 }
 
 .header
@@ -22,6 +22,7 @@
 {
     -fx-font-family: "Roboto Light";
     -fx-font-size: 20pt;
+    -fx-fill:#000000;
 }
 
 .headerBold
@@ -31,7 +32,7 @@
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 20pt;
-    -fx-text-fill:#ffffff;
+    -fx-text-fill:#000000;
 }
 
 .body
@@ -40,6 +41,7 @@
 {
     -fx-font-family: "Roboto Light";
     -fx-font-size: 10pt;
+    -fx-text-fill:#000000;
 }
 
 .bodyBold
@@ -48,6 +50,7 @@
 {
     -fx-font-family: "Roboto";
     -fx-font-size: 10pt;
+    -fx-text-fill:#000000;
 }
 
 .subtext
@@ -55,6 +58,7 @@
 {
     -fx-font-family: "Roboto Light";
     -fx-font-size: 8pt;
+    -fx-text-fill:#000000;
 }
 
 .middle
@@ -62,6 +66,7 @@
 {
     -fx-font-family: "Roboto Light";
     -fx-font-size: 14pt;
+    -fx-text-fill:#000000;
 }
 
 .middleBold
@@ -70,6 +75,7 @@
     -fx-font-family: "Roboto";
     -fx-font-size: 16pt;
     -fx-font-weight: bold;
+    -fx-text-fill:#000000;
 }
 
 .warningText
@@ -88,9 +94,9 @@
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
     -fx-background-color:transparent;
-    -fx-border-color: #F6BD38;
+    -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
-    -fx-text-fill: #F6BD38;
+    -fx-text-fill: #012D5A;
     -fx-font-size: 10pt;
     -fx-pref-width: 184px;
     -fx-pref-height: 25px;
@@ -103,9 +109,9 @@
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
     -fx-background-color:transparent;
-    -fx-border-color:#F6BD38;
+    -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
-    -fx-text-fill: #F6BD38;
+    -fx-text-fill: #012D5A;
     -fx-font-size: 10pt;
 }
 
@@ -117,9 +123,9 @@
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
     -fx-background-color: transparent;
-    -fx-border-color:#F6BD38;
+    -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
-    -fx-text-fill: #F6BD38;
+    -fx-text-fill: #012D5A;
     -fx-font-size: 10pt;
     -fx-pref-width: 150px;
     -fx-pref-height: 25px;
@@ -132,10 +138,10 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
-    -fx-background-color: #F6BD38;
-    -fx-border-color:#F6BD38;
+    -fx-background-color: #012D5A;
+    -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 10pt;
     -fx-pref-width: 150px;
     -fx-pref-height: 25px;
@@ -147,10 +153,10 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
-    -fx-background-color: #F6BD38;
-    -fx-border-color:#F6BD38;
+    -fx-background-color: #012D5A;
+    -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 10pt;
 }
 
@@ -160,10 +166,10 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
-    -fx-background-color:#F6BD38;
-    -fx-border-color:#F6BD38;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 10pt;
     -fx-pref-width: 184px;
     -fx-pref-height: 25px;
@@ -175,10 +181,10 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
-    -fx-background-color:#F6BD38;
-    -fx-border-color:#F6BD38;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 10pt;
     -fx-pref-width: 184px;
     -fx-pref-height: 75px;
@@ -193,11 +199,11 @@
     -fx-background-radius: 10px !important;
     -fx-font-family: "Roboto Light";
     -fx-font-size: 12pt;
-    -fx-border-color:#F6BD38;
-    -fx-text-fill: #F6BD38;
+    -fx-border-color:#012D5A;
+    -fx-text-fill: #012D5A;
     -fx-background-color: transparent;
     -fx-border-insets: -1px;
-    -fx-prompt-text-fill: #F6BD38;
+    -fx-prompt-text-fill: #012D5A;
     -fx-font-weight: normal;
     /** -fx-pref-width: 200px; (not sure if we want to set width and height in here) **/
     /** -fx-pref-height: 26px; **/
@@ -207,15 +213,15 @@
     /** controls all date picker fields within the app **/
 {
     -fx-background-radius: 10 10 10 10;
-    -fx-text-fill: #F6BD38;
+    -fx-text-fill: #012D5A;
 }
 .date-picker > .text-field
     /** controls all date picker fields within the app **/
 {
     -fx-background-radius: 10 0 0 10;
-    -fx-prompt-text-fill: #F6BD38;
-    -fx-control-inner-background: transparent;
-    -fx-control-background: transparent ;
+    -fx-prompt-text-fill: #012D5A;
+    -fx-control-inner-background: #f1f1f1 ;
+    -fx-control-background: #f1f1f1 ;
 }
 
 .date-picker > .arrow-button
@@ -228,9 +234,9 @@
     /** controls all searchable combo boxes within the app **/
 {
     -fx-background-radius: 10 10 10 10;
-    -fx-prompt-text-fill: #F6BD38;
-    -fx-text-fill: #F6BD38;
-    -fx-context-menu-enabled: #F6BD38;
+    -fx-prompt-text-fill: #012D5A;
+    -fx-text-fill: #012D5A;
+    -fx-context-menu-enabled: #012D5A;
 
 }
 
@@ -238,15 +244,15 @@
     /** controls all searchable combo boxes within the app **/
 {
     -fx-background-radius: 10 10 10 10;
-    -fx-text-fill: #F6BD38;
-    -fx-prompt-text-fill: #F6BD38;
+    -fx-text-fill: #012D5A;
+    -fx-prompt-text-fill: #012D5A;
 }
 
 .combo-box-base .text
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-text-fill: #F6BD38;
-    -fx-prompt-text-fill: #F6BD38;
+    -fx-text-fill: #012D5A;
+    -fx-prompt-text-fill: #012D5A;
     -fx-text-inner-color: #012D5A;
 }
 
@@ -259,13 +265,13 @@
 .combo-box .arrow
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-background-color:#F6BD38;
+    -fx-background-color:#012D5A;
 }
 
 .combo-box .cell
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-text-fill: #F6BD38;
+    -fx-text-fill: #012D5A;
 }
 
 .submitButton
@@ -274,10 +280,10 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
-    -fx-background-color:#F6BD38;
-    -fx-border-color:#F6BD38;
+    -fx-background-color:#012D5A;
+    -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 10pt;
     -fx-pref-width: 100px;
     -fx-pref-height: 25px;
@@ -331,27 +337,27 @@
 .bar
     /** This sets the color of the dividing bar on the service requests page **/
 {
-    -fx-fill:#F6BD38;
-    -fx-stroke: #F6BD38;
+    -fx-fill:#012D5A;
+    -fx-stroke: #012D5A;
 }
 
 .sidebar
     /** This sets the sidebar on all of the pages **/
 {
-    -fx-background-color: #f1f1f1 !important;
+    -fx-background-color: #d1d1d1 !important;
     -fx-pref-width: 220px
 }
 
 .background
     /** sets the background color throughout the app **/
 {
-    -fx-background-color:#012d5a;
+    -fx-background-color:#f1f1f1;
 }
 
 .navBar
     /** sets the style of the nav bar **/
 {
-    -fx-background-color: #f1f1f1;
+    -fx-background-color: #012d5a;
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-border-insets: -1px;
@@ -365,27 +371,27 @@
 .menu-button .arrow-button
     /** controls the background of the arrow next to the current employee name **/
 {
-    -fx-background-color:#F6BD38;
-    -fx-control-inner-background: #F6BD38;
+    -fx-background-color:#012D5A;
+    -fx-control-inner-background: #012D5A;
     -fx-border-insets: -1px;
-    -fx-border-color: #F6BD38;
+    -fx-border-color: #012D5A;
 }
 
 .menu-button .arrow
     /** controls the color of the arrow next to the current employee name **/
 {
-    -fx-background-color: #000000;
-    -fx-control-inner-background: #F6BD38;
+    -fx-background-color: #ffffff;
+    -fx-control-inner-background: #012D5A;
 }
 
 .menu-button .label
     /** controls current employee name text color and the background color **/
 {
-    -fx-background-color: #F6BD38;
-    -fx-control-inner-background: #F6BD38;
-    -fx-border-color: #F6BD38;
+    -fx-background-color: #012D5A;
+    -fx-control-inner-background: #012D5A;
+    -fx-border-color: #012D5A;
     -fx-border-insets: -1px;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 13px;
 }
 
@@ -394,12 +400,12 @@
 {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-text-fill: #F6BD38;
+    -fx-text-fill: #012D5A;
 }
 .menu-item:focused
     /** This controls the background color of the menu-item when it is hovered over **/
 {
-    -fx-background-color: #012d5a;
+    -fx-background-color: #F6BD38;
     -fx-border-insets: -1px;
 }
 
@@ -408,13 +414,13 @@
 {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #000000;
 }
 
 .table-view .column-header-background
     /** controls the blue line in the tables above the table entries **/
 {
-    -fx-background-color: #F6BD38;
+    -fx-background-color: #012d5a;
     -fx-background-radius: 0px 0px 0px 0px;
     -fx-padding: 0px 0px 7px 0px;
 }
@@ -428,43 +434,43 @@
 .table-view .column-header
     /** controls table views within the app - not hover **/
 {
-    -fx-background-color: #F6BD38;
+    -fx-background-color: #f1f1f1;
 }
 
 .table-row-cell
     /** controls table views within the app - not hover **/
 {
-    -fx-background-color: #012d5a;
+    -fx-background-color: #f1f1f1;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
-    -fx-text-background-color: #F6BD38;
-    -fx-text-fill: #F6BD38;
+    -fx-text-background-color: #012d5a;
+    -fx-text-fill: #012d5a;
 }
 
 .table-row-cell:hover
     /** controls table views within the app - hover **/
 {
-    -fx-background-color: #F6BD38;
-    -fx-text-background-color: #000000;
-    -fx-text-fill: #000000;
+    -fx-background-color: #012d5a;
+    -fx-text-background-color: #ffffff;
+    -fx-text-fill: #ffffff;
 }
 
 .alertTopBox
     /** controls the top box with the title of the alert in the alert side bar **/
 {
-    -fx-fill: #F6BD38;
-    -stroke: #F6BD38;
+    -fx-fill: #012d5a;
+    -stroke: #012d5a;
     -strokeType: inside;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
-    -fx-text-fill: #000000;
+    -fx-text-fill: white;
 }
 
 .alertBottomBox
     /** controls the bottom box within the alert **/
 {
-    -fx-fill: #012d5a;
-    -fx-background-color: #012d5a;
+    -fx-fill: #f1f1f1;
+    -fx-background-color: #f1f1f1;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
 }
@@ -475,8 +481,8 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-text-box-border: transparent;
-    -fx-background-color: #012d5a;
-    -fx-control-inner-background: #012d5a;
+    -fx-background-color: #f1f1f1;
+    -fx-control-inner-background: #f1f1f1;
     -fx-background-radius: 0px;
 }
 
@@ -484,16 +490,17 @@
     /** controls the bar within the alert (the one that separates the name and date from
     the rest of the text) **/
 {
-    -fx-stroke: #ffffff;
+    -fx-stroke: #000000;
 }
 
 .pathfindingPopup
     /** controls the styling of the path finding popup on the login and home pages **/
 {
-    -fx-background-color: #f1f1f1;
-    -fx-text-fill: #000000;
+    -fx-background-color: #6B6D6F;
+    -fx-text-fill: white;
     -fx-font-size: 16;
     -fx-font-family: "Roboto Light";
 }
+
 
 
