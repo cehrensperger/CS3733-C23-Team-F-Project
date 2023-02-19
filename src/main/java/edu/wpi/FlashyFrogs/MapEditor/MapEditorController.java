@@ -160,7 +160,7 @@ public class MapEditorController implements IController {
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
-    Pane map = mapLoader.load(); // Load the map
+    javafx.scene.Node map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(0, map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
 
@@ -202,7 +202,63 @@ public class MapEditorController implements IController {
                 mapController.getMapSession().persist(newNode); // Save the new node
                 mapController.addNode(newNode, false); // Add the node onto the map
 
+                // If the last node isn't null
+                if (lastQuickDrawNode != null) {
+                  Edge edge = new Edge(lastQuickDrawNode, newNode); // Add the node
+                  mapController.getMapSession().persist(edge); // Add the edge to the DB
+
+                  mapController.addEdge(edge); // Add the edge to the map
+                }
+
                 lastQuickDrawNode = newNode; // Make this the new node
+
+                // Update line positioning
+                if (currentQuickDrawLine != null) {
+                  currentQuickDrawLine.setStartX(newNode.getXCoord()); // X
+                  currentQuickDrawLine.setStartY(newNode.getYCoord()); // Y
+                }
+              }
+            });
+
+    mapController
+        .getCurrentDrawingPane()
+        .addEventFilter(
+            MouseEvent.MOUSE_MOVED,
+            (mouseEvent) -> {
+              // If quick-draw is enabled, we're on the gesture pane, and we have a source
+              // node
+              if (quickDrawActive
+                  && lastQuickDrawNode != null) { // If we have a source node for the line
+
+                // If the current line exists, just update it
+                if (currentQuickDrawLine != null) {
+                  currentQuickDrawLine.setEndX(mouseEvent.getX());
+                  currentQuickDrawLine.setEndY(mouseEvent.getY());
+                } else { // Otherwise
+                  currentQuickDrawLine =
+                      new Line(
+                          lastQuickDrawNode.getXCoord(),
+                          lastQuickDrawNode.getYCoord(),
+                          mouseEvent.getX(),
+                          mouseEvent.getY());
+                  mapController
+                      .getCurrentDrawingPane()
+                      .getChildren()
+                      .add(currentQuickDrawLine); // Add the line
+                }
+              }
+            });
+
+    mapController
+        .getCurrentDrawingPane()
+        .addEventFilter(
+            MouseEvent.MOUSE_EXITED,
+            (mouseEvent) -> {
+              // If we have a line and aren't in the page, delete the current quick draw line
+              if (currentQuickDrawLine != null) { // If the current quick draw line exists
+                // Delete the current quick draw line
+                mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawLine);
+                currentQuickDrawLine = null;
               }
             });
 
@@ -214,47 +270,17 @@ public class MapEditorController implements IController {
               .addEventFilter(
                   MouseEvent.MOUSE_MOVED,
                   (mouseEvent) -> {
+                    System.out.println(root.getHeight());
                     // If quick draw is enabled
                     if (quickDrawActive) {
                       // Set the circles position
                       currentQuickDrawCircle.relocate(
                           mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
                     }
-
-                    // Regardless of what the rest of this is, we want to clear the old quick draw
-                    // line.
-                    // Either we will make a new one and update, or we won't make a new one
-                    if (currentQuickDrawLine != null) { // If the current quick draw line exists
-                      // Delete the current quick draw line
-                      mapController
-                          .getCurrentDrawingPane()
-                          .getChildren()
-                          .remove(currentQuickDrawLine);
-                      currentQuickDrawLine = null;
-                    }
-
-                    // If quick-draw is enabled, we're on the gesture pane, and we have a source
-                    // node
-                    if (quickDrawActive
-                        && mapController
-                            .getGesturePane()
-                            .contains(mouseEvent.getScreenX(), mouseEvent.getScreenY())
-                        && lastQuickDrawNode != null) { // If we have a source node for the line
-                      // Create it
-                      currentQuickDrawLine =
-                          new Line(
-                              lastQuickDrawNode.getXCoord(),
-                              lastQuickDrawNode.getYCoord(),
-                              mouseEvent.getX(),
-                              mouseEvent.getY());
-
-                      // And draw it
-                      mapController.getCurrentDrawingPane().getChildren().add(currentQuickDrawLine);
-                    }
                   });
         });
 
-    // Set the delete handler
+    // Set the button handler
     Platform.runLater(
         () ->
             mapController
@@ -887,7 +913,7 @@ public class MapEditorController implements IController {
             selectedNodes.clear(); // Clear
           }
 
-          // Othewrise, add this
+          // Otherwise, add this
           selectedNodes.add(node);
         });
 
@@ -982,8 +1008,6 @@ public class MapEditorController implements IController {
 
     // Now actually do the move
     for (Node node : nodes) {
-      if (mapController.getNodeToCircleMap().get(node) == null) {}
-
       String newID =
           createNodeID(
               node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff); // Get the ID
@@ -1055,6 +1079,8 @@ public class MapEditorController implements IController {
       // If disabled, delete it
       root.getChildren().remove(currentQuickDrawCircle);
       currentQuickDrawCircle = null; // Clear it
+      lastQuickDrawNode = null; // Clear the last node
+      // No need to clear the last edge, already gone (off the map editor)
     }
   }
 }
