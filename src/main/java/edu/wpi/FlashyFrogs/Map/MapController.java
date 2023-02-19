@@ -43,10 +43,6 @@ public class MapController {
     Platform.runLater(() -> gesturePane.zoomTo(0.15, new javafx.geometry.Point2D(2500, 1700)));
   }
 
-  public GesturePane getGesturePane() {
-    return gesturePane;
-  }
-
   /**
    * Sets the node creation function
    *

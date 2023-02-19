@@ -68,7 +68,7 @@ public class ComputerService extends ServiceRequest {
    * @param bestContact the String to use in the bestContact field
    */
   public ComputerService(
-      User emp,
+      HospitalUser emp,
       LocationName location,
       @NonNull Date dateNeededBy,
       @NonNull Date dateOfSubmission,

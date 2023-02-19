@@ -4,10 +4,10 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
-import edu.wpi.FlashyFrogs.ORM.User;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -60,7 +60,7 @@ public class SanitationEditorController extends ServiceRequestController impleme
   @FXML CheckBox isolation;
   @FXML SearchableComboBox<Sanitation.BiohazardLevel> biohazard;
   @FXML TextField description;
-  @FXML SearchableComboBox<User> assignedBox;
+  @FXML SearchableComboBox<HospitalUser> assignedBox;
   @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
   boolean hDone = false;
   @FXML private Label errorMessage;
@@ -84,8 +84,9 @@ public class SanitationEditorController extends ServiceRequestController impleme
         session.createQuery("FROM LocationName", LocationName.class).getResultList();
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    List<User> users = session.createQuery("SELECT u FROM User u", User.class).getResultList();
-    users.sort(Comparator.comparing(User::getFirstName));
+    List<HospitalUser> users =
+        session.createQuery("SELECT u FROM HospitalUser u", HospitalUser.class).getResultList();
+    users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     locationBox.setItems(FXCollections.observableArrayList(locations));
     sanitationType.setItems(FXCollections.observableArrayList(Sanitation.SanitationType.values()));

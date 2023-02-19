@@ -48,15 +48,16 @@ public class SanitationTest {
       connection.createMutationQuery("DELETE FROM Sanitation").executeUpdate(); // Do the drop
       connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
       connection.createMutationQuery("DELETE FROM LocationName").executeUpdate();
-      connection.createMutationQuery("DELETE FROM User").executeUpdate();
+      connection.createMutationQuery("DELETE FROM HospitalUser").executeUpdate();
       connection.createMutationQuery("DELETE FROM Department").executeUpdate();
       cleanupTransaction.commit(); // Commit the cleanup
     }
   }
 
-  private final User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
-  private final User assignedEmp =
-      new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, null);
+  private final HospitalUser emp =
+      new HospitalUser("Wilson", "Softeng", "Wong", HospitalUser.EmployeeType.MEDICAL, null);
+  private final HospitalUser assignedEmp =
+      new HospitalUser("Jonathan", "Elias", "Golden", HospitalUser.EmployeeType.MEDICAL, null);
   private final Sanitation testSan =
       new Sanitation(
           Sanitation.SanitationType.MOPPING,
@@ -80,8 +81,8 @@ public class SanitationTest {
     assignedEmp.setFirstName("Jonathan");
     assignedEmp.setMiddleName("Elias");
     assignedEmp.setLastName("Golden");
-    emp.setEmployeeType(User.EmployeeType.MEDICAL);
-    assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
+    emp.setEmployeeType(HospitalUser.EmployeeType.MEDICAL);
+    assignedEmp.setEmployeeType(HospitalUser.EmployeeType.MEDICAL);
     testSan.setAssignedEmp(assignedEmp);
     testSan.setDate(new Date(2023 - 1 - 31));
     testSan.setDateOfSubmission(new Date(2023 - 2 - 1));
@@ -102,7 +103,8 @@ public class SanitationTest {
   /** Tests setter for emp */
   @Test
   public void changeEmpTest() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
+    HospitalUser newEmp =
+        new HospitalUser("Bob", "Bobby", "Jones", HospitalUser.EmployeeType.ADMIN, null);
     testSan.setEmp(newEmp);
     assertEquals(newEmp, testSan.getEmp());
   }
@@ -128,10 +130,11 @@ public class SanitationTest {
             false,
             Sanitation.BiohazardLevel.BSL4,
             "bb");
-    test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+    test.setEmp(new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
-    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getEmp());
+    assertEquals(
+        new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, null), test.getEmp());
   }
 
   /** Starts the location name as null and sets it to null */
@@ -157,7 +160,8 @@ public class SanitationTest {
   /** Test setter for Assigned emp */
   @Test
   public void changeAssignedEmpTest() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, null);
+    HospitalUser newEmp =
+        new HospitalUser("Bob", "Bobby", "Jones", HospitalUser.EmployeeType.ADMIN, null);
     testSan.setAssignedEmp(newEmp);
     assertEquals(newEmp, testSan.getAssignedEmp());
   }
@@ -184,10 +188,12 @@ public class SanitationTest {
             false,
             Sanitation.BiohazardLevel.BSL1,
             "false");
-    test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+    test.setAssignedEmp(new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
-    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getAssignedEmp());
+    assertEquals(
+        new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, null),
+        test.getAssignedEmp());
   }
 
   /** Starts the location name as null and sets it to null */
@@ -352,7 +358,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, null);
+    HospitalUser emp =
+        new HospitalUser("Wilson", "Softeng", "Wong", HospitalUser.EmployeeType.MEDICAL, null);
     LocationName location = new LocationName("Name", LocationName.LocationType.EXIT, "name");
 
     session.persist(emp);
@@ -423,7 +430,7 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("b", "a", "d", User.EmployeeType.MEDICAL, null);
+    HospitalUser emp = new HospitalUser("b", "a", "d", HospitalUser.EmployeeType.MEDICAL, null);
     LocationName location = new LocationName("q", LocationName.LocationType.EXIT, "name");
 
     session.persist(emp);
@@ -464,7 +471,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("jhj", "aew", "hgfd", User.EmployeeType.ADMIN, null);
+    HospitalUser emp =
+        new HospitalUser("jhj", "aew", "hgfd", HospitalUser.EmployeeType.ADMIN, null);
     LocationName location = new LocationName("b", LocationName.LocationType.EXIT, "a");
 
     session.persist(emp);
@@ -507,7 +515,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, null);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(emp);
@@ -537,7 +546,7 @@ public class SanitationTest {
     session.refresh(av);
 
     // Assert the location is actually gone
-    assertNull(session.find(User.class, emp.getId()));
+    assertNull(session.find(HospitalUser.class, emp.getId()));
     assertNull(av.getEmp()); // Assert the location is null
 
     transaction.rollback();
@@ -550,7 +559,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, null);
 
     session.persist(emp);
     // Create the av request we will use
@@ -569,7 +579,7 @@ public class SanitationTest {
 
     // Change the enp
     session
-        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .createMutationQuery("DELETE FROM HospitalUser WHERE id = :id")
         .setParameter("id", emp.getId())
         .executeUpdate();
 
@@ -581,7 +591,7 @@ public class SanitationTest {
     // Assert the location is actually gone
     assertNull(
         session
-            .createQuery("FROM User WHERE id = :id", User.class)
+            .createQuery("FROM HospitalUser WHERE id = :id", HospitalUser.class)
             .setParameter("id", emp.getId())
             .uniqueResult());
     assertNull(av.getEmp()); // Assert the location is null
@@ -596,7 +606,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, null);
 
     session.persist(emp);
     // Create the av request we will use
@@ -622,7 +633,7 @@ public class SanitationTest {
         Exception.class,
         () ->
             session
-                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .createMutationQuery("UPDATE HospitalUser SET id = 999 WHERE id = :id")
                 .setParameter("id", emp.getId())
                 .executeUpdate());
 
@@ -633,7 +644,7 @@ public class SanitationTest {
     av = session.createQuery("FROM Sanitation", Sanitation.class).getSingleResult();
 
     // Assert the location is not actually gone
-    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, session.find(HospitalUser.class, emp.getId()));
     assertEquals(emp, av.getEmp()); // Assert the location is null
 
     transaction.rollback();
@@ -646,7 +657,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, null);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(assignedEmp);
@@ -669,7 +681,7 @@ public class SanitationTest {
 
     // Change the enp
     session
-        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .createMutationQuery("DELETE FROM HospitalUser WHERE id = :id")
         .setParameter("id", emp.getId())
         .executeUpdate();
 
@@ -679,7 +691,7 @@ public class SanitationTest {
     // Assert the location is actually gone
     assertNull(
         session
-            .createQuery("FROM User WHERE id = :id", User.class)
+            .createQuery("FROM HospitalUser WHERE id = :id", HospitalUser.class)
             .setParameter("id", emp.getId())
             .uniqueResult());
     assertNull(av.getAssignedEmp()); // Assert the location is null
@@ -694,7 +706,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, null);
 
     session.persist(assignedEmp);
     session.persist(emp);
@@ -721,7 +734,7 @@ public class SanitationTest {
         Exception.class,
         () ->
             session
-                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .createMutationQuery("UPDATE HospitalUser SET id = 999 WHERE id = :id")
                 .setParameter("id", emp.getId())
                 .executeUpdate());
 
@@ -735,7 +748,7 @@ public class SanitationTest {
     session.refresh(av);
 
     // Assert the location is not actually gone
-    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, session.find(HospitalUser.class, emp.getId()));
     assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
 
     transaction.rollback();
@@ -748,7 +761,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, null);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(emp);
@@ -770,7 +784,7 @@ public class SanitationTest {
 
     // Change the enp
     session
-        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .createMutationQuery("DELETE FROM HospitalUser WHERE id = :id")
         .setParameter("id", emp.getId())
         .executeUpdate();
 
@@ -780,7 +794,7 @@ public class SanitationTest {
     // Assert the location is actually gone
     assertNull(
         session
-            .createQuery("FROM User WHERE id = :id", User.class)
+            .createQuery("FROM HospitalUser WHERE id = :id", HospitalUser.class)
             .setParameter("id", emp.getId())
             .uniqueResult());
     assertNull(av.getAssignedEmp()); // Assert the location is null
@@ -796,7 +810,8 @@ public class SanitationTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, null);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, null);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(emp);
@@ -824,7 +839,7 @@ public class SanitationTest {
         Exception.class,
         () ->
             session
-                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .createMutationQuery("UPDATE HospitalUser SET id = 999 WHERE id = :id")
                 .setParameter("id", emp.getId())
                 .executeUpdate());
 
@@ -838,7 +853,7 @@ public class SanitationTest {
     session.refresh(av);
 
     // Assert the location is not actually gone
-    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, session.find(HospitalUser.class, emp.getId()));
     assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
     assertEquals(emp, av.getEmp());
 
