@@ -16,11 +16,11 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.SecurityController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.SecurityController">
     <children>
-        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane styleClass="background" layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
-                <VBox prefWidth="220.0" style="-fx-background-color: d1d1d1;" BorderPane.alignment="TOP_LEFT">
+                <VBox styleClass="rectangle" prefWidth="220.0"  BorderPane.alignment="TOP_LEFT">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="184.66615295410156">
                             <VBox.margin>
@@ -108,7 +108,7 @@
                 </VBox>
             </left>
             <center>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f1f1f1;" BorderPane.alignment="CENTER">
+                <VBox styleClass="background" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Security Service Request">
                             <font>
@@ -118,7 +118,7 @@
                                 <Insets top="55.0" />
                             </VBox.margin>
                         </Text>
-                        <HBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
+                        <HBox styleClass="background" alignment="TOP_CENTER" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
                             <children>
                         <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="185.0">
                            <HBox.margin>
@@ -186,7 +186,7 @@
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" text="Clear" textFill="#b6000b">
+                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" text="Clear">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>

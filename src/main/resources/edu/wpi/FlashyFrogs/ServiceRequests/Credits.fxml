@@ -127,7 +127,7 @@
                 </VBox>
             </left>
             <center>
-                <VBox alignment="CENTER" prefHeight="720.0" prefWidth="997.0" style="-fx-background-color: #f1f1f1;" BorderPane.alignment="CENTER">
+                <VBox styleClass="background" alignment="CENTER" prefHeight="720.0" prefWidth="997.0" BorderPane.alignment="CENTER">
                     <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
                             <children>
