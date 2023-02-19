@@ -863,6 +863,17 @@ public class MapEditorController implements IController {
           int xDiff = (int) Math.round(event.getX()) - node.getXCoord();
           int yDiff = (int) Math.round(event.getY()) - node.getYCoord();
 
+          // Check to make sure that each dragged node is in bounds
+          for (Node selectedNode : selectedNodes) {
+            // Check the bounds
+            if (selectedNode.getXCoord() + xDiff < 0
+                || selectedNode.getXCoord() + xDiff > mapController.getMapWidth()
+                || selectedNode.getYCoord() + yDiff < 0
+                || selectedNode.getYCoord() + yDiff > mapController.getMapHeight()) {
+              return;
+            }
+          }
+
           // For each selected node
           for (Node selectedNode : selectedNodes) {
             // Get the circle

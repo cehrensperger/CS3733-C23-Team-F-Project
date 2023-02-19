@@ -419,4 +419,22 @@ public class MapController {
   public Node.Floor getFloor() {
     return this.mapEntity.getMapFloor(); // return the floor
   }
+
+  /**
+   * Gets the current width of the drawing pane, AKA the image width
+   *
+   * @return the image width
+   */
+  public double getMapWidth() {
+    return currentDrawingPane.getWidth();
+  }
+
+  /**
+   * Gets the current height of the drawing pane, AKA the image height
+   *
+   * @return the image height
+   */
+  public double getMapHeight() {
+    return currentDrawingPane.getHeight();
+  }
 }
