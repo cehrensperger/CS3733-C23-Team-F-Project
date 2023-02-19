@@ -46,7 +46,9 @@ import org.hibernate.Session;
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 @GeneratedExclusion
 public class MapEditorController implements IController {
-  public Button addEdge;
+  @FXML private Button quickDraw;
+  @FXML private Button addLocation;
+  @FXML private Button addEdge;
   @FXML private Text h41;
   @FXML private AnchorPane mapPane;
   @FXML private Button backButton;
@@ -72,6 +74,7 @@ public class MapEditorController implements IController {
       new SimpleObjectProperty<>(Node.Floor.L1);
   private PopOver circlePopOver; // Pop over for the circles
   private boolean dragInProgress; // Whether a drag is currently in progress
+  private boolean quickDrawActive = false; // Whether quick draw is currently enabled
 
   @FXML private Circle nodeToDrag;
   private Circle duplicateCircle;
@@ -717,6 +720,11 @@ public class MapEditorController implements IController {
     // Set the on-click processor
     circle.setOnDragDetected(
         (event) -> {
+          // If quick draw is enabled
+          if (quickDrawActive) {
+            return; // Do nothing
+          }
+
           // If this node isn't selected pre-drag
           if (!selectedNodes.contains(node)) {
             if (!event.isShiftDown()) { // Clear only if shift isn't down
@@ -792,6 +800,11 @@ public class MapEditorController implements IController {
 
     circle.setOnMouseClicked(
         (event) -> {
+          // If quick draw is active
+          if (quickDrawActive) {
+            return; // Don't do any selection stuff!
+          }
+
           event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
           // If shift is not down
           if (!event.isShiftDown()) {
@@ -805,8 +818,8 @@ public class MapEditorController implements IController {
     // On right-click (context menu)
     circle.setOnContextMenuRequested(
         (event) -> {
-          // If we are dragging
-          if (event.isConsumed() || dragInProgress) {
+          // If we are dragging or quick draw is on
+          if (event.isConsumed() || dragInProgress || quickDrawActive) {
             return; // Don't do anything!
           }
           // If we're no longer hovering and the pop over exists, delete it. We will
@@ -942,5 +955,15 @@ public class MapEditorController implements IController {
 
     circlePopOver.hide(); // Hide it
     circlePopOver = null; // Clear it
+  }
+
+  /**
+   * Method that enables/disables QuickDraw functionality
+   *
+   * @param actionEvent the event triggering this
+   */
+  @FXML
+  private void toggleQuickDraw(ActionEvent actionEvent) {
+    quickDrawActive = !quickDrawActive; // Toggle quickdraw status
   }
 }
