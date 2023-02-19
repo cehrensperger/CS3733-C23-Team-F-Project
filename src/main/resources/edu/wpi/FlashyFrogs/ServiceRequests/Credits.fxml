@@ -6,9 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.CreditsController">
     <children>
@@ -129,159 +131,49 @@
             <center>
                 <VBox alignment="CENTER" prefHeight="720.0" prefWidth="997.0" style="-fx-background-color: #f1f1f1;" BorderPane.alignment="CENTER">
                     <children>
-                        <HBox alignment="TOP_RIGHT" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
-                            <children>
-                        <VBox prefHeight="586.0" prefWidth="167.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Ian Wright and Owen Krause" wrappingWidth="346.0859069824219">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="132.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Kyla Driscoll and Lindsey Mraz" wrappingWidth="317.1355285644531">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="60.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Audrey Mongillo and Emre Sabaz" wrappingWidth="339.65252685546875">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="68.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Connor Ehrensperger and Jonathan Golden" wrappingWidth="270.49334716796875">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="82.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Joseph Cardarelli and Connor Ehrensperger" wrappingWidth="315.5272521972656">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="86.0" />
-                                 </VBox.margin>
-                              </Text>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="30.0" top="12.0" />
-                           </HBox.margin>
-                        </VBox>
-                                <VBox prefHeight="670.0" prefWidth="479.0" HBox.hgrow="ALWAYS">
-                                    <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Descriptions and Credits" wrappingWidth="434.7284240722656" VBox.vgrow="ALWAYS">
-                                        <font>
-                                            <Font size="28.0" />
-                                        </font>
-                                        <VBox.margin>
-                                            <Insets bottom="40.0" top="40.0" />
-                                        </VBox.margin>
-                                    </Text>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Audio/Visual" wrappingWidth="215.40960693359375">
-                                            <font>
-                                                <Font size="20.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for devices like TVs, speakers, and others" wrappingWidth="500.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Information Technology">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for devices or software to be installed or fixed" wrappingWidth="400.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Internal Patient Transportation">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for patients to be transported to a new location in a variety of ways" wrappingWidth="400.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Sanitation">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for spills, biohazards, furniture, clothes, and other items to be cleaned" wrappingWidth="400.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Security">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for various levels of threats to be neutralized" wrappingWidth="400.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="20.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Here are the credits and descriptions for the service request pages">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                              </Text>
-                                    </children>
-                                    <HBox.margin>
-                                        <Insets right="100.0" />
-                                    </HBox.margin>
-                                </VBox>
-                            </children>
+                        <HBox alignment="TOP_RIGHT" prefHeight="604.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
                             <VBox.margin>
                                 <Insets top="50.0" />
                             </VBox.margin>
+                     <children>
+                        <BorderPane prefHeight="670.0" prefWidth="1103.0">
+                           <top>
+                              <Text strokeWidth="0.0" text="Acknowledgments" wrappingWidth="250.01615595817566" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Roboto" size="28.0" />
+                                 </font>
+                              </Text>
+                           </top>
+                           <center>
+                              <Pane prefHeight="543.0" prefWidth="947.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Pane layoutX="132.0" layoutY="79.0" prefHeight="476.0" prefWidth="802.0">
+                                       <children>
+                                          <TextFlow layoutX="71.0" layoutY="-2.0" lineSpacing="2.0" prefHeight="140.0" prefWidth="605.0" textAlignment="CENTER">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Software Used: IntelliJ, Figma, SceneBuilder, Google Workspace, Docker, PostrgresQL, Slack, and Discord" wrappingWidth="631.9692077636719">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </TextFlow>
+                                          <TextFlow layoutX="72.0" layoutY="140.0" prefHeight="330.0" prefWidth="602.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dependencies: palexdev/MaterialFX GitHub Repository, tom91136/GestureFX GitHub Repository, MVN Repository ControlsFX 11.1.2, MVN Repository Apache Derby Client JDBC Driver 10.16.1.1, Apache Derby 10.16.1.1 Release, MVN Repository Apache Derby Shared Code 10.16.1.1, MVN repository SLF4J API Module 1.7.30, MVN Repository SLF4J Simple Binding 1.7.30, MVN Repository UCP 19.6.0.0, MVN Repositpry Ojdbc8 19.6.0.0, MVN Repository HIbernate Core RElocation 6.1.6.Final, Ehcache 3.10 Documentation, Ehcache 3.10 Documentation, MVN Repository Old JAXB Core 4.0.2, MVN Repository, MVN Repository, JAXB API 2.3.1, JAXB Runtime 4.0.2, MVN Repository PostgreSQL JDBC Driver 42.5.1, MVN Repository Argon2 JVM 2.1.1, MVN Repository Argon2 JVM 2.1.1, onexip/FlexBoxFX GitHub Repository, and hervegirod/fxsgimage GitHub Repository">
+                                                   <font>
+                                                      <Font name="Roboto" size="16.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </TextFlow>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                           </center>
+                        </BorderPane>
+                     </children>
                         </HBox>
                     </children>
                 </VBox>
