@@ -39,6 +39,8 @@ public class LoginAdministratorController implements IController {
   @FXML private Button back;
 
   @FXML Text h1;
+
+  private UserLogin selectedUserLogin;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -115,6 +117,22 @@ public class LoginAdministratorController implements IController {
       ses.close();
       throw e;
     }
+  }
+
+  public void deleteUser(ActionEvent actionEvent) {
+    Session ses = CONNECTION.getSessionFactory().openSession();
+    ses.beginTransaction();
+    ses.createMutationQuery("delete FROM HospitalUser user WHERE id=:ID")
+        .setParameter("ID", selectedUserLogin.getUser().getId())
+        .executeUpdate();
+    ses.getTransaction().commit();
+    ses.close();
+    userLoginTable.getItems().remove(selectedUserLogin);
+  }
+
+  public void setSelected() {
+    selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
+    System.out.println(selectedUserLogin.getUserName());
   }
 
   public void onClose() {}
