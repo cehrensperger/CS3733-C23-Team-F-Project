@@ -11,10 +11,10 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -25,8 +25,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -66,26 +68,12 @@ public class MapEditorController implements IController {
   private final ObjectProperty<Node.Floor> floorProperty =
       new SimpleObjectProperty<>(Node.Floor.L1);
   private PopOver circlePopOver; // Pop over for the circles
+  private boolean dragInProgress; // Whether a drag is currently in progress
 
   /** Initializes the map editor, adds the map onto it */
   @SneakyThrows
   @FXML
   private void initialize() {
-    // Set things up later, after initialize is done
-
-    // On click of the map
-    Platform.runLater(
-        () ->
-            mapController
-                .getGesturePane()
-                .setOnMouseClicked(
-                    (event) -> {
-                      // Check to ensure the node isn't consumed
-                      if (!event.isConsumed()) {
-                        selectedNodes.clear(); // Clear the nodes
-                      }
-                    }));
-
     h1.setVisible(false);
     h2.setVisible(false);
     h3.setVisible(false);
@@ -167,6 +155,38 @@ public class MapEditorController implements IController {
     AnchorPane.setLeftAnchor(map, 0.0);
     AnchorPane.setRightAnchor(map, 0.0);
 
+    // Make the map controller click register clear selected nodes
+    mapController
+        .getGesturePane()
+        .setOnMouseClicked(
+            (event) -> {
+              // Check to ensure the node isn't consumed
+              if (!event.isConsumed()) {
+                selectedNodes.clear(); // Clear the nodes
+              }
+            });
+
+    // Set the delete handler
+    mapController
+        .getGesturePane()
+        .setOnKeyPressed(
+            (event) -> {
+              if (event.getCode().equals(KeyCode.DELETE)
+                  || event
+                      .getCode()
+                      .equals(KeyCode.BACK_SPACE)) { // if the key is delete or backsapce
+                Collection<Node> nodesToDelete =
+                    selectedNodes.stream().toList(); // Get the nodes to delete
+
+                selectedNodes
+                    .clear(); // Clear the selected nodes. This must happen before deleting in the
+
+                // On node delete
+                nodesToDelete.forEach(
+                    (node) -> mapController.deleteNode(node)); // Delete all selected nodes
+              }
+            });
+
     createLocationNameTable(
         mapController.getMapSession()); // Create the table using the map session
 
@@ -183,10 +203,7 @@ public class MapEditorController implements IController {
               // For each removed node
               for (Node oldNode : listChange.getRemoved()) {
                 // Clear the effect
-                mapController
-                    .getNodeToCircleMap()
-                    .get(oldNode)
-                    .setFill(Color.BLACK);
+                mapController.getNodeToCircleMap().get(oldNode).setFill(Color.BLACK);
               }
             });
 
@@ -199,6 +216,7 @@ public class MapEditorController implements IController {
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorProperty.addListener(
         (observable, oldValue, newValue) -> {
+          selectedNodes.clear(); // Clear the selected nodes
           mapController.setFloor(newValue);
           // drawNodesAndEdges(); // Re-draw pop-ups
           floorSelector.setText("Floor " + newValue.floorNum);
@@ -526,7 +544,7 @@ public class MapEditorController implements IController {
    * @param newY the new y-position of the circle
    */
   private void moveCircleToPosition(
-      @NonNull Circle circle, @NonNull Node node, double newX, double newY) {
+      @NonNull Circle circle, @NonNull Node node, int newX, int newY) {
     // Update the positions
     circle.setCenterX(newX); // X
     circle.setCenterY(newY); // Y
@@ -547,6 +565,11 @@ public class MapEditorController implements IController {
         line.setEndY(circle.getCenterY()); // Update the Y
       }
     }
+
+    // Update the position of the locations
+    VBox locationContainer = mapController.getNodeToLocationBox().get(node); // Get the box
+    locationContainer.setLayoutX(circle.getCenterX() + 2.5); // Set the X
+    locationContainer.setLayoutY(circle.getCenterY() - 20); // Set the Y
   }
 
   /**
@@ -556,94 +579,99 @@ public class MapEditorController implements IController {
    * @param circle the circle representing the node
    */
   private void nodeCreation(@NonNull Node node, @NonNull Circle circle) {
-    // Variable determining whether this node is currently being dragged. Used to prevent
-    // uncecessary
-    // pop-ups. Must be atomic due to where it exists
-    AtomicReference<Boolean> dragInProgress = new AtomicReference<>(false);
-
     // Set the on-click processor
     circle.setOnDragDetected(
         (event) -> {
-          // Mark that we are dragging
-          dragInProgress.set(true);
+          // If this node isn't selected pre-drag
+          if (!selectedNodes.contains(node)) {
+            if (!event.isShiftDown()) { // Clear only if shift isn't down
+              selectedNodes.clear(); // Clear the other nodes
+            }
+            selectedNodes.add(node); // Add this one
+          }
 
           // Disable the gesture pane (obviously)
           this.mapController.getGesturePane().setGestureEnabled(false);
+
+          // Mark that we are dragging
+          dragInProgress = true;
         });
 
     // On drag
     circle.setOnMouseDragged(
         (event) -> {
-          // Move the circle to the new position
-          moveCircleToPosition(circle, node, event.getX(), event.getY());
+          // If a drag is in not progress
+          if (!dragInProgress) {
+            return; // Don't do anything
+          }
+
+          // Calculate the differential on the positions
+          int xDiff = (int) Math.round(event.getX()) - node.getXCoord();
+          int yDiff = (int) Math.round(event.getY()) - node.getYCoord();
+
+          // For each selected node
+          for (Node selectedNode : selectedNodes) {
+            // Get the circle
+            Circle selectedCircle = mapController.getNodeToCircleMap().get(selectedNode);
+
+            // Move it according to the diff
+            moveCircleToPosition(
+                selectedCircle,
+                selectedNode,
+                selectedNode.getXCoord() + xDiff,
+                selectedNode.getYCoord() + yDiff);
+          }
         });
 
     // On drag stop, this is the only thing that represents that for some reason
     circle.setOnMouseReleased(
         (event) -> {
           // If a drag isn't in progress (for instance simple release)
-          if (!dragInProgress.get()) {
+          if (!dragInProgress) {
             return; // Do nothing
           }
           // Re-enable the gesture pane
           this.mapController.getGesturePane().setGestureEnabled(true);
-          dragInProgress.set(false); // Mark that we are no longer dragging
+          dragInProgress = false; // Mark that we are no longer dragging
 
           // Cast the coords
           int newX = (int) Math.round(circle.getCenterX()); // Int rounded
           int newY = (int) Math.round(circle.getCenterY()); // int rounded
 
-          // Create the new ID. To do that, floor and then coords
-          String newID = node.getFloor() + String.format("X%04dY%04d", newX, newY);
-
           // First check to make sure that the circles position is unique. If it's not we need
-          // to relocate it.
-          // To do that, check if there are any other nodes at this position on this floor
-          if (mapController
-                  .getMapSession()
-                  .createQuery("FROM Node n WHERE n.id = :id", Node.class)
-                  .setParameter("id", newID)
-                  .uniqueResult()
-              != null) {
-            // Reset it to its original position
-            moveCircleToPosition(circle, node, node.getXCoord(), node.getYCoord());
+          // to relocate all of them
+          try {
+            // Do the move, this does all DB stuff
+            tryCommitBulkMove(newX - node.getXCoord(), newY - node.getYCoord());
+          } catch (IllegalArgumentException duplicateNode) { // Duplicate detected
+            for (Node selectedNode : selectedNodes) {
+              // Get the circle
+              Circle selectedCircle = mapController.getNodeToCircleMap().get(selectedNode);
 
-            return; // Short-circuit, no need for DB  changes
+              // Reset the position
+              moveCircleToPosition(
+                  selectedCircle, selectedNode, selectedNode.getXCoord(), selectedNode.getYCoord());
+            }
           }
-
-          // Create a query to move the node in the DB
-          mapController
-              .getMapSession()
-              .createMutationQuery(
-                  "UPDATE Node SET id = :newID, xCoord = "
-                      + ":newXCoord, yCoord = :newYCoord WHERE id = :oldID")
-              .setParameter("newID", newID)
-              .setParameter("newXCoord", newX)
-              .setParameter("newYCoord", newY)
-              .setParameter("oldID", node.getId())
-              .executeUpdate();
-
-          Node newNode = mapController.getMapSession().find(Node.class, newID); // Get the new node
-
-          mapController.moveNode(node, newNode); // Process the node change
         });
 
-    // When the mouse is clicked, handle selection
     circle.setOnMouseClicked(
         (event) -> {
-          event.consume(); // Consume the event, so that the map editor won't intercept it
+          event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
+          // If shift is not down
           if (!event.isShiftDown()) {
-            selectedNodes.clear(); // If shift isn't pressed, clear the rest
+            selectedNodes.clear(); // Clear
           }
 
-          selectedNodes.add(node); // Add the nodes regardless
+          // Othewrise, add this
+          selectedNodes.add(node);
         });
 
     // On right-click (context menu)
     circle.setOnContextMenuRequested(
         (event) -> {
           // If we are dragging
-          if (event.isConsumed() || dragInProgress.get()) {
+          if (event.isConsumed() || dragInProgress) {
             return; // Don't do anything!
           }
           // If we're no longer hovering and the pop over exists, delete it. We will
@@ -651,7 +679,8 @@ public class MapEditorController implements IController {
           // or, keep it deleted
           clearNodePopOver();
 
-          selectedNodes.clear(); // Clear the selected nodes, so what is happening is perfectly clear
+          selectedNodes
+              .clear(); // Clear the selected nodes, so what is happening is perfectly clear
 
           // Get the node info in FXML form
           FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
@@ -675,15 +704,8 @@ public class MapEditorController implements IController {
                 clearNodePopOver();
               },
               (oldNode, newNode) -> {
-                boolean reSelectNode =
-                    selectedNodes.remove(oldNode); // Remove the old node (if present)
                 mapController.moveNode(oldNode, newNode); // On move move
                 clearNodePopOver();
-
-                // if the node was previously selected
-                if (reSelectNode) {
-                  selectedNodes.add(newNode); // Re-select it
-                }
               },
               (oldLocation) -> {
                 locationTable.getItems().remove(oldLocation);
@@ -707,6 +729,71 @@ public class MapEditorController implements IController {
               // Re-enable map gestures
               (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
         });
+  }
+
+  /**
+   * Tries doing a bulk move on the selected nodes, moving them to the provided offset in the DB and
+   * visually. Throws an exception if any node duplicates position. Saves no changes in that case
+   *
+   * @param xDiff the x-delta
+   * @param yDiff the y-delta
+   */
+  private void tryCommitBulkMove(int xDiff, int yDiff) {
+    Collection<Node> nodes =
+        selectedNodes.stream().toList(); // Collection of nodes, so that we can remove them
+
+    // For each selected node
+    for (Node node : nodes) {
+      if (mapController
+              .getMapSession()
+              .find(
+                  Node.class,
+                  createNodeID(node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff))
+          != null) {
+        throw new IllegalArgumentException("Duplicate position detected!");
+      }
+    }
+
+    selectedNodes.clear(); // Clear the selected nodes. Do this all at once for efficiency
+
+    // Now actually do the move
+    for (Node node : nodes) {
+      if (mapController.getNodeToCircleMap().get(node) == null) {}
+
+      String newID =
+          createNodeID(
+              node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff); // Get the ID
+
+      // Create a query to move the node in the DB
+      mapController
+          .getMapSession()
+          .createMutationQuery(
+              "UPDATE Node n SET n.id = :newID, n.xCoord = "
+                  + ":newXCoord, n.yCoord = :newYCoord WHERE n.id = :oldID")
+          .setParameter("newID", newID)
+          .setParameter("newXCoord", node.getXCoord() + xDiff)
+          .setParameter("newYCoord", node.getYCoord() + yDiff)
+          .setParameter("oldID", node.getId())
+          .executeUpdate();
+
+      Node newNode = mapController.getMapSession().find(Node.class, newID); // Get the new node
+
+      mapController.moveNode(node, newNode); // Process the node change
+
+      // selectedNodes.add(newNode); // Re-add this to the selected
+    }
+  }
+
+  /**
+   * Creates a node ID from the provided information. Does not perform any validation
+   *
+   * @param floor the floor
+   * @param xCoord the x-coordinate
+   * @param yCoord the y-coordinate
+   * @return the new ID of the node
+   */
+  private static String createNodeID(Node.Floor floor, int xCoord, int yCoord) {
+    return floor + String.format("X%04dY%04d", xCoord, yCoord);
   }
 
   /**

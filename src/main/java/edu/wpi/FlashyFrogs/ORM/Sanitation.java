@@ -61,7 +61,7 @@ public class Sanitation extends ServiceRequest {
    */
   public Sanitation(
       @NonNull SanitationType sanitationType,
-      User emp,
+      HospitalUser emp,
       @NonNull Date datePreference,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,

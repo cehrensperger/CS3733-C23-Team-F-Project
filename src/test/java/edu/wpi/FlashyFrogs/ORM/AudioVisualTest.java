@@ -47,7 +47,7 @@ public class AudioVisualTest {
       connection.createMutationQuery("DELETE FROM AudioVisual").executeUpdate(); // Do the drop
       connection.createMutationQuery("DELETE FROM ServiceRequest").executeUpdate();
       connection.createMutationQuery("DELETE FROM LocationName").executeUpdate();
-      connection.createMutationQuery("DELETE FROM User").executeUpdate();
+      connection.createMutationQuery("DELETE FROM HospitalUser").executeUpdate();
       connection.createMutationQuery("DELETE FROM Department").executeUpdate();
       cleanupTransaction.commit(); // Commit the cleanup
     }
@@ -55,10 +55,10 @@ public class AudioVisualTest {
 
   private final Department sourceDept = new Department("a", "b");
   private final Department endDept = new Department("c", "d");
-  private final User emp =
-      new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, sourceDept);
-  private final User assignedEmp =
-      new User("Jonathan", "Elias", "Golden", User.EmployeeType.MEDICAL, endDept);
+  private final HospitalUser emp =
+      new HospitalUser("Wilson", "Softeng", "Wong", HospitalUser.EmployeeType.MEDICAL, sourceDept);
+  private final HospitalUser assignedEmp =
+      new HospitalUser("Jonathan", "Elias", "Golden", HospitalUser.EmployeeType.MEDICAL, endDept);
   AudioVisual testAV =
       new AudioVisual(
           emp,
@@ -82,8 +82,8 @@ public class AudioVisualTest {
     assignedEmp.setMiddleName("Elias");
     assignedEmp.setLastName("Golden");
     assignedEmp.setDepartment(endDept);
-    emp.setEmployeeType(User.EmployeeType.MEDICAL);
-    assignedEmp.setEmployeeType(User.EmployeeType.MEDICAL);
+    emp.setEmployeeType(HospitalUser.EmployeeType.MEDICAL);
+    assignedEmp.setEmployeeType(HospitalUser.EmployeeType.MEDICAL);
     testAV.setAssignedEmp(assignedEmp);
     testAV.setDate(new Date(2023 - 1 - 31));
     testAV.setDateOfSubmission(new Date(2023 - 2 - 1));
@@ -97,7 +97,8 @@ public class AudioVisualTest {
   /** Tests setter for emp */
   @Test
   public void changeEmpTest() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, endDept);
+    HospitalUser newEmp =
+        new HospitalUser("Bob", "Bobby", "Jones", HospitalUser.EmployeeType.ADMIN, endDept);
     testAV.setEmp(newEmp);
     assertEquals(newEmp, testAV.getEmp());
   }
@@ -115,10 +116,11 @@ public class AudioVisualTest {
     AudioVisual test =
         new AudioVisual(
             null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT, "a", "b", "c", null);
-    test.setEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+    test.setEmp(new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
-    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getEmp());
+    assertEquals(
+        new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, null), test.getEmp());
   }
 
   /** Starts the location name as null and sets it to null */
@@ -136,7 +138,8 @@ public class AudioVisualTest {
   /** Test setter for Assigned emp */
   @Test
   public void changeAssignedEmpTest() {
-    User newEmp = new User("Bob", "Bobby", "Jones", User.EmployeeType.ADMIN, sourceDept);
+    HospitalUser newEmp =
+        new HospitalUser("Bob", "Bobby", "Jones", HospitalUser.EmployeeType.ADMIN, sourceDept);
     testAV.setAssignedEmp(newEmp);
     assertEquals(newEmp, testAV.getAssignedEmp());
   }
@@ -155,10 +158,12 @@ public class AudioVisualTest {
     AudioVisual test =
         new AudioVisual(
             null, new Date(), new Date(), ServiceRequest.Urgency.NOT_URGENT, "L", "a", "b", null);
-    test.setAssignedEmp(new User("a", "b", "c", User.EmployeeType.MEDICAL, null));
+    test.setAssignedEmp(new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, null));
 
     // Assert that the location is correct
-    assertEquals(new User("a", "b", "c", User.EmployeeType.MEDICAL, null), test.getAssignedEmp());
+    assertEquals(
+        new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, null),
+        test.getAssignedEmp());
   }
 
   /** Starts the location name as null and sets it to null */
@@ -294,7 +299,9 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("Wilson", "Softeng", "Wong", User.EmployeeType.MEDICAL, sourceDept);
+    HospitalUser emp =
+        new HospitalUser(
+            "Wilson", "Softeng", "Wong", HospitalUser.EmployeeType.MEDICAL, sourceDept);
     LocationName location = new LocationName("Name", LocationName.LocationType.EXIT, "name");
 
     session.persist(sourceDept);
@@ -361,7 +368,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("b", "a", "d", User.EmployeeType.MEDICAL, sourceDept);
+    HospitalUser emp =
+        new HospitalUser("b", "a", "d", HospitalUser.EmployeeType.MEDICAL, sourceDept);
     LocationName location = new LocationName("q", LocationName.LocationType.EXIT, "name");
 
     session.persist(sourceDept);
@@ -402,7 +410,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("jhj", "aew", "hgfd", User.EmployeeType.ADMIN, endDept);
+    HospitalUser emp =
+        new HospitalUser("jhj", "aew", "hgfd", HospitalUser.EmployeeType.ADMIN, endDept);
     LocationName location = new LocationName("b", LocationName.LocationType.EXIT, "a");
 
     session.persist(endDept);
@@ -445,7 +454,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, endDept);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(endDept);
@@ -475,7 +485,7 @@ public class AudioVisualTest {
     session.refresh(av);
 
     // Assert the location is actually gone
-    assertNull(session.find(User.class, emp.getId()));
+    assertNull(session.find(HospitalUser.class, emp.getId()));
     assertNull(av.getEmp()); // Assert the location is null
 
     transaction.rollback();
@@ -488,7 +498,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, endDept);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(endDept);
@@ -509,7 +520,7 @@ public class AudioVisualTest {
 
     // Change the enp
     session
-        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .createMutationQuery("DELETE FROM HospitalUser WHERE id = :id")
         .setParameter("id", emp.getId())
         .executeUpdate();
 
@@ -521,7 +532,7 @@ public class AudioVisualTest {
     // Assert the location is actually gone
     assertNull(
         session
-            .createQuery("FROM User WHERE id = :id", User.class)
+            .createQuery("FROM HospitalUser WHERE id = :id", HospitalUser.class)
             .setParameter("id", emp.getId())
             .uniqueResult());
     assertNull(av.getEmp()); // Assert the location is null
@@ -536,7 +547,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, endDept);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(endDept);
@@ -564,7 +576,7 @@ public class AudioVisualTest {
         Exception.class,
         () ->
             session
-                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .createMutationQuery("UPDATE HospitalUser SET id = 999 WHERE id = :id")
                 .setParameter("id", emp.getId())
                 .executeUpdate());
 
@@ -575,7 +587,7 @@ public class AudioVisualTest {
     av = session.createQuery("FROM AudioVisual", AudioVisual.class).getSingleResult();
 
     // Assert the location is not actually gone
-    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, session.find(HospitalUser.class, emp.getId()));
     assertEquals(emp, av.getEmp()); // Assert the location is null
 
     transaction.rollback();
@@ -588,7 +600,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, endDept);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(assignedEmp);
@@ -611,7 +624,7 @@ public class AudioVisualTest {
 
     // Change the enp
     session
-        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .createMutationQuery("DELETE FROM HospitalUser WHERE id = :id")
         .setParameter("id", emp.getId())
         .executeUpdate();
 
@@ -621,7 +634,7 @@ public class AudioVisualTest {
     // Assert the location is actually gone
     assertNull(
         session
-            .createQuery("FROM User WHERE id = :id", User.class)
+            .createQuery("FROM HospitalUser WHERE id = :id", HospitalUser.class)
             .setParameter("id", emp.getId())
             .uniqueResult());
     assertNull(av.getAssignedEmp()); // Assert the location is null
@@ -636,7 +649,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, endDept);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(endDept);
@@ -665,7 +679,7 @@ public class AudioVisualTest {
         Exception.class,
         () ->
             session
-                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .createMutationQuery("UPDATE HospitalUser SET id = 999 WHERE id = :id")
                 .setParameter("id", emp.getId())
                 .executeUpdate());
 
@@ -679,7 +693,7 @@ public class AudioVisualTest {
     session.refresh(av);
 
     // Assert the location is not actually gone
-    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, session.find(HospitalUser.class, emp.getId()));
     assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
 
     transaction.rollback();
@@ -692,7 +706,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, endDept);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(assignedEmp);
@@ -715,7 +730,7 @@ public class AudioVisualTest {
 
     // Change the enp
     session
-        .createMutationQuery("DELETE FROM User WHERE id = :id")
+        .createMutationQuery("DELETE FROM HospitalUser WHERE id = :id")
         .setParameter("id", emp.getId())
         .executeUpdate();
 
@@ -725,7 +740,7 @@ public class AudioVisualTest {
     // Assert the location is actually gone
     assertNull(
         session
-            .createQuery("FROM User WHERE id = :id", User.class)
+            .createQuery("FROM HospitalUser WHERE id = :id", HospitalUser.class)
             .setParameter("id", emp.getId())
             .uniqueResult());
     assertNull(av.getAssignedEmp()); // Assert the location is null
@@ -741,7 +756,8 @@ public class AudioVisualTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Open a session
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
-    User emp = new User("basdf", "axcvb", "dxcbv", User.EmployeeType.STAFF, endDept);
+    HospitalUser emp =
+        new HospitalUser("basdf", "axcvb", "dxcbv", HospitalUser.EmployeeType.STAFF, endDept);
     LocationName location = new LocationName("qwq", LocationName.LocationType.EXIT, "zx");
 
     session.persist(endDept);
@@ -770,7 +786,7 @@ public class AudioVisualTest {
         Exception.class,
         () ->
             session
-                .createMutationQuery("UPDATE User SET id = 999 WHERE id = :id")
+                .createMutationQuery("UPDATE HospitalUser SET id = 999 WHERE id = :id")
                 .setParameter("id", emp.getId())
                 .executeUpdate());
 
@@ -784,7 +800,7 @@ public class AudioVisualTest {
     session.refresh(av);
 
     // Assert the location is not actually gone
-    assertEquals(emp, session.find(User.class, emp.getId()));
+    assertEquals(emp, session.find(HospitalUser.class, emp.getId()));
     assertEquals(emp, av.getAssignedEmp()); // Assert the location is null
     assertEquals(emp, av.getEmp());
 

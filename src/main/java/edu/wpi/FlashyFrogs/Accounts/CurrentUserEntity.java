@@ -1,20 +1,20 @@
 package edu.wpi.FlashyFrogs.Accounts;
 
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 
 public enum CurrentUserEntity {
   CURRENT_USER; // The current user
-  private User currentUser;
+  private HospitalUser currentUser;
 
-  public User getCurrentuser() {
+  public HospitalUser getCurrentuser() {
     return this.currentUser;
   }
 
   public boolean getAdmin() {
-    return this.currentUser.getEmployeeType().equals(User.EmployeeType.ADMIN);
+    return this.currentUser.getEmployeeType().equals(HospitalUser.EmployeeType.ADMIN);
   }
 
-  public void setCurrentUser(User user) {
+  public void setCurrentUser(HospitalUser user) {
     this.currentUser = user;
   }
 }
