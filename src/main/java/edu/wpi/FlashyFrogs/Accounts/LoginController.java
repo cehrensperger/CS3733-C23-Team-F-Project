@@ -59,10 +59,10 @@ public class LoginController implements IController {
             password.getText())) { // Username's Password is not equal to what was inputted
           throw new Exception();
         } else { // Username and Password match database
-          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getHospitalUser());
+          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
           Fapp.setScene("views", "Home");
           Fapp.logIn();
-          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getHospitalUser());
+          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
         }
         ses.close();
       } catch (Exception e) {

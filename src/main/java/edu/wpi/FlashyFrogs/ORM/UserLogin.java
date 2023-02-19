@@ -29,6 +29,7 @@ public class UserLogin {
   @OneToOne(optional = false)
   @NonNull
   @Getter
+  @Setter
   private HospitalUser user;
 
   @Column(nullable = false, unique = true)
