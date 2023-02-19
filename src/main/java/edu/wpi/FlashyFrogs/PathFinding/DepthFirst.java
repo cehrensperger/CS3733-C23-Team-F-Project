@@ -8,10 +8,15 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.hibernate.Session;
 
 public class DepthFirst implements IFindPath {
+  @SneakyThrows
   public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
+
+    if (start.getId().equals(null) || end.getId().equals(null)) throw new Exception();
+
     Stack<Node> stack = new Stack<>(); // create stack
     List<Node> visited = new LinkedList<>(); // create list for nodes that have been visited
     stack.push(start); // push start node to stack

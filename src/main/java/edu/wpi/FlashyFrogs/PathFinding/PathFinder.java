@@ -4,6 +4,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import java.util.*;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.hibernate.Session;
 
 public class PathFinder {
@@ -75,6 +76,7 @@ public class PathFinder {
    * @throws NullPointerException if the lookup for a location (or node associated with the
    *     location) fails
    */
+  @SneakyThrows
   public List<Node> findPath(@NonNull Node start, @NonNull Node end) {
 
     // Find the path with the algorithm

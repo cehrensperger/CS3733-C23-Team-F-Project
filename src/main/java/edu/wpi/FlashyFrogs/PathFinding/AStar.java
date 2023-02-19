@@ -7,6 +7,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import java.time.Instant;
 import java.util.*;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.hibernate.Session;
 
 public class AStar implements IFindPath {
@@ -17,7 +18,11 @@ public class AStar implements IFindPath {
    * @param end the end node
    * @return the path (as a list) between the two nodes, or null if it could not find a path
    */
+  @SneakyThrows
   public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
+
+    if (start.getId().equals(null) || end.getId().equals(null)) throw new Exception();
+
     PriorityQueue<PathFinder.NodeWrapper> openList =
         new PriorityQueue<>(); // create priority queue for nodes to search
     List<PathFinder.NodeWrapper> closedList =

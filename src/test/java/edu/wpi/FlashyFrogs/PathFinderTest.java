@@ -760,10 +760,10 @@ public class PathFinderTest {
     // Read in the CSVs from the path finder
     try {
       CSVParser.readFiles(
-          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/nodesWithNewIDs.csv"),
-          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/edgesFixed.csv"),
-          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv"),
-          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/nodes.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/edges.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locations.csv"),
+          new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/moves.csv"),
           DBConnection.CONNECTION.getSessionFactory());
     } catch (FileNotFoundException fileError) {
       fail(fileError); // If we get a file error, just fail with that as the reasoning
