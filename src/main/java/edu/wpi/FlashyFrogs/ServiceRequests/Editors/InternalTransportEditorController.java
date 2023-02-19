@@ -97,10 +97,10 @@ public class InternalTransportEditorController extends ServiceRequestController
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    List<HospitalUser> hospitalUsers =
+    List<HospitalUser> users =
         session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList();
 
-    hospitalUsers.sort(Comparator.comparing(HospitalUser::getFirstName));
+    users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     to.setItems(FXCollections.observableArrayList(locations));
     from.setItems(FXCollections.observableArrayList(locations));
@@ -109,7 +109,7 @@ public class InternalTransportEditorController extends ServiceRequestController
     consciousness.setItems(
         FXCollections.observableArrayList(InternalTransport.ConsciousnessStatus.values()));
     condition.setItems(FXCollections.observableArrayList(InternalTransport.HealthStatus.values()));
-    assignedBox.setItems(FXCollections.observableArrayList(hospitalUsers));
+    assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     equipment.setItems(FXCollections.observableArrayList(InternalTransport.Equipment.values()));

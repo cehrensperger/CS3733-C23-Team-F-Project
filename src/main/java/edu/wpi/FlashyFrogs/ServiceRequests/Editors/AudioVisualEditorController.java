@@ -72,13 +72,13 @@ public class AudioVisualEditorController extends ServiceRequestController implem
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    List<HospitalUser> hospitalUsers =
+    List<HospitalUser> users =
         session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList();
 
-    hospitalUsers.sort(Comparator.comparing(HospitalUser::getFirstName));
+    users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     locationBox.setItems(FXCollections.observableArrayList(locations));
-    assignedBox.setItems(FXCollections.observableArrayList(hospitalUsers));
+    assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();

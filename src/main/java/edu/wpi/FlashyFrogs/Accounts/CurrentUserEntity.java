@@ -4,17 +4,17 @@ import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 
 public enum CurrentUserEntity {
   CURRENT_USER; // The current user
-  private HospitalUser currentHospitalUser;
+  private HospitalUser currentUser;
 
   public HospitalUser getCurrentuser() {
-    return this.currentHospitalUser;
+    return this.currentUser;
   }
 
   public boolean getAdmin() {
-    return this.currentHospitalUser.getEmployeeType().equals(HospitalUser.EmployeeType.ADMIN);
+    return this.currentUser.getEmployeeType().equals(HospitalUser.EmployeeType.ADMIN);
   }
 
-  public void setCurrentUser(HospitalUser hospitalUser) {
-    this.currentHospitalUser = hospitalUser;
+  public void setCurrentUser(HospitalUser user) {
+    this.currentUser = user;
   }
 }

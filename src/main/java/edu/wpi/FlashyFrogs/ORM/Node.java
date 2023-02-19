@@ -51,6 +51,14 @@ public class Node {
   /** Creates a new Node with empty fields */
   public Node() {}
 
+  public Node(@NonNull String theBuilding, @NonNull Floor theFloor, int theXCoord, int theYCoord) {
+    this.id = theFloor.floorNum + String.format("X%04dY%04d", theXCoord, theYCoord);
+    this.building = theBuilding;
+    this.floor = theFloor;
+    this.xCoord = theXCoord;
+    this.yCoord = theYCoord;
+  }
+
   /**
    * Creates a new Node with the given fields
    *

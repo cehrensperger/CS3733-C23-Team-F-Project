@@ -77,29 +77,25 @@ public class LoginAdministratorController implements IController {
 
     idCol.setCellValueFactory(
         data -> {
-          HospitalUser hospitalUser = data.getValue().getHospitalUser();
-          return new SimpleLongProperty(hospitalUser.getId());
+          HospitalUser user = data.getValue().getUser();
+          return new SimpleLongProperty(user.getId());
         });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     nameCol.setCellValueFactory(
         data -> {
-          HospitalUser hospitalUser = data.getValue().getHospitalUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleStringProperty(
-              hospitalUser.getFirstName()
-                  + " "
-                  + hospitalUser.getMiddleName()
-                  + " "
-                  + hospitalUser.getLastName());
+              user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
         });
     empTypeCol.setCellValueFactory(
         data -> {
-          HospitalUser hospitalUser = data.getValue().getHospitalUser();
-          return new SimpleObjectProperty(hospitalUser.getEmployeeType());
+          HospitalUser user = data.getValue().getUser();
+          return new SimpleObjectProperty(user.getEmployeeType());
         });
     deptCol.setCellValueFactory(
         data -> {
-          HospitalUser hospitalUser = data.getValue().getHospitalUser();
-          return new SimpleObjectProperty(hospitalUser.getDepartment());
+          HospitalUser user = data.getValue().getUser();
+          return new SimpleObjectProperty(user.getDepartment());
         });
 
     // create logIn table

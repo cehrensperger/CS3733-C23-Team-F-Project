@@ -25,11 +25,11 @@ public class UserLogin {
           @ForeignKey(
               name = "user_id_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (user_id) REFERENCES \"user\"(id) ON DELETE CASCADE"))
+                  "FOREIGN KEY (user_id) REFERENCES hospital_user(id) ON DELETE CASCADE"))
   @OneToOne(optional = false)
   @NonNull
   @Getter
-  private HospitalUser hospitalUser;
+  private HospitalUser user;
 
   @Column(nullable = false, unique = true)
   @NonNull
@@ -54,15 +54,13 @@ public class UserLogin {
   /**
    * Creates a user log in with filled in fields
    *
-   * @param hospitalUser the user to create the thing for
+   * @param user the user to create the thing for
    * @param theUserName the username of the user
    * @param thePassword the password of the user
    */
   public UserLogin(
-      @NonNull HospitalUser hospitalUser,
-      @NonNull String theUserName,
-      @NonNull String thePassword) {
-    this.hospitalUser = hospitalUser;
+      @NonNull HospitalUser user, @NonNull String theUserName, @NonNull String thePassword) {
+    this.user = user;
     this.userName = theUserName;
 
     // Encrypts password with salt
@@ -82,7 +80,7 @@ public class UserLogin {
     if (obj == null) return false;
     if (this.getClass() != obj.getClass()) return false;
     UserLogin other = (UserLogin) obj;
-    return this.hospitalUser.equals(other.getHospitalUser());
+    return this.user.equals(other.getUser());
   }
 
   /**
@@ -93,7 +91,7 @@ public class UserLogin {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(this.hospitalUser);
+    return Objects.hash(this.user);
   }
 
   /**

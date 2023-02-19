@@ -108,20 +108,19 @@ public class HospitalUserLoginTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Get a session
     Transaction commitTransaction = session.beginTransaction(); // begin a transaction
     // Two different users
-    HospitalUser hospitalUser =
-        new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.ADMIN, null);
-    session.persist(hospitalUser); // Persist the user, set the ID
-    HospitalUser differetHospitalUser =
+    HospitalUser user = new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.ADMIN, null);
+    session.persist(user); // Persist the user, set the ID
+    HospitalUser differetUser =
         new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.STAFF, null);
-    session.persist(differetHospitalUser); // Persist the other user, set the ID
+    session.persist(differetUser); // Persist the other user, set the ID
 
     commitTransaction.rollback(); // Rollback the transaction, all we care about is the IDs
     session.close(); // Close the session
 
     // Create the logins
-    UserLogin newLogin = new UserLogin(hospitalUser, "a", "b");
-    UserLogin sameUserDifferent = new UserLogin(hospitalUser, "b", "c");
-    UserLogin differentUserSame = new UserLogin(differetHospitalUser, "a", "c");
+    UserLogin newLogin = new UserLogin(user, "a", "b");
+    UserLogin sameUserDifferent = new UserLogin(user, "b", "c");
+    UserLogin differentUserSame = new UserLogin(differetUser, "a", "c");
 
     // Assert that the logins are the right equals including hash code
     assertEquals(newLogin, sameUserDifferent);
@@ -134,17 +133,17 @@ public class HospitalUserLoginTest {
   @Test
   public void updateCascadeTest() {
     // Create a dummy user, we will try to update this
-    HospitalUser hospitalUser =
+    HospitalUser user =
         new HospitalUser("bob", "dad", "pop", HospitalUser.EmployeeType.ADMIN, null);
-    UserLogin userLogin = new UserLogin(hospitalUser, "bobuser", "B");
+    UserLogin userLogin = new UserLogin(user, "bobuser", "B");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
-    session.persist(hospitalUser);
+    session.persist(user);
     session.persist(userLogin);
-    long originalID = hospitalUser.getId(); // ID for the user to start after persisting
+    long originalID = user.getId(); // ID for the user to start after persisting
 
     transaction.commit();
 
@@ -165,17 +164,17 @@ public class HospitalUserLoginTest {
     // Reset the session
     Session session2 = DBConnection.CONNECTION.getSessionFactory().openSession();
 
-    hospitalUser =
+    user =
         session2
             .createQuery("FROM HospitalUser WHERE id = :oldID", HospitalUser.class)
             .setParameter("oldID", originalID)
             .getSingleResult(); // get the new ID
-    assertEquals(originalID, hospitalUser.getId()); // Assert the ID works
+    assertEquals(originalID, user.getId()); // Assert the ID works
 
     // Query for the new login, this will inhertently check it exists with the right ID
     session2
-        .createQuery("FROM UserLogin WHERE hospitalUser = :user", UserLogin.class)
-        .setParameter("user", hospitalUser)
+        .createQuery("FROM UserLogin WHERE user = :user", UserLogin.class)
+        .setParameter("user", user)
         .getSingleResult(); // Refresh the user login
 
     session2.close(); // Close the session
@@ -185,14 +184,14 @@ public class HospitalUserLoginTest {
   @Test
   public void deleteQueryCascadeTest() {
     // Create a dummy user, we will try to delete this
-    HospitalUser hospitalUser =
+    HospitalUser user =
         new HospitalUser("test", "test", "pop", HospitalUser.EmployeeType.ADMIN, null);
-    UserLogin userLogin = new UserLogin(hospitalUser, "login", "password");
+    UserLogin userLogin = new UserLogin(user, "login", "password");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    session.persist(hospitalUser);
+    session.persist(user);
     session.persist(userLogin);
 
     // Delete the user
@@ -211,18 +210,18 @@ public class HospitalUserLoginTest {
   @Test
   public void deleteHibernateCascadeTest() {
     // Create a dummy user, we will try to delete this
-    HospitalUser hospitalUser =
+    HospitalUser user =
         new HospitalUser("sadf", "nffghj", "dsfg", HospitalUser.EmployeeType.ADMIN, null);
-    UserLogin userLogin = new UserLogin(hospitalUser, "hj", "sdfasdf");
+    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    session.persist(hospitalUser);
+    session.persist(user);
     session.persist(userLogin);
 
     // Delete the user
-    session.remove(hospitalUser);
+    session.remove(user);
 
     // Assert the result list is 0 (there are no UserLogins)
     assertEquals(0, session.createQuery("FROM UserLogin", UserLogin.class).getResultList().size());
@@ -237,15 +236,14 @@ public class HospitalUserLoginTest {
   @Test
   public void oneToOneTest() {
     // Create a dummy user, we will try to delete this
-    HospitalUser hospitalUser =
-        new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.ADMIN, null);
-    UserLogin userLogin = new UserLogin(hospitalUser, "hj", "sdfasdf");
-    UserLogin otherUserLogin = new UserLogin(hospitalUser, "other", "bad");
+    HospitalUser user = new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.ADMIN, null);
+    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(user, "other", "bad");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    session.persist(hospitalUser);
+    session.persist(user);
     session.persist(userLogin);
 
     // Assert that the persist fails
@@ -258,18 +256,16 @@ public class HospitalUserLoginTest {
   @Test
   public void noDuplicateLoginsTest() {
     // Create a dummy user, we will try to delete this
-    HospitalUser hospitalUser =
-        new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.ADMIN, null);
-    HospitalUser otherHospitalUser =
-        new HospitalUser("c", "d", "e", HospitalUser.EmployeeType.STAFF, null);
-    UserLogin userLogin = new UserLogin(hospitalUser, "hj", "sdfasdf");
-    UserLogin otherUserLogin = new UserLogin(otherHospitalUser, "hj", "bad");
+    HospitalUser user = new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.ADMIN, null);
+    HospitalUser otherUser = new HospitalUser("c", "d", "e", HospitalUser.EmployeeType.STAFF, null);
+    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(otherUser, "hj", "bad");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    session.persist(hospitalUser);
-    session.persist(otherHospitalUser);
+    session.persist(user);
+    session.persist(otherUser);
     session.persist(userLogin);
 
     // Assert that the persist fails

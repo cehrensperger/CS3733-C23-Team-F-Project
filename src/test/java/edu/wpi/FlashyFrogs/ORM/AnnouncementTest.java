@@ -65,20 +65,19 @@ public class AnnouncementTest {
     Date testDate = new Date(); // Create a date to use with testing
 
     // Create a user to use
-    HospitalUser newHospitalUser =
-        new HospitalUser("A", "B", "C", HospitalUser.EmployeeType.STAFF, null);
+    HospitalUser newUser = new HospitalUser("A", "B", "C", HospitalUser.EmployeeType.STAFF, null);
 
     // Create the string to use
     String announcement = "announce";
 
-    Announcement testAnnouncement = new Announcement(testDate, newHospitalUser, announcement);
+    Announcement testAnnouncement = new Announcement(testDate, newUser, announcement);
 
-    testSession.persist(newHospitalUser);
+    testSession.persist(newUser);
     testSession.persist(testAnnouncement);
 
     // Assert that the fields are gotten correctly
     assertEquals(testDate, testAnnouncement.getCreationDate());
-    assertEquals(newHospitalUser, testAnnouncement.getAuthor());
+    assertEquals(newUser, testAnnouncement.getAuthor());
     assertEquals(announcement, testAnnouncement.getAnnouncement());
     assertEquals(Long.toString(testAnnouncement.getId()), testAnnouncement.toString());
 
@@ -86,7 +85,7 @@ public class AnnouncementTest {
 
     // Check the fields on the announcements
     assertEquals(testDate, testAnnouncement.getCreationDate());
-    assertEquals(newHospitalUser, testAnnouncement.getAuthor());
+    assertEquals(newUser, testAnnouncement.getAuthor());
     assertEquals("asdfasf", testAnnouncement.getAnnouncement());
     assertEquals(Long.toString(testAnnouncement.getId()), testAnnouncement.toString());
 
@@ -96,7 +95,7 @@ public class AnnouncementTest {
 
     // Check the fields
     assertEquals(newDate, testAnnouncement.getCreationDate());
-    assertEquals(newHospitalUser, testAnnouncement.getAuthor());
+    assertEquals(newUser, testAnnouncement.getAuthor());
     assertEquals("asdfasf", testAnnouncement.getAnnouncement());
     assertEquals(Long.toString(testAnnouncement.getId()), testAnnouncement.toString());
 
@@ -115,27 +114,27 @@ public class AnnouncementTest {
     Date testDate = Date.from(Instant.ofEpochSecond(1000)); // Create a date to use with testing
 
     // Create a user to use
-    HospitalUser newHospitalUser =
+    HospitalUser newUser =
         new HospitalUser("cxbcvxb", "qwer", "yetuyiu", HospitalUser.EmployeeType.ADMIN, null);
 
     // Create the string to use
     String announcement = "something";
 
-    Announcement testAnnouncement = new Announcement(testDate, newHospitalUser, announcement);
+    Announcement testAnnouncement = new Announcement(testDate, newUser, announcement);
 
-    testSession.persist(newHospitalUser);
+    testSession.persist(newUser);
     testSession.persist(testAnnouncement);
 
     // Assert that the fields are gotten correctly
     assertEquals(testDate, testAnnouncement.getCreationDate());
-    assertEquals(newHospitalUser, testAnnouncement.getAuthor());
+    assertEquals(newUser, testAnnouncement.getAuthor());
     assertEquals(announcement, testAnnouncement.getAnnouncement());
 
     testAnnouncement.setAnnouncement("something new"); // Change the announcement
 
     // Check the fields on the announcements
     assertEquals(testDate, testAnnouncement.getCreationDate());
-    assertEquals(newHospitalUser, testAnnouncement.getAuthor());
+    assertEquals(newUser, testAnnouncement.getAuthor());
     assertEquals("something new", testAnnouncement.getAnnouncement());
 
     // Update the date
@@ -144,7 +143,7 @@ public class AnnouncementTest {
 
     // Check the fields
     assertEquals(newDate, testAnnouncement.getCreationDate());
-    assertEquals(newHospitalUser, testAnnouncement.getAuthor());
+    assertEquals(newUser, testAnnouncement.getAuthor());
     assertEquals("something new", testAnnouncement.getAnnouncement());
 
     transaction.rollback(); // Cancel the TXN, it's necessary
@@ -179,14 +178,13 @@ public class AnnouncementTest {
     assertNotEquals(originalAnnouncement.hashCode(), identicalAnnouncement.hashCode());
 
     // User for the completely different announcement
-    HospitalUser hospitalUser =
-        new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.ADMIN, null);
+    HospitalUser user = new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.ADMIN, null);
 
     Announcement completelyDifferentAnnouncement =
-        new Announcement(Date.from(Instant.ofEpochSecond(1)), hospitalUser, "diff");
+        new Announcement(Date.from(Instant.ofEpochSecond(1)), user, "diff");
 
     // Persist everything
-    session.persist(hospitalUser);
+    session.persist(user);
     session.persist(completelyDifferentAnnouncement);
 
     assertNotEquals(originalAnnouncement, completelyDifferentAnnouncement);
@@ -202,16 +200,15 @@ public class AnnouncementTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Create a session
     Transaction transaction = session.beginTransaction(); // Begin the transaction
 
-    HospitalUser hospitalUser =
-        new HospitalUser("A", "B", "C", HospitalUser.EmployeeType.MEDICAL, null);
-    session.persist(hospitalUser);
+    HospitalUser user = new HospitalUser("A", "B", "C", HospitalUser.EmployeeType.MEDICAL, null);
+    session.persist(user);
 
-    Announcement announcement = new Announcement(new Date(), hospitalUser, "mes");
+    Announcement announcement = new Announcement(new Date(), user, "mes");
     session.persist(announcement);
 
     transaction.commit(); // Commit, so we can access later
 
-    long originalId = hospitalUser.getId(); // Get the Id originally
+    long originalId = user.getId(); // Get the Id originally
 
     transaction = session.beginTransaction(); // Open a new transaction
 
@@ -223,9 +220,9 @@ public class AnnouncementTest {
     transaction.rollback(); // Rollback
 
     transaction = session.beginTransaction(); // Create a new transaction
-    assertEquals(hospitalUser, session.find(HospitalUser.class, originalId)); // Find the old user
+    assertEquals(user, session.find(HospitalUser.class, originalId)); // Find the old user
     assertEquals(
-        hospitalUser,
+        user,
         session.createQuery("FROM Announcement", Announcement.class).getSingleResult().getAuthor());
     transaction.commit();
 
@@ -238,11 +235,10 @@ public class AnnouncementTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Create a session
     Transaction transaction = session.beginTransaction(); // Begin the transaction
 
-    HospitalUser hospitalUser =
-        new HospitalUser("b", "C", "d", HospitalUser.EmployeeType.MEDICAL, null);
-    session.persist(hospitalUser);
+    HospitalUser user = new HospitalUser("b", "C", "d", HospitalUser.EmployeeType.MEDICAL, null);
+    session.persist(user);
 
-    Announcement announcement = new Announcement(new Date(), hospitalUser, "asdf");
+    Announcement announcement = new Announcement(new Date(), user, "asdf");
     session.persist(announcement);
 
     transaction.commit(); // Commit, so we can access later

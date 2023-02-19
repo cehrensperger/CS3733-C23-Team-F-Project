@@ -84,16 +84,16 @@ public class SanitationEditorController extends ServiceRequestController impleme
         session.createQuery("FROM LocationName", LocationName.class).getResultList();
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    List<HospitalUser> hospitalUsers =
+    List<HospitalUser> users =
         session.createQuery("SELECT u FROM HospitalUser u", HospitalUser.class).getResultList();
-    hospitalUsers.sort(Comparator.comparing(HospitalUser::getFirstName));
+    users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     locationBox.setItems(FXCollections.observableArrayList(locations));
     sanitationType.setItems(FXCollections.observableArrayList(Sanitation.SanitationType.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     biohazard.setItems(FXCollections.observableArrayList(Sanitation.BiohazardLevel.values()));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
-    assignedBox.setItems(FXCollections.observableArrayList(hospitalUsers));
+    assignedBox.setItems(FXCollections.observableArrayList(users));
 
     session.close();
   }

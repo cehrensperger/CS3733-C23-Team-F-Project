@@ -83,18 +83,18 @@ public class NewUserController implements IController {
     } else {
       // Save Username and Password to db
       errorMessage.setVisible(false);
-      HospitalUser hospitalUserFK =
+      HospitalUser userFK =
           new HospitalUser(
               firstName.getText(),
               middleName.getText(),
               lastName.getText(),
               employeeType.getValue(),
               deptBox.getValue()); // update department
-      UserLogin newUser = new UserLogin(hospitalUserFK, username.getText(), pass1.getText());
+      UserLogin newUser = new UserLogin(userFK, username.getText(), pass1.getText());
       Session ses = CONNECTION.getSessionFactory().openSession();
       Transaction transaction = ses.beginTransaction();
       try {
-        ses.persist(hospitalUserFK);
+        ses.persist(userFK);
         ses.persist(newUser);
         transaction.commit();
         ses.close();

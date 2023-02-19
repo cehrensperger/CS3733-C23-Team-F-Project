@@ -140,9 +140,9 @@ public class HospitalUser {
     if (o == null || getClass() != o.getClass())
       return false; // Bad the other one is a different class
 
-    HospitalUser hospitalUser = (HospitalUser) o; // Cast
+    HospitalUser user = (HospitalUser) o; // Cast
 
-    return getId() == hospitalUser.getId(); // Check the cast
+    return getId() == user.getId(); // Check the cast
   }
 
   /**
