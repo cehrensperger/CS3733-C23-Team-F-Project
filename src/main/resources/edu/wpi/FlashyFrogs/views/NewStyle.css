@@ -87,13 +87,26 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
-    -fx-background-color:#d1d1d1;
+    -fx-background-color:transparent;
     -fx-border-color:#012D5A;
     -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
     -fx-font-size: 10pt;
     -fx-pref-width: 184px;
     -fx-pref-height: 25px;
+}
+
+.blueOutlineNoSetSize
+    /** if you need the blue outline with blue text styling with no set sizes **/
+{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-background-color:transparent;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light";
+    -fx-text-fill: #012D5A;
+    -fx-font-size: 10pt;
 }
 
 .blueOutline
@@ -126,6 +139,19 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 150px;
     -fx-pref-height: 25px;
+}
+
+.blueNoSetSize
+    /** If you need the blue background with white text with no set size **/
+{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-background-color: #012D5A;
+    -fx-border-color:#012D5A;
+    -fx-font-family: "Roboto Light";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 10pt;
 }
 
 .blueBackgroundSideBar
@@ -211,7 +237,7 @@
 .combo-box> .text-field
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-background-radius: 0 10 10 0;
+    -fx-background-radius: 10 10 10 10;
     -fx-text-fill: #012D5A;
     -fx-prompt-text-fill: #012D5A;
 }
@@ -263,13 +289,27 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
-    -fx-background-color: #f1f1f1;
+    -fx-background-color: transparent;
     -fx-border-color:#b6000b;
     -fx-font-family: "Roboto Light";
     -fx-text-fill: #b6000b;
     -fx-font-size: 10pt;
     -fx-pref-width: 100px;
-    -fx-pref-height: 25;
+    -fx-pref-height: 25px;
+}
+
+.redOutlineNoSetSize
+    /** if you need the styling of a clear or exit style button with
+     no set size**/
+{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-background-color: transparent;
+    -fx-border-color:#b6000b;
+    -fx-font-family: "Roboto Light";
+    -fx-text-fill: #b6000b;
+    -fx-font-size: 10pt;
 }
 
 .cancelButton
@@ -455,3 +495,7 @@
     -fx-font-size: 16;
     -fx-font-family: "Roboto Light";
 }
+
+
+
+

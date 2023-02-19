@@ -39,31 +39,23 @@
                      </VBox.margin>
                   </HBox>
                   <Label fx:id="errorMessage" />
-                  <TextField fx:id="username" prefHeight="38.0" prefWidth="389.0" promptText="Username">
+                  <TextField fx:id="username" prefHeight="38.0" prefWidth="389.0" promptText="Username" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-border-color: #012D5A; -fx-prompt-text-fill: #012D5A;">
                      <VBox.margin>
                         <Insets bottom="15.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
                      </font>
-                     <styleClass>
-                        <String fx:value="round" />
-                        <String fx:value="dropshadow" />
-                     </styleClass>
                   </TextField>
-                  <PasswordField fx:id="password" prefHeight="38.0" prefWidth="391.0" promptText="Password">
+                  <PasswordField fx:id="password" prefHeight="38.0" prefWidth="391.0" promptText="Password" style="-fx-border-radius: 10px; -fx-background-radius: 10px; -fx-border-color: #012D5A; -fx-background-color: transparent; -fx-prompt-text-fill: #012D5A;">
                      <VBox.margin>
                         <Insets bottom="30.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
                      </font>
-                     <styleClass>
-                        <String fx:value="round" />
-                        <String fx:value="dropshadow" />
-                     </styleClass>
                   </PasswordField>
-                  <MFXButton fx:id="login" onAction="#loginButton" prefHeight="38.0" prefWidth="392.0" style="-fx-background-color: #012D5A;" text="Log In" textFill="WHITE">
+                  <MFXButton fx:id="login" onAction="#loginButton" prefHeight="38.0" prefWidth="392.0" style="-fx-background-color: #012D5A; -fx-border-radius: 10px; -fx-background-radius: 10px;" text="Log In" textFill="WHITE">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -106,7 +98,7 @@
          <children>
             <VBox prefHeight="213.0" prefWidth="260.0" styleClass="pathfindingPopup">
                <children>
-                  <Label styleClass="pathfindingPopup" onMouseClicked="#openPathfinding" text="Pathfinding" VBox.vgrow="ALWAYS">
+                  <Label onMouseClicked="#openPathfinding" styleClass="pathfindingPopup" text="Pathfinding" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>

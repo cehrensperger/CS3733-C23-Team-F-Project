@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -44,17 +43,13 @@
                   <Font size="10.0" />
                </font>
             </Text>
-            <Button fx:id="addLocation" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupLocation" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location">
+            <Button fx:id="addLocation" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupLocation" prefHeight="0.0" prefWidth="170.0" styleClass="blueBackgroundSideBar" text="Add Location">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
                </font>
-               <styleClass>
-                  <String fx:value="round" />
-                  <String fx:value="body" />
-               </styleClass>
             </Button>
             <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to add a new location to the map" wrappingWidth="170.0">
                <font>
@@ -64,17 +59,13 @@
                   <Insets bottom="8.0" />
                </VBox.margin>
             </Text>
-            <Button fx:id="addNode" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupNode" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Add Node">
+            <Button fx:id="addNode" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupNode" prefHeight="0.0" prefWidth="170.0" styleClass="blueBackgroundSideBar" text="Add Node">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <font>
                   <Font size="18.0" />
                </font>
-               <styleClass>
-                  <String fx:value="round" />
-                  <String fx:value="body" />
-               </styleClass>
             </Button>
             <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to add a new node to the map" wrappingWidth="170.0">
                <font>
@@ -84,11 +75,7 @@
                   <Insets />
                </VBox.margin>
             </Text>
-            <Button fx:id="addMove" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupMove" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Node and Location" wrapText="true">
-               <styleClass>
-                  <String fx:value="round" />
-                  <String fx:value="body" />
-               </styleClass>
+            <Button fx:id="addMove" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupMove" prefHeight="0.0" prefWidth="170.0" styleClass="blueBackgroundSideBar" text="Link Node and Location" wrapText="true">
                <VBox.margin>
                   <Insets top="8.0" />
                </VBox.margin>
@@ -98,14 +85,10 @@
                   <Font size="10.0" />
                </font>
             </Text>
-            <Button fx:id="addEdge" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupEdge" prefHeight="0.0" prefWidth="167.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffffff;" text="Link Nodes">
+            <Button fx:id="addEdge" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#popupEdge" prefHeight="0.0" prefWidth="167.0" styleClass="blueBackgroundSideBar" text="Link Nodes">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
-               <styleClass>
-                  <String fx:value="round" />
-                  <String fx:value="body" />
-               </styleClass>
             </Button>
             <Text fx:id="h41" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Clink to link nodes with each other" wrappingWidth="170.0">
                <font>
@@ -117,14 +100,10 @@
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </padding>
       </VBox>
-      <Button fx:id="backButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="25.0" prefWidth="85.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0">
+      <Button fx:id="backButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="25.0" prefWidth="85.0" styleClass="backButton" text="Back" textAlignment="CENTER" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0">
          <font>
             <Font size="18.0" />
          </font>
-         <styleClass>
-            <String fx:value="back" />
-            <String fx:value="round" />
-         </styleClass>
       </Button>
       <StackPane layoutX="257.0" layoutY="28.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -162,28 +141,18 @@
                         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
                      </children>
                   </StackPane>
-                  <Button mnemonicParsing="false" onAction="#handleSave" prefWidth="85.0" text="Save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="150.0">
+                  <Button mnemonicParsing="false" onAction="#handleSave" prefWidth="85.0" styleClass="submitButton" text="Save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="150.0">
                      <font>
                         <Font size="16.0" />
                      </font>
-                     <styleClass>
-                        <String fx:value="credits" />
-                        <String fx:value="round" />
-                        <String fx:value="body" />
-                     </styleClass>
                      <opaqueInsets>
                         <Insets left="20.0" />
                      </opaqueInsets>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="85.0" text="Cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+                  <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="85.0" styleClass="clearButton" text="Cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
                      <font>
                         <Font size="16.0" />
                      </font>
-                     <styleClass>
-                        <String fx:value="clear" />
-                        <String fx:value="background" />
-                        <String fx:value="body" />
-                     </styleClass>
                   </Button>
                </children>
             </AnchorPane>
