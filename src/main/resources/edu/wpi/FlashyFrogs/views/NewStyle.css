@@ -455,6 +455,13 @@
     -fx-text-fill: #ffffff;
 }
 
+.table-row-cell:selected {
+    -fx-background-color: #012d5a;
+    -fx-text-background-color: #ffffff;
+    -fx-text-fill: #ffffff;
+}
+
+
 .alertTopBox
     /** controls the top box with the title of the alert in the alert side bar **/
 {
@@ -501,7 +508,4 @@
     -fx-font-size: 16;
     -fx-font-family: "Roboto Light";
 }
-
-
-
 
