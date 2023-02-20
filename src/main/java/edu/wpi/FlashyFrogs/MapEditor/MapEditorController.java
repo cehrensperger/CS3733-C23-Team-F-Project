@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ResourceDictionary;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -382,6 +383,7 @@ public class MapEditorController implements IController {
     nodeToDrag.setOnDragDetected(
         event -> {
           Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+          dragboard.setDragView(ResourceDictionary.DRAG_SVG.resource);
           ClipboardContent clipboardContent = new ClipboardContent();
           clipboardContent.putString("fjbwef");
           dragboard.setContent(clipboardContent);
@@ -1123,12 +1125,12 @@ public class MapEditorController implements IController {
       currentQuickDrawCircle = null; // Clear it
       lastQuickDrawNode = null; // Clear the last node
 
-        // If the quick draw line exists
-        if (currentQuickDrawLine != null) {
-            // Delete it
-            mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawCircle);
-            currentQuickDrawLine = null;
-        }
+      // If the quick draw line exists
+      if (currentQuickDrawLine != null) {
+        // Delete it
+        mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawCircle);
+        currentQuickDrawLine = null;
+      }
       // No need to clear the last edge, already gone (off the map editor)
     }
   }
