@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -31,11 +30,11 @@
             </TableView>
          </children>
       </HBox>
-      <HBox alignment="BOTTOM_CENTER" layoutY="486.0" prefHeight="86.0" prefWidth="800.0" spacing="600.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0">
+      <HBox alignment="BOTTOM_CENTER" layoutX="301.0" layoutY="486.0" prefHeight="86.0" prefWidth="800.0" spacing="600.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="301.0" AnchorPane.rightAnchor="299.0">
          <children>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="116.0" prefWidth="426.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="BOTTOM_LEFT" prefHeight="86.0" prefWidth="526.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" text="Back" HBox.hgrow="ALWAYS">
+                  <MFXButton fx:id="back" graphicTextGap="100.0" onAction="#handleBack" prefHeight="33.0" prefWidth="112.0" styleClass="backButton" text="Back" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -52,7 +51,7 @@
             </HBox>
             <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <MFXButton fx:id="deleteUser" onAction="#deleteUser" prefHeight="25.0" prefWidth="85.0" text="Delete User">
+                  <MFXButton fx:id="deleteUser" onAction="#deleteUser" prefHeight="33.0" prefWidth="112.0" text="Delete User">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -64,20 +63,15 @@
                   </MFXButton>
                </children>
             </HBox>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="86.0" prefWidth="327.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="86.0" prefWidth="611.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXButton fx:id="addNewUser" onAction="#handleNewUser" prefHeight="33.0" prefWidth="246.0" text="Add New User" wrapText="true" HBox.hgrow="ALWAYS">
+                  <MFXButton fx:id="addNewUser" onAction="#handleNewUser" prefHeight="33.0" prefWidth="256.0" styleClass="blueBackgroundSideBar" text="Add New User" wrapText="true" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="16.0" />
                      </font>
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
-                     <styleClass>
-                        <String fx:value="blue2" />
-                        <String fx:value="body" />
-                        <String fx:value="round" />
-                     </styleClass>
                   </MFXButton>
                </children>
             </HBox>

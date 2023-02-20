@@ -46,7 +46,10 @@ import org.hibernate.Session;
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
 @GeneratedExclusion
 public class MapEditorController implements IController {
-  public Button addEdge;
+  @FXML private AnchorPane root; // Root pane, used to position the quickdraw circle
+  @FXML private Button quickDraw;
+  @FXML private Button addLocation;
+  @FXML private Button addEdge;
   @FXML private Text h41;
   @FXML private AnchorPane mapPane;
   @FXML private Button backButton;
@@ -72,6 +75,10 @@ public class MapEditorController implements IController {
       new SimpleObjectProperty<>(Node.Floor.L1);
   private PopOver circlePopOver; // Pop over for the circles
   private boolean dragInProgress; // Whether a drag is currently in progress
+  private boolean quickDrawActive = false; // Whether quick draw is currently enabled
+  private Node lastQuickDrawNode = null; // Last node for the quickdraw chain
+  private Circle currentQuickDrawCircle; // Current circle for quickdraw
+  private Line currentQuickDrawLine; // Current line for quickdraw
 
   @FXML private Circle nodeToDrag;
   private Circle duplicateCircle;
@@ -87,7 +94,6 @@ public class MapEditorController implements IController {
 
     h1.setVisible(false);
     h2.setVisible(false);
-    h41.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -154,7 +160,7 @@ public class MapEditorController implements IController {
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
-    Pane map = mapLoader.load(); // Load the map
+    javafx.scene.Node map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(0, map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
 
@@ -175,7 +181,100 @@ public class MapEditorController implements IController {
               }
             });
 
-    // Set the delete handler
+    mapController.setEdgeCreation(
+        (edge, line) -> {
+          line.toBack(); // Move the line to the back, for visual reasons
+        });
+
+    mapController
+        .getCurrentDrawingPane()
+        .setOnMouseClicked(
+            (mouseEvent) -> {
+              // If quick draw is active, and this hasn't been consumed, place this node
+              if (quickDrawActive
+                  && !mouseEvent.isConsumed()
+                  && !mouseEvent.getSource().getClass().equals(Circle.class)) {
+                // Round the X and Y
+                int roundedX = (int) Math.round(mouseEvent.getX());
+                int roundedY = (int) Math.round(mouseEvent.getY());
+
+                // Place this node
+                Node newNode =
+                    new Node(
+                        createNodeID(mapController.getFloor(), roundedX, roundedY),
+                        "",
+                        mapController.getFloor(),
+                        roundedX,
+                        roundedY);
+                mapController.getMapSession().persist(newNode); // Save the new node
+                mapController.addNode(newNode, false); // Add the node onto the map
+
+                quickDrawHandleNodeClick(newNode); // Handle the node click
+              }
+            });
+
+    mapController
+        .getCurrentDrawingPane()
+        .addEventFilter(
+            MouseEvent.MOUSE_MOVED,
+            (mouseEvent) -> {
+              // If quick-draw is enabled, we're on the gesture pane, and we have a source
+              // node
+              if (quickDrawActive
+                  && lastQuickDrawNode != null) { // If we have a source node for the line
+
+                // If the current line exists, just update it
+                if (currentQuickDrawLine != null) {
+                  currentQuickDrawLine.setEndX(mouseEvent.getX());
+                  currentQuickDrawLine.setEndY(mouseEvent.getY());
+                } else { // Otherwise
+                  currentQuickDrawLine =
+                      new Line(
+                          lastQuickDrawNode.getXCoord(),
+                          lastQuickDrawNode.getYCoord(),
+                          mouseEvent.getX(),
+                          mouseEvent.getY());
+                  currentQuickDrawLine.setMouseTransparent(true);
+                  mapController
+                      .getCurrentDrawingPane()
+                      .getChildren()
+                      .add(currentQuickDrawLine); // Add the line
+                }
+              }
+            });
+
+    mapController
+        .getCurrentDrawingPane()
+        .addEventFilter(
+            MouseEvent.MOUSE_EXITED,
+            (mouseEvent) -> {
+              // If we have a line and aren't in the page, delete the current quick draw line
+              if (currentQuickDrawLine != null) { // If the current quick draw line exists
+                // Delete the current quick draw line
+                mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawLine);
+                currentQuickDrawLine = null;
+              }
+            });
+
+    // Handle quick-draw stuff in terms of moving the mouse drags a node around
+    Platform.runLater(
+        () -> {
+          backButton
+              .getScene()
+              .addEventFilter(
+                  MouseEvent.MOUSE_MOVED,
+                  (mouseEvent) -> {
+                    System.out.println(root.getHeight());
+                    // If quick draw is enabled
+                    if (quickDrawActive) {
+                      // Set the circles position
+                      currentQuickDrawCircle.relocate(
+                          mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
+                    }
+                  });
+        });
+
+    // Set the button handler
     Platform.runLater(
         () ->
             mapController
@@ -714,9 +813,29 @@ public class MapEditorController implements IController {
    * @param circle the circle representing the node
    */
   private void nodeCreation(@NonNull Node node, @NonNull Circle circle) {
+    // On hover, add an outline to the circle
+    circle
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              // If quick draw is enabled
+              if (quickDrawActive) {
+                if (newValue) {
+                  circle.setFill(Color.YELLOW); // Set a hover
+                } else {
+                  circle.setFill(Color.BLACK); // Disable
+                }
+              }
+            });
+
     // Set the on-click processor
     circle.setOnDragDetected(
         (event) -> {
+          // If quick draw is enabled
+          if (quickDrawActive) {
+            return; // Do nothing
+          }
+
           // If this node isn't selected pre-drag
           if (!selectedNodes.contains(node)) {
             if (!event.isShiftDown()) { // Clear only if shift isn't down
@@ -743,6 +862,17 @@ public class MapEditorController implements IController {
           // Calculate the differential on the positions
           int xDiff = (int) Math.round(event.getX()) - node.getXCoord();
           int yDiff = (int) Math.round(event.getY()) - node.getYCoord();
+
+          // Check to make sure that each dragged node is in bounds
+          for (Node selectedNode : selectedNodes) {
+            // Check the bounds
+            if (selectedNode.getXCoord() + xDiff < 0
+                || selectedNode.getXCoord() + xDiff > mapController.getMapWidth()
+                || selectedNode.getYCoord() + yDiff < 0
+                || selectedNode.getYCoord() + yDiff > mapController.getMapHeight()) {
+              return;
+            }
+          }
 
           // For each selected node
           for (Node selectedNode : selectedNodes) {
@@ -793,20 +923,27 @@ public class MapEditorController implements IController {
     circle.setOnMouseClicked(
         (event) -> {
           event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
+
+          // If quick draw is active
+          if (quickDrawActive) {
+            quickDrawHandleNodeClick(node); // handle it
+            return; // Don't do any selection stuff!
+          }
+
           // If shift is not down
           if (!event.isShiftDown()) {
             selectedNodes.clear(); // Clear
           }
 
-          // Othewrise, add this
+          // Otherwise, add this
           selectedNodes.add(node);
         });
 
     // On right-click (context menu)
     circle.setOnContextMenuRequested(
         (event) -> {
-          // If we are dragging
-          if (event.isConsumed() || dragInProgress) {
+          // If we are dragging or quick draw is on
+          if (event.isConsumed() || dragInProgress || quickDrawActive) {
             return; // Don't do anything!
           }
           // If we're no longer hovering and the pop over exists, delete it. We will
@@ -893,8 +1030,6 @@ public class MapEditorController implements IController {
 
     // Now actually do the move
     for (Node node : nodes) {
-      if (mapController.getNodeToCircleMap().get(node) == null) {}
-
       String newID =
           createNodeID(
               node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff); // Get the ID
@@ -942,5 +1077,65 @@ public class MapEditorController implements IController {
 
     circlePopOver.hide(); // Hide it
     circlePopOver = null; // Clear it
+  }
+
+  /**
+   * Method that enables/disables QuickDraw functionality
+   *
+   * @param actionEvent the event triggering this
+   */
+  @FXML
+  private void toggleQuickDraw(MouseEvent actionEvent) {
+    selectedNodes
+        .clear(); // Clear selected nodes. If was enabled, should be empty. Otherwise, must be
+    quickDrawActive = !quickDrawActive; // Toggle quickdraw status
+
+    // Figure out what to do with the circle
+    if (quickDrawActive) {
+      // If it's enabled, create
+      currentQuickDrawCircle = new Circle(5, Color.BLACK);
+      currentQuickDrawCircle.setOpacity(.25); // Set it to be slightly transparent
+      currentQuickDrawCircle.relocate(actionEvent.getSceneX(), actionEvent.getSceneY() - 27);
+      root.getChildren().add(currentQuickDrawCircle); // And add
+    } else {
+      // If disabled, delete it
+      root.getChildren().remove(currentQuickDrawCircle);
+      currentQuickDrawCircle = null; // Clear it
+      lastQuickDrawNode = null; // Clear the last node
+      // No need to clear the last edge, already gone (off the map editor)
+    }
+  }
+
+  /**
+   * Handles clicking a node in quickdraw mode. Handles creating an edge (if the edge is unique and
+   * necessary)
+   *
+   * @param clickedNode the clicked node
+   */
+  private void quickDrawHandleNodeClick(@NonNull Node clickedNode) {
+    // If we have a node to create an edge from
+    if (lastQuickDrawNode != null) {
+      // Create the edge
+      Edge edge = new Edge(lastQuickDrawNode, clickedNode);
+
+      // Check to make sure this edge is unique
+      if (mapController.getMapSession().find(Edge.class, edge) == null) {
+        mapController.getMapSession().persist(edge); // Save the edge
+
+        mapController.addEdge(edge); // Draw the edge
+      }
+
+      // Update the last node to this
+      lastQuickDrawNode = clickedNode;
+
+      // If the line exists, update it
+      if (currentQuickDrawLine != null) {
+        currentQuickDrawLine.setStartX(lastQuickDrawNode.getXCoord());
+        currentQuickDrawLine.setStartY(lastQuickDrawNode.getYCoord());
+      }
+    } else {
+      // Update the last node to this
+      lastQuickDrawNode = clickedNode;
+    }
   }
 }
