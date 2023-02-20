@@ -103,24 +103,22 @@ public class NewUserController implements IController {
         errorMessage.setText("That username is already taken.");
         errorMessage.setVisible(true);
         transaction.rollback();
-        ses.close();
         return;
       }
-      if (rfid.getText() != null) {
+      if (rfid != null && !rfid.getText().isEmpty()) {
         try {
           transaction = ses.beginTransaction();
           newUser.setRFIDBadge(rfid.getText());
           ses.merge(newUser);
           transaction.commit();
-          popOver.hide();
-          ses.close();
+          loginAdministratorController.initialize();
         } catch (Exception e) {
           errorMessage.setText("That badge ID is already taken. User added without a badge ID.");
           errorMessage.setVisible(true);
           transaction.rollback();
-          ses.close();
         }
       }
+      ses.close();
     }
   }
 
