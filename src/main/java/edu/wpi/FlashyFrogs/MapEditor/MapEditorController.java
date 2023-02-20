@@ -11,6 +11,7 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +42,7 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
 /** Controller for the map editor, enables the user to add/remove/change Nodes */
@@ -57,6 +59,7 @@ public class MapEditorController implements IController {
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
   @FXML private MFXButton floorSelectorButton;
+  @FXML private SearchableComboBox<MapController.Display> filterBox;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -87,6 +90,7 @@ public class MapEditorController implements IController {
   @SneakyThrows
   @FXML
   private void initialize() {
+
     duplicateCircle = new Circle(5);
     duplicateCircle.setFill(Color.RED);
     duplicateCircle.setVisible(false);
@@ -264,7 +268,7 @@ public class MapEditorController implements IController {
               .addEventFilter(
                   MouseEvent.MOUSE_MOVED,
                   (mouseEvent) -> {
-                    System.out.println(root.getHeight());
+                    // System.out.println(root.getHeight());
                     // If quick draw is enabled
                     if (quickDrawActive) {
                       // Set the circles position
@@ -299,12 +303,12 @@ public class MapEditorController implements IController {
                         nodesToDelete.forEach(
                             (node) -> {
                               // For each node, delete it
+                              mapController.deleteAndAutoRepair(node); // Delete the node
                               mapController
                                   .getMapSession()
                                   .createMutationQuery("DELETE FROM " + "Node WHERE id = :id")
                                   .setParameter("id", node.getId())
                                   .executeUpdate();
-                              mapController.deleteNode(node); // Delete the node
                             }); // Delete all selected nodes
                       } else if (event.getCode().equals(KeyCode.DOWN)) { // Reversed top-bottom JFX
                         try {
@@ -327,6 +331,8 @@ public class MapEditorController implements IController {
                           tryCommitBulkMove(1, 0); // See above
                         } catch (IllegalArgumentException ignored) {
                         } // See above
+                      } else if (event.getCode().equals(KeyCode.ESCAPE) && quickDrawActive) {
+                        toggleQuickDraw(null); // Toggle quick draw
                       } else {
                         shouldConsume = false; // IF we don't want it, don't consume it
                       }
@@ -370,6 +376,7 @@ public class MapEditorController implements IController {
           mapController.setFloor(newValue);
           // drawNodesAndEdges(); // Re-draw pop-ups
           floorSelector.setText("Floor " + newValue.floorNum);
+          mapController.setDisplayText(filterBox.getValue());
         }); // Set the floor text
 
     nodeToDrag.setOnDragDetected(
@@ -436,14 +443,14 @@ public class MapEditorController implements IController {
 
             GesturePane gesturePane = mapController.getGesturePane();
             double scale = gesturePane.getCurrentScale();
-            System.out.println("translate X: " + gesturePane.getCurrentX());
-            System.out.println("translate Y: " + gesturePane.getCurrentY());
-            System.out.println("scale factor: " + scale);
+            // System.out.println("translate X: " + gesturePane.getCurrentX());
+            // System.out.println("translate Y: " + gesturePane.getCurrentY());
+            // System.out.println("scale factor: " + scale);
 
-            System.out.println(
-                "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
-            System.out.println(
-                "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
+            // System.out.println(
+            //    "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
+            // System.out.println(
+            //    "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
             double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
             double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
             Node newNode =
@@ -452,11 +459,24 @@ public class MapEditorController implements IController {
 
             // make sure the circle is within bounds
             if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
-              System.out.println("out of bounds");
+              // System.out.println("out of bounds");
             }
             duplicateCircle.setVisible(false);
           }
         });
+
+    ArrayList<MapController.Display> displayArrayList = new ArrayList<>();
+    displayArrayList.add(MapController.Display.LOCATION_NAMES);
+    displayArrayList.add(MapController.Display.NONE);
+    filterBox.setItems(FXCollections.observableArrayList(displayArrayList));
+    filterBox.setValue(MapController.Display.LOCATION_NAMES);
+
+    filterBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue != null) mapController.setDisplayText(newValue);
+            });
   }
 
   /**
@@ -1102,6 +1122,13 @@ public class MapEditorController implements IController {
       root.getChildren().remove(currentQuickDrawCircle);
       currentQuickDrawCircle = null; // Clear it
       lastQuickDrawNode = null; // Clear the last node
+
+      // If the quick draw line exists
+      if (currentQuickDrawLine != null) {
+        // Delete it
+        mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawCircle);
+        currentQuickDrawLine = null;
+      }
       // No need to clear the last edge, already gone (off the map editor)
     }
   }

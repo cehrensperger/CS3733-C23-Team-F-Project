@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -9,46 +8,25 @@
 
 <AnchorPane prefHeight="350.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
    <children>
-      <MFXButton alignment="BASELINE_LEFT" layoutX="40.0" layoutY="244.0" onAction="#handleChooseFiles" prefHeight="25.0" prefWidth="160.0" text="Select Files" AnchorPane.bottomAnchor="73.0" AnchorPane.rightAnchor="257.0">
+      <MFXButton alignment="BASELINE_LEFT" layoutX="40.0" layoutY="244.0" onAction="#handleChooseFiles" prefHeight="25.0" prefWidth="150.0" styleClass="blueBackground" text="Select Files" AnchorPane.bottomAnchor="73.0" AnchorPane.rightAnchor="267.0">
          <font>
             <Font size="16.0" />
          </font>
-         <styleClass>
-            <String fx:value="blue" />
-            <String fx:value="round" />
-            <String fx:value="body" />
-         </styleClass>
       </MFXButton>
-      <MFXButton alignment="BASELINE_LEFT" layoutX="257.0" layoutY="244.0" onAction="#handleUpload" prefHeight="25.0" prefWidth="160.0" text="Upload CSVs" AnchorPane.bottomAnchor="73.0" AnchorPane.rightAnchor="40.0">
+      <MFXButton alignment="BASELINE_LEFT" layoutX="267.0" layoutY="244.0" onAction="#handleUpload" prefHeight="25.0" prefWidth="150.0" styleClass="blueBackground" text="Upload CSVs" AnchorPane.bottomAnchor="73.0" AnchorPane.rightAnchor="40.0">
          <font>
             <Font size="16.0" />
          </font>
-         <styleClass>
-            <String fx:value="blue" />
-            <String fx:value="round" />
-            <String fx:value="body" />
-         </styleClass>
       </MFXButton>
-      <MFXButton alignment="BASELINE_LEFT" layoutX="40.0" layoutY="290.0" onAction="#handleBackup" prefHeight="25.0" prefWidth="160.0" text="Backup CSVs" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="40.0">
+      <MFXButton alignment="BASELINE_LEFT" layoutX="40.0" layoutY="298.0" onAction="#handleBackup" prefHeight="25.0" prefWidth="150.0" styleClass="blueOutline" text="Backup CSVs" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="40.0">
          <font>
             <Font size="16.0" />
          </font>
-         <styleClass>
-            <String fx:value="back2" />
-            <String fx:value="background" />
-            <String fx:value="round" />
-            <String fx:value="body" />
-         </styleClass>
       </MFXButton>
-      <MFXButton alignment="BASELINE_LEFT" layoutX="257.0" layoutY="298.0" onAction="#handleCancel" prefHeight="25.0" prefWidth="160.0" text="Cancel" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="257.0">
+      <MFXButton alignment="BASELINE_LEFT" layoutX="267.0" layoutY="298.0" onAction="#handleCancel" prefHeight="25.0" prefWidth="150.0" styleClass="cancelButton" text="Cancel" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="267.0">
          <font>
             <Font size="16.0" />
          </font>
-         <styleClass>
-            <String fx:value="cancel2" />
-            <String fx:value="round" />
-            <String fx:value="body" />
-         </styleClass>
       </MFXButton>
       <VBox layoutX="179.0" layoutY="54.0" prefHeight="146.0" prefWidth="377.0" spacing="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
          <children>

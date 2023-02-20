@@ -1,11 +1,11 @@
 package edu.wpi.FlashyFrogs.Map;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.Edge;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Move;
-import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
+import jakarta.persistence.Tuple;
+import java.time.Instant;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -101,7 +101,8 @@ public class MapController {
 
     if (addLocations) {
       // For each location belonging to this node
-      for (LocationName nodeLocation : node.getCurrentLocation(getMapSession())) {
+      for (LocationName nodeLocation :
+          node.getCurrentLocation(getMapSession(), Date.from(Instant.now()))) {
         addLocationName(nodeLocation, node); // Add it
       }
     }
@@ -140,12 +141,30 @@ public class MapController {
   }
 
   public void deleteAndAutoRepair(Node node) {
-    List<Node> children = node.getChildren();
+
+    List<Node> allChildren = node.getChildren(getMapSession());
+
+    ArrayList<Node> sameFloorChildren =
+        new ArrayList<>(
+            allChildren.stream()
+                .filter(node1 -> node.getFloor().equals(node1.getFloor()))
+                .toList());
+
+    ArrayList<Node> differentFloorChildren =
+        new ArrayList<>(
+            allChildren.stream()
+                .filter(node1 -> !node.getFloor().equals(node1.getFloor()))
+                .toList());
+
+    repairNodes(sameFloorChildren);
+    repairNodes(differentFloorChildren);
     deleteNode(node);
-    repairNodes(children);
   }
 
   private void repairNodes(List<Node> nodes) {
+    if (nodes.size() == 0) {
+      return;
+    }
     List<Node> nodesLeftToRepair = nodes;
 
     // the last node should already be connected to something else, so we do not need
@@ -168,17 +187,33 @@ public class MapController {
         for (int i = 2; i < nodesLeftToRepair.size(); i++) {
           // update smallestDistance and closestNode if a closer node is found
           double newDistance = startingNode.getDistanceFrom(nodesLeftToRepair.get(i));
-          if (newDistance < smallestDistance) {
+          // if the new distance is now the smallest AND the edge doesn't already exist (both ways)
+          if (newDistance < smallestDistance
+              && getMapSession().find(Edge.class, new Edge(startingNode, nodesLeftToRepair.get(i)))
+                  == null
+              && getMapSession().find(Edge.class, new Edge(nodesLeftToRepair.get(i), startingNode))
+                  == null) {
+            // update smallest and closest vars
             smallestDistance = newDistance;
             closestNode = nodesLeftToRepair.get(i);
           }
         }
       }
 
-      // node can be repaired and connected now to the closes node
       Edge newEdge = new Edge(startingNode, closestNode);
-      getMapSession().persist(newEdge);
-      addEdge(newEdge);
+
+      if (getMapSession().find(Edge.class, newEdge) == null
+          && getMapSession().find(Edge.class, new Edge(closestNode, startingNode)) == null) {
+
+        // node can be repaired and connected now to the closes node
+        getMapSession().persist(newEdge);
+        addEdge(newEdge);
+        // nodesLeftToRepair.remove(0);
+        getMapSession().flush();
+      }
+
+      // remove the node
+      nodesLeftToRepair.remove(0);
     }
   }
 
@@ -271,6 +306,36 @@ public class MapController {
   public void removeLocationName(@NonNull LocationName locationName) {
     // Remove the location name from the map backing
     mapEntity.removeLocationName(locationName);
+  }
+
+  public void fillServiceRequests() {
+    HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+
+    List<Tuple> tuples =
+        getMapSession()
+            .createQuery(
+                "Select s.id, m.node "
+                    + "From ServiceRequest s, Move m "
+                    + "WHERE s.assignedEmp = :user "
+                    + "AND m.location = s.location "
+                    + "AND m.moveDate = (Select max(m2.moveDate)"
+                    + "                  FROM Move m2 "
+                    + "                  WHERE s.location = m2.location "
+                    + "                  GROUP BY m2.location "
+                    + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
+                Tuple.class)
+            .setParameter("user", currentUser)
+            .getResultList();
+
+    for (Tuple t : tuples) {
+      Node node = (Node) t.get(t.getElements().get(1));
+      ServiceRequest sr = getMapSession().find(ServiceRequest.class, t.get(t.getElements().get(0)));
+
+      if (node.getFloor().equals(getFloor())) {
+        Text text = new Text(sr.toString());
+        getNodeToLocationBox().get(node).getChildren().add(text);
+      }
+    }
   }
 
   /**
@@ -421,6 +486,45 @@ public class MapController {
     }
   }
 
+  public void setDisplayText(Display display) {
+    Collection<VBox> boxes = getNodeToLocationBox().values();
+
+    switch (display.name()) {
+      case "LOCATION_NAMES" -> {
+        for (VBox box : boxes) {
+          for (int i = 0; i < box.getChildren().size(); i++) {
+            if (i == 0) box.getChildren().get(i).setOpacity(1);
+            if (i == 1) box.getChildren().get(i).setOpacity(0);
+          }
+        }
+      }
+      case "SERVICE_REQUESTS" -> {
+        for (VBox box : boxes) {
+          for (int i = 0; i < box.getChildren().size(); i++) {
+            if (i == 0) box.getChildren().get(i).setOpacity(0);
+            if (i == 1) box.getChildren().get(i).setOpacity(1);
+          }
+        }
+      }
+      case "BOTH" -> {
+        for (VBox box : boxes) {
+          for (int i = 0; i < box.getChildren().size(); i++) {
+            if (i == 0) box.getChildren().get(i).setOpacity(1);
+            if (i == 1) box.getChildren().get(i).setOpacity(1);
+          }
+        }
+      }
+      case "NONE" -> {
+        for (VBox box : boxes) {
+          for (int i = 0; i < box.getChildren().size(); i++) {
+            if (i == 0) box.getChildren().get(i).setOpacity(0);
+            if (i == 1) box.getChildren().get(i).setOpacity(0);
+          }
+        }
+      }
+    }
+  }
+
   /**
    * Changes the floor that the map is displaying
    *
@@ -463,7 +567,25 @@ public class MapController {
    * @return the floor the map is currently on, may be null
    */
   public Node.Floor getFloor() {
-    return this.mapEntity.getMapFloor(); // return the floor
+    return this.mapEntity.getMapFloor();
+  }
+
+  public enum Display {
+    LOCATION_NAMES("Location Names"),
+    SERVICE_REQUESTS("Service Requests"),
+    BOTH("Both"),
+    NONE("None");
+
+    @NonNull public final String DisplayOption;
+
+    /**
+     * Creates a new floor with the given String backing
+     *
+     * @param displayOption the displayOption to create. Must not be null
+     */
+    Display(@NonNull String displayOption) {
+      DisplayOption = displayOption;
+    }
   }
 
   /**

@@ -27,10 +27,11 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class LoginAdministratorController implements IController {
-
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
+
+  @FXML private TableColumn<UserLogin, String> rfidCol;
   @FXML private TableColumn<UserLogin, String> userNameCol;
   @FXML private TableColumn<UserLogin, String> nameCol;
   @FXML private TableColumn<UserLogin, HospitalUser.EmployeeType> empTypeCol;
@@ -39,6 +40,8 @@ public class LoginAdministratorController implements IController {
   @FXML private Button back;
 
   @FXML Text h1;
+
+  private UserLogin selectedUserLogin;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -80,6 +83,11 @@ public class LoginAdministratorController implements IController {
           HospitalUser user = data.getValue().getUser();
           return new SimpleLongProperty(user.getId());
         });
+    rfidCol.setCellValueFactory(
+        data -> {
+          String rfid = data.getValue().getRFIDBadge();
+          return new SimpleStringProperty(rfid != null ? rfid : "");
+        });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     nameCol.setCellValueFactory(
         data -> {
@@ -115,6 +123,21 @@ public class LoginAdministratorController implements IController {
       ses.close();
       throw e;
     }
+  }
+
+  public void deleteUser(ActionEvent actionEvent) {
+    Session ses = CONNECTION.getSessionFactory().openSession();
+    ses.beginTransaction();
+    ses.createMutationQuery("delete FROM HospitalUser user WHERE id=:ID")
+        .setParameter("ID", selectedUserLogin.getUser().getId())
+        .executeUpdate();
+    ses.getTransaction().commit();
+    ses.close();
+    userLoginTable.getItems().remove(selectedUserLogin);
+  }
+
+  public void setSelected() {
+    selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
   }
 
   public void onClose() {}
