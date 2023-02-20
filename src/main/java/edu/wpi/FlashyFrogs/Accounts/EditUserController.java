@@ -38,6 +38,7 @@ public class EditUserController implements IController {
     this.middleName.setText(middleName);
     this.lastName.setText(lastName);
     this.username.setText(userName);
+    // this.deptBox.set
   }
 
   public void saveChanges(ActionEvent actionEvent) {
