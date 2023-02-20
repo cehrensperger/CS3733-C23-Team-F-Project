@@ -24,7 +24,7 @@
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
                      </styleClass></TextField>
-                  <TextField fx:id="middleName" promptText="Middle Name">
+                  <TextField fx:id="middleName" promptText="Middle Name (Optional)">
                      <styleClass>
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
