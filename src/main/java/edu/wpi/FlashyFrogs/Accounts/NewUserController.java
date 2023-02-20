@@ -23,12 +23,13 @@ import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class NewUserController implements IController {
-
   private PopOver popOver;
   private LoginAdministratorController loginAdministratorController;
   @FXML private TextField username;
   @FXML private PasswordField pass1;
   @FXML private PasswordField pass2;
+
+  @FXML private TextField rfid;
   @FXML private TextField firstName;
   @FXML private TextField middleName;
   @FXML private TextField lastName;
@@ -97,11 +98,23 @@ public class NewUserController implements IController {
         ses.persist(userFK);
         ses.persist(newUser);
         transaction.commit();
-        ses.close();
         loginAdministratorController.initialize();
-        popOver.hide();
       } catch (Exception e) {
         errorMessage.setText("That username is already taken.");
+        errorMessage.setVisible(true);
+        transaction.rollback();
+        ses.close();
+        return;
+      }
+      try {
+        transaction = ses.beginTransaction();
+        newUser.setRFIDBadge(rfid.getText());
+        ses.merge(newUser);
+        transaction.commit();
+        popOver.hide();
+        ses.close();
+      } catch (Exception e) {
+        errorMessage.setText("That badge ID is already taken. User added without a badge ID.");
         errorMessage.setVisible(true);
         transaction.rollback();
         ses.close();
