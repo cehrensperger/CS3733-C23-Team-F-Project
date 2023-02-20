@@ -44,6 +44,8 @@ public class LoginAdministratorController implements IController {
   @FXML Text h1;
 
   private UserLogin selectedUserLogin;
+
+  private int selectedUserLoginIndex;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -146,11 +148,16 @@ public class LoginAdministratorController implements IController {
       ses.getTransaction().commit();
       ses.close();
       userLoginTable.getItems().remove(selectedUserLogin);
+      if (selectedUserLoginIndex != 0) {
+        selectedUserLoginIndex -= 1;
+        selectedUserLogin = userLoginTable.getItems().get(selectedUserLoginIndex);
+      }
     }
   }
 
   public void setSelected() {
     selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
+    selectedUserLoginIndex = userLoginTable.getSelectionModel().getSelectedIndex();
   }
 
   public void onClose() {}

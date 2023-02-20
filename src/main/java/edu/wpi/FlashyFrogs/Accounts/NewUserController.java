@@ -106,18 +106,20 @@ public class NewUserController implements IController {
         ses.close();
         return;
       }
-      try {
-        transaction = ses.beginTransaction();
-        newUser.setRFIDBadge(rfid.getText());
-        ses.merge(newUser);
-        transaction.commit();
-        popOver.hide();
-        ses.close();
-      } catch (Exception e) {
-        errorMessage.setText("That badge ID is already taken. User added without a badge ID.");
-        errorMessage.setVisible(true);
-        transaction.rollback();
-        ses.close();
+      if (rfid.getText() != null) {
+        try {
+          transaction = ses.beginTransaction();
+          newUser.setRFIDBadge(rfid.getText());
+          ses.merge(newUser);
+          transaction.commit();
+          popOver.hide();
+          ses.close();
+        } catch (Exception e) {
+          errorMessage.setText("That badge ID is already taken. User added without a badge ID.");
+          errorMessage.setVisible(true);
+          transaction.rollback();
+          ses.close();
+        }
       }
     }
   }
