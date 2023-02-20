@@ -132,7 +132,6 @@ public class LoginAdministratorController implements IController {
 
   public void setSelected() {
     selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
-    System.out.println(selectedUserLogin.getUserName());
   }
 
   public void onClose() {}
