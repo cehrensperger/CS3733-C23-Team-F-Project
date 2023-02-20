@@ -8,6 +8,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -19,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.NonNull;
 import net.kurobako.gesturefx.GesturePane;
 import org.hibernate.Session;
@@ -30,14 +32,19 @@ import org.hibernate.Session;
  */
 @GeneratedExclusion
 public class MapController {
-  @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
+
+  @FXML @Getter private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
-  private Pane currentDrawingPane; // The current drawing pane to use to draw nodes/edges
+
+  @Getter
+  private final Pane currentDrawingPane =
+      new Pane(); // The current drawing pane to use to draw nodes/edges
+
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
 
   public void initialize() {
     gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
-    Platform.runLater(() -> gesturePane.zoomTo(0.001, new javafx.geometry.Point2D(2500, 1700)));
+    Platform.runLater(() -> gesturePane.zoomTo(0.15, new javafx.geometry.Point2D(2500, 1700)));
   }
 
   /**
@@ -287,7 +294,7 @@ public class MapController {
   public void redraw() {
     // Clear the gesture pane
     group.getChildren().clear();
-    currentDrawingPane = null; // Delete the reference to the drawing pane
+    currentDrawingPane.getChildren().clear(); // Clear the drawing pane
 
     // If we have a floor to draw
     if (mapEntity.getMapFloor() != null) {
@@ -301,8 +308,11 @@ public class MapController {
       group.getChildren().add(imageView);
 
       // Create a pane to draw the nodes in
-      currentDrawingPane = new Pane(); // Create it
       group.getChildren().add(currentDrawingPane); // Add it to the group
+
+      // Manually set the dimensions to the right size, so that dragging-out doesn't have issues
+      currentDrawingPane.setPrefWidth(imageView.getImage().getWidth());
+      currentDrawingPane.setPrefHeight(imageView.getImage().getHeight());
 
       // Get the list of nodes
       List<Node> nodes =
@@ -343,7 +353,7 @@ public class MapController {
               .stream()
               .filter((move) -> move.getMoveDate().before(now))
               .distinct()
-              .toList();
+              .collect(Collectors.toList());
 
       HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
 
@@ -354,10 +364,11 @@ public class MapController {
           nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
 
           addLocationName(move.getLocation(), move.getNode());
-        } else if (!nodeToLocationCount.containsKey(move.getNode()))
+        } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
-        addLocationName(move.getLocation(), move.getNode());
+          addLocationName(move.getLocation(), move.getNode());
+        }
       }
 
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out
@@ -407,5 +418,23 @@ public class MapController {
    */
   public Node.Floor getFloor() {
     return this.mapEntity.getMapFloor(); // return the floor
+  }
+
+  /**
+   * Gets the current width of the drawing pane, AKA the image width
+   *
+   * @return the image width
+   */
+  public double getMapWidth() {
+    return currentDrawingPane.getWidth();
+  }
+
+  /**
+   * Gets the current height of the drawing pane, AKA the image height
+   *
+   * @return the image height
+   */
+  public double getMapHeight() {
+    return currentDrawingPane.getHeight();
   }
 }

@@ -45,7 +45,7 @@ public class Security extends ServiceRequest {
   public Security(
       @NonNull String theIncidentReport,
       LocationName theLocation,
-      User emp,
+      HospitalUser emp,
       @NonNull Date datePreference,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,

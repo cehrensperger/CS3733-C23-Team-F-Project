@@ -45,7 +45,7 @@ public class UserLoginTest {
 
       // Clear the session
       clearSession.createMutationQuery("DELETE FROM UserLogin").executeUpdate();
-      clearSession.createMutationQuery("DELETE FROM User").executeUpdate();
+      clearSession.createMutationQuery("DELETE FROM HospitalUser").executeUpdate();
       clearSession.createMutationQuery("DELETE FROM Department ").executeUpdate();
 
       transaction.commit(); // Commit
@@ -55,7 +55,10 @@ public class UserLoginTest {
   // Creates iteration of Login
   private UserLogin testLogin =
       new UserLogin(
-          new User("a", "b", "c", User.EmployeeType.ADMIN, null), "testUserName", "testPassword");
+          new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.ADMIN, null),
+          "testUserName",
+          "asdf",
+          "testPassword");
 
   /** Reset testLogin after each test */
   @BeforeEach
@@ -63,7 +66,10 @@ public class UserLoginTest {
   public void resetTestLogin() {
     testLogin =
         new UserLogin(
-            new User("a", "b", "c", User.EmployeeType.ADMIN, null), "testUserName", "testPassword");
+            new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.ADMIN, null),
+            "testUserName",
+            "asdf",
+            "testPassword");
   }
 
   /** Checks to see if toString makes a string in the same format specified in UserLogin.java */
@@ -78,6 +84,13 @@ public class UserLoginTest {
   public void testSetUserName() {
     testLogin.setUserName("Changed");
     assertEquals("Changed", testLogin.getUserName());
+  }
+
+  /** Tests for badge number setters */
+  @Test
+  public void testSetBadgeNumber() {
+    testLogin.setRFIDBadge("asdf");
+    assertEquals("asdf", testLogin.getRFIDBadge());
   }
 
   /** Tests setter for password */
@@ -104,18 +117,19 @@ public class UserLoginTest {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Get a session
     Transaction commitTransaction = session.beginTransaction(); // begin a transaction
     // Two different users
-    User user = new User("a", "b", "c", User.EmployeeType.ADMIN, null);
+    HospitalUser user = new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.ADMIN, null);
     session.persist(user); // Persist the user, set the ID
-    User differetUser = new User("b", "c", "d", User.EmployeeType.STAFF, null);
+    HospitalUser differetUser =
+        new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.STAFF, null);
     session.persist(differetUser); // Persist the other user, set the ID
 
     commitTransaction.rollback(); // Rollback the transaction, all we care about is the IDs
     session.close(); // Close the session
 
     // Create the logins
-    UserLogin newLogin = new UserLogin(user, "a", "b");
-    UserLogin sameUserDifferent = new UserLogin(user, "b", "c");
-    UserLogin differentUserSame = new UserLogin(differetUser, "a", "c");
+    UserLogin newLogin = new UserLogin(user, "a", "b", "b");
+    UserLogin sameUserDifferent = new UserLogin(user, "b", "b", "c");
+    UserLogin differentUserSame = new UserLogin(differetUser, "a", "b", "c");
 
     // Assert that the logins are the right equals including hash code
     assertEquals(newLogin, sameUserDifferent);
@@ -128,8 +142,9 @@ public class UserLoginTest {
   @Test
   public void updateCascadeTest() {
     // Create a dummy user, we will try to update this
-    User user = new User("bob", "dad", "pop", User.EmployeeType.ADMIN, null);
-    UserLogin userLogin = new UserLogin(user, "bobuser", "B");
+    HospitalUser user =
+        new HospitalUser("bob", "dad", "pop", HospitalUser.EmployeeType.ADMIN, null);
+    UserLogin userLogin = new UserLogin(user, "bobuser", "bobRF", "B");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
@@ -146,7 +161,7 @@ public class UserLoginTest {
     // Assert that the mutation query updating the name throws
     assertThrows(
         Exception.class,
-        () -> session.createMutationQuery("UPDATE User SET id=50").executeUpdate());
+        () -> session.createMutationQuery("UPDATE HospitalUser SET id=50").executeUpdate());
 
     // Flush
     session.flush();
@@ -160,7 +175,7 @@ public class UserLoginTest {
 
     user =
         session2
-            .createQuery("FROM User WHERE id = :oldID", User.class)
+            .createQuery("FROM HospitalUser WHERE id = :oldID", HospitalUser.class)
             .setParameter("oldID", originalID)
             .getSingleResult(); // get the new ID
     assertEquals(originalID, user.getId()); // Assert the ID works
@@ -178,8 +193,9 @@ public class UserLoginTest {
   @Test
   public void deleteQueryCascadeTest() {
     // Create a dummy user, we will try to delete this
-    User user = new User("test", "test", "pop", User.EmployeeType.ADMIN, null);
-    UserLogin userLogin = new UserLogin(user, "login", "password");
+    HospitalUser user =
+        new HospitalUser("test", "test", "pop", HospitalUser.EmployeeType.ADMIN, null);
+    UserLogin userLogin = new UserLogin(user, "login", "bobRF", "password");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
@@ -188,11 +204,12 @@ public class UserLoginTest {
     session.persist(userLogin);
 
     // Delete the user
-    session.createMutationQuery("DELETE FROM User").executeUpdate();
+    session.createMutationQuery("DELETE FROM HospitalUser").executeUpdate();
 
     // Assert the result list is 0 (there are no UserLogins)
     assertEquals(0, session.createQuery("FROM UserLogin", UserLogin.class).getResultList().size());
-    assertEquals(0, session.createQuery("FROM User", User.class).getResultList().size());
+    assertEquals(
+        0, session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList().size());
 
     transaction.rollback(); // Abort the transaction
     session.close(); // Close the session
@@ -202,8 +219,9 @@ public class UserLoginTest {
   @Test
   public void deleteHibernateCascadeTest() {
     // Create a dummy user, we will try to delete this
-    User user = new User("sadf", "nffghj", "dsfg", User.EmployeeType.ADMIN, null);
-    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
+    HospitalUser user =
+        new HospitalUser("sadf", "nffghj", "dsfg", HospitalUser.EmployeeType.ADMIN, null);
+    UserLogin userLogin = new UserLogin(user, "hj", "bobRF", "sdfasdf");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
@@ -216,7 +234,8 @@ public class UserLoginTest {
 
     // Assert the result list is 0 (there are no UserLogins)
     assertEquals(0, session.createQuery("FROM UserLogin", UserLogin.class).getResultList().size());
-    assertEquals(0, session.createQuery("FROM User", User.class).getResultList().size());
+    assertEquals(
+        0, session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList().size());
 
     transaction.rollback(); // Abort the transaction
     session.close(); // Close the session
@@ -226,9 +245,9 @@ public class UserLoginTest {
   @Test
   public void oneToOneTest() {
     // Create a dummy user, we will try to delete this
-    User user = new User("b", "c", "d", User.EmployeeType.ADMIN, null);
-    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
-    UserLogin otherUserLogin = new UserLogin(user, "other", "bad");
+    HospitalUser user = new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.ADMIN, null);
+    UserLogin userLogin = new UserLogin(user, "hj", "bobRF", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(user, "other", "bobRF", "bad");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
@@ -246,10 +265,37 @@ public class UserLoginTest {
   @Test
   public void noDuplicateLoginsTest() {
     // Create a dummy user, we will try to delete this
-    User user = new User("b", "c", "d", User.EmployeeType.ADMIN, null);
-    User otherUser = new User("c", "d", "e", User.EmployeeType.STAFF, null);
-    UserLogin userLogin = new UserLogin(user, "hj", "sdfasdf");
-    UserLogin otherUserLogin = new UserLogin(otherUser, "hj", "bad");
+    HospitalUser user = new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.ADMIN, null);
+    HospitalUser otherUser = new HospitalUser("c", "d", "e", HospitalUser.EmployeeType.STAFF, null);
+    UserLogin userLogin = new UserLogin(user, "hj", "b", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(otherUser, "hj", "c", "bad");
+
+    // Begin the transaction to commit the things with
+    Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+    session.persist(user);
+    session.persist(otherUser);
+    session.persist(userLogin);
+
+    // Assert that the persist fails
+    assertThrows(
+        Exception.class,
+        () -> {
+          session.persist(otherUserLogin);
+          transaction.commit();
+        });
+
+    session.close(); // Close the session
+  }
+
+  /** */
+  @Test
+  public void noDuplicateRFIDTest() {
+    // Create a dummy user, we will try to delete this
+    HospitalUser user = new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.ADMIN, null);
+    HospitalUser otherUser = new HospitalUser("c", "d", "e", HospitalUser.EmployeeType.STAFF, null);
+    UserLogin userLogin = new UserLogin(user, "a", "bobRF", "sdfasdf");
+    UserLogin otherUserLogin = new UserLogin(otherUser, "diff", "bobRF", "bad");
 
     // Begin the transaction to commit the things with
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();

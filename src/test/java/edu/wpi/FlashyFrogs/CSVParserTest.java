@@ -30,14 +30,13 @@ public class CSVParserTest {
     DBConnection.CONNECTION.disconnect(); // Teardown the connection
   }
 
-  static File nodeFile =
-      new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/nodesWithNewIDs.csv");
+  static File nodeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/nodes.csv");
   static File testNodeFile =
       new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/testNodes.csv");
-  static File edgeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/edgesFixed.csv");
-  static File moveFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/move.csv");
+  static File edgeFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/edges.csv");
+  static File moveFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/moves.csv");
   static File locationFile =
-      new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locationName.csv");
+      new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/locations.csv");
   static File emptyFile = new File("src/test/resources/edu/wpi/FlashyFrogs/CSVFiles/emptyFile.csv");
 
   @BeforeEach

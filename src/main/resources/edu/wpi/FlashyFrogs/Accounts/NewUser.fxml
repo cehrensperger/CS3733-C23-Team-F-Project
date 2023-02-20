@@ -4,6 +4,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -18,9 +19,21 @@
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name" styleClass="fields" />
-                  <TextField fx:id="middleName" promptText="Middle Name" styleClass="fields" />
-                  <TextField fx:id="lastName" promptText="Last Name" styleClass="fields" />
+                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="middleName" promptText="Middle Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <TextField fx:id="lastName" promptText="Last Name">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
                   <SearchableComboBox fx:id="deptBox" prefHeight="26.0" prefWidth="211.0" promptText="Department:" styleClass="fields">
                      <VBox.margin>
                         <Insets />
@@ -35,9 +48,21 @@
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username" styleClass="fields" />
-                  <TextField fx:id="pass1" promptText="Password" styleClass="fields" />
-                  <TextField fx:id="pass2" promptText="Confirm Password" styleClass="fields" />
+                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></TextField>
+                  <PasswordField fx:id="pass1" promptText="Password">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></PasswordField>
+                  <PasswordField fx:id="pass2" promptText="Confirm Password">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass></PasswordField>
                   <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="293.0" promptText="Employee Type:" styleClass="fields">
                      <VBox.margin>
                         <Insets />
@@ -57,7 +82,7 @@
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
       <HBox alignment="CENTER" layoutY="386.0" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0">
          <children>
-            <MFXButton fx:id="newUser" onAction="#handleNewUser" text="Add User">
+            <MFXButton fx:id="newHospitalUser" onAction="#handleNewUser" text="Add User">
                <styleClass>
                   <String fx:value="blue" />
                   <String fx:value="body" />

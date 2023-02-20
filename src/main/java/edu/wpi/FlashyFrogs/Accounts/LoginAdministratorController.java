@@ -5,7 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
@@ -27,18 +27,21 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class LoginAdministratorController implements IController {
-
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
+
+  @FXML private TableColumn<UserLogin, String> rfidCol;
   @FXML private TableColumn<UserLogin, String> userNameCol;
   @FXML private TableColumn<UserLogin, String> nameCol;
-  @FXML private TableColumn<UserLogin, User.EmployeeType> empTypeCol;
+  @FXML private TableColumn<UserLogin, HospitalUser.EmployeeType> empTypeCol;
   @FXML private TableColumn<UserLogin, Department> deptCol;
   @FXML private Button addNewUser;
   @FXML private Button back;
 
   @FXML Text h1;
+
+  private UserLogin selectedUserLogin;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -77,24 +80,29 @@ public class LoginAdministratorController implements IController {
 
     idCol.setCellValueFactory(
         data -> {
-          User user = data.getValue().getUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleLongProperty(user.getId());
+        });
+    rfidCol.setCellValueFactory(
+        data -> {
+          String rfid = data.getValue().getRFIDBadge();
+          return new SimpleStringProperty(rfid != null ? rfid : "");
         });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     nameCol.setCellValueFactory(
         data -> {
-          User user = data.getValue().getUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleStringProperty(
               user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
         });
     empTypeCol.setCellValueFactory(
         data -> {
-          User user = data.getValue().getUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleObjectProperty(user.getEmployeeType());
         });
     deptCol.setCellValueFactory(
         data -> {
-          User user = data.getValue().getUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleObjectProperty(user.getDepartment());
         });
 
@@ -154,6 +162,21 @@ public class LoginAdministratorController implements IController {
                     });
           }
         });
+  }
+
+  public void deleteUser(ActionEvent actionEvent) {
+    Session ses = CONNECTION.getSessionFactory().openSession();
+    ses.beginTransaction();
+    ses.createMutationQuery("delete FROM HospitalUser user WHERE id=:ID")
+        .setParameter("ID", selectedUserLogin.getUser().getId())
+        .executeUpdate();
+    ses.getTransaction().commit();
+    ses.close();
+    userLoginTable.getItems().remove(selectedUserLogin);
+  }
+
+  public void setSelected() {
+    selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
   }
 
   public void onClose() {}

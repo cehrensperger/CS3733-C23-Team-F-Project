@@ -4,7 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -26,13 +27,13 @@ public class NewUserController implements IController {
   private PopOver popOver;
   private LoginAdministratorController loginAdministratorController;
   @FXML private TextField username;
-  @FXML private TextField pass1;
-  @FXML private TextField pass2;
+  @FXML private PasswordField pass1;
+  @FXML private PasswordField pass2;
   @FXML private TextField firstName;
   @FXML private TextField middleName;
   @FXML private TextField lastName;
   @FXML private SearchableComboBox<Department> deptBox;
-  @FXML private SearchableComboBox<User.EmployeeType> employeeType;
+  @FXML private SearchableComboBox<HospitalUser.EmployeeType> employeeType;
   @FXML private Label errorMessage;
 
   public NewUserController() {}
@@ -56,7 +57,10 @@ public class NewUserController implements IController {
     deptBox.setItems(observableList);
     employeeType
         .getItems()
-        .addAll(User.EmployeeType.ADMIN, User.EmployeeType.MEDICAL, User.EmployeeType.STAFF);
+        .addAll(
+            HospitalUser.EmployeeType.ADMIN,
+            HospitalUser.EmployeeType.MEDICAL,
+            HospitalUser.EmployeeType.STAFF);
     session.close();
   }
 
@@ -79,14 +83,14 @@ public class NewUserController implements IController {
     } else {
       // Save Username and Password to db
       errorMessage.setVisible(false);
-      User userFK =
-          new User(
+      HospitalUser userFK =
+          new HospitalUser(
               firstName.getText(),
               middleName.getText(),
               lastName.getText(),
               employeeType.getValue(),
               deptBox.getValue()); // update department
-      UserLogin newUser = new UserLogin(userFK, username.getText(), pass1.getText());
+      UserLogin newUser = new UserLogin(userFK, username.getText(), null, pass1.getText());
       Session ses = CONNECTION.getSessionFactory().openSession();
       Transaction transaction = ses.beginTransaction();
       try {
