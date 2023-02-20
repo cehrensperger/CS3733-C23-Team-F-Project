@@ -38,6 +38,11 @@ public class UserLogin {
   @Setter
   private String userName;
 
+  @Column(unique = true)
+  @Getter
+  @Setter
+  private String RFIDBadge; // The users RFID badge ID
+
   @Basic
   @Column(nullable = false)
   @NonNull
@@ -60,8 +65,12 @@ public class UserLogin {
    * @param thePassword the password of the user
    */
   public UserLogin(
-      @NonNull HospitalUser user, @NonNull String theUserName, @NonNull String thePassword) {
+      @NonNull HospitalUser user,
+      @NonNull String theUserName,
+      String RFID,
+      @NonNull String thePassword) {
     this.user = user;
+    this.RFIDBadge = RFID;
     this.userName = theUserName;
 
     // Encrypts password with salt
