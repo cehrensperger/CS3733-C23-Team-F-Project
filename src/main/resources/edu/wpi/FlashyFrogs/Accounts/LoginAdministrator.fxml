@@ -84,5 +84,6 @@
             <Font size="10.0" />
          </font>
       </Text>
+      <Label fx:id="errorMessage" layoutX="936.0" layoutY="608.0" text="Cannot delete current account" />
    </children>
 </AnchorPane>
