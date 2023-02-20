@@ -327,6 +327,8 @@ public class MapEditorController implements IController {
                           tryCommitBulkMove(1, 0); // See above
                         } catch (IllegalArgumentException ignored) {
                         } // See above
+                      } else if (event.getCode().equals(KeyCode.ESCAPE) && quickDrawActive) {
+                        toggleQuickDraw(null); // Toggle quick draw
                       } else {
                         shouldConsume = false; // IF we don't want it, don't consume it
                       }
