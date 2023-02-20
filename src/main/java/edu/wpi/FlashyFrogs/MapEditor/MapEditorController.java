@@ -80,6 +80,7 @@ public class MapEditorController implements IController {
   @SneakyThrows
   @FXML
   private void initialize() {
+
     duplicateCircle = new Circle(5);
     duplicateCircle.setFill(Color.RED);
     duplicateCircle.setVisible(false);

@@ -14,8 +14,6 @@ import edu.wpi.FlashyFrogs.Theme;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.*;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -66,7 +64,6 @@ public class HomeController implements IController {
 
   protected boolean canEditMoves = false;
 
-  ObjectProperty<String> filterProperty = new SimpleObjectProperty<>("All");
   boolean filterCreated = false;
 
   @FXML Text h1;

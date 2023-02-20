@@ -60,6 +60,8 @@ public class PathfindingController implements IController {
   @FXML Text h4;
   @FXML Text h5;
 
+  @FXML protected SearchableComboBox<MapController.Display> filterBox;
+
   boolean hDone = false;
   AtomicReference<PopOver> mapPopOver =
       new AtomicReference<>(); // The pop-over the map is using for node highlighting
@@ -128,6 +130,8 @@ public class PathfindingController implements IController {
     startingBox.setItems(FXCollections.observableList(objects));
     destinationBox.setItems(FXCollections.observableList(objects));
     algorithmBox.setItems(FXCollections.observableList(algorithms));
+    filterBox.setItems(FXCollections.observableArrayList(MapController.Display.values()));
+    filterBox.setValue(MapController.Display.BOTH);
 
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorProperty.addListener(
@@ -135,7 +139,8 @@ public class PathfindingController implements IController {
           mapController.setFloor(newValue);
           // If we have a valid path
           floorSelector.setText("Floor " + newValue.floorNum);
-
+          mapController.fillServiceRequests();
+          mapController.setDisplayText(filterBox.getValue());
           // If the last path is valid
           if (lastPath != null) {
             try {
@@ -157,6 +162,13 @@ public class PathfindingController implements IController {
       mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
+
+    filterBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue != null) mapController.setDisplayText(newValue);
+            });
   }
 
   /** Callback to handle the back button being pressed */

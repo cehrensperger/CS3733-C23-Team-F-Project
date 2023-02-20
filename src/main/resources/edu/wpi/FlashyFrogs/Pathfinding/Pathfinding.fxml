@@ -123,11 +123,12 @@
                         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
                      </children>
                   </StackPane>
+                  <SearchableComboBox fx:id="filterBox" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0" />
                </children>
             </AnchorPane>
          </children>
       </StackPane>
-      <MFXButton onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
+      <MFXButton onAction="#handleBack" prefHeight="32.0" prefWidth="184.0" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
          </font>
