@@ -74,8 +74,7 @@ public class NewUserController implements IController {
         || deptBox.getValue() == null
         || employeeType.getValue() == null) {
       // One of the values is left null
-      errorMessage.setText(
-          "Please fill out all required fields! Required fields are marked with an asterisk (*)");
+      errorMessage.setText("Please fill out all required fields!");
       errorMessage.setVisible(true);
     } else if (!pass1.getText().equals(pass2.getText())) {
       // Passwords do not match
