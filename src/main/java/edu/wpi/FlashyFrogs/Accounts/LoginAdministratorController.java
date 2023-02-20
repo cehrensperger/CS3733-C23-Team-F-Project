@@ -130,7 +130,12 @@ public class LoginAdministratorController implements IController {
 
   public void deleteUser(ActionEvent actionEvent) {
     Session ses = CONNECTION.getSessionFactory().openSession();
+    if (selectedUserLogin == null) {
+      errorMessage.setText("No user selected for deletion");
+      errorMessage.setVisible(true);
+    }
     if (selectedUserLogin.getUser().equals(CurrentUserEntity.CURRENT_USER.getCurrentuser())) {
+      errorMessage.setText("Cannot delete current account");
       errorMessage.setVisible(true);
     } else {
       errorMessage.setVisible(false);
