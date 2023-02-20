@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.ORM;
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
@@ -166,7 +167,7 @@ public class Node {
    * @param session the session to use for the lookup
    * @return either the location this node is storing, or null if there is none
    */
-  public List<LocationName> getCurrentLocation(@NonNull Session session) {
+  public List<LocationName> getCurrentLocation(@NonNull Session session, Date date) {
 
     // associate location with a node
     // then associate that location with a new node
@@ -193,19 +194,20 @@ public class Node {
                 """
                                         SELECT location
                                         FROM Move
-                                        WHERE node = :node AND moveDate <= current timestamp
+                                        WHERE node = :node AND moveDate <= :date
                                         ORDER BY moveDate DESC
                                         LIMIT 2
                                         """,
                 LocationName.class)
             .setParameter("node", this)
+            .setParameter("date", date)
             .setCacheable(true)
             .getResultList();
     if (locations.isEmpty()) {
       return locations;
     }
 
-    locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
+    locations.removeIf(location -> !location.getCurrentNode(session, date).equals(this));
 
     return locations;
   }
@@ -218,12 +220,12 @@ public class Node {
    *
    * @return either the location this node is storing, or null if there is none
    */
-  public Collection<LocationName> getCurrentLocation() {
+  public Collection<LocationName> getCurrentLocation(Date date) {
     // Trys to create a connection, auto-closing it when this is done. This also re-throws any
     // exceptions that
     // may occur
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
-      return getCurrentLocation(connection);
+      return getCurrentLocation(connection, date);
     }
   }
 }
