@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -14,7 +13,7 @@
     <children>
         <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
-                <VBox prefWidth="220.0" styleClass="rectangle" BorderPane.alignment="TOP_LEFT">
+                <VBox prefWidth="220.0" styleClass="sidebar" BorderPane.alignment="TOP_LEFT">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="160.0">
                             <VBox.margin>
@@ -24,100 +23,65 @@
                                 <Font name="Roboto" size="28.0" />
                             </font>
                         </Text>
-                        <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" text="Audio/Visual" textFill="WHITE">
+                        <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" textFill="WHITE">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="16.0" />
                             </font>
-                     <styleClass>
-                        <String fx:value="body" />
-                        <String fx:value="round" />
-                        <String fx:value="serviceRequestButtons" />
-                     </styleClass>
                         </MFXButton>
-                        <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" text="Information Technology" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Information Technology" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="16.0" />
                             </font>
-                     <styleClass>
-                        <String fx:value="serviceRequestButtons" />
-                        <String fx:value="round" />
-                        <String fx:value="body" />
-                     </styleClass>
                         </MFXButton>
-                        <MFXButton fx:id="IPT" alignment="BASELINE_LEFT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="IPT" alignment="BASELINE_LEFT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="16.0" />
                             </font>
-                     <styleClass>
-                        <String fx:value="serviceRequestButtons" />
-                        <String fx:value="round" />
-                        <String fx:value="body" />
-                     </styleClass>
                         </MFXButton>
-                        <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" text="Sanitation" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="16.0" />
                             </font>
-                     <styleClass>
-                        <String fx:value="serviceRequestButtons" />
-                        <String fx:value="round" />
-                        <String fx:value="body" />
-                     </styleClass>
                         </MFXButton>
-                        <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" text="Security" textFill="WHITE" wrapText="true">
+                        <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Security" textFill="WHITE" wrapText="true">
                             <VBox.margin>
                                 <Insets left="18.0" top="18.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="16.0" />
                             </font>
-                     <styleClass>
-                        <String fx:value="serviceRequestButtons" />
-                        <String fx:value="round" />
-                        <String fx:value="body" />
-                     </styleClass>
                         </MFXButton>
                         <AnchorPane VBox.vgrow="ALWAYS">
                             <children>
                                 <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
                                     <children>
-                                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" text="Credits" textFill="WHITE">
+                                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" styleClass="blueBackgroundSideBar" text="Credits" textFill="WHITE">
                                             <VBox.margin>
                                                 <Insets left="20.0" />
                                             </VBox.margin>
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
-                                 <styleClass>
-                                    <String fx:value="credits" />
-                                    <String fx:value="round" />
-                                    <String fx:value="body" />
-                                 </styleClass>
                                         </MFXButton>
-                                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" text="Back" textFill="#012d5a">
+                                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" styleClass="backButton" text="Back" textFill="#012d5a">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" left="20.0" top="18.0" />
                                             </VBox.margin>
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
-                                 <styleClass>
-                                    <String fx:value="back" />
-                                    <String fx:value="round" />
-                                    <String fx:value="body" />
-                                 </styleClass>
                                         </MFXButton>
                                     </children>
                                 </VBox>
@@ -127,7 +91,7 @@
                 </VBox>
             </left>
             <center>
-                <VBox alignment="CENTER" prefHeight="720.0" prefWidth="997.0" style="-fx-background-color: #f1f1f1;" BorderPane.alignment="CENTER">
+                <VBox alignment="CENTER" prefHeight="720.0" prefWidth="997.0" styleClass="background" BorderPane.alignment="CENTER">
                     <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
                             <children>
@@ -268,7 +232,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Here are the credits and descriptions for the service request pages">
+                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Here are the credits and descriptions for the service request pages">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
