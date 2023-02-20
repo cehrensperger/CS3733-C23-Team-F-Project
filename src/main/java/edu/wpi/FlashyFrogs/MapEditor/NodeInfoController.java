@@ -4,6 +4,8 @@ import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -173,7 +175,7 @@ public class NodeInfoController {
 
     // If it's not a new node
     if (!isNewNode) {
-      List<LocationName> locations = node.getCurrentLocation(session);
+      List<LocationName> locations = node.getCurrentLocation(session, Date.from(Instant.now()));
 
       System.out.println(locations.size());
       if (!locations.isEmpty()) { // If the location exists

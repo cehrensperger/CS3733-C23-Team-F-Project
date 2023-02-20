@@ -123,9 +123,14 @@ public class NodeTest {
   /** If a node isn't in the database, querying for it should return null */
   @Test
   public void nodeNotPersistedTest() {
-    assertTrue(testNode.getCurrentLocation().isEmpty()); // Assert the test node has a null location
     assertTrue(
-        testNode.getCurrentLocation(session).isEmpty()); // Assert the test node has a null location
+        testNode
+            .getCurrentLocation(Date.from(Instant.now()))
+            .isEmpty()); // Assert the test node has a null location
+    assertTrue(
+        testNode
+            .getCurrentLocation(session, Date.from(Instant.now()))
+            .isEmpty()); // Assert the test node has a null location
   }
 
   /** Tests that a node with no mapping in move does not return a location */
@@ -138,8 +143,8 @@ public class NodeTest {
     session.persist(testNode); // Persist the node
     commitTransaction.commit(); // Commit
 
-    assertTrue(testNode.getCurrentLocation().isEmpty());
-    assertTrue(testNode.getCurrentLocation(session).isEmpty());
+    assertTrue(testNode.getCurrentLocation(Date.from(Instant.now())).isEmpty());
+    assertTrue(testNode.getCurrentLocation(session, Date.from(Instant.now())).isEmpty());
   }
 
   /**
@@ -160,8 +165,14 @@ public class NodeTest {
     session.persist(testMove);
     commitTransaction.commit(); // Commit
 
-    assertTrue(testNode.getCurrentLocation().isEmpty()); // Assert the location is null
-    assertTrue(testNode.getCurrentLocation(session).isEmpty()); // Assert the location is null
+    assertTrue(
+        testNode
+            .getCurrentLocation(Date.from(Instant.now()))
+            .isEmpty()); // Assert the location is null
+    assertTrue(
+        testNode
+            .getCurrentLocation(session, Date.from(Instant.now()))
+            .isEmpty()); // Assert the location is null
   }
 
   /** Tests that if the correct location is remapped, null is returned */
@@ -182,8 +193,14 @@ public class NodeTest {
     session.persist(newMove);
     commitTransaction.commit(); // Commit
 
-    assertTrue(thisNode.getCurrentLocation().isEmpty()); // Assert the location is null
-    assertTrue(thisNode.getCurrentLocation(session).isEmpty()); // Assert the location is null
+    assertTrue(
+        thisNode
+            .getCurrentLocation(Date.from(Instant.now()))
+            .isEmpty()); // Assert the location is null
+    assertTrue(
+        thisNode
+            .getCurrentLocation(session, Date.from(Instant.now()))
+            .isEmpty()); // Assert the location is null
   }
 
   /**
@@ -223,7 +240,10 @@ public class NodeTest {
     session.persist(newestMove);
     commitTransaction.commit(); // Commit
 
-    assertTrue(thisNode.getCurrentLocation().isEmpty()); // Assert the location is null
+    assertTrue(
+        thisNode
+            .getCurrentLocation(Date.from(Instant.now()))
+            .isEmpty()); // Assert the location is null
   }
 
   /** Tests that a simple mapping (one location, one node) works as expected */
@@ -242,15 +262,15 @@ public class NodeTest {
 
     assertEquals(
         location,
-        node.getCurrentLocation().stream()
+        node.getCurrentLocation(Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Assert the location is valid
     assertEquals(
         location,
-        node.getCurrentLocation(session).stream()
+        node.getCurrentLocation(session, Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Assert the location is valid
-    assertEquals(1, node.getCurrentLocation().size());
+    assertEquals(1, node.getCurrentLocation(Date.from(Instant.now())).size());
   }
 
   /** Tests that old mappings of this node -> a location are ignored */
@@ -278,13 +298,13 @@ public class NodeTest {
 
     assertEquals(
         currentLocation,
-        node.getCurrentLocation().stream()
+        node.getCurrentLocation(Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Assert the correct location is gotten
 
-    assertEquals(midLocation, node.getCurrentLocation().toArray()[1]);
+    assertEquals(midLocation, node.getCurrentLocation(Date.from(Instant.now())).toArray()[1]);
 
-    assertEquals(2, node.getCurrentLocation().size());
+    assertEquals(2, node.getCurrentLocation(Date.from(Instant.now())).size());
   }
 
   /** Tests that old mappings of the current location -> a node are ignored */
@@ -307,15 +327,15 @@ public class NodeTest {
 
     assertEquals(
         location,
-        theNode.getCurrentLocation().stream()
+        theNode.getCurrentLocation(Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Check that the location is correct
     assertEquals(
         location,
-        theNode.getCurrentLocation(session).stream()
+        theNode.getCurrentLocation(session, Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Check that the location is correct
-    assertEquals(1, theNode.getCurrentLocation().size());
+    assertEquals(1, theNode.getCurrentLocation(Date.from(Instant.now())).size());
   }
 
   /** Tests for a case where the node is remapped in the future, ignores the future locations */
@@ -345,15 +365,15 @@ public class NodeTest {
 
     assertEquals(
         currentLocation,
-        node.getCurrentLocation().stream()
+        node.getCurrentLocation(Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Assert the location is right
     assertEquals(
         currentLocation,
-        node.getCurrentLocation(session).stream()
+        node.getCurrentLocation(session, Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Assert the location is right
-    assertEquals(1, node.getCurrentLocation().size());
+    assertEquals(1, node.getCurrentLocation(Date.from(Instant.now())).size());
   }
 
   /** Test for a case where the location is remapped in the future */
@@ -388,15 +408,15 @@ public class NodeTest {
 
     assertEquals(
         location,
-        currentNode.getCurrentLocation().stream()
+        currentNode.getCurrentLocation(Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Assert the location is right
     assertEquals(
         location,
-        currentNode.getCurrentLocation(session).stream()
+        currentNode.getCurrentLocation(session, Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Assert the location is right
-    assertEquals(1, currentNode.getCurrentLocation().size());
+    assertEquals(1, currentNode.getCurrentLocation(Date.from(Instant.now())).size());
   }
 
   /**
@@ -439,24 +459,27 @@ public class NodeTest {
 
     assertEquals(
         correctLocation,
-        correctNode.getCurrentLocation().stream()
-            .findFirst()
-            .orElseThrow()); // Assert the location is right
-
-    assertEquals(
-        oldLocation, correctNode.getCurrentLocation().toArray()[1]); // Assert the location is right
-
-    assertEquals(
-        correctLocation,
-        correctNode.getCurrentLocation(session).stream()
+        correctNode.getCurrentLocation(Date.from(Instant.now())).stream()
             .findFirst()
             .orElseThrow()); // Assert the location is right
 
     assertEquals(
         oldLocation,
-        correctNode.getCurrentLocation(session).toArray()[1]); // Assert the location is right
+        correctNode.getCurrentLocation(Date.from(Instant.now()))
+            .toArray()[1]); // Assert the location is right
 
-    assertEquals(2, correctNode.getCurrentLocation().size());
+    assertEquals(
+        correctLocation,
+        correctNode.getCurrentLocation(session, Date.from(Instant.now())).stream()
+            .findFirst()
+            .orElseThrow()); // Assert the location is right
+
+    assertEquals(
+        oldLocation,
+        correctNode.getCurrentLocation(session, Date.from(Instant.now()))
+            .toArray()[1]); // Assert the location is right
+
+    assertEquals(2, correctNode.getCurrentLocation(Date.from(Instant.now())).size());
   }
 
   @Test
@@ -479,7 +502,7 @@ public class NodeTest {
     session.persist(currentNode2);
     commitTransaction.commit();
 
-    assertEquals(2, node.getCurrentLocation(session).size());
+    assertEquals(2, node.getCurrentLocation(session, Date.from(Instant.now())).size());
   }
 
   /** Tests the get enum method for Node and the to string method for that */
