@@ -26,7 +26,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -86,7 +85,7 @@ public class PathfindingController implements IController {
     FXMLLoader mapLoader =
         new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
 
-    Pane map = mapLoader.load(); // Load the map
+    javafx.scene.Node map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(0, map); // Put the map loader into the editor box
     mapController = mapLoader.getController();
 

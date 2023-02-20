@@ -46,6 +46,7 @@ public class HomeController implements IController {
   @FXML protected TableColumn<ServiceRequest, String> urgencyCol;
   @FXML protected TableColumn<ServiceRequest, LocationName> locationCol;
   @FXML protected TableColumn<ServiceRequest, ServiceRequest.Status> statusCol;
+
   @FXML protected TableView<ServiceRequest> requestTable;
 
   @FXML protected TableColumn<MoveWrapper, edu.wpi.FlashyFrogs.ORM.Node> nodeIDCol;
@@ -170,8 +171,41 @@ public class HomeController implements IController {
         session.createQuery("FROM Node", edu.wpi.FlashyFrogs.ORM.Node.class).getResultList();
     List<LocationName> locationNames =
         session.createQuery("FROM LocationName ", LocationName.class).getResultList();
-    session.close();
+    List<ServiceRequest.Status> statuses = Arrays.asList(ServiceRequest.Status.values());
 
+    session.close();
+    // Status make it editable and combo box
+    requestTable.setEditable(true);
+    statusCol.setEditable(true);
+    statusCol.setCellFactory(
+        new Callback<
+            TableColumn<ServiceRequest, ServiceRequest.Status>,
+            TableCell<ServiceRequest, ServiceRequest.Status>>() {
+          @Override
+          public TableCell<ServiceRequest, ServiceRequest.Status> call(
+              TableColumn<ServiceRequest, ServiceRequest.Status> param) {
+            return new ComboBoxTableCell<ServiceRequest, ServiceRequest.Status>(
+                (ObservableList<ServiceRequest.Status>) FXCollections.observableList(statuses));
+          }
+        });
+
+    statusCol.setOnEditCommit(
+        new EventHandler<TableColumn.CellEditEvent<ServiceRequest, ServiceRequest.Status>>() {
+          @Override
+          public void handle(
+              TableColumn.CellEditEvent<ServiceRequest, ServiceRequest.Status> event) {
+            try (Session session = CONNECTION.getSessionFactory().openSession()) {
+              ServiceRequest request = event.getRowValue();
+              request.setStatus(event.getNewValue());
+
+              Transaction tx = session.beginTransaction();
+              session.update(request);
+              tx.commit();
+            } catch (Exception ex) {
+              ex.printStackTrace();
+            }
+          }
+        });
     nodeIDCol.setCellFactory(
         new Callback<
             TableColumn<MoveWrapper, edu.wpi.FlashyFrogs.ORM.Node>,

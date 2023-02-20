@@ -90,7 +90,7 @@ public class NewUserController implements IController {
               lastName.getText(),
               employeeType.getValue(),
               deptBox.getValue()); // update department
-      UserLogin newUser = new UserLogin(userFK, username.getText(), pass1.getText());
+      UserLogin newUser = new UserLogin(userFK, username.getText(), null, pass1.getText());
       Session ses = CONNECTION.getSessionFactory().openSession();
       Transaction transaction = ses.beginTransaction();
       try {
