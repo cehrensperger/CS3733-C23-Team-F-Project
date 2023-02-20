@@ -27,10 +27,11 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class LoginAdministratorController implements IController {
-
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
+
+  @FXML private TableColumn<UserLogin, String> rfidCol;
   @FXML private TableColumn<UserLogin, String> userNameCol;
   @FXML private TableColumn<UserLogin, String> nameCol;
   @FXML private TableColumn<UserLogin, HospitalUser.EmployeeType> empTypeCol;
@@ -81,6 +82,11 @@ public class LoginAdministratorController implements IController {
         data -> {
           HospitalUser user = data.getValue().getUser();
           return new SimpleLongProperty(user.getId());
+        });
+    rfidCol.setCellValueFactory(
+        data -> {
+          String rfid = data.getValue().getRFIDBadge();
+          return new SimpleStringProperty(rfid != null ? rfid : "");
         });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     nameCol.setCellValueFactory(
