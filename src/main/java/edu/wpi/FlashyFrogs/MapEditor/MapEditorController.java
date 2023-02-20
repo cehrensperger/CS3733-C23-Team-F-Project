@@ -1104,6 +1104,13 @@ public class MapEditorController implements IController {
       root.getChildren().remove(currentQuickDrawCircle);
       currentQuickDrawCircle = null; // Clear it
       lastQuickDrawNode = null; // Clear the last node
+
+        // If the quick draw line exists
+        if (currentQuickDrawLine != null) {
+            // Delete it
+            mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawCircle);
+            currentQuickDrawLine = null;
+        }
       // No need to clear the last edge, already gone (off the map editor)
     }
   }
