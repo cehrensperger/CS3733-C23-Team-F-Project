@@ -2,10 +2,10 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -248,24 +248,27 @@ public class Node {
 
   public List<Node> getChildren() {
     Session session = DBConnection.CONNECTION.getSessionFactory().openSession();
-    List<Node> children =
+    List<Edge> edges =
         session
             .createQuery(
-                "select e.node1, e.node2 FROM Edge e where Edge.node1 = :node OR Edge.node2 = :node",
-                Node.class)
+                "select e FROM Edge e where e.node1 = :node OR e.node2 = :node", Edge.class)
             .setParameter("node", this)
             .getResultList();
-    List<Node> filteredChildren =
-        children.stream()
-            .filter(
-                new Predicate<>() {
-                  @Override
-                  public boolean test(Node childNode) {
-                    return !childNode.equals(this);
-                  }
-                })
-            .toList();
 
-    return filteredChildren;
+    List<Node> children = new ArrayList<>();
+
+    edges.forEach(
+        edge -> {
+          children.add(edge.getNode1());
+          children.add(edge.getNode2());
+        });
+
+    return children.stream().filter(node -> node.equals(this)).toList();
+  }
+
+  public double getDistanceFrom(Node node) {
+    double xDistance = this.xCoord - node.xCoord;
+    double yDistance = this.yCoord - node.yCoord;
+    return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
   }
 }

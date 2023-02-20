@@ -116,7 +116,7 @@ public class MapController {
    */
   public void deleteNode(@NonNull Node node) {
     // TODO: remove because everyone hates print statements I guess
-    node.getChildren().forEach(node1 -> System.out.println(node1.getId()));
+    // node.getChildren().forEach(node1 -> System.out.println(node1.getId()));
 
     currentDrawingPane
         .getChildren()
@@ -137,6 +137,49 @@ public class MapController {
 
     mapEntity.removeNode(
         node); // Remove the node, this also handles removing the edges and locations
+  }
+
+  public void deleteAndAutoRepair(Node node) {
+    List<Node> children = node.getChildren();
+    deleteNode(node);
+    repairNodes(children);
+  }
+
+  private void repairNodes(List<Node> nodes) {
+    List<Node> nodesLeftToRepair = nodes;
+
+    // the last node should already be connected to something else, so we do not need
+    // to connect it again
+
+    while (nodesLeftToRepair.size() > 1) {
+
+      // connect the first node in the list to the closest other node
+      Node startingNode = nodesLeftToRepair.get(0);
+
+      // find the closest other node
+      // set the closest node to be the second one in the list to start
+      Node closestNode = nodesLeftToRepair.get(1);
+      double smallestDistance = startingNode.getDistanceFrom(closestNode);
+
+      // if there are only two nodes left in the list, they by default are the closest to each other
+      if (nodesLeftToRepair.size() > 2) {
+        // start comparing distances with the third node in the list since we
+        // already accounted for the second node in the list
+        for (int i = 2; i < nodesLeftToRepair.size(); i++) {
+          // update smallestDistance and closestNode if a closer node is found
+          double newDistance = startingNode.getDistanceFrom(nodesLeftToRepair.get(i));
+          if (newDistance < smallestDistance) {
+            smallestDistance = newDistance;
+            closestNode = nodesLeftToRepair.get(i);
+          }
+        }
+      }
+
+      // node can be repaired and connected now to the closes node
+      Edge newEdge = new Edge(startingNode, closestNode);
+      getMapSession().persist(newEdge);
+      addEdge(newEdge);
+    }
   }
 
   /**
