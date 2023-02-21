@@ -20,9 +20,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -31,8 +31,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -162,13 +162,6 @@ public class PathfindingController implements IController {
       mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
-
-    filterBox
-        .valueProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (newValue != null) mapController.setDisplayText(newValue);
-            });
 
     pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
   }

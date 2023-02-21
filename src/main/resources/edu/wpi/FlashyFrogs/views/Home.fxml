@@ -100,7 +100,7 @@
                         </StackPane>
                         <StackPane maxWidth="190.0" prefHeight="165.0" prefWidth="190.0">
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f1f1f1" height="165.0" stroke="#f1f1f1" strokeType="INSIDE" width="190.0">
+                              <Rectangle styleClass="alertBottomBox" arcHeight="5.0" arcWidth="5.0" height="165.0" width="190.0">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
