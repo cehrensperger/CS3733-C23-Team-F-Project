@@ -167,6 +167,37 @@ public class PathfindingController implements IController {
     }
 
     pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
+
+    pathTable.setRowFactory(
+        param -> {
+          TableRow<Instruction> row = new TableRow<>(); // Create a new table row to use
+
+          // When the user selects a row, just un-select it to avoid breaking formatting
+          row.selectedProperty()
+              .addListener(
+                  // Add a listener that does that
+                  (observable, oldValue, newValue) -> row.updateSelected(false));
+
+          // Add a listener to show the pop-up
+          row.setOnMouseClicked(
+              (event) -> {
+                // If the pop over exists and is either not focused or we are showing a new
+                // row
+                if (row != null) {
+                  setFloor(row.getItem().node.getFloor());
+                  //                  Platform.runLater(
+                  //                      () ->
+                  //                          mapController
+                  //                              .getGesturePane()
+                  //                              .zoomTo(
+                  //                                  .8,
+                  //                                  new javafx.geometry.Point2D(
+                  //                                      row.getItem().node.getXCoord(),
+                  //                                      row.getItem().node.getYCoord())));
+                }
+              });
+          return row;
+        });
   }
 
   /** Callback to handle the back button being pressed */
