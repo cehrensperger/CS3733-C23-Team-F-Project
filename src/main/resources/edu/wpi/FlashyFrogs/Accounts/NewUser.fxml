@@ -88,12 +88,7 @@
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
       <HBox alignment="CENTER" layoutY="386.0" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0">
          <children>
-            <MFXButton fx:id="newHospitalUser" onAction="#handleNewUser" text="Add User">
-               <styleClass>
-                  <String fx:value="blue" />
-                  <String fx:value="body" />
-                  <String fx:value="round" />
-               </styleClass>
+            <MFXButton fx:id="newHospitalUser" styleClass="blueBackground" onAction="#handleNewUser" text="Add User">
             </MFXButton>
          </children>
       </HBox>
