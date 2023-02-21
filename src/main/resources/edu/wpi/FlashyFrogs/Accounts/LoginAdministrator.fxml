@@ -2,7 +2,6 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import java.lang.String?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -11,79 +10,47 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.LoginAdministratorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.LoginAdministratorController">
    <children>
       <Label alignment="CENTER" layoutX="280.0" layoutY="14.0" styleClass="titleText" text="Login Manager" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="279.2" AnchorPane.topAnchor="14.0">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER" layoutX="485.0" layoutY="118.0" prefHeight="488.0" prefWidth="802.0" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="102.0">
+      <HBox alignment="CENTER" layoutX="-2.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="1280.0" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="102.0">
          <children>
-            <TableView fx:id="userLoginTable" onMouseClicked="#setSelected" prefHeight="382.0" prefWidth="800.0" HBox.hgrow="ALWAYS">
+            <TableView fx:id="userLoginTable" onMouseClicked="#setSelected" prefHeight="504.0" prefWidth="1306.0" HBox.hgrow="ALWAYS">
               <columns>
-                  <TableColumn fx:id="idCol" maxWidth="50.0" prefWidth="50.0" text="ID" />
-                 <TableColumn fx:id="rfidCol" prefWidth="100.0" text="RFID Badge ID" />
-                <TableColumn fx:id="userNameCol" prefWidth="187.5" text="Username" />
-                <TableColumn fx:id="nameCol" prefWidth="187.5" text="Name" />
-                  <TableColumn fx:id="empTypeCol" prefWidth="187.5" text="Employee Type" />
-                  <TableColumn fx:id="deptCol" prefWidth="187.5" text="Department" />
+                  <TableColumn fx:id="idCol" maxWidth="199.99999690055847" prefWidth="61.59997630119324" text="ID" />
+                 <TableColumn fx:id="rfidCol" prefWidth="204.80004501342773" text="RFID Badge ID" />
+                <TableColumn fx:id="userNameCol" prefWidth="299.19996643066406" text="Username" />
+                <TableColumn fx:id="nameCol" prefWidth="334.39996337890625" text="Name" />
+                  <TableColumn fx:id="empTypeCol" prefWidth="262.39990234375" text="Employee Type" />
+                  <TableColumn fx:id="deptCol" prefWidth="408.0001220703125" text="Department" />
               </columns>
             </TableView>
          </children>
       </HBox>
-      <HBox alignment="BOTTOM_CENTER" layoutX="301.0" layoutY="486.0" prefHeight="86.0" prefWidth="800.0" spacing="600.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="301.0" AnchorPane.rightAnchor="299.0">
-         <children>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="86.0" prefWidth="526.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <MFXButton fx:id="back" graphicTextGap="100.0" onAction="#handleBack" prefHeight="33.0" prefWidth="112.0" styleClass="backButton" text="Back" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <styleClass>
-                        <String fx:value="back" />
-                        <String fx:value="round" />
-                        <String fx:value="body" />
-                     </styleClass>
-                  </MFXButton>
-               </children>
-            </HBox>
-            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <MFXButton fx:id="deleteUser" onAction="#deleteUser" prefHeight="33.0" prefWidth="112.0" text="Delete User">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <styleClass>
-                        <String fx:value="back" />
-                        <String fx:value="round" />
-                        <String fx:value="body" />
-                     </styleClass>
-                  </MFXButton>
-               </children>
-            </HBox>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="86.0" prefWidth="611.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <MFXButton fx:id="addNewUser" onAction="#handleNewUser" prefHeight="33.0" prefWidth="256.0" styleClass="blueBackgroundSideBar" text="Add New User" wrapText="true" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </MFXButton>
-               </children>
-            </HBox>
-         </children>
-      </HBox>
+      <MFXButton fx:id="back" graphicTextGap="100.0" layoutX="14.0" layoutY="661.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleBack" prefHeight="33.0" prefWidth="130.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="25.399999999999977" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <styleClass>
+            <String fx:value="back" />
+            <String fx:value="round" />
+            <String fx:value="body" />
+         </styleClass>
+      </MFXButton>
       <Text fx:id="h1" fill="#b6000b" layoutX="342.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can manage all of the accounts and their preferences">
          <font>
             <Font size="10.0" />
          </font>
       </Text>
       <Label fx:id="errorMessage" layoutX="936.0" layoutY="608.0" />
+      <MFXButton fx:id="addNewUser" layoutX="1135.0" layoutY="661.0" minWidth="-Infinity" onAction="#handleNewUser" prefHeight="33.0" prefWidth="130.0" styleClass="blueBackgroundSideBar" text="Add New User" wrapText="true" AnchorPane.bottomAnchor="25.399999999999977" AnchorPane.rightAnchor="14.599999999999909">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
    </children>
 </AnchorPane>

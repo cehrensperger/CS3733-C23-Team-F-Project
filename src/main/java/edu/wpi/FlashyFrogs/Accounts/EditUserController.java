@@ -8,6 +8,7 @@ import edu.wpi.FlashyFrogs.controllers.IController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -21,8 +22,8 @@ public class EditUserController implements IController {
   @FXML private TextField middleName;
   @FXML private TextField lastName;
   @FXML private TextField username;
-  @FXML private TextField pass1;
-  @FXML private TextField pass2;
+  @FXML private PasswordField pass1;
+  @FXML private PasswordField pass2;
   @FXML private SearchableComboBox<Department> deptBox;
   @FXML private SearchableComboBox<HospitalUser.EmployeeType> employeeType;
   @FXML private Label errorMessage;
@@ -86,6 +87,8 @@ public class EditUserController implements IController {
       }
     }
   }
+
+  public void deleteUser(ActionEvent actionEvent) {}
 
   public void onClose() {}
 
