@@ -35,6 +35,7 @@
             <MenuButton fx:id="menu" mnemonicParsing="false" textAlignment="RIGHT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
               <items>
                  <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
+                 <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
                  <MenuItem mnemonicParsing="false" text="User Preferences                 " />
                 <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
                   <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />
@@ -47,6 +48,7 @@
             <MenuButton fx:id="loggedOutMenu" mnemonicParsing="false" styleClass="navBar" textAlignment="RIGHT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
+                  <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
                   <MenuItem onAction="#changeMode" text="Switch Color Theme">
                   </MenuItem>
                   <MenuItem onAction="#closeApp" text="Close Application" />

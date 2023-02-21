@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text styleClass="titleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Acknowledgments" />
+      <HBox prefHeight="443.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="385.0" prefWidth="22.0" />
+            <VBox prefHeight="385.0" prefWidth="554.0">
+               <children>
+                  <TextFlow prefHeight="385.0" prefWidth="554.0">
+                     <children>
+                        <Text styleClass="bodyTextObject" strokeType="OUTSIDE" strokeWidth="0.0" text="Software Used:&#13;IntelliJ, Figma, SceneBuilder, Google Workspace, Docker, PostrgresQL, Slack, DiscordDependencies:palexdev/MaterialFX GitHub Repository, tom91136/GestureFX GitHub Repository, MVN Repository ControlsFX 11.1.2, MVN Repository Apache Derby Client JDBC Driver 10.16.1.1, Apache Derby 10.16.1.1 Release, MVN Repository Apache Derby Shared Code 10.16.1.1, MVN repository SLF4J API Module 1.7.30, MVN Repository SLF4J Simple Binding 1.7.30, MVN Repository UCP 19.6.0.0, MVN Repositpry Ojdbc8 19.6.0.0, MVN Repository HIbernate Core RElocation 6.1.6.Final, Ehcache 3.10 Documentation, Ehcache 3.10 Documentation, MVN Repository Old JAXB Core 4.0.2, MVN Repository, MVN Repository, JAXB API 2.3.1, JAXB Runtime 4.0.2, MVN Repository PostgreSQL JDBC Driver 42.5.1, MVN Repository Argon2 JVM 2.1.1, MVN Repository Argon2 JVM 2.1.1, onexip/FlexBoxFX GitHub Repository, hervegirod/fxsgimage GitHub Repository" wrappingWidth="145.3367404937744" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </VBox>
+            <VBox prefHeight="385.0" prefWidth="24.0" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

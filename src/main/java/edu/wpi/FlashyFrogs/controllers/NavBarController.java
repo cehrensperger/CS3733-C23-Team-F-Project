@@ -114,6 +114,14 @@ public class NavBarController {
     popOver.show(anchorPane.getScene().getWindow());
   }
 
+  @FXML
+  private void acknowledgments() throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/acknowledgmentsPage.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+    popOver.detach();
+    popOver.show(anchorPane.getScene().getWindow());
+  }
+
   /**
    * Change the color theme between Dark and Light Mode when the Switch Color Scheme button is
    * clicked on NavBar.fxml.
