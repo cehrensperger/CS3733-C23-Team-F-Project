@@ -70,7 +70,7 @@
     /** This is used for all back buttons within the app **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color:transparent;
+    -fx-background-color:#F1F1F1;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
 }
@@ -79,17 +79,17 @@
     /** if you need the blue outline with blue text styling with no set sizes **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color:transparent;
+    -fx-background-color:#F1F1F1;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
 }
 
 .blueOutline
-    /** This is a smaller version of the back button styling (transparent background with
+    /** This is a smaller version of the back button styling (light gray background with
      blue outline) - ex. the toggle all button on the home page **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: transparent;
+    -fx-background-color:#F1F1F1;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
 }
@@ -137,9 +137,8 @@
 {
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
-    -fx-background-color: transparent;
+    -fx-background-color: #F1F1F1;
     -fx-prompt-text-fill: #012D5A;
-    -fx-font-weight: normal;
 }
 
 .date-picker
@@ -215,9 +214,9 @@
     /** sets the clear button on the service requests page **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: transparent;
-    -fx-border-color:#b6000b;
-    -fx-text-fill: #b6000b;
+    -fx-background-color: #b6000b;
+    -fx-border-color:white;
+    -fx-text-fill: white;
 }
 
 .redOutlineNoSetSize
@@ -225,9 +224,9 @@
      no set size**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: transparent;
-    -fx-border-color:#b6000b;
-    -fx-text-fill: #b6000b;
+    -fx-background-color: #b6000b;
+    -fx-border-color:white;
+    -fx-text-fill: white;
 }
 
 .cancelButton
@@ -235,9 +234,9 @@
      but it is a bigger button - ex. cancel button Manage CSVs **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: #f1f1f1;
-    -fx-border-color:#b6000b;
-    -fx-text-fill: #b6000b;
+    -fx-background-color: #b6000b;
+    -fx-border-color:white;
+    -fx-text-fill: white;
 }
 
 .bar
@@ -250,13 +249,13 @@
 .sidebar
     /** This sets the sidebar on all of the pages **/
 {
-    -fx-background-color: #d1d1d1 !important;
+    -fx-background-color: #6B6D6F !important;
 }
 
 .background
     /** sets the background color throughout the app **/
 {
-    -fx-background-color:#f1f1f1;
+    -fx-background-color:#2F2F2F;
 }
 
 .navBar
@@ -365,8 +364,14 @@
 .alertBottomBox
     /** controls the bottom box within the alert **/
 {
-    -fx-fill: #f1f1f1;
-    -fx-background-color: #f1f1f1;
+    -fx-fill: #2F2F2F;
+    -fx-background-color: #2F2F2F;
+    -fx-text-fill: white;
+}
+
+.alertBottomBox .label {
+    /** controls the author and date text within the alert **/
+    -fx-text-fill: white;
 }
 
 .alertText
@@ -375,15 +380,16 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-text-box-border: transparent;
-    -fx-background-color: #f1f1f1;
-    -fx-control-inner-background: #f1f1f1;
+    -fx-background-color: #2F2F2F;
+    -fx-control-inner-background: #2F2F2F;
+    -fx-text-fill: white;
 }
 
 .alertBar
     /** controls the bar within the alert (the one that separates the name and date from
     the rest of the text) **/
 {
-    -fx-stroke: #000000;
+    -fx-stroke: #6B6D6F;
 }
 
 .pathfindingPopup
