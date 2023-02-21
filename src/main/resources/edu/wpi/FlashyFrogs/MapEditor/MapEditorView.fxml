@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -19,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0"  styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.MapEditorController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.MapEditorController">
    <children>
       <VBox maxWidth="220.0" minWidth="220.0" prefHeight="720.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -28,14 +27,17 @@
                   <Insets bottom="25.0" left="18.0" top="18.0" />
                </VBox.margin>
             </Label>
-            <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="17.0" prefWidth="129.0" text="Auto-Repair Edges">
+            <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="203.0" text="Auto-Repair Edges">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="5.0" left="18.0" right="18.0" />
                </VBox.margin></CheckBox>
             <Label text="Viewing Date">
                <VBox.margin>
-                  <Insets bottom="5.0" left="18.0" />
+                  <Insets left="18.0" />
                </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font>
             </Label>
             <DatePicker fx:id="viewingDate">
                <VBox.margin>
@@ -65,54 +67,39 @@
                 <TableColumn fx:id="longName" prefWidth="170.0" resizable="false" text="Location" />
               </columns>
                <VBox.margin>
-                  <Insets />
+                  <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </TableView>
             <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="View current locations in the map" wrappingWidth="170.0">
                <VBox.margin>
-                  <Insets bottom="16.0" />
+                  <Insets bottom="16.0" left="18.0" />
                </VBox.margin>
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <Button fx:id="addLocation" alignment="CENTER" mnemonicParsing="false" onAction="#popupLocation" prefHeight="0.0" prefWidth="170.0" style="-fx-background-color: #012D5A; -fx-text-fill: #ffff;" text="Add Location" textAlignment="CENTER">
+            <Button fx:id="addLocation" alignment="CENTER" mnemonicParsing="false" onAction="#popupLocation" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Add Location" textAlignment="CENTER">
                <VBox.margin>
-                  <Insets left="25.0" />
+                  <Insets left="18.0" />
                </VBox.margin>
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="round" />
-                  <String fx:value="body" />
-               </styleClass>
             </Button>
             <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to add a new location to the map" wrappingWidth="170.0">
                <font>
                   <Font size="10.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="8.0" />
+                  <Insets bottom="8.0" left="18.0" />
                </VBox.margin>
             </Text>
-            <Button fx:id="quickDraw" alignment="CENTER" mnemonicParsing="false" onMousePressed="#toggleQuickDraw" prefHeight="0.0" prefWidth="170.0" text="QuickDraw">
-               <styleClass>
-                  <String fx:value="round" />
-                  <String fx:value="body" />
-               </styleClass>
+            <Button fx:id="quickDraw" alignment="CENTER" mnemonicParsing="false" onMousePressed="#toggleQuickDraw" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="QuickDraw">
                <VBox.margin>
-                  <Insets left="25.0" />
+                  <Insets left="18.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="0.0" prefWidth="170.0" text="Move Visualizer">
+            <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Move Visualizer">
                <VBox.margin>
-                  <Insets left="25.0" top="15.0" />
+                  <Insets left="18.0" top="15.0" />
                </VBox.margin>
-               <styleClass>
-                  <String fx:value="round" />
-                  <String fx:value="body" />
-               </styleClass>
             </Button>
          </children>
       </VBox>
@@ -120,34 +107,24 @@
          <children>
             <AnchorPane fx:id="mapPane" prefHeight="10.0" prefWidth="10.0">
                <children>
-                  <Button layoutX="173.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="39.0" prefWidth="141.0" text="Finalize Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="173.0">
+                  <Button layoutX="173.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="39.0" prefWidth="141.0" styleClass="blueNoSetSize" text="Finalize Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="173.0">
                      <font>
                         <Font size="16.0" />
                      </font>
-                     <styleClass>
-                        <String fx:value="credits" />
-                        <String fx:value="round" />
-                        <String fx:value="body" />
-                     </styleClass>
                      <opaqueInsets>
                         <Insets left="20.0" />
                      </opaqueInsets>
                   </Button>
-                  <Button layoutX="14.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="39.0" prefWidth="141.0" text="Cancel Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0">
+                  <Button layoutX="14.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="39.0" prefWidth="141.0" styleClass="redOutlineNoSetSize" text="Cancel Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0">
                      <font>
                         <Font size="16.0" />
                      </font>
-                     <styleClass>
-                        <String fx:value="clear" />
-                        <String fx:value="background" />
-                        <String fx:value="body" />
-                     </styleClass>
                   </Button>
                </children>
             </AnchorPane>
          </children>
       </StackPane>
-      <MFXButton fx:id="backButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="39.0" prefWidth="170.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
+      <MFXButton fx:id="backButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="39.0" prefWidth="184.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
       </MFXButton>
    </children>
 </AnchorPane>

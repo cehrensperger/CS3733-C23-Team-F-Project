@@ -345,6 +345,7 @@
     /** controls table views within the app - not hover **/
 {
     -fx-background-color: #f1f1f1;
+    -fx-text-fill: #012D5A;
 }
 
 .table-row-cell
