@@ -7,21 +7,24 @@ import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.util.Date;
+import java.util.List;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TableColumn;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import lombok.SneakyThrows;
+import org.controlsfx.control.tableview2.TableColumn2;
 import org.controlsfx.control.tableview2.TableView2;
 
 /** */
 public class MoveVisualizerController implements IController {
   @FXML private TableView2<Move> moveTable; // Table for the moves
-  @FXML private TableColumn<Move, Node> nodeColumn; // Node column
-  @FXML private TableColumn<Move, LocationName> locationColumn; // Location column
-  @FXML private TableColumn<Move, Date> dateColumn; // Date column
+  @FXML private TableColumn2<Move, Node> nodeColumn; // Node column
+  @FXML private TableColumn2<Move, LocationName> locationColumn; // Location column
+  @FXML private TableColumn2<Move, Date> dateColumn; // Date column
   @FXML private AnchorPane mapPane; // Map pane for map display
   private MapController mapController; // Map controller=
 
@@ -47,6 +50,17 @@ public class MoveVisualizerController implements IController {
     AnchorPane.setRightAnchor(mapRoot, 0.0);
     AnchorPane.setTopAnchor(mapRoot, 0.0);
     AnchorPane.setBottomAnchor(mapRoot, 0.0);
+
+    // Set the value factories for the columns
+    nodeColumn.setCellValueFactory(row -> new SimpleObjectProperty<>(row.getValue().getNode()));
+    locationColumn.setCellValueFactory(
+        row -> new SimpleObjectProperty<>(row.getValue().getLocation()));
+    dateColumn.setCellValueFactory(row -> new SimpleObjectProperty<>(row.getValue().getMoveDate()));
+
+    // Get the moves
+    List<Move> moves =
+        mapController.getMapSession().createQuery("FROM Move", Move.class).getResultList();
+    moveTable.setItems(FXCollections.observableList(moves)); // set the items in the table
   }
 
   /** On close, in this case closes the map */
