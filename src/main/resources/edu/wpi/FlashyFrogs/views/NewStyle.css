@@ -70,28 +70,18 @@
     /** This is used for all back buttons within the app **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color:transparent;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 10pt;
-    -fx-pref-width: 184px;
-    -fx-pref-height: 25px;
 }
 
 .blueOutlineNoSetSize
     /** if you need the blue outline with blue text styling with no set sizes **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color:transparent;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 10pt;
 }
 
 .blueOutline
@@ -99,15 +89,9 @@
      blue outline) - ex. the toggle all button on the home page **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color: transparent;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #012D5A;
-    -fx-font-size: 10pt;
-    -fx-pref-width: 150px;
-    -fx-pref-height: 25px;
 }
 
 .blueBackground
@@ -115,89 +99,57 @@
      white text) - ex. select files in Manage CSVs  **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color: #012D5A;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 10pt;
-    -fx-pref-width: 150px;
-    -fx-pref-height: 25px;
 }
 
 .blueNoSetSize
     /** If you need the blue background with white text with no set size **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color: #012D5A;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 10pt;
 }
 
 .blueBackgroundSideBar
     /** This is used for the sidebar buttons with blue backgrounds - ex. switch color, manage CSVs, etc. **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 10pt;
-    -fx-pref-width: 184px;
-    -fx-pref-height: 25px;
 }
 
 .serviceRequestButtons
     /** This is used for the sidebar buttons for service requests **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 10pt;
-    -fx-pref-width: 184px;
-    -fx-pref-height: 75px;
-    -fx-text-alignment: Baseline Left;
 }
 
 .fields
     /** This controls input fields within the app - such as the service requests
     fields and the csv parser inputs **/
 {
-    -fx-border-radius: 10px !important;
-    -fx-background-radius: 10px !important;
-    -fx-font-family: "Roboto Light";
-    -fx-font-size: 12pt;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
     -fx-background-color: transparent;
-    -fx-border-insets: -1px;
     -fx-prompt-text-fill: #012D5A;
     -fx-font-weight: normal;
-    /** -fx-pref-width: 200px; (not sure if we want to set width and height in here) **/
-    /** -fx-pref-height: 26px; **/
 }
 
 .date-picker
     /** controls all date picker fields within the app **/
 {
-    -fx-background-radius: 10 10 10 10;
     -fx-text-fill: #012D5A;
 }
 .date-picker > .text-field
     /** controls all date picker fields within the app **/
 {
-    -fx-background-radius: 10 0 0 10;
     -fx-prompt-text-fill: #012D5A;
     -fx-control-inner-background: #f1f1f1 ;
     -fx-control-background: #f1f1f1 ;
@@ -206,13 +158,11 @@
 .date-picker > .arrow-button
     /** controls all date picker fields within the app **/
 {
-    -fx-background-radius: 0 10 10 0;
 }
 
 .searchable-combo-box>
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-background-radius: 10 10 10 10;
     -fx-prompt-text-fill: #012D5A;
     -fx-text-fill: #012D5A;
     -fx-context-menu-enabled: #012D5A;
@@ -222,7 +172,6 @@
 .combo-box> .text-field
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-background-radius: 10 10 10 10;
     -fx-text-fill: #012D5A;
     -fx-prompt-text-fill: #012D5A;
 }
@@ -257,30 +206,18 @@
     /** This is used for the submit buttons on the service requests pages **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 10pt;
-    -fx-pref-width: 100px;
-    -fx-pref-height: 25px;
 }
 
 .clearButton
     /** sets the clear button on the service requests page **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color: transparent;
     -fx-border-color:#b6000b;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #b6000b;
-    -fx-font-size: 10pt;
-    -fx-pref-width: 100px;
-    -fx-pref-height: 25px;
 }
 
 .redOutlineNoSetSize
@@ -288,13 +225,9 @@
      no set size**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color: transparent;
     -fx-border-color:#b6000b;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #b6000b;
-    -fx-font-size: 10pt;
 }
 
 .cancelButton
@@ -302,15 +235,9 @@
      but it is a bigger button - ex. cancel button Manage CSVs **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-radius: 10px !important;
-    -fx-border-radius: 10px !important;
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
-    -fx-font-family: "Roboto Light";
     -fx-text-fill: #b6000b;
-    -fx-font-size: 10pt;
-    -fx-pref-width: 150px;
-    -fx-pref-height: 25;
 }
 
 .bar
@@ -324,7 +251,6 @@
     /** This sets the sidebar on all of the pages **/
 {
     -fx-background-color: #d1d1d1 !important;
-    -fx-pref-width: 220px
 }
 
 .background
@@ -338,8 +264,6 @@
 {
     -fx-background-color: #012d5a;
     -fx-text-fill: white;
-    -fx-font-size: 13px;
-    -fx-border-insets: -1px;
 }
 .navBarLines
     /** sets the style of the line in between the buttons on the nav bar **/
@@ -351,7 +275,6 @@
     /** controls the background of the arrow next to the current employee name **/
 {
     -fx-background-color:#012D5A;
-    -fx-border-insets: -1px;
     -fx-border-color: #012D5A;
 }
 
@@ -367,9 +290,7 @@
 {
     -fx-background-color: #012D5A;
     -fx-border-color: #012D5A;
-    -fx-border-insets: -1px;
     -fx-text-fill: #ffffff;
-    -fx-font-size: 13px;
 }
 
 .menu-item .label
@@ -383,7 +304,6 @@
     /** This controls the background color of the menu-item when it is hovered over **/
 {
     -fx-background-color: #F6BD38;
-    -fx-border-insets: -1px;
 }
 
 .menu-item:focused .label
@@ -398,15 +318,12 @@
     /** controls the blue line in the tables above the table entries **/
 {
     -fx-background-color: #012d5a;
-    -fx-background-radius: 0px 0px 0px 0px;
-    -fx-padding: 0px 0px 7px 0px;
 }
 
 .table-view .table-cell
     /** controls table views within the app - not hover **/
 {
     -fx-border-color: transparent;
-    -fx-padding: 2 0 2 10px;
 }
 .table-view .column-header
     /** controls table views within the app - not hover **/
@@ -418,8 +335,6 @@
     /** controls table views within the app - not hover **/
 {
     -fx-background-color: #f1f1f1;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em;
     -fx-text-background-color: #012d5a;
     -fx-text-fill: #012d5a;
 }
@@ -444,9 +359,6 @@
 {
     -fx-fill: #012d5a;
     -stroke: #012d5a;
-    -strokeType: inside;
-    -fx-background-radius: 10px;
-    -fx-border-radius: 10px;
     -fx-text-fill: white;
 }
 
@@ -455,8 +367,6 @@
 {
     -fx-fill: #f1f1f1;
     -fx-background-color: #f1f1f1;
-    -fx-background-radius: 10px;
-    -fx-border-radius: 10px;
 }
 
 .alertText
@@ -467,7 +377,6 @@
     -fx-text-box-border: transparent;
     -fx-background-color: #f1f1f1;
     -fx-control-inner-background: #f1f1f1;
-    -fx-background-radius: 0px;
 }
 
 .alertBar
@@ -482,7 +391,5 @@
 {
     -fx-background-color: #6B6D6F;
     -fx-text-fill: white;
-    -fx-font-size: 16;
-    -fx-font-family: "Roboto Light";
 }
 
