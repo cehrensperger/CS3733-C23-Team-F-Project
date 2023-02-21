@@ -9,7 +9,6 @@ import jakarta.persistence.Tuple;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -68,6 +67,7 @@ public class MapController {
 
   /**
    * Set the location creation function
+   *
    * @param function the function to set the location creation to. May be null
    */
   public void setLocationCreation(TriConsumer<Node, LocationName, Text> function) {
