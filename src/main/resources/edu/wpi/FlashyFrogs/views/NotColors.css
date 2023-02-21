@@ -359,8 +359,8 @@
     /** controls the top box with the title of the alert in the alert side bar **/
 {
     -strokeType: inside;
-    -fx-background-radius: 10px;
-    -fx-border-radius: 10px;
+    -fx-background-radius: 10px, 10px, 0px, 0px;
+    -fx-border-radius: 10px, 10px, 0px, 0px;
 }
 
 .alertBottomBox
@@ -372,6 +372,11 @@
 
 .alertText
     /** controls the text area within the alertBottomBox **/
+{
+    -fx-background-radius: 0px;
+}
+
+.alertText .content
 {
     -fx-background-radius: 0px;
 }
