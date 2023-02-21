@@ -13,6 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -50,7 +51,7 @@ public class EditUserController implements IController {
     this.employeeType.getSelectionModel().select(currentUser.getEmployeeType());
   }
 
-  public void saveChanges(ActionEvent actionEvent) {
+  public void saveChanges(ActionEvent actionEvent) throws Exception {
     if (username.getText().equals("")
         || pass1.getText().equals("")
         || pass2.getText().equals("")
@@ -62,35 +63,54 @@ public class EditUserController implements IController {
       // One of the values is left null
       errorMessage.setText("Please fill out all fields!");
       errorMessage.setVisible(true);
-    } /*else if (!pass1.getText().equals(pass2.getText())) {
+    } else if (!pass1.getText().equals(pass2.getText())) {
       // Passwords do not match
       errorMessage.setText("Passwords do not match!");
-      errorMessage.setVisible(true);}*/ else {
-      // Save Username and Password to db
+      errorMessage.setVisible(true);
+    } else {
+      // Save Changes
       errorMessage.setVisible(false);
-      /*User userFK =
-              new User(
-                      firstName.getText(),
-                      middleName.getText(),
-                      lastName.getText(),
-                      employeeType.getValue(),
-                      deptBox.getValue()); // update department
-      UserLogin newUser = new UserLogin(userFK, username.getText());*/
-      Session ses = CONNECTION.getSessionFactory().openSession();
-      Transaction transaction = ses.beginTransaction();
+
+      currentUserLogin.setUserName(username.getText());
+      currentUserLogin.setPassword(pass1.getText());
+      currentUserLogin.setUser(currentUser);
+
+      Session ses = null;
+      Transaction transaction = null;
+      ses = CONNECTION.getSessionFactory().openSession();
       try {
-        // ses.persist(userFK);
-        // ses.persist(newUser);
+        transaction = ses.beginTransaction();
+        /*HospitalUser hospitalUser = ses.get(HospitalUser.class, currentUser.getId());
+        UserLogin userLogin = ses.get(UserLogin.class, currentUserLogin.getUser().getId());
+
+        hospitalUser.setDepartment(deptBox.getValue());
+        hospitalUser.setFirstName(firstName.getText());
+        hospitalUser.setLastName(lastName.getText());
+        hospitalUser.setMiddleName(middleName.getText());
+        hospitalUser.setEmployeeType(employeeType.getValue());
+        userLogin.setUserName(username.getText());
+        userLogin.setPassword(pass1.getText());
+        userLogin.setUser(hospitalUser);*/
+
+        currentUser.setDepartment(deptBox.getValue());
+        currentUser.setFirstName(firstName.getText());
+        currentUser.setLastName(lastName.getText());
+        currentUser.setMiddleName(middleName.getText());
+        currentUser.setEmployeeType(employeeType.getValue());
+        currentUserLogin.setUserName(username.getText());
+        currentUserLogin.setPassword(pass1.getText());
+        currentUserLogin.setUser(currentUser);
+
+        ses.merge(currentUser);
+        ses.merge(currentUserLogin);
+
         transaction.commit();
         ses.close();
-        loginAdministratorController.initialize();
-        popOver.hide();
-      } catch (Exception e) {
-        errorMessage.setText("That username is already taken.");
-        errorMessage.setVisible(true);
-        transaction.rollback();
+      } catch (HibernateException e) {
         ses.close();
       }
+      loginAdministratorController.initialize();
+      popOver.hide();
     }
   }
 
@@ -112,6 +132,7 @@ public class EditUserController implements IController {
       ses.getTransaction().commit();
       ses.close();
       loginAdministratorController.initialize();
+      popOver.hide();
     }
   }
 

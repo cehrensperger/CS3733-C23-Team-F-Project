@@ -118,6 +118,7 @@ public class NewUserController implements IController {
         }
       }
       ses.close();
+      popOver.hide();
     }
   }
 
