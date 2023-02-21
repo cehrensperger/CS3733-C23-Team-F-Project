@@ -47,8 +47,6 @@
             <String fx:value="round" />
          </styleClass>
       </Button>
-
-      <AnchorPane fx:id="mapPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0"
-                  AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0"/>
+      <AnchorPane fx:id="mapPane" />
    </children>
 </AnchorPane>

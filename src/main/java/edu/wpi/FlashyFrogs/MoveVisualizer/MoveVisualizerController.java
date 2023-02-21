@@ -25,9 +25,7 @@ public class MoveVisualizerController implements IController {
   @FXML private AnchorPane mapPane; // Map pane for map display
   private MapController mapController; // Map controller=
 
-  /**
-   * Sets up the move visualizer, including all tables, and the map
-   */
+  /** Sets up the move visualizer, including all tables, and the map */
   @SneakyThrows
   @FXML
   private void initialize() {
@@ -49,22 +47,19 @@ public class MoveVisualizerController implements IController {
     AnchorPane.setBottomAnchor(mapRoot, 0.0);
   }
 
-  /**
-   * On close, in this case closes the map
-   */
+  /** On close, in this case closes the map */
   @Override
   public void onClose() {
     mapController.exit();
   }
 
-  /**
-   * Help, shows the help menu for the visualizer
-   */
+  /** Help, shows the help menu for the visualizer */
   @Override
   public void help() {}
 
   /**
    * Handler for the back button, delegates to Fapp
+   *
    * @param actionEvent the event triggering this
    */
   public void handleBackButton(ActionEvent actionEvent) {
