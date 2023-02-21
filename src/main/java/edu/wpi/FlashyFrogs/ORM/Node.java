@@ -185,12 +185,12 @@ public class Node {
         session
             .createQuery(
                 """
-                                        SELECT location
-                                        FROM Move
-                                        WHERE node = :node AND moveDate <= :date
-                                        ORDER BY moveDate DESC
-                                        LIMIT 2
-                                        """,
+                                                    SELECT location
+                                                    FROM Move
+                                                    WHERE node = :node AND moveDate <= :date
+                                                    ORDER BY moveDate DESC
+                                                    LIMIT 2
+                                                    """,
                 LocationName.class)
             .setParameter("node", this)
             .setParameter("date", date)
@@ -200,30 +200,45 @@ public class Node {
       return locations;
     }
 
-    // locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
 
-    // attempt to remove extra query
-    //    locations.removeIf(
-    //        location -> {
-    //          Node mostRecentNode =
-    //              session
-    //                  .createQuery(
-    //                      """
-    //                                                                  SELECT Node
-    //                                                                  FROM Move
-    //                                                                  WHERE location = :loc AND
-    //     moveDate
-    //         <=
-    //                        current timestamp
-    //                                                                  ORDER BY moveDate DESC
-    //                                                                  LIMIT 1
-    //                                                                  """,
-    //                      Node.class)
-    //                  .setParameter("loc", location)
-    //                  .setCacheable(true)
-    //                  .uniqueResult();
-    //          return !mostRecentNode.equals(this);
-    //        });
+    //TODO: make this work to get rid of extra query
+
+    //    Node node =
+    //            session
+    //                    .createQuery(
+    //                            """
+    //                            SELECT node
+    //                            FROM Move
+    //                            WHERE location = :location AND moveDate <= :date
+    //                            ORDER BY moveDate DESC
+    //                            LIMIT 1
+    //                            """,
+    //                            Node.class)
+    //                    .setParameter("location", this)
+    //                    .setParameter("date", date)
+    //                    .setCacheable(true)
+    //                    .uniqueResult();
+    //
+    //    List<Node> nodes =
+    //        session
+    //            .createQuery(
+    //                """
+    //                                SELECT m.node
+    //                                FROM Move m
+    //                                WHERE (m.location = :loc1 OR m.location =:loc2)
+    //                                AND m.moveDate = (SELECT m2.moveDate
+    //                                                  FROM Move m2
+    //                                                  WHERE (m.location = :loc1 OR m.location =
+    // :loc2)
+    //                                                  GROUP BY m2.location
+    //                                                  HAVING m2.moveDate <= :date)
+    //                                """,
+    //                Node.class)
+    //            .setParameter("loc1", locations.get(0))
+    //            .setParameter("loc1", locations.get(1))
+    //            .setParameter("date", date)
+    //            .setCacheable(true)
+    //            .getResultList();
 
     locations.removeIf(location -> !location.getCurrentNode(session, date).equals(this));
 
