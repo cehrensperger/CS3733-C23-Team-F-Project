@@ -29,7 +29,6 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class LoginAdministratorController implements IController {
   @FXML private Label errorMessage;
-  @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
 
@@ -136,7 +135,7 @@ public class LoginAdministratorController implements IController {
       errorMessage.setText("No user selected for deletion");
       errorMessage.setVisible(true);
     }
-    if (selectedUserLogin.getUser().equals(CurrentUserEntity.CURRENT_USER.getCurrentuser())) {
+    if (selectedUserLogin.getUser().equals(CurrentUserEntity.CURRENT_USER.getCurrentUser())) {
       errorMessage.setText("Cannot delete current account");
       errorMessage.setVisible(true);
     } else {

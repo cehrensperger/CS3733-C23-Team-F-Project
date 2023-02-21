@@ -114,7 +114,7 @@ public class SanitationController implements IController {
       Sanitation sanitationRequest =
           new Sanitation(
               sanitationType.getValue(),
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               dateOfIncident,
               Date.from(Instant.now()),
               urgency.getValue(),

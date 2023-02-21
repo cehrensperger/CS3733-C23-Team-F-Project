@@ -77,10 +77,10 @@ public class PathFinder {
    *     location) fails
    */
   @SneakyThrows
-  public List<Node> findPath(@NonNull Node start, @NonNull Node end) {
+  public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Boolean accessible) {
 
     // Find the path with the algorithm
-    return algorithm.findPath(start, end, session); // Return the path
+    return algorithm.findPath(start, end, accessible, session); // Return the path
   }
 
   static class NodeWrapper implements Comparable<NodeWrapper> {

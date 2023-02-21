@@ -5,6 +5,7 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
@@ -23,6 +24,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -42,6 +44,7 @@ public class PathfindingController implements IController {
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
+  @FXML private CheckBox accessibleBox;
   @FXML private AnchorPane mapPane;
   @FXML private Label floorSelector;
   @FXML private MFXButton mapEditorButton;
@@ -140,13 +143,17 @@ public class PathfindingController implements IController {
     filterBox.setItems(FXCollections.observableArrayList(MapController.Display.values()));
     filterBox.setValue(MapController.Display.BOTH);
 
+    algorithmBox.setValue("A*");
+
     // Add a listener so that when the floor is changed, the map  controller sets the new floor
     floorProperty.addListener(
         (observable, oldValue, newValue) -> {
           mapController.setFloor(newValue);
           // If we have a valid path
           floorSelector.setText("Floor " + newValue.floorNum);
-          mapController.fillServiceRequests();
+          if (session.find(
+                  HospitalUser.class, CurrentUserEntity.CURRENT_USER.getCurrentUser().getId())
+              != null) mapController.fillServiceRequests();
           mapController.setDisplayText(filterBox.getValue());
           // If the last path is valid
           if (lastPath != null) {
@@ -337,6 +344,7 @@ public class PathfindingController implements IController {
     // get start and end locations from text fields
     LocationName startPath = startingBox.valueProperty().get();
     LocationName endPath = destinationBox.valueProperty().get();
+    Boolean accessible = accessibleBox.isSelected();
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
@@ -358,7 +366,7 @@ public class PathfindingController implements IController {
     Node endNode =
         endPath.getCurrentNode(
             Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-    lastPath = pathFinder.findPath(startNode, endNode);
+    lastPath = pathFinder.findPath(startNode, endNode, accessible);
 
     // Check that we actually got a path
     if (lastPath == null) {
@@ -367,6 +375,7 @@ public class PathfindingController implements IController {
       //      error.setText("No path found");
       System.out.println("no path found");
     } else {
+      setFloor(startNode.getFloor());
       drawPath(); // Draw the path
     }
   }
