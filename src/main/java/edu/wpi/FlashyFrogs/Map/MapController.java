@@ -138,11 +138,12 @@ public class MapController {
   /**
    * Zooms the map to the given coordinates
    *
+   * @param scale the scale to set ot
    * @param x the x-coordinate to zoom to
    * @param y the y-coordinate to zoom to
    */
-  public void zoomToCoordinates(int x, int y) {
-    gesturePane.centreOn(new Point2D(x, y));
+  public void zoomToCoordinates(int scale, int x, int y) {
+    gesturePane.zoomTo(scale, new Point2D(x, y));
   }
 
   /**
