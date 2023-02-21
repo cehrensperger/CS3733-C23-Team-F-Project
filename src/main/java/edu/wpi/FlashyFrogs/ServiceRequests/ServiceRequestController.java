@@ -15,6 +15,7 @@ public abstract class ServiceRequestController {
   // @FXML MFXButton backButton;
   @FXML private Pane rootPane;
   Stage stage;
+  @FXML private PopOver popOver;
 
   @FXML
   public void initialize() {}
