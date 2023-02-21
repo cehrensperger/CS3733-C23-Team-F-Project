@@ -5,6 +5,7 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
@@ -19,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -38,6 +40,7 @@ public class PathfindingController implements IController {
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
+  @FXML private CheckBox accessibleBox;
   @FXML private AnchorPane mapPane;
   @FXML private MFXButton mapEditorButton;
   @FXML private DatePicker moveDatePicker;
@@ -61,6 +64,14 @@ public class PathfindingController implements IController {
   @SneakyThrows
   public void initialize() {
     moveDatePicker.setValue(LocalDate.now());
+    moveDatePicker
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.setDate(
+                  Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+              mapController.redraw();
+            });
     h1.setVisible(false);
     h2.setVisible(false);
     h3.setVisible(false);
@@ -114,6 +125,8 @@ public class PathfindingController implements IController {
     startingBox.setItems(FXCollections.observableList(objects));
     destinationBox.setItems(FXCollections.observableList(objects));
     algorithmBox.setItems(FXCollections.observableList(algorithms));
+
+    algorithmBox.setValue("A*");
 
     // On floor change
     mapController
@@ -303,6 +316,7 @@ public class PathfindingController implements IController {
     // get start and end locations from text fields
     LocationName startPath = startingBox.valueProperty().get();
     LocationName endPath = destinationBox.valueProperty().get();
+    Boolean accessible = accessibleBox.isSelected();
 
     PathFinder pathFinder = new PathFinder(mapController.getMapSession());
 
@@ -324,7 +338,7 @@ public class PathfindingController implements IController {
     Node endNode =
         endPath.getCurrentNode(
             Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-    lastPath = pathFinder.findPath(startNode, endNode);
+    lastPath = pathFinder.findPath(startNode, endNode, accessible);
 
     // Check that we actually got a path
     if (lastPath == null) {
@@ -333,6 +347,7 @@ public class PathfindingController implements IController {
       //      error.setText("No path found");
       System.out.println("no path found");
     } else {
+      setFloor(startNode.getFloor());
       drawPath(); // Draw the path
     }
   }

@@ -10,6 +10,8 @@ import edu.wpi.FlashyFrogs.ResourceDictionary;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -23,10 +25,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
@@ -55,6 +54,8 @@ public class MapEditorController implements IController {
   @FXML private Button backButton;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
+    @FXML private CheckBox checkBox;
+  @FXML private DatePicker viewingDate;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -269,7 +270,7 @@ public class MapEditorController implements IController {
                 .addEventFilter(
                     MouseEvent.MOUSE_MOVED,
                     (mouseEvent) -> {
-                      System.out.println(root.getHeight());
+                      //System.out.println(root.getHeight());
                       // If quick draw is enabled
                       if (quickDrawActive) {
                         // Set the circles position
@@ -303,12 +304,13 @@ public class MapEditorController implements IController {
                         nodesToDelete.forEach(
                             (node) -> {
                               // For each node, delete it
+                              mapController.deleteNode(
+                                  node, checkBox.isSelected()); // Delete the node
                               mapController
                                   .getMapSession()
                                   .createMutationQuery("DELETE FROM " + "Node WHERE id = :id")
                                   .setParameter("id", node.getId())
                                   .executeUpdate();
-                              mapController.deleteNode(node); // Delete the node
                             }); // Delete all selected nodes
                       } else if (event.getCode().equals(KeyCode.DOWN)) { // Reversed top-bottom JFX
                         try {
@@ -433,26 +435,42 @@ public class MapEditorController implements IController {
         event -> {
           GesturePane gesturePane = mapController.getGesturePane();
           double scale = gesturePane.getCurrentScale();
-          System.out.println("translate X: " + gesturePane.getCurrentX());
-          System.out.println("translate Y: " + gesturePane.getCurrentY());
-          System.out.println("scale factor: " + scale);
+          //System.out.println("translate X: " + gesturePane.getCurrentX());
+          //System.out.println("translate Y: " + gesturePane.getCurrentY());
+          // System.out.println("scale factor: " + scale);
 
-          System.out.println(
-              "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
-          System.out.println(
-              "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
+          //System.out.println(
+            //  "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
+          //System.out.println(
+            //  "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
           double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
           double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
-          Node newNode =
-              new Node("", floorProperty.getValue(), (int) Math.round(x), (int) Math.round(y));
+          int roundedX = (int) Math.round(x);
+            int roundedY = (int) Math.round(y);
+            Node newNode =
+                new Node(
+                    createNodeID(mapController.getFloor(), roundedX, roundedY),
+                    "",
+                    floorProperty.getValue(),
+                    roundedX,
+                    roundedY);
           mapController.addNode(newNode, false);
 
           // make sure the circle is within bounds
           if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
-            System.out.println("out of bounds");
+            //System.out.println("out of bounds");
           }
           duplicateCircle.setVisible(false);
         });
+
+    viewingDate
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.setDate(
+                  Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+              mapController.redraw();
+            });
   }
 
   /**
@@ -927,7 +945,7 @@ public class MapEditorController implements IController {
               (oldNode) -> {
                 selectedNodes.remove(oldNode); // Remove the node
 
-                mapController.deleteNode(oldNode); // On delete, delete
+                mapController.deleteNode(oldNode, false); // On delete, delete
                 clearNodePopOver();
               },
               (oldNode, newNode) -> {
