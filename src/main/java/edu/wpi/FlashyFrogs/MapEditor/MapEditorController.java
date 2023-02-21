@@ -12,14 +12,15 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -62,6 +63,7 @@ public class MapEditorController implements IController {
   @FXML private MFXButton floorSelectorButton;
   @FXML private SearchableComboBox<MapController.Display> filterBox;
   @FXML private CheckBox checkBox;
+  @FXML private DatePicker viewingDate;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -486,6 +488,15 @@ public class MapEditorController implements IController {
             (observable, oldValue, newValue) -> {
               if (newValue != null) mapController.setDisplayText(newValue);
             });
+
+    viewingDate
+        .valueProperty()
+        .addListener(
+                (observable, oldValue, newValue) -> {
+                  mapController.setDate(
+                      Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+                  mapController.redraw();
+                });
   }
 
   /**

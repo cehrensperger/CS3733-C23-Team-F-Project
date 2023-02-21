@@ -40,7 +40,7 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </Label>
-            <DatePicker>
+            <DatePicker fx:id="viewingDate">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>

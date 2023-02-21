@@ -77,7 +77,6 @@ public class PathfindingController implements IController {
         .valueProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              System.out.println("listener dun heard somthin");
               mapController.setDate(
                   Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
               mapController.redraw();
