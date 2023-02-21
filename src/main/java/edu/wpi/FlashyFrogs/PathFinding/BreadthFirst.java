@@ -12,7 +12,11 @@ import org.hibernate.Session;
 public class BreadthFirst implements IFindPath {
 
   @SneakyThrows
-  public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
+  public List<Node> findPath(
+      @NonNull Node start,
+      @NonNull Node end,
+      @NonNull Boolean accessible,
+      @NonNull Session session) {
 
     if (start.getId().equals(null) || end.getId().equals(null)) throw new Exception();
 

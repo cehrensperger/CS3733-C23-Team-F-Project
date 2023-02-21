@@ -67,7 +67,7 @@ public class Fapp extends Application {
 
               // For each floor
               for (Node.Floor floor : Node.Floor.values()) {
-                mapController.setFloor(floor); // Cache it
+                mapController.getMapFloorProperty().setValue(floor); // Cache it
               }
 
               mapController.exit(); // Exit the map controller
@@ -122,6 +122,8 @@ public class Fapp extends Application {
 
     // Add the sheets
     sheets.add(themeName.resource.toExternalForm());
+    sheets.add(
+        Objects.requireNonNull(Theme.class.getResource("views/NotColors.css")).toExternalForm());
 
     theme = themeName;
   }

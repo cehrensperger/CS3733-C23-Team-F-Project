@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -15,14 +14,14 @@
 
 <AnchorPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.EditUserController">
    <children>
-      <HBox alignment="CENTER" layoutY="74.0" prefHeight="325.0" prefWidth="582.0">
+      <HBox alignment="CENTER" layoutY="74.0" prefHeight="325.0" prefWidth="600.0">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="40.0">
                <children>
-                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username" styleClass="fields" />
-                  <CustomPasswordField fx:id="pass1" promptText="Password:" />
-                  <CustomPasswordField fx:id="pass2" promptText="Confirm Password:" />
-                  <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="293.0" promptText="Employee Type:" styleClass="fields">
+                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username" styleClass="editUserFields" />
+                  <CustomPasswordField fx:id="pass1" promptText="Password:" styleClass="editUserFields" />
+                  <CustomPasswordField fx:id="pass2" promptText="Confirm Password:" styleClass="editUserFields" />
+                  <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="293.0" promptText="Employee Type:" styleClass="editUserFields">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -34,10 +33,10 @@
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="40.0">
                <children>
-                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name" styleClass="fields" />
-                  <TextField fx:id="middleName" promptText="Middle Name" styleClass="fields" />
-                  <TextField fx:id="lastName" promptText="Last Name" styleClass="fields" />
-                  <SearchableComboBox fx:id="deptBox" prefHeight="26.0" prefWidth="211.0" promptText="Department:" styleClass="fields">
+                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name" styleClass="editUserFields" />
+                  <TextField fx:id="middleName" promptText="Middle Name" styleClass="editUserFields" />
+                  <TextField fx:id="lastName" promptText="Last Name" styleClass="editUserFields" />
+                  <SearchableComboBox fx:id="deptBox" prefHeight="26.0" prefWidth="211.0" promptText="Department:" styleClass="editUserFields">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -58,19 +57,17 @@
          </font>
       </Text>
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
-      <HBox alignment="CENTER" layoutY="386.0" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0">
+      <HBox alignment="CENTER" layoutY="386.0" prefHeight="100.0" prefWidth="600.0" spacing="150.0" AnchorPane.bottomAnchor="0.0">
          <children>
-            <MFXButton onAction="#deleteUser" text="Delete User">
+            <MFXButton onAction="#deleteUser" prefHeight="25.0" prefWidth="184.0" styleClass="redOutlineNoSetSize" text="Delete User">
                <HBox.margin>
-                  <Insets right="200.0" />
+                  <Insets left="18.0" />
                </HBox.margin>
             </MFXButton>
-            <MFXButton fx:id="editUser" onAction="#saveChanges" text="Save Changes">
-               <styleClass>
-                  <String fx:value="blue" />
-                  <String fx:value="body" />
-                  <String fx:value="round" />
-               </styleClass>
+            <MFXButton fx:id="editUser" onAction="#saveChanges" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Save Changes">
+               <HBox.margin>
+                  <Insets right="18.0" />
+               </HBox.margin>
             </MFXButton>
          </children>
       </HBox>

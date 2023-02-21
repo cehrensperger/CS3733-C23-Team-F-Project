@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -10,14 +10,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.LoginAdministratorController">
+<AnchorPane styleClass="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.LoginAdministratorController">
    <children>
-      <Label alignment="CENTER" layoutX="280.0" layoutY="14.0" styleClass="titleText" text="Login Manager" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="279.2" AnchorPane.topAnchor="14.0">
+      <Label alignment="CENTER" layoutX="280.0" layoutY="14.0" styleClass="titleTextNonTextObject" text="Login Manager" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="279.2" AnchorPane.topAnchor="14.0">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER" layoutX="-2.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="1280.0" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="102.0">
+      <HBox alignment="CENTER" layoutX="-2.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="1280.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="102.0">
          <children>
             <TableView fx:id="userLoginTable" onMouseClicked="#setSelected" prefHeight="504.0" prefWidth="1306.0" HBox.hgrow="ALWAYS">
               <columns>
@@ -28,26 +28,24 @@
                   <TableColumn fx:id="empTypeCol" prefWidth="262.39990234375" text="Employee Type" />
                   <TableColumn fx:id="deptCol" prefWidth="408.0001220703125" text="Department" />
               </columns>
+               <HBox.margin>
+                  <Insets left="18.0" right="18.0" />
+               </HBox.margin>
             </TableView>
          </children>
       </HBox>
-      <MFXButton fx:id="back" graphicTextGap="100.0" layoutX="14.0" layoutY="661.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleBack" prefHeight="33.0" prefWidth="130.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="25.399999999999977" AnchorPane.leftAnchor="14.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <styleClass>
-            <String fx:value="back" />
-            <String fx:value="round" />
-            <String fx:value="body" />
-         </styleClass>
-      </MFXButton>
-      <Text fx:id="h1" fill="#b6000b" layoutX="342.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can manage all of the accounts and their preferences">
+      <Text fx:id="h1" fill="#b6000b" layoutX="20.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can manage all of the accounts and their preferences">
          <font>
             <Font size="10.0" />
          </font>
       </Text>
       <Label fx:id="errorMessage" layoutX="936.0" layoutY="608.0" />
-      <MFXButton fx:id="addNewUser" layoutX="1135.0" layoutY="661.0" minWidth="-Infinity" onAction="#handleNewUser" prefHeight="33.0" prefWidth="130.0" styleClass="blueBackgroundSideBar" text="Add New User" wrapText="true" AnchorPane.bottomAnchor="25.399999999999977" AnchorPane.rightAnchor="14.599999999999909">
+      <MFXButton fx:id="addNewUser" layoutX="1135.0" layoutY="661.0" minWidth="-Infinity" onAction="#handleNewUser" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Add New User" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="18.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+      <MFXButton fx:id="back" layoutX="20.0" layoutY="662.0" minWidth="-Infinity" onAction="#handleBack" prefHeight="25.0" prefWidth="184.0" styleClass="backButton" text="Back" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
          </font>

@@ -111,7 +111,7 @@ public class AudioVisualEditorController extends ServiceRequestController implem
 
     try {
       // check
-      if (locationBox.getValue().toString().equals("")
+      if (locationBox.getValue().toString().isEmpty()
           || device.getText().equals("")
           || reason.getText().equals("")
           || date.getValue().toString().equals("")

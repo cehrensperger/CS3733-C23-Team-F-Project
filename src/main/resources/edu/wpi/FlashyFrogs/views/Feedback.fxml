@@ -32,7 +32,7 @@
                               <Insets top="6.0" />
                            </HBox.margin>
                         </HBox>
-                        <MFXButton onAction="#handleSubmit" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                        <MFXButton onAction="#handleSubmit" prefWidth="85.0" styleClass="blueNoSetSize" text="Submit" textFill="WHITE">
                            <HBox.margin>
                               <Insets bottom="18.0" right="18.0" />
                            </HBox.margin>

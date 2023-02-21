@@ -97,7 +97,7 @@
                             <children>
                         <VBox prefHeight="586.0" prefWidth="167.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Ian Wright and Owen Krause" wrappingWidth="346.0859069824219">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Ian Wright and Owen Krause" wrappingWidth="346.0859069824219">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -105,7 +105,7 @@
                                     <Insets top="132.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Kyla Driscoll and Lindsey Mraz" wrappingWidth="317.1355285644531">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Kyla Driscoll and Lindsey Mraz" wrappingWidth="317.1355285644531">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -113,7 +113,7 @@
                                     <Insets top="60.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Audrey Mongillo and Emre Sabaz" wrappingWidth="339.65252685546875">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Audrey Mongillo and Emre Sabaz" wrappingWidth="339.65252685546875">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -121,7 +121,7 @@
                                     <Insets top="68.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Connor Ehrensperger and Jonathan Golden" wrappingWidth="270.49334716796875">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Connor Ehrensperger and Jonathan Golden" wrappingWidth="270.49334716796875">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -129,7 +129,7 @@
                                     <Insets top="82.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Joseph Cardarelli and Connor Ehrensperger" wrappingWidth="315.5272521972656">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Joseph Cardarelli and Connor Ehrensperger" wrappingWidth="315.5272521972656">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -152,7 +152,7 @@
                                             <Insets bottom="40.0" top="40.0" />
                                         </VBox.margin>
                                     </Text>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Audio/Visual" wrappingWidth="215.40960693359375">
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Audio/Visual" wrappingWidth="215.40960693359375">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -160,7 +160,7 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for devices like TVs, speakers, and others" wrappingWidth="500.0">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for devices like TVs, speakers, and others" wrappingWidth="500.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -168,7 +168,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Information Technology">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Information Technology">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -176,7 +176,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for devices or software to be installed or fixed" wrappingWidth="400.0">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for devices or software to be installed or fixed" wrappingWidth="400.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -184,7 +184,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Internal Patient Transportation">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Internal Patient Transportation">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -192,7 +192,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for patients to be transported to a new location in a variety of ways" wrappingWidth="400.0">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for patients to be transported to a new location in a variety of ways" wrappingWidth="400.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -200,7 +200,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Sanitation">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Sanitation">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -208,7 +208,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for spills, biohazards, furniture, clothes, and other items to be cleaned" wrappingWidth="400.0">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for spills, biohazards, furniture, clothes, and other items to be cleaned" wrappingWidth="400.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -216,7 +216,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBold" text="Security">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Security">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -224,7 +224,7 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="Request for various levels of threats to be neutralized" wrappingWidth="400.0">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for various levels of threats to be neutralized" wrappingWidth="400.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -232,10 +232,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Here are the credits and descriptions for the service request pages">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h1" styleClass="warningText" text="Here are the credits and descriptions for the service request pages">
                               </Text>
                                     </children>
                                     <HBox.margin>
