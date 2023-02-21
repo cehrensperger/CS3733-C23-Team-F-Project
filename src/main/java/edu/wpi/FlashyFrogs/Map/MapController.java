@@ -144,6 +144,7 @@ public class MapController {
    */
   public void zoomToCoordinates(int scale, int x, int y) {
     gesturePane.zoomTo(scale, new Point2D(x, y));
+    gesturePane.zoomTo(scale, new Point2D(x, y)); // Zoom a second time because this works????
   }
 
   /**

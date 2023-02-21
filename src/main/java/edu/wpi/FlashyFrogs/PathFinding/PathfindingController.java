@@ -80,17 +80,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
     mapPane.getChildren().add(0, map); // Put the map loader into the editor box
 
-    // By default hide circles
-    mapController.setNodeCreation(
-        (node, circle) -> {
-          circle.setOpacity(0); // hide the circle
-        });
-
-    mapController.setEdgeCreation(
-        (edge, line) -> {
-          line.setOpacity(0); // Hide the line
-        });
-
     // make the anchor pane resizable
     AnchorPane.setTopAnchor(map, 0.0);
     AnchorPane.setBottomAnchor(map, 0.0);
@@ -173,73 +162,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     Fapp.handleBack(); // Delegate to Fapp
   }
 
-
-
-  /**
-   * Hides the last drawn path on the map, in preparation for a new path being drawn. Handles case
-   * where no path is drawn
-   */
-  private void hideLastPath() {
-    pathTable.setVisible(false);
-    // Check to make sure there is a path
-    if (lastPath != null) {
-      // Get the start node
-      Node startNode = lastPath.get(0);
-
-      // If the start node is on this floor
-      if (startNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-        // Get the circle
-        Circle circle = mapController.getNodeToCircleMap().get(startNode);
-
-        circle.setOpacity(0); // Hide the circle
-      }
-
-      // Get the end node in the path
-      Node endNode = lastPath.get(lastPath.size() - 1);
-
-      // If the end node is on this floor
-      if (endNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-        // Get the circle
-        Circle circle = mapController.getNodeToCircleMap().get(endNode);
-
-        circle.setOpacity(0); // Hide the circle
-      }
-
-      // Hide all the edges
-      for (int i = 1; i < lastPath.size(); i++) { // For each edge
-        // Get the two nodes in the edge
-        Node thisNode = lastPath.get(i);
-
-        // If we're on the right floor
-        if (thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-          // Hide
-          mapController.getNodeToCircleMap().get(thisNode).setOpacity(0);
-        }
-
-        Node previousNode = lastPath.get(i - 1);
-
-        // If both nodes are on this floor
-        if (thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())
-            && previousNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-          Edge edge; // The edge to hide
-
-          // Get the edge, try the first directino
-          edge = mapController.getMapSession().find(Edge.class, new Edge(thisNode, previousNode));
-
-          // That failing
-          if (edge == null) {
-            // Try the other
-            edge = mapController.getMapSession().find(Edge.class, new Edge(previousNode, thisNode));
-          }
-
-          // Now get the line
-          Line line = mapController.getEdgeToLineMap().get(edge);
-          line.setOpacity(0); // hide the line
-        }
-      }
-    }
-  }
-
   /** Method that generates table for textual path instructions */
   private void drawTable() {
     pathTable.setVisible(true);
@@ -249,9 +171,9 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     double curAngle = 0;
 
     pathTable.setItems(instructions);
-    for (int i = 0; i < lastPath.size() - 1; i++) { // For each line in the path
-      Node thisNode = lastPath.get(i);
-      Node nextNode = lastPath.get(i + 1);
+    for (int i = 0; i < currentPath.size() - 1; i++) { // For each line in the path
+      Node thisNode = currentPath.get(i);
+      Node nextNode = currentPath.get(i + 1);
 
       double target =
           Math.atan2(
@@ -267,6 +189,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       String nodeName =
           thisNode
               .getCurrentLocation(
+                  mapController.getMapSession(),
                   Date.from(
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))
               .stream()
@@ -298,89 +221,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     instructions.add(
         new Instruction(
             "You have arrived at " + destinationBox.valueProperty().get(),
-            lastPath.get(lastPath.size() - 1)));
-  }
-
-  /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */
-  private void drawPath() throws IOException {
-    // Color any edges on the map
-    Node prevNode = lastPath.get(0);
-    for (int i = 1; i < lastPath.size(); i++) { // For each line in the path
-      Node thisNode = lastPath.get(i); // Get the node
-
-      String nextFloor = thisNode.getFloor().floorNum;
-
-      if (!nextFloor.equals(prevNode.getFloor().floorNum)) {
-        FXMLLoader loader =
-            new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
-        PopOver goToNext = new PopOver(loader.load());
-
-        NextFloorPopupController controller = loader.getController();
-        controller.setPathfindingController(this);
-        controller.setFloor(thisNode.getFloor());
-
-        Circle circle = mapController.getNodeToCircleMap().get(prevNode);
-        if (circle != null) {
-          circle.setFill(Paint.valueOf(Color.YELLOW.toString()));
-          circle.setOpacity(1);
-
-          goToNext.show(circle);
-          goToNext.setAutoHide(false);
-          goToNext.setAutoFix(false);
-          goToNext.detach();
-          goToNext.setX(250);
-          goToNext.setY(20);
-          goToNext.setTitle("   Your path goes to Floor " + nextFloor + ".");
-        }
-      }
-      prevNode = thisNode;
-
-      // If the node is on this floor
-      if (thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-
-        // Try to draw its edge. Check that what it's connected to is on this floor
-        if (lastPath.get(i - 1).getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-          // find the edge related to each pair of nodes
-          Edge edge =
-              mapController
-                  .getMapSession()
-                  .find(Edge.class, new Edge(lastPath.get(i - 1), thisNode));
-
-          // if it couldn't find the edge, reverse the direction and look again
-          if (edge == null) {
-            edge =
-                mapController
-                    .getMapSession()
-                    .find(Edge.class, new Edge(thisNode, lastPath.get(i - 1)));
-          }
-
-          // get the line on the map associated with the edge
-          Line line = mapController.getEdgeToLineMap().get(edge);
-
-          // Set its formatting
-          line.setOpacity(1);
-          line.setStroke(Paint.valueOf(Color.BLUE.toString()));
-          line.setStrokeWidth(5);
-        }
-      }
-    }
-
-    // Get the first node, to draw it
-    Node firstNode = lastPath.get(0);
-    if (firstNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-      Circle circle = mapController.getNodeToCircleMap().get(firstNode);
-
-      circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-      circle.setOpacity(1);
-    }
-
-    // Get the ending node, to draw it
-    Node lastNode = lastPath.get(lastPath.size() - 1);
-    if (lastNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-      Circle circle = mapController.getNodeToCircleMap().get(lastNode);
-      circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-      circle.setOpacity(1);
-    }
+            currentPath.get(currentPath.size() - 1)));
   }
 
   /** Method that handles drawing a new path (AKA the submit button handler) */
@@ -405,9 +246,11 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     // Get the new path from the PathFinder
     Node startNode =
         startPath.getCurrentNode(
+            mapController.getMapSession(),
             Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     Node endNode =
         endPath.getCurrentNode(
+            mapController.getMapSession(),
             Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     currentPath = pathFinder.findPath(startNode, endNode, accessible);
 
@@ -420,7 +263,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     } else {
       setFloor(startNode.getFloor()); // Go to the starting floor
       // Zoom to the coordinates of the starting node
-      mapController.zoomToCoordinates(10, startNode.getXCoord(), startNode.getYCoord());
+      mapController.zoomToCoordinates(5, startNode.getXCoord(), startNode.getYCoord());
       colorFloor(); // Draw the path
       setFloor(startNode.getFloor());
       drawTable();

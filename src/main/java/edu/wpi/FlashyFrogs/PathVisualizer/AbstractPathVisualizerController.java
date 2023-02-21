@@ -13,7 +13,6 @@ import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import lombok.NonNull;
@@ -96,9 +95,9 @@ public abstract class AbstractPathVisualizerController implements IController {
       Node endNode = currentPath.get(currentPath.size() - 1); // Get the end node
 
       // If the nodes floor is correct
-      if (startNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+      if (endNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
         // Circle for the node
-        Circle nodeCircle = mapController.getNodeToCircleMap().get(startNode);
+        Circle nodeCircle = mapController.getNodeToCircleMap().get(endNode);
         nodeCircle.setVisible(visible); // Set the node to be visible
         nodeCircle.setFill(endColor); // Set its color
       }
@@ -124,17 +123,21 @@ public abstract class AbstractPathVisualizerController implements IController {
           controller.setDestination(thisNode); // Go to that
 
           Circle circle = mapController.getNodeToCircleMap().get(lastNode);
-          if (circle != null) {
-            circle.setFill(Paint.valueOf(Color.YELLOW.toString()));
-            circle.setOpacity(1);
+          circle.setFill(Color.YELLOW);
+          circle.setVisible(true);
 
-            goToNext.show(circle);
-            goToNext.setAutoHide(false);
-            goToNext.setAutoFix(false);
-            goToNext.detach();
-            goToNext.setX(250);
-            goToNext.setY(20);
-          }
+          goToNext.show(circle);
+          goToNext.setAutoHide(false);
+          goToNext.setAutoFix(false);
+          goToNext.detach();
+          goToNext.setX(250);
+          goToNext.setY(20);
+        } else if (!thisNode.getFloor().equals(lastNode.getFloor())
+            && thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+          System.out.println("this one");
+          Circle circle = mapController.getNodeToCircleMap().get(thisNode);
+          circle.setFill(Color.YELLOW);
+          circle.setVisible(true);
         }
 
         // If both nodes are on this floor
@@ -154,6 +157,8 @@ public abstract class AbstractPathVisualizerController implements IController {
 
           // Set the line color
           lineToColor.setFill(lineColor);
+          lineToColor.setStroke(lineColor);
+          lineToColor.setStrokeWidth(5);
           lineToColor.setVisible(visible);
         }
       }
@@ -197,6 +202,6 @@ public abstract class AbstractPathVisualizerController implements IController {
     mapController.getMapFloorProperty().setValue(node.getFloor());
 
     // Go to the nodes coordinates
-    mapController.zoomToCoordinates(10, node.getXCoord(), node.getYCoord());
+    mapController.zoomToCoordinates(5, node.getXCoord(), node.getYCoord());
   }
 }
