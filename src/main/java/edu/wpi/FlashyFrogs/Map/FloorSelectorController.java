@@ -1,9 +1,8 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,7 +10,7 @@ import javafx.scene.control.Button;
 @GeneratedExclusion
 public class FloorSelectorController {
 
-  ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>();
+  private Property<Node.Floor> floorProperty = null;
 
   @FXML Button button1;
   @FXML Button button2;
@@ -29,7 +28,7 @@ public class FloorSelectorController {
     floorProperty.setValue(Node.Floor.getEnum(floorLevel));
   }
 
-  public void setFloorProperty(ObjectProperty<Node.Floor> floorProperty) {
+  public void setFloorProperty(Property<Node.Floor> floorProperty) {
     this.floorProperty = floorProperty;
   }
 }
