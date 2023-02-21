@@ -21,12 +21,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -50,6 +50,8 @@ public class PathfindingController implements IController {
   @FXML private MFXButton mapEditorButton;
   @FXML private MFXButton floorSelectorButton;
   @FXML private DatePicker moveDatePicker;
+  @FXML private TableView<LocationName> pathTable;
+  @FXML private TableColumn<LocationName, String> pathCol;
   private List<Node> lastPath; // The most recently generated path
 
   //  @FXML private Label error;
@@ -81,6 +83,7 @@ public class PathfindingController implements IController {
     h3.setVisible(false);
     h4.setVisible(false);
     h5.setVisible(false);
+    pathTable.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -175,6 +178,8 @@ public class PathfindingController implements IController {
             (observable, oldValue, newValue) -> {
               if (newValue != null) mapController.setDisplayText(newValue);
             });
+
+    pathCol.setCellValueFactory(new PropertyValueFactory<>("shortName"));
   }
 
   /** Callback to handle the back button being pressed */
@@ -189,6 +194,7 @@ public class PathfindingController implements IController {
    * where no path is drawn
    */
   private void hideLastPath() {
+    pathTable.setVisible(false);
     // Check to make sure there is a path
     if (lastPath != null) {
       // Get the start node
@@ -245,6 +251,19 @@ public class PathfindingController implements IController {
           line.setOpacity(0); // hide the line
         }
       }
+    }
+  }
+
+  /** Method that generates table for textual path instructions */
+  private void drawTable() {
+    pathTable.setVisible(true);
+
+    ObservableList<LocationName> instructions = FXCollections.observableArrayList();
+
+    pathTable.setItems(instructions);
+    for (int i = 1; i < lastPath.size(); i++) { // For each line in the path
+      Node thisNode = lastPath.get(i);
+      instructions.add(thisNode.getCurrentLocation(new Date()).stream().findFirst().orElseThrow());
     }
   }
 
@@ -368,6 +387,7 @@ public class PathfindingController implements IController {
       System.out.println("no path found");
     } else {
       setFloor(startNode.getFloor());
+      drawTable();
       drawPath(); // Draw the path
     }
   }
