@@ -16,17 +16,22 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -43,6 +48,8 @@ public class PathfindingController implements IController {
   @FXML private AnchorPane mapPane;
   @FXML private MFXButton mapEditorButton;
   @FXML private DatePicker moveDatePicker;
+  @FXML private TableView<Instruction> pathTable;
+  @FXML private TableColumn<Instruction, String> pathCol;
   private List<Node> lastPath; // The most recently generated path
 
   //  @FXML private Label error;
@@ -76,6 +83,7 @@ public class PathfindingController implements IController {
     h3.setVisible(false);
     h4.setVisible(false);
     h5.setVisible(false);
+    pathTable.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -154,6 +162,15 @@ public class PathfindingController implements IController {
       mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
+
+    filterBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue != null) mapController.setDisplayText(newValue);
+            });
+
+    pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
   }
 
   /** Callback to handle the back button being pressed */
@@ -168,6 +185,7 @@ public class PathfindingController implements IController {
    * where no path is drawn
    */
   private void hideLastPath() {
+    pathTable.setVisible(false);
     // Check to make sure there is a path
     if (lastPath != null) {
       // Get the start node
@@ -224,6 +242,42 @@ public class PathfindingController implements IController {
           line.setOpacity(0); // hide the line
         }
       }
+    }
+  }
+
+  /** Method that generates table for textual path instructions */
+  private void drawTable() {
+    pathTable.setVisible(true);
+
+    ObservableList<Instruction> instructions = FXCollections.observableArrayList();
+
+    double curAngle = 0;
+
+    pathTable.setItems(instructions);
+    for (int i = 1; i < lastPath.size() - 1; i++) { // For each line in the path
+      Node thisNode = lastPath.get(i);
+      Node nextNode = lastPath.get(i + 1);
+
+      double target =
+          Math.atan2(
+              (nextNode.getYCoord() - thisNode.getYCoord()),
+              (nextNode.getXCoord() - thisNode.getXCoord()));
+      double errorTheta = target - curAngle;
+      curAngle = target;
+
+      int errorDeg = (int) Math.toDegrees(errorTheta);
+
+      String nodeName =
+          thisNode
+              .getCurrentLocation(
+                  Date.from(
+                      moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))
+              .stream()
+              .findFirst()
+              .orElseThrow()
+              .getShortName();
+
+      instructions.add(new Instruction("Turn " + errorDeg + " degrees at " + nodeName));
     }
   }
 
@@ -347,6 +401,7 @@ public class PathfindingController implements IController {
       System.out.println("no path found");
     } else {
       setFloor(startNode.getFloor());
+      drawTable();
       drawPath(); // Draw the path
     }
   }
@@ -410,5 +465,13 @@ public class PathfindingController implements IController {
    */
   public void setFloor(@NonNull Node.Floor floor) {
     mapController.getMapFloorProperty().setValue(floor);
+  }
+
+  public static class Instruction {
+    @Getter @Setter private String instruction;
+
+    Instruction(String instruction) {
+      this.instruction = instruction;
+    }
   }
 }
