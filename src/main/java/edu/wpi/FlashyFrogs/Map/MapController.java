@@ -9,7 +9,6 @@ import jakarta.persistence.Tuple;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -68,6 +67,7 @@ public class MapController {
 
   /**
    * Set the location creation function
+   *
    * @param function the function to set the location creation to. May be null
    */
   public void setLocationCreation(TriConsumer<Node, LocationName, Text> function) {
@@ -239,22 +239,39 @@ public class MapController {
 
   public void fillServiceRequests() {
     HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    List<Tuple> tuples;
 
-    List<Tuple> tuples =
-        getMapSession()
-            .createQuery(
-                "Select s.id, m.node "
-                    + "From ServiceRequest s, Move m "
-                    + "WHERE s.assignedEmp = :user "
-                    + "AND m.location = s.location "
-                    + "AND m.moveDate = (Select max(m2.moveDate)"
-                    + "                  FROM Move m2 "
-                    + "                  WHERE s.location = m2.location "
-                    + "                  GROUP BY m2.location "
-                    + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
-                Tuple.class)
-            .setParameter("user", currentUser)
-            .getResultList();
+    if (CurrentUserEntity.CURRENT_USER.getAdmin()) {
+      tuples =
+          getMapSession()
+              .createQuery(
+                  "Select s.id, m.node "
+                      + "From ServiceRequest s, Move m "
+                      + "WHERE m.location = s.location "
+                      + "AND m.moveDate = (Select max(m2.moveDate)"
+                      + "                  FROM Move m2 "
+                      + "                  WHERE s.location = m2.location "
+                      + "                  GROUP BY m2.location "
+                      + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
+                  Tuple.class)
+              .getResultList();
+    } else {
+      tuples =
+          getMapSession()
+              .createQuery(
+                  "Select s.id, m.node "
+                      + "From ServiceRequest s, Move m "
+                      + "WHERE s.assignedEmp = :user "
+                      + "AND m.location = s.location "
+                      + "AND m.moveDate = (Select max(m2.moveDate)"
+                      + "                  FROM Move m2 "
+                      + "                  WHERE s.location = m2.location "
+                      + "                  GROUP BY m2.location "
+                      + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
+                  Tuple.class)
+              .setParameter("user", currentUser)
+              .getResultList();
+    }
 
     for (Tuple t : tuples) {
       Node node = (Node) t.get(t.getElements().get(1));
@@ -423,7 +440,7 @@ public class MapController {
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
             if (i == 0) box.getChildren().get(i).setOpacity(1);
-            if (i == 1) box.getChildren().get(i).setOpacity(0);
+            if (i >= 1) box.getChildren().get(i).setOpacity(0);
           }
         }
       }
@@ -431,7 +448,7 @@ public class MapController {
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
             if (i == 0) box.getChildren().get(i).setOpacity(0);
-            if (i == 1) box.getChildren().get(i).setOpacity(1);
+            if (i >= 1) box.getChildren().get(i).setOpacity(1);
           }
         }
       }
@@ -439,7 +456,7 @@ public class MapController {
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
             if (i == 0) box.getChildren().get(i).setOpacity(1);
-            if (i == 1) box.getChildren().get(i).setOpacity(1);
+            if (i >= 1) box.getChildren().get(i).setOpacity(1);
           }
         }
       }
@@ -447,7 +464,7 @@ public class MapController {
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
             if (i == 0) box.getChildren().get(i).setOpacity(0);
-            if (i == 1) box.getChildren().get(i).setOpacity(0);
+            if (i >= 1) box.getChildren().get(i).setOpacity(0);
           }
         }
       }

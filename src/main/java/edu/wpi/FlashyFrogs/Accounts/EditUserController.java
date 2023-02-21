@@ -3,7 +3,7 @@ package edu.wpi.FlashyFrogs.Accounts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.ORM.Department;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
@@ -22,7 +22,7 @@ public class EditUserController implements IController {
   @FXML private MFXTextField lastName;
   @FXML private MFXTextField username;
   @FXML private SearchableComboBox<Department> deptBox;
-  @FXML private SearchableComboBox<User.EmployeeType> employeeType;
+  @FXML private SearchableComboBox<HospitalUser.EmployeeType> employeeType;
   @FXML private Label errorMessage;
 
   public void setPopOver(PopOver thePopOver) {

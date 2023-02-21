@@ -295,13 +295,23 @@ public class HomeController implements IController {
                     Node node =
                         (Node) event.getSource(); // Get the node representation of what called this
                     popOver.show(node);
+                    ServiceRequestController controller = newLoad.getController();
+                    controller.setRequest(row.getItem());
+                    controller.updateFields();
+                    controller.setPopOver(popOver);
+
+                    popOver
+                        .showingProperty()
+                        .addListener(
+                            (observable, oldValue, newValue) -> {
+                              if (!newValue) {
+                                refreshTable();
+                              }
+                            });
+
                   } catch (IOException e) {
                     throw new RuntimeException(e);
                   }
-
-                  ServiceRequestController controller = newLoad.getController();
-                  controller.setRequest(row.getItem());
-                  controller.updateFields();
                 }
               });
           return row;
@@ -442,6 +452,9 @@ public class HomeController implements IController {
       }
       moveTable.setItems(FXCollections.observableList(moveWrappers));
     }
+
+    requestTable.refresh();
+    moveTable.refresh();
 
     // refill based on filter
     if (!filterCreated) {
