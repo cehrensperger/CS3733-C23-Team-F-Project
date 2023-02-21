@@ -460,8 +460,15 @@ public class MapEditorController implements IController {
                 "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
             double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
             double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
+            int roundedX = (int) Math.round(x);
+            int roundedY = (int) Math.round(y);
             Node newNode =
-                new Node("", floorProperty.getValue(), (int) Math.round(x), (int) Math.round(y));
+                new Node(
+                    createNodeID(mapController.getFloor(), roundedX, roundedY),
+                    "",
+                    floorProperty.getValue(),
+                    roundedX,
+                    roundedY);
             mapController.addNode(newNode, false);
 
             // make sure the circle is within bounds
