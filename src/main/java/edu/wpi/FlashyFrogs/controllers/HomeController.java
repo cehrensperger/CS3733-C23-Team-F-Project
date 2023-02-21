@@ -33,6 +33,7 @@ import javafx.util.converter.DateStringConverter;
 import lombok.Getter;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
+import org.controlsfx.control.tableview2.FilteredTableView;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -47,12 +48,12 @@ public class HomeController implements IController {
   @FXML protected TableColumn<ServiceRequest, LocationName> locationCol;
   @FXML protected TableColumn<ServiceRequest, ServiceRequest.Status> statusCol;
 
-  @FXML protected TableView<ServiceRequest> requestTable;
+  @FXML protected FilteredTableView<ServiceRequest> requestTable;
 
   @FXML protected TableColumn<MoveWrapper, edu.wpi.FlashyFrogs.ORM.Node> nodeIDCol;
   @FXML protected TableColumn<MoveWrapper, LocationName> locationNameCol;
   @FXML protected TableColumn<MoveWrapper, Date> dateCol;
-  @FXML protected TableView<MoveWrapper> moveTable;
+  @FXML protected FilteredTableView<MoveWrapper> moveTable;
   @FXML protected MFXButton manageLoginsButton;
   @FXML protected MFXButton manageCSVButton;
 
