@@ -137,8 +137,6 @@ public class HomeController implements IController {
   }
 
   public void initialize() {
-    moveTable = new FilteredTableView<MoveWrapper>();
-    requestTable = new FilteredTableView<ServiceRequest>();
 
     h1.setVisible(false);
     h2.setVisible(false);
@@ -159,19 +157,46 @@ public class HomeController implements IController {
     filterBox.setValue("All");
     filterBox.valueProperty().setValue("All");
 
-    // need to be the names of the fields
-    requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
-    requestIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-    initEmpCol.setCellValueFactory(new PropertyValueFactory<>("emp"));
-    assignedEmpCol.setCellValueFactory(new PropertyValueFactory<>("assignedEmp"));
-    subDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
-    urgencyCol.setCellValueFactory(new PropertyValueFactory<>("urgency"));
-    locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-    statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+    moveTable = new FilteredTableView<MoveWrapper>();
+    requestTable = new FilteredTableView<ServiceRequest>();
 
+    // need to be the names of the fields
+    requestTypeCol = new FilteredTableColumn<>("Request Type");
+    requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
+    requestIDCol = new FilteredTableColumn<>("Request ID");
+    requestIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+    initEmpCol = new FilteredTableColumn<>("Initiating Employee");
+    initEmpCol.setCellValueFactory(new PropertyValueFactory<>("emp"));
+    assignedEmpCol = new FilteredTableColumn<>("Assigned Employee");
+    assignedEmpCol.setCellValueFactory(new PropertyValueFactory<>("assignedEmp"));
+    subDateCol = new FilteredTableColumn<>("Submission Date");
+    subDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
+    urgencyCol = new FilteredTableColumn<>("Urgency");
+    urgencyCol.setCellValueFactory(new PropertyValueFactory<>("urgency"));
+    locationCol = new FilteredTableColumn<>("Location");
+    locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+    statusCol = new FilteredTableColumn<>("Status");
+    statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+    requestTable
+        .getColumns()
+        .setAll(
+            requestTypeCol,
+            requestIDCol,
+            initEmpCol,
+            assignedEmpCol,
+            subDateCol,
+            urgencyCol,
+            locationCol,
+            statusCol);
+
+    nodeIDCol = new FilteredTableColumn<>("Node ID");
     nodeIDCol.setCellValueFactory(new PropertyValueFactory<>("node"));
+    locationNameCol = new FilteredTableColumn<>("Location");
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("locationName"));
+    dateCol = new FilteredTableColumn<>("Date Effective");
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
+    moveTable.getColumns().setAll(nodeIDCol, locationNameCol, dateCol);
+
     Session session = CONNECTION.getSessionFactory().openSession();
     List<edu.wpi.FlashyFrogs.ORM.Node> nodes =
         session.createQuery("FROM Node", edu.wpi.FlashyFrogs.ORM.Node.class).getResultList();
@@ -367,10 +392,8 @@ public class HomeController implements IController {
   public void changeMode(ActionEvent actionEvent) throws IOException {
     if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
       Fapp.setTheme(Theme.DARK_THEME);
-      System.out.println("switch to dark");
     } else {
       Fapp.setTheme(Theme.LIGHT_THEME);
-      System.out.println("switch to light");
     }
   }
 
