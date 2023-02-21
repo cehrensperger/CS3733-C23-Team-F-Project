@@ -388,6 +388,28 @@
 .table-row-cell:selected {
 }
 
+/** here **/
+
+
+.filtered-table-view .column-header-background
+    /** controls the blue line in the tables above the table entries **/
+{
+    -fx-background-radius: 0px 0px 0px 0px;
+    -fx-padding: 0px 0px 7px 0px;
+}
+
+.filtered-table-view .table-cell
+    /** controls table views within the app - not hover **/
+{
+    -fx-padding: 2 0 2 10px;
+}
+
+.filtered-table-row-cell
+    /** controls table views within the app - not hover **/
+{
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
 
 .alertTopBox
     /** controls the top box with the title of the alert in the alert side bar **/

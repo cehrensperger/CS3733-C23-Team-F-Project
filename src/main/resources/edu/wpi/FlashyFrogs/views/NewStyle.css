@@ -373,7 +373,51 @@
     -fx-text-fill: #ffffff;
 }
 
-.table-row-cell:selected {
+.table-row-cell:selected
+    /** controls the cells when they are hovered over in table views **/
+{
+    -fx-background-color: #012d5a;
+    -fx-text-background-color: #ffffff;
+    -fx-text-fill: #ffffff;
+}
+
+.filtered-table-view .column-header-background
+    /** controls the blue line in the filtered tables above the table entries **/
+{
+    -fx-background-color: #012d5a;
+}
+
+.filtered-table-view .table-cell
+    /** controls filtered table views within the app - not hover **/
+{
+    -fx-border-color: transparent;
+}
+.filtered-table-view .column-header
+    /** controls filtered table views within the app - not hover **/
+{
+    -fx-background-color: #f1f1f1;
+    -fx-text-fill: #012D5A;
+}
+
+.filtered-table-row-cell
+    /** controls filtered table views within the app - not hover **/
+{
+    -fx-background-color: #f1f1f1;
+    -fx-text-background-color: #012d5a;
+    -fx-text-fill: #012d5a;
+}
+
+.filtered-table-row-cell:hover
+    /** controls filtered table views within the app - hover **/
+{
+    -fx-background-color: #012d5a;
+    -fx-text-background-color: #ffffff;
+    -fx-text-fill: #ffffff;
+}
+
+.filtered-table-row-cell:selected
+    /** controls the cells when they are hovered over in filtered table views **/
+{
     -fx-background-color: #012d5a;
     -fx-text-background-color: #ffffff;
     -fx-text-fill: #ffffff;
