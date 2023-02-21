@@ -150,8 +150,8 @@
     /** controls all date picker fields within the app **/
 {
     -fx-prompt-text-fill: #012D5A;
-    -fx-control-inner-background: #f1f1f1 ;
-    -fx-control-background: #f1f1f1 ;
+    -fx-control-inner-background: transparent;
+    -fx-control-background: transparent ;
 }
 
 .date-picker > .arrow-button
