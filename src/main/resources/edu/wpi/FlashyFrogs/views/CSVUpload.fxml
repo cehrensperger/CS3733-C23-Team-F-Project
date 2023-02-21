@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="350.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
+<AnchorPane styleClass="background" prefHeight="350.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
    <children>
       <MFXButton alignment="BASELINE_LEFT" layoutX="40.0" layoutY="244.0" onAction="#handleChooseFiles" prefHeight="25.0" prefWidth="150.0" styleClass="blueBackground" text="Select Files" AnchorPane.bottomAnchor="73.0" AnchorPane.rightAnchor="267.0">
          <font>
@@ -30,22 +30,22 @@
       </MFXButton>
       <VBox layoutX="179.0" layoutY="54.0" prefHeight="146.0" prefWidth="377.0" spacing="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
          <children>
-            <Label fx:id="nodeFileLabel" layoutX="10.0" layoutY="127.0" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" styleClass="fields" text=" File 1:">
+            <Label fx:id="nodeFileLabel" layoutX="10.0" layoutY="127.0" prefHeight="29.0" prefWidth="377.0" styleClass="fields" text=" File 1:">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="edgeFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" styleClass="fields" text=" File 2:">
+            <Label fx:id="edgeFileLabel" prefHeight="29.0" prefWidth="377.0" styleClass="fields" text=" File 2:">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="locationFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" styleClass="fields" text=" File 3:">
+            <Label fx:id="locationFileLabel" prefHeight="29.0" prefWidth="377.0" styleClass="fields" text=" File 3:">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="moveFileLabel" prefHeight="29.0" prefWidth="377.0" style="-fx-border-color: #000;" styleClass="fields" text=" File 4:">
+            <Label fx:id="moveFileLabel" prefHeight="29.0" prefWidth="377.0" styleClass="fields" text=" File 4:">
                <font>
                   <Font size="18.0" />
                </font>
