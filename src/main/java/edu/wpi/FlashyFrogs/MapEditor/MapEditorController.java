@@ -191,9 +191,10 @@ public class MapEditorController implements IController {
           line.toBack(); // Move the line to the back, for visual reasons
         });
 
-    mapController.setLocationCreation((node, location, name) -> {
-        name.setMouseTransparent(true); // Set this to not intercept mouse events
-    });
+    mapController.setLocationCreation(
+        (node, location, name) -> {
+          name.setMouseTransparent(true); // Set this to not intercept mouse events
+        });
 
     mapController
         .getCurrentDrawingPane()

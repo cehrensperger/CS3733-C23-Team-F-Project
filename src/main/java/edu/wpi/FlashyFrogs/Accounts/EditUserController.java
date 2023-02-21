@@ -3,10 +3,8 @@ package edu.wpi.FlashyFrogs.Accounts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.ORM.Department;
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -47,8 +45,8 @@ public class EditUserController implements IController {
 
   public void saveChanges(ActionEvent actionEvent) {
     if (username.getText().equals("")
-         || pass1.getText().equals("")
-         || pass2.getText().equals("")
+        || pass1.getText().equals("")
+        || pass2.getText().equals("")
         || firstName.getText().equals("")
         || middleName.getText().equals("")
         || lastName.getText().equals("")
