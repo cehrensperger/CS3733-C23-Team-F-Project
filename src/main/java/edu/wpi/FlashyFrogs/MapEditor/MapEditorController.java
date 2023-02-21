@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ResourceDictionary;
 import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -189,6 +190,10 @@ public class MapEditorController implements IController {
         (edge, line) -> {
           line.toBack(); // Move the line to the back, for visual reasons
         });
+
+    mapController.setLocationCreation((node, location, name) -> {
+        name.setMouseTransparent(true); // Set this to not intercept mouse events
+    });
 
     mapController
         .getCurrentDrawingPane()
@@ -382,6 +387,7 @@ public class MapEditorController implements IController {
     nodeToDrag.setOnDragDetected(
         event -> {
           Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+          dragboard.setDragView(ResourceDictionary.DRAG_SVG.resource);
           ClipboardContent clipboardContent = new ClipboardContent();
           clipboardContent.putString("fjbwef");
           dragboard.setContent(clipboardContent);
