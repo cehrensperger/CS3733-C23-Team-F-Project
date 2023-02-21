@@ -14,10 +14,10 @@ import edu.wpi.FlashyFrogs.Theme;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.*;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -43,11 +43,11 @@ import org.hibernate.Transaction;
 @GeneratedExclusion
 public class HomeController implements IController {
   @FXML protected FilteredTableColumn<ServiceRequest, String> requestTypeCol;
-  @FXML protected FilteredTableColumn<ServiceRequest, String> requestIDCol;
-  @FXML protected FilteredTableColumn<ServiceRequest, String> initEmpCol;
-  @FXML protected FilteredTableColumn<ServiceRequest, String> assignedEmpCol;
-  @FXML protected FilteredTableColumn<ServiceRequest, String> subDateCol;
-  @FXML protected FilteredTableColumn<ServiceRequest, String> urgencyCol;
+  @FXML protected FilteredTableColumn<ServiceRequest, Long> requestIDCol;
+  @FXML protected FilteredTableColumn<ServiceRequest, HospitalUser> initEmpCol;
+  @FXML protected FilteredTableColumn<ServiceRequest, HospitalUser> assignedEmpCol;
+  @FXML protected FilteredTableColumn<ServiceRequest, Date> subDateCol;
+  @FXML protected FilteredTableColumn<ServiceRequest, ServiceRequest.Urgency> urgencyCol;
   @FXML protected FilteredTableColumn<ServiceRequest, LocationName> locationCol;
   @FXML protected FilteredTableColumn<ServiceRequest, ServiceRequest.Status> statusCol;
 
@@ -77,6 +77,8 @@ public class HomeController implements IController {
   @FXML Text h4;
   @FXML Text h5;
   boolean hDone = false;
+
+  public SimpleStringProperty requestTypeProperty;
 
   public static class MoveWrapper {
     @Getter public edu.wpi.FlashyFrogs.ORM.Node node;
@@ -161,33 +163,17 @@ public class HomeController implements IController {
     requestTable = new FilteredTableView<ServiceRequest>();
 
     // need to be the names of the fields
-    requestTypeCol = new FilteredTableColumn<>("Request Type");
-    requestTypeCol.setCellValueFactory(new PropertyValueFactory<>("requestType"));
-    requestIDCol = new FilteredTableColumn<>("Request ID");
-    requestIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-    initEmpCol = new FilteredTableColumn<>("Initiating Employee");
-    initEmpCol.setCellValueFactory(new PropertyValueFactory<>("emp"));
-    assignedEmpCol = new FilteredTableColumn<>("Assigned Employee");
-    assignedEmpCol.setCellValueFactory(new PropertyValueFactory<>("assignedEmp"));
-    subDateCol = new FilteredTableColumn<>("Submission Date");
-    subDateCol.setCellValueFactory(new PropertyValueFactory<>("dateOfSubmission"));
-    urgencyCol = new FilteredTableColumn<>("Urgency");
-    urgencyCol.setCellValueFactory(new PropertyValueFactory<>("urgency"));
-    locationCol = new FilteredTableColumn<>("Location");
-    locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-    statusCol = new FilteredTableColumn<>("Status");
-    statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-    requestTable
-        .getColumns()
-        .setAll(
-            requestTypeCol,
-            requestIDCol,
-            initEmpCol,
-            assignedEmpCol,
-            subDateCol,
-            urgencyCol,
-            locationCol,
-            statusCol);
+    requestTypeCol.setCellValueFactory(
+        p -> new SimpleStringProperty(p.getValue().getRequestType()));
+    requestIDCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getId()));
+    initEmpCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getEmp()));
+    assignedEmpCol.setCellValueFactory(
+        p -> new SimpleObjectProperty<>(p.getValue().getAssignedEmp()));
+    subDateCol.setCellValueFactory(
+        p -> new SimpleObjectProperty<Date>(p.getValue().getDateOfSubmission()));
+    urgencyCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getUrgency()));
+    locationCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getLocation()));
+    statusCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getStatus()));
 
     nodeIDCol = new FilteredTableColumn<>("Node ID");
     nodeIDCol.setCellValueFactory(new PropertyValueFactory<>("node"));
@@ -195,7 +181,6 @@ public class HomeController implements IController {
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("locationName"));
     dateCol = new FilteredTableColumn<>("Date Effective");
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
-    moveTable.getColumns().setAll(nodeIDCol, locationNameCol, dateCol);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<edu.wpi.FlashyFrogs.ORM.Node> nodes =
@@ -448,11 +433,7 @@ public class HomeController implements IController {
               .getResultList();
 
       ObservableList<ServiceRequest> srList = FXCollections.observableList(serviceRequests);
-      FilteredList<ServiceRequest> filteredSR = new FilteredList<>(srList);
-      filteredSR.predicateProperty().bind(requestTable.predicateProperty());
-      SortedList<ServiceRequest> sortedSR = new SortedList<>(filteredSR);
-      sortedSR.comparatorProperty().bind(requestTable.comparatorProperty());
-      requestTable.setItems(sortedSR);
+      FilteredTableView.configureForFiltering(requestTable, srList);
 
       moveTable.setOpacity(0);
     } else {
@@ -461,11 +442,7 @@ public class HomeController implements IController {
               .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
               .getResultList();
       ObservableList<ServiceRequest> srList = FXCollections.observableList(serviceRequests);
-      FilteredList<ServiceRequest> filteredSR = new FilteredList<>(srList);
-      filteredSR.predicateProperty().bind(requestTable.predicateProperty());
-      SortedList<ServiceRequest> sortedSR = new SortedList<>(filteredSR);
-      sortedSR.comparatorProperty().bind(requestTable.comparatorProperty());
-      requestTable.setItems(sortedSR);
+      FilteredTableView.configureForFiltering(requestTable, srList);
 
       String query = "SELECT m from Move m WHERE m.moveDate > current timestamp";
       if (canEditMoves) {
@@ -477,11 +454,7 @@ public class HomeController implements IController {
         moveWrappers.add(new MoveWrapper(move));
       }
       ObservableList<MoveWrapper> moveList = FXCollections.observableList(moveWrappers);
-      FilteredList<MoveWrapper> filteredMove = new FilteredList<>(moveList);
-      filteredMove.predicateProperty().bind(moveTable.predicateProperty());
-      SortedList<MoveWrapper> sortedMove = new SortedList<>(filteredMove);
-      sortedMove.comparatorProperty().bind(moveTable.comparatorProperty());
-      moveTable.setItems(sortedMove);
+      FilteredTableView.configureForFiltering(moveTable, moveList);
     }
 
     // refill based on filter
