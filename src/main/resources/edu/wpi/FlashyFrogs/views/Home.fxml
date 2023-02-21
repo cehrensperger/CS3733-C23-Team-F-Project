@@ -99,7 +99,7 @@
                         </StackPane>
                         <StackPane maxWidth="190.0" prefHeight="165.0" prefWidth="190.0">
                            <children>
-                              <Rectangle styleClass="alertBottomBox" arcHeight="5.0" arcWidth="5.0" height="165.0" width="190.0">
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" height="165.0" styleClass="alertBottomBox" width="190.0">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
@@ -206,9 +206,9 @@
       </ImageView>
       <FilteredTableView fx:id="moveTable" layoutX="241.0" prefHeight="208.0" prefWidth="758.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="241.0" AnchorPane.rightAnchor="281.0">
          <columns>
-            <FilteredTableColumn fx:id="nodeIDCol" prefWidth="144.0" text="Node ID" />
-            <FilteredTableColumn fx:id="locationNameCol" prefWidth="331.0" text="Location Name" />
-            <FilteredTableColumn fx:id="dateCol" minWidth="0.0" prefWidth="375.0" text="Date Effective" />
+            <FilteredTableColumn fx:id="nodeIDCol" maxWidth="1.7976931348623157E308" prefWidth="385.0" text="Node ID" />
+            <FilteredTableColumn fx:id="locationNameCol" maxWidth="1.7976931348623157E308" prefWidth="385.0" text="Location Name" />
+            <FilteredTableColumn fx:id="dateCol" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="385.0" text="Date Effective" />
          </columns>
       </FilteredTableView>
       <Label fx:id="tableText2" layoutX="240.0" layoutY="459.0" styleClass="headerBold" text="Future Moves" AnchorPane.bottomAnchor="226.0" AnchorPane.leftAnchor="240.0">
