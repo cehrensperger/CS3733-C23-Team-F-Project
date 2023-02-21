@@ -34,9 +34,10 @@ import javafx.util.Callback;
 import javafx.util.converter.DateStringConverter;
 import lombok.Getter;
 import org.controlsfx.control.PopOver;
-import org.controlsfx.control.SearchableComboBox;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -64,12 +65,9 @@ public class HomeController implements IController {
   @FXML protected Label tableText;
   @FXML protected Label tableText2;
 
-  @FXML protected SearchableComboBox<String> filterBox;
   @FXML protected MFXButton editMovesButton;
 
   protected boolean canEditMoves = false;
-
-  boolean filterCreated = false;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -77,8 +75,6 @@ public class HomeController implements IController {
   @FXML Text h4;
   @FXML Text h5;
   boolean hDone = false;
-
-  public SimpleStringProperty requestTypeProperty;
 
   public static class MoveWrapper {
     @Getter public edu.wpi.FlashyFrogs.ORM.Node node;
@@ -148,20 +144,6 @@ public class HomeController implements IController {
 
     Fapp.resetStack();
 
-    List<String> filters = new ArrayList<String>();
-    filters.add("All");
-    filters.add("AudioVisual");
-    filters.add("ComputerService");
-    filters.add("InternalTransport");
-    filters.add("Sanitation");
-    filters.add("Security");
-    filterBox.setItems(FXCollections.observableList(filters));
-    filterBox.setValue("All");
-    filterBox.valueProperty().setValue("All");
-
-    moveTable = new FilteredTableView<MoveWrapper>();
-    requestTable = new FilteredTableView<ServiceRequest>();
-
     // need to be the names of the fields
     requestTypeCol.setCellValueFactory(
         p -> new SimpleStringProperty(p.getValue().getRequestType()));
@@ -170,17 +152,44 @@ public class HomeController implements IController {
     assignedEmpCol.setCellValueFactory(
         p -> new SimpleObjectProperty<>(p.getValue().getAssignedEmp()));
     subDateCol.setCellValueFactory(
-        p -> new SimpleObjectProperty<Date>(p.getValue().getDateOfSubmission()));
+        p -> new SimpleObjectProperty<>(p.getValue().getDateOfSubmission()));
     urgencyCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getUrgency()));
     locationCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getLocation()));
     statusCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getStatus()));
 
-    nodeIDCol = new FilteredTableColumn<>("Node ID");
+    PopupFilter<ServiceRequest, String> popupTypeFilter = new PopupStringFilter<>(requestTypeCol);
+    requestTypeCol.setOnFilterAction(e -> popupTypeFilter.showPopup());
+    PopupFilter<ServiceRequest, Long> popupIDFilter = new PopupStringFilter<>(requestIDCol);
+    requestIDCol.setOnFilterAction(e -> popupIDFilter.showPopup());
+    PopupFilter<ServiceRequest, HospitalUser> popupEmpFilter = new PopupStringFilter<>(initEmpCol);
+    initEmpCol.setOnFilterAction(e -> popupEmpFilter.showPopup());
+    PopupFilter<ServiceRequest, HospitalUser> popupAssignedFilter =
+        new PopupStringFilter<>(assignedEmpCol);
+    assignedEmpCol.setOnFilterAction(e -> popupAssignedFilter.showPopup());
+    PopupFilter<ServiceRequest, Date> popupSubDateFilter = new PopupStringFilter<>(subDateCol);
+    subDateCol.setOnFilterAction(e -> popupSubDateFilter.showPopup());
+    PopupFilter<ServiceRequest, ServiceRequest.Urgency> popupUrgencyFilter =
+        new PopupStringFilter<>(urgencyCol);
+    urgencyCol.setOnFilterAction(e -> popupUrgencyFilter.showPopup());
+    PopupFilter<ServiceRequest, LocationName> popupLocationFilter =
+        new PopupStringFilter<>(locationCol);
+    locationCol.setOnFilterAction(e -> popupLocationFilter.showPopup());
+    PopupFilter<ServiceRequest, ServiceRequest.Status> popupStatusFilter =
+        new PopupStringFilter<>(statusCol);
+    statusCol.setOnFilterAction(e -> popupStatusFilter.showPopup());
+
     nodeIDCol.setCellValueFactory(new PropertyValueFactory<>("node"));
-    locationNameCol = new FilteredTableColumn<>("Location");
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("locationName"));
-    dateCol = new FilteredTableColumn<>("Date Effective");
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
+
+    PopupFilter<MoveWrapper, edu.wpi.FlashyFrogs.ORM.Node> popupNodeFilter =
+        new PopupStringFilter<>(nodeIDCol);
+    nodeIDCol.setOnFilterAction(e -> popupNodeFilter.showPopup());
+    PopupFilter<MoveWrapper, LocationName> popupLocationNameFilter =
+        new PopupStringFilter<>(locationNameCol);
+    locationNameCol.setOnFilterAction(e -> popupLocationNameFilter.showPopup());
+    PopupFilter<MoveWrapper, Date> popupDateFilter = new PopupStringFilter<>(dateCol);
+    dateCol.setOnFilterAction(e -> popupDateFilter.showPopup());
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<edu.wpi.FlashyFrogs.ORM.Node> nodes =
@@ -344,7 +353,6 @@ public class HomeController implements IController {
       tableText2.setText("Future Moves");
     }
     refreshTable();
-    setListener();
   }
 
   @FXML
@@ -454,65 +462,6 @@ public class HomeController implements IController {
       ObservableList<MoveWrapper> moveList = FXCollections.observableList(moveWrappers);
       FilteredTableView.configureForFiltering(moveTable, moveList);
     }
-
-    // refill based on filter
-    if (!filterCreated) {
-
-      session.close();
-    }
-  }
-
-  public void setListener() {
-    filterBox
-        .valueProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue.equals(null)) {
-                Session session = CONNECTION.getSessionFactory().openSession();
-                HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentUser();
-                boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
-                if (!newValue.equals("All")) {
-                  if (!isAdmin) {
-                    requestTable.setItems(
-                        FXCollections.observableList(
-                            session
-                                .createQuery(
-                                    "SELECT s FROM ServiceRequest s WHERE s.requestType = :type AND s.assignedEmp = :emp",
-                                    ServiceRequest.class)
-                                .setParameter("type", newValue)
-                                .setParameter("emp", currentUser)
-                                .getResultList()));
-                  } else {
-                    requestTable.setItems(
-                        FXCollections.observableList(
-                            session
-                                .createQuery(
-                                    "SELECT s FROM ServiceRequest s WHERE s.requestType = :type",
-                                    ServiceRequest.class)
-                                .setParameter("type", newValue)
-                                .getResultList()));
-                  }
-                } else {
-                  if (!isAdmin) {
-                    requestTable.setItems(
-                        FXCollections.observableList(
-                            session
-                                .createQuery(
-                                    "SELECT s FROM ServiceRequest s WHERE s.assignedEmp = :emp",
-                                    ServiceRequest.class)
-                                .setParameter("emp", currentUser)
-                                .getResultList()));
-                  } else {
-                    requestTable.setItems(
-                        FXCollections.observableList(
-                            session
-                                .createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class)
-                                .getResultList()));
-                  }
-                }
-                session.close();
-              }
-            });
   }
 
   public void handleManageCSV(ActionEvent event) throws IOException {
@@ -547,6 +496,11 @@ public class HomeController implements IController {
       tableText2.setText("Future Moves");
     }
     refreshTable();
+  }
+
+  public void handleResetFilters() {
+    requestTable.resetFilter();
+    moveTable.resetFilter();
   }
 
   public void srEditorPopOver() {}
