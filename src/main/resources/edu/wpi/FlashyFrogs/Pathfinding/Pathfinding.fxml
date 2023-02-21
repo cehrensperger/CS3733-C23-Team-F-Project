@@ -63,6 +63,15 @@
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </Text>
+            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" text="No Stairs">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin></CheckBox>
+            <Text fx:id="h6" styleClass="warningText" text="Check if you would not like your path to include stairs" wrappingWidth="190.0">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+            </Text>
             <MFXButton alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Generate Path">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
@@ -72,15 +81,6 @@
                </font>
             </MFXButton>
             <Text fx:id="h4" styleClass="warningText" text="Click to generate the path!">
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin>
-            </Text>
-            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" text="No Stairs">
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin></CheckBox>
-            <Text fx:id="h6" styleClass="warningText" text="Check if you would not like your path to include stairs" wrappingWidth="190.0">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>

@@ -354,13 +354,27 @@
     /** controls table views within the app - not hover **/
 {
     -fx-background-color: #f1f1f1;
-    -fx-text-fill: #012D5A;
+}
+.table-view .column-header .label
+    /** controls table views within the app - not hover **/
+{
+    -fx-text-fill: #012d5a;
+    -fx-alignment: center-left;
 }
 
 .table-row-cell
     /** controls table views within the app - not hover **/
 {
     -fx-background-color: #f1f1f1;
+    -fx-background: #f1f1f1;
+    -fx-text-background-color: #012d5a;
+    -fx-text-fill: #012d5a;
+}
+
+.filtered-table-row-cell
+{
+    -fx-background-color: #f1f1f1;
+    -fx-background: #f1f1f1;
     -fx-text-background-color: #012d5a;
     -fx-text-fill: #012d5a;
 }
@@ -370,7 +384,8 @@
 {
     -fx-background-color: #012d5a;
     -fx-text-background-color: #ffffff;
-    -fx-text-fill: #ffffff;
+    -fx-background: #012d5a;
+
 }
 
 .table-row-cell:selected
@@ -378,19 +393,14 @@
 {
     -fx-background-color: #012d5a;
     -fx-text-background-color: #ffffff;
-    -fx-text-fill: #ffffff;
-}
-
-.filtered-table-view .column-header-background
-    /** controls the blue line in the filtered tables above the table entries **/
-{
-    -fx-background-color: #012d5a;
+    -fx-background: #012d5a;
 }
 
 .filtered-table-view .table-cell
     /** controls filtered table views within the app - not hover **/
 {
     -fx-border-color: transparent;
+
 }
 .filtered-table-view .column-header
     /** controls filtered table views within the app - not hover **/
@@ -406,23 +416,6 @@
     -fx-text-background-color: #012d5a;
     -fx-text-fill: #012d5a;
 }
-
-.filtered-table-row-cell:hover
-    /** controls filtered table views within the app - hover **/
-{
-    -fx-background-color: #012d5a;
-    -fx-text-background-color: #ffffff;
-    -fx-text-fill: #ffffff;
-}
-
-.filtered-table-row-cell:selected
-    /** controls the cells when they are hovered over in filtered table views **/
-{
-    -fx-background-color: #012d5a;
-    -fx-text-background-color: #ffffff;
-    -fx-text-fill: #ffffff;
-}
-
 
 .alertTopBox
     /** controls the top box with the title of the alert in the alert side bar **/
