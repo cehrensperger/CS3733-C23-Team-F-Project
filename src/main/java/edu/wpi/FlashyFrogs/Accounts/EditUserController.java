@@ -4,6 +4,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.HospitalUser;
+import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,8 @@ import org.hibernate.Transaction;
 public class EditUserController implements IController {
   private PopOver popOver;
   private LoginAdministratorController loginAdministratorController;
+  private HospitalUser currentUser;
+  private UserLogin currentUserLogin;
   @FXML private TextField firstName;
   @FXML private TextField middleName;
   @FXML private TextField lastName;
@@ -36,12 +39,15 @@ public class EditUserController implements IController {
     this.loginAdministratorController = adminController;
   }
 
-  public void initialize(String firstName, String middleName, String lastName, String userName) {
-    this.firstName.setText(firstName);
-    this.middleName.setText(middleName);
-    this.lastName.setText(lastName);
+  public void initialize(String userName, UserLogin selectedUserLogin) {
+    this.currentUserLogin = selectedUserLogin;
+    this.currentUser = selectedUserLogin.getUser();
+    this.firstName.setText(currentUser.getFirstName());
+    this.middleName.setText(currentUser.getMiddleName());
+    this.lastName.setText(currentUser.getLastName());
     this.username.setText(userName);
-    // this.deptBox.set
+    this.deptBox.getSelectionModel().select(currentUser.getDepartment());
+    this.employeeType.getSelectionModel().select(currentUser.getEmployeeType());
   }
 
   public void saveChanges(ActionEvent actionEvent) {
@@ -88,7 +94,26 @@ public class EditUserController implements IController {
     }
   }
 
-  public void deleteUser(ActionEvent actionEvent) {}
+  public void deleteUser(ActionEvent actionEvent) throws Exception {
+    Session ses = CONNECTION.getSessionFactory().openSession();
+    if (currentUserLogin == null) {
+      errorMessage.setText("No user selected for deletion");
+      errorMessage.setVisible(true);
+    }
+    if (currentUser.equals(CurrentUserEntity.CURRENT_USER.getCurrentuser())) {
+      errorMessage.setText("Cannot delete current account");
+      errorMessage.setVisible(true);
+    } else {
+      errorMessage.setVisible(false);
+      ses.beginTransaction();
+      ses.createMutationQuery("delete FROM HospitalUser user WHERE id=:ID")
+          .setParameter("ID", currentUser.getId())
+          .executeUpdate();
+      ses.getTransaction().commit();
+      ses.close();
+      loginAdministratorController.initialize();
+    }
+  }
 
   public void onClose() {}
 

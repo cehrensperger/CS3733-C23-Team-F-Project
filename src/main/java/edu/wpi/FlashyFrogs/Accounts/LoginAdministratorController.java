@@ -29,7 +29,6 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class LoginAdministratorController implements IController {
   @FXML private Label errorMessage;
-  @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
 
@@ -135,8 +134,7 @@ public class LoginAdministratorController implements IController {
             System.out.println(
                 "You clicked on "
                     + userLoginTable.getSelectionModel().getSelectedItem().getUserName());
-            HospitalUser selectedUser =
-                userLoginTable.getSelectionModel().getSelectedItem().getUser();
+            UserLogin selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
             FXMLLoader newLoad =
                 new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
             PopOver popOver = null;
@@ -149,10 +147,8 @@ public class LoginAdministratorController implements IController {
             editUser.setPopOver(popOver);
             editUser.setLoginAdminController(this);
             editUser.initialize(
-                userLoginTable.getSelectionModel().getSelectedItem().getUser().getFirstName(),
-                userLoginTable.getSelectionModel().getSelectedItem().getUser().getMiddleName(),
-                userLoginTable.getSelectionModel().getSelectedItem().getUser().getLastName(),
-                userLoginTable.getSelectionModel().getSelectedItem().getUserName());
+                userLoginTable.getSelectionModel().getSelectedItem().getUserName(),
+                selectedUserLogin);
             popOver.detach();
             Node node = (Node) event.getSource();
             popOver.show(node.getScene().getWindow());
