@@ -152,33 +152,21 @@
                   <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="149.0" prefHeight="200.0" prefWidth="184.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
                      <children>
                         <MFXButton fx:id="manageCSVButton" onAction="#handleManageCSV" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Manage CSVs" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </MFXButton>
                         <MFXButton fx:id="manageLoginsButton" onAction="#viewLogins" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Manage Logins" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
                         </MFXButton>
                         <MFXButton fx:id="manageAnnouncementsButton" onAction="#manageAnnouncements" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Manage Alerts" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
                         </MFXButton>
                         <MFXButton onAction="#changeMode" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>

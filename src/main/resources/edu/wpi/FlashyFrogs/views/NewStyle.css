@@ -12,6 +12,10 @@
 {
     -fx-fill:#000000;
 }
+.titleTextNonTextObject {
+    /** Mimics .titleText for elements that aren't Text elements and thus won't change with -fx-fill **/
+    -fx-text-fill: #000000;
+}
 
 .header
     /** This styles headers - such as the titles of the sections on the service
@@ -27,11 +31,22 @@
     -fx-text-fill:#000000;
 }
 
+.headerBoldTextObject
+    /** Mimics .headerBold for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
+{
+    -fx-fill:#000000;
+}
+
 .body
     /** This styles body text - such as the names and descriptions on the service
      requests credits page **/
 {
     -fx-text-fill:#000000;
+}
+
+.bodyTextObject {
+    /** Mimics .body for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
+    -fx-fill:#000000;
 }
 
 .bodyBold
@@ -63,7 +78,7 @@
     /** This controls the style of the warning text that appears when the help
      button is clicked**/
 {
-    -fx-text-fill: #b6000b;
+    -fx-fill: #b6000b;
 }
 
 .backButton
