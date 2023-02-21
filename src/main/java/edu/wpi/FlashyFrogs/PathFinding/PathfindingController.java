@@ -33,6 +33,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -50,8 +52,8 @@ public class PathfindingController implements IController {
   @FXML private MFXButton mapEditorButton;
   @FXML private MFXButton floorSelectorButton;
   @FXML private DatePicker moveDatePicker;
-  @FXML private TableView<LocationName> pathTable;
-  @FXML private TableColumn<LocationName, String> pathCol;
+  @FXML private TableView<Instruction> pathTable;
+  @FXML private TableColumn<Instruction, String> pathCol;
   private List<Node> lastPath; // The most recently generated path
 
   //  @FXML private Label error;
@@ -179,7 +181,7 @@ public class PathfindingController implements IController {
               if (newValue != null) mapController.setDisplayText(newValue);
             });
 
-    pathCol.setCellValueFactory(new PropertyValueFactory<>("shortName"));
+    pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
   }
 
   /** Callback to handle the back button being pressed */
@@ -258,12 +260,35 @@ public class PathfindingController implements IController {
   private void drawTable() {
     pathTable.setVisible(true);
 
-    ObservableList<LocationName> instructions = FXCollections.observableArrayList();
+    ObservableList<Instruction> instructions = FXCollections.observableArrayList();
+
+    double curAngle = 0;
 
     pathTable.setItems(instructions);
-    for (int i = 1; i < lastPath.size(); i++) { // For each line in the path
+    for (int i = 1; i < lastPath.size() - 1; i++) { // For each line in the path
       Node thisNode = lastPath.get(i);
-      instructions.add(thisNode.getCurrentLocation(new Date()).stream().findFirst().orElseThrow());
+      Node nextNode = lastPath.get(i + 1);
+
+      double target =
+          Math.atan2(
+              (nextNode.getYCoord() - thisNode.getYCoord()),
+              (nextNode.getXCoord() - thisNode.getXCoord()));
+      double errorTheta = target - curAngle;
+      curAngle = target;
+
+      int errorDeg = (int) Math.toDegrees(errorTheta);
+
+      String nodeName =
+          thisNode
+              .getCurrentLocation(
+                  Date.from(
+                      moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))
+              .stream()
+              .findFirst()
+              .orElseThrow()
+              .getShortName();
+
+      instructions.add(new Instruction("Turn " + errorDeg + " degrees at " + nodeName));
     }
   }
 
@@ -494,6 +519,14 @@ public class PathfindingController implements IController {
       h4.setVisible(false);
       h5.setVisible(false);
       hDone = false;
+    }
+  }
+
+  public static class Instruction {
+    @Getter @Setter private String instruction;
+
+    Instruction(String instruction) {
+      this.instruction = instruction;
     }
   }
 }
