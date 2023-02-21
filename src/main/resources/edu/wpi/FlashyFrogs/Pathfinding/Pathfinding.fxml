@@ -86,7 +86,7 @@
                   <Insets left="18.0" />
                </VBox.margin>
             </Text>
-            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" text="CheckBox" />
+            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" text="No Stairs" />
          </children>
       </VBox>
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
