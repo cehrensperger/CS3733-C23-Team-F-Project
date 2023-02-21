@@ -76,7 +76,10 @@
                   <Insets left="18.0" />
                </VBox.margin>
             </Text>
-            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" text="No Stairs" />
+            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" text="No Stairs">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin></CheckBox>
             <Text fx:id="h6" styleClass="warningText" text="Check if you would not like your path to include stairs" wrappingWidth="190.0">
                <VBox.margin>
                   <Insets left="18.0" />
@@ -89,6 +92,9 @@
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
+               <VBox.margin>
+                  <Insets left="18.0" right="18.0" />
+               </VBox.margin>
             </TableView>
          </children>
       </VBox>

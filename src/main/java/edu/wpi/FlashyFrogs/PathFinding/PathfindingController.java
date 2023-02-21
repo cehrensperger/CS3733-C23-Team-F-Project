@@ -34,6 +34,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.commons.math3.util.MathUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
@@ -166,6 +167,37 @@ public class PathfindingController implements IController {
     }
 
     pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
+
+    pathTable.setRowFactory(
+        param -> {
+          TableRow<Instruction> row = new TableRow<>(); // Create a new table row to use
+
+          // When the user selects a row, just un-select it to avoid breaking formatting
+          row.selectedProperty()
+              .addListener(
+                  // Add a listener that does that
+                  (observable, oldValue, newValue) -> row.updateSelected(false));
+
+          // Add a listener to show the pop-up
+          row.setOnMouseClicked(
+              (event) -> {
+                // If the pop over exists and is either not focused or we are showing a new
+                // row
+                if (row != null) {
+                  setFloor(row.getItem().node.getFloor());
+                  //                  Platform.runLater(
+                  //                      () ->
+                  //                          mapController
+                  //                              .getGesturePane()
+                  //                              .zoomTo(
+                  //                                  .8,
+                  //                                  new javafx.geometry.Point2D(
+                  //                                      row.getItem().node.getXCoord(),
+                  //                                      row.getItem().node.getYCoord())));
+                }
+              });
+          return row;
+        });
   }
 
   /** Callback to handle the back button being pressed */
@@ -249,7 +281,7 @@ public class PathfindingController implements IController {
     double curAngle = 0;
 
     pathTable.setItems(instructions);
-    for (int i = 1; i < lastPath.size() - 1; i++) { // For each line in the path
+    for (int i = 0; i < lastPath.size() - 1; i++) { // For each line in the path
       Node thisNode = lastPath.get(i);
       Node nextNode = lastPath.get(i + 1);
 
@@ -260,6 +292,8 @@ public class PathfindingController implements IController {
       double errorTheta = target - curAngle;
       curAngle = target;
 
+      errorTheta = MathUtils.normalizeAngle(errorTheta, 0.0);
+
       int errorDeg = (int) Math.toDegrees(errorTheta);
 
       String nodeName =
@@ -269,11 +303,34 @@ public class PathfindingController implements IController {
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))
               .stream()
               .findFirst()
-              .orElseThrow()
+              .orElse(new LocationName("", LocationName.LocationType.HALL, ""))
               .getShortName();
 
-      instructions.add(new Instruction("Turn " + errorDeg + " degrees at " + nodeName));
+      if (nodeName.equals("")) {
+        if (errorDeg < -10) {
+          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees", thisNode));
+        } else if (errorDeg > 10) {
+          instructions.add(new Instruction("Turn left " + errorDeg + " degrees", thisNode));
+        } else {
+          instructions.add(new Instruction("Continue", thisNode));
+        }
+      } else {
+        if (errorDeg < -10) {
+          instructions.add(
+              new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName, thisNode));
+        } else if (errorDeg > 10) {
+          instructions.add(
+              new Instruction("Turn left " + errorDeg + " degrees at " + nodeName, thisNode));
+        } else {
+          instructions.add(new Instruction("Continue at " + nodeName, thisNode));
+        }
+      }
     }
+
+    instructions.add(
+        new Instruction(
+            "You have arrived at " + destinationBox.valueProperty().get(),
+            lastPath.get(lastPath.size() - 1)));
   }
 
   /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */
@@ -466,9 +523,11 @@ public class PathfindingController implements IController {
 
   public static class Instruction {
     @Getter @Setter private String instruction;
+    @Getter @Setter private Node node;
 
-    Instruction(String instruction) {
+    Instruction(String instruction, Node node) {
       this.instruction = instruction;
+      this.node = node;
     }
   }
 }
