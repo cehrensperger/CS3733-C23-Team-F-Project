@@ -91,7 +91,7 @@
 }
 
 .blueOutlineNoSetSize
-    /** if you need the blue outline with blue text styling with no set sizes **/
+    /** if you need the blue outline with blue text styling with no set sizes**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#F1F1F1;
@@ -101,7 +101,7 @@
 
 .blueOutline
     /** This is a smaller version of the back button styling (light gray background with
-     blue outline) - ex. the toggle all button on the home page **/
+     blue outline) - ex. the toggle all button on the home page.**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#F1F1F1;
@@ -111,7 +111,7 @@
 
 .blueBackground
     /** This is a smaller version of the credits button styling (blue background with
-     white text) - ex. select files in Manage CSVs  **/
+     white text) - ex. select files in Manage CSVs. **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #012D5A;
@@ -150,7 +150,7 @@
     /** This controls input fields within the app - such as the service requests
     fields and the csv parser inputs **/
 {
-    -fx-border-color:#012D5A;
+    -fx-border-color:#D1D1D1;
     -fx-text-fill: #012D5A;
     -fx-background-color: #F1F1F1;
     -fx-prompt-text-fill: #012D5A;
