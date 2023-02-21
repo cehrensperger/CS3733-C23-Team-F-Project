@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.controllers;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.Theme;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -111,5 +112,19 @@ public class NavBarController {
     PopOver popOver = new PopOver(newLoad.load());
     popOver.detach();
     popOver.show(anchorPane.getScene().getWindow());
+  }
+
+  /**
+   * Change the color theme between Dark and Light Mode when the Switch Color Scheme button is
+   * clicked on NavBar.fxml.
+   *
+   * @throws IOException
+   */
+  public void changeMode() throws IOException {
+    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
+      Fapp.setTheme(Theme.DARK_THEME);
+    } else {
+      Fapp.setTheme(Theme.LIGHT_THEME);
+    }
   }
 }

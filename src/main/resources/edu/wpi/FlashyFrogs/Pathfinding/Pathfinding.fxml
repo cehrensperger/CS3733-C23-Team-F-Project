@@ -18,13 +18,10 @@
    <children>
       <VBox prefHeight="720.0" prefWidth="220.0" style="-fx-background-color: #d1d1d1;" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label styleClass="title" text="Pathfinder">
+            <Label styleClass="titleTextNonTextObject" text="Pathfinder">
                <VBox.margin>
                   <Insets bottom="25.0" left="18.0" top="18.0" />
                </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
             </Label>
             <SearchableComboBox fx:id="startingBox" promptText="Starting Location:" styleClass="fields">
                <VBox.margin>
@@ -66,18 +63,6 @@
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </Text>
-            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="188.0" text="No Stairs">
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="12.0" />
-               </font></CheckBox>
-            <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Check if you would not like your path to include stairs" wrappingWidth="190.0">
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin>
-            </Text>
             <MFXButton alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Generate Path">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
@@ -91,16 +76,19 @@
                   <Insets left="18.0" />
                </VBox.margin>
             </Text>
-            <TableView fx:id="pathTable" prefHeight="200.0" prefWidth="200.0">
+            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" text="No Stairs" />
+            <Text fx:id="h6" styleClass="warningText" text="Check if you would not like your path to include stairs" wrappingWidth="190.0">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+            </Text>
+            <TableView fx:id="pathTable" maxWidth="220.0" prefHeight="200.0" prefWidth="200.0">
               <columns>
                 <TableColumn fx:id="pathCol" editable="false" prefWidth="75.0" text="Text Directions" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
-               <VBox.margin>
-                  <Insets left="18.0" right="18.0" top="20.0" />
-               </VBox.margin>
             </TableView>
          </children>
       </VBox>

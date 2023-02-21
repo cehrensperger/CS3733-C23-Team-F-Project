@@ -47,6 +47,8 @@
             <MenuButton fx:id="loggedOutMenu" mnemonicParsing="false" styleClass="navBar" textAlignment="RIGHT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
+                  <MenuItem onAction="#changeMode" text="Switch Color Theme">
+                  </MenuItem>
                   <MenuItem onAction="#closeApp" text="Close Application" />
                </items>
             </MenuButton>

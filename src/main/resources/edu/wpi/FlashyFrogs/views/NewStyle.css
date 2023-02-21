@@ -12,6 +12,10 @@
 {
     -fx-fill:#000000;
 }
+.titleTextNonTextObject {
+    /** Mimics .titleText for elements that aren't Text elements and thus won't change with -fx-fill **/
+    -fx-text-fill: #000000;
+}
 
 .header
     /** This styles headers - such as the titles of the sections on the service
