@@ -130,6 +130,7 @@ public class LoginAdministratorController implements IController {
             System.out.println(
                 "You clicked on "
                     + userLoginTable.getSelectionModel().getSelectedItem().getUserName());
+            //HospitalUser selectedUser = (HospitalUser) userLoginTable.getSelectionModel().getSelectedItem();
             FXMLLoader newLoad =
                 new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
             PopOver popOver = null;
