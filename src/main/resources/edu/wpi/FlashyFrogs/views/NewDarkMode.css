@@ -10,72 +10,53 @@
     /** This styles any title texts within the app - including the title
     at the top of the sidebar **/
 {
-    -fx-font-family: "Roboto";
-    -fx-font-weight: bold;
-    -fx-font-size: 28pt;
-    -fx-fill:#000000;
+    -fx-fill:white;
 }
 
 .header
     /** This styles headers - such as the titles of the sections on the service
      requests pages **/
 {
-    -fx-font-family: "Roboto Light";
-    -fx-font-size: 20pt;
-    -fx-fill:#000000;
+    -fx-fill:white;
 }
 
 .headerBold
     /** This styles bold headers - such as the titles of the sections on the service
      requests credits page **/
 {
-    -fx-font-family: "Roboto";
-    -fx-font-weight: bold;
-    -fx-font-size: 20pt;
-    -fx-text-fill:#000000;
+    -fx-text-fill:white;
 }
 
 .body
     /** This styles body text - such as the names and descriptions on the service
      requests credits page **/
 {
-    -fx-font-family: "Roboto Light";
-    -fx-font-size: 10pt;
-    -fx-text-fill:#000000;
+    -fx-text-fill:white;
 }
 
 .bodyBold
     /** This styles body text - such as the names and descriptions on the service
      requests credits page **/
 {
-    -fx-font-family: "Roboto";
-    -fx-font-size: 10pt;
-    -fx-text-fill:#000000;
+    -fx-text-fill:white;
 }
 
 .subtext
     /** super small - basically only used in warning text **/
 {
-    -fx-font-family: "Roboto Light";
-    -fx-font-size: 8pt;
-    -fx-text-fill:#000000;
+    -fx-text-fill:white;
 }
 
 .middle
     /** honestly just if you need a text bigger than body but smaller than header **/
 {
-    -fx-font-family: "Roboto Light";
-    -fx-font-size: 14pt;
-    -fx-text-fill:#000000;
+    -fx-text-fill:white;
 }
 
 .middleBold
     /** honestly just if you need a text bigger than body but smaller than header and bold **/
 {
-    -fx-font-family: "Roboto";
-    -fx-font-size: 16pt;
-    -fx-font-weight: bold;
-    -fx-text-fill:#000000;
+    -fx-text-fill:white;
 }
 
 .warningText
@@ -83,8 +64,6 @@
      button is clicked**/
 {
     -fx-text-fill: #b6000b;
-    -fx-font-family: "Roboto Light";
-    -fx-font-size: 8pt;
 }
 
 .backButton
