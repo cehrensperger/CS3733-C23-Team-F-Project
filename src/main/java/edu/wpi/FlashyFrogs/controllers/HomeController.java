@@ -377,10 +377,8 @@ public class HomeController implements IController {
   public void changeMode(ActionEvent actionEvent) throws IOException {
     if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
       Fapp.setTheme(Theme.DARK_THEME);
-      System.out.println("switch to dark");
     } else {
       Fapp.setTheme(Theme.LIGHT_THEME);
-      System.out.println("switch to light");
     }
   }
 
