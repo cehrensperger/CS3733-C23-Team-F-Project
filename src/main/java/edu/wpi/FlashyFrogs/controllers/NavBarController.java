@@ -53,7 +53,7 @@ public class NavBarController {
     menu.show();
     menu.setDisable(false);
     header.setDisable(false);
-    menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentuser().getFirstName());
+    menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentUser().getFirstName());
     menu.setStyle("-fx-background-color: white");
     menu.getStyleClass().add("navBar");
     header.setOpacity(1);

@@ -19,7 +19,11 @@ public class AStar implements IFindPath {
    * @return the path (as a list) between the two nodes, or null if it could not find a path
    */
   @SneakyThrows
-  public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
+  public List<Node> findPath(
+      @NonNull Node start,
+      @NonNull Node end,
+      @NonNull Boolean accessible,
+      @NonNull Session session) {
 
     if (start.getId().equals(null) || end.getId().equals(null)) throw new Exception();
 
@@ -62,14 +66,15 @@ public class AStar implements IFindPath {
               .get(0)
               .getLocationType()
               .equals(LocationName.LocationType.ELEV)) {
-            child.g = q.g + 10; // cost for elevator
+            child.g = q.g + 50; // cost for elevator
           } else if (child
               .node
               .getCurrentLocation(session, Date.from(Instant.now()))
               .get(0)
               .getLocationType()
               .equals(LocationName.LocationType.STAI)) {
-            child.g = q.g + 20; // cost for stairs
+            if (accessible) continue;
+            child.g = q.g + 100; // cost for stairs
           }
         } else {
           child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start

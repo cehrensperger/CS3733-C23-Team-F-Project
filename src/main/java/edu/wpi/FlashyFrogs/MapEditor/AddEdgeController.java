@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
+import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
 /** Controller to add edges */
+@GeneratedExclusion
 public class AddEdgeController {
   @FXML private Text errorText;
   @FXML private SearchableComboBox<Node> edgeOneField;

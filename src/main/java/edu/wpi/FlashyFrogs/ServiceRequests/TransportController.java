@@ -157,7 +157,7 @@ public class TransportController implements IController {
               equipment.getValue(),
               dateOfTransport,
               Date.from(Instant.now()),
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               mode.getValue(),
               isolation.isSelected(),
               personal.getText(),
