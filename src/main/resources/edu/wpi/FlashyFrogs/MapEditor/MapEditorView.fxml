@@ -100,6 +100,15 @@
                   <String fx:value="body" />
                </styleClass>
             </Button>
+            <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="0.0" prefWidth="170.0" text="Move Visualizer">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+               <styleClass>
+                  <String fx:value="round" />
+                  <String fx:value="body" />
+               </styleClass>
+            </Button>
          </children>
          <padding>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

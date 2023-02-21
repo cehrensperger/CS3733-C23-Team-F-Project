@@ -191,9 +191,10 @@ public class MapEditorController implements IController {
           line.toBack(); // Move the line to the back, for visual reasons
         });
 
-    mapController.setLocationCreation((node, location, name) -> {
-        name.setMouseTransparent(true); // Set this to not intercept mouse events
-    });
+    mapController.setLocationCreation(
+        (node, location, name) -> {
+          name.setMouseTransparent(true); // Set this to not intercept mouse events
+        });
 
     mapController
         .getCurrentDrawingPane()
@@ -399,47 +400,44 @@ public class MapEditorController implements IController {
         });
 
     mapPane.setOnDragOver(
-        new EventHandler<DragEvent>() {
-          @Override
-          public void handle(DragEvent event) {
-            /* data is dragged over the target */
-            /* accept it only if it is not dragged from the same node
-             * and if it has a string data */
-            if (event.getGestureSource() != mapPane
-                &&
-                // image to represent the node?
-                event.getDragboard().hasString()) {
-              /* allow for both copying and moving, whatever user chooses */
-              event.acceptTransferModes(TransferMode.COPY);
-              GesturePane gesturePane = mapController.getGesturePane();
-              double scale = gesturePane.getCurrentScale();
-              duplicateCircle.setRadius(5 * scale);
-              duplicateCircle.setVisible(true);
-              duplicateCircle.setFill(Paint.valueOf("012DFA"));
-              duplicateCircle.setCenterX(event.getX());
+        event -> {
+          /* data is dragged over the target */
+          /* accept it only if it is not dragged from the same node
+           * and if it has a string data */
+          if (event.getGestureSource() != mapPane
+              &&
+              // image to represent the node?
+              event.getDragboard().hasString()) {
+            /* allow for both copying and moving, whatever user chooses */
+            event.acceptTransferModes(TransferMode.COPY);
+            GesturePane gesturePane = mapController.getGesturePane();
+            double scale = gesturePane.getCurrentScale();
+            duplicateCircle.setRadius(5 * scale);
+            duplicateCircle.setVisible(true);
+            duplicateCircle.setFill(Paint.valueOf("012DFA"));
+            duplicateCircle.setCenterX(event.getX());
+            duplicateCircle.setCenterY(event.getY());
+
+            // X bounds
+            if (event.getX() < 0) {
+              duplicateCircle.setCenterX(0);
               duplicateCircle.setCenterY(event.getY());
-
-              // X bounds
-              if (event.getX() < 0) {
-                duplicateCircle.setCenterX(0);
-                duplicateCircle.setCenterY(event.getY());
-              } else if (event.getX() > mapPane.getWidth()) {
-                duplicateCircle.setCenterX(mapPane.getWidth());
-                duplicateCircle.setCenterY(event.getY());
-              }
-
-              // Y bounds
-              if (event.getY() < 0) {
-                duplicateCircle.setCenterY(0);
-                duplicateCircle.setCenterX(event.getX());
-              } else if (event.getY() > mapPane.getHeight()) {
-                duplicateCircle.setCenterY(mapPane.getHeight());
-                duplicateCircle.setCenterX(event.getX());
-              }
+            } else if (event.getX() > mapPane.getWidth()) {
+              duplicateCircle.setCenterX(mapPane.getWidth());
+              duplicateCircle.setCenterY(event.getY());
             }
 
-            event.consume();
+            // Y bounds
+            if (event.getY() < 0) {
+              duplicateCircle.setCenterY(0);
+              duplicateCircle.setCenterX(event.getX());
+            } else if (event.getY() > mapPane.getHeight()) {
+              duplicateCircle.setCenterY(mapPane.getHeight());
+              duplicateCircle.setCenterX(event.getX());
+            }
           }
+
+          event.consume();
         });
 
     mapPane.setOnDragDropped(
@@ -1170,5 +1168,15 @@ public class MapEditorController implements IController {
       // Update the last node to this
       lastQuickDrawNode = clickedNode;
     }
+  }
+
+  /**
+   * Callback to close the map editor and show the move visualizer
+   *
+   * @param actionEvent the event triggering this
+   */
+  public void showMoveVisualizer(ActionEvent actionEvent) {
+    onClose(); // Handle the exit
+    Fapp.setScene("MoveVisualizer", "MoveVisualizer");
   }
 }
