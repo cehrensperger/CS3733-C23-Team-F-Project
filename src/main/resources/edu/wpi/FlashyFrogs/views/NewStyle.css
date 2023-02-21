@@ -78,7 +78,7 @@
     /** This controls the style of the warning text that appears when the help
      button is clicked**/
 {
-    -fx-text-fill: #b6000b;
+    -fx-fill: #b6000b;
 }
 
 .backButton

@@ -14,9 +14,9 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.Editors.SecurityEditorController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.Editors.SecurityEditorController">
     <children>
-        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="background" BorderPane.alignment="CENTER">
                     <children>
@@ -35,22 +35,16 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Where is the security needed" textAlignment="RIGHT" wrappingWidth="185.0">
+                              <Text fx:id="h1" styleClass="warningText" text="Where is the security needed" textAlignment="RIGHT" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="60.0" />
                                  </VBox.margin>
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
                               </Text>
                            </children>
                         </VBox>
                                 <VBox prefHeight="400.0" prefWidth="200.0">
                                     <children>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Location Information" wrappingWidth="250.0">
-                                            <font>
-                                                <Font size="20.0" />
-                                            </font>
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
@@ -83,9 +77,6 @@
                                 <VBox prefHeight="159.0" prefWidth="200.0">
                                     <children>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Security Information" wrappingWidth="250.0">
-                                            <font>
-                                                <Font size="20.0" />
-                                            </font>
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
@@ -110,7 +101,7 @@
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: F1F1F1;" styleClass="clearButton" text="Clear" textFill="#b6000b">
+                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
@@ -119,10 +110,7 @@
                                                 </HBox>
                                                 <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textFill="WHITE">
-                                                            <font>
-                                                                <Font size="16.0" />
-                                                            </font>
+                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit">
                                                         </MFXButton>
                                                     </children>
                                                 </HBox>
@@ -152,34 +140,22 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Is there a specific threat security is needed for" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h2" styleClass="warningText" text="Is there a specific threat security is needed for" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="53.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the urgency of the security request" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h3" styleClass="warningText" text="What is the urgency of the security request" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Is there a specific date that security will be needed" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h4"  styleClass="warningText" text="Is there a specific date that security will be needed" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="24.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Explain why security is needed" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h5" styleClass="warningText" text="Explain why security is needed" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="30.0" />
                                  </VBox.margin>

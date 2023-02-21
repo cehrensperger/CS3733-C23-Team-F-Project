@@ -109,18 +109,12 @@
                         <Insets right="10.0" top="8.0" />
                      </HBox.margin>
                      <children>
-                        <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the best contact number for the owner of the device" textAlignment="RIGHT" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h1" styleClass="warningText" text="What is the best contact number for the owner of the device" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="32.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Where is the device located" textAlignment="RIGHT" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h2" styleClass="warningText" text="Where is the device located" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="148.0" />
                            </VBox.margin>
@@ -130,9 +124,6 @@
                   <VBox prefHeight="400.0" prefWidth="200.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Contact Information" wrappingWidth="250.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
@@ -239,42 +230,27 @@
                         <Insets left="10.0" top="8.0" />
                      </HBox.margin>
                      <children>
-                        <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Are you requesting a new device or do you need a current device repaired??" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h3" styleClass="warningText" text="Are you requesting a new device or do you need a current device repaired??" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="31.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What type of device do you need service for" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h4" styleClass="warningText" text="What type of device do you need service for" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="6.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the model of the device that you need service for" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h5" styleClass="warningText" text="What is the model of the device that you need service for" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the urgency of the IT request" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h6" styleClass="warningText" text="What is the urgency of the IT request" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="16.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Describe the IT request" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h7" styleClass="warningText" text="Describe the IT request" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="24.0" />
                            </VBox.margin>

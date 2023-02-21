@@ -232,10 +232,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Here are the credits and descriptions for the service request pages">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h1" styleClass="warningText" text="Here are the credits and descriptions for the service request pages">
                               </Text>
                                     </children>
                                     <HBox.margin>

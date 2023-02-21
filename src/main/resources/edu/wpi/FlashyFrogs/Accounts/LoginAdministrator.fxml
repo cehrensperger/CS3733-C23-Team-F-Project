@@ -69,6 +69,6 @@
             </HBox>
          </children>
       </HBox>
-      <Text fx:id="h1" fill="#b6000b" layoutX="239.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Here you can add, delete, and edit users in the database" AnchorPane.bottomAnchor="631.2578125" AnchorPane.leftAnchor="239.0" AnchorPane.rightAnchor="739.3720703125" AnchorPane.topAnchor="73.431640625" />
+      <Text fx:id="h1" layoutX="239.0" layoutY="86.0" styleClass="warningText" text="Here you can add, delete, and edit users in the database" AnchorPane.bottomAnchor="631.2578125" AnchorPane.leftAnchor="239.0" AnchorPane.rightAnchor="739.3720703125" AnchorPane.topAnchor="73.431640625" />
    </children>
 </AnchorPane>
