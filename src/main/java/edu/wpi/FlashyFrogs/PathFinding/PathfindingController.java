@@ -34,7 +34,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.apache.commons.math3.util.MathUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
@@ -163,6 +162,7 @@ public class PathfindingController implements IController {
       mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
+
     pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
   }
 
@@ -258,8 +258,6 @@ public class PathfindingController implements IController {
       double errorTheta = target - curAngle;
       curAngle = target;
 
-      errorTheta = MathUtils.normalizeAngle(errorTheta, 0.0);
-
       int errorDeg = (int) Math.toDegrees(errorTheta);
 
       String nodeName =
@@ -272,13 +270,7 @@ public class PathfindingController implements IController {
               .orElseThrow()
               .getShortName();
 
-      if (errorDeg < 0) {
-        instructions.add(new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName));
-      } else if (errorDeg > 0) {
-        instructions.add(new Instruction("Turn left " + errorDeg + " degrees at " + nodeName));
-      } else {
-        instructions.add(new Instruction("Continue at " + nodeName));
-      }
+      instructions.add(new Instruction("Turn " + errorDeg + " degrees at " + nodeName));
     }
   }
 
