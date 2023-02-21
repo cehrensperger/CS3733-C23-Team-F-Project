@@ -34,6 +34,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.commons.math3.util.MathUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
@@ -249,7 +250,7 @@ public class PathfindingController implements IController {
     double curAngle = 0;
 
     pathTable.setItems(instructions);
-    for (int i = 1; i < lastPath.size() - 1; i++) { // For each line in the path
+    for (int i = 0; i < lastPath.size() - 1; i++) { // For each line in the path
       Node thisNode = lastPath.get(i);
       Node nextNode = lastPath.get(i + 1);
 
@@ -260,6 +261,8 @@ public class PathfindingController implements IController {
       double errorTheta = target - curAngle;
       curAngle = target;
 
+      errorTheta = MathUtils.normalizeAngle(errorTheta, 0.0);
+
       int errorDeg = (int) Math.toDegrees(errorTheta);
 
       String nodeName =
@@ -269,11 +272,30 @@ public class PathfindingController implements IController {
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))
               .stream()
               .findFirst()
-              .orElseThrow()
+              .orElse(new LocationName("", LocationName.LocationType.HALL, ""))
               .getShortName();
 
-      instructions.add(new Instruction("Turn " + errorDeg + " degrees at " + nodeName));
+      if (nodeName.equals("")) {
+        if (errorDeg < -10) {
+          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees"));
+        } else if (errorDeg > 10) {
+          instructions.add(new Instruction("Turn left " + errorDeg + " degrees"));
+        } else {
+          instructions.add(new Instruction("Continue"));
+        }
+      } else {
+        if (errorDeg < -10) {
+          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName));
+        } else if (errorDeg > 10) {
+          instructions.add(new Instruction("Turn left " + errorDeg + " degrees at " + nodeName));
+        } else {
+          instructions.add(new Instruction("Continue at " + nodeName));
+        }
+      }
     }
+
+    instructions.add(
+        new Instruction("You have arrived at " + destinationBox.valueProperty().get()));
   }
 
   /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */

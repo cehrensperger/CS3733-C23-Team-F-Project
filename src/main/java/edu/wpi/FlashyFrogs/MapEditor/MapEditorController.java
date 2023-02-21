@@ -11,7 +11,6 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -89,7 +88,7 @@ public class MapEditorController implements IController {
   @SneakyThrows
   @FXML
   private void initialize() {
-      viewingDate.setValue(LocalDate.now());
+    viewingDate.setValue(LocalDate.now());
 
     duplicateCircle = new Circle(5);
     duplicateCircle.setFill(Color.RED);
