@@ -184,7 +184,7 @@ public class InternalTransportEditorController extends ServiceRequestController
               equipment.getValue(),
               dateOfTransport,
               Date.from(Instant.now()),
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               mode.getValue(),
               isolation.isSelected(),
               personal.getText(),

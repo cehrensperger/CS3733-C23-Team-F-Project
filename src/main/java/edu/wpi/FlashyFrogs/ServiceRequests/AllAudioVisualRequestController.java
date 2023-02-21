@@ -31,7 +31,7 @@ public class AllAudioVisualRequestController extends AllRequestsController {
   @FXML private MFXButton question;
 
   public void initialize() {
-    System.out.println("initializing");
+    // System.out.println("initializing");
     typeCol.setCellValueFactory(
         new Callback<
             TableColumn.CellDataFeatures<ServiceRequest, String>, ObservableValue<String>>() {

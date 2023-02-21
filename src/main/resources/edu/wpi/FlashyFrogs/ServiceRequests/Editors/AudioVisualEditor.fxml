@@ -35,10 +35,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h1" styleClass="warningText" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="58.0" />
                                  </VBox.margin>
@@ -114,7 +111,7 @@
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" styleClass="clearButton" text="Clear" textAlignment="CENTER" textFill="#b6000b">
+                                                        <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
@@ -123,7 +120,7 @@
                                                 </HBox>
                                                 <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" styleClass="submitButton" text="Submit" textFill="WHITE">
+                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
@@ -156,42 +153,27 @@
                               <Insets left="10.0" top="48.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What type of device do you need" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h2" styleClass="warningText" text="What type of device do you need" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the reason for the device requested" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h3"  styleClass="warningText" text="What is the reason for the device requested" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="38.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What date is the device needed by" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h4" styleClass="warningText" text="What date is the device needed by" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="38.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the urgency of this request" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h5" styleClass="warningText" text="What is the urgency of this request" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="36.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Describe the request" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h6" styleClass="warningText" text="Describe the request" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="38.0" />
                                  </VBox.margin>
