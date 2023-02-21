@@ -200,8 +200,7 @@ public class Node {
       return locations;
     }
 
-
-    //TODO: make this work to get rid of extra query
+    // TODO: make this work to get rid of extra query
 
     //    Node node =
     //            session
