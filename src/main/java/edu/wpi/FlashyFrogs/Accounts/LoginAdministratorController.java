@@ -127,6 +127,45 @@ public class LoginAdministratorController implements IController {
       ses.close();
       throw e;
     }
+    userLoginTable.setOnMouseClicked(
+        event -> {
+          // Make sure the user clicked on a populated item
+          if (userLoginTable.getSelectionModel().getSelectedItem() != null) {
+            System.out.println(
+                "You clicked on "
+                    + userLoginTable.getSelectionModel().getSelectedItem().getUserName());
+            FXMLLoader newLoad =
+                new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
+            PopOver popOver = null;
+            try {
+              popOver = new PopOver(newLoad.load());
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+            EditUserController editUser = newLoad.getController();
+            editUser.setPopOver(popOver);
+            editUser.setLoginAdminController(this);
+            editUser.initialize(
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getFirstName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getMiddleName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getLastName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUserName());
+            popOver.detach();
+            Node node = (Node) event.getSource();
+            popOver.show(node.getScene().getWindow());
+            addNewUser.setDisable(true);
+            back.setDisable(true);
+            popOver
+                .showingProperty()
+                .addListener(
+                    (observable, oldValue, newValue) -> {
+                      if (!newValue) {
+                        addNewUser.setDisable(false);
+                        back.setDisable(false);
+                      }
+                    });
+          }
+        });
   }
 
   public void deleteUser(ActionEvent actionEvent) {

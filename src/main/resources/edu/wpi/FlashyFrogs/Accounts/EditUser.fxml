@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="581.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.EditUserController">
+   <children>
+      <HBox layoutX="-5.0" layoutY="84.0" prefHeight="211.0" prefWidth="582.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="306.0" prefWidth="305.0" spacing="25.0">
+               <children>
+                  <MFXTextField fx:id="firstName" floatingText="First Name:" prefWidth="200.0" />
+                  <MFXTextField fx:id="lastName" floatingText="Last Name:" prefWidth="200.0" />
+                  <SearchableComboBox fx:id="deptBox" prefHeight="26.0" prefWidth="200.0" promptText="Department:">
+                     <VBox.margin>
+                        <Insets left="46.0" right="46.0" />
+                     </VBox.margin>
+                  </SearchableComboBox>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="218.0" prefWidth="282.0" spacing="25.0">
+               <children>
+                  <MFXTextField fx:id="middleName" floatingText="Middle Name:" prefWidth="200.0" />
+                  <MFXTextField fx:id="username" floatingText="Username:" prefWidth="200.0" />
+                  <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="226.0" promptText="Employee Type:">
+                     <VBox.margin>
+                        <Insets left="46.0" right="46.0" />
+                     </VBox.margin>
+                  </SearchableComboBox>
+               </children>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+      <Text layoutX="177.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit User" textAlignment="CENTER" wrappingWidth="228.462890625">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="212.0" layoutY="61.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
+      <MFXButton fx:id="updateUser" layoutX="243.0" layoutY="326.0" onAction="#saveChanges" text="Update User" />
+   </children>
+</AnchorPane>
