@@ -22,7 +22,7 @@
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.HomeController">
    <children>
       <StackPane layoutX="1011.0" layoutY="486.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -230,22 +230,22 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Text fx:id="h2" fill="#b6000b" layoutX="571.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all submitted service requests. Look in the table to find details about each request." AnchorPane.leftAnchor="571.0" AnchorPane.rightAnchor="307.603515625">
+      <Text fx:id="h2" fill="#b6000b" layoutX="462.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all submitted service requests. Look in the table to find details about each request." AnchorPane.rightAnchor="388.0">
          <font>
             <Font size="10.0" />
          </font>
       </Text>
-      <Text fx:id="h3" fill="#b6000b" layoutX="417.0" layoutY="778.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all future moves of hospital location. Look in the table to find details about each move." AnchorPane.leftAnchor="417.0" AnchorPane.rightAnchor="447.3896484375">
+      <Text fx:id="h3" fill="#b6000b" layoutX="415.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all future moves of hospital location. Look in the table to find details about each move." AnchorPane.bottomAnchor="231.490234375">
          <font>
             <Font size="10.0" />
          </font>
       </Text>
-      <Text fx:id="h4" fill="#b6000b" layoutX="1317.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Use this dropdown to filter through submitted service requests" wrappingWidth="150.0" AnchorPane.leftAnchor="1317.0" AnchorPane.rightAnchor="-187.0">
+      <Text fx:id="h4" fill="#b6000b" layoutX="931.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Use this dropdown to filter through submitted service requests" wrappingWidth="164.00000000000023" AnchorPane.rightAnchor="184.99999999999977">
          <font>
             <Font size="10.0" />
          </font>
       </Text>
-      <Text fx:id="h5" fill="#b6000b" layoutX="1454.0" layoutY="777.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click path finding to find paths through the hospital" wrappingWidth="229.396484375" AnchorPane.leftAnchor="1420.0" AnchorPane.rightAnchor="-369.396484375">
+      <Text fx:id="h5" fill="#b6000b" layoutX="1018.0" layoutY="493.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click path finding to find paths through the hospital" wrappingWidth="229.396484375" AnchorPane.bottomAnchor="231.78945312500002" AnchorPane.rightAnchor="20.0">
          <font>
             <Font size="10.0" />
          </font>
