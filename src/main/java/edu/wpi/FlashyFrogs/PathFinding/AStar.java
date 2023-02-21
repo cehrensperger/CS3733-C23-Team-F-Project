@@ -4,11 +4,10 @@ import static edu.wpi.FlashyFrogs.PathFinding.PathFinder.getNeighbors;
 
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.time.Instant;
+import java.util.*;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.hibernate.Session;
 
 public class AStar implements IFindPath {
@@ -19,7 +18,15 @@ public class AStar implements IFindPath {
    * @param end the end node
    * @return the path (as a list) between the two nodes, or null if it could not find a path
    */
-  public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
+  @SneakyThrows
+  public List<Node> findPath(
+      @NonNull Node start,
+      @NonNull Node end,
+      @NonNull Boolean accessible,
+      @NonNull Session session) {
+
+    if (start.getId().equals(null) || end.getId().equals(null)) throw new Exception();
+
     PriorityQueue<PathFinder.NodeWrapper> openList =
         new PriorityQueue<>(); // create priority queue for nodes to search
     List<PathFinder.NodeWrapper> closedList =
@@ -55,18 +62,19 @@ public class AStar implements IFindPath {
         if (q.node.getFloor() != child.node.getFloor()) {
           if (child
               .node
-              .getCurrentLocation(session)
+              .getCurrentLocation(session, Date.from(Instant.now()))
               .get(0)
               .getLocationType()
               .equals(LocationName.LocationType.ELEV)) {
-            child.g = q.g + 10; // cost for elevator
+            child.g = q.g + 50; // cost for elevator
           } else if (child
               .node
-              .getCurrentLocation(session)
+              .getCurrentLocation(session, Date.from(Instant.now()))
               .get(0)
               .getLocationType()
               .equals(LocationName.LocationType.STAI)) {
-            child.g = q.g + 20; // cost for stairs
+            if (accessible) continue;
+            child.g = q.g + 100; // cost for stairs
           }
         } else {
           child.g = q.g + euclideanDistance(child.node, q.node); // calculate distance from start

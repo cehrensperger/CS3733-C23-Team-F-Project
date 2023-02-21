@@ -2,7 +2,9 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
@@ -50,14 +52,6 @@ public class Node {
 
   /** Creates a new Node with empty fields */
   public Node() {}
-
-  public Node(@NonNull String theBuilding, @NonNull Floor theFloor, int theXCoord, int theYCoord) {
-    this.id = theFloor.floorNum + String.format("X%04dY%04d", theXCoord, theYCoord);
-    this.building = theBuilding;
-    this.floor = theFloor;
-    this.xCoord = theXCoord;
-    this.yCoord = theYCoord;
-  }
 
   /**
    * Creates a new Node with the given fields
@@ -166,7 +160,7 @@ public class Node {
    * @param session the session to use for the lookup
    * @return either the location this node is storing, or null if there is none
    */
-  public List<LocationName> getCurrentLocation(@NonNull Session session) {
+  public List<LocationName> getCurrentLocation(@NonNull Session session, Date date) {
 
     // associate location with a node
     // then associate that location with a new node
@@ -193,19 +187,45 @@ public class Node {
                 """
                                         SELECT location
                                         FROM Move
-                                        WHERE node = :node AND moveDate <= current timestamp
+                                        WHERE node = :node AND moveDate <= :date
                                         ORDER BY moveDate DESC
                                         LIMIT 2
                                         """,
                 LocationName.class)
             .setParameter("node", this)
+            .setParameter("date", date)
             .setCacheable(true)
             .getResultList();
     if (locations.isEmpty()) {
       return locations;
     }
 
-    locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
+    // locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
+
+    // attempt to remove extra query
+    //    locations.removeIf(
+    //        location -> {
+    //          Node mostRecentNode =
+    //              session
+    //                  .createQuery(
+    //                      """
+    //                                                                  SELECT Node
+    //                                                                  FROM Move
+    //                                                                  WHERE location = :loc AND
+    //     moveDate
+    //         <=
+    //                        current timestamp
+    //                                                                  ORDER BY moveDate DESC
+    //                                                                  LIMIT 1
+    //                                                                  """,
+    //                      Node.class)
+    //                  .setParameter("loc", location)
+    //                  .setCacheable(true)
+    //                  .uniqueResult();
+    //          return !mostRecentNode.equals(this);
+    //        });
+
+    locations.removeIf(location -> !location.getCurrentNode(session, date).equals(this));
 
     return locations;
   }
@@ -218,12 +238,42 @@ public class Node {
    *
    * @return either the location this node is storing, or null if there is none
    */
-  public Collection<LocationName> getCurrentLocation() {
+  public Collection<LocationName> getCurrentLocation(Date date) {
     // Trys to create a connection, auto-closing it when this is done. This also re-throws any
     // exceptions that
     // may occur
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
-      return getCurrentLocation(connection);
+      return getCurrentLocation(connection, date);
     }
+  }
+
+  public List<Node> getChildren(Session session) {
+    List<Edge> edges =
+        session
+            .createQuery(
+                "select e FROM Edge e where e.node1 = :node OR e.node2 = :node", Edge.class)
+            .setParameter("node", this)
+            .getResultList();
+
+    List<Node> children = new ArrayList<>();
+
+    edges.forEach(
+        edge -> {
+          if (!edge.getNode1().equals(this)) {
+            children.add(edge.getNode1());
+          }
+
+          if (!edge.getNode2().equals(this)) {
+            children.add(edge.getNode2());
+          }
+        });
+
+    return children;
+  }
+
+  public double getDistanceFrom(Node node) {
+    double xDistance = this.xCoord - node.xCoord;
+    double yDistance = this.yCoord - node.yCoord;
+    return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
   }
 }

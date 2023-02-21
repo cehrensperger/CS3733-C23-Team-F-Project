@@ -94,7 +94,7 @@ public class LoadMapPageController implements IController {
         throw new RuntimeException(e);
       }
     } else {
-      System.out.println("less than or more than four files chosen");
+      // System.out.println("less than or more than four files chosen");
     }
   }
 

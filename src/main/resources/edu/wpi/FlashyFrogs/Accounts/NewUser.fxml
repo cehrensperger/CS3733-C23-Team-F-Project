@@ -24,7 +24,7 @@
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
                      </styleClass></TextField>
-                  <TextField fx:id="middleName" promptText="Middle Name">
+                  <TextField fx:id="middleName" promptText="Middle Name (Optional)">
                      <styleClass>
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
@@ -63,6 +63,12 @@
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
                      </styleClass></PasswordField>
+                  <TextField fx:id="rfid" prefHeight="26.0" prefWidth="206.0" promptText="Badge ID (Optional)">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
+                  </TextField>
                   <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="293.0" promptText="Employee Type:" styleClass="fields">
                      <VBox.margin>
                         <Insets />
@@ -82,7 +88,7 @@
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
       <HBox alignment="CENTER" layoutY="386.0" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0">
          <children>
-            <MFXButton fx:id="newUser" onAction="#handleNewUser" text="Add User">
+            <MFXButton fx:id="newHospitalUser" onAction="#handleNewUser" text="Add User">
                <styleClass>
                   <String fx:value="blue" />
                   <String fx:value="body" />

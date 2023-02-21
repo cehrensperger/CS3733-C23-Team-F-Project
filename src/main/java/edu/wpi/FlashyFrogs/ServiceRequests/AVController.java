@@ -108,7 +108,7 @@ public class AVController implements IController {
 
       AudioVisual audioVisual =
           new AudioVisual(
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               dateNeeded,
               Date.from(Instant.now()),
               urgency.getValue(),

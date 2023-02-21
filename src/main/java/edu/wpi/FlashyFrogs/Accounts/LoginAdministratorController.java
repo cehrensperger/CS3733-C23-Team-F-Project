@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,10 +28,11 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class LoginAdministratorController implements IController {
-
-  @FXML private TableView<UserLogin> tableView;
+  @FXML private Label errorMessage;
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
+
+  @FXML private TableColumn<UserLogin, String> rfidCol;
   @FXML private TableColumn<UserLogin, String> userNameCol;
   @FXML private TableColumn<UserLogin, String> nameCol;
   @FXML private TableColumn<UserLogin, HospitalUser.EmployeeType> empTypeCol;
@@ -39,6 +41,10 @@ public class LoginAdministratorController implements IController {
   @FXML private Button back;
 
   @FXML Text h1;
+
+  private UserLogin selectedUserLogin;
+
+  private int selectedUserLoginIndex;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -69,6 +75,7 @@ public class LoginAdministratorController implements IController {
   }
 
   public void initialize() throws Exception {
+    errorMessage.setVisible(false);
     h1.setVisible(false);
 
     // Clear old table before init
@@ -79,6 +86,11 @@ public class LoginAdministratorController implements IController {
         data -> {
           HospitalUser user = data.getValue().getUser();
           return new SimpleLongProperty(user.getId());
+        });
+    rfidCol.setCellValueFactory(
+        data -> {
+          String rfid = data.getValue().getRFIDBadge();
+          return new SimpleStringProperty(rfid != null ? rfid : "");
         });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     nameCol.setCellValueFactory(
@@ -115,6 +127,75 @@ public class LoginAdministratorController implements IController {
       ses.close();
       throw e;
     }
+    userLoginTable.setOnMouseClicked(
+        event -> {
+          // Make sure the user clicked on a populated item
+          if (userLoginTable.getSelectionModel().getSelectedItem() != null) {
+            System.out.println(
+                "You clicked on "
+                    + userLoginTable.getSelectionModel().getSelectedItem().getUserName());
+            FXMLLoader newLoad =
+                new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
+            PopOver popOver = null;
+            try {
+              popOver = new PopOver(newLoad.load());
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+            EditUserController editUser = newLoad.getController();
+            editUser.setPopOver(popOver);
+            editUser.setLoginAdminController(this);
+            editUser.initialize(
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getFirstName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getMiddleName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUser().getLastName(),
+                userLoginTable.getSelectionModel().getSelectedItem().getUserName());
+            popOver.detach();
+            Node node = (Node) event.getSource();
+            popOver.show(node.getScene().getWindow());
+            addNewUser.setDisable(true);
+            back.setDisable(true);
+            popOver
+                .showingProperty()
+                .addListener(
+                    (observable, oldValue, newValue) -> {
+                      if (!newValue) {
+                        addNewUser.setDisable(false);
+                        back.setDisable(false);
+                      }
+                    });
+          }
+        });
+  }
+
+  public void deleteUser(ActionEvent actionEvent) {
+    Session ses = CONNECTION.getSessionFactory().openSession();
+    if (selectedUserLogin == null) {
+      errorMessage.setText("No user selected for deletion");
+      errorMessage.setVisible(true);
+    }
+    if (selectedUserLogin.getUser().equals(CurrentUserEntity.CURRENT_USER.getCurrentUser())) {
+      errorMessage.setText("Cannot delete current account");
+      errorMessage.setVisible(true);
+    } else {
+      errorMessage.setVisible(false);
+      ses.beginTransaction();
+      ses.createMutationQuery("delete FROM HospitalUser user WHERE id=:ID")
+          .setParameter("ID", selectedUserLogin.getUser().getId())
+          .executeUpdate();
+      ses.getTransaction().commit();
+      ses.close();
+      userLoginTable.getItems().remove(selectedUserLogin);
+      if (selectedUserLoginIndex != 0) {
+        selectedUserLoginIndex -= 1;
+        selectedUserLogin = userLoginTable.getItems().get(selectedUserLoginIndex);
+      }
+    }
+  }
+
+  public void setSelected() {
+    selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
+    selectedUserLoginIndex = userLoginTable.getSelectionModel().getSelectedIndex();
   }
 
   public void onClose() {}

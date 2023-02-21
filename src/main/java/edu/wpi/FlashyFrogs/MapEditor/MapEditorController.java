@@ -6,11 +6,14 @@ import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
+import edu.wpi.FlashyFrogs.ResourceDictionary;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -22,13 +25,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -52,11 +53,11 @@ public class MapEditorController implements IController {
   @FXML private Button addEdge;
   @FXML private Text h41;
   @FXML private AnchorPane mapPane;
-  @FXML private Button backButton;
-  @FXML private Label floorSelector;
+  @FXML private MFXButton backButton;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
-  @FXML private MFXButton floorSelectorButton;
+  @FXML private CheckBox checkBox;
+  @FXML private DatePicker viewingDate;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -87,6 +88,8 @@ public class MapEditorController implements IController {
   @SneakyThrows
   @FXML
   private void initialize() {
+    viewingDate.setValue(LocalDate.now());
+
     duplicateCircle = new Circle(5);
     duplicateCircle.setFill(Color.RED);
     duplicateCircle.setVisible(false);
@@ -186,6 +189,11 @@ public class MapEditorController implements IController {
           line.toBack(); // Move the line to the back, for visual reasons
         });
 
+    mapController.setLocationCreation(
+        (node, location, name) -> {
+          name.setMouseTransparent(true); // Set this to not intercept mouse events
+        });
+
     mapController
         .getCurrentDrawingPane()
         .setOnMouseClicked(
@@ -201,9 +209,10 @@ public class MapEditorController implements IController {
                 // Place this node
                 Node newNode =
                     new Node(
-                        createNodeID(mapController.getFloor(), roundedX, roundedY),
+                        createNodeID(
+                            mapController.getMapFloorProperty().getValue(), roundedX, roundedY),
                         "",
-                        mapController.getFloor(),
+                        mapController.getMapFloorProperty().getValue(),
                         roundedX,
                         roundedY);
                 mapController.getMapSession().persist(newNode); // Save the new node
@@ -258,21 +267,20 @@ public class MapEditorController implements IController {
 
     // Handle quick-draw stuff in terms of moving the mouse drags a node around
     Platform.runLater(
-        () -> {
-          backButton
-              .getScene()
-              .addEventFilter(
-                  MouseEvent.MOUSE_MOVED,
-                  (mouseEvent) -> {
-                    System.out.println(root.getHeight());
-                    // If quick draw is enabled
-                    if (quickDrawActive) {
-                      // Set the circles position
-                      currentQuickDrawCircle.relocate(
-                          mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
-                    }
-                  });
-        });
+        () ->
+            backButton
+                .getScene()
+                .addEventFilter(
+                    MouseEvent.MOUSE_MOVED,
+                    (mouseEvent) -> {
+                      // System.out.println(root.getHeight());
+                      // If quick draw is enabled
+                      if (quickDrawActive) {
+                        // Set the circles position
+                        currentQuickDrawCircle.relocate(
+                            mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
+                      }
+                    }));
 
     // Set the button handler
     Platform.runLater(
@@ -299,12 +307,13 @@ public class MapEditorController implements IController {
                         nodesToDelete.forEach(
                             (node) -> {
                               // For each node, delete it
+                              mapController.deleteNode(
+                                  node, checkBox.isSelected()); // Delete the node
                               mapController
                                   .getMapSession()
                                   .createMutationQuery("DELETE FROM " + "Node WHERE id = :id")
                                   .setParameter("id", node.getId())
                                   .executeUpdate();
-                              mapController.deleteNode(node); // Delete the node
                             }); // Delete all selected nodes
                       } else if (event.getCode().equals(KeyCode.DOWN)) { // Reversed top-bottom JFX
                         try {
@@ -327,6 +336,8 @@ public class MapEditorController implements IController {
                           tryCommitBulkMove(1, 0); // See above
                         } catch (IllegalArgumentException ignored) {
                         } // See above
+                      } else if (event.getCode().equals(KeyCode.ESCAPE) && quickDrawActive) {
+                        toggleQuickDraw(null); // Toggle quick draw
                       } else {
                         shouldConsume = false; // IF we don't want it, don't consume it
                       }
@@ -352,111 +363,117 @@ public class MapEditorController implements IController {
 
               // For each removed node
               for (Node oldNode : listChange.getRemoved()) {
-                // Clear the effect
-                mapController.getNodeToCircleMap().get(oldNode).setFill(Color.BLACK);
+                // Double-check to make sure this hasn't been removed
+                if (mapController.getNodeToCircleMap().containsKey(oldNode)) {
+                  // Clear the effect
+                  mapController.getNodeToCircleMap().get(oldNode).setFill(Color.BLACK);
+                }
               }
             });
 
     // Set the node creation processor
     mapController.setNodeCreation(this::nodeCreation);
 
-    mapController.setFloor(Node.Floor.L1);
-    floorSelector.setText("Floor " + Node.Floor.L1.name());
-    mapController.setFloor(Node.Floor.L1);
-    // Add a listener so that when the floor is changed, the map  controller sets the new floor
-    floorProperty.addListener(
-        (observable, oldValue, newValue) -> {
-          selectedNodes.clear(); // Clear the selected nodes
-          mapController.setFloor(newValue);
-          // drawNodesAndEdges(); // Re-draw pop-ups
-          floorSelector.setText("Floor " + newValue.floorNum);
-        }); // Set the floor text
+    // On floor change
+    mapController
+        .getMapFloorProperty()
+        .addListener(
+            (property) -> {
+              selectedNodes.clear(); // Clear the selected nodes
+            });
 
     nodeToDrag.setOnDragDetected(
         event -> {
           Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+          dragboard.setDragView(ResourceDictionary.DRAG_SVG.resource);
           ClipboardContent clipboardContent = new ClipboardContent();
           clipboardContent.putString("fjbwef");
           dragboard.setContent(clipboardContent);
         });
 
-    nodeToDrag.setOnMouseDragged(
-        event -> {
-          event.setDragDetect(true);
-        });
+    nodeToDrag.setOnMouseDragged(event -> event.setDragDetect(true));
 
     mapPane.setOnDragOver(
-        new EventHandler<DragEvent>() {
-          @Override
-          public void handle(DragEvent event) {
-            /* data is dragged over the target */
-            /* accept it only if it is not dragged from the same node
-             * and if it has a string data */
-            if (event.getGestureSource() != mapPane
-                &&
-                // image to represent the node?
-                event.getDragboard().hasString()) {
-              /* allow for both copying and moving, whatever user chooses */
-              event.acceptTransferModes(TransferMode.COPY);
-              GesturePane gesturePane = mapController.getGesturePane();
-              double scale = gesturePane.getCurrentScale();
-              duplicateCircle.setRadius(5 * scale);
-              duplicateCircle.setVisible(true);
-              duplicateCircle.setFill(Paint.valueOf("012DFA"));
-              duplicateCircle.setCenterX(event.getX());
+        event -> {
+          /* data is dragged over the target */
+          /* accept it only if it is not dragged from the same node
+           * and if it has a string data */
+          if (event.getGestureSource() != mapPane
+              &&
+              // image to represent the node?
+              event.getDragboard().hasString()) {
+            /* allow for both copying and moving, whatever user chooses */
+            event.acceptTransferModes(TransferMode.COPY);
+            GesturePane gesturePane = mapController.getGesturePane();
+            double scale = gesturePane.getCurrentScale();
+            duplicateCircle.setRadius(5 * scale);
+            duplicateCircle.setVisible(true);
+            duplicateCircle.setFill(Paint.valueOf("012DFA"));
+            duplicateCircle.setCenterX(event.getX());
+            duplicateCircle.setCenterY(event.getY());
+
+            // X bounds
+            if (event.getX() < 0) {
+              duplicateCircle.setCenterX(0);
               duplicateCircle.setCenterY(event.getY());
-
-              // X bounds
-              if (event.getX() < 0) {
-                duplicateCircle.setCenterX(0);
-                duplicateCircle.setCenterY(event.getY());
-              } else if (event.getX() > mapPane.getWidth()) {
-                duplicateCircle.setCenterX(mapPane.getWidth());
-                duplicateCircle.setCenterY(event.getY());
-              }
-
-              // Y bounds
-              if (event.getY() < 0) {
-                duplicateCircle.setCenterY(0);
-                duplicateCircle.setCenterX(event.getX());
-              } else if (event.getY() > mapPane.getHeight()) {
-                duplicateCircle.setCenterY(mapPane.getHeight());
-                duplicateCircle.setCenterX(event.getX());
-              }
+            } else if (event.getX() > mapPane.getWidth()) {
+              duplicateCircle.setCenterX(mapPane.getWidth());
+              duplicateCircle.setCenterY(event.getY());
             }
 
-            event.consume();
+            // Y bounds
+            if (event.getY() < 0) {
+              duplicateCircle.setCenterY(0);
+              duplicateCircle.setCenterX(event.getX());
+            } else if (event.getY() > mapPane.getHeight()) {
+              duplicateCircle.setCenterY(mapPane.getHeight());
+              duplicateCircle.setCenterX(event.getX());
+            }
           }
+
+          event.consume();
         });
 
     mapPane.setOnDragDropped(
-        new EventHandler<DragEvent>() {
-          @Override
-          public void handle(DragEvent event) {
+        event -> {
+          GesturePane gesturePane = mapController.getGesturePane();
+          double scale = gesturePane.getCurrentScale();
+          // System.out.println("translate X: " + gesturePane.getCurrentX());
+          // System.out.println("translate Y: " + gesturePane.getCurrentY());
+          // System.out.println("scale factor: " + scale);
 
-            GesturePane gesturePane = mapController.getGesturePane();
-            double scale = gesturePane.getCurrentScale();
-            System.out.println("translate X: " + gesturePane.getCurrentX());
-            System.out.println("translate Y: " + gesturePane.getCurrentY());
-            System.out.println("scale factor: " + scale);
+          // System.out.println(
+          //  "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
+          // System.out.println(
+          //  "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
+          double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
+          double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
+          int roundedX = (int) Math.round(x);
+          int roundedY = (int) Math.round(y);
+          Node newNode =
+              new Node(
+                  createNodeID(mapController.getMapFloorProperty().getValue(), roundedX, roundedY),
+                  "",
+                  floorProperty.getValue(),
+                  roundedX,
+                  roundedY);
+          mapController.addNode(newNode, false);
 
-            System.out.println(
-                "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
-            System.out.println(
-                "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
-            double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
-            double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
-            Node newNode =
-                new Node("", floorProperty.getValue(), (int) Math.round(x), (int) Math.round(y));
-            mapController.addNode(newNode, false);
-
-            // make sure the circle is within bounds
-            if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
-              System.out.println("out of bounds");
-            }
-            duplicateCircle.setVisible(false);
+          // make sure the circle is within bounds
+          if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
+            // System.out.println("out of bounds");
           }
+          duplicateCircle.setVisible(false);
         });
+
+    viewingDate
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.setDate(
+                  Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+              mapController.redraw();
+            });
   }
 
   /**
@@ -583,7 +600,7 @@ public class MapEditorController implements IController {
     NodeInfoController addNode = newLoad.getController(); // get the controller
     // Provide the blank node
     addNode.setNode(
-        new Node("", "", mapController.getFloor(), 0, 0),
+        new Node("", "", mapController.getMapFloorProperty().getValue(), 0, 0),
         mapController.getMapSession(), // Get the map session
         (oldNode) -> popOver.hide(), // On delete we do nothing but hide
         (oldNode, newNode) -> {
@@ -591,9 +608,9 @@ public class MapEditorController implements IController {
           popOver.hide();
         }, // On create new one, process it
         (oldLocation) -> mapController.removeLocationName(oldLocation),
-        (oldLocation, newLocation, node) -> {
-          mapController.updateLocationName(oldLocation, newLocation, node);
-        }, // No location processing, no locations
+        (oldLocation, newLocation, node) ->
+            mapController.updateLocationName(
+                oldLocation, newLocation, node), // No location processing, no locations
         true); // This is a new node
 
     popOver.detach(); // Detatch the pop-up, so it's not stuck to the button
@@ -672,47 +689,6 @@ public class MapEditorController implements IController {
    */
   public void handleSave(ActionEvent actionEvent) {
     mapController.saveChanges(); // On save just save
-  }
-
-  @FXML
-  public void upFloor() {
-    int floorLevel = floorProperty.getValue().ordinal() + 1;
-    if (floorLevel > Node.Floor.values().length - 1) floorLevel = 0;
-
-    floorProperty.setValue(Node.Floor.values()[floorLevel]);
-  }
-
-  @FXML
-  public void downFloor() {
-    int floorLevel = floorProperty.getValue().ordinal() - 1;
-    if (floorLevel < 0) floorLevel = Node.Floor.values().length - 1;
-
-    floorProperty.setValue(Node.Floor.values()[floorLevel]);
-  }
-
-  @FXML
-  public void openFloorSelector(ActionEvent event) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
-    PopOver popOver = new PopOver(newLoad.load()); // create the popover
-
-    popOver.setTitle("");
-    FloorSelectorController floorPopup = newLoad.getController();
-    floorPopup.setFloorProperty(this.floorProperty);
-
-    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-    javafx.scene.Node node =
-        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
-    popOver.show(node); // display the popover
-
-    floorSelectorButton.setDisable(true);
-    popOver
-        .showingProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue) {
-                floorSelectorButton.setDisable(false);
-              }
-            });
   }
 
   public void onClose() {
@@ -863,6 +839,17 @@ public class MapEditorController implements IController {
           int xDiff = (int) Math.round(event.getX()) - node.getXCoord();
           int yDiff = (int) Math.round(event.getY()) - node.getYCoord();
 
+          // Check to make sure that each dragged node is in bounds
+          for (Node selectedNode : selectedNodes) {
+            // Check the bounds
+            if (selectedNode.getXCoord() + xDiff < 0
+                || selectedNode.getXCoord() + xDiff > mapController.getMapWidth()
+                || selectedNode.getYCoord() + yDiff < 0
+                || selectedNode.getYCoord() + yDiff > mapController.getMapHeight()) {
+              return;
+            }
+          }
+
           // For each selected node
           for (Node selectedNode : selectedNodes) {
             // Get the circle
@@ -961,7 +948,7 @@ public class MapEditorController implements IController {
               (oldNode) -> {
                 selectedNodes.remove(oldNode); // Remove the node
 
-                mapController.deleteNode(oldNode); // On delete, delete
+                mapController.deleteNode(oldNode, false); // On delete, delete
                 clearNodePopOver();
               },
               (oldNode, newNode) -> {
@@ -1091,6 +1078,13 @@ public class MapEditorController implements IController {
       root.getChildren().remove(currentQuickDrawCircle);
       currentQuickDrawCircle = null; // Clear it
       lastQuickDrawNode = null; // Clear the last node
+
+      // If the quick draw line exists
+      if (currentQuickDrawLine != null) {
+        // Delete it
+        mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawLine);
+        currentQuickDrawLine = null;
+      }
       // No need to clear the last edge, already gone (off the map editor)
     }
   }
@@ -1126,5 +1120,15 @@ public class MapEditorController implements IController {
       // Update the last node to this
       lastQuickDrawNode = clickedNode;
     }
+  }
+
+  /**
+   * Callback to close the map editor and show the move visualizer
+   *
+   * @param actionEvent the event triggering this
+   */
+  public void showMoveVisualizer(ActionEvent actionEvent) {
+    onClose(); // Handle the exit
+    Fapp.setScene("MoveVisualizer", "MoveVisualizer");
   }
 }

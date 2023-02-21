@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -19,7 +18,7 @@
     <children>
         <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #f1f1f1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f1f1f1;" BorderPane.alignment="CENTER">
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="background" BorderPane.alignment="CENTER">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Audio/Visual Service Request">
                             <font>
@@ -36,10 +35,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h1" styleClass="warningText" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="58.0" />
                                  </VBox.margin>
@@ -80,7 +76,7 @@
                                         <Insets right="100.0" />
                                     </HBox.margin>
                                 </VBox>
-                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#012d5a" height="500.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#012d5a" height="500.0" stroke="BLACK" strokeType="INSIDE" styleClass="bar" width="10.0" />
                                 <VBox prefHeight="159.0" prefWidth="200.0">
                                     <children>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Device Information" wrappingWidth="250.0">
@@ -115,29 +111,19 @@
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #f1f1f1;" text="Clear" textAlignment="CENTER" textFill="#b6000b">
+                                                        <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
-                                             <styleClass>
-                                                <String fx:value="clear" />
-                                                <String fx:value="round" />
-                                                <String fx:value="body" />
-                                             </styleClass>
                                                         </MFXButton>
                                                     </children>
                                                 </HBox>
                                                 <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #012D5A;" text="Submit" textFill="WHITE">
+                                                        <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
-                                             <styleClass>
-                                                <String fx:value="credits" />
-                                                <String fx:value="round" />
-                                                <String fx:value="body" />
-                                             </styleClass>
                                                         </MFXButton>
                                                     </children>
                                                 </HBox>
@@ -167,42 +153,27 @@
                               <Insets left="10.0" top="48.0" />
                            </HBox.margin>
                            <children>
-                              <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What type of device do you need" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h2" styleClass="warningText" text="What type of device do you need" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the reason for the device requested" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h3"  styleClass="warningText" text="What is the reason for the device requested" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="38.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What date is the device needed by" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h4" styleClass="warningText" text="What date is the device needed by" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="38.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the urgency of this request" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h5" styleClass="warningText" text="What is the urgency of this request" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="36.0" />
                                  </VBox.margin>
                               </Text>
-                              <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe the request" wrappingWidth="185.0">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
+                              <Text fx:id="h6" styleClass="warningText" text="Describe the request" wrappingWidth="185.0">
                                  <VBox.margin>
                                     <Insets top="38.0" />
                                  </VBox.margin>

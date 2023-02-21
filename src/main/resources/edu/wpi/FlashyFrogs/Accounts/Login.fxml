@@ -23,7 +23,7 @@
    <children>
       <BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="720.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="TOP_CENTER" fillHeight="false" prefHeight="55.0" prefWidth="400.0">
                      <children>
@@ -39,31 +39,20 @@
                      </VBox.margin>
                   </HBox>
                   <Label fx:id="errorMessage" />
-                  <TextField fx:id="username" prefHeight="38.0" prefWidth="389.0" promptText="Username">
+                  <TextField styleClass="fields" fx:id="username" prefHeight="38.0" prefWidth="389.0" promptText="Username">
                      <VBox.margin>
                         <Insets bottom="15.0" />
                      </VBox.margin>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <styleClass>
-                        <String fx:value="round" />
-                        <String fx:value="dropshadow" />
-                     </styleClass>
                   </TextField>
-                  <PasswordField fx:id="password" prefHeight="38.0" prefWidth="391.0" promptText="Password">
+                  <PasswordField styleClass="fields" fx:id="password" prefHeight="38.0" prefWidth="391.0" promptText="Password">
                      <VBox.margin>
                         <Insets bottom="30.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
                      </font>
-                     <styleClass>
-                        <String fx:value="round" />
-                        <String fx:value="dropshadow" />
-                     </styleClass>
                   </PasswordField>
-                  <MFXButton fx:id="login" onAction="#loginButton" prefHeight="38.0" prefWidth="392.0" style="-fx-background-color: #012D5A;" text="Log In" textFill="WHITE">
+                  <MFXButton styleClass="blueNoSetSize" fx:id="login" onAction="#loginButton" prefHeight="38.0" prefWidth="392.0" text="Log In">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -75,7 +64,7 @@
                         <String fx:value="round" />
                      </styleClass>
                   </MFXButton>
-                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="393.0" style="-fx-background-color: #f1f1f1; -fx-text-fill: #b6000b; -fx-border-color: #b6000b; -fx-border-radius: 10px; -fx-background-radius: 10px;" styleClass="b2" text="Clear">
+                  <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="38.0" prefWidth="393.0" styleClass="redOutlineNoSetSize" text="Clear">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -106,7 +95,7 @@
          <children>
             <VBox prefHeight="213.0" prefWidth="260.0" styleClass="pathfindingPopup">
                <children>
-                  <Label styleClass="pathfindingPopup" onMouseClicked="#openPathfinding" text="Pathfinding" VBox.vgrow="ALWAYS">
+                  <Label onMouseClicked="#openPathfinding" styleClass="pathfindingPopup" text="Pathfinding" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
