@@ -7,7 +7,6 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -134,7 +133,7 @@ class MapEntity {
     List<Edge> edgesToRemove =
         edgeToLineMap.keySet().stream()
             .filter((edge) -> (edge.getNode1().equals(node) || edge.getNode2().equals(node)))
-            .collect(Collectors.toList());
+            .toList();
 
     // For each edge to remove
     for (Edge toRemove : edgesToRemove) {

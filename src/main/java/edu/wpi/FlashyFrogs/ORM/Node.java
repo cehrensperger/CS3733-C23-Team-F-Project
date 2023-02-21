@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.ORM;
 
 import edu.wpi.FlashyFrogs.DBConnection;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -199,6 +200,31 @@ public class Node {
       return locations;
     }
 
+    // locations.removeIf(location -> !location.getCurrentNode(session).equals(this));
+
+    // attempt to remove extra query
+    //    locations.removeIf(
+    //        location -> {
+    //          Node mostRecentNode =
+    //              session
+    //                  .createQuery(
+    //                      """
+    //                                                                  SELECT Node
+    //                                                                  FROM Move
+    //                                                                  WHERE location = :loc AND
+    //     moveDate
+    //         <=
+    //                        current timestamp
+    //                                                                  ORDER BY moveDate DESC
+    //                                                                  LIMIT 1
+    //                                                                  """,
+    //                      Node.class)
+    //                  .setParameter("loc", location)
+    //                  .setCacheable(true)
+    //                  .uniqueResult();
+    //          return !mostRecentNode.equals(this);
+    //        });
+
     locations.removeIf(location -> !location.getCurrentNode(session, date).equals(this));
 
     return locations;
@@ -219,5 +245,35 @@ public class Node {
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       return getCurrentLocation(connection, date);
     }
+  }
+
+  public List<Node> getChildren(Session session) {
+    List<Edge> edges =
+        session
+            .createQuery(
+                "select e FROM Edge e where e.node1 = :node OR e.node2 = :node", Edge.class)
+            .setParameter("node", this)
+            .getResultList();
+
+    List<Node> children = new ArrayList<>();
+
+    edges.forEach(
+        edge -> {
+          if (!edge.getNode1().equals(this)) {
+            children.add(edge.getNode1());
+          }
+
+          if (!edge.getNode2().equals(this)) {
+            children.add(edge.getNode2());
+          }
+        });
+
+    return children;
+  }
+
+  public double getDistanceFrom(Node node) {
+    double xDistance = this.xCoord - node.xCoord;
+    double yDistance = this.yCoord - node.yCoord;
+    return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
   }
 }
