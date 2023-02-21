@@ -19,7 +19,8 @@ public enum ResourceDictionary {
   // G("floors/G.png"), // Ground floor hospital map image
   ONE("floors/one.png"), // Floor one map image
   TWO("floors/two.png"), // , // Floor two map image
-  THREE("floors/three.png"); // Floor three map image
+  THREE("floors/three.png"), // Floor three map image
+  TRANSPARENT_IMAGE("views/transparentFileTrust.png");
 
   @NonNull public final Image resource; // The resource that is being stored in the dictionary
 
