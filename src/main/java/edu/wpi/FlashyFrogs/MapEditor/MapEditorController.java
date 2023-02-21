@@ -274,7 +274,7 @@ public class MapEditorController implements IController {
               .addEventFilter(
                   MouseEvent.MOUSE_MOVED,
                   (mouseEvent) -> {
-                    System.out.println(root.getHeight());
+                    // System.out.println(root.getHeight());
                     // If quick draw is enabled
                     if (quickDrawActive) {
                       // Set the circles position
@@ -309,12 +309,12 @@ public class MapEditorController implements IController {
                         nodesToDelete.forEach(
                             (node) -> {
                               // For each node, delete it
+                              mapController.deleteAndAutoRepair(node); // Delete the node
                               mapController
                                   .getMapSession()
                                   .createMutationQuery("DELETE FROM " + "Node WHERE id = :id")
                                   .setParameter("id", node.getId())
                                   .executeUpdate();
-                              mapController.deleteNode(node); // Delete the node
                             }); // Delete all selected nodes
                       } else if (event.getCode().equals(KeyCode.DOWN)) { // Reversed top-bottom JFX
                         try {
@@ -450,14 +450,14 @@ public class MapEditorController implements IController {
 
             GesturePane gesturePane = mapController.getGesturePane();
             double scale = gesturePane.getCurrentScale();
-            System.out.println("translate X: " + gesturePane.getCurrentX());
-            System.out.println("translate Y: " + gesturePane.getCurrentY());
-            System.out.println("scale factor: " + scale);
+            // System.out.println("translate X: " + gesturePane.getCurrentX());
+            // System.out.println("translate Y: " + gesturePane.getCurrentY());
+            // System.out.println("scale factor: " + scale);
 
-            System.out.println(
-                "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
-            System.out.println(
-                "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
+            // System.out.println(
+            //    "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
+            // System.out.println(
+            //    "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
             double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
             double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
             Node newNode =
@@ -466,7 +466,7 @@ public class MapEditorController implements IController {
 
             // make sure the circle is within bounds
             if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
-              System.out.println("out of bounds");
+              // System.out.println("out of bounds");
             }
             duplicateCircle.setVisible(false);
           }

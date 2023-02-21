@@ -125,6 +125,9 @@ public class MapController {
    * @param node the node to delete
    */
   public void deleteNode(@NonNull Node node) {
+    // TODO: remove because everyone hates print statements I guess
+    // node.getChildren().forEach(node1 -> System.out.println(node1.getId()));
+
     currentDrawingPane
         .getChildren()
         .remove(getNodeToCircleMap().get(node)); // Remove the nodes circle
@@ -144,6 +147,83 @@ public class MapController {
 
     mapEntity.removeNode(
         node); // Remove the node, this also handles removing the edges and locations
+  }
+
+  public void deleteAndAutoRepair(Node node) {
+
+    List<Node> allChildren = node.getChildren(getMapSession());
+
+    ArrayList<Node> sameFloorChildren =
+        new ArrayList<>(
+            allChildren.stream()
+                .filter(node1 -> node.getFloor().equals(node1.getFloor()))
+                .toList());
+
+    ArrayList<Node> differentFloorChildren =
+        new ArrayList<>(
+            allChildren.stream()
+                .filter(node1 -> !node.getFloor().equals(node1.getFloor()))
+                .toList());
+
+    repairNodes(sameFloorChildren);
+    repairNodes(differentFloorChildren);
+    deleteNode(node);
+  }
+
+  private void repairNodes(List<Node> nodes) {
+    if (nodes.size() == 0) {
+      return;
+    }
+    List<Node> nodesLeftToRepair = nodes;
+
+    // the last node should already be connected to something else, so we do not need
+    // to connect it again
+
+    while (nodesLeftToRepair.size() > 1) {
+
+      // connect the first node in the list to the closest other node
+      Node startingNode = nodesLeftToRepair.get(0);
+
+      // find the closest other node
+      // set the closest node to be the second one in the list to start
+      Node closestNode = nodesLeftToRepair.get(1);
+      double smallestDistance = startingNode.getDistanceFrom(closestNode);
+
+      // if there are only two nodes left in the list, they by default are the closest to each other
+      if (nodesLeftToRepair.size() > 2) {
+        // start comparing distances with the third node in the list since we
+        // already accounted for the second node in the list
+        for (int i = 2; i < nodesLeftToRepair.size(); i++) {
+          // update smallestDistance and closestNode if a closer node is found
+          double newDistance = startingNode.getDistanceFrom(nodesLeftToRepair.get(i));
+          // if the new distance is now the smallest AND the edge doesn't already exist (both ways)
+          if (newDistance < smallestDistance
+              && getMapSession().find(Edge.class, new Edge(startingNode, nodesLeftToRepair.get(i)))
+                  == null
+              && getMapSession().find(Edge.class, new Edge(nodesLeftToRepair.get(i), startingNode))
+                  == null) {
+            // update smallest and closest vars
+            smallestDistance = newDistance;
+            closestNode = nodesLeftToRepair.get(i);
+          }
+        }
+      }
+
+      Edge newEdge = new Edge(startingNode, closestNode);
+
+      if (getMapSession().find(Edge.class, newEdge) == null
+          && getMapSession().find(Edge.class, new Edge(closestNode, startingNode)) == null) {
+
+        // node can be repaired and connected now to the closes node
+        getMapSession().persist(newEdge);
+        addEdge(newEdge);
+        // nodesLeftToRepair.remove(0);
+        getMapSession().flush();
+      }
+
+      // remove the node
+      nodesLeftToRepair.remove(0);
+    }
   }
 
   /**
