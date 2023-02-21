@@ -22,6 +22,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import net.kurobako.gesturefx.GesturePane;
 import org.hibernate.Session;
 
@@ -42,7 +43,10 @@ public class MapController {
 
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
 
+  @Setter private Date date;
+
   public void initialize() {
+    date = Date.from(Instant.now());
     gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
     Platform.runLater(() -> gesturePane.zoomTo(0.15, new javafx.geometry.Point2D(2500, 1700)));
   }
@@ -110,8 +114,7 @@ public class MapController {
 
     if (addLocations) {
       // For each location belonging to this node
-      for (LocationName nodeLocation :
-          node.getCurrentLocation(getMapSession(), Date.from(Instant.now()))) {
+      for (LocationName nodeLocation : node.getCurrentLocation(getMapSession(), date)) {
         addLocationName(nodeLocation, node); // Add it
       }
     }
@@ -124,32 +127,37 @@ public class MapController {
    *
    * @param node the node to delete
    */
-  public void deleteNode(@NonNull Node node) {
-    // TODO: remove because everyone hates print statements I guess
-    // node.getChildren().forEach(node1 -> System.out.println(node1.getId()));
+  public void deleteNode(@NonNull Node node, boolean shouldAutoRepair) {
+    if (!shouldAutoRepair) {
 
-    currentDrawingPane
-        .getChildren()
-        .remove(getNodeToCircleMap().get(node)); // Remove the nodes circle
+      // TODO: remove because everyone hates print statements I guess
+      // node.getChildren().forEach(node1 -> System.out.println(node1.getId()));
 
-    // For each edge
-    for (Edge edge : getEdgeToLineMap().keySet()) {
-      // Check if it relates to the node we're deleting
-      if (edge.getNode1().equals(node) || edge.getNode2().equals(node)) {
-        currentDrawingPane
-            .getChildren()
-            .remove(getEdgeToLineMap().get(edge)); // Remove the edge visually
+      currentDrawingPane
+          .getChildren()
+          .remove(getNodeToCircleMap().get(node)); // Remove the nodes circle
+
+      // For each edge
+      for (Edge edge : getEdgeToLineMap().keySet()) {
+        // Check if it relates to the node we're deleting
+        if (edge.getNode1().equals(node) || edge.getNode2().equals(node)) {
+          currentDrawingPane
+              .getChildren()
+              .remove(getEdgeToLineMap().get(edge)); // Remove the edge visually
+        }
       }
+
+      // Remove the location box
+      currentDrawingPane.getChildren().remove(getNodeToLocationBox().get(node));
+
+      mapEntity.removeNode(
+          node); // Remove the node, this also handles removing the edges and locations
+    } else {
+      deleteAndAutoRepair(node);
     }
-
-    // Remove the location box
-    currentDrawingPane.getChildren().remove(getNodeToLocationBox().get(node));
-
-    mapEntity.removeNode(
-        node); // Remove the node, this also handles removing the edges and locations
   }
 
-  public void deleteAndAutoRepair(Node node) {
+  private void deleteAndAutoRepair(Node node) {
 
     List<Node> allChildren = node.getChildren(getMapSession());
 
@@ -167,7 +175,7 @@ public class MapController {
 
     repairNodes(sameFloorChildren);
     repairNodes(differentFloorChildren);
-    deleteNode(node);
+    deleteNode(node, false);
   }
 
   private void repairNodes(List<Node> nodes) {
@@ -235,7 +243,7 @@ public class MapController {
    * @param newNode the new node
    */
   public void moveNode(@NonNull Node oldNode, @NonNull Node newNode) {
-    deleteNode(oldNode); // Completely delete the old node
+    deleteNode(oldNode, false); // Completely delete the old node
 
     if (newNode
         .getFloor()
@@ -387,6 +395,10 @@ public class MapController {
     return mapEntity.getLocationNameToTextMap();
   }
 
+  public void updateLocationNames() {
+    for (Set<LocationName> locationNameSet : mapEntity.getNodeToLocationNameMap().values()) {}
+  }
+
   /**
    * Gets the node to location box mapping
    *
@@ -471,7 +483,7 @@ public class MapController {
               .setParameter("floor", getFloor())
               .setCacheable(true)
               .stream()
-              .filter((move) -> move.getMoveDate().before(now))
+              .filter((move) -> move.getMoveDate().before(date))
               .distinct()
               .toList();
 

@@ -73,6 +73,15 @@ public class PathfindingController implements IController {
   @SneakyThrows
   public void initialize() {
     moveDatePicker.setValue(LocalDate.now());
+    moveDatePicker
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              System.out.println("listener dun heard somthin");
+              mapController.setDate(
+                  Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+              mapController.redraw();
+            });
     h1.setVisible(false);
     h2.setVisible(false);
     h3.setVisible(false);

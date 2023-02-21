@@ -61,6 +61,7 @@ public class MapEditorController implements IController {
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
   @FXML private MFXButton floorSelectorButton;
   @FXML private SearchableComboBox<MapController.Display> filterBox;
+  @FXML private CheckBox checkBox;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -309,7 +310,8 @@ public class MapEditorController implements IController {
                         nodesToDelete.forEach(
                             (node) -> {
                               // For each node, delete it
-                              mapController.deleteAndAutoRepair(node); // Delete the node
+                              mapController.deleteNode(
+                                  node, checkBox.isSelected()); // Delete the node
                               mapController
                                   .getMapSession()
                                   .createMutationQuery("DELETE FROM " + "Node WHERE id = :id")
@@ -999,7 +1001,7 @@ public class MapEditorController implements IController {
               (oldNode) -> {
                 selectedNodes.remove(oldNode); // Remove the node
 
-                mapController.deleteNode(oldNode); // On delete, delete
+                mapController.deleteNode(oldNode, false); // On delete, delete
                 clearNodePopOver();
               },
               (oldNode, newNode) -> {
