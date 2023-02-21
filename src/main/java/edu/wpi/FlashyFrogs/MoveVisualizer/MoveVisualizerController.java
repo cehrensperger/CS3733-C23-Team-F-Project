@@ -40,6 +40,8 @@ public class MoveVisualizerController implements IController {
     Pane mapRoot = mapLoader.load(); // Load the map
     mapPane.getChildren().add(mapRoot); // Add it
 
+    mapController = mapLoader.getController(); // Get the controller
+
     // Anchor it to take up the whole map pane
     AnchorPane.setLeftAnchor(mapRoot, 0.0);
     AnchorPane.setRightAnchor(mapRoot, 0.0);

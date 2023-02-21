@@ -29,8 +29,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.SneakyThrows;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -239,37 +239,34 @@ public class MapController {
     if (nodes.size() == 0) {
       return;
     }
-    List<Node> nodesLeftToRepair = nodes;
 
     // the last node should already be connected to something else, so we do not need
     // to connect it again
 
-    while (nodesLeftToRepair.size() > 1) {
+    while (nodes.size() > 1) {
 
       // connect the first node in the list to the closest other node
-      Node startingNode = nodesLeftToRepair.get(0);
+      Node startingNode = nodes.get(0);
 
       // find the closest other node
       // set the closest node to be the second one in the list to start
-      Node closestNode = nodesLeftToRepair.get(1);
+      Node closestNode = nodes.get(1);
       double smallestDistance = startingNode.getDistanceFrom(closestNode);
 
       // if there are only two nodes left in the list, they by default are the closest to each other
-      if (nodesLeftToRepair.size() > 2) {
+      if (nodes.size() > 2) {
         // start comparing distances with the third node in the list since we
         // already accounted for the second node in the list
-        for (int i = 2; i < nodesLeftToRepair.size(); i++) {
+        for (int i = 2; i < nodes.size(); i++) {
           // update smallestDistance and closestNode if a closer node is found
-          double newDistance = startingNode.getDistanceFrom(nodesLeftToRepair.get(i));
+          double newDistance = startingNode.getDistanceFrom(nodes.get(i));
           // if the new distance is now the smallest AND the edge doesn't already exist (both ways)
           if (newDistance < smallestDistance
-              && getMapSession().find(Edge.class, new Edge(startingNode, nodesLeftToRepair.get(i)))
-                  == null
-              && getMapSession().find(Edge.class, new Edge(nodesLeftToRepair.get(i), startingNode))
-                  == null) {
+              && getMapSession().find(Edge.class, new Edge(startingNode, nodes.get(i))) == null
+              && getMapSession().find(Edge.class, new Edge(nodes.get(i), startingNode)) == null) {
             // update smallest and closest vars
             smallestDistance = newDistance;
-            closestNode = nodesLeftToRepair.get(i);
+            closestNode = nodes.get(i);
           }
         }
       }
@@ -287,7 +284,7 @@ public class MapController {
       }
 
       // remove the node
-      nodesLeftToRepair.remove(0);
+      nodes.remove(0);
     }
   }
 
@@ -538,8 +535,6 @@ public class MapController {
         addNode(node, false); // Add the node
       }
 
-      Date now = new Date();
-
       // Get the moves before now
       List<Move> moves =
           getMapSession()
@@ -567,7 +562,15 @@ public class MapController {
         }
       }
 
-      fillServiceRequests(); // Fill the service requests, as set display text shows/hides
+      // Only populate service requests if the signed in user actually exists. This exists
+      // essentially just for
+      // the login page
+      if (CurrentUserEntity.CURRENT_USER.getCurrentUser() != null
+          && getMapSession()
+                  .find(HospitalUser.class, CurrentUserEntity.CURRENT_USER.getCurrentUser().getId())
+              != null) {
+        fillServiceRequests(); // Fill the service requests, as set display text shows/hides
+      }
 
       // We need to re-handle updating the display text now that we've redrawn everything
       setDisplayText(filterBox.getValue());

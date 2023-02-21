@@ -20,7 +20,7 @@
 
 <AnchorPane fx:id="root" prefHeight="763.0" prefWidth="1124.0" style="-fx-background-color: blue;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.MapEditorController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox maxWidth="220.0" minWidth="220.0" prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Map Editor">
                <VBox.margin>

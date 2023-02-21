@@ -13,12 +13,12 @@
 
 <AnchorPane prefHeight="763.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MoveVisualizer.MoveVisualizerController">
    <children>
-      <VBox prefWidth="220.0" spacing="30.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox maxWidth="220.0" minWidth="220.0" prefWidth="220.0" spacing="30.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </padding>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Move Visualizer">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Move Visualizer" wrappingWidth="220.0">
                <font>
                   <Font size="18.0" />
                </font>
@@ -47,6 +47,6 @@
             <String fx:value="round" />
          </styleClass>
       </Button>
-      <AnchorPane fx:id="mapPane" />
+      <AnchorPane fx:id="mapPane" layoutX="257.0" layoutY="28.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>

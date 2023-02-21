@@ -54,7 +54,7 @@ public class MapEditorController implements IController {
   @FXML private Button backButton;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
-    @FXML private CheckBox checkBox;
+  @FXML private CheckBox checkBox;
   @FXML private DatePicker viewingDate;
 
   @FXML Text h1;
@@ -270,7 +270,7 @@ public class MapEditorController implements IController {
                 .addEventFilter(
                     MouseEvent.MOUSE_MOVED,
                     (mouseEvent) -> {
-                      //System.out.println(root.getHeight());
+                      // System.out.println(root.getHeight());
                       // If quick draw is enabled
                       if (quickDrawActive) {
                         // Set the circles position
@@ -435,30 +435,30 @@ public class MapEditorController implements IController {
         event -> {
           GesturePane gesturePane = mapController.getGesturePane();
           double scale = gesturePane.getCurrentScale();
-          //System.out.println("translate X: " + gesturePane.getCurrentX());
-          //System.out.println("translate Y: " + gesturePane.getCurrentY());
+          // System.out.println("translate X: " + gesturePane.getCurrentX());
+          // System.out.println("translate Y: " + gesturePane.getCurrentY());
           // System.out.println("scale factor: " + scale);
 
-          //System.out.println(
-            //  "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
-          //System.out.println(
-            //  "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
+          // System.out.println(
+          //  "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
+          // System.out.println(
+          //  "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
           double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
           double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
           int roundedX = (int) Math.round(x);
-            int roundedY = (int) Math.round(y);
-            Node newNode =
-                new Node(
-                    createNodeID(mapController.getFloor(), roundedX, roundedY),
-                    "",
-                    floorProperty.getValue(),
-                    roundedX,
-                    roundedY);
+          int roundedY = (int) Math.round(y);
+          Node newNode =
+              new Node(
+                  createNodeID(mapController.getMapFloorProperty().getValue(), roundedX, roundedY),
+                  "",
+                  floorProperty.getValue(),
+                  roundedX,
+                  roundedY);
           mapController.addNode(newNode, false);
 
           // make sure the circle is within bounds
           if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
-            //System.out.println("out of bounds");
+            // System.out.println("out of bounds");
           }
           duplicateCircle.setVisible(false);
         });
@@ -1079,7 +1079,7 @@ public class MapEditorController implements IController {
       // If the quick draw line exists
       if (currentQuickDrawLine != null) {
         // Delete it
-        mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawCircle);
+        mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawLine);
         currentQuickDrawLine = null;
       }
       // No need to clear the last edge, already gone (off the map editor)
