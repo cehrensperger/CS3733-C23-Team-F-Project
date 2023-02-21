@@ -4,6 +4,7 @@ import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
+import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import jakarta.persistence.Tuple;
 import java.time.Instant;
 import java.util.*;
@@ -63,6 +64,14 @@ public class MapController {
    */
   public void setEdgeCreation(BiConsumer<Edge, Line> function) {
     mapEntity.setEdgeCreation(function);
+  }
+
+  /**
+   * Set the location creation function
+   * @param function the function to set the location creation to. May be null
+   */
+  public void setLocationCreation(TriConsumer<Node, LocationName, Text> function) {
+    mapEntity.setLocationCreation(function);
   }
 
   /**
@@ -384,7 +393,7 @@ public class MapController {
               .stream()
               .filter((move) -> move.getMoveDate().before(now))
               .distinct()
-              .collect(Collectors.toList());
+              .toList();
 
       HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
 

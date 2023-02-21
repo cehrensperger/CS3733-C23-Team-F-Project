@@ -13,6 +13,7 @@ import lombok.SneakyThrows;
  */
 @GeneratedExclusion
 public enum ResourceDictionary {
+  DRAG_SVG("MapEditor/dragSVG.png"),
   L2("floors/L2.png"), // L2 hospital map image
   L1("floors/L1.png"), // , // L1 hospital map image
   // G("floors/G.png"), // Ground floor hospital map image
