@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -16,9 +15,9 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
    <children>
-      <VBox prefHeight="720.0" prefWidth="220.0" style="-fx-background-color: #d1d1d1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="720.0" prefWidth="220.0" style="-fx-background-color: #d1d1d1;" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label styleClass="title" text="Pathfinder">
                <VBox.margin>
@@ -28,60 +27,55 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <SearchableComboBox fx:id="startingBox" promptText="Starting Location:" style="-fx-background-color: #d1d1d1;" styleClass="fields2">
+            <SearchableComboBox fx:id="startingBox" promptText="Starting Location:" styleClass="fields">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </SearchableComboBox>
-            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a starting location for your path" wrappingWidth="190.0">
+            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Choose a starting location for your path" wrappingWidth="190.0">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
             </Text>
-            <SearchableComboBox fx:id="destinationBox" promptText="Destination:" styleClass="fields2">
+            <SearchableComboBox fx:id="destinationBox" promptText="Destination:" styleClass="fields">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </SearchableComboBox>
-            <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose an ending location for your path" wrappingWidth="190.0">
+            <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Choose an ending location for your path" wrappingWidth="190.0">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
             </Text>
-            <SearchableComboBox fx:id="algorithmBox" promptText="Algorithm:" styleClass="fields2">
+            <SearchableComboBox fx:id="algorithmBox" promptText="Algorithm:" styleClass="fields">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </SearchableComboBox>
-            <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose an algorithm to generate your path with" wrappingWidth="190.0">
+            <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Choose an algorithm to generate your path with" wrappingWidth="190.0">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
             </Text>
-            <DatePicker fx:id="moveDatePicker" prefHeight="25.0" prefWidth="187.0">
+            <DatePicker fx:id="moveDatePicker" prefHeight="25.0" prefWidth="187.0" styleClass="fields">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </DatePicker>
-            <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a date for the pathfinding to take place" wrappingWidth="190.0">
+            <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Choose a date for the pathfinding to take place" wrappingWidth="190.0">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </Text>
-            <MFXButton alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" style="-fx-text-fill: #ffffff; -fx-background-color: #012d5a;" text="Generate Path">
+            <MFXButton alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Generate Path">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
                <font>
                   <Font size="16.0" />
                </font>
-               <styleClass>
-                  <String fx:value="round" />
-                  <String fx:value="body" />
-                  <String fx:value="dropshadow" />
-               </styleClass>
             </MFXButton>
-            <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to generate the path!">
+            <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Click to generate the path!">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
@@ -125,30 +119,20 @@
                         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
                      </children>
                   </StackPane>
-                  <SearchableComboBox fx:id="filterBox" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0" />
+                  <SearchableComboBox fx:id="filterBox" styleClass="fields" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0" />
                </children>
             </AnchorPane>
          </children>
       </StackPane>
-      <MFXButton onAction="#handleBack" prefHeight="32.0" prefWidth="184.0" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
+      <MFXButton onAction="#handleBack" prefHeight="32.0" prefWidth="184.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
          </font>
-         <styleClass>
-            <String fx:value="back" />
-            <String fx:value="round" />
-            <String fx:value="body" />
-         </styleClass>
       </MFXButton>
-      <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="19.0" prefWidth="184.0" style="-fx-background-color: #012d5a; -fx-text-fill: #f1f1f1;" text="Map Editor" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
+      <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="19.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Map Editor" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
          </font>
-         <styleClass>
-            <String fx:value="round" />
-            <String fx:value="body" />
-            <String fx:value="dropshadow" />
-         </styleClass>
       </MFXButton>
    </children>
 </AnchorPane>
