@@ -372,7 +372,6 @@
     /** controls the background of the arrow next to the current employee name **/
 {
     -fx-background-color:#012D5A;
-    -fx-control-inner-background: #012D5A;
     -fx-border-insets: -1px;
     -fx-border-color: #012D5A;
 }
@@ -388,7 +387,6 @@
     /** controls current employee name text color and the background color **/
 {
     -fx-background-color: #012D5A;
-    -fx-control-inner-background: #012D5A;
     -fx-border-color: #012D5A;
     -fx-border-insets: -1px;
     -fx-text-fill: #ffffff;
