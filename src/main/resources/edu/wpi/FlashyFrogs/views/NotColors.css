@@ -188,6 +188,20 @@
     /** -fx-pref-height: 26px; **/
 }
 
+.editUserFields
+    /** This controls input fields within the app - such as the service requests
+    fields and the csv parser inputs **/
+{
+    -fx-border-radius: 10px !important;
+    -fx-background-radius: 10px !important;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 12pt;
+    -fx-border-insets: -1px;
+    -fx-font-weight: normal;
+    /** -fx-pref-width: 200px; (not sure if we want to set width and height in here) **/
+    /** -fx-pref-height: 26px; **/
+}
+
 .date-picker
     /** controls all date picker fields within the app **/
 {

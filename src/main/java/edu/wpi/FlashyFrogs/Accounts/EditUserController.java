@@ -100,7 +100,7 @@ public class EditUserController implements IController {
       errorMessage.setText("No user selected for deletion");
       errorMessage.setVisible(true);
     }
-    if (currentUser.equals(CurrentUserEntity.CURRENT_USER.getCurrentuser())) {
+    if (currentUser.equals(CurrentUserEntity.CURRENT_USER.getCurrentUser())) {
       errorMessage.setText("Cannot delete current account");
       errorMessage.setVisible(true);
     } else {
