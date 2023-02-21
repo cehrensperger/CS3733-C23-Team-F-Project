@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +28,7 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class LoginAdministratorController implements IController {
+  @FXML private Label errorMessage;
   @FXML private TableView<UserLogin> tableView;
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
@@ -42,6 +44,8 @@ public class LoginAdministratorController implements IController {
   @FXML Text h1;
 
   private UserLogin selectedUserLogin;
+
+  private int selectedUserLoginIndex;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -72,6 +76,7 @@ public class LoginAdministratorController implements IController {
   }
 
   public void initialize() throws Exception {
+    errorMessage.setVisible(false);
     h1.setVisible(false);
 
     // Clear old table before init
@@ -167,17 +172,32 @@ public class LoginAdministratorController implements IController {
 
   public void deleteUser(ActionEvent actionEvent) {
     Session ses = CONNECTION.getSessionFactory().openSession();
-    ses.beginTransaction();
-    ses.createMutationQuery("delete FROM HospitalUser user WHERE id=:ID")
-        .setParameter("ID", selectedUserLogin.getUser().getId())
-        .executeUpdate();
-    ses.getTransaction().commit();
-    ses.close();
-    userLoginTable.getItems().remove(selectedUserLogin);
+    if (selectedUserLogin == null) {
+      errorMessage.setText("No user selected for deletion");
+      errorMessage.setVisible(true);
+    }
+    if (selectedUserLogin.getUser().equals(CurrentUserEntity.CURRENT_USER.getCurrentuser())) {
+      errorMessage.setText("Cannot delete current account");
+      errorMessage.setVisible(true);
+    } else {
+      errorMessage.setVisible(false);
+      ses.beginTransaction();
+      ses.createMutationQuery("delete FROM HospitalUser user WHERE id=:ID")
+          .setParameter("ID", selectedUserLogin.getUser().getId())
+          .executeUpdate();
+      ses.getTransaction().commit();
+      ses.close();
+      userLoginTable.getItems().remove(selectedUserLogin);
+      if (selectedUserLoginIndex != 0) {
+        selectedUserLoginIndex -= 1;
+        selectedUserLogin = userLoginTable.getItems().get(selectedUserLoginIndex);
+      }
+    }
   }
 
   public void setSelected() {
     selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
+    selectedUserLoginIndex = userLoginTable.getSelectionModel().getSelectedIndex();
   }
 
   public void onClose() {}

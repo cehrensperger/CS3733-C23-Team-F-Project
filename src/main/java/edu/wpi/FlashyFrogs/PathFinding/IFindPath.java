@@ -6,5 +6,6 @@ import lombok.NonNull;
 import org.hibernate.Session;
 
 public interface IFindPath {
-  public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Session session);
+  public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Session session)
+      throws Exception;
 }

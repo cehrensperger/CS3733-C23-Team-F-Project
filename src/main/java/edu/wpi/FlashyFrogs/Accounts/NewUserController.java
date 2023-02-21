@@ -23,12 +23,13 @@ import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class NewUserController implements IController {
-
   private PopOver popOver;
   private LoginAdministratorController loginAdministratorController;
   @FXML private TextField username;
   @FXML private PasswordField pass1;
   @FXML private PasswordField pass2;
+
+  @FXML private TextField rfid;
   @FXML private TextField firstName;
   @FXML private TextField middleName;
   @FXML private TextField lastName;
@@ -69,12 +70,11 @@ public class NewUserController implements IController {
         || pass1.getText().equals("")
         || pass2.getText().equals("")
         || firstName.getText().equals("")
-        || middleName.getText().equals("")
         || lastName.getText().equals("")
         || deptBox.getValue() == null
         || employeeType.getValue() == null) {
       // One of the values is left null
-      errorMessage.setText("Please fill out all fields!");
+      errorMessage.setText("Please fill out all required fields!");
       errorMessage.setVisible(true);
     } else if (!pass1.getText().equals(pass2.getText())) {
       // Passwords do not match
@@ -97,15 +97,27 @@ public class NewUserController implements IController {
         ses.persist(userFK);
         ses.persist(newUser);
         transaction.commit();
-        ses.close();
         loginAdministratorController.initialize();
-        popOver.hide();
       } catch (Exception e) {
         errorMessage.setText("That username is already taken.");
         errorMessage.setVisible(true);
         transaction.rollback();
-        ses.close();
+        return;
       }
+      if (rfid != null && !rfid.getText().isEmpty()) {
+        try {
+          transaction = ses.beginTransaction();
+          newUser.setRFIDBadge(rfid.getText());
+          ses.merge(newUser);
+          transaction.commit();
+          loginAdministratorController.initialize();
+        } catch (Exception e) {
+          errorMessage.setText("That badge ID is already taken. User added without a badge ID.");
+          errorMessage.setVisible(true);
+          transaction.rollback();
+        }
+      }
+      ses.close();
     }
   }
 
