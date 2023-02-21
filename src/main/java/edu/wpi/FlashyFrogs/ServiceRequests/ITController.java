@@ -109,7 +109,7 @@ public class ITController implements IController {
 
       ComputerService informationTechnology =
           new ComputerService(
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               locationBox.getValue(),
               dateNeeded,
               Date.from(Instant.now()),

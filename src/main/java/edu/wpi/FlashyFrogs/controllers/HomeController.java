@@ -407,7 +407,7 @@ public class HomeController implements IController {
   }
 
   public void refreshTable() {
-    HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentUser();
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
     Session session = CONNECTION.getSessionFactory().openSession();
@@ -457,7 +457,7 @@ public class HomeController implements IController {
             (observable, oldValue, newValue) -> {
               if (!newValue.equals(null)) {
                 Session session = CONNECTION.getSessionFactory().openSession();
-                HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+                HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentUser();
                 boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
                 if (!newValue.equals("All")) {
                   if (!isAdmin) {

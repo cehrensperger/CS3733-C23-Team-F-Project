@@ -144,7 +144,7 @@ public class PathfindingController implements IController {
           // If we have a valid path
           floorSelector.setText("Floor " + newValue.floorNum);
           if (session.find(
-                  HospitalUser.class, CurrentUserEntity.CURRENT_USER.getCurrentuser().getId())
+                  HospitalUser.class, CurrentUserEntity.CURRENT_USER.getCurrentUser().getId())
               != null) mapController.fillServiceRequests();
           mapController.setDisplayText(filterBox.getValue());
           // If the last path is valid

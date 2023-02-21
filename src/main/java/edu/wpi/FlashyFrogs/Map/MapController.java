@@ -238,7 +238,7 @@ public class MapController {
   }
 
   public void fillServiceRequests() {
-    HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentuser();
+    HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentUser();
 
     List<Tuple> tuples =
         getMapSession()

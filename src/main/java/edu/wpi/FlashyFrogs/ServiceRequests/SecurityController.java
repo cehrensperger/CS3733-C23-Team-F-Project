@@ -106,7 +106,7 @@ public class SecurityController implements IController {
           new Security(
               description.getText(),
               locationBox.getValue(),
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               dateOfRequest,
               Date.from(Instant.now()),
               urgency.getValue(),
