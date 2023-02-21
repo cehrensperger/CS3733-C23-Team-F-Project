@@ -13,15 +13,21 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.commons.math3.util.MathUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
@@ -35,6 +41,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML private AnchorPane mapPane;
   @FXML private MFXButton mapEditorButton;
   @FXML private DatePicker moveDatePicker;
+  @FXML private TableView<Instruction> pathTable;
+  @FXML private TableColumn<Instruction, String> pathCol;
   //  @FXML private Label error;
 
   @FXML Text h1;
@@ -42,6 +50,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
+  @FXML Text h6;
 
   boolean hDone = false;
 
@@ -64,6 +73,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     h3.setVisible(false);
     h4.setVisible(false);
     h5.setVisible(false);
+    h6.setVisible(false);
+    pathTable.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -120,6 +131,39 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
+
+    pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
+
+    pathTable.setRowFactory(
+        param -> {
+          TableRow<Instruction> row = new TableRow<>(); // Create a new table row to use
+
+          // When the user selects a row, just un-select it to avoid breaking formatting
+          row.selectedProperty()
+              .addListener(
+                  // Add a listener that does that
+                  (observable, oldValue, newValue) -> row.updateSelected(false));
+
+          // Add a listener to show the pop-up
+          row.setOnMouseClicked(
+              (event) -> {
+                // If the pop over exists and is either not focused or we are showing a new
+                // row
+                if (row != null) {
+                  setFloor(row.getItem().node.getFloor());
+                  //                  Platform.runLater(
+                  //                      () ->
+                  //                          mapController
+                  //                              .getGesturePane()
+                  //                              .zoomTo(
+                  //                                  .8,
+                  //                                  new javafx.geometry.Point2D(
+                  //                                      row.getItem().node.getXCoord(),
+                  //                                      row.getItem().node.getYCoord())));
+                }
+              });
+          return row;
+        });
   }
 
   /** Callback to handle the back button being pressed */
@@ -127,6 +171,216 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML
   private void handleBack() {
     Fapp.handleBack(); // Delegate to Fapp
+  }
+
+
+
+  /**
+   * Hides the last drawn path on the map, in preparation for a new path being drawn. Handles case
+   * where no path is drawn
+   */
+  private void hideLastPath() {
+    pathTable.setVisible(false);
+    // Check to make sure there is a path
+    if (lastPath != null) {
+      // Get the start node
+      Node startNode = lastPath.get(0);
+
+      // If the start node is on this floor
+      if (startNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+        // Get the circle
+        Circle circle = mapController.getNodeToCircleMap().get(startNode);
+
+        circle.setOpacity(0); // Hide the circle
+      }
+
+      // Get the end node in the path
+      Node endNode = lastPath.get(lastPath.size() - 1);
+
+      // If the end node is on this floor
+      if (endNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+        // Get the circle
+        Circle circle = mapController.getNodeToCircleMap().get(endNode);
+
+        circle.setOpacity(0); // Hide the circle
+      }
+
+      // Hide all the edges
+      for (int i = 1; i < lastPath.size(); i++) { // For each edge
+        // Get the two nodes in the edge
+        Node thisNode = lastPath.get(i);
+
+        // If we're on the right floor
+        if (thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+          // Hide
+          mapController.getNodeToCircleMap().get(thisNode).setOpacity(0);
+        }
+
+        Node previousNode = lastPath.get(i - 1);
+
+        // If both nodes are on this floor
+        if (thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())
+            && previousNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+          Edge edge; // The edge to hide
+
+          // Get the edge, try the first directino
+          edge = mapController.getMapSession().find(Edge.class, new Edge(thisNode, previousNode));
+
+          // That failing
+          if (edge == null) {
+            // Try the other
+            edge = mapController.getMapSession().find(Edge.class, new Edge(previousNode, thisNode));
+          }
+
+          // Now get the line
+          Line line = mapController.getEdgeToLineMap().get(edge);
+          line.setOpacity(0); // hide the line
+        }
+      }
+    }
+  }
+
+  /** Method that generates table for textual path instructions */
+  private void drawTable() {
+    pathTable.setVisible(true);
+
+    ObservableList<Instruction> instructions = FXCollections.observableArrayList();
+
+    double curAngle = 0;
+
+    pathTable.setItems(instructions);
+    for (int i = 0; i < lastPath.size() - 1; i++) { // For each line in the path
+      Node thisNode = lastPath.get(i);
+      Node nextNode = lastPath.get(i + 1);
+
+      double target =
+          Math.atan2(
+              (nextNode.getYCoord() - thisNode.getYCoord()),
+              (nextNode.getXCoord() - thisNode.getXCoord()));
+      double errorTheta = target - curAngle;
+      curAngle = target;
+
+      errorTheta = MathUtils.normalizeAngle(errorTheta, 0.0);
+
+      int errorDeg = (int) Math.toDegrees(errorTheta);
+
+      String nodeName =
+          thisNode
+              .getCurrentLocation(
+                  Date.from(
+                      moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))
+              .stream()
+              .findFirst()
+              .orElse(new LocationName("", LocationName.LocationType.HALL, ""))
+              .getShortName();
+
+      if (nodeName.equals("")) {
+        if (errorDeg < -10) {
+          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees", thisNode));
+        } else if (errorDeg > 10) {
+          instructions.add(new Instruction("Turn left " + errorDeg + " degrees", thisNode));
+        } else {
+          instructions.add(new Instruction("Continue", thisNode));
+        }
+      } else {
+        if (errorDeg < -10) {
+          instructions.add(
+              new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName, thisNode));
+        } else if (errorDeg > 10) {
+          instructions.add(
+              new Instruction("Turn left " + errorDeg + " degrees at " + nodeName, thisNode));
+        } else {
+          instructions.add(new Instruction("Continue at " + nodeName, thisNode));
+        }
+      }
+    }
+
+    instructions.add(
+        new Instruction(
+            "You have arrived at " + destinationBox.valueProperty().get(),
+            lastPath.get(lastPath.size() - 1)));
+  }
+
+  /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */
+  private void drawPath() throws IOException {
+    // Color any edges on the map
+    Node prevNode = lastPath.get(0);
+    for (int i = 1; i < lastPath.size(); i++) { // For each line in the path
+      Node thisNode = lastPath.get(i); // Get the node
+
+      String nextFloor = thisNode.getFloor().floorNum;
+
+      if (!nextFloor.equals(prevNode.getFloor().floorNum)) {
+        FXMLLoader loader =
+            new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
+        PopOver goToNext = new PopOver(loader.load());
+
+        NextFloorPopupController controller = loader.getController();
+        controller.setPathfindingController(this);
+        controller.setFloor(thisNode.getFloor());
+
+        Circle circle = mapController.getNodeToCircleMap().get(prevNode);
+        if (circle != null) {
+          circle.setFill(Paint.valueOf(Color.YELLOW.toString()));
+          circle.setOpacity(1);
+
+          goToNext.show(circle);
+          goToNext.setAutoHide(false);
+          goToNext.setAutoFix(false);
+          goToNext.detach();
+          goToNext.setX(250);
+          goToNext.setY(20);
+          goToNext.setTitle("   Your path goes to Floor " + nextFloor + ".");
+        }
+      }
+      prevNode = thisNode;
+
+      // If the node is on this floor
+      if (thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+
+        // Try to draw its edge. Check that what it's connected to is on this floor
+        if (lastPath.get(i - 1).getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+          // find the edge related to each pair of nodes
+          Edge edge =
+              mapController
+                  .getMapSession()
+                  .find(Edge.class, new Edge(lastPath.get(i - 1), thisNode));
+
+          // if it couldn't find the edge, reverse the direction and look again
+          if (edge == null) {
+            edge =
+                mapController
+                    .getMapSession()
+                    .find(Edge.class, new Edge(thisNode, lastPath.get(i - 1)));
+          }
+
+          // get the line on the map associated with the edge
+          Line line = mapController.getEdgeToLineMap().get(edge);
+
+          // Set its formatting
+          line.setOpacity(1);
+          line.setStroke(Paint.valueOf(Color.BLUE.toString()));
+          line.setStrokeWidth(5);
+        }
+      }
+    }
+
+    // Get the first node, to draw it
+    Node firstNode = lastPath.get(0);
+    if (firstNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+      Circle circle = mapController.getNodeToCircleMap().get(firstNode);
+
+      circle.setFill(Paint.valueOf(Color.BLUE.toString()));
+      circle.setOpacity(1);
+    }
+
+    // Get the ending node, to draw it
+    Node lastNode = lastPath.get(lastPath.size() - 1);
+    if (lastNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
+      Circle circle = mapController.getNodeToCircleMap().get(lastNode);
+      circle.setFill(Paint.valueOf(Color.GREEN.toString()));
+      circle.setOpacity(1);
+    }
   }
 
   /** Method that handles drawing a new path (AKA the submit button handler) */
@@ -168,6 +422,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       // Zoom to the coordinates of the starting node
       mapController.zoomToCoordinates(10, startNode.getXCoord(), startNode.getYCoord());
       colorFloor(); // Draw the path
+      setFloor(startNode.getFloor());
+      drawTable();
     }
   }
 
@@ -208,6 +464,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h3.setVisible(true);
       h4.setVisible(true);
       h5.setVisible(true);
+      h6.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
@@ -215,6 +472,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h3.setVisible(false);
       h4.setVisible(false);
       h5.setVisible(false);
+      h6.setVisible(false);
       hDone = false;
     }
   }
@@ -226,5 +484,15 @@ public class PathfindingController extends AbstractPathVisualizerController impl
    */
   public void setFloor(@NonNull Node.Floor floor) {
     mapController.getMapFloorProperty().setValue(floor);
+  }
+
+  public static class Instruction {
+    @Getter @Setter private String instruction;
+    @Getter @Setter private Node node;
+
+    Instruction(String instruction, Node node) {
+      this.instruction = instruction;
+      this.node = node;
+    }
   }
 }

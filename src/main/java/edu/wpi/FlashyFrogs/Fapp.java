@@ -122,6 +122,8 @@ public class Fapp extends Application {
 
     // Add the sheets
     sheets.add(themeName.resource.toExternalForm());
+    sheets.add(
+        Objects.requireNonNull(Theme.class.getResource("views/NotColors.css")).toExternalForm());
 
     theme = themeName;
   }

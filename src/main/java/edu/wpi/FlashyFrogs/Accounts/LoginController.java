@@ -25,7 +25,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
-import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
 
@@ -85,7 +84,6 @@ public class LoginController implements IController {
                     })));
   }
 
-  @SneakyThrows
   public void loginButton(ActionEvent actionEvent) {
     if (username.getText().equals("") || password.getText().equals("")) {
       // One of the values is left null
@@ -111,11 +109,10 @@ public class LoginController implements IController {
         }
         ses.close();
       } catch (Exception e) {
-
+        System.out.println(e);
         errorMessage.setText("Invalid Username or Password.");
         errorMessage.setVisible(true);
         ses.close();
-        throw e;
       }
     }
   }

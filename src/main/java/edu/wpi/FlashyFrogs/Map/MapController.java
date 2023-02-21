@@ -385,22 +385,39 @@ public class MapController {
 
   public void fillServiceRequests() {
     HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentUser();
+    List<Tuple> tuples;
 
-    List<Tuple> tuples =
-        getMapSession()
-            .createQuery(
-                "Select s.id, m.node "
-                    + "From ServiceRequest s, Move m "
-                    + "WHERE s.assignedEmp = :user "
-                    + "AND m.location = s.location "
-                    + "AND m.moveDate = (Select max(m2.moveDate)"
-                    + "                  FROM Move m2 "
-                    + "                  WHERE s.location = m2.location "
-                    + "                  GROUP BY m2.location "
-                    + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
-                Tuple.class)
-            .setParameter("user", currentUser)
-            .getResultList();
+    if (CurrentUserEntity.CURRENT_USER.getAdmin()) {
+      tuples =
+          getMapSession()
+              .createQuery(
+                  "Select s.id, m.node "
+                      + "From ServiceRequest s, Move m "
+                      + "WHERE m.location = s.location "
+                      + "AND m.moveDate = (Select max(m2.moveDate)"
+                      + "                  FROM Move m2 "
+                      + "                  WHERE s.location = m2.location "
+                      + "                  GROUP BY m2.location "
+                      + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
+                  Tuple.class)
+              .getResultList();
+    } else {
+      tuples =
+          getMapSession()
+              .createQuery(
+                  "Select s.id, m.node "
+                      + "From ServiceRequest s, Move m "
+                      + "WHERE s.assignedEmp = :user "
+                      + "AND m.location = s.location "
+                      + "AND m.moveDate = (Select max(m2.moveDate)"
+                      + "                  FROM Move m2 "
+                      + "                  WHERE s.location = m2.location "
+                      + "                  GROUP BY m2.location "
+                      + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
+                  Tuple.class)
+              .setParameter("user", currentUser)
+              .getResultList();
+    }
 
     for (Tuple t : tuples) {
       Node node = (Node) t.get(t.getElements().get(1));
@@ -584,37 +601,67 @@ public class MapController {
 
   private void setDisplayText(Display display) {
     Collection<VBox> boxes = getNodeToLocationBox().values();
+    LinkedList<Text> list = new LinkedList<>();
 
     switch (display.name()) {
       case "LOCATION_NAMES" -> {
+        // orders text as loc, loc, sr...
+        // or as loc, sr...
+        // depending on number of locations
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
-            if (i == 0) box.getChildren().get(i).setOpacity(1);
-            if (i == 1) box.getChildren().get(i).setOpacity(0);
+            Text text = (Text) box.getChildren().get(i);
+
+            if (text.getText().contains("_")) {
+              list.add(text);
+              text.setOpacity(0);
+            } else {
+              list.add(0, text);
+              text.setOpacity(1);
+            }
           }
+          box.getChildren().setAll(list);
+          list.clear();
         }
       }
       case "SERVICE_REQUESTS" -> {
+        // orders text with all sr before loc
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
-            if (i == 0) box.getChildren().get(i).setOpacity(0);
-            if (i == 1) box.getChildren().get(i).setOpacity(1);
+            Text text = (Text) box.getChildren().get(i);
+
+            if (text.getText().contains("_")) {
+              list.add(0, text);
+              text.setOpacity(1);
+            } else {
+              list.add(text);
+              text.setOpacity(0);
+            }
           }
+          box.getChildren().setAll(list);
+          list.clear();
         }
       }
       case "BOTH" -> {
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
-            if (i == 0) box.getChildren().get(i).setOpacity(1);
-            if (i == 1) box.getChildren().get(i).setOpacity(1);
+            Text text = (Text) box.getChildren().get(i);
+            text.setOpacity(1);
+
+            if (text.getText().contains("_")) {
+              list.add(text);
+            } else {
+              list.add(0, text);
+            }
           }
+          box.getChildren().setAll(list);
+          list.clear();
         }
       }
       case "NONE" -> {
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
-            if (i == 0) box.getChildren().get(i).setOpacity(0);
-            if (i == 1) box.getChildren().get(i).setOpacity(0);
+            box.getChildren().get(i).setOpacity(0);
           }
         }
       }
