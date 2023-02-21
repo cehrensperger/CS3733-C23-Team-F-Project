@@ -277,25 +277,29 @@ public class PathfindingController implements IController {
 
       if (nodeName.equals("")) {
         if (errorDeg < -10) {
-          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees"));
+          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees", thisNode));
         } else if (errorDeg > 10) {
-          instructions.add(new Instruction("Turn left " + errorDeg + " degrees"));
+          instructions.add(new Instruction("Turn left " + errorDeg + " degrees", thisNode));
         } else {
-          instructions.add(new Instruction("Continue"));
+          instructions.add(new Instruction("Continue", thisNode));
         }
       } else {
         if (errorDeg < -10) {
-          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName));
+          instructions.add(
+              new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName, thisNode));
         } else if (errorDeg > 10) {
-          instructions.add(new Instruction("Turn left " + errorDeg + " degrees at " + nodeName));
+          instructions.add(
+              new Instruction("Turn left " + errorDeg + " degrees at " + nodeName, thisNode));
         } else {
-          instructions.add(new Instruction("Continue at " + nodeName));
+          instructions.add(new Instruction("Continue at " + nodeName, thisNode));
         }
       }
     }
 
     instructions.add(
-        new Instruction("You have arrived at " + destinationBox.valueProperty().get()));
+        new Instruction(
+            "You have arrived at " + destinationBox.valueProperty().get(),
+            lastPath.get(lastPath.size() - 1)));
   }
 
   /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */
@@ -488,9 +492,11 @@ public class PathfindingController implements IController {
 
   public static class Instruction {
     @Getter @Setter private String instruction;
+    @Getter @Setter private Node node;
 
-    Instruction(String instruction) {
+    Instruction(String instruction, Node node) {
       this.instruction = instruction;
+      this.node = node;
     }
   }
 }
