@@ -14,6 +14,11 @@
     -fx-font-weight: bold;
     -fx-font-size: 28pt;
 }
+.titleTextNonTextObject {
+    /** Mimics .titleText for elements that aren't Text elements and thus won't change with -fx-fill **/
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-font-size: 28pt;}
 
 .header
     /** This styles headers - such as the titles of the sections on the service
@@ -32,9 +37,24 @@
     -fx-font-size: 20pt;
 }
 
+.headerBoldTextObject
+    /** Mimics .headerBold for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
+{
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-font-size: 20pt;
+}
+
 .body
     /** This styles body text - such as the names and descriptions on the service
      requests credits page **/
+{
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 10pt;
+}
+
+.bodyTextObject
+    /** Mimics .body for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
 {
     -fx-font-family: "Roboto Light";
     -fx-font-size: 10pt;
@@ -359,8 +379,8 @@
     /** controls the top box with the title of the alert in the alert side bar **/
 {
     -strokeType: inside;
-    -fx-background-radius: 10px;
-    -fx-border-radius: 10px;
+    -fx-background-radius: 10px, 10px, 0px, 0px;
+    -fx-border-radius: 10px, 10px, 0px, 0px;
 }
 
 .alertBottomBox
@@ -372,6 +392,11 @@
 
 .alertText
     /** controls the text area within the alertBottomBox **/
+{
+    -fx-background-radius: 0px;
+}
+
+.alertText .content
 {
     -fx-background-radius: 0px;
 }
@@ -389,3 +414,8 @@
     -fx-font-family: "Roboto Light";
 }
 
+.check-box
+{
+    -fx-font-size: 12pt;
+    -fx-font-family: "Roboto Light";
+}

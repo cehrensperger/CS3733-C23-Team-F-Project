@@ -9,6 +9,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -53,7 +54,7 @@ public class MapEditorController implements IController {
   @FXML private Button addEdge;
   @FXML private Text h41;
   @FXML private AnchorPane mapPane;
-  @FXML private Button backButton;
+  @FXML private MFXButton backButton;
   private MapController mapController; // Controller for the map
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
   @FXML private CheckBox checkBox;

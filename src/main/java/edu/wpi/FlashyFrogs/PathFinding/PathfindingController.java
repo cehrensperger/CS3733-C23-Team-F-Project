@@ -34,7 +34,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.apache.commons.math3.util.MathUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
@@ -62,6 +61,7 @@ public class PathfindingController implements IController {
   @FXML Text h3;
   @FXML Text h4;
   @FXML Text h5;
+  @FXML Text h6;
 
   boolean hDone = false;
 
@@ -84,6 +84,7 @@ public class PathfindingController implements IController {
     h3.setVisible(false);
     h4.setVisible(false);
     h5.setVisible(false);
+    h6.setVisible(false);
     pathTable.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
@@ -163,6 +164,7 @@ public class PathfindingController implements IController {
       mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
+
     pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
   }
 
@@ -258,8 +260,6 @@ public class PathfindingController implements IController {
       double errorTheta = target - curAngle;
       curAngle = target;
 
-      errorTheta = MathUtils.normalizeAngle(errorTheta, 0.0);
-
       int errorDeg = (int) Math.toDegrees(errorTheta);
 
       String nodeName =
@@ -272,13 +272,7 @@ public class PathfindingController implements IController {
               .orElseThrow()
               .getShortName();
 
-      if (errorDeg < 0) {
-        instructions.add(new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName));
-      } else if (errorDeg > 0) {
-        instructions.add(new Instruction("Turn left " + errorDeg + " degrees at " + nodeName));
-      } else {
-        instructions.add(new Instruction("Continue at " + nodeName));
-      }
+      instructions.add(new Instruction("Turn " + errorDeg + " degrees at " + nodeName));
     }
   }
 
@@ -448,6 +442,7 @@ public class PathfindingController implements IController {
       h3.setVisible(true);
       h4.setVisible(true);
       h5.setVisible(true);
+      h6.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
@@ -455,6 +450,7 @@ public class PathfindingController implements IController {
       h3.setVisible(false);
       h4.setVisible(false);
       h5.setVisible(false);
+      h6.setVisible(false);
       hDone = false;
     }
   }

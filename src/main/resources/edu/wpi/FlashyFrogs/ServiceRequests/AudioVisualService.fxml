@@ -109,10 +109,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                      <children>
-                        <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h1" styleClass="warningText" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="46.0" />
                            </VBox.margin>
@@ -218,42 +215,27 @@
                         <Insets left="10.0" top="52.0" />
                      </HBox.margin>
                      <children>
-                        <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What type of device do you need" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h2" styleClass="warningText" text="What type of device do you need" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the reason for the device requested" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h3" styleClass="warningText" text="What is the reason for the device requested" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="18.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What date is the device needed by" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h4" styleClass="warningText" text="What date is the device needed by" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="16.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="What is the urgency of this request" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h5" styleClass="warningText" text="What is the urgency of this request" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="24.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Describe the request" wrappingWidth="100.0">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <Text fx:id="h6" styleClass="warningText" text="Describe the request" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="28.0" />
                            </VBox.margin>
