@@ -150,15 +150,23 @@ public class HomeController implements IController {
     // need to be the names of the fields
     requestTypeCol.setCellValueFactory(
         p -> new SimpleStringProperty(p.getValue().getRequestType()));
+    requestTypeCol.setReorderable(false);
     requestIDCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getId()));
+    requestIDCol.setReorderable(false);
     initEmpCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getEmp()));
+    initEmpCol.setReorderable(false);
     assignedEmpCol.setCellValueFactory(
         p -> new SimpleObjectProperty<>(p.getValue().getAssignedEmp()));
+    assignedEmpCol.setReorderable(false);
     subDateCol.setCellValueFactory(
         p -> new SimpleObjectProperty<>(p.getValue().getDateOfSubmission()));
+    subDateCol.setReorderable(false);
     urgencyCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getUrgency()));
+    urgencyCol.setReorderable(false);
     locationCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getLocation()));
+    locationCol.setReorderable(false);
     statusCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getStatus()));
+    statusCol.setReorderable(false);
 
     PopupFilter<ServiceRequest, String> popupTypeFilter = new PopupStringFilter<>(requestTypeCol);
     requestTypeCol.setOnFilterAction(e -> popupTypeFilter.showPopup());
@@ -182,8 +190,11 @@ public class HomeController implements IController {
     statusCol.setOnFilterAction(e -> popupStatusFilter.showPopup());
 
     nodeIDCol.setCellValueFactory(new PropertyValueFactory<>("node"));
+    nodeIDCol.setReorderable(false);
     locationNameCol.setCellValueFactory(new PropertyValueFactory<>("locationName"));
+    locationNameCol.setReorderable(false);
     dateCol.setCellValueFactory(new PropertyValueFactory<>("moveDate"));
+    dateCol.setReorderable(false);
 
     PopupFilter<MoveWrapper, edu.wpi.FlashyFrogs.ORM.Node> popupNodeFilter =
         new PopupStringFilter<>(nodeIDCol);
