@@ -79,7 +79,7 @@ public class Announcement {
   public Announcement(
       @NonNull Date creationDate,
       HospitalUser author,
-      @NonNull String descriptoin,
+      @NonNull String description,
       @NonNull String announcement,
       @NonNull Department department,
       @NonNull Severity severity) {

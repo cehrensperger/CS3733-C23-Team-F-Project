@@ -27,6 +27,7 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.converter.DateStringConverter;
@@ -67,6 +68,7 @@ public class HomeController implements IController {
   @FXML protected MFXButton editMovesButton;
 
   @FXML protected ScrollPane scrollPane;
+  @FXML protected VBox alertBox;
 
   protected boolean canEditMoves = false;
 
@@ -354,6 +356,8 @@ public class HomeController implements IController {
       tableText2.setText("Future Moves");
     }
     refreshTable();
+
+    refreshAlerts();
   }
 
   @FXML
@@ -395,7 +399,27 @@ public class HomeController implements IController {
     Fapp.setScene("views", "Login");
   }
 
-  public void manageAnnouncements(ActionEvent event) throws IOException {}
+  public void manageAnnouncements(ActionEvent event) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AlertManager.fxml"));
+    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+
+    AlertManagerController controller = newLoad.getController();
+    controller.setPopOver(popOver);
+
+    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    javafx.scene.Node node =
+        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
+    popOver.show(node); // display the popover
+
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                refreshAlerts();
+              }
+            });
+  }
 
   public void onClose() {}
 
@@ -507,7 +531,28 @@ public class HomeController implements IController {
     moveTable.resetFilter();
   }
 
-  public void insertAlert(Announcement announcement) {}
+  public void insertAlert(Announcement announcement) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Alert.fxml"));
+
+    Parent root = newLoad.load();
+    alertBox.getChildren().add(root);
+
+    AlertController controller = newLoad.getController();
+    controller.insertAnnouncement(announcement);
+  }
+
+  @SneakyThrows
+  public void refreshAlerts() {
+    alertBox.getChildren().clear();
+
+    Session session = CONNECTION.getSessionFactory().openSession();
+    List<Announcement> list =
+        session.createQuery("Select a from Announcement a", Announcement.class).getResultList();
+
+    for (Announcement a : list) {
+      insertAlert(a);
+    }
+  }
 
   public void srEditorPopOver() {}
 }
