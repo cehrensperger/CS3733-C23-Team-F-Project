@@ -531,6 +531,7 @@ public class MapEditorController implements IController {
                                   .setParameter("id", node.getId())
                                   .executeUpdate();
                             }); // Delete all selected nodes
+                        mapController.redraw(); // Redraw on update
                       } else if (event.getCode().equals(KeyCode.DOWN)) { // Reversed top-bottom JFX
                         try {
                           // Try moving up
@@ -816,12 +817,18 @@ public class MapEditorController implements IController {
     addNode.setNode(
         new Node("", "", mapController.getMapFloorProperty().getValue(), 0, 0),
         mapController.getMapSession(), // Get the map session
-        (oldNode) -> popOver.hide(), // On delete we do nothing but hide
+        (oldNode) -> {
+          popOver.hide();
+          mapController.redraw();
+        }, // On delete we do nothing but hide
         (oldNode, newNode) -> {
           mapController.addNode(newNode, false);
           popOver.hide();
         }, // On create new one, process it
-        (oldLocation) -> mapController.removeLocationName(oldLocation),
+        (oldLocation) -> {
+          mapController.removeLocationName(oldLocation);
+          mapController.redraw();
+        },
         (oldLocation, newLocation, node) ->
             mapController.updateLocationName(
                 oldLocation, newLocation, node), // No location processing, no locations
