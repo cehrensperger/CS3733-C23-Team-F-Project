@@ -142,6 +142,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @FXML
   private void addText(ActionEvent actionEvent) {
     Text text = new Text(textText.getText()); // Create the text
+    text.setStyle("-fx-font-size: 500");
+    text.setWrappingWidth(mapController.getMapWidth() / 2);
+
     handleAddNode(text); // Add the text
   }
 
@@ -222,11 +225,19 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           // Update the coordinates if they are in bounds
           if (newX >= 0 && newX + root.getWidth() <= mapController.getMapWidth()) {
             root.setLayoutX(newX);
+          } else if (newX < 0) {
+            root.setLayoutX(0);
+          } else {
+            root.setLayoutX(mapController.getMapWidth() - root.getWidth());
           }
 
           // Do the same
           if (newY >= 0 && newY + root.getHeight() <= mapController.getMapHeight()) {
             root.setLayoutY(newY);
+          } else if (newY < 0) {
+            root.setLayoutY(0);
+          } else {
+            root.setLayoutY(mapController.getMapHeight() - root.getHeight());
           }
         });
 
@@ -260,6 +271,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
     // Drag start coordinates
     double[] dragStart = new double[2];
+    double[] startScale = new double[2]; // Starting scales
     boolean[] dragInProgress =
         new boolean[1]; // Whether a drag is in progress, don't allow resize until progress
 
@@ -272,6 +284,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           // Save starting coords
           dragStart[0] = event.getScreenX();
           dragStart[1] = event.getScreenY();
+          startScale[0] = root.getScaleX();
+          startScale[1] = root.getScaleY();
           dragInProgress[0] = true; // Enable drag
         });
 
@@ -281,12 +295,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           if (dragInProgress[0]) {
             event.consume(); // Consume the event
 
-            root.setScaleX(
-                (((event.getScreenX() - dragStart[0]) / dragStart[0]) * 10) + node.getScaleX());
-            root.setScaleY(
-                (((event.getScreenY() - dragStart[1]) / dragStart[1]) * 10) + node.getScaleY());
-
-            System.out.println(root.getBoundsInLocal().getMinX());
+            root.setScaleX((((event.getScreenX() - dragStart[0]) / dragStart[0])) + startScale[0]);
+            root.setScaleY((((event.getScreenY() - dragStart[1]) / dragStart[1])) + startScale[1]);
           }
         });
 
