@@ -2,12 +2,14 @@ package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import jakarta.persistence.Tuple;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.function.BiConsumer;
 import javafx.application.Platform;
@@ -59,10 +61,16 @@ public class MapController {
 
   @Setter private Date date;
 
+  @Getter private HashSet<LocationName> placedLocations;
+
+  @Getter private List<LocationName> locs;
+
   /** Initialize, zooms to the middle of the map */
   @FXML
   private void initialize() {
-    date = Date.from(Instant.now());
+    date =
+        MapEditorController.addMilliseconds(
+            Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()), 1);
 
     // Zooms to the middle of the map. This must be run later because currently the gesture pane
     // doesn't exist
@@ -571,6 +579,7 @@ public class MapController {
               .toList();
 
       HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
+      placedLocations = new HashSet<>();
 
       // For each location belonging to this node
       for (Move move : moves) {
@@ -578,11 +587,17 @@ public class MapController {
             && nodeToLocationCount.get(move.getNode()) == 1) {
           nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
 
-          addLocationName(move.getLocation(), move.getNode());
+          if (!placedLocations.contains(move.getLocation())) {
+            addLocationName(move.getLocation(), move.getNode());
+            placedLocations.add(move.getLocation());
+          }
         } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
-          addLocationName(move.getLocation(), move.getNode());
+          if (!placedLocations.contains(move.getLocation())) {
+            addLocationName(move.getLocation(), move.getNode());
+            placedLocations.add(move.getLocation());
+          }
         }
       }
 
@@ -602,6 +617,14 @@ public class MapController {
       this.gesturePane.centreOn(currentCenter); // Re-zoom on the old center
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out
       gesturePane.setMaxScale(10); // Set the max scale
+
+      Date date2 = MapEditorController.addMilliseconds(date, -1);
+
+      locs =
+          getMapSession()
+              .createQuery("select location from Move m where moveDate = :date", LocationName.class)
+              .setParameter("date", MapEditorController.addMilliseconds(date, -1))
+              .getResultList();
     }
   }
 
