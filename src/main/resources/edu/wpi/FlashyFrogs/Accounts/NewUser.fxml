@@ -19,17 +19,17 @@
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name">
+                  <TextField fx:id="firstName" prefHeight="26.0" prefWidth="50.0" promptText="First Name:">
                      <styleClass>
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
                      </styleClass></TextField>
-                  <TextField fx:id="middleName" promptText="Middle Name (Optional)">
+                  <TextField fx:id="middleName" promptText="Middle Name: (Optional)">
                      <styleClass>
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
                      </styleClass></TextField>
-                  <TextField fx:id="lastName" promptText="Last Name">
+                  <TextField fx:id="lastName" promptText="Last Name:">
                      <styleClass>
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
@@ -48,27 +48,21 @@
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username">
+                  <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username:">
                      <styleClass>
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
                      </styleClass></TextField>
-                  <PasswordField fx:id="pass1" promptText="Password">
+                  <PasswordField fx:id="pass1" promptText="Password:">
                      <styleClass>
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
                      </styleClass></PasswordField>
-                  <PasswordField fx:id="pass2" promptText="Confirm Password">
+                  <PasswordField fx:id="pass2" promptText="Confirm Password:">
                      <styleClass>
                         <String fx:value="fields" />
                         <String fx:value="dropshadow" />
                      </styleClass></PasswordField>
-                  <TextField fx:id="rfid" prefHeight="26.0" prefWidth="206.0" promptText="Badge ID (Optional)">
-                     <styleClass>
-                        <String fx:value="fields" />
-                        <String fx:value="dropshadow" />
-                     </styleClass>
-                  </TextField>
                   <SearchableComboBox fx:id="employeeType" prefHeight="26.0" prefWidth="293.0" promptText="Employee Type:" styleClass="fields">
                      <VBox.margin>
                         <Insets />
@@ -80,16 +74,34 @@
             </VBox>
          </children>
       </HBox>
-      <Text layoutX="37.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Add New User" textAlignment="CENTER" wrappingWidth="507.462890625">
+      <Text layoutX="46.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Add New User" textAlignment="CENTER" wrappingWidth="507.462890625">
          <font>
             <Font size="36.0" />
          </font>
       </Text>
-      <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="51.0" prefHeight="27.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
-      <HBox alignment="CENTER" layoutY="386.0" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0">
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="70.0" prefHeight="14.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
+      <HBox alignment="CENTER" layoutY="386.0" prefHeight="151.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0">
          <children>
-            <MFXButton fx:id="newHospitalUser" styleClass="blueBackground" onAction="#handleNewUser" text="Add User">
-            </MFXButton>
+            <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="231.2" spacing="60.0">
+               <children>
+                  <TextField fx:id="rfid" prefWidth="198.0" promptText="Badge ID: (Optional)">
+                     <styleClass>
+                        <String fx:value="fields" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
+                  </TextField>
+                  <MFXButton fx:id="newHospitalUser" onAction="#handleNewUser" text="Add User">
+                     <styleClass>
+                        <String fx:value="blue" />
+                        <String fx:value="body" />
+                        <String fx:value="round" />
+                     </styleClass>
+                  </MFXButton>
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
          </children>
       </HBox>
    </children>
