@@ -19,7 +19,7 @@
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="25.0" left="18.0" top="18.0" />
+                  <Insets left="18.0" top="18.0" />
                </VBox.margin>
             </Text>
             <Text fx:id="noLocationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Selected Move has no old location mapping!" visible="false" wrappingWidth="184.0">
@@ -48,7 +48,7 @@
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin></MFXButton>
-            <MFXButton mnemonicParsing="false" onAction="#clearNodes" prefHeight="26.0" prefWidth="174.0" styleClass="blueBackgroundSideBar" text="Clear Items">
+            <MFXButton mnemonicParsing="false" onAction="#clearNodes" prefHeight="27.0" prefWidth="192.0" styleClass="redOutlineNoSetSize" text="Clear Items">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
