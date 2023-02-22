@@ -5,6 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
@@ -94,7 +95,10 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         .addListener(
             (observable, oldValue, newValue) -> {
               mapController.setDate(
-                  Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+                  MapEditorController.add(
+                      Date.from(newValue.atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                      Calendar.MILLISECOND,
+                      1));
               mapController.redraw();
             });
     h1.setVisible(false);
@@ -453,7 +457,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     public void run() {
       Session session = CONNECTION.getSessionFactory().openSession();
 
-      // _______________________________________________________________________________
       // Get the new path from the PathFinder
       Node startNode =
           startingBox
@@ -470,7 +473,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                   Date.from(
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
-      // ___________________________________________________________________________
 
       session.close();
       // Call unlock() on the UI thread when finished
