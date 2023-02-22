@@ -17,7 +17,7 @@
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </padding>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Move Visualizer" wrappingWidth="220.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Move Visualizer" wrappingWidth="188.0">
                <font>
                   <Font size="18.0" />
                </font>
@@ -26,7 +26,7 @@
                </VBox.margin>
             </Text>
             <Text fx:id="noLocationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Selected Move has no old location mapping!" visible="false" wrappingWidth="164.7777557373047" />
-            <TableView2 fx:id="moveTable" columnFixingEnabled="false" prefHeight="554.0" prefWidth="170.0" rowFixingEnabled="false" rowHeaderWidth="0.0">
+            <TableView2 fx:id="moveTable" columnFixingEnabled="false" prefHeight="554.0" rowFixingEnabled="false" rowHeaderWidth="0.0">
                <columns>
                   <TableColumn2 fx:id="nodeColumn" editable="false" prefWidth="75.0" text="Node " />
                   <TableColumn2 fx:id="locationColumn" editable="false" prefWidth="75.0" text="Location " />
@@ -38,7 +38,7 @@
             </TableView2>
          </children>
       </VBox>
-      <Button alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="25.0" prefWidth="184.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" />
+      <Button alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="25.0" prefWidth="184.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0" />
       <AnchorPane fx:id="mapPane" layoutX="257.0" layoutY="28.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>

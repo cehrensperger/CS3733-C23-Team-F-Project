@@ -26,25 +26,47 @@
                   <Insets bottom="25.0" left="18.0" top="18.0" />
                </VBox.margin>
             </Label>
-            <CheckBox styleClass="body" fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="203.0" text="Auto-Repair Edges">
+            <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="203.0" text="Auto-Repair Edges">
                <VBox.margin>
                   <Insets bottom="5.0" left="18.0" right="18.0" />
                </VBox.margin></CheckBox>
-            <Label styleClass="body" text="Viewing Date">
+            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Select if you would like edges to be auto repaired when nodes are changed" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
-            </Label>
-            <DatePicker styleClass="fields" fx:id="viewingDate">
+            </Text>
+            <Label styleClass="blueText" text="Viewing Date">
                <VBox.margin>
-                  <Insets bottom="10.0" left="18.0" />
+                  <Insets bottom="4.0" left="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="viewingDate" styleClass="fields">
+               <VBox.margin>
+                  <Insets left="18.0" />
                </VBox.margin>
             </DatePicker>
-            <Label styleClass="body" text="Add Node">
+            <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Select which date the locations should reflect" wrappingWidth="184.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
                <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin></Label>
-            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="170.0" spacing="15.0">
+                  <Insets bottom="2.0" left="18.0" />
+               </VBox.margin>
+            </Text>
+            <Label styleClass="blueText" text="Drag and drop nodes">
+               <VBox.margin>
+                  <Insets bottom="4.0" left="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font></Label>
+            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="220.0" spacing="15.0">
                <children>
                   <Circle fx:id="nodeToDrag" radius="19.0" stroke="BLACK" strokeType="INSIDE" />
                   <Line endX="100.0" startX="30.0" strokeWidth="3.0" />
@@ -58,7 +80,15 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="locationTable" prefHeight="254.0" prefWidth="170.0">
+            <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Drag and drop the cricle on to the map to add a new node" wrappingWidth="184.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="18.0" />
+               </VBox.margin>
+            </Text>
+            <TableView fx:id="locationTable" prefHeight="254.0" prefWidth="250.0">
               <columns>
                 <TableColumn fx:id="longName" prefWidth="170.0" resizable="false" text="Location" />
               </columns>
@@ -66,37 +96,53 @@
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </TableView>
-            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="View current locations in the map" wrappingWidth="170.0">
+            <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="View current locations and drag locations from the table to the map to create a node for that location" wrappingWidth="184.0">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Button fx:id="addLocation" alignment="CENTER" mnemonicParsing="false" onAction="#popupLocation" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Add Location" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets left="18.0" />
+               </VBox.margin>
+            </Button>
+            <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to add a new location to the map" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
                <VBox.margin>
                   <Insets bottom="16.0" left="18.0" />
                </VBox.margin>
-               <font>
-                  <Font size="10.0" />
-               </font>
             </Text>
-            <Button fx:id="addLocation" alignment="CENTER" mnemonicParsing="false" onAction="#popupLocation" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Add Location" textAlignment="CENTER">
+            <Button fx:id="quickDraw" alignment="CENTER" mnemonicParsing="false" onMousePressed="#toggleQuickDraw" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="QuickDraw">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
             </Button>
-            <Text fx:id="h2" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to add a new location to the map" wrappingWidth="170.0">
+            <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Quick draw nodes and edges on the map" wrappingWidth="184.0">
                <font>
                   <Font size="10.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="8.0" left="18.0" />
+                  <Insets bottom="16.0" left="18.0" />
                </VBox.margin>
             </Text>
-            <Button fx:id="quickDraw" alignment="CENTER" mnemonicParsing="false" onMousePressed="#toggleQuickDraw" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="QuickDraw">
+            <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Move Visualizer">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Move Visualizer">
+            <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to view the move visualizer" wrappingWidth="170.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
                <VBox.margin>
-                  <Insets left="18.0" top="15.0" />
+                  <Insets left="18.0" />
                </VBox.margin>
-            </Button>
+            </Text>
          </children>
       </VBox>
       <AnchorPane fx:id="mapPane" layoutX="250.0" layoutY="20.0" prefHeight="10.0" prefWidth="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
