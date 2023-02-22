@@ -26,24 +26,21 @@
                   <Insets bottom="25.0" left="18.0" top="18.0" />
                </VBox.margin>
             </Label>
-            <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="203.0" text="Auto-Repair Edges">
+            <CheckBox styleClass="body" fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="203.0" text="Auto-Repair Edges">
                <VBox.margin>
                   <Insets bottom="5.0" left="18.0" right="18.0" />
                </VBox.margin></CheckBox>
-            <Label text="Viewing Date">
+            <Label styleClass="body" text="Viewing Date">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
-               <font>
-                  <Font size="12.0" />
-               </font>
             </Label>
-            <DatePicker fx:id="viewingDate">
+            <DatePicker styleClass="fields" fx:id="viewingDate">
                <VBox.margin>
                   <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </DatePicker>
-            <Label text="Add Node">
+            <Label styleClass="body" text="Add Node">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin></Label>
@@ -77,7 +74,7 @@
                   <Font size="10.0" />
                </font>
             </Text>
-            <Button fx:id="addLocation" alignment="CENTER" mnemonicParsing="false" onAction="#popupLocation" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Add Location" textAlignment="CENTER">
+            <Button fx:id="addLocation" alignment="CENTER" mnemonicParsing="false" onAction="#popupLocation" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Add Location" textAlignment="CENTER">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
@@ -90,12 +87,12 @@
                   <Insets bottom="8.0" left="18.0" />
                </VBox.margin>
             </Text>
-            <Button fx:id="quickDraw" alignment="CENTER" mnemonicParsing="false" onMousePressed="#toggleQuickDraw" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="QuickDraw">
+            <Button fx:id="quickDraw" alignment="CENTER" mnemonicParsing="false" onMousePressed="#toggleQuickDraw" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="QuickDraw">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Move Visualizer">
+            <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Move Visualizer">
                <VBox.margin>
                   <Insets left="18.0" top="15.0" />
                </VBox.margin>

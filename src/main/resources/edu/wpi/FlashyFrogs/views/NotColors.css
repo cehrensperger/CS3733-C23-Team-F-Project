@@ -460,3 +460,12 @@
     -fx-font-family: "Roboto Light";
     -fx-cursor: hand;
 }
+
+.login
+    /** If you need the blue background with white text with no set size **/
+{
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 10pt;
+}

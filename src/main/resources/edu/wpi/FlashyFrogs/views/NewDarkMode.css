@@ -94,7 +94,7 @@
     /** if you need the blue outline with blue text styling with no set sizes**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color:#6B6D6F;
+    -fx-background-color:transparent;
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
 }
@@ -104,7 +104,7 @@
      blue outline) - ex. the toggle all button on the home page.**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color:#6B6D6F;
+    -fx-background-color:transparent;
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
 }
@@ -152,7 +152,7 @@
 {
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
-    -fx-background-color: #6B6D6F;
+    -fx-background-color: transparent;
     -fx-prompt-text-fill: white;
 }
 
@@ -161,7 +161,7 @@
 {
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
-    -fx-background-color: #6B6D6F;
+    -fx-background-color: transparent;
     -fx-prompt-text-opacity: 50%;
     -fx-prompt-text-fill: white;
 }
@@ -175,8 +175,10 @@
     /** controls all date picker fields within the app **/
 {
     -fx-prompt-text-fill: white;
-    -fx-control-inner-background: #6B6D6F;
-    -fx-control-background: #6B6D6F;
+    -fx-control-inner-background: transparent;
+    -fx-control-background: transparent;
+    -fx-background-color: -fx-control-inner-background;
+
 }
 
 .date-picker > .arrow-button
@@ -190,6 +192,7 @@
     -fx-prompt-text-fill: white;
     -fx-text-fill: white;
     -fx-context-menu-enabled: #012D5A;
+    -fx-control-inner-background: transparent;
 }
 
 .combo-box> .text-field
@@ -466,4 +469,5 @@
     -fx-background-color: #6B6D6F;
     -fx-text-fill: white;
 }
+
 
