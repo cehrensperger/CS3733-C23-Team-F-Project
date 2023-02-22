@@ -114,6 +114,7 @@ public class NavBarController {
 
   /**
    * Launch About page when About This Application is clicked in the menu bar.
+   *
    * @throws IOException
    */
   @FXML
@@ -126,6 +127,7 @@ public class NavBarController {
 
   /**
    * Launch Acknowledgments page when Acknowledgments is clicked in the menu bar.
+   *
    * @throws IOException
    */
   @FXML
