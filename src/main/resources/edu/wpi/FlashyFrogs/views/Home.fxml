@@ -51,20 +51,22 @@
                   <Insets left="18.0" top="18.0" />
                </VBox.margin>
             </Text>
-            <MFXScrollPane fx:id="scrollPane" prefHeight="437.0" prefWidth="220.0" styleClass="sidebar" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="20.0" />
-               </padding>
-               <content>
-                  <VBox fx:id="alertBox" prefHeight="417.0" prefWidth="208.0" spacing="10.0">
+            <AnchorPane prefHeight="666.0" prefWidth="220.0">
+               <children>
+                  <MFXScrollPane fx:id="scrollPane" prefHeight="660.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
-                        <Insets left="10.0" />
-                     </padding></VBox>
-               </content>
-            </MFXScrollPane>
+                        <Insets bottom="20.0" />
+                     </padding>
+                     <content>
+                        <VBox fx:id="alertBox" spacing="10.0">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </MFXScrollPane>
+               </children>
+            </AnchorPane>
             <AnchorPane prefHeight="216.0" prefWidth="220.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="149.0" prefHeight="200.0" prefWidth="184.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
