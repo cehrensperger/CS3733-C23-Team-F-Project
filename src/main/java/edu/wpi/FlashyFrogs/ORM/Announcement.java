@@ -3,6 +3,8 @@ package edu.wpi.FlashyFrogs.ORM;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+
+import javafx.fxml.FXML;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -20,7 +22,6 @@ public class Announcement {
   @Temporal(TemporalType.DATE)
   @Column(nullable = false)
   @Getter
-  @Setter
   @NonNull
   private Date creationDate; // Date that the announcement was created
 
@@ -35,12 +36,29 @@ public class Announcement {
                   "FOREIGN KEY (author) REFERENCES hospital_user(id) ON DELETE SET NULL"))
   private HospitalUser author; // Author for the message
 
+  @ManyToOne
+  @Getter
+  @JoinColumn(
+  name = "department",
+          foreignKey = @ForeignKey(
+          name = "department_fk",
+                  foreignKeyDefinition =
+                  "FOREIGN KEY (department) REFERENCES department(longName) ON DELETE SET NULL"))
+  private Department department; // Department for the message
+
   @Basic
   @Getter
   @Setter
   @Column(nullable = false)
   @NonNull
   private String announcement;
+
+  @Basic
+  @Getter
+  @Setter
+  @Column(nullable = false)
+  @NonNull
+  private Severity severity;
 
   /** Empty constructor, required by hibernate */
   public Announcement() {}
@@ -53,10 +71,40 @@ public class Announcement {
    * @param announcement the announcement body to create
    */
   public Announcement(
-      @NonNull Date creationDate, HospitalUser author, @NonNull String announcement) {
+      @NonNull Date creationDate, HospitalUser author, @NonNull String announcement, @NonNull Department department, @NonNull Severity severity) {
     this.creationDate = creationDate;
     this.author = author;
     this.announcement = announcement;
+    this.department = department;
+    this.severity = severity;
+  }
+
+  /**
+   * Enumerated type for the possible severities
+   */
+  public enum Severity {
+    MILD("mild"),
+    INTERMEDIATE("intermediate"),
+    SEVERE("severe");
+
+    @NonNull public final String severity;
+
+    /**
+     * Creates a new severity with the given String backing
+     *
+     * @param severityVal the severity to create. Must not be null
+     */
+    Severity(@NonNull String severityVal) {severity = severityVal;}
+
+    /**
+     * Override for the toString, returns the severity as a string
+     *
+     * @return the status as a string
+     */
+    @Override
+    public String toString() {
+      return this.severity;
+    }
   }
 
   /**
