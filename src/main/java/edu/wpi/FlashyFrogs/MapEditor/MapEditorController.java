@@ -5,6 +5,7 @@ import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
@@ -25,6 +26,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -87,6 +89,41 @@ public class MapEditorController implements IController {
   private Circle duplicateCircle;
 
   /** Initializes the map editor, adds the map onto it */
+
+  // -----------------------------------------------------------------------
+  /**
+   * Adds a number of milliseconds to a date returning a new object. The original date object is
+   * unchanged.
+   *
+   * @param date the date, not null
+   * @param amount the amount to add, may be negative
+   * @return the new date object with the amount added
+   * @throws IllegalArgumentException if the date is null
+   */
+  public static Date addMilliseconds(Date date, int amount) {
+    return add(date, Calendar.MILLISECOND, amount);
+  }
+
+  // -----------------------------------------------------------------------
+  /**
+   * Adds to a date returning a new object. The original date object is unchanged.
+   *
+   * @param date the date, not null
+   * @param calendarField the calendar field to add to
+   * @param amount the amount to add, may be negative
+   * @return the new date object with the amount added
+   * @throws IllegalArgumentException if the date is null
+   */
+  private static Date add(Date date, int calendarField, int amount) {
+    if (date == null) {
+      throw new IllegalArgumentException("The date must not be null");
+    }
+    Calendar c = Calendar.getInstance();
+    c.setTime(date);
+    c.add(calendarField, amount);
+    return c.getTime();
+  }
+
   @SneakyThrows
   @FXML
   private void initialize() {
@@ -114,14 +151,71 @@ public class MapEditorController implements IController {
                   // Add a listener that does that
                   (observable, oldValue, newValue) -> row.updateSelected(false));
 
-          row.setOnMouseDragged(
+          row.setOnMouseDragged(event -> event.setDragDetect(true));
+          row.setOnDragDetected(
               event -> {
-                Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+                Dragboard dragboard = row.startDragAndDrop(TransferMode.COPY);
                 dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
                 ClipboardContent clipboardContent = new ClipboardContent();
                 clipboardContent.putString(row.getItem().getLongName());
                 dragboard.setContent(clipboardContent);
+                mapPane.setOnDragOver(p -> {});
+                mapPane.setOnDragDropped(p -> {});
+                for (Node node : mapController.getNodeToCircleMap().keySet()) {
+                  Circle circle = mapController.getNodeToCircleMap().get(node);
+
+                  circle.setOnDragOver(
+                      new EventHandler<DragEvent>() {
+                        @Override
+                        public void handle(DragEvent event) {
+                          event.acceptTransferModes(TransferMode.COPY);
+                          // "#F6BD38" - Hospital Yellow
+                          circle.setFill(Paint.valueOf("#F6BD38"));
+                        }
+                      });
+
+                  circle.setOnDragExited(
+                      new EventHandler<DragEvent>() {
+                        @Override
+                        public void handle(DragEvent event) {
+                          circle.setFill(Paint.valueOf(Color.BLACK.toString()));
+                        }
+                      });
+
+                  circle.setOnDragDropped(
+                      new EventHandler<DragEvent>() {
+                        @Override
+                        public void handle(DragEvent event) {
+                          Session session = mapController.getMapSession();
+                          LocationName locationName =
+                              session.find(
+                                  LocationName.class, dragboard.getContent(DataFormat.PLAIN_TEXT));
+
+                          Date date =
+                              java.util.Date.from(
+                                  viewingDate
+                                      .getValue()
+                                      .atStartOfDay(ZoneId.systemDefault())
+                                      .toInstant());
+
+                          Move newMove = new Move(node, locationName, date);
+
+                          session.persist(newMove);
+                          session.flush();
+                          mapController.redraw();
+                        }
+                      });
+                }
               });
+
+          //          row.setOnMouseDragged(
+          //              event -> {
+          //                Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+          //                dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
+          //                ClipboardContent clipboardContent = new ClipboardContent();
+          //                clipboardContent.putString(row.getItem().getLongName());
+          //                dragboard.setContent(clipboardContent);
+          //              });
 
           // Add a listener to show the pop-up
           row.setOnMouseClicked(
@@ -400,47 +494,49 @@ public class MapEditorController implements IController {
           ClipboardContent clipboardContent = new ClipboardContent();
           clipboardContent.putString("fjbwef");
           dragboard.setContent(clipboardContent);
+
+          mapPane.setOnDragDone(e -> duplicateCircle.setVisible(false));
+          mapPane.setOnDragExited(e -> duplicateCircle.setVisible(false));
+          mapPane.setOnDragOver(
+              e -> {
+                /* data is dragged over the target */
+                /* accept it only if it is not dragged from the same node
+                 * and if it has a string data */
+                if (e.getGestureSource() != mapPane
+                    &&
+                    // image to represent the node?
+                    e.getDragboard().hasString()) {
+                  /* allow for both copying and moving, whatever user chooses */
+                  e.acceptTransferModes(TransferMode.COPY);
+                  GesturePane gesturePane = mapController.getGesturePane();
+                  double scale = gesturePane.getCurrentScale();
+                  duplicateCircle.setOpacity(1);
+                  duplicateCircle.setRadius(5 * scale);
+                  duplicateCircle.setVisible(true);
+                  duplicateCircle.setFill(Paint.valueOf("012D5A"));
+                  duplicateCircle.setCenterX(e.getX());
+                  duplicateCircle.setCenterY(e.getY());
+
+                  // X bounds
+                  if (e.getX() < 0) {
+                    duplicateCircle.setVisible(false);
+                  } else if (e.getX() > mapPane.getWidth()) {
+                    duplicateCircle.setVisible(false);
+                  }
+
+                  // Y bounds
+                  if (e.getY() < 0) {
+                    duplicateCircle.setVisible(false);
+                  } else if (e.getY() > mapPane.getHeight()) {
+                    duplicateCircle.setVisible(false);
+                  }
+                }
+
+                e.consume();
+              });
         });
 
     nodeToDrag.setOnMouseDragged(event -> event.setDragDetect(true));
-
-    mapPane.setOnDragOver(
-        event -> {
-          /* data is dragged over the target */
-          /* accept it only if it is not dragged from the same node
-           * and if it has a string data */
-          if (event.getGestureSource() != mapPane
-              &&
-              // image to represent the node?
-              event.getDragboard().hasString()) {
-            /* allow for both copying and moving, whatever user chooses */
-            event.acceptTransferModes(TransferMode.COPY);
-            GesturePane gesturePane = mapController.getGesturePane();
-            double scale = gesturePane.getCurrentScale();
-            duplicateCircle.setOpacity(1);
-            duplicateCircle.setRadius(5 * scale);
-            duplicateCircle.setVisible(true);
-            duplicateCircle.setFill(Paint.valueOf("012D5A"));
-            duplicateCircle.setCenterX(event.getX());
-            duplicateCircle.setCenterY(event.getY());
-
-            // X bounds
-            if (event.getX() < 0) {
-              duplicateCircle.setVisible(false);
-            } else if (event.getX() > mapPane.getWidth()) {
-              duplicateCircle.setVisible(false);
-            }
-
-            // Y bounds
-            if (event.getY() < 0) {
-              duplicateCircle.setVisible(false);
-            } else if (event.getY() > mapPane.getHeight()) {
-              duplicateCircle.setVisible(false);
-            }
-          }
-
-          event.consume();
-        });
 
     duplicateCircle.setOnDragDropped(
         event -> {
@@ -458,6 +554,9 @@ public class MapEditorController implements IController {
                   floorProperty.getValue(),
                   roundedX,
                   roundedY);
+
+          mapController.getMapSession().persist(newNode);
+          mapController.getMapSession().flush();
           mapController.addNode(newNode, false);
 
           // make sure the circle is within bounds
@@ -467,15 +566,15 @@ public class MapEditorController implements IController {
           duplicateCircle.setVisible(false);
         });
 
-    mapPane.setOnDragDone(event -> duplicateCircle.setVisible(false));
-    mapPane.setOnDragExited(event -> duplicateCircle.setVisible(false));
-
     viewingDate
         .valueProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
               mapController.setDate(
-                  Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+                  add(
+                      Date.from(newValue.atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                      Calendar.MILLISECOND,
+                      1));
               mapController.redraw();
             });
   }

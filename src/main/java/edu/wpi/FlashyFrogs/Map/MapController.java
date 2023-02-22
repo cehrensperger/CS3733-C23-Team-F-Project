@@ -569,6 +569,7 @@ public class MapController {
               .toList();
 
       HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
+      HashSet<LocationName> placedLocations = new HashSet<>();
 
       // For each location belonging to this node
       for (Move move : moves) {
@@ -576,11 +577,17 @@ public class MapController {
             && nodeToLocationCount.get(move.getNode()) == 1) {
           nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
 
-          addLocationName(move.getLocation(), move.getNode());
+          if (!placedLocations.contains(move.getLocation())) {
+            addLocationName(move.getLocation(), move.getNode());
+            placedLocations.add(move.getLocation());
+          }
         } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
-          addLocationName(move.getLocation(), move.getNode());
+          if (!placedLocations.contains(move.getLocation())) {
+            addLocationName(move.getLocation(), move.getNode());
+            placedLocations.add(move.getLocation());
+          }
         }
       }
 
