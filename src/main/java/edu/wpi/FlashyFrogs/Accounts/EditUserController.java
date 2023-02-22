@@ -111,7 +111,7 @@ public class EditUserController implements IController {
         currentUser.setEmployeeType(employeeType.getValue());
         currentUserLogin.setUserName(username.getText());
         currentUserLogin.setPassword(pass1.getText());
-        if (rfid.getText().equals("")) {
+        if (rfid.getText() == null || rfid.getText().equals("")) {
           currentUserLogin.setRFIDBadge(null);
         } else {
           currentUserLogin.setRFIDBadge(rfid.getText());
