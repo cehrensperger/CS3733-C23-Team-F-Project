@@ -26,6 +26,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -87,6 +88,33 @@ public class AVController implements IController {
 
     locationBox.setItems(FXCollections.observableArrayList(locations));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
+
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    locationBox.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Location of Request");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
     session.close();
   }
 
@@ -140,12 +168,12 @@ public class AVController implements IController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    locationBox.valueProperty().set(null);
     device.setText("");
     date.valueProperty().set(null);
-    urgency.valueProperty().set(null);
     description.setText("");
     reason.setText("");
+    urgency.valueProperty().set(null);
+    locationBox.valueProperty().set(null);
   }
 
   public void help() {

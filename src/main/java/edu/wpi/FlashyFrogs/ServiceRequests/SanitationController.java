@@ -24,10 +24,7 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -92,6 +89,57 @@ public class SanitationController implements IController {
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     biohazard.setItems(FXCollections.observableArrayList(Sanitation.BiohazardLevel.values()));
     session.close();
+
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    locationBox.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Location of Request");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    sanitationType.setButtonCell(
+        new ListCell<Sanitation.SanitationType>() {
+          @Override
+          protected void updateItem(Sanitation.SanitationType item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Sanitation Type");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    biohazard.setButtonCell(
+        new ListCell<Sanitation.BiohazardLevel>() {
+          @Override
+          protected void updateItem(Sanitation.BiohazardLevel item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Biohazard");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {

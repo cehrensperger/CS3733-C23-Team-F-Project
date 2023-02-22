@@ -169,15 +169,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                 // row
                 if (row != null) {
                   setFloor(row.getItem().node.getFloor());
-                  //                  Platform.runLater(
-                  //                      () ->
-                  //                          mapController
-                  //                              .getGesturePane()
-                  //                              .zoomTo(
-                  //                                  .8,
-                  //                                  new javafx.geometry.Point2D(
-                  //                                      row.getItem().node.getXCoord(),
-                  //                                      row.getItem().node.getYCoord())));
+                  mapController.zoomToCoordinates(
+                      2, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
                 }
               });
           return row;

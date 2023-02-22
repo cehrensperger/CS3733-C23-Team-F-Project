@@ -90,6 +90,13 @@
     -fx-font-weight: bold;
 }
 
+.blueText
+    /** honestly just if you need a text bigger than body but smaller than header and bold **/
+{
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 12pt;
+}
+
 .warningText
     /** This controls the style of the warning text that appears when the help
      button is clicked**/
@@ -172,6 +179,7 @@
     -fx-pref-width: 184px;
     -fx-pref-height: 75px;
     -fx-text-alignment: Baseline Left;
+    -fx-cursor: hand;
 }
 
 .fields
@@ -261,6 +269,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 100px;
     -fx-pref-height: 25px;
+    -fx-cursor: hand;
 }
 
 .clearButton
@@ -272,6 +281,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 100px;
     -fx-pref-height: 25px;
+    -fx-cursor: hand;
 }
 
 .redOutlineNoSetSize
@@ -360,7 +370,7 @@
     /** controls the blue line in the tables above the table entries **/
 {
     -fx-background-radius: 0px 0px 0px 0px;
-    -fx-padding: 0px 0px 7px 0px;
+    -fx-padding: 0px 0px 1px 0px;
 }
 
 .table-view .table-cell
@@ -448,10 +458,43 @@
 {
     -fx-font-size: 16;
     -fx-font-family: "Roboto Light";
+    -fx-cursor: hand;
 }
 
 .check-box
 {
     -fx-font-size: 12pt;
     -fx-font-family: "Roboto Light";
+    -fx-cursor: hand;
 }
+
+.login
+    /** If you need the blue background with white text with no set size **/
+{
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 10pt;
+}
+
+.pathfindingField {
+    /** This controls the input field for controlling what labels to show in the upper right corner of Pathfinding **/
+    -fx-border-radius: 10px !important;
+    -fx-background-radius: 10px !important;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 12pt;
+    -fx-border-insets: -1px;
+    -fx-font-weight: normal;
+/** -fx-pref-width: 200px; (not sure if we want to set width and height in here) **/
+/** -fx-pref-height: 26px; **/
+}
+
+.text-area:focused .content {
+    -fx-border-color: transparent;
+    -fx-background-color:  white;
+    -fx-border-radius: 10px;
+}
+.text-area .content {
+    -fx-border-color: transparent;
+}
+
