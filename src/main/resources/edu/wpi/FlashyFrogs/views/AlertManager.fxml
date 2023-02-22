@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AlertManagerController">
+   <children>
+      <TextArea fx:id="descriptionField" layoutX="20.0" layoutY="87.0" prefHeight="200.0" prefWidth="562.0" promptText="Alert Message:" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="87.0" />
+      <TextField fx:id="summaryField" layoutX="22.0" layoutY="49.0" prefHeight="25.0" prefWidth="560.0" promptText="Summary:" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+      <SearchableComboBox fx:id="deptBox" layoutX="379.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Department:" />
+      <ComboBox fx:id="severityBox" layoutX="20.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Severity:" />
+      <MFXButton layoutX="519.0" layoutY="354.0" onAction="#handleSubmit" text="Submit" />
+      <MFXButton layoutX="379.0" layoutY="354.0" onAction="#handleCancel" text="Cancel" />
+      <Label layoutX="252.0" layoutY="21.0" text="Create a New Alert" AnchorPane.topAnchor="20.0" />
+   </children>
+</AnchorPane>
