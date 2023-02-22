@@ -51,7 +51,7 @@
                   <Insets left="18.0" top="18.0" />
                </VBox.margin>
             </Text>
-            <MFXScrollPane fx:id="scrollPane" prefHeight="451.0" prefWidth="220.0">
+            <MFXScrollPane fx:id="scrollPane" prefHeight="451.0" prefWidth="220.0" styleClass="sidebar" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -59,7 +59,7 @@
                   <Insets bottom="20.0" />
                </padding>
                <content>
-                  <VBox prefHeight="417.0" prefWidth="208.0" />
+                  <VBox prefHeight="417.0" prefWidth="208.0" styleClass="sidebar" />
                </content>
             </MFXScrollPane>
             <AnchorPane prefHeight="216.0" prefWidth="220.0" VBox.vgrow="ALWAYS">

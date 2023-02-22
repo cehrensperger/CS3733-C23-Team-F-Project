@@ -507,9 +507,7 @@ public class HomeController implements IController {
     moveTable.resetFilter();
   }
 
-  public void insertAlert(Announcement announcement) {
-
-  }
+  public void insertAlert(Announcement announcement) {}
 
   public void srEditorPopOver() {}
 }
