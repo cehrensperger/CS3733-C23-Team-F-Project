@@ -112,6 +112,10 @@ public class NavBarController {
     header.setOpacity(0);
   }
 
+  /**
+   * Launch About page when About This Application is clicked in the menu bar.
+   * @throws IOException
+   */
   @FXML
   private void about() throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/About.fxml"));
@@ -120,6 +124,10 @@ public class NavBarController {
     popOver.show(anchorPane.getScene().getWindow());
   }
 
+  /**
+   * Launch Acknowledgments page when Acknowledgments is clicked in the menu bar.
+   * @throws IOException
+   */
   @FXML
   private void acknowledgments() throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/acknowledgmentsPage.fxml"));
