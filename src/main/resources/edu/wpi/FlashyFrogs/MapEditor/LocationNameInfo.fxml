@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxWidth="230.0" prefHeight="272.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.LocationNameInfoController">
+<AnchorPane styleClass="background" maxWidth="230.0" prefHeight="272.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.LocationNameInfoController">
     <children>
         <VBox layoutX="164.0" layoutY="63.0" maxWidth="288.0" prefHeight="288.0" prefWidth="288.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-53.0" AnchorPane.topAnchor="0.0">
             <children>
