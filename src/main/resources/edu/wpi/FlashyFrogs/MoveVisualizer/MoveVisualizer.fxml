@@ -28,9 +28,9 @@
                </VBox.margin></Text>
             <TableView2 fx:id="moveTable" columnFixingEnabled="false" prefHeight="387.0" prefWidth="170.0" rowFixingEnabled="false" rowHeaderWidth="0.0">
                <columns>
-                  <TableColumn2 fx:id="nodeColumn" editable="false" minWidth="200.0" prefWidth="200.0" text="Node " />
-                  <TableColumn2 fx:id="locationColumn" editable="false" minWidth="200.0" prefWidth="200.0" text="Location " />
-                  <TableColumn2 fx:id="dateColumn" editable="false" minWidth="200.0" prefWidth="200.0" text="Date" />
+                  <TableColumn2 fx:id="nodeColumn" editable="false" prefWidth="75.0" text="Node " />
+                  <TableColumn2 fx:id="locationColumn" editable="false" prefWidth="75.0" text="Location " />
+                  <TableColumn2 fx:id="dateColumn" editable="false" prefWidth="75.0" text="Date" />
                </columns>
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />

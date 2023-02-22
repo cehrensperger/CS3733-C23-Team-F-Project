@@ -54,7 +54,6 @@ public class MapEditorController implements IController {
   @FXML private Button quickDraw;
   @FXML private Button addLocation;
   @FXML private Button addEdge;
-  @FXML private Text h41;
   @FXML private AnchorPane mapPane;
   @FXML private MFXButton backButton;
   private MapController mapController; // Controller for the map
@@ -65,6 +64,11 @@ public class MapEditorController implements IController {
 
   @FXML Text h1;
   @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+  @FXML Text h5;
+  @FXML Text h6;
+  @FXML Text h7;
 
   boolean hDone = false;
 
@@ -174,6 +178,11 @@ public class MapEditorController implements IController {
 
     h1.setVisible(false);
     h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
+    h5.setVisible(false);
+    h6.setVisible(false);
+    h7.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =
@@ -907,12 +916,20 @@ public class MapEditorController implements IController {
     if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
-      h41.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      h5.setVisible(true);
+      h6.setVisible(true);
+      h7.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
-      h41.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      h5.setVisible(false);
+      h6.setVisible(false);
+      h7.setVisible(false);
       hDone = false;
     }
   }

@@ -82,7 +82,7 @@
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="202.0" layoutY="70.0" prefHeight="14.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false" />
       <HBox alignment="CENTER" layoutY="386.0" prefHeight="151.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="231.2" spacing="60.0">
+            <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="231.2" spacing="40.0">
                <children>
                   <TextField fx:id="rfid" prefWidth="198.0" promptText="Badge ID: (Optional)">
                      <styleClass>
@@ -90,12 +90,10 @@
                         <String fx:value="dropshadow" />
                      </styleClass>
                   </TextField>
-                  <MFXButton fx:id="newHospitalUser" onAction="#handleNewUser" text="Add User">
-                     <styleClass>
-                        <String fx:value="blue" />
-                        <String fx:value="body" />
-                        <String fx:value="round" />
-                     </styleClass>
+                  <MFXButton fx:id="newHospitalUser" onAction="#handleNewUser" prefWidth="130.0" styleClass="blueNoSetSize" text="Add User">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </MFXButton>
                </children>
                <padding>
