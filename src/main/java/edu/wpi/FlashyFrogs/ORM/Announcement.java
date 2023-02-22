@@ -22,7 +22,6 @@ public class Announcement {
   @Temporal(TemporalType.DATE)
   @Column(nullable = false)
   @Getter
-  @Setter
   @NonNull
   private Date creationDate; // Date that the announcement was created
 
@@ -56,6 +55,7 @@ public class Announcement {
 
   @Basic
   @Getter
+  @Setter
   @Column(nullable = false)
   @NonNull
   private Severity severity;
