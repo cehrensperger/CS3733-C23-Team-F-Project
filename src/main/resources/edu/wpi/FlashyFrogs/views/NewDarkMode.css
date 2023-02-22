@@ -74,6 +74,12 @@
     -fx-text-fill:white;
 }
 
+.blueText
+    /** honestly just if you need a text bigger than body but smaller than header and bold **/
+{
+    -fx-text-fill:white;
+}
+
 .warningText
     /** This controls the style of the warning text that appears when the help
      button is clicked**/
@@ -470,4 +476,11 @@
     -fx-text-fill: white;
 }
 
+.pathfindingField {
+    /** This controls the input field for controlling what labels to show in the upper right corner of Pathfinding **/
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
+    -fx-background-color: #6B6D6F;
+    -fx-prompt-text-fill: white;
+}
 

@@ -5,10 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.HospitalUser;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Move;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import edu.wpi.FlashyFrogs.Theme;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -68,6 +65,8 @@ public class HomeController implements IController {
   @FXML protected Label tableText2;
 
   @FXML protected MFXButton editMovesButton;
+
+  @FXML protected ScrollPane scrollPane;
 
   protected boolean canEditMoves = false;
 
@@ -507,6 +506,8 @@ public class HomeController implements IController {
     requestTable.resetFilter();
     moveTable.resetFilter();
   }
+
+  public void insertAlert(Announcement announcement) {}
 
   public void srEditorPopOver() {}
 }

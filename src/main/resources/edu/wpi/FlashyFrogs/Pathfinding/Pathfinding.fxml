@@ -30,7 +30,7 @@
             </SearchableComboBox>
             <Text fx:id="h1" styleClass="warningText" text="Choose a starting location for your path" wrappingWidth="184.0">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <SearchableComboBox fx:id="destinationBox" maxWidth="184.0" promptText="Destination:" styleClass="fields">
@@ -40,7 +40,7 @@
             </SearchableComboBox>
             <Text fx:id="h2" styleClass="warningText" text="Choose an ending location for your path" wrappingWidth="184.0">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <SearchableComboBox fx:id="algorithmBox" maxWidth="184.0" promptText="Algorithm:" styleClass="fields">
@@ -65,7 +65,7 @@
             </Text>
             <CheckBox fx:id="accessibleBox" mnemonicParsing="false" styleClass="body" text="No Stairs">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="8.0" left="18.0" />
                </VBox.margin></CheckBox>
             <Text fx:id="h6" styleClass="warningText" text="Check to exclude stairs from your path" wrappingWidth="184.0">
                <VBox.margin>

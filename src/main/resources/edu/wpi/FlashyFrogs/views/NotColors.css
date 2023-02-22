@@ -90,6 +90,13 @@
     -fx-font-weight: bold;
 }
 
+.blueText
+    /** honestly just if you need a text bigger than body but smaller than header and bold **/
+{
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 12pt;
+}
+
 .warningText
     /** This controls the style of the warning text that appears when the help
      button is clicked**/
@@ -469,3 +476,16 @@
     -fx-font-family: "Roboto Light";
     -fx-font-size: 10pt;
 }
+
+.pathfindingField {
+    /** This controls the input field for controlling what labels to show in the upper right corner of Pathfinding **/
+    -fx-border-radius: 10px !important;
+    -fx-background-radius: 10px !important;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 12pt;
+    -fx-border-insets: -1px;
+    -fx-font-weight: normal;
+/** -fx-pref-width: 200px; (not sure if we want to set width and height in here) **/
+/** -fx-pref-height: 26px; **/
+}
+
