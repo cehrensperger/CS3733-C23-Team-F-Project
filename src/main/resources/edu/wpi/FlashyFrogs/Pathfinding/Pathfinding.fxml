@@ -74,7 +74,7 @@
                   <Insets left="18.0" />
                </VBox.margin>
             </Text>
-            <MFXButton alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Generate Path">
+            <MFXButton fx:id="generatePathButton" alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Generate Path">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>

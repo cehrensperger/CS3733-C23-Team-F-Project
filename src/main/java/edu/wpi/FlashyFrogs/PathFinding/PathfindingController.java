@@ -44,6 +44,7 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
+  @FXML private MFXButton generatePathButton;
   @FXML private Pane animationPane;
   @FXML private Circle cir1;
   @FXML private Circle cir6;
@@ -254,6 +255,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
   @SneakyThrows
   public void handleGetPath() {
+    generatePathButton.setDisable(true);
     // start the animation
     Animation();
     // get start and end locations from text fields
@@ -298,6 +300,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       drawTable();
     }
     // stop the animation
+    parallelTransition.jumpTo(Duration.ZERO);
     parallelTransition.stop();
 
     //    animationPane.setTranslateX(2000);
@@ -311,9 +314,11 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     cir5.setVisible(false);
     cir6.setVisible(false);
     animationPane.setVisible(false);
+    generatePathButton.setDisable(false);
   }
 
   public void Animation() {
+    parallelTransition.stop();
     //    animationPane.setTranslateX(0);
     //    animationPane.setTranslateY(0);
     cir1.setVisible(true);
@@ -323,12 +328,18 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     cir5.setVisible(true);
     cir6.setVisible(true);
     animationPane.setVisible(true);
-    //    cir1.setTranslateY(340);
-    //    cir2.setTranslateY(340);
-    //    cir3.setTranslateY(340);
-    //    cir4.setTranslateY(340);
-    //    cir5.setTranslateY(340);
-    //    cir6.setTranslateY(340);
+    //    cir1.setTranslateY(0);
+    //    cir2.setTranslateY(0);
+    //    cir3.setTranslateY(0);
+    //    cir4.setTranslateY(0);
+    //    cir5.setTranslateY(0);
+    //    cir6.setTranslateY(0);
+    cir1.setTranslateX(300);
+    cir2.setTranslateX(300);
+    cir3.setTranslateX(300);
+    cir4.setTranslateX(300);
+    cir5.setTranslateX(300);
+    cir6.setTranslateX(300);
     // Create a TranslateTransition for each circle and add a delay
     TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.2), cir1);
     tt1.setInterpolator(Interpolator.EASE_BOTH);
