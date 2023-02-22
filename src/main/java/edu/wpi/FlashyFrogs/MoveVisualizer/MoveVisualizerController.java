@@ -142,6 +142,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @FXML
   private void addText(ActionEvent actionEvent) {
     Text text = new Text(textText.getText()); // Create the text
+    text.setStyle("-fx-font-size: 500");
+    text.setWrappingWidth(mapController.getMapWidth() / 2);
+
     handleAddNode(text); // Add the text
   }
 
@@ -205,10 +208,31 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
     nodes.add(root); // Add the node to the collection to be able to clear
 
+    // Starting positions for the mouse and node
+    double[] originalPosition = new double[2];
+    double[] mousePosition = new double[2];
+    boolean[] dragEnabled = new boolean[1]; // Whether the drag is enabled
+
+    node.setOnDragDetected(
+        (event) -> {
+          // Avoid intercepting from the circle
+          if (event.isConsumed()) {
+            return;
+          }
+
+          // Save starting info
+          originalPosition[0] = root.getLayoutX();
+          originalPosition[1] = root.getLayoutY();
+          mousePosition[0] = event.getScreenX();
+          mousePosition[1] = event.getScreenY();
+
+          dragEnabled[0] = true; // Enable
+        });
+
     // On drag
     node.setOnMouseDragged(
         (event) -> {
-          if (event.isConsumed()) {
+          if (event.isConsumed() || !dragEnabled[0]) {
             return;
           }
 
@@ -216,17 +240,27 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           this.mapController.getGesturePane().setGestureEnabled(false);
 
           // New x and y coords
-          double newX = root.getLayoutX() + event.getX();
-          double newY = root.getLayoutY() + event.getY();
+          double newX = originalPosition[0] + event.getScreenX() - mousePosition[0];
+          double newY = originalPosition[1] + event.getScreenY() - mousePosition[1];
 
           // Update the coordinates if they are in bounds
-          if (newX >= 0 && newX + root.getWidth() <= mapController.getMapWidth()) {
+          if (newX >= 0
+              && newX + root.getBoundsInParent().getWidth() <= mapController.getMapWidth()) {
             root.setLayoutX(newX);
+          } else if (newX < 0) {
+            root.setLayoutX(0);
+          } else {
+            root.setLayoutX(mapController.getMapWidth() - root.getBoundsInParent().getWidth());
           }
 
           // Do the same
-          if (newY >= 0 && newY + root.getHeight() <= mapController.getMapHeight()) {
+          if (newY >= 0
+              && newY + root.getBoundsInParent().getHeight() <= mapController.getMapHeight()) {
             root.setLayoutY(newY);
+          } else if (newY < 0) {
+            root.setLayoutY(0);
+          } else {
+            root.setLayoutY(mapController.getMapHeight() - root.getBoundsInParent().getHeight());
           }
         });
 
@@ -236,6 +270,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           if (event.isConsumed()) {
             return;
           }
+
+          dragEnabled[0] = false; // Disable dragging
 
           // Re-enable gestures
           mapController.getGesturePane().setGestureEnabled(true);
@@ -260,6 +296,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
     // Drag start coordinates
     double[] dragStart = new double[2];
+    double[] startScale = new double[2]; // Starting scales
     boolean[] dragInProgress =
         new boolean[1]; // Whether a drag is in progress, don't allow resize until progress
 
@@ -272,6 +309,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           // Save starting coords
           dragStart[0] = event.getScreenX();
           dragStart[1] = event.getScreenY();
+          startScale[0] = root.getScaleX();
+          startScale[1] = root.getScaleY();
           dragInProgress[0] = true; // Enable drag
         });
 
@@ -281,12 +320,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           if (dragInProgress[0]) {
             event.consume(); // Consume the event
 
-            root.setScaleX(
-                (((event.getScreenX() - dragStart[0]) / dragStart[0]) * 10) + node.getScaleX());
-            root.setScaleY(
-                (((event.getScreenY() - dragStart[1]) / dragStart[1]) * 10) + node.getScaleY());
-
-            System.out.println(root.getBoundsInLocal().getMinX());
+            root.setScaleX((((event.getScreenX() - dragStart[0]) / dragStart[0])) + startScale[0]);
+            root.setScaleY((((event.getScreenY() - dragStart[1]) / dragStart[1])) + startScale[1]);
           }
         });
 

@@ -6,8 +6,6 @@ import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.ORM.Announcement;
 import edu.wpi.FlashyFrogs.ORM.Department;
 import jakarta.persistence.RollbackException;
-import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.List;
@@ -16,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import lombok.Setter;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -26,6 +26,8 @@ public class AlertManagerController {
   @FXML private SearchableComboBox<Department> deptBox;
   @FXML private ComboBox<Announcement.Severity> severityBox;
 
+  @Setter private PopOver popOver;
+
   public void initialize() {
     Session session = CONNECTION.getSessionFactory().openSession();
     List<Department> departments =
@@ -35,7 +37,7 @@ public class AlertManagerController {
     severityBox.setItems(FXCollections.observableArrayList(Announcement.Severity.values()));
   }
 
-  public void handleSubmit(ActionEvent actionEvent) throws IOException {
+  public void handleSubmit(javafx.event.ActionEvent actionEvent) {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
@@ -57,7 +59,7 @@ public class AlertManagerController {
         session.persist(announcement);
         transaction.commit();
         session.close();
-        handleClear(actionEvent);
+        handleCancel(actionEvent);
       } catch (RollbackException exception) {
         session.clear();
         // TODO Do something smart and throw an error maybe
@@ -70,10 +72,12 @@ public class AlertManagerController {
     }
   }
 
-  public void handleClear(ActionEvent actionEvent) throws IOException {
+  public void handleCancel(javafx.event.ActionEvent actionEvent) {
     summaryField.setText("");
     descriptionField.setText("");
     deptBox.valueProperty().set(null);
     severityBox.valueProperty().set(null);
+
+    popOver.hide();
   }
 }

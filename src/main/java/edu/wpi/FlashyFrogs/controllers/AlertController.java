@@ -2,26 +2,30 @@ package edu.wpi.FlashyFrogs.controllers;
 
 import edu.wpi.FlashyFrogs.ORM.Announcement;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
 public class AlertController {
-  @FXML private TextField summaryField;
-  @FXML private TextField departmentField;
-  @FXML private TextField severityField;
+  @FXML private Label summaryField;
+  @FXML private Label departmentField;
+  @FXML private Label severityField;
   @FXML private TextArea descriptionField;
-  @FXML private TextField authorField;
-  @FXML private TextField dateField;
+  @FXML private Label authorField;
+  @FXML private Label dateField;
 
   public void initialize() {}
 
   public void insertAnnouncement(Announcement announcement) {
-    summaryField.setText(announcement.getAnnouncement());
-    //        for(int i = 0; i < announcement.getSeverity())
+    summaryField.setText(announcement.getDescription());
+    String severity = "";
+    for (int i = 0; i < announcement.getSeverity().ordinal(); i++) {
+      severity = severity + "!";
+    }
+    severityField.setText(severity);
     dateField.setText(announcement.getCreationDate().toString());
     authorField.setText(
         announcement.getAuthor().getFirstName() + " " + announcement.getAuthor().getLastName());
     departmentField.setText(announcement.getDepartment().getLongName());
-    //        descriptionField.setText(announcement.getDescription());
+    descriptionField.setText(announcement.getAnnouncement());
   }
 }
