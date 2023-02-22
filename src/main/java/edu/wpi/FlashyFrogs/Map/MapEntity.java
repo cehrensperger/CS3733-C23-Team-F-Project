@@ -92,6 +92,9 @@ class MapEntity {
     // Add the vbox that will hold the locations
     nodeToLocationBox.put(node, new VBox());
 
+    // Set the node to be transparent (shouldn't be interactable)
+    nodeToLocationBox.get(node).setMouseTransparent(true);
+
     // If the node we're creating is valid
     if (nodeCreation != null) {
       nodeCreation.accept(node, circle); // Preform the callback on it
