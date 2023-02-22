@@ -53,25 +53,30 @@ public class LoginController implements IController {
                 .setOnKeyPressed(
                     (event -> {
                       if (event.getCode().equals(KeyCode.ENTER)) {
+                        System.out.println("attempting login");
+                        System.out.println(backgroundText);
                         // If the username exists
                         if (!username.getText().isEmpty()) {
                           loginButton(null); // Try logging in
                         } else {
                           Session session = CONNECTION.getSessionFactory().openSession();
-                          // Log in
-                          UserLogin logIn =
-                              session
-                                  .createQuery(
-                                      "FROM UserLogin  WHERE RFIDBadge = :badge", UserLogin.class)
-                                  .setParameter("badge", backgroundText)
-                                  .uniqueResult();
-
+                          UserLogin logIn = null;
+                          if (!backgroundText.equals("")) {
+                            // Log in
+                            logIn =
+                                session
+                                    .createQuery(
+                                        "FROM UserLogin  WHERE RFIDBadge = :badge", UserLogin.class)
+                                    .setParameter("badge", backgroundText)
+                                    .uniqueResult();
+                          }
                           // If the login is valid
                           if (logIn != null) {
                             CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
                             Fapp.setScene("views", "Home");
                             Fapp.logIn();
                             CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
+                            backgroundText = ""; // Clear the background text
                           } else {
                             backgroundText = ""; // Clear the background text
                           }
