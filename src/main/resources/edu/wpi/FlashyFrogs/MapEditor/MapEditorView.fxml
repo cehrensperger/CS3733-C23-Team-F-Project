@@ -101,7 +101,7 @@
                   <Insets left="18.0" />
                </VBox.margin>
             </Button>
-            <Text fx:id="h6" styleClass="warningText" text="Quick draw nodes and edges on the map" wrappingWidth="184.0">
+            <Text fx:id="h6" styleClass="warningText" text="Quick draw nodes and edges on the map. Use esc to stop." wrappingWidth="184.0">
                <VBox.margin>
                   <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
