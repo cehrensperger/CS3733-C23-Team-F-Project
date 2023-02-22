@@ -140,6 +140,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                 // row
                 if (row != null) {
                   setFloor(row.getItem().node.getFloor());
+                  mapController.zoomToCoordinates(
+                      5, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
                   //                  Platform.runLater(
                   //                      () ->
                   //                          mapController
