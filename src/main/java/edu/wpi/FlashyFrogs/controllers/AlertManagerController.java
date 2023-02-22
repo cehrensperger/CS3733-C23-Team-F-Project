@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import lombok.Setter;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -23,6 +25,8 @@ public class AlertManagerController {
   @FXML private TextArea descriptionField;
   @FXML private SearchableComboBox<Department> deptBox;
   @FXML private ComboBox<Announcement.Severity> severityBox;
+
+  @Setter private PopOver popOver;
 
   public void initialize() {
     Session session = CONNECTION.getSessionFactory().openSession();
@@ -34,7 +38,6 @@ public class AlertManagerController {
   }
 
   public void handleSubmit(javafx.event.ActionEvent actionEvent) {
-    // todo: close popover
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
@@ -75,6 +78,6 @@ public class AlertManagerController {
     deptBox.valueProperty().set(null);
     severityBox.valueProperty().set(null);
 
-    // todo: close popover
+    popOver.hide();
   }
 }

@@ -404,7 +404,7 @@ public class HomeController implements IController {
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
 
     AlertManagerController controller = newLoad.getController();
-    //    controller.setPopOver(popOver);
+    controller.setPopOver(popOver);
 
     popOver.detach(); // Detach the pop-up, so it's not stuck to the button
     javafx.scene.Node node =
