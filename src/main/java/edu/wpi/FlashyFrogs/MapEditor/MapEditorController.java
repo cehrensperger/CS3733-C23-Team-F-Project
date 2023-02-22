@@ -114,6 +114,15 @@ public class MapEditorController implements IController {
                   // Add a listener that does that
                   (observable, oldValue, newValue) -> row.updateSelected(false));
 
+          row.setOnMouseDragged(
+              event -> {
+                Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+                dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
+                ClipboardContent clipboardContent = new ClipboardContent();
+                clipboardContent.putString(row.getItem().getLongName());
+                dragboard.setContent(clipboardContent);
+              });
+
           // Add a listener to show the pop-up
           row.setOnMouseClicked(
               (event) -> {
