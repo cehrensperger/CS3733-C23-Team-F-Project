@@ -6,6 +6,9 @@ import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -30,6 +33,7 @@ public class EditUserController implements IController {
   @FXML private PasswordField pass2;
   @FXML private SearchableComboBox<Department> deptBox;
   @FXML private SearchableComboBox<HospitalUser.EmployeeType> employeeType;
+  @FXML private TextField rfid;
   @FXML private Label errorMessage;
 
   public void setPopOver(PopOver thePopOver) {
@@ -49,6 +53,27 @@ public class EditUserController implements IController {
     this.username.setText(userName);
     this.deptBox.getSelectionModel().select(currentUser.getDepartment());
     this.employeeType.getSelectionModel().select(currentUser.getEmployeeType());
+    this.rfid.setText(currentUserLogin.getRFIDBadge());
+
+    initDepartment_EmpType(deptBox, employeeType);
+  }
+
+  static void initDepartment_EmpType(
+      SearchableComboBox<Department> deptBox,
+      SearchableComboBox<HospitalUser.EmployeeType> employeeType) {
+    Session session = CONNECTION.getSessionFactory().openSession();
+    List<Department> objects =
+        session.createQuery("SELECT d FROM Department d", Department.class).getResultList();
+
+    ObservableList<Department> observableList = FXCollections.observableList(objects);
+    deptBox.setItems(observableList);
+    employeeType
+        .getItems()
+        .addAll(
+            HospitalUser.EmployeeType.ADMIN,
+            HospitalUser.EmployeeType.MEDICAL,
+            HospitalUser.EmployeeType.STAFF);
+    session.close();
   }
 
   public void saveChanges(ActionEvent actionEvent) throws Exception {
@@ -56,7 +81,6 @@ public class EditUserController implements IController {
         || pass1.getText().equals("")
         || pass2.getText().equals("")
         || firstName.getText().equals("")
-        || middleName.getText().equals("")
         || lastName.getText().equals("")
         || deptBox.getValue() == null
         || employeeType.getValue() == null) {
@@ -73,24 +97,12 @@ public class EditUserController implements IController {
 
       currentUserLogin.setUserName(username.getText());
       currentUserLogin.setPassword(pass1.getText());
-      currentUserLogin.setUser(currentUser);
 
-      Session ses = null;
-      Transaction transaction = null;
+      Session ses;
+      Transaction transaction;
       ses = CONNECTION.getSessionFactory().openSession();
       try {
         transaction = ses.beginTransaction();
-        /*HospitalUser hospitalUser = ses.get(HospitalUser.class, currentUser.getId());
-        UserLogin userLogin = ses.get(UserLogin.class, currentUserLogin.getUser().getId());
-
-        hospitalUser.setDepartment(deptBox.getValue());
-        hospitalUser.setFirstName(firstName.getText());
-        hospitalUser.setLastName(lastName.getText());
-        hospitalUser.setMiddleName(middleName.getText());
-        hospitalUser.setEmployeeType(employeeType.getValue());
-        userLogin.setUserName(username.getText());
-        userLogin.setPassword(pass1.getText());
-        userLogin.setUser(hospitalUser);*/
 
         currentUser.setDepartment(deptBox.getValue());
         currentUser.setFirstName(firstName.getText());
@@ -99,6 +111,11 @@ public class EditUserController implements IController {
         currentUser.setEmployeeType(employeeType.getValue());
         currentUserLogin.setUserName(username.getText());
         currentUserLogin.setPassword(pass1.getText());
+        if (rfid.getText().equals("")) {
+          currentUserLogin.setRFIDBadge(null);
+        } else {
+          currentUserLogin.setRFIDBadge(rfid.getText());
+        }
         currentUserLogin.setUser(currentUser);
 
         ses.merge(currentUser);
