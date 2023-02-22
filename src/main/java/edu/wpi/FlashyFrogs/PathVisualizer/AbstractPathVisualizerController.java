@@ -201,6 +201,6 @@ public abstract class AbstractPathVisualizerController implements IController {
     mapController.getMapFloorProperty().setValue(node.getFloor());
 
     // Go to the nodes coordinates
-    mapController.zoomToCoordinates(5, node.getXCoord(), node.getYCoord());
+    mapController.zoomToCoordinates(2, node.getXCoord(), node.getYCoord());
   }
 }

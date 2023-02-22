@@ -19,7 +19,7 @@
       </Label>
       <HBox alignment="CENTER" layoutX="-2.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="1280.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="102.0">
          <children>
-            <TableView fx:id="userLoginTable" onMouseClicked="#setSelected" prefHeight="504.0" prefWidth="1306.0" HBox.hgrow="ALWAYS">
+            <TableView fx:id="userLoginTable" prefHeight="504.0" prefWidth="1306.0" HBox.hgrow="ALWAYS">
               <columns>
                   <TableColumn fx:id="idCol" maxWidth="199.99999690055847" prefWidth="61.59997630119324" text="ID" />
                  <TableColumn fx:id="rfidCol" prefWidth="204.80004501342773" text="RFID Badge ID" />
