@@ -81,7 +81,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </MFXButton>
-                        <MFXButton onAction="#changeMode" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Switch Color Theme" textAlignment="CENTER" wrapText="true">
+                        <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Map Editor" textAlignment="CENTER" wrapText="true">
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>

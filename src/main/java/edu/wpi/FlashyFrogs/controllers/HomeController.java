@@ -7,7 +7,6 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
-import edu.wpi.FlashyFrogs.Theme;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.*;
@@ -42,6 +41,7 @@ import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class HomeController implements IController {
+  @FXML protected MFXButton mapEditorButton;
   @FXML protected FilteredTableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected FilteredTableColumn<ServiceRequest, Long> requestIDCol;
   @FXML protected FilteredTableColumn<ServiceRequest, HospitalUser> initEmpCol;
@@ -338,6 +338,8 @@ public class HomeController implements IController {
       manageCSVButton.setOpacity(0);
       editMovesButton.setDisable(true);
       editMovesButton.setOpacity(0);
+      mapEditorButton.setDisable(true);
+      mapEditorButton.setOpacity(0);
 
       tableText2.setText("");
     } else {
@@ -350,6 +352,8 @@ public class HomeController implements IController {
       manageCSVButton.setOpacity(1);
       editMovesButton.setDisable(false);
       editMovesButton.setOpacity(1);
+      mapEditorButton.setDisable(false);
+      mapEditorButton.setOpacity(1);
 
       tableText2.setText("Future Moves");
     }
@@ -374,21 +378,6 @@ public class HomeController implements IController {
     popOver.detach();
     Node node = (Node) event.getSource();
     popOver.show(node.getScene().getWindow());
-  }
-
-  /**
-   * Change the color theme between Dark and Light Mode when the Switch Color Scheme button is
-   * clicked on Home.fxml.
-   *
-   * @param actionEvent
-   * @throws IOException
-   */
-  public void changeMode(ActionEvent actionEvent) throws IOException {
-    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
-      Fapp.setTheme(Theme.DARK_THEME);
-    } else {
-      Fapp.setTheme(Theme.LIGHT_THEME);
-    }
   }
 
   public void handleLogOut(ActionEvent actionEvent) throws IOException {
@@ -505,6 +494,12 @@ public class HomeController implements IController {
   public void handleResetFilters() {
     requestTable.resetFilter();
     moveTable.resetFilter();
+  }
+
+  /** Callback to open the map editor from a button */
+  @FXML
+  public void openMapEditor() {
+    Fapp.setScene("MapEditor", "MapEditorView");
   }
 
   public void insertAlert(Announcement announcement) {}
