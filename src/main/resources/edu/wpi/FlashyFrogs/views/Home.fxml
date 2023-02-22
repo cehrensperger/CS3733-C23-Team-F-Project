@@ -236,7 +236,7 @@
             <Font size="10.0" />
          </font>
       </Text>
-      <MFXButton fx:id="editMovesButton" layoutX="944.0" layoutY="464.0" onAction="#handleEditMovesButton" prefWidth="140.0" styleClass="blueOutline" text="Toggle Edit All" AnchorPane.bottomAnchor="230.8" AnchorPane.rightAnchor="282.8" />
-      <MFXButton layoutX="1175.0" layoutY="120.0" onAction="#handleResetFilters" prefHeight="25.0" prefWidth="140.0" styleClass="blueOutlineNoSetSize" text="Reset Filters" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="120.0" />
+      <MFXButton fx:id="editMovesButton" layoutX="944.0" layoutY="464.0" onAction="#handleEditMovesButton" styleClass="blueOutline" text="Toggle Edit All" AnchorPane.bottomAnchor="230.8" AnchorPane.rightAnchor="282.8" />
+      <MFXButton layoutX="1175.0" layoutY="120.0" onAction="#handleResetFilters" prefHeight="25.0" prefWidth="113.0" styleClass="blueOutlineNoSetSize" text="Reset Filters" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="120.0" />
    </children>
 </AnchorPane>

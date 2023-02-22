@@ -28,53 +28,26 @@
             </Label>
             <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="203.0" text="Auto-Repair Edges">
                <VBox.margin>
-                  <Insets left="18.0" right="18.0" />
+                  <Insets bottom="5.0" left="18.0" right="18.0" />
                </VBox.margin></CheckBox>
-            <Text fx:id="h3" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Check if you would like edges to be auto repaired when you change nodes" wrappingWidth="184.0">
-               <font>
-                  <Font size="10.0" />
-               </font>
+            <Label text="Viewing Date">
                <VBox.margin>
                   <Insets left="18.0" />
-               </VBox.margin>
-            </Text>
-            <Label styleClass="blueText" text="Viewing Date">
-               <VBox.margin>
-                  <Insets bottom="4.0" left="18.0" />
                </VBox.margin>
                <font>
                   <Font size="12.0" />
                </font>
             </Label>
-            <DatePicker fx:id="viewingDate" prefWidth="184.0" styleClass="fields">
+            <DatePicker fx:id="viewingDate">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </DatePicker>
-            <Text fx:id="h4" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose the a date to base locations off of" wrappingWidth="184.0">
-               <font>
-                  <Font size="10.0" />
-               </font>
+            <Label text="Add Node">
                <VBox.margin>
                   <Insets left="18.0" />
-               </VBox.margin>
-            </Text>
-            <Label styleClass="blueText" text="Drag and drop node">
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="12.0" />
-               </font></Label>
-            <Text fx:id="h5" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Drag the circle onto the map to place a node" wrappingWidth="184.0">
-               <font>
-                  <Font size="10.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin>
-            </Text>
-            <HBox alignment="CENTER" prefHeight="6.0" prefWidth="220.0" spacing="15.0">
+               </VBox.margin></Label>
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="170.0" spacing="15.0">
                <children>
                   <Circle fx:id="nodeToDrag" radius="19.0" stroke="BLACK" strokeType="INSIDE" />
                   <Line endX="100.0" startX="30.0" strokeWidth="3.0" />
@@ -85,7 +58,7 @@
                   </Polygon>
                </children>
                <VBox.margin>
-                  <Insets bottom="10.0" />
+                  <Insets bottom="5.0" />
                </VBox.margin>
             </HBox>
             <TableView fx:id="locationTable" prefHeight="254.0" prefWidth="170.0">
@@ -96,9 +69,9 @@
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </TableView>
-            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="View current locations in the map and drag locations from the table to add them to the map" wrappingWidth="184.0">
+            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="View current locations in the map" wrappingWidth="170.0">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="16.0" left="18.0" />
                </VBox.margin>
                <font>
                   <Font size="10.0" />
@@ -122,27 +95,11 @@
                   <Insets left="18.0" />
                </VBox.margin>
             </Button>
-            <Text fx:id="h6" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Quick draw nodes and edges on the map" wrappingWidth="184.0">
-               <font>
-                  <Font size="10.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="8.0" left="18.0" />
-               </VBox.margin>
-            </Text>
             <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Move Visualizer">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets left="18.0" top="15.0" />
                </VBox.margin>
             </Button>
-            <Text fx:id="h7" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="Open the move visualizer page" wrappingWidth="184.0">
-               <font>
-                  <Font size="10.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="8.0" left="18.0" />
-               </VBox.margin>
-            </Text>
          </children>
       </VBox>
       <AnchorPane fx:id="mapPane" layoutX="250.0" layoutY="20.0" prefHeight="10.0" prefWidth="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
