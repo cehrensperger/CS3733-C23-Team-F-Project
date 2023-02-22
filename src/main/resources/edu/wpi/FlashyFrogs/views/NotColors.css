@@ -498,7 +498,7 @@
 
 .text-area:focused .content {
     -fx-border-color: transparent;
-    -fx-background-color:  white;
+    -fx-background-color:  #f1f1f1;
     -fx-border-radius: 10px;
 }
 .text-area .content {
