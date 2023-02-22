@@ -126,7 +126,7 @@ public class CSVMaker {
         fileWriter.write(serviceRequest.getUrgency() + ",");
         fileWriter.write(serviceRequest.getAssignedEmp() + ",");
         fileWriter.write(serviceRequest.getEmp() + ",");
-        fileWriter.write(serviceRequest.getLocation() + ",");
+        fileWriter.write(serviceRequest.getLocation() + "\n");
       }
 
       fileWriter.close();
@@ -147,7 +147,7 @@ public class CSVMaker {
         fileWriter.write(serviceRequest.getDeviceType() + ",");
         fileWriter.write(serviceRequest.getReason() + ",");
         fileWriter.write(serviceRequest.getDescription() + ",");
-        fileWriter.write(serviceRequest.getDescription());
+        fileWriter.write(serviceRequest.getDescription() + "\n");
       }
 
       fileWriter.close();
@@ -171,7 +171,7 @@ public class CSVMaker {
         fileWriter.write(serviceRequest.getModel() + ",");
         fileWriter.write(serviceRequest.getServiceType().ServiceType + ",");
         fileWriter.write(serviceRequest.getDescription() + ",");
-        fileWriter.write(serviceRequest.getBestContact());
+        fileWriter.write(serviceRequest.getBestContact() + "\n");
       }
 
       fileWriter.close();
@@ -202,7 +202,7 @@ public class CSVMaker {
         fileWriter.write(serviceRequest.getMode() + ",");
         fileWriter.write(serviceRequest.isIsolation() + ",");
         fileWriter.write(serviceRequest.getPersonalItems() + ",");
-        fileWriter.write(serviceRequest.getReason());
+        fileWriter.write(serviceRequest.getReason() + "\n");
       }
 
       fileWriter.close();
@@ -225,7 +225,7 @@ public class CSVMaker {
         fileWriter.write(serviceRequest.getType() + ",");
         fileWriter.write(serviceRequest.getIsolation() + ",");
         fileWriter.write(serviceRequest.getBiohazard().BiohazardLevel + ",");
-        fileWriter.write(serviceRequest.getDescription());
+        fileWriter.write(serviceRequest.getDescription() + "\n");
       }
 
       fileWriter.close();
@@ -245,7 +245,7 @@ public class CSVMaker {
       for (Security serviceRequest : serviceRequests) {
 
         fileWriter.write(serviceRequest.getIncidentReport() + ",");
-        fileWriter.write(serviceRequest.getThreatType().ThreatType);
+        fileWriter.write(serviceRequest.getThreatType().ThreatType + "\n");
       }
 
       fileWriter.close();

@@ -152,7 +152,7 @@ public class MapController {
    * @param x the x-coordinate to zoom to
    * @param y the y-coordinate to zoom to
    */
-  public void zoomToCoordinates(int scale, int x, int y) {
+  public void zoomToCoordinates(double scale, int x, int y) {
     gesturePane.zoomTo(scale, new Point2D(x, y));
     gesturePane.zoomTo(scale, new Point2D(x, y)); // Zoom a second time because this works????
 

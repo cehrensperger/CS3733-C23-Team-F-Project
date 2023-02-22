@@ -141,7 +141,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                 if (row != null) {
                   setFloor(row.getItem().node.getFloor());
                   mapController.zoomToCoordinates(
-                      5, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
+                      2, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
                 }
               });
           return row;
@@ -256,7 +256,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     } else {
       setFloor(startNode.getFloor()); // Go to the starting floor
       // Zoom to the coordinates of the starting node
-      mapController.zoomToCoordinates(5, startNode.getXCoord(), startNode.getYCoord());
+      mapController.zoomToCoordinates(2, startNode.getXCoord(), startNode.getYCoord());
       colorFloor(); // Draw the path
       //      setFloor(startNode.getFloor());
       drawTable();
