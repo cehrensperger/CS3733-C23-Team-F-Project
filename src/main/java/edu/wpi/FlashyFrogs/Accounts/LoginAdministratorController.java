@@ -138,9 +138,7 @@ public class LoginAdministratorController implements IController {
             EditUserController editUser = newLoad.getController();
             editUser.setPopOver(popOver);
             editUser.setLoginAdminController(this);
-            editUser.initialize(
-                userLoginTable.getSelectionModel().getSelectedItem().getUserName(),
-                selectedUserLogin);
+            editUser.initialize(selectedUserLogin);
             popOver.detach();
             Node node = (Node) event.getSource();
             popOver.show(node.getScene().getWindow());
@@ -156,6 +154,7 @@ public class LoginAdministratorController implements IController {
                       }
                     });
           }
+          userLoginTable.getSelectionModel().clearSelection();
         });
   }
 

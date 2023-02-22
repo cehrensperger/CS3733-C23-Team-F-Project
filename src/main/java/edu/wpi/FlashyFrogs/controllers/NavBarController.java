@@ -106,7 +106,6 @@ public class NavBarController {
     menu.hide();
     loggedOutMenu.setDisable(false);
     loggedOutMenu.setText("Welcome, Guest");
-    loggedOutMenu.show();
     header.setDisable(true);
     header.setOpacity(0);
   }

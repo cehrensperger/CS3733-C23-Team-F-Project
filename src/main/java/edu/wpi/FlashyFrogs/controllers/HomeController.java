@@ -323,6 +323,7 @@ public class HomeController implements IController {
                         });
               }
             }
+            requestTable.getSelectionModel().clearSelection();
           }
         });
 

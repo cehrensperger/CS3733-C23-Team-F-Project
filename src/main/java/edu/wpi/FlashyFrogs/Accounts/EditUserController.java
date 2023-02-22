@@ -44,13 +44,13 @@ public class EditUserController implements IController {
     this.loginAdministratorController = adminController;
   }
 
-  public void initialize(String userName, UserLogin selectedUserLogin) {
+  public void initialize(UserLogin selectedUserLogin) {
     this.currentUserLogin = selectedUserLogin;
     this.currentUser = selectedUserLogin.getUser();
     this.firstName.setText(currentUser.getFirstName());
     this.middleName.setText(currentUser.getMiddleName());
     this.lastName.setText(currentUser.getLastName());
-    this.username.setText(userName);
+    this.username.setText(selectedUserLogin.getUserName());
     this.deptBox.getSelectionModel().select(currentUser.getDepartment());
     this.employeeType.getSelectionModel().select(currentUser.getEmployeeType());
     this.rfid.setText(currentUserLogin.getRFIDBadge());
