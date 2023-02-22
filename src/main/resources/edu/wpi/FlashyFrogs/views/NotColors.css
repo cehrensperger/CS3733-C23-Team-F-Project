@@ -489,3 +489,12 @@
 /** -fx-pref-height: 26px; **/
 }
 
+.text-area:focused .content {
+    -fx-border-color: transparent;
+    -fx-background-color:  white;
+    -fx-border-radius: 10px;
+}
+.text-area .content {
+    -fx-border-color: transparent;
+}
+
