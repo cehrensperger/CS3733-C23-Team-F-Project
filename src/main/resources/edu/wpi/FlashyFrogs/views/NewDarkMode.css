@@ -490,3 +490,11 @@
     -fx-prompt-text-fill: white;
 }
 
+.text-area:focused .content {
+    -fx-border-color: transparent;
+    -fx-background-color:  #2F2F2F;
+}
+
+.text-area .content {
+    -fx-border-color: transparent;
+}

@@ -494,3 +494,11 @@
     -fx-background-color: transparent;
     -fx-prompt-text-fill: #012D5A;
 }
+
+.text-area:focused .content {
+    -fx-border-color: transparent;
+    -fx-background-color:  #f1f1f1;
+}
+.text-area .content {
+    -fx-border-color: transparent;
+}
