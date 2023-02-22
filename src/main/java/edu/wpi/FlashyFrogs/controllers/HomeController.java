@@ -29,10 +29,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.converter.DateStringConverter;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
@@ -281,48 +283,47 @@ public class HomeController implements IController {
         });
     moveTable.setEditable(true);
     moveTable.getSelectionModel().setCellSelectionEnabled(true);
+    TableRow<ServiceRequest> row1 = new TableRow<>();
+    requestTable.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          @SneakyThrows
+          public void handle(MouseEvent event) {
+            ServiceRequest selectedItem =
+                requestTable.getSelectionModel().selectedItemProperty().get();
+            if (selectedItem != null) {
 
-    requestTable.setRowFactory(
-        param -> {
-          TableRow<ServiceRequest> row = new TableRow<>(); // Create a new table row to use
+              if (CurrentUserEntity.CURRENT_USER.getAdmin()) {
+                FXMLLoader newLoad =
+                    new FXMLLoader(
+                        Fapp.class.getResource(
+                            "ServiceRequests/Editors/"
+                                + selectedItem.getRequestType()
+                                + "Editor.fxml"));
 
-          // When the user selects a row, just un-select it to avoid breaking formatting
-          row.selectedProperty()
-              .addListener(
-                  // Add a listener that does that
-                  (observable, oldValue, newValue) -> row.updateSelected(false));
+                Parent root = null;
+                root = newLoad.load();
+                PopOver popOver = new PopOver(root);
+                popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+                Node node =
+                    (Node) event.getSource(); // Get the node representation of what called this
+                popOver.show(node);
+                ServiceRequestController controller = newLoad.getController();
+                controller.setRequest(selectedItem);
+                controller.updateFields();
+                controller.setPopOver(popOver);
 
-          // Add a listener to show the pop-up
-          row.setOnMouseClicked(
-              (event) -> {
-                // If the pop over exists and is either not focused or we are showing a new
-                // row
-                if (row != null && CurrentUserEntity.CURRENT_USER.getAdmin()) {
-                  FXMLLoader newLoad =
-                      new FXMLLoader(
-                          Fapp.class.getResource(
-                              "ServiceRequests/Editors/"
-                                  + row.getItem().getRequestType()
-                                  + "Editor.fxml"));
-
-                  Parent root = null;
-                  try {
-                    root = newLoad.load();
-                    PopOver popOver = new PopOver(root);
-                    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-                    Node node =
-                        (Node) event.getSource(); // Get the node representation of what called this
-                    popOver.show(node);
-                  } catch (IOException e) {
-                    throw new RuntimeException(e);
-                  }
-
-                  ServiceRequestController controller = newLoad.getController();
-                  controller.setRequest(row.getItem());
-                  controller.updateFields();
-                }
-              });
-          return row;
+                popOver
+                    .showingProperty()
+                    .addListener(
+                        (observable, oldValue, newValue) -> {
+                          if (!newValue) {
+                            refreshTable();
+                          }
+                        });
+              }
+            }
+          }
         });
 
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
@@ -462,6 +463,9 @@ public class HomeController implements IController {
       ObservableList<MoveWrapper> moveList = FXCollections.observableList(moveWrappers);
       FilteredTableView.configureForFiltering(moveTable, moveList);
     }
+
+    moveTable.refresh();
+    requestTable.refresh();
   }
 
   public void handleManageCSV(ActionEvent event) throws IOException {

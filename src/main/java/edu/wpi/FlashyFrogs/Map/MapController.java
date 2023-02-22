@@ -49,6 +49,8 @@ public class MapController {
   @FXML @Getter private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
 
+  private Display displayEnum;
+
   @Getter
   private final Pane currentDrawingPane =
       new Pane(); // The current drawing pane to use to draw nodes/edges
@@ -138,10 +140,14 @@ public class MapController {
   /**
    * Zooms the map to the given coordinates
    *
+   * @param scale the scale to set ot
    * @param x the x-coordinate to zoom to
    * @param y the y-coordinate to zoom to
    */
-  public void zoomToCoordinates(int x, int y) {
+  public void zoomToCoordinates(int scale, int x, int y) {
+    gesturePane.zoomTo(scale, new Point2D(x, y));
+    gesturePane.zoomTo(scale, new Point2D(x, y)); // Zoom a second time because this works????
+
     gesturePane.centreOn(new Point2D(x, y));
   }
 
@@ -174,6 +180,7 @@ public class MapController {
       for (LocationName nodeLocation : node.getCurrentLocation(getMapSession(), date)) {
         addLocationName(nodeLocation, node); // Add it
       }
+      setDisplayText(displayEnum);
     }
   }
 
@@ -599,6 +606,7 @@ public class MapController {
   }
 
   private void setDisplayText(Display display) {
+    displayEnum = display;
     Collection<VBox> boxes = getNodeToLocationBox().values();
     LinkedList<Text> list = new LinkedList<>();
 
@@ -620,6 +628,7 @@ public class MapController {
             }
           }
           box.getChildren().setAll(list);
+          box.setMouseTransparent(true);
           list.clear();
         }
       }
@@ -638,6 +647,7 @@ public class MapController {
             }
           }
           box.getChildren().setAll(list);
+          box.setMouseTransparent(true);
           list.clear();
         }
       }
@@ -654,6 +664,7 @@ public class MapController {
             }
           }
           box.getChildren().setAll(list);
+          box.setMouseTransparent(true);
           list.clear();
         }
       }
@@ -661,7 +672,12 @@ public class MapController {
         for (VBox box : boxes) {
           for (int i = 0; i < box.getChildren().size(); i++) {
             box.getChildren().get(i).setOpacity(0);
+            Text text = (Text) box.getChildren().get(i);
+            list.add(text);
           }
+          box.getChildren().setAll(list);
+          box.setMouseTransparent(true);
+          list.clear();
         }
       }
     }

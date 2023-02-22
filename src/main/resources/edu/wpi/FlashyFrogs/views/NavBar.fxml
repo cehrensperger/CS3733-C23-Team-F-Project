@@ -32,7 +32,7 @@
                   <HBox alignment="CENTER_RIGHT" />
                </children>
             </HBox>
-            <MenuButton fx:id="menu" mnemonicParsing="false" textAlignment="RIGHT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+            <MenuButton fx:id="menu" mnemonicParsing="false" styleClass="navBar" textAlignment="RIGHT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
               <items>
                  <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
                  <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />

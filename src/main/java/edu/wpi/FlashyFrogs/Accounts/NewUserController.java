@@ -8,9 +8,6 @@ import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
-import java.util.List;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -48,21 +45,7 @@ public class NewUserController implements IController {
   }
 
   public void initialize() {
-    Session session = CONNECTION.getSessionFactory().openSession();
-    List<Department> objects =
-        session.createQuery("SELECT d FROM Department d", Department.class).getResultList();
-
-    // objects.sort(String::compareTo);
-
-    ObservableList<Department> observableList = FXCollections.observableList(objects);
-    deptBox.setItems(observableList);
-    employeeType
-        .getItems()
-        .addAll(
-            HospitalUser.EmployeeType.ADMIN,
-            HospitalUser.EmployeeType.MEDICAL,
-            HospitalUser.EmployeeType.STAFF);
-    session.close();
+    EditUserController.initDepartment_EmpType(deptBox, employeeType);
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
@@ -118,6 +101,7 @@ public class NewUserController implements IController {
         }
       }
       ses.close();
+      popOver.hide();
     }
   }
 

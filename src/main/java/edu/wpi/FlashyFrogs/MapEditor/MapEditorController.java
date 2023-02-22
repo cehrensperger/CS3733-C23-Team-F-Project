@@ -27,6 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
@@ -58,6 +59,7 @@ public class MapEditorController implements IController {
   @FXML private TableView<LocationName> locationTable; // Attribute for the location table
   @FXML private CheckBox checkBox;
   @FXML private DatePicker viewingDate;
+  @FXML private Cursor cursor;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -111,6 +113,15 @@ public class MapEditorController implements IController {
               .addListener(
                   // Add a listener that does that
                   (observable, oldValue, newValue) -> row.updateSelected(false));
+
+          row.setOnMouseDragged(
+              event -> {
+                Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
+                dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
+                ClipboardContent clipboardContent = new ClipboardContent();
+                clipboardContent.putString(row.getItem().getLongName());
+                dragboard.setContent(clipboardContent);
+              });
 
           // Add a listener to show the pop-up
           row.setOnMouseClicked(
@@ -385,7 +396,7 @@ public class MapEditorController implements IController {
     nodeToDrag.setOnDragDetected(
         event -> {
           Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
-          dragboard.setDragView(ResourceDictionary.DRAG_SVG.resource);
+          dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
           ClipboardContent clipboardContent = new ClipboardContent();
           clipboardContent.putString("fjbwef");
           dragboard.setContent(clipboardContent);
@@ -406,50 +417,40 @@ public class MapEditorController implements IController {
             event.acceptTransferModes(TransferMode.COPY);
             GesturePane gesturePane = mapController.getGesturePane();
             double scale = gesturePane.getCurrentScale();
+            duplicateCircle.setOpacity(1);
             duplicateCircle.setRadius(5 * scale);
             duplicateCircle.setVisible(true);
-            duplicateCircle.setFill(Paint.valueOf("012DFA"));
+            duplicateCircle.setFill(Paint.valueOf("012D5A"));
             duplicateCircle.setCenterX(event.getX());
             duplicateCircle.setCenterY(event.getY());
 
             // X bounds
             if (event.getX() < 0) {
-              duplicateCircle.setCenterX(0);
-              duplicateCircle.setCenterY(event.getY());
+              duplicateCircle.setVisible(false);
             } else if (event.getX() > mapPane.getWidth()) {
-              duplicateCircle.setCenterX(mapPane.getWidth());
-              duplicateCircle.setCenterY(event.getY());
+              duplicateCircle.setVisible(false);
             }
 
             // Y bounds
             if (event.getY() < 0) {
-              duplicateCircle.setCenterY(0);
-              duplicateCircle.setCenterX(event.getX());
+              duplicateCircle.setVisible(false);
             } else if (event.getY() > mapPane.getHeight()) {
-              duplicateCircle.setCenterY(mapPane.getHeight());
-              duplicateCircle.setCenterX(event.getX());
+              duplicateCircle.setVisible(false);
             }
           }
 
           event.consume();
         });
 
-    mapPane.setOnDragDropped(
+    duplicateCircle.setOnDragDropped(
         event -> {
           GesturePane gesturePane = mapController.getGesturePane();
           double scale = gesturePane.getCurrentScale();
-          // System.out.println("translate X: " + gesturePane.getCurrentX());
-          // System.out.println("translate Y: " + gesturePane.getCurrentY());
-          // System.out.println("scale factor: " + scale);
-
-          // System.out.println(
-          //  "actual X: " + (event.getX() * scale) + gesturePane.getCurrentX() * -1);
-          // System.out.println(
-          //  "actual Y: " + (event.getY() * scale) + gesturePane.getCurrentY() * -1);
           double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
           double y = (duplicateCircle.getCenterY() / scale) + gesturePane.getCurrentY() * -1;
           int roundedX = (int) Math.round(x);
           int roundedY = (int) Math.round(y);
+
           Node newNode =
               new Node(
                   createNodeID(mapController.getMapFloorProperty().getValue(), roundedX, roundedY),
@@ -465,6 +466,9 @@ public class MapEditorController implements IController {
           }
           duplicateCircle.setVisible(false);
         });
+
+    mapPane.setOnDragDone(event -> duplicateCircle.setVisible(false));
+    mapPane.setOnDragExited(event -> duplicateCircle.setVisible(false));
 
     viewingDate
         .valueProperty()
