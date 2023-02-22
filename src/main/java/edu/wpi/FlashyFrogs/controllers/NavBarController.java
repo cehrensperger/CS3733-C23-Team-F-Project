@@ -33,6 +33,10 @@ public class NavBarController {
   @FXML
   public void initialize() {
     loggedOutMenu.setText("Welcome, Guest");
+    loggedOutMenu.show();
+    loggedOutMenu.setVisible(true);
+    loggedOutMenu.setDisable(false);
+    menu.setVisible(false);
     menu.setDisable(true);
     menu.hide();
     header.setDisable(true);
@@ -49,6 +53,8 @@ public class NavBarController {
 
   public void logIn() {
     loggedOutMenu.setDisable(true);
+    loggedOutMenu.setVisible(false);
+    menu.setVisible(true);
     loggedOutMenu.hide();
     loggedOutMenu.setText("");
     menu.setDisable(false);
@@ -96,6 +102,8 @@ public class NavBarController {
     Fapp.setScene("Accounts", "Login");
     menu.setText("");
     menu.setDisable(true);
+    loggedOutMenu.setVisible(true);
+    menu.setVisible(false);
     menu.hide();
     loggedOutMenu.setDisable(false);
     loggedOutMenu.setText("Welcome, Guest");
