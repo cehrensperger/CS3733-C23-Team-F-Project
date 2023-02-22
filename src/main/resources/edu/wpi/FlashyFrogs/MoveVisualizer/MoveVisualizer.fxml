@@ -48,7 +48,7 @@
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin></MFXButton>
-            <MFXButton mnemonicParsing="false" onAction="#clearNodes" prefHeight="26.0" prefWidth="174.0" styleClass="clearButton" text="Clear Items">
+            <MFXButton mnemonicParsing="false" onAction="#clearNodes" prefHeight="26.0" prefWidth="174.0" styleClass="blueBackgroundSideBar" text="Clear Items">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
