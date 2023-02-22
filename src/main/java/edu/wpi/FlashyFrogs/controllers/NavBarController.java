@@ -115,7 +115,7 @@ public class NavBarController {
   }
 
   @FXML
-  private void acknowledgments() throws IOException {
+  private void acknowledgements() throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/acknowledgmentsPage.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     popOver.detach();

@@ -13,9 +13,24 @@
             <VBox prefHeight="385.0" prefWidth="22.0" />
             <VBox prefHeight="385.0" prefWidth="554.0">
                <children>
-                  <TextFlow prefHeight="385.0" prefWidth="554.0">
+                  <TextFlow prefHeight="21.0" prefWidth="554.0">
                      <children>
-                        <Text lineSpacing="0.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="&#13;Software Used:&#13;IntelliJ, Figma, SceneBuilder, Google Workspace, Docker, PostrgresQL, Slack, Discord &#13; &#13;Dependencies:&#13;palexdev/MaterialFX GitHub Repository,  tom91136/GestureFX GitHub Repository,  MVN Repository ControlsFX 11.1.2,  MVN Repository Apache Derby Client JDBC Driver 10.16.1.1,  Apache Derby 10.16.1.1 Release,  MVN Repository Apache Derby Shared Code 10.16.1.1,  MVN repository SLF4J API Module 1.7.30,  MVN Repository SLF4J Simple Binding 1.7.30,  MVN Repository UCP 19.6.0.0,  MVN Repositpry Ojdbc8 19.6.0.0,  MVN Repository HIbernate Core RElocation 6.1.6.Final,  Ehcache 3.10 Documentation,  Ehcache 3.10 Documentation,  MVN Repository Old JAXB Core 4.0.2,  MVN Repository,  MVN Repository,  JAXB API 2.3.1,  JAXB Runtime 4.0.2,  MVN Repository PostgreSQL JDBC Driver 42.5.1,  MVN Repository Argon2 JVM 2.1.1,  MVN Repository Argon2 JVM 2.1.1,  onexip/FlexBoxFX GitHub Repository,  hervegirod/fxsgimage GitHub Repository" wrappingWidth="145.3367404937744" />
+                        <Text lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="&#13;&#13;Software Used:" wrappingWidth="145.3367404937744"  style="-fx-font-weight: bold" />
+                     </children>
+                  </TextFlow>
+                  <TextFlow prefHeight="50.0" prefWidth="554.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IntelliJ, Figma, SceneBuilder, Google Workspace, Docker, PostrgresQL, Slack, Discord" />
+                     </children>
+                  </TextFlow>
+                  <TextFlow prefHeight="20.0" prefWidth="554.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dependencies:"  style="-fx-font-weight: bold"/>
+                     </children>
+                  </TextFlow>
+                  <TextFlow prefHeight="118.0" prefWidth="554.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="palexdev/MaterialFX GitHub Repository, tom91136/GestureFX GitHub Repository, MVN Repository ControlsFX 11.1.2, MVN Repository Apache Derby Client JDBC Driver 10.16.1.1, Apache Derby 10.16.1.1 Release, MVN Repository Apache Derby Shared Code 10.16.1.1, MVN repository SLF4J API Module 1.7.30, MVN Repository SLF4J Simple Binding 1.7.30, MVN Repository UCP 19.6.0.0, MVN Repositpry Ojdbc8 19.6.0.0, MVN Repository HIbernate Core RElocation 6.1.6.Final, Ehcache 3.10 Documentation, Ehcache 3.10 Documentation, MVN Repository Old JAXB Core 4.0.2, MVN Repository, MVN Repository, JAXB API 2.3.1, JAXB Runtime 4.0.2, MVN Repository PostgreSQL JDBC Driver 42.5.1, MVN Repository Argon2 JVM 2.1.1, MVN Repository Argon2 JVM 2.1.1, onexip/FlexBoxFX GitHub Repository, hervegirod/fxsgimage GitHub Repository" wrappingWidth="546.38671875" />
                      </children>
                   </TextFlow>
                </children>
