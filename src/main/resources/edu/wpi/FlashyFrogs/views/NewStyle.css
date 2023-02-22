@@ -171,13 +171,15 @@
     -fx-text-fill: #012D5A;
     -fx-prompt-text-fill: #012D5A;
 }
+
 .date-picker > .text-field
     /** controls all date picker fields within the app **/
 {
     -fx-prompt-text-fill: #012D5A;
     -fx-text-fill: #012D5A;
     -fx-control-inner-background: transparent;
-    -fx-control-background: transparent ;
+    -fx-control-background: transparent;
+    -fx-background-color: -fx-control-inner-background;
 }
 
 .date-picker > .arrow-button
