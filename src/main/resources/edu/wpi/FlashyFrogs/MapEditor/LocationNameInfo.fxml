@@ -56,7 +56,7 @@
                 <Text fx:id="errorText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="287.13671875" />
                 <HBox maxWidth="235.0" prefHeight="31.0" prefWidth="235.0">
                     <children>
-                        <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" styleClass="redOutlineNoSetSize" text="Cancel" textAlignment="CENTER">
+                        <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" styleClass="redOutlineNoSetSize" text="Delete" textAlignment="CENTER">
                             <font>
                                 <Font size="16.0" />
                             </font>

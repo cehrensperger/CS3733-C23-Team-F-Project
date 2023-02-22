@@ -154,6 +154,7 @@ public class LoginAdministratorController implements IController {
                       }
                     });
           }
+          userLoginTable.getSelectionModel().clearSelection();
         });
   }
 
