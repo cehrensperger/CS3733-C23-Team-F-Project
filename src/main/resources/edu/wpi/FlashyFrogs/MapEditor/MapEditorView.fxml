@@ -10,7 +10,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
@@ -103,27 +102,23 @@
             </Button>
          </children>
       </VBox>
-      <StackPane layoutX="257.0" layoutY="28.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
+      <AnchorPane fx:id="mapPane" layoutX="250.0" layoutY="20.0" prefHeight="10.0" prefWidth="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
          <children>
-            <AnchorPane fx:id="mapPane" prefHeight="10.0" prefWidth="10.0">
-               <children>
-                  <Button layoutX="173.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="39.0" prefWidth="141.0" styleClass="blueNoSetSize" text="Finalize Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="173.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets left="20.0" />
-                     </opaqueInsets>
-                  </Button>
-                  <Button layoutX="14.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="39.0" prefWidth="141.0" styleClass="redOutlineNoSetSize" text="Cancel Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Button>
-               </children>
-            </AnchorPane>
+            <Button layoutX="173.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="39.0" prefWidth="141.0" styleClass="blueNoSetSize" text="Finalize Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="173.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets left="20.0" />
+               </opaqueInsets>
+            </Button>
+            <Button layoutX="14.0" layoutY="668.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="39.0" prefWidth="141.0" styleClass="redOutlineNoSetSize" text="Cancel Changes" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
-      </StackPane>
+      </AnchorPane>
       <MFXButton fx:id="backButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="39.0" prefWidth="184.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
       </MFXButton>
    </children>
