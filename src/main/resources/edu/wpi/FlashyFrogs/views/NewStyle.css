@@ -163,6 +163,7 @@
     -fx-text-fill: #012D5A;
     -fx-background-color: transparent;
     -fx-prompt-text-opacity: 50%;
+    -fx-prompt-text-fill: #012D5A;
 }
 
 .date-picker

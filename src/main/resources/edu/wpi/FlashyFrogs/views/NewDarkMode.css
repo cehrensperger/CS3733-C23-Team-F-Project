@@ -156,6 +156,16 @@
     -fx-prompt-text-fill: white;
 }
 
+.editUserFields
+    /** This controls input fields within the edit user popup only **/
+{
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
+    -fx-background-color: #6B6D6F;
+    -fx-prompt-text-opacity: 50%;
+    -fx-prompt-text-fill: white;
+}
+
 .date-picker
     /** controls all date picker fields within the app **/
 {

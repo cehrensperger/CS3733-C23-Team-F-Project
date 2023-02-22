@@ -13,7 +13,7 @@
 <?import org.controlsfx.control.SearchableComboBox?>
 <?import org.controlsfx.control.textfield.CustomPasswordField?>
 
-<AnchorPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.EditUserController">
+<AnchorPane styleClass="background" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Accounts.EditUserController">
    <children>
       <HBox alignment="CENTER" layoutY="74.0" prefHeight="218.0" prefWidth="600.0">
          <children>
