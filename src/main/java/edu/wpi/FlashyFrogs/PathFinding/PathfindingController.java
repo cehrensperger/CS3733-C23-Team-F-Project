@@ -1,5 +1,7 @@
 package edu.wpi.FlashyFrogs.PathFinding;
 
+import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
+
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
@@ -12,10 +14,11 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-
+import java.util.concurrent.locks.ReentrantLock;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +29,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -40,13 +44,16 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
+  @FXML private Pane animationPane;
   @FXML private Circle cir1;
   @FXML private Circle cir6;
   @FXML private Circle cir5;
   @FXML private Circle cir4;
   @FXML private Circle cir3;
   @FXML private Circle cir2;
-  private ParallelTransition parallelTransition;
+  private final ReentrantLock lock = new ReentrantLock();
+  private final MyRunnable myRunnable = new MyRunnable();
+  private ParallelTransition parallelTransition = new ParallelTransition();
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
@@ -72,6 +79,14 @@ public class PathfindingController extends AbstractPathVisualizerController impl
    */
   @SneakyThrows
   public void initialize() {
+    // hide the circles
+    cir1.setVisible(false);
+    cir2.setVisible(false);
+    cir3.setVisible(false);
+    cir4.setVisible(false);
+    cir5.setVisible(false);
+    cir6.setVisible(false);
+    animationPane.setVisible(false);
     moveDatePicker.setValue(LocalDate.now());
     moveDatePicker
         .valueProperty()
@@ -237,39 +252,83 @@ public class PathfindingController extends AbstractPathVisualizerController impl
             currentPath.get(currentPath.size() - 1)));
   }
 
-
-
   @SneakyThrows
   public void handleGetPath() {
-    // create a new thread to run getPath() in the background
-    Thread getPathThread =
-            new Thread(
-                    () -> {
-                      // call the original getPath() method in the new thread
-                      getPath();
-                      // when getPath() is done, stop the animation
-                      parallelTransition.stop();
-                      cir1.setVisible(false);
-                      cir2.setVisible(false);
-                      cir3.setVisible(false);
-                      cir4.setVisible(false);
-                      cir5.setVisible(false);
-                      cir6.setVisible(false);
-                    });
-    // start the new thread
-    getPathThread.start();
-
     // start the animation
     Animation();
+    // get start and end locations from text fields
+    LocationName startPath = startingBox.valueProperty().get();
+    LocationName endPath = destinationBox.valueProperty().get();
+    Boolean accessible = accessibleBox.isSelected();
+
+    // get algorithm to use in pathfinding from algorithmBox
+    if (algorithmBox.getValue() != null) {
+      switch (algorithmBox.getValue()) {
+        case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
+        case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
+        default -> pathFinder.setAlgorithm(new AStar());
+      }
+    }
+
+    unColorFloor(); // hide the last drawn path
+    // acquire the lock
+    lock.lock();
+
+    // create a new thread with myRunnable
+    Thread thread = new Thread(myRunnable);
+    thread.start();
+  }
+
+  public void unlock() {
+    // release the lock
+    lock.unlock();
+    // Check that we actually got a path
+    if (currentPath == null) {
+      // if nodes is null, that means the there was no possible path
+      //      error.setTextFill(Paint.valueOf(Color.RED.toString()));
+      //      error.setText("No path found");
+      System.out.println("no path found");
+    } else {
+      setFloor(currentPath.get(0).getFloor()); // Go to the starting floor
+      // Zoom to the coordinates of the starting node
+      mapController.zoomToCoordinates(
+          5, currentPath.get(0).getXCoord(), currentPath.get(0).getYCoord());
+      colorFloor(); // Draw the path
+      setFloor(currentPath.get(0).getFloor());
+      drawTable();
+    }
+    // stop the animation
+    parallelTransition.stop();
+
+    //    animationPane.setTranslateX(2000);
+    //    animationPane.setTranslateY(2000);
+
+    // hide the circles
+    cir1.setVisible(false);
+    cir2.setVisible(false);
+    cir3.setVisible(false);
+    cir4.setVisible(false);
+    cir5.setVisible(false);
+    cir6.setVisible(false);
+    animationPane.setVisible(false);
   }
 
   public void Animation() {
+    //    animationPane.setTranslateX(0);
+    //    animationPane.setTranslateY(0);
     cir1.setVisible(true);
     cir2.setVisible(true);
     cir3.setVisible(true);
     cir4.setVisible(true);
     cir5.setVisible(true);
     cir6.setVisible(true);
+    animationPane.setVisible(true);
+    //    cir1.setTranslateY(340);
+    //    cir2.setTranslateY(340);
+    //    cir3.setTranslateY(340);
+    //    cir4.setTranslateY(340);
+    //    cir5.setTranslateY(340);
+    //    cir6.setTranslateY(340);
     // Create a TranslateTransition for each circle and add a delay
     TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.2), cir1);
     tt1.setInterpolator(Interpolator.EASE_BOTH);
@@ -312,54 +371,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     ParallelTransition parallelTransition = new ParallelTransition(tt1, tt2, tt3, tt4, tt5, tt6);
     parallelTransition.setAutoReverse(true);
     parallelTransition.setCycleCount(ParallelTransition.INDEFINITE);
-
     // Start the animation
-    parallelTransition.play();
-  }
-  /** Method that handles drawing a new path (AKA the submit button handler) */
-  @SneakyThrows
-  public void getPath() {
-    // get start and end locations from text fields
-    LocationName startPath = startingBox.valueProperty().get();
-    LocationName endPath = destinationBox.valueProperty().get();
-    Boolean accessible = accessibleBox.isSelected();
-
-    // get algorithm to use in pathfinding from algorithmBox
-    if (algorithmBox.getValue() != null) {
-      switch (algorithmBox.getValue()) {
-        case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
-        case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
-        default -> pathFinder.setAlgorithm(new AStar());
-      }
-    }
-
-    unColorFloor(); // hide the last drawn path
-
-    // Get the new path from the PathFinder
-    Node startNode =
-        startPath.getCurrentNode(
-            mapController.getMapSession(),
-            Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-    Node endNode =
-        endPath.getCurrentNode(
-            mapController.getMapSession(),
-            Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-    currentPath = pathFinder.findPath(startNode, endNode, accessible);
-
-    // Check that we actually got a path
-    if (currentPath == null) {
-      // if nodes is null, that means the there was no possible path
-      //      error.setTextFill(Paint.valueOf(Color.RED.toString()));
-      //      error.setText("No path found");
-      System.out.println("no path found");
-    } else {
-      setFloor(startNode.getFloor()); // Go to the starting floor
-      // Zoom to the coordinates of the starting node
-      mapController.zoomToCoordinates(5, startNode.getXCoord(), startNode.getYCoord());
-      colorFloor(); // Draw the path
-      setFloor(startNode.getFloor());
-      drawTable();
-    }
+    parallelTransition.playFromStart();
   }
 
   /** Callback to open the map editor from a button */
@@ -428,6 +441,36 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     Instruction(String instruction, Node node) {
       this.instruction = instruction;
       this.node = node;
+    }
+  }
+  /** Method that handles drawing a new path (AKA the submit button handler) */
+  class MyRunnable implements Runnable {
+
+    public void run() {
+      Session session = CONNECTION.getSessionFactory().openSession();
+
+      // _______________________________________________________________________________
+      // Get the new path from the PathFinder
+      Node startNode =
+          startingBox
+              .getValue()
+              .getCurrentNode(
+                  mapController.getMapSession(),
+                  Date.from(
+                      moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      Node endNode =
+          destinationBox
+              .getValue()
+              .getCurrentNode(
+                  mapController.getMapSession(),
+                  Date.from(
+                      moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
+      // ___________________________________________________________________________
+
+      session.close();
+      // Call unlock() on the UI thread when finished
+      Platform.runLater(() -> unlock());
     }
   }
 }
