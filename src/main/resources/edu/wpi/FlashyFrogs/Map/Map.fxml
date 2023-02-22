@@ -48,5 +48,5 @@
          <MFXButton style="-fx-cursor: hand" fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
       </children>
    </StackPane>
-   <SearchableComboBox styleClass="fields" fx:id="filterBox" layoutX="10.0" layoutY="10.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0" />
+   <SearchableComboBox styleClass="pathfindingField" fx:id="filterBox" layoutX="10.0" layoutY="10.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0" />
 </AnchorPane>

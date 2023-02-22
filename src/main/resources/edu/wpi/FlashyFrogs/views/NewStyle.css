@@ -480,4 +480,11 @@
     -fx-fill: #012d5a;
 }
 
-
+.pathfindingField
+    /** This controls the input field for controlling what labels to show in the upper right corner of Pathfinding **/
+{
+    -fx-border-color:#012D5A;
+    -fx-text-fill: #012D5A;
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: #012D5A;
+}
