@@ -365,30 +365,30 @@
 .table-view .column-header
     /** controls table views within the app - not hover **/
 {
-    -fx-background-color: #f1f1f1;
+    -fx-background-color: #2F2F2F;
 }
 .table-view .column-header .label
     /** controls table views within the app - not hover **/
 {
-    -fx-text-fill: #012d5a;
+    -fx-text-fill: white;
     -fx-alignment: center-left;
 }
 
 .table-row-cell
     /** controls table views within the app - not hover **/
 {
-    -fx-background-color: #f1f1f1;
-    -fx-background: #f1f1f1;
-    -fx-text-background-color: #012d5a;
-    -fx-text-fill: #012d5a;
+    -fx-background-color: #6B6D6F;
+    -fx-background: #6B6D6F;
+    -fx-text-background-color: white;
+    -fx-text-fill: white;
 }
 
 .filtered-table-row-cell
 {
-    -fx-background-color: #f1f1f1;
-    -fx-background: #f1f1f1;
-    -fx-text-background-color: #012d5a;
-    -fx-text-fill: #012d5a;
+    -fx-background-color: #6B6D6F;
+    -fx-background: #6B6D6F;
+    -fx-text-background-color: white;
+    -fx-text-fill: white;
 }
 
 .table-row-cell:hover

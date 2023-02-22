@@ -8,8 +8,10 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
@@ -72,7 +74,7 @@
                   <Insets left="18.0" />
                </VBox.margin>
             </Text>
-            <MFXButton alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Generate Path">
+            <MFXButton fx:id="generatePathButton" alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Generate Path">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
@@ -103,6 +105,16 @@
             <AnchorPane fx:id="mapPane" prefHeight="10.0" prefWidth="10.0">
                <children>
                   <StackPane layoutX="825.0" layoutY="590.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="108.0" />
+                  <Pane fx:id="animationPane" mouseTransparent="true" prefHeight="680.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Circle fx:id="cir1" fill="DODGERBLUE" layoutX="375.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="cir6" fill="DODGERBLUE" layoutX="625.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="cir5" fill="DODGERBLUE" layoutX="575.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="cir4" fill="DODGERBLUE" layoutX="525.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="cir3" fill="DODGERBLUE" layoutX="475.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="cir2" fill="DODGERBLUE" layoutX="425.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </Pane>
                </children>
             </AnchorPane>
          </children>
