@@ -74,6 +74,12 @@
     -fx-text-fill:#000000;
 }
 
+.blueText
+    /** honestly just if you need a text bigger than body but smaller than header and bold **/
+{
+    -fx-text-fill:#012D5A;
+}
+
 .warningText
     /** This controls the style of the warning text that appears when the help
      button is clicked**/
