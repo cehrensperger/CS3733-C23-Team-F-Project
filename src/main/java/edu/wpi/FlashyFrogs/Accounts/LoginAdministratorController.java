@@ -41,10 +41,6 @@ public class LoginAdministratorController implements IController {
   @FXML private Button back;
 
   @FXML Text h1;
-
-  private UserLogin selectedUserLogin;
-
-  private int selectedUserLoginIndex;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -52,7 +48,7 @@ public class LoginAdministratorController implements IController {
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../Accounts/NewUser.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("NewUser.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     NewUserController newUser = newLoad.getController();
     newUser.setPopOver(popOver);
@@ -60,7 +56,6 @@ public class LoginAdministratorController implements IController {
     popOver.detach();
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
-
     addNewUser.setDisable(true);
     back.setDisable(true);
     popOver
@@ -131,12 +126,8 @@ public class LoginAdministratorController implements IController {
         event -> {
           // Make sure the user clicked on a populated item
           if (userLoginTable.getSelectionModel().getSelectedItem() != null) {
-            System.out.println(
-                "You clicked on "
-                    + userLoginTable.getSelectionModel().getSelectedItem().getUserName());
             UserLogin selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
-            FXMLLoader newLoad =
-                new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
+            FXMLLoader newLoad = new FXMLLoader(getClass().getResource("EditUser.fxml"));
             PopOver popOver = null;
             try {
               popOver = new PopOver(newLoad.load());
@@ -146,9 +137,7 @@ public class LoginAdministratorController implements IController {
             EditUserController editUser = newLoad.getController();
             editUser.setPopOver(popOver);
             editUser.setLoginAdminController(this);
-            editUser.initialize(
-                userLoginTable.getSelectionModel().getSelectedItem().getUserName(),
-                selectedUserLogin);
+            editUser.initialize(selectedUserLogin);
             popOver.detach();
             Node node = (Node) event.getSource();
             popOver.show(node.getScene().getWindow());
@@ -164,37 +153,8 @@ public class LoginAdministratorController implements IController {
                       }
                     });
           }
+          userLoginTable.getSelectionModel().clearSelection();
         });
-  }
-
-  public void deleteUser(ActionEvent actionEvent) {
-    Session ses = CONNECTION.getSessionFactory().openSession();
-    if (selectedUserLogin == null) {
-      errorMessage.setText("No user selected for deletion");
-      errorMessage.setVisible(true);
-    }
-    if (selectedUserLogin.getUser().equals(CurrentUserEntity.CURRENT_USER.getCurrentUser())) {
-      errorMessage.setText("Cannot delete current account");
-      errorMessage.setVisible(true);
-    } else {
-      errorMessage.setVisible(false);
-      ses.beginTransaction();
-      ses.createMutationQuery("delete FROM HospitalUser user WHERE id=:ID")
-          .setParameter("ID", selectedUserLogin.getUser().getId())
-          .executeUpdate();
-      ses.getTransaction().commit();
-      ses.close();
-      userLoginTable.getItems().remove(selectedUserLogin);
-      if (selectedUserLoginIndex != 0) {
-        selectedUserLoginIndex -= 1;
-        selectedUserLogin = userLoginTable.getItems().get(selectedUserLoginIndex);
-      }
-    }
-  }
-
-  public void setSelected() {
-    selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
-    selectedUserLoginIndex = userLoginTable.getSelectionModel().getSelectedIndex();
   }
 
   public void onClose() {}

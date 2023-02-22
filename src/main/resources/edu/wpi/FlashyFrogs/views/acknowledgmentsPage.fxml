@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Acknowledgments" />
+      <HBox prefHeight="420.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="385.0" prefWidth="22.0" />
+            <ScrollPane>
+               <content>
+                  <VBox prefHeight="385.0" prefWidth="554.0">
+                     <children>
+                        <TextFlow prefHeight="21.0" prefWidth="554.0">
+                           <children>
+                              <Label styleClass="bodyBold" text="Software Used:" />
+                           </children>
+                        </TextFlow>
+                        <TextFlow prefHeight="50.0" prefWidth="554.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="IntelliJ, Figma, SceneBuilder, Google Workspace, Docker, PostrgresQL, Slack, Discord&#13;" />
+                           </children>
+                        </TextFlow>
+                        <TextFlow prefHeight="20.0" prefWidth="554.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold" />
+                              <Label styleClass="bodyBold" text="Dependencies:" />
+                           </children>
+                        </TextFlow>
+                        <TextFlow prefHeight="118.0" prefWidth="554.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="palexdev/MaterialFX GitHub Repository,&#13; tom91136/GestureFX GitHub Repository,&#13; MVN Repository ControlsFX 11.1.2,&#13; MVN Repository Apache Derby Client JDBC Driver 10.16.1.1,&#13; Apache Derby 10.16.1.1 Release,&#13; MVN Repository Apache Derby Shared Code 10.16.1.1,&#13; MVN repository SLF4J API Module 1.7.30,&#13; MVN Repository SLF4J Simple Binding 1.7.30,&#13; MVN Repository UCP 19.6.0.0,&#13; MVN Repositpry Ojdbc8 19.6.0.0, MVN Repository HIbernate Core RElocation 6.1.6.Final,&#13; Ehcache 3.10 Documentation,&#13; Ehcache 3.10 Documentation,&#13; MVN Repository Old JAXB Core 4.0.2,&#13; MVN Repository,&#13; MVN Repository,&#13; JAXB API 2.3.1,&#13; JAXB Runtime 4.0.2,&#13; MVN Repository PostgreSQL JDBC Driver 42.5.1,&#13; MVN Repository Argon2 JVM 2.1.1,&#13; MVN Repository Argon2 JVM 2.1.1,&#13; onexip/FlexBoxFX GitHub Repository,&#13; hervegirod/fxsgimage GitHub Repository" wrappingWidth="546.38671875" />
+                           </children>
+                        </TextFlow>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <VBox prefHeight="385.0" prefWidth="24.0" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

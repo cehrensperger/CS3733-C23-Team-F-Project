@@ -134,7 +134,6 @@ public abstract class AbstractPathVisualizerController implements IController {
           goToNext.setY(20);
         } else if (!thisNode.getFloor().equals(lastNode.getFloor())
             && thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-          System.out.println("this one");
           Circle circle = mapController.getNodeToCircleMap().get(thisNode);
           circle.setFill(Color.YELLOW);
           circle.setVisible(true);
@@ -202,6 +201,6 @@ public abstract class AbstractPathVisualizerController implements IController {
     mapController.getMapFloorProperty().setValue(node.getFloor());
 
     // Go to the nodes coordinates
-    mapController.zoomToCoordinates(5, node.getXCoord(), node.getYCoord());
+    mapController.zoomToCoordinates(2, node.getXCoord(), node.getYCoord());
   }
 }

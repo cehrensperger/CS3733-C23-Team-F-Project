@@ -68,10 +68,22 @@
     -fx-text-fill:#000000;
 }
 
+.middleTextObject
+    /** Mimics .middle for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
+{
+    -fx-fill:#000000;
+}
+
 .middleBold
     /** honestly just if you need a text bigger than body but smaller than header and bold **/
 {
     -fx-text-fill:#000000;
+}
+
+.blueText
+    /** honestly just if you need a text bigger than body but smaller than header and bold **/
+{
+    -fx-text-fill:#012D5A;
 }
 
 .warningText
@@ -163,6 +175,7 @@
     -fx-text-fill: #012D5A;
     -fx-background-color: transparent;
     -fx-prompt-text-opacity: 50%;
+    -fx-prompt-text-fill: #012D5A;
 }
 
 .date-picker
@@ -171,13 +184,15 @@
     -fx-text-fill: #012D5A;
     -fx-prompt-text-fill: #012D5A;
 }
+
 .date-picker > .text-field
     /** controls all date picker fields within the app **/
 {
     -fx-prompt-text-fill: #012D5A;
     -fx-text-fill: #012D5A;
     -fx-control-inner-background: transparent;
-    -fx-control-background: transparent ;
+    -fx-control-background: transparent;
+    -fx-background-color: -fx-control-inner-background;
 }
 
 .date-picker > .arrow-button
@@ -469,4 +484,13 @@
 .check-box:selected .mark
 {
     -fx-fill: #012d5a;
+}
+
+.pathfindingField
+    /** This controls the input field for controlling what labels to show in the upper right corner of Pathfinding **/
+{
+    -fx-border-color:#012D5A;
+    -fx-text-fill: #012D5A;
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: #012D5A;
 }
