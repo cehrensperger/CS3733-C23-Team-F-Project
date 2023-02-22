@@ -548,7 +548,5 @@ public class HomeController implements IController {
     Fapp.setScene("MapEditor", "MapEditorView");
   }
 
-  public void insertAlert(Announcement announcement) {}
-
   public void srEditorPopOver() {}
 }
