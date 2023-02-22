@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
@@ -55,31 +54,25 @@
                     </VBox.margin>
                 </SearchableComboBox>
                 <Text fx:id="errorText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="287.13671875" />
-                <HBox maxWidth="230.0" prefHeight="35.0">
+                <HBox maxWidth="235.0" prefHeight="31.0" prefWidth="235.0">
                     <children>
-                        <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="133.0" text="Delete Location" textAlignment="CENTER">
+                        <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" styleClass="redOutlineNoSetSize" text="Delete" textAlignment="CENTER">
                             <font>
                                 <Font size="16.0" />
                             </font>
-                     <styleClass>
-                        <String fx:value="cancel" />
-                        <String fx:value="body" />
-                        <String fx:value="round" />
-                     </styleClass>
                         </Button>
-                        <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Save" textAlignment="CENTER">
-                            <HBox.margin>
-                                <Insets left="12.0" />
-                            </HBox.margin>
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                     <styleClass>
-                        <String fx:value="credits2" />
-                        <String fx:value="body" />
-                        <String fx:value="round" />
-                     </styleClass>
-                        </Button>
+                  <HBox alignment="TOP_RIGHT" prefHeight="31.0" prefWidth="158.0">
+                     <children>
+                              <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="blueNoSetSize" text="Save" textAlignment="CENTER">
+                                  <HBox.margin>
+                                      <Insets left="12.0" />
+                                  </HBox.margin>
+                                  <font>
+                                      <Font size="16.0" />
+                                  </font>
+                              </Button>
+                     </children>
+                  </HBox>
                     </children>
                 </HBox>
             </children>

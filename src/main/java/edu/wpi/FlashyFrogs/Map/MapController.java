@@ -1,18 +1,27 @@
 package edu.wpi.FlashyFrogs.Map;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.Edge;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Move;
-import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
+import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.utils.others.TriConsumer;
+import jakarta.persistence.Tuple;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.Property;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -20,8 +29,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import net.kurobako.gesturefx.GesturePane;
+import org.controlsfx.control.PopOver;
+import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
 /**
@@ -31,14 +45,74 @@ import org.hibernate.Session;
  */
 @GeneratedExclusion
 public class MapController {
-  @FXML private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
+  @FXML private Label floorSelector; // Floor selector label
+  @FXML private MFXButton floorSelectorButton; // Floor selector button
+  @FXML private SearchableComboBox<Display> filterBox; // Box enabling selection of what is showing
+  @FXML @Getter private GesturePane gesturePane; // Gesture pane, used to zoom to given locations
   @FXML private Group group; // Group that will be used as display in the gesture pane
-  private Pane currentDrawingPane; // The current drawing pane to use to draw nodes/edges
+
+  private Display displayEnum;
+
+  @Getter
+  private final Pane currentDrawingPane =
+      new Pane(); // The current drawing pane to use to draw nodes/edges
+
   @NonNull private final MapEntity mapEntity = new MapEntity(); // The entity the map will use
 
-  public void initialize() {
-    gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
-    Platform.runLater(() -> gesturePane.zoomTo(0.001, new javafx.geometry.Point2D(2500, 1700)));
+  @Setter private Date date;
+
+  @Getter private HashSet<LocationName> placedLocations;
+
+  @Getter private List<LocationName> locs;
+
+  /** Initialize, zooms to the middle of the map */
+  @FXML
+  private void initialize() {
+    date =
+        MapEditorController.addMilliseconds(
+            Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()), 1);
+
+    // Zooms to the middle of the map. This must be run later because currently the gesture pane
+    // doesn't exist
+    Platform.runLater(() -> gesturePane.zoomTo(0.15, new javafx.geometry.Point2D(2500, 1700)));
+
+    // Set the initial filter box things
+    filterBox.setItems(FXCollections.observableArrayList(Display.values())); // Set the items
+    filterBox.setValue(Display.LOCATION_NAMES); // Set the value
+
+    // When the map floor changes
+    mapEntity
+        .getMapFloor()
+        .addListener(
+            (observable) -> {
+              redraw(); // Redraw
+            });
+
+    // Listener for the change box to update the labels on each node
+    filterBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              // this needs to be here for some reason (sometimes nulls are randomly here?)
+              if (newValue != null) {
+                setDisplayText(newValue); // Update the labels
+              }
+            });
+
+    // Bind the floor text to be floor and then the floor
+    floorSelector.textProperty().bind(Bindings.concat("Floor ", mapEntity.getMapFloor()));
+
+    mapEntity.getMapFloor().setValue(Node.Floor.L1); // Set the starting to L1
+  }
+
+  /**
+   * Gets the property representing the maps floor
+   *
+   * @return the property representing the maps floor
+   */
+  @NonNull
+  public Property<Node.Floor> getMapFloorProperty() {
+    return mapEntity.getMapFloor(); // Get the map floor
   }
 
   /**
@@ -48,6 +122,7 @@ public class MapController {
    */
   public void setNodeCreation(BiConsumer<Node, Circle> function) {
     mapEntity.setNodeCreation(function);
+    redraw(); // Make this take effect
   }
 
   /**
@@ -57,15 +132,30 @@ public class MapController {
    */
   public void setEdgeCreation(BiConsumer<Edge, Line> function) {
     mapEntity.setEdgeCreation(function);
+    redraw(); // Make this take effect
+  }
+
+  /**
+   * Set the location creation function
+   *
+   * @param function the function to set the location creation to. May be null
+   */
+  public void setLocationCreation(TriConsumer<Node, LocationName, Text> function) {
+    mapEntity.setLocationCreation(function);
+    redraw(); // make this take effect
   }
 
   /**
    * Zooms the map to the given coordinates
    *
+   * @param scale the scale to set ot
    * @param x the x-coordinate to zoom to
    * @param y the y-coordinate to zoom to
    */
-  public void zoomToCoordinates(int x, int y) {
+  public void zoomToCoordinates(int scale, int x, int y) {
+    gesturePane.zoomTo(scale, new Point2D(x, y));
+    gesturePane.zoomTo(scale, new Point2D(x, y)); // Zoom a second time because this works????
+
     gesturePane.centreOn(new Point2D(x, y));
   }
 
@@ -95,9 +185,10 @@ public class MapController {
 
     if (addLocations) {
       // For each location belonging to this node
-      for (LocationName nodeLocation : node.getCurrentLocation(getMapSession())) {
+      for (LocationName nodeLocation : node.getCurrentLocation(getMapSession(), date)) {
         addLocationName(nodeLocation, node); // Add it
       }
+      setDisplayText(displayEnum);
     }
   }
 
@@ -108,26 +199,108 @@ public class MapController {
    *
    * @param node the node to delete
    */
-  public void deleteNode(@NonNull Node node) {
-    currentDrawingPane
-        .getChildren()
-        .remove(getNodeToCircleMap().get(node)); // Remove the nodes circle
+  public void deleteNode(@NonNull Node node, boolean shouldAutoRepair) {
+    if (!shouldAutoRepair) {
 
-    // For each edge
-    for (Edge edge : getEdgeToLineMap().keySet()) {
-      // Check if it relates to the node we're deleting
-      if (edge.getNode1().equals(node) || edge.getNode2().equals(node)) {
-        currentDrawingPane
-            .getChildren()
-            .remove(getEdgeToLineMap().get(edge)); // Remove the edge visually
+      // TODO: remove because everyone hates print statements I guess
+      // node.getChildren().forEach(node1 -> System.out.println(node1.getId()));
+
+      currentDrawingPane
+          .getChildren()
+          .remove(getNodeToCircleMap().get(node)); // Remove the nodes circle
+
+      // For each edge
+      for (Edge edge : getEdgeToLineMap().keySet()) {
+        // Check if it relates to the node we're deleting
+        if (edge.getNode1().equals(node) || edge.getNode2().equals(node)) {
+          currentDrawingPane
+              .getChildren()
+              .remove(getEdgeToLineMap().get(edge)); // Remove the edge visually
+        }
       }
+
+      // Remove the location box
+      currentDrawingPane.getChildren().remove(getNodeToLocationBox().get(node));
+
+      mapEntity.removeNode(
+          node); // Remove the node, this also handles removing the edges and locations
+    } else {
+      deleteAndAutoRepair(node);
+    }
+  }
+
+  private void deleteAndAutoRepair(Node node) {
+
+    List<Node> allChildren = node.getChildren(getMapSession());
+
+    ArrayList<Node> sameFloorChildren =
+        new ArrayList<>(
+            allChildren.stream()
+                .filter(node1 -> node.getFloor().equals(node1.getFloor()))
+                .toList());
+
+    ArrayList<Node> differentFloorChildren =
+        new ArrayList<>(
+            allChildren.stream()
+                .filter(node1 -> !node.getFloor().equals(node1.getFloor()))
+                .toList());
+
+    repairNodes(sameFloorChildren);
+    repairNodes(differentFloorChildren);
+    deleteNode(node, false);
+  }
+
+  private void repairNodes(List<Node> nodes) {
+    if (nodes.size() == 0) {
+      return;
     }
 
-    // Remove the location box
-    currentDrawingPane.getChildren().remove(getNodeToLocationBox().get(node));
+    // the last node should already be connected to something else, so we do not need
+    // to connect it again
 
-    mapEntity.removeNode(
-        node); // Remove the node, this also handles removing the edges and locations
+    while (nodes.size() > 1) {
+
+      // connect the first node in the list to the closest other node
+      Node startingNode = nodes.get(0);
+
+      // find the closest other node
+      // set the closest node to be the second one in the list to start
+      Node closestNode = nodes.get(1);
+      double smallestDistance = startingNode.getDistanceFrom(closestNode);
+
+      // if there are only two nodes left in the list, they by default are the closest to each other
+      if (nodes.size() > 2) {
+        // start comparing distances with the third node in the list since we
+        // already accounted for the second node in the list
+        for (int i = 2; i < nodes.size(); i++) {
+          // update smallestDistance and closestNode if a closer node is found
+          double newDistance = startingNode.getDistanceFrom(nodes.get(i));
+          // if the new distance is now the smallest AND the edge doesn't already exist (both ways)
+          if (newDistance < smallestDistance
+              && getMapSession().find(Edge.class, new Edge(startingNode, nodes.get(i))) == null
+              && getMapSession().find(Edge.class, new Edge(nodes.get(i), startingNode)) == null) {
+            // update smallest and closest vars
+            smallestDistance = newDistance;
+            closestNode = nodes.get(i);
+          }
+        }
+      }
+
+      Edge newEdge = new Edge(startingNode, closestNode);
+
+      if (getMapSession().find(Edge.class, newEdge) == null
+          && getMapSession().find(Edge.class, new Edge(closestNode, startingNode)) == null) {
+
+        // node can be repaired and connected now to the closes node
+        getMapSession().persist(newEdge);
+        addEdge(newEdge);
+        // nodesLeftToRepair.remove(0);
+        getMapSession().flush();
+      }
+
+      // remove the node
+      nodes.remove(0);
+    }
   }
 
   /**
@@ -139,11 +312,14 @@ public class MapController {
    * @param newNode the new node
    */
   public void moveNode(@NonNull Node oldNode, @NonNull Node newNode) {
-    deleteNode(oldNode); // Completely delete the old node
+    deleteNode(oldNode, false); // Completely delete the old node
 
     if (newNode
         .getFloor()
-        .equals(this.getFloor())) { // If the floors are equal (we should draw this)
+        .equals(
+            this.mapEntity
+                .getMapFloor()
+                .getValue())) { // If the floors are equal (we should draw this)
       addNode(newNode, true); // Add the new node
 
       // For each edge in the edges on this floor and associated with this node
@@ -155,7 +331,7 @@ public class MapController {
                       + "(node1 = :thisNode OR node2 = :thisNode)",
                   Edge.class)
               .setCacheable(true)
-              .setParameter("thisFloor", this.getFloor())
+              .setParameter("thisFloor", this.mapEntity.getMapFloor().getValue())
               .setParameter("thisNode", newNode)
               .getResultList();
 
@@ -221,6 +397,53 @@ public class MapController {
     mapEntity.removeLocationName(locationName);
   }
 
+  public void fillServiceRequests() {
+    HospitalUser currentUser = CurrentUserEntity.CURRENT_USER.getCurrentUser();
+    List<Tuple> tuples;
+
+    if (CurrentUserEntity.CURRENT_USER.getAdmin()) {
+      tuples =
+          getMapSession()
+              .createQuery(
+                  "Select s.id, m.node "
+                      + "From ServiceRequest s, Move m "
+                      + "WHERE m.location = s.location "
+                      + "AND m.moveDate = (Select max(m2.moveDate)"
+                      + "                  FROM Move m2 "
+                      + "                  WHERE s.location = m2.location "
+                      + "                  GROUP BY m2.location "
+                      + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
+                  Tuple.class)
+              .getResultList();
+    } else {
+      tuples =
+          getMapSession()
+              .createQuery(
+                  "Select s.id, m.node "
+                      + "From ServiceRequest s, Move m "
+                      + "WHERE s.assignedEmp = :user "
+                      + "AND m.location = s.location "
+                      + "AND m.moveDate = (Select max(m2.moveDate)"
+                      + "                  FROM Move m2 "
+                      + "                  WHERE s.location = m2.location "
+                      + "                  GROUP BY m2.location "
+                      + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
+                  Tuple.class)
+              .setParameter("user", currentUser)
+              .getResultList();
+    }
+
+    for (Tuple t : tuples) {
+      Node node = (Node) t.get(t.getElements().get(1));
+      ServiceRequest sr = getMapSession().find(ServiceRequest.class, t.get(t.getElements().get(0)));
+
+      if (node.getFloor().equals(mapEntity.getMapFloor().getValue())) {
+        Text text = new Text(sr.toString());
+        getNodeToLocationBox().get(node).getChildren().add(text);
+      }
+    }
+  }
+
   /**
    * Gets the map relating nodes to circles on the map
    *
@@ -261,6 +484,10 @@ public class MapController {
     return mapEntity.getLocationNameToTextMap();
   }
 
+  public void updateLocationNames() {
+    for (Set<LocationName> locationNameSet : mapEntity.getNodeToLocationNameMap().values()) {}
+  }
+
   /**
    * Gets the node to location box mapping
    *
@@ -288,29 +515,36 @@ public class MapController {
   public void redraw() {
     // Clear the gesture pane
     group.getChildren().clear();
-    currentDrawingPane = null; // Delete the reference to the drawing pane
+    currentDrawingPane.getChildren().clear(); // Clear the drawing pane
 
     // If we have a floor to draw
-    if (mapEntity.getMapFloor() != null) {
+    if (mapEntity.getMapFloor().getValue() != null) {
+      Point2D currentCenter =
+          this.gesturePane.targetPointAtViewportCentre(); // Get the current center
+
       // Fetch the map image from the resource dictionary, and then drop it at the root
       ImageView imageView =
           new ImageView(
-              ResourceDictionary.valueOf(mapEntity.getMapFloor().name()).resource); // image
+              ResourceDictionary.valueOf(mapEntity.getMapFloor().getValue().name())
+                  .resource); // image
       imageView.relocate(0, 0); // Relocate to 0, 0
 
       // Add the image to the group
       group.getChildren().add(imageView);
 
       // Create a pane to draw the nodes in
-      currentDrawingPane = new Pane(); // Create it
       group.getChildren().add(currentDrawingPane); // Add it to the group
+
+      // Manually set the dimensions to the right size, so that dragging-out doesn't have issues
+      currentDrawingPane.setPrefWidth(imageView.getImage().getWidth());
+      currentDrawingPane.setPrefHeight(imageView.getImage().getHeight());
 
       // Get the list of nodes
       List<Node> nodes =
           getMapSession()
               .createQuery("FROM Node n WHERE n.floor = :floor", Node.class)
               .setCacheable(true)
-              .setParameter("floor", mapEntity.getMapFloor())
+              .setParameter("floor", mapEntity.getMapFloor().getValue())
               .getResultList();
 
       // Get the list of edges
@@ -318,7 +552,7 @@ public class MapController {
           getMapSession()
               .createQuery(
                   "FROM Edge WHERE node1.floor = :floor AND node2.floor = :floor", Edge.class)
-              .setParameter("floor", mapEntity.getMapFloor())
+              .setParameter("floor", mapEntity.getMapFloor().getValue())
               .setCacheable(true)
               .getResultList();
 
@@ -333,20 +567,19 @@ public class MapController {
         addNode(node, false); // Add the node
       }
 
-      Date now = new Date();
-
       // Get the moves before now
       List<Move> moves =
           getMapSession()
               .createQuery("FROM Move WHERE node.floor = :floor ORDER BY moveDate DESC", Move.class)
-              .setParameter("floor", getFloor())
+              .setParameter("floor", mapEntity.getMapFloor().getValue())
               .setCacheable(true)
               .stream()
-              .filter((move) -> move.getMoveDate().before(now))
+              .filter((move) -> move.getMoveDate().before(date))
               .distinct()
-              .collect(Collectors.toList());
+              .toList();
 
       HashMap<Node, Integer> nodeToLocationCount = new HashMap<>(); // Node to location count map
+      placedLocations = new HashSet<>();
 
       // For each location belonging to this node
       for (Move move : moves) {
@@ -354,31 +587,123 @@ public class MapController {
             && nodeToLocationCount.get(move.getNode()) == 1) {
           nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
 
-          addLocationName(move.getLocation(), move.getNode());
+          if (!placedLocations.contains(move.getLocation())) {
+            addLocationName(move.getLocation(), move.getNode());
+            placedLocations.add(move.getLocation());
+          }
         } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
-          addLocationName(move.getLocation(), move.getNode());
+          if (!placedLocations.contains(move.getLocation())) {
+            addLocationName(move.getLocation(), move.getNode());
+            placedLocations.add(move.getLocation());
+          }
         }
       }
 
+      // Only populate service requests if the signed in user actually exists. This exists
+      // essentially just for
+      // the login page
+      if (CurrentUserEntity.CURRENT_USER.getCurrentUser() != null
+          && getMapSession()
+                  .find(HospitalUser.class, CurrentUserEntity.CURRENT_USER.getCurrentUser().getId())
+              != null) {
+        fillServiceRequests(); // Fill the service requests, as set display text shows/hides
+      }
+
+      // We need to re-handle updating the display text now that we've redrawn everything
+      setDisplayText(filterBox.getValue());
+
+      this.gesturePane.centreOn(currentCenter); // Re-zoom on the old center
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out
+      gesturePane.setMaxScale(10); // Set the max scale
+
+      Date date2 = MapEditorController.addMilliseconds(date, -1);
+
+      locs =
+          getMapSession()
+              .createQuery("select location from Move m where moveDate = :date", LocationName.class)
+              .setParameter("date", MapEditorController.addMilliseconds(date, -1))
+              .getResultList();
     }
   }
 
-  /**
-   * Changes the floor that the map is displaying
-   *
-   * @param floor the new floor to display. Must not be null
-   */
-  public void setFloor(Node.Floor floor) {
-    Point2D currentCenter =
-        this.gesturePane.targetPointAtViewportCentre(); // Get the current center
+  private void setDisplayText(Display display) {
+    displayEnum = display;
+    Collection<VBox> boxes = getNodeToLocationBox().values();
+    LinkedList<Text> list = new LinkedList<>();
 
-    this.mapEntity.setMapFloor(floor); // Set the floor in the entity
-    redraw(); // Force a redraw/re-fetch from scratch
+    switch (display.name()) {
+      case "LOCATION_NAMES" -> {
+        // orders text as loc, loc, sr...
+        // or as loc, sr...
+        // depending on number of locations
+        for (VBox box : boxes) {
+          for (int i = 0; i < box.getChildren().size(); i++) {
+            Text text = (Text) box.getChildren().get(i);
 
-    this.gesturePane.centreOn(currentCenter); // Re-zoom on the old center
+            if (text.getText().contains("_")) {
+              list.add(text);
+              text.setOpacity(0);
+            } else {
+              list.add(0, text);
+              text.setOpacity(1);
+            }
+          }
+          box.getChildren().setAll(list);
+          box.setMouseTransparent(true);
+          list.clear();
+        }
+      }
+      case "SERVICE_REQUESTS" -> {
+        // orders text with all sr before loc
+        for (VBox box : boxes) {
+          for (int i = 0; i < box.getChildren().size(); i++) {
+            Text text = (Text) box.getChildren().get(i);
+
+            if (text.getText().contains("_")) {
+              list.add(0, text);
+              text.setOpacity(1);
+            } else {
+              list.add(text);
+              text.setOpacity(0);
+            }
+          }
+          box.getChildren().setAll(list);
+          box.setMouseTransparent(true);
+          list.clear();
+        }
+      }
+      case "BOTH" -> {
+        for (VBox box : boxes) {
+          for (int i = 0; i < box.getChildren().size(); i++) {
+            Text text = (Text) box.getChildren().get(i);
+            text.setOpacity(1);
+
+            if (text.getText().contains("_")) {
+              list.add(text);
+            } else {
+              list.add(0, text);
+            }
+          }
+          box.getChildren().setAll(list);
+          box.setMouseTransparent(true);
+          list.clear();
+        }
+      }
+      case "NONE" -> {
+        for (VBox box : boxes) {
+          for (int i = 0; i < box.getChildren().size(); i++) {
+            box.getChildren().get(i).setOpacity(0);
+            Text text = (Text) box.getChildren().get(i);
+            list.add(text);
+          }
+          box.getChildren().setAll(list);
+          box.setMouseTransparent(true);
+          list.clear();
+        }
+      }
+    }
   }
 
   /** Saves changes to the map */
@@ -403,11 +728,95 @@ public class MapController {
   }
 
   /**
-   * Gets the floor the map is current on
+   * Handler for going up a floor
    *
-   * @return the floor the map is currently on, may be null
+   * @param actionEvent the event triggering this
    */
-  public Node.Floor getFloor() {
-    return this.mapEntity.getMapFloor(); // return the floor
+  public void upFloor(ActionEvent actionEvent) {
+    int floorLevel = mapEntity.getMapFloor().getValue().ordinal() + 1;
+    if (floorLevel > Node.Floor.values().length - 1) floorLevel = 0;
+
+    mapEntity.getMapFloor().setValue(Node.Floor.values()[floorLevel]);
+  }
+
+  /**
+   * Handler for going down a floor
+   *
+   * @param actionEvent the event triggering this
+   */
+  public void downFloor(ActionEvent actionEvent) {
+    int floorLevel = mapEntity.getMapFloor().getValue().ordinal() - 1;
+    if (floorLevel < 0) floorLevel = Node.Floor.values().length - 1;
+
+    mapEntity.getMapFloor().setValue(Node.Floor.values()[floorLevel]);
+  }
+
+  /**
+   * Floor selector opener binding, creates the pop-over with the floor selector and binds it to the
+   * property
+   *
+   * @param actionEvent the event triggering this
+   */
+  @SneakyThrows
+  public void openFloorSelector(ActionEvent actionEvent) {
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("FloorSelectorPopUp.fxml"));
+    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+
+    popOver.setHeaderAlwaysVisible(false); // Hide the header
+    FloorSelectorController floorPopup = newLoad.getController();
+    floorPopup.setFloorProperty(this.mapEntity.getMapFloor());
+
+    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    javafx.scene.Node node =
+        (javafx.scene.Node)
+            actionEvent.getSource(); // Get the node representation of what called this
+    popOver.show(node); // display the popover
+
+    // Set the button to be disabled until the window is closed
+    floorSelectorButton.setDisable(true);
+    popOver
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                floorSelectorButton.setDisable(false); // On close, re-enable
+              }
+            });
+  }
+
+  public enum Display {
+    LOCATION_NAMES("Location Names"),
+    SERVICE_REQUESTS("Service Requests"),
+    BOTH("Both"),
+    NONE("None");
+
+    @NonNull public final String DisplayOption;
+
+    /**
+     * Creates a new floor with the given String backing
+     *
+     * @param displayOption the displayOption to create. Must not be null
+     */
+    Display(@NonNull String displayOption) {
+      DisplayOption = displayOption;
+    }
+  }
+
+  /**
+   * Gets the current width of the drawing pane, AKA the image width
+   *
+   * @return the image width
+   */
+  public double getMapWidth() {
+    return currentDrawingPane.getWidth();
+  }
+
+  /**
+   * Gets the current height of the drawing pane, AKA the image height
+   *
+   * @return the image height
+   */
+  public double getMapHeight() {
+    return currentDrawingPane.getHeight();
   }
 }

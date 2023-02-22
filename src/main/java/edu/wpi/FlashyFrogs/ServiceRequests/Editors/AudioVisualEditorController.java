@@ -31,7 +31,7 @@ import org.hibernate.Transaction;
 public class AudioVisualEditorController extends ServiceRequestController implements IController {
 
   @FXML SearchableComboBox<LocationName> locationBox;
-  @FXML SearchableComboBox<User> assignedBox;
+  @FXML SearchableComboBox<HospitalUser> assignedBox;
   @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
   @FXML TextField device;
   @FXML TextField reason;
@@ -72,9 +72,10 @@ public class AudioVisualEditorController extends ServiceRequestController implem
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    List<User> users = session.createQuery("FROM User", User.class).getResultList();
+    List<HospitalUser> users =
+        session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList();
 
-    users.sort(Comparator.comparing(User::getFirstName));
+    users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     locationBox.setItems(FXCollections.observableArrayList(locations));
     assignedBox.setItems(FXCollections.observableArrayList(users));
@@ -110,7 +111,7 @@ public class AudioVisualEditorController extends ServiceRequestController implem
 
     try {
       // check
-      if (locationBox.getValue().toString().equals("")
+      if (locationBox.getValue().toString().isEmpty()
           || device.getText().equals("")
           || reason.getText().equals("")
           || date.getValue().toString().equals("")

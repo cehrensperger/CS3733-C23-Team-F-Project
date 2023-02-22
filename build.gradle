@@ -55,12 +55,15 @@ dependencies {
             'org.ehcache:ehcache:3.10.6',
             'com.sun.xml.bind:jaxb-core:4.0.2',
             'javax.xml.bind:jaxb-api:2.3.1',
-             'com.sun.xml.bind:jaxb-impl:3.0.0',
+            'org.glassfish.jaxb:jaxb-runtime:4.0.2',
             'org.postgresql:postgresql:42.5.1',
 
             'de.mkammerer:argon2-jvm:2.11',
             'com.onexip:FlexBoxFX:0.1.5.3-SNAPSHOT',
-            'com.github.hervegirod:fxsvgimage:1.1'
+            'com.github.hervegirod:fxsvgimage:1.1',
+            'net.java.dev.jna:jna:5.12.1',
+
+            'org.apache.commons:commons-math3:3.6.1'
     )
 
     testImplementation(

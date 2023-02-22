@@ -25,17 +25,23 @@ public class UserLogin {
           @ForeignKey(
               name = "user_id_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (user_id) REFERENCES \"user\"(id) ON DELETE CASCADE"))
+                  "FOREIGN KEY (user_id) REFERENCES hospital_user(id) ON DELETE CASCADE"))
   @OneToOne(optional = false)
   @NonNull
   @Getter
-  private User user;
+  @Setter
+  private HospitalUser user;
 
   @Column(nullable = false, unique = true)
   @NonNull
   @Getter
   @Setter
   private String userName;
+
+  @Column(unique = true)
+  @Getter
+  @Setter
+  private String RFIDBadge; // The users RFID badge ID
 
   @Basic
   @Column(nullable = false)
@@ -58,8 +64,13 @@ public class UserLogin {
    * @param theUserName the username of the user
    * @param thePassword the password of the user
    */
-  public UserLogin(@NonNull User user, @NonNull String theUserName, @NonNull String thePassword) {
+  public UserLogin(
+      @NonNull HospitalUser user,
+      @NonNull String theUserName,
+      String RFID,
+      @NonNull String thePassword) {
     this.user = user;
+    this.RFIDBadge = RFID;
     this.userName = theUserName;
 
     // Encrypts password with salt

@@ -3,101 +3,82 @@ package edu.wpi.FlashyFrogs.PathFinding;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.Map.MapController;
-import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import edu.wpi.FlashyFrogs.controllers.FloorSelectorController;
+import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import edu.wpi.FlashyFrogs.controllers.NextFloorPopupController;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.commons.math3.util.MathUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
 @GeneratedExclusion
-public class PathfindingController implements IController {
-
+public class PathfindingController extends AbstractPathVisualizerController implements IController {
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
+  @FXML private CheckBox accessibleBox;
   @FXML private AnchorPane mapPane;
-  @FXML private Label floorSelector;
   @FXML private MFXButton mapEditorButton;
-  @FXML private MFXButton floorSelectorButton;
-  private List<Node> lastPath; // The most recently generated path
-
+  @FXML private DatePicker moveDatePicker;
+  @FXML private TableView<Instruction> pathTable;
+  @FXML private TableColumn<Instruction, String> pathCol;
   //  @FXML private Label error;
-
-  private MapController mapController;
 
   @FXML Text h1;
   @FXML Text h2;
   @FXML Text h3;
   @FXML Text h4;
+  @FXML Text h5;
+  @FXML Text h6;
 
   boolean hDone = false;
-  AtomicReference<PopOver> mapPopOver =
-      new AtomicReference<>(); // The pop-over the map is using for node highlighting
-
-  ObjectProperty<Node.Floor> floorProperty = new SimpleObjectProperty<>(Node.Floor.L1);
 
   /**
    * Initializes the path finder, sets up the floor selector, and the map including default behavior
    */
   @SneakyThrows
   public void initialize() {
-
+    moveDatePicker.setValue(LocalDate.now());
+    moveDatePicker
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.setDate(
+                  Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+              mapController.redraw();
+            });
     h1.setVisible(false);
     h2.setVisible(false);
     h3.setVisible(false);
     h4.setVisible(false);
+    h5.setVisible(false);
+    h6.setVisible(false);
+    pathTable.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
-    // load map page
-    FXMLLoader mapLoader =
-        new FXMLLoader(Objects.requireNonNull(Fapp.class.getResource("Map/Map.fxml")));
-
-    Pane map = mapLoader.load(); // Load the map
     mapPane.getChildren().add(0, map); // Put the map loader into the editor box
-    mapController = mapLoader.getController();
-
-    // By default hide circles
-    mapController.setNodeCreation(
-        (node, circle) -> {
-          circle.setOpacity(0); // hide the circle
-        });
-
-    mapController.setEdgeCreation(
-        (edge, line) -> {
-          line.setOpacity(0); // Hide the line
-        });
-
-    mapController.setFloor(Node.Floor.L1);
-    floorSelector.setText("Floor " + Node.Floor.L1.name());
 
     // make the anchor pane resizable
     AnchorPane.setTopAnchor(map, 0.0);
@@ -110,7 +91,7 @@ public class PathfindingController implements IController {
 
     // get the list of all location names from the database
     List<LocationName> objects =
-        session.createQuery("FROM LocationName l", LocationName.class).getResultList();
+        session.createQuery("SELECT location FROM Move", LocationName.class).getResultList();
 
     // sort the locations alphabetically, algorithms already alphabetical
     objects.sort(Comparator.comparing(LocationName::getLongName));
@@ -126,22 +107,7 @@ public class PathfindingController implements IController {
     destinationBox.setItems(FXCollections.observableList(objects));
     algorithmBox.setItems(FXCollections.observableList(algorithms));
 
-    // Add a listener so that when the floor is changed, the map  controller sets the new floor
-    floorProperty.addListener(
-        (observable, oldValue, newValue) -> {
-          mapController.setFloor(newValue);
-          // If we have a valid path
-          floorSelector.setText("Floor " + newValue.floorNum);
-
-          // If the last path is valid
-          if (lastPath != null) {
-            try {
-              drawPath(); // Draw it
-            } catch (IOException e) {
-              throw new RuntimeException(e);
-            }
-          }
-        });
+    algorithmBox.setValue("A*");
 
     // Get whether the user is an admin
     boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
@@ -154,6 +120,32 @@ public class PathfindingController implements IController {
       mapEditorButton.setDisable(false);
       mapEditorButton.setOpacity(1);
     }
+
+    pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
+
+    pathTable.setRowFactory(
+        param -> {
+          TableRow<Instruction> row = new TableRow<>(); // Create a new table row to use
+
+          // When the user selects a row, just un-select it to avoid breaking formatting
+          row.selectedProperty()
+              .addListener(
+                  // Add a listener that does that
+                  (observable, oldValue, newValue) -> row.updateSelected(false));
+
+          // Add a listener to show the pop-up
+          row.setOnMouseClicked(
+              (event) -> {
+                // If the pop over exists and is either not focused or we are showing a new
+                // row
+                if (row != null) {
+                  setFloor(row.getItem().node.getFloor());
+                  mapController.zoomToCoordinates(
+                      5, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
+                }
+              });
+          return row;
+        });
   }
 
   /** Callback to handle the back button being pressed */
@@ -163,143 +155,66 @@ public class PathfindingController implements IController {
     Fapp.handleBack(); // Delegate to Fapp
   }
 
-  /**
-   * Hides the last drawn path on the map, in preparation for a new path being drawn. Handles case
-   * where no path is drawn
-   */
-  private void hideLastPath() {
-    // Check to make sure there is a path
-    if (lastPath != null) {
-      // Get the start node
-      Node startNode = lastPath.get(0);
+  /** Method that generates table for textual path instructions */
+  private void drawTable() {
+    pathTable.setVisible(true);
 
-      // If the start node is on this floor
-      if (startNode.getFloor().equals(mapController.getFloor())) {
-        // Get the circle
-        Circle circle = mapController.getNodeToCircleMap().get(startNode);
+    ObservableList<Instruction> instructions = FXCollections.observableArrayList();
 
-        circle.setOpacity(0); // Hide the circle
-      }
+    double curAngle = 0;
 
-      // Get the end node in the path
-      Node endNode = lastPath.get(lastPath.size() - 1);
+    pathTable.setItems(instructions);
+    for (int i = 0; i < currentPath.size() - 1; i++) { // For each line in the path
+      Node thisNode = currentPath.get(i);
+      Node nextNode = currentPath.get(i + 1);
 
-      // If the end node is on this floor
-      if (endNode.getFloor().equals(mapController.getFloor())) {
-        // Get the circle
-        Circle circle = mapController.getNodeToCircleMap().get(endNode);
+      double target =
+          Math.atan2(
+              (nextNode.getYCoord() - thisNode.getYCoord()),
+              (nextNode.getXCoord() - thisNode.getXCoord()));
+      double errorTheta = target - curAngle;
+      curAngle = target;
 
-        circle.setOpacity(0); // Hide the circle
-      }
+      errorTheta = MathUtils.normalizeAngle(errorTheta, 0.0);
 
-      // Hide all the edges
-      for (int i = 1; i < lastPath.size(); i++) { // For each edge
-        // Get the two nodes in the edge
-        Node thisNode = lastPath.get(i);
-        Node previousNode = lastPath.get(i - 1);
+      int errorDeg = (int) Math.toDegrees(errorTheta);
 
-        // If both nodes are on this floor
-        if (thisNode.getFloor().equals(mapController.getFloor())
-            && previousNode.getFloor().equals(mapController.getFloor())) {
-          Edge edge; // The edge to hide
+      String nodeName =
+          thisNode
+              .getCurrentLocation(
+                  mapController.getMapSession(),
+                  Date.from(
+                      moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))
+              .stream()
+              .findFirst()
+              .orElse(new LocationName("", LocationName.LocationType.HALL, ""))
+              .getShortName();
 
-          // Get the edge, try the first directino
-          edge = mapController.getMapSession().find(Edge.class, new Edge(thisNode, previousNode));
-
-          // That failing
-          if (edge == null) {
-            // Try the other
-            edge = mapController.getMapSession().find(Edge.class, new Edge(previousNode, thisNode));
-          }
-
-          // Now get the line
-          Line line = mapController.getEdgeToLineMap().get(edge);
-          line.setOpacity(0); // hide the line
+      if (nodeName.equals("")) {
+        if (errorDeg < -10) {
+          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees", thisNode));
+        } else if (errorDeg > 10) {
+          instructions.add(new Instruction("Turn left " + errorDeg + " degrees", thisNode));
+        } else {
+          instructions.add(new Instruction("Continue", thisNode));
         }
-      }
-    }
-  }
-
-  /** Method that draws a path on the map based on the last gotten path. Assumes that path exists */
-  private void drawPath() throws IOException {
-    // Color any edges on the map
-    Node prevNode = lastPath.get(0);
-    for (int i = 1; i < lastPath.size(); i++) { // For each line in the path
-      Node thisNode = lastPath.get(i); // Get the node
-
-      String nextFloor = thisNode.getFloor().floorNum;
-
-      if (!nextFloor.equals(prevNode.getFloor().floorNum)) {
-        FXMLLoader loader =
-            new FXMLLoader(Fapp.class.getResource("Pathfinding/NextFloorPopup.fxml"));
-        PopOver goToNext = new PopOver(loader.load());
-
-        NextFloorPopupController controller = loader.getController();
-        controller.setPathfindingController(this);
-        controller.setFloor(thisNode.getFloor());
-
-        Circle circle = mapController.getNodeToCircleMap().get(prevNode);
-        if (circle != null) {
-          circle.setFill(Paint.valueOf(Color.YELLOW.toString()));
-          circle.setOpacity(1);
-
-          goToNext.show(circle);
-          goToNext.setAutoHide(false);
-          goToNext.setAutoFix(false);
-          goToNext.detach();
-          goToNext.setX(250);
-          goToNext.setY(20);
-          goToNext.setTitle("   Your path goes to Floor " + nextFloor + ".");
-        }
-      }
-      prevNode = thisNode;
-
-      // If the node is on this floor
-      if (thisNode.getFloor().equals(mapController.getFloor())) {
-
-        // Try to draw its edge. Check that what it's connected to is on this floor
-        if (lastPath.get(i - 1).getFloor().equals(mapController.getFloor())) {
-          // find the edge related to each pair of nodes
-          Edge edge =
-              mapController
-                  .getMapSession()
-                  .find(Edge.class, new Edge(lastPath.get(i - 1), thisNode));
-
-          // if it couldn't find the edge, reverse the direction and look again
-          if (edge == null) {
-            edge =
-                mapController
-                    .getMapSession()
-                    .find(Edge.class, new Edge(thisNode, lastPath.get(i - 1)));
-          }
-
-          // get the line on the map associated with the edge
-          Line line = mapController.getEdgeToLineMap().get(edge);
-
-          // Set its formatting
-          line.setOpacity(1);
-          line.setStroke(Paint.valueOf(Color.BLUE.toString()));
-          line.setStrokeWidth(5);
+      } else {
+        if (errorDeg < -10) {
+          instructions.add(
+              new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName, thisNode));
+        } else if (errorDeg > 10) {
+          instructions.add(
+              new Instruction("Turn left " + errorDeg + " degrees at " + nodeName, thisNode));
+        } else {
+          instructions.add(new Instruction("Continue at " + nodeName, thisNode));
         }
       }
     }
 
-    // Get the first node, to draw it
-    Node firstNode = lastPath.get(0);
-    if (firstNode.getFloor().equals(mapController.getFloor())) {
-      Circle circle = mapController.getNodeToCircleMap().get(firstNode);
-
-      circle.setFill(Paint.valueOf(Color.BLUE.toString()));
-      circle.setOpacity(1);
-    }
-
-    // Get the ending node, to draw it
-    Node lastNode = lastPath.get(lastPath.size() - 1);
-    if (lastNode.getFloor().equals(mapController.getFloor())) {
-      Circle circle = mapController.getNodeToCircleMap().get(lastNode);
-      circle.setFill(Paint.valueOf(Color.GREEN.toString()));
-      circle.setOpacity(1);
-    }
+    instructions.add(
+        new Instruction(
+            "You have arrived at " + destinationBox.valueProperty().get(),
+            currentPath.get(currentPath.size() - 1)));
   }
 
   /** Method that handles drawing a new path (AKA the submit button handler) */
@@ -308,8 +223,7 @@ public class PathfindingController implements IController {
     // get start and end locations from text fields
     LocationName startPath = startingBox.valueProperty().get();
     LocationName endPath = destinationBox.valueProperty().get();
-
-    PathFinder pathFinder = new PathFinder(mapController.getMapSession());
+    Boolean accessible = accessibleBox.isSelected();
 
     // get algorithm to use in pathfinding from algorithmBox
     if (algorithmBox.getValue() != null) {
@@ -320,19 +234,32 @@ public class PathfindingController implements IController {
       }
     }
 
-    hideLastPath(); // hide the last drawn path
+    unColorFloor(); // hide the last drawn path
 
     // Get the new path from the PathFinder
-    lastPath = pathFinder.findPath(startPath, endPath);
+    Node startNode =
+        startPath.getCurrentNode(
+            mapController.getMapSession(),
+            Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+    Node endNode =
+        endPath.getCurrentNode(
+            mapController.getMapSession(),
+            Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+    currentPath = pathFinder.findPath(startNode, endNode, accessible);
 
     // Check that we actually got a path
-    if (lastPath == null) {
+    if (currentPath == null) {
       // if nodes is null, that means the there was no possible path
       //      error.setTextFill(Paint.valueOf(Color.RED.toString()));
       //      error.setText("No path found");
       System.out.println("no path found");
     } else {
-      drawPath(); // Draw the path
+      setFloor(startNode.getFloor()); // Go to the starting floor
+      // Zoom to the coordinates of the starting node
+      mapController.zoomToCoordinates(5, startNode.getXCoord(), startNode.getYCoord());
+      colorFloor(); // Draw the path
+      //      setFloor(startNode.getFloor());
+      drawTable();
     }
   }
 
@@ -365,63 +292,6 @@ public class PathfindingController implements IController {
     popOver.show(node.getScene().getWindow());
   }
 
-  /** Handler for the up arrow on the floor selector being pressed */
-  @FXML
-  public void upFloor() {
-    int floorLevel = floorProperty.getValue().ordinal() + 1;
-    if (floorLevel > Node.Floor.values().length - 1) floorLevel = 0;
-
-    floorProperty.setValue(Node.Floor.values()[floorLevel]);
-  }
-
-  /** Handler for the down arrow on the floor selector being pressed */
-  @FXML
-  public void downFloor() {
-    int floorLevel = floorProperty.getValue().ordinal() - 1;
-    if (floorLevel < 0) floorLevel = Node.Floor.values().length - 1;
-
-    floorProperty.setValue(Node.Floor.values()[floorLevel]);
-  }
-
-  /**
-   * Handler for the open floor selector button being pressed, shows the floor selector
-   *
-   * @param event the event triggering this
-   */
-  @FXML
-  @SneakyThrows
-  public void openFloorSelector(ActionEvent event) {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/FloorSelectorPopUp.fxml"));
-    PopOver popOver = new PopOver(newLoad.load()); // create the popover
-
-    popOver.setTitle("");
-    FloorSelectorController floorPopup = newLoad.getController();
-    floorPopup.setFloorProperty(this.floorProperty);
-
-    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-    javafx.scene.Node node =
-        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
-    popOver.show(node); // display the popover
-
-    floorSelectorButton.setDisable(true);
-    popOver
-        .showingProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue) {
-                floorSelectorButton.setDisable(false);
-              }
-            });
-  }
-
-  public void setFloor(Node.Floor floor) {
-    floorProperty.setValue(Objects.requireNonNull(floor));
-  }
-
-  public void onClose() {
-    mapController.exit();
-  }
-
   @Override
   public void help() {
     if (!hDone) {
@@ -429,13 +299,36 @@ public class PathfindingController implements IController {
       h2.setVisible(true);
       h3.setVisible(true);
       h4.setVisible(true);
+      h5.setVisible(true);
+      h6.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
       h4.setVisible(false);
+      h5.setVisible(false);
+      h6.setVisible(false);
       hDone = false;
+    }
+  }
+
+  /**
+   * Sets the floor for the map
+   *
+   * @param floor the new floort
+   */
+  public void setFloor(@NonNull Node.Floor floor) {
+    mapController.getMapFloorProperty().setValue(floor);
+  }
+
+  public static class Instruction {
+    @Getter @Setter private String instruction;
+    @Getter @Setter private Node node;
+
+    Instruction(String instruction, Node node) {
+      this.instruction = instruction;
+      this.node = node;
     }
   }
 }

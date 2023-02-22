@@ -13,12 +13,14 @@ import lombok.SneakyThrows;
  */
 @GeneratedExclusion
 public enum ResourceDictionary {
+  DRAG_SVG("MapEditor/dragSVG.png"),
   L2("floors/L2.png"), // L2 hospital map image
   L1("floors/L1.png"), // , // L1 hospital map image
   // G("floors/G.png"), // Ground floor hospital map image
   ONE("floors/one.png"), // Floor one map image
   TWO("floors/two.png"), // , // Floor two map image
-  THREE("floors/three.png"); // Floor three map image
+  THREE("floors/three.png"), // Floor three map image
+  TRANSPARENT_IMAGE("views/transparentFileTrust.png");
 
   @NonNull public final Image resource; // The resource that is being stored in the dictionary
 

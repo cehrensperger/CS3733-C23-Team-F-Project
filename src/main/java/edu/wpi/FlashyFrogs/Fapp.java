@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -66,7 +67,7 @@ public class Fapp extends Application {
 
               // For each floor
               for (Node.Floor floor : Node.Floor.values()) {
-                mapController.setFloor(floor); // Cache it
+                mapController.getMapFloorProperty().setValue(floor); // Cache it
               }
 
               mapController.exit(); // Exit the map controller
@@ -121,6 +122,8 @@ public class Fapp extends Application {
 
     // Add the sheets
     sheets.add(themeName.resource.toExternalForm());
+    sheets.add(
+        Objects.requireNonNull(Theme.class.getResource("views/NotColors.css")).toExternalForm());
 
     theme = themeName;
   }
@@ -147,6 +150,11 @@ public class Fapp extends Application {
     Fapp.rootPane = root;
 
     final Scene scene = new Scene(root);
+
+    // Disable full-screen exit and combo
+    primaryStage.setFullScreenExitHint("");
+    primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+
     primaryStage.setScene(scene);
     setTheme(Theme.LIGHT_THEME);
     primaryStage.setFullScreen(true);

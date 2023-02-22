@@ -1,11 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<?import net.kurobako.gesturefx.GesturePane?>
-
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import net.kurobako.gesturefx.GesturePane?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
 <AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Map.MapController">
-    <GesturePane fx:id="gesturePane" fitHeight="false" fitWidth="false" fitMode="COVER" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <Group fx:id="group"/>
+    <GesturePane fx:id="gesturePane" fitHeight="false" fitMode="COVER" fitWidth="false" hbarPolicy="NEVER" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Group fx:id="group" />
     </GesturePane>
+   <StackPane layoutX="937.0" layoutY="629.0" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="70.0">
+      <children>
+         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" stroke="WHITE" strokeType="INSIDE" width="25.0">
+            <effect>
+               <DropShadow />
+            </effect>
+         </Rectangle>
+         <Polygon fill="#012d5a" points="30.0, 40.0, 50.0, 40.0, 40.0, 21.0" stroke="#012d5a" strokeType="INSIDE" />
+         <MFXButton style="-fx-cursor: hand" onAction="#upFloor" opacity="0.0" prefHeight="0.0" prefWidth="26.0" />
+      </children>
+   </StackPane>
+   <StackPane layoutX="937.0" layoutY="647.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="70.0">
+      <children>
+         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" stroke="WHITE" strokeType="INSIDE" width="25.0">
+            <effect>
+               <DropShadow />
+            </effect>
+         </Rectangle>
+         <Polygon fill="#012d5a" points="30.0, 40.0, 50.0, 40.0, 40.0, 21.0" rotate="180.0" stroke="#012d5a" strokeType="INSIDE" />
+         <MFXButton style="-fx-cursor: hand" onAction="#downFloor" opacity="0.0" prefHeight="2.0" prefWidth="26.0" text="Button" />
+      </children>
+   </StackPane>
+   <StackPane layoutX="835.0" layoutY="600.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="108.0">
+      <children>
+         <Label fx:id="floorSelector" prefHeight="25.0" prefWidth="67.0" style="-fx-underline: true;" text="Floor #" textFill="#012d5a">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <MFXButton style="-fx-cursor: hand" fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
+      </children>
+   </StackPane>
+   <SearchableComboBox fx:id="filterBox" layoutX="10.0" layoutY="10.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0" />
 </AnchorPane>

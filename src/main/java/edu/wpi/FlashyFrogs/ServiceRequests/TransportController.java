@@ -18,22 +18,28 @@ import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import javafx.animation.FillTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class TransportController implements IController {
-
+  @FXML Rectangle check2;
+  @FXML Rectangle check1;
+  @FXML Pane toast;
   @FXML MFXButton AV;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
@@ -109,6 +115,120 @@ public class TransportController implements IController {
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     equipment.setItems(FXCollections.observableArrayList(InternalTransport.Equipment.values()));
     mode.setItems(FXCollections.observableArrayList(InternalTransport.ModeOfTransport.values()));
+
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    to.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Transfer To");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    from.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Transfer From");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    vision.setButtonCell(
+        new ListCell<InternalTransport.VisionStatus>() {
+          @Override
+          protected void updateItem(InternalTransport.VisionStatus item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Vision");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    hearing.setButtonCell(
+        new ListCell<InternalTransport.HearingStatus>() {
+          @Override
+          protected void updateItem(InternalTransport.HearingStatus item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Hearing");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    consciousness.setButtonCell(
+        new ListCell<InternalTransport.ConsciousnessStatus>() {
+          @Override
+          protected void updateItem(InternalTransport.ConsciousnessStatus item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Consciousness");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    condition.setButtonCell(
+        new ListCell<InternalTransport.HealthStatus>() {
+          @Override
+          protected void updateItem(InternalTransport.HealthStatus item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Condition");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    equipment.setButtonCell(
+        new ListCell<InternalTransport.Equipment>() {
+          @Override
+          protected void updateItem(InternalTransport.Equipment item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Equipment");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    mode.setButtonCell(
+        new ListCell<InternalTransport.ModeOfTransport>() {
+          @Override
+          protected void updateItem(InternalTransport.ModeOfTransport item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Mode of Transfer");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -148,7 +268,7 @@ public class TransportController implements IController {
               equipment.getValue(),
               dateOfTransport,
               Date.from(Instant.now()),
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               mode.getValue(),
               isolation.isSelected(),
               personal.getText(),
@@ -161,6 +281,7 @@ public class TransportController implements IController {
         handleClear(actionEvent);
         errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
         errorMessage.setText("Successfully submitted.");
+        toastAnimation();
       } catch (RollbackException exception) {
         session.clear();
         errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
@@ -190,6 +311,7 @@ public class TransportController implements IController {
     isolation.setSelected(false);
     personal.setText("");
     reason.setText("");
+    date.valueProperty().set(null);
   }
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
@@ -197,7 +319,7 @@ public class TransportController implements IController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ITService");
+    Fapp.setScene("ServiceRequests", "ComputerService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
@@ -254,6 +376,34 @@ public class TransportController implements IController {
       h14.setVisible(false);
       hDone = false;
     }
+  }
+
+  public void toastAnimation() {
+    // Create a TranslateTransition to move the first rectangle to the left
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(1.0), toast);
+    translate1.setByX(-280.0);
+    translate1.setAutoReverse(true);
+
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.3), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.3), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(1.0), toast);
+    translateBack1.setDelay(Duration.seconds(2));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.play();
   }
 
   @Override

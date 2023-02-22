@@ -7,7 +7,8 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -54,21 +55,26 @@ class MapEntity {
 
   // Transaction to allow map commit/rollback
   private Transaction mapTransaction = mapSession.beginTransaction();
-  @Getter private Node.Floor mapFloor = null; // The floor the map should use
+
+  @Getter
+  private final Property<Node.Floor> mapFloor =
+      new SimpleObjectProperty<>(); // The floor the map should use
 
   /**
-   * Sets the map floor, including clearing the nodes and edges the map uses
-   *
-   * @param mapFloor the new floor to set
+   * Constructor for the map entity, adds a listener to changes on map floor that clears the object
+   * mappings
    */
-  void setMapFloor(Node.Floor mapFloor) {
-    this.mapFloor = mapFloor;
-
-    nodeToCircleMap.clear();
-    edgeToLineMap.clear();
-    locationNameToTextMap.clear();
-    nodeToLocationNameMap.clear();
-    nodeToLocationBox.clear();
+  public MapEntity() {
+    // Add the listener
+    mapFloor.addListener(
+        (floor) -> {
+          // on change, clear everything
+          nodeToCircleMap.clear();
+          edgeToLineMap.clear();
+          locationNameToTextMap.clear();
+          nodeToLocationNameMap.clear();
+          nodeToLocationBox.clear();
+        });
   }
 
   /**
@@ -85,6 +91,9 @@ class MapEntity {
 
     // Add the vbox that will hold the locations
     nodeToLocationBox.put(node, new VBox());
+
+    // Set the node to be transparent (shouldn't be interactable)
+    nodeToLocationBox.get(node).setMouseTransparent(true);
 
     // If the node we're creating is valid
     if (nodeCreation != null) {
@@ -134,7 +143,7 @@ class MapEntity {
     List<Edge> edgesToRemove =
         edgeToLineMap.keySet().stream()
             .filter((edge) -> (edge.getNode1().equals(node) || edge.getNode2().equals(node)))
-            .collect(Collectors.toList());
+            .toList();
 
     // For each edge to remove
     for (Edge toRemove : edgesToRemove) {

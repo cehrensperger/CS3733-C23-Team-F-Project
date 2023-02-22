@@ -18,21 +18,31 @@ import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import javafx.animation.FillTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class ITController implements IController {
-
+  @FXML Rectangle check2;
+  @FXML Rectangle check1;
+  @FXML Pane toast;
   @FXML MFXButton AV;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
@@ -81,6 +91,58 @@ public class ITController implements IController {
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     type.setItems(FXCollections.observableArrayList(ComputerService.DeviceType.values()));
     session.close();
+
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    locationBox.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Location of Request");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    service.setButtonCell(
+        new ListCell<ComputerService.ServiceType>() {
+          @Override
+          protected void updateItem(ComputerService.ServiceType item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Service Type");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    type.setButtonCell(
+        new ListCell<ComputerService.DeviceType>() {
+          @Override
+          protected void updateItem(ComputerService.DeviceType item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Device Type");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
@@ -100,7 +162,7 @@ public class ITController implements IController {
 
       ComputerService informationTechnology =
           new ComputerService(
-              CurrentUserEntity.CURRENT_USER.getCurrentuser(),
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               locationBox.getValue(),
               dateNeeded,
               Date.from(Instant.now()),
@@ -118,6 +180,7 @@ public class ITController implements IController {
         handleClear(actionEvent);
         errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
         errorMessage.setText("Successfully submitted.");
+        toastAnimation();
       } catch (RollbackException exception) {
         session.clear();
         errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
@@ -169,7 +232,7 @@ public class ITController implements IController {
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "ITService");
+    Fapp.setScene("ServiceRequests", "ComputerService");
   }
 
   public void handleIPT(ActionEvent actionEvent) throws IOException {
@@ -190,6 +253,34 @@ public class ITController implements IController {
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
+  }
+
+  public void toastAnimation() {
+    // Create a TranslateTransition to move the first rectangle to the left
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(1.0), toast);
+    translate1.setByX(-280.0);
+    translate1.setAutoReverse(true);
+
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.3), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.3), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(1.0), toast);
+    translateBack1.setDelay(Duration.seconds(2));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.play();
   }
 
   public void onClose() {}

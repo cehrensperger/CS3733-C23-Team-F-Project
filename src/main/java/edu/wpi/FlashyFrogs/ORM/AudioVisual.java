@@ -52,7 +52,7 @@ public class AudioVisual extends ServiceRequest {
    * @param location the LocationName to use in the location field
    */
   public AudioVisual(
-      User emp,
+      HospitalUser emp,
       @NonNull Date requestDate,
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,

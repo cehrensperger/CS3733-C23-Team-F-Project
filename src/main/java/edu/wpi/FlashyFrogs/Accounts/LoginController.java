@@ -5,13 +5,14 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 // import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.*;
@@ -37,11 +39,57 @@ public class LoginController implements IController {
   @FXML Text forgot;
   @FXML private Label errorMessage;
 
+  /** Background text, used for RFID badge capture */
+  private String backgroundText = "";
+
   public void initialize() {
     Fapp.resetStackLogin();
+
+    // Set up the key press handler
+    Platform.runLater(
+        () ->
+            rootPane
+                .getScene()
+                .setOnKeyPressed(
+                    (event -> {
+                      if (event.getCode().equals(KeyCode.ENTER)) {
+                        System.out.println("attempting login");
+                        System.out.println(backgroundText);
+                        // If the username exists
+                        if (!username.getText().isEmpty()) {
+                          loginButton(null); // Try logging in
+                        } else {
+                          Session session = CONNECTION.getSessionFactory().openSession();
+                          UserLogin logIn = null;
+                          if (!backgroundText.equals("")) {
+                            // Log in
+                            logIn =
+                                session
+                                    .createQuery(
+                                        "FROM UserLogin  WHERE RFIDBadge = :badge", UserLogin.class)
+                                    .setParameter("badge", backgroundText)
+                                    .uniqueResult();
+                          }
+                          // If the login is valid
+                          if (logIn != null) {
+                            CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
+                            Fapp.setScene("views", "Home");
+                            Fapp.logIn();
+                            CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
+                            backgroundText = ""; // Clear the background text
+                          } else {
+                            backgroundText = ""; // Clear the background text
+                          }
+
+                          session.close(); // Close the session
+                        }
+                      } else {
+                        backgroundText += event.getText(); // Add the text to the RFID string
+                      }
+                    })));
   }
 
-  public void loginButton(ActionEvent actionEvent) throws Exception {
+  public void loginButton(ActionEvent actionEvent) {
     if (username.getText().equals("") || password.getText().equals("")) {
       // One of the values is left null
       errorMessage.setText("Please fill out all fields!");
@@ -101,7 +149,7 @@ public class LoginController implements IController {
   public void openPathfinding(ActionEvent event) throws IOException {
     System.out.println("opening pathfinding");
     CurrentUserEntity.CURRENT_USER.setCurrentUser(
-        new User("a", "a", "a", User.EmployeeType.STAFF, new Department()));
+        new HospitalUser("a", "a", "a", HospitalUser.EmployeeType.STAFF, new Department()));
     Fapp.setScene("Pathfinding", "Pathfinding");
   }
 

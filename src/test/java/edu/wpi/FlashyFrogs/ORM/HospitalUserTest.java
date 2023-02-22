@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /** Tests for the ORM user class */
-public class UserTest {
+public class HospitalUserTest {
   /** Sets up the data base before all tests run */
   @BeforeAll
   public static void setupDBConnection() {
@@ -47,7 +47,7 @@ public class UserTest {
     // Use a closure to manage the session to use
     try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
-      connection.createMutationQuery("DELETE FROM User").executeUpdate(); // Do the drop
+      connection.createMutationQuery("DELETE FROM HospitalUser").executeUpdate(); // Do the drop
       connection.createMutationQuery("DELETE FROM Department ").executeUpdate(); // Do the drop
       cleanupTransaction.commit(); // Commit the cleanup
     }
@@ -63,7 +63,7 @@ public class UserTest {
     Department department = new Department("a", "b");
 
     // Try creating a new user
-    User u = new User("a", "b", "c", User.EmployeeType.STAFF, department);
+    HospitalUser u = new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.STAFF, department);
 
     session.persist(department); // Persist the department to enable using the session
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -85,7 +85,7 @@ public class UserTest {
     assertEquals("b", u.getMiddleName()); // Check middle name side effects
     assertEquals("c", u.getLastName()); // Check last name side effects
     assertEquals(new Department("a", "b"), u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
   }
 
   /** Tries setting the middle name from something to null */
@@ -97,7 +97,9 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", "dfhdfsgh", "afgawert", User.EmployeeType.ADMIN, department);
+    HospitalUser u =
+        new HospitalUser(
+            "abasb", "dfhdfsgh", "afgawert", HospitalUser.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -119,7 +121,7 @@ public class UserTest {
     assertNull(u.getMiddleName()); // Check middle name side effects
     assertEquals("afgawert", u.getLastName()); // Check last name side effects
     assertEquals(new Department("long", "short"), u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
   /** Tries setting the middle name from null to something */
@@ -131,7 +133,8 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", null, "afgawert", User.EmployeeType.ADMIN, department);
+    HospitalUser u =
+        new HospitalUser("abasb", null, "afgawert", HospitalUser.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -153,7 +156,7 @@ public class UserTest {
     assertEquals("bbB", u.getMiddleName()); // Check middle name side effects
     assertEquals("afgawert", u.getLastName()); // Check last name side effects
     assertEquals(new Department("long", "short"), u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
   /** Sets the middle name from one value to another */
@@ -165,7 +168,8 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN, department);
+    HospitalUser u =
+        new HospitalUser("abasb", "b", "afgawert", HospitalUser.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -187,7 +191,7 @@ public class UserTest {
     assertEquals("hj", u.getMiddleName()); // Check middle name side effects
     assertEquals("afgawert", u.getLastName()); // Check last name side effects
     assertEquals(new Department("long", "short"), u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
   /** Starts the middle name as null, and tests setting it to the same */
@@ -199,7 +203,8 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", "val1", "afgawert", User.EmployeeType.ADMIN, department);
+    HospitalUser u =
+        new HospitalUser("abasb", "val1", "afgawert", HospitalUser.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -221,7 +226,7 @@ public class UserTest {
     assertEquals("val2", u.getMiddleName()); // Check middle name side effects
     assertEquals("afgawert", u.getLastName()); // Check last name side effects
     assertEquals(new Department("long", "short"), u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
   /** Simple test for setting the last name */
@@ -231,7 +236,8 @@ public class UserTest {
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
     // Try creating a new user
-    User u = new User("bbb", null, "qwerty", User.EmployeeType.MEDICAL, null);
+    HospitalUser u =
+        new HospitalUser("bbb", null, "qwerty", HospitalUser.EmployeeType.MEDICAL, null);
 
     session.persist(u); // Persist U to set its ID (not to make it actually work)
 
@@ -252,7 +258,7 @@ public class UserTest {
     assertNull(u.getMiddleName()); // Check middle name side effects
     assertEquals("pppppp", u.getLastName()); // Check last name side effects
     assertNull(u.getDepartment()); // Assert the department stays null
-    assertEquals(User.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
   }
 
   /** Simple test for setting the type */
@@ -262,7 +268,8 @@ public class UserTest {
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
     // Try creating a new user
-    User u = new User("lll", null, "qwerty", User.EmployeeType.MEDICAL, null);
+    HospitalUser u =
+        new HospitalUser("lll", null, "qwerty", HospitalUser.EmployeeType.MEDICAL, null);
 
     session.persist(u); // Persist U to set its ID (not to make it actually work)
 
@@ -272,10 +279,11 @@ public class UserTest {
     long originalID = u.getId(); // Get the original ID
 
     // Check the starting
-    assertEquals(User.EmployeeType.MEDICAL, u.getEmployeeType()); // Assert the field is right
+    assertEquals(
+        HospitalUser.EmployeeType.MEDICAL, u.getEmployeeType()); // Assert the field is right
 
     // Try to set the field
-    u.setEmployeeType(User.EmployeeType.STAFF);
+    u.setEmployeeType(HospitalUser.EmployeeType.STAFF);
 
     // Check the values
     assertEquals(originalID, u.getId());
@@ -283,7 +291,7 @@ public class UserTest {
     assertNull(u.getMiddleName()); // Check middle name side effects
     assertEquals("qwerty", u.getLastName()); // Check last name side effects
     assertNull(u.getDepartment());
-    assertEquals(User.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.STAFF, u.getEmployeeType()); // Check type side effects
   }
 
   /** Test where the department is set to something from null */
@@ -296,7 +304,8 @@ public class UserTest {
     Department department = new Department("short", "long");
 
     // Try creating a new user
-    User u = new User("lll", null, "qwerty", User.EmployeeType.MEDICAL, department);
+    HospitalUser u =
+        new HospitalUser("lll", null, "qwerty", HospitalUser.EmployeeType.MEDICAL, department);
 
     session.persist(department); // Persist the department (so that we can persist the user)
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -318,7 +327,7 @@ public class UserTest {
     assertNull(u.getMiddleName()); // Check middle name side effects
     assertEquals("qwerty", u.getLastName()); // Check last name side effects
     assertEquals(new Department("short", "long"), u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
   }
 
   /** Test where the department is valid and is changed from one valid thing to another */
@@ -330,7 +339,8 @@ public class UserTest {
     Department department = new Department("long", "short");
 
     // Try creating a new user
-    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN, department);
+    HospitalUser u =
+        new HospitalUser("abasb", "b", "afgawert", HospitalUser.EmployeeType.ADMIN, department);
 
     Department otherDepartment = new Department("b", "c"); // Other department name
 
@@ -355,7 +365,7 @@ public class UserTest {
     assertEquals("b", u.getMiddleName()); // Check middle name side effects
     assertEquals("afgawert", u.getLastName()); // Check last name side effects
     assertEquals(new Department("b", "c"), u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
   /** Tries setting the department from one null value to another */
@@ -367,7 +377,8 @@ public class UserTest {
     Department department = new Department("j", "k");
 
     // Try creating a new user
-    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN, department);
+    HospitalUser u =
+        new HospitalUser("abasb", "b", "afgawert", HospitalUser.EmployeeType.ADMIN, department);
 
     session.persist(department); // persist the department to enable persisting the user
     session.persist(u); // Persist U to set its ID (not to make it actually work)
@@ -386,7 +397,7 @@ public class UserTest {
     assertEquals("b", u.getMiddleName()); // Check middle name side effects
     assertEquals("afgawert", u.getLastName()); // Check last name side effects
     assertEquals(new Department("j", "k"), u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
   /** Tests setting the department from one null value to another */
@@ -396,7 +407,8 @@ public class UserTest {
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
     // Try creating a new user
-    User u = new User("abasb", "b", "afgawert", User.EmployeeType.ADMIN, null);
+    HospitalUser u =
+        new HospitalUser("abasb", "b", "afgawert", HospitalUser.EmployeeType.ADMIN, null);
 
     session.persist(u); // Persist U to set its ID (not to make it actually work)
 
@@ -414,7 +426,7 @@ public class UserTest {
     assertEquals("b", u.getMiddleName()); // Check middle name side effects
     assertEquals("afgawert", u.getLastName()); // Check last name side effects
     assertNull(u.getDepartment()); // Check the department
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
   }
 
   /** Tests setting all parameters one at a time and testing for sequential side effects */
@@ -424,7 +436,7 @@ public class UserTest {
     Transaction transaction = session.beginTransaction(); // Begin a transaction
 
     // Try creating a new user
-    User u = new User("pop", null, "pod", User.EmployeeType.MEDICAL, null);
+    HospitalUser u = new HospitalUser("pop", null, "pod", HospitalUser.EmployeeType.MEDICAL, null);
 
     session.persist(u); // Persist U to set its ID (not to make it actually work)
 
@@ -438,7 +450,7 @@ public class UserTest {
     assertEquals("pop", u.getFirstName()); // Check the first name
     assertNull(null); // Check middle name side effects
     assertEquals("pod", u.getLastName()); // Check last name side effects
-    assertEquals(User.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
     assertNull(u.getDepartment());
 
     // Try to set the first name
@@ -449,7 +461,7 @@ public class UserTest {
     assertEquals("asdf", u.getFirstName()); // Check the first name
     assertNull(null); // Check middle name side effects
     assertEquals("pod", u.getLastName()); // Check last name side effects
-    assertEquals(User.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
     assertNull(u.getDepartment());
 
     // Set the middle name
@@ -460,7 +472,7 @@ public class UserTest {
     assertEquals("asdf", u.getFirstName()); // Check the first name
     assertNull(u.getMiddleName()); // Check middle name side effects
     assertEquals("pod", u.getLastName()); // Check last name side effects
-    assertEquals(User.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
     assertNull(u.getDepartment());
 
     // Set the last name
@@ -471,18 +483,18 @@ public class UserTest {
     assertEquals("asdf", u.getFirstName()); // Check the first name
     assertNull(u.getMiddleName()); // Check middle name side effects
     assertEquals("qwerty", u.getLastName()); // Check last name side effects
-    assertEquals(User.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.MEDICAL, u.getEmployeeType()); // Check type side effects
     assertNull(u.getDepartment());
 
     // Set the type
-    u.setEmployeeType(User.EmployeeType.ADMIN);
+    u.setEmployeeType(HospitalUser.EmployeeType.ADMIN);
 
     // Check the values
     assertEquals(originalID, u.getId());
     assertEquals("asdf", u.getFirstName()); // Check the first name
     assertNull(u.getMiddleName()); // Check middle name side effects
     assertEquals("qwerty", u.getLastName()); // Check last name side effects
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
     assertNull(u.getDepartment());
 
     // Set the department
@@ -493,7 +505,7 @@ public class UserTest {
     assertEquals("asdf", u.getFirstName()); // Check the first name
     assertNull(u.getMiddleName()); // Check middle name side effects
     assertEquals("qwerty", u.getLastName()); // Check last name side effects
-    assertEquals(User.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
+    assertEquals(HospitalUser.EmployeeType.ADMIN, u.getEmployeeType()); // Check type side effects
     assertEquals(new Department("b", "c"), u.getDepartment()); // Check the department
   }
 
@@ -507,15 +519,19 @@ public class UserTest {
     Department department = new Department("my dept", "d");
 
     // Try creating a new user
-    User u = new User("John", "G", "Smith", User.EmployeeType.MEDICAL, department);
-    User uCopy = new User("John", "G", "Smith", User.EmployeeType.MEDICAL, department);
+    HospitalUser u =
+        new HospitalUser("John", "G", "Smith", HospitalUser.EmployeeType.MEDICAL, department);
+    HospitalUser uCopy =
+        new HospitalUser("John", "G", "Smith", HospitalUser.EmployeeType.MEDICAL, department);
 
     session.persist(department); // Persist the department
     session.persist(u); // Persist U to set its ID (not to make it actually work)
     session.persist(uCopy); // Persist the other one with identical fields
 
     // Assert that the users are correct
-    assertEquals(List.of(u, uCopy), session.createQuery("FROM User", User.class).getResultList());
+    assertEquals(
+        List.of(u, uCopy),
+        session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList());
 
     transaction.rollback(); // Rollback
     session.close(); // Close
@@ -538,23 +554,25 @@ public class UserTest {
     session.persist(d2);
 
     // Create the user we will use
-    User u = new User("a", "b", "c", User.EmployeeType.MEDICAL, department);
+    HospitalUser u = new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, department);
     session.persist(u); // Save u
 
     // Assert that the one thing in the database matches this
-    assertEquals(u, session.createQuery("FROM User", User.class).getSingleResult());
+    assertEquals(u, session.createQuery("FROM HospitalUser", HospitalUser.class).getSingleResult());
     assertEquals(
-        u.hashCode(), session.createQuery("FROM User", User.class).getSingleResult().hashCode());
+        u.hashCode(),
+        session.createQuery("FROM HospitalUser", HospitalUser.class).getSingleResult().hashCode());
 
     // Identical user that should have a different ID
-    User u2 = new User("a", "b", "c", User.EmployeeType.MEDICAL, department);
+    HospitalUser u2 =
+        new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, department);
     session.persist(u2); // Load U2 into the DB, set its ID
 
     assertNotEquals(u, u2); // Assert U and U2 aren't equal
     assertNotEquals(u.hashCode(), u2.hashCode()); // Assert their has hash codes are different
 
     // Completely different user
-    User u3 = new User("b", "c", "d", User.EmployeeType.ADMIN, d2);
+    HospitalUser u3 = new HospitalUser("b", "c", "d", HospitalUser.EmployeeType.ADMIN, d2);
     session.persist(u3); // Load u3 into the DB, set its ID
 
     assertNotEquals(u, u3); // Assert U and U3 aren't equal
@@ -576,7 +594,7 @@ public class UserTest {
     session.persist(department);
 
     // Create the user we will use
-    User u = new User("a", "b", "c", User.EmployeeType.MEDICAL, department);
+    HospitalUser u = new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, department);
     session.persist(u); // Save u
 
     session.createMutationQuery("DELETE FROM Department").executeUpdate(); // Delete
@@ -601,7 +619,7 @@ public class UserTest {
     session.persist(department);
 
     // Create the user we will use
-    User u = new User("a", "b", "c", User.EmployeeType.MEDICAL, department);
+    HospitalUser u = new HospitalUser("a", "b", "c", HospitalUser.EmployeeType.MEDICAL, department);
     session.persist(u); // Save u
 
     session.createMutationQuery("UPDATE Department SET longName = 'b'").executeUpdate(); // Delete
@@ -617,17 +635,19 @@ public class UserTest {
   /** Tests that the to string method of a user is first name " " last name */
   @Test
   public void toStringTest() {
-    User u = new User("john", "b", "smith", User.EmployeeType.MEDICAL, null);
+    HospitalUser u =
+        new HospitalUser("john", "b", "smith", HospitalUser.EmployeeType.MEDICAL, null);
     assertEquals("john smith", u.toString()); // Check the to string
 
-    User u2 = new User("b", null, "d", User.EmployeeType.ADMIN, new Department("b", "c"));
+    HospitalUser u2 =
+        new HospitalUser("b", null, "d", HospitalUser.EmployeeType.ADMIN, new Department("b", "c"));
     assertEquals("b d", u2.toString());
   }
 
   /** Test that assert equals returns false with null and other classes */
   @Test
   public void assertEqualsNullOtherClassTest() {
-    User u = new User("a", "c", "d", User.EmployeeType.STAFF, null);
+    HospitalUser u = new HospitalUser("a", "c", "d", HospitalUser.EmployeeType.STAFF, null);
 
     // Assert that null fails
     assertNotEquals(u, null); // Check null
@@ -637,8 +657,8 @@ public class UserTest {
   /** Check the enumerated type to string values work */
   @Test
   public void checkToStringType() {
-    assertEquals("Administrator", User.EmployeeType.ADMIN.toString());
-    assertEquals("Medical Practitioner", User.EmployeeType.MEDICAL.toString());
-    assertEquals("Staff Member", User.EmployeeType.STAFF.toString());
+    assertEquals("Administrator", HospitalUser.EmployeeType.ADMIN.toString());
+    assertEquals("Medical Practitioner", HospitalUser.EmployeeType.MEDICAL.toString());
+    assertEquals("Staff Member", HospitalUser.EmployeeType.STAFF.toString());
   }
 }

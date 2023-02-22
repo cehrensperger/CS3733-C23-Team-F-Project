@@ -5,7 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
-import edu.wpi.FlashyFrogs.ORM.User;
+import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,13 +28,14 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class LoginAdministratorController implements IController {
-
-  @FXML private TableView<UserLogin> tableView;
+  @FXML private Label errorMessage;
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
+
+  @FXML private TableColumn<UserLogin, String> rfidCol;
   @FXML private TableColumn<UserLogin, String> userNameCol;
   @FXML private TableColumn<UserLogin, String> nameCol;
-  @FXML private TableColumn<UserLogin, User.EmployeeType> empTypeCol;
+  @FXML private TableColumn<UserLogin, HospitalUser.EmployeeType> empTypeCol;
   @FXML private TableColumn<UserLogin, Department> deptCol;
   @FXML private Button addNewUser;
   @FXML private Button back;
@@ -54,7 +56,6 @@ public class LoginAdministratorController implements IController {
     popOver.detach();
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
-
     addNewUser.setDisable(true);
     back.setDisable(true);
     popOver
@@ -69,6 +70,7 @@ public class LoginAdministratorController implements IController {
   }
 
   public void initialize() throws Exception {
+    errorMessage.setVisible(false);
     h1.setVisible(false);
 
     // Clear old table before init
@@ -77,24 +79,29 @@ public class LoginAdministratorController implements IController {
 
     idCol.setCellValueFactory(
         data -> {
-          User user = data.getValue().getUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleLongProperty(user.getId());
+        });
+    rfidCol.setCellValueFactory(
+        data -> {
+          String rfid = data.getValue().getRFIDBadge();
+          return new SimpleStringProperty(rfid != null ? rfid : "");
         });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     nameCol.setCellValueFactory(
         data -> {
-          User user = data.getValue().getUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleStringProperty(
               user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
         });
     empTypeCol.setCellValueFactory(
         data -> {
-          User user = data.getValue().getUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleObjectProperty(user.getEmployeeType());
         });
     deptCol.setCellValueFactory(
         data -> {
-          User user = data.getValue().getUser();
+          HospitalUser user = data.getValue().getUser();
           return new SimpleObjectProperty(user.getDepartment());
         });
 
@@ -115,6 +122,40 @@ public class LoginAdministratorController implements IController {
       ses.close();
       throw e;
     }
+    userLoginTable.setOnMouseClicked(
+        event -> {
+          // Make sure the user clicked on a populated item
+          if (userLoginTable.getSelectionModel().getSelectedItem() != null) {
+            UserLogin selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
+            FXMLLoader newLoad =
+                new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
+            PopOver popOver = null;
+            try {
+              popOver = new PopOver(newLoad.load());
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+            EditUserController editUser = newLoad.getController();
+            editUser.setPopOver(popOver);
+            editUser.setLoginAdminController(this);
+            editUser.initialize(selectedUserLogin);
+            popOver.detach();
+            Node node = (Node) event.getSource();
+            popOver.show(node.getScene().getWindow());
+            addNewUser.setDisable(true);
+            back.setDisable(true);
+            popOver
+                .showingProperty()
+                .addListener(
+                    (observable, oldValue, newValue) -> {
+                      if (!newValue) {
+                        addNewUser.setDisable(false);
+                        back.setDisable(false);
+                      }
+                    });
+          }
+          userLoginTable.getSelectionModel().clearSelection();
+        });
   }
 
   public void onClose() {}

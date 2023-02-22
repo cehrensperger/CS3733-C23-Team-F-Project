@@ -35,7 +35,7 @@ public class ComputerEditorController extends ServiceRequestController implement
   @FXML MFXButton submit;
   @FXML TextField number;
   @FXML SearchableComboBox<LocationName> locationBox;
-  @FXML SearchableComboBox<User> assignedBox;
+  @FXML SearchableComboBox<HospitalUser> assignedBox;
   @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
   @FXML SearchableComboBox<ComputerService.ServiceType> service;
   @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
@@ -76,9 +76,10 @@ public class ComputerEditorController extends ServiceRequestController implement
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    List<User> users = session.createQuery("FROM User", User.class).getResultList();
+    List<HospitalUser> users =
+        session.createQuery("FROM HospitalUser", HospitalUser.class).getResultList();
 
-    users.sort(Comparator.comparing(User::getFirstName));
+    users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     locationBox.setItems(FXCollections.observableArrayList(locations));
     assignedBox.setItems(FXCollections.observableArrayList(users));

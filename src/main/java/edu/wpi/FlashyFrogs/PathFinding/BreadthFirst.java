@@ -6,10 +6,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.hibernate.Session;
 
 public class BreadthFirst implements IFindPath {
-  public List<Node> findPath(@NonNull Node start, @NonNull Node end, @NonNull Session session) {
+
+  @SneakyThrows
+  public List<Node> findPath(
+      @NonNull Node start,
+      @NonNull Node end,
+      @NonNull Boolean accessible,
+      @NonNull Session session) {
+
+    if (start.getId().equals(null) || end.getId().equals(null)) throw new Exception();
+
     List<PathFinder.NodeWrapper> queue = new LinkedList<>();
     List<Node> nodeQueue = new LinkedList<>();
     List<Node> visited = new LinkedList<>();
