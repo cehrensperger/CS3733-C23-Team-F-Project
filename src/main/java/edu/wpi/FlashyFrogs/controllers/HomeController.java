@@ -34,6 +34,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.converter.DateStringConverter;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
@@ -286,13 +287,12 @@ public class HomeController implements IController {
     requestTable.setOnMouseClicked(
         new EventHandler<MouseEvent>() {
           @Override
+          @SneakyThrows
           public void handle(MouseEvent event) {
             ServiceRequest selectedItem =
                 requestTable.getSelectionModel().selectedItemProperty().get();
             if (selectedItem != null) {
 
-              // If the pop over exists and is either not focused or we are showing a new
-              // row
               if (CurrentUserEntity.CURRENT_USER.getAdmin()) {
                 FXMLLoader newLoad =
                     new FXMLLoader(
@@ -302,20 +302,25 @@ public class HomeController implements IController {
                                 + "Editor.fxml"));
 
                 Parent root = null;
-                try {
-                  root = newLoad.load();
-                  PopOver popOver = new PopOver(root);
-                  popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-                  Node node =
-                      (Node) event.getSource(); // Get the node representation of what called this
-                  popOver.show(node);
-                } catch (IOException e) {
-                  throw new RuntimeException(e);
-                }
-
+                root = newLoad.load();
+                PopOver popOver = new PopOver(root);
+                popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+                Node node =
+                    (Node) event.getSource(); // Get the node representation of what called this
+                popOver.show(node);
                 ServiceRequestController controller = newLoad.getController();
                 controller.setRequest(selectedItem);
                 controller.updateFields();
+                controller.setPopOver(popOver);
+
+                popOver
+                    .showingProperty()
+                    .addListener(
+                        (observable, oldValue, newValue) -> {
+                          if (!newValue) {
+                            refreshTable();
+                          }
+                        });
               }
             }
           }
@@ -458,6 +463,9 @@ public class HomeController implements IController {
       ObservableList<MoveWrapper> moveList = FXCollections.observableList(moveWrappers);
       FilteredTableView.configureForFiltering(moveTable, moveList);
     }
+
+    moveTable.refresh();
+    requestTable.refresh();
   }
 
   public void handleManageCSV(ActionEvent event) throws IOException {
