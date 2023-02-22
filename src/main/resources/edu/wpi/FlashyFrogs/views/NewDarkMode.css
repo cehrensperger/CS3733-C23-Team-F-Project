@@ -94,9 +94,9 @@
     /** if you need the blue outline with blue text styling with no set sizes**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color:#F1F1F1;
-    -fx-border-color:#012D5A;
-    -fx-text-fill: #012D5A;
+    -fx-background-color:#6B6D6F;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
 }
 
 .blueOutline
@@ -104,9 +104,9 @@
      blue outline) - ex. the toggle all button on the home page.**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color:#F1F1F1;
-    -fx-border-color:#012D5A;
-    -fx-text-fill: #012D5A;
+    -fx-background-color:#6B6D6F;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
 }
 
 .blueBackground
@@ -114,18 +114,18 @@
      white text) - ex. select files in Manage CSVs. **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: #012D5A;
-    -fx-border-color:#012D5A;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #6B6D6F;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
 }
 
 .blueNoSetSize
     /** If you need the blue background with white text with no set size **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: #012D5A;
-    -fx-border-color:#012D5A;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #6B6D6F;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
 }
 
 .blueBackgroundSideBar

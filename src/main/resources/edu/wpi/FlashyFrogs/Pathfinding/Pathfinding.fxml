@@ -67,7 +67,7 @@
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin></CheckBox>
-            <Text fx:id="h6" styleClass="warningText" text="Check if you would not like your path to include stairs" wrappingWidth="190.0">
+            <Text fx:id="h6" styleClass="warningText" text="Check to exclude stairs from your path" wrappingWidth="190.0">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
