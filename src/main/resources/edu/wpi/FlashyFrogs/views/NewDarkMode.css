@@ -151,22 +151,22 @@
     fields and the csv parser inputs **/
 {
     -fx-border-color:#D1D1D1;
-    -fx-text-fill: #012D5A;
-    -fx-background-color: #F1F1F1;
-    -fx-prompt-text-fill: #012D5A;
+    -fx-text-fill: white;
+    -fx-background-color: #6B6D6F;
+    -fx-prompt-text-fill: white;
 }
 
 .date-picker
     /** controls all date picker fields within the app **/
 {
-    -fx-text-fill: #012D5A;
+    -fx-text-fill: white;
 }
 .date-picker > .text-field
     /** controls all date picker fields within the app **/
 {
-    -fx-prompt-text-fill: #012D5A;
-    -fx-control-inner-background: #f1f1f1 ;
-    -fx-control-background: #f1f1f1 ;
+    -fx-prompt-text-fill: white;
+    -fx-control-inner-background: #6B6D6F;
+    -fx-control-background: #6B6D6F;
 }
 
 .date-picker > .arrow-button
@@ -177,25 +177,24 @@
 .searchable-combo-box>
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-prompt-text-fill: #012D5A;
-    -fx-text-fill: #012D5A;
+    -fx-prompt-text-fill: white;
+    -fx-text-fill: white;
     -fx-context-menu-enabled: #012D5A;
-
 }
 
 .combo-box> .text-field
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-text-fill: #012D5A;
-    -fx-prompt-text-fill: #012D5A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
 }
 
 .combo-box-base .text
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-text-fill: #012D5A;
-    -fx-prompt-text-fill: #012D5A;
-    -fx-text-inner-color: #012D5A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
+    -fx-text-inner-color: white;
 }
 
 .combo-box .text-field:focused
@@ -207,13 +206,18 @@
 .combo-box .arrow
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-background-color:#012D5A;
+    -fx-background-color:#D1D1D1;
 }
 
 .combo-box .cell
     /** controls all searchable combo boxes within the app **/
 {
-    -fx-text-fill: #012D5A;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #6B6D6F;
+    -fx-text-fill: white;
 }
 
 .submitButton
@@ -257,8 +261,8 @@
 .bar
     /** This sets the color of the dividing bar on the service requests page **/
 {
-    -fx-fill:#012D5A;
-    -fx-stroke: #012D5A;
+    -fx-fill:#6B6D6F;
+    -fx-stroke: #6B6D6F;
 }
 
 .sidebar
@@ -276,7 +280,7 @@
 .navBar
     /** sets the style of the nav bar **/
 {
-    -fx-background-color: #012d5a;
+    -fx-background-color: #012D5A;
     -fx-text-fill: white;
 }
 .navBarLines
@@ -344,11 +348,26 @@
 {
     -fx-background-color: #f1f1f1;
 }
+.table-view .column-header .label
+    /** controls table views within the app - not hover **/
+{
+    -fx-text-fill: #012d5a;
+    -fx-alignment: center-left;
+}
 
 .table-row-cell
     /** controls table views within the app - not hover **/
 {
     -fx-background-color: #f1f1f1;
+    -fx-background: #f1f1f1;
+    -fx-text-background-color: #012d5a;
+    -fx-text-fill: #012d5a;
+}
+
+.filtered-table-row-cell
+{
+    -fx-background-color: #f1f1f1;
+    -fx-background: #f1f1f1;
     -fx-text-background-color: #012d5a;
     -fx-text-fill: #012d5a;
 }
@@ -358,21 +377,45 @@
 {
     -fx-background-color: #012d5a;
     -fx-text-background-color: #ffffff;
-    -fx-text-fill: #ffffff;
+    -fx-background: #012d5a;
+
 }
 
-.table-row-cell:selected {
+.table-row-cell:selected
+    /** controls the cells when they are hovered over in table views **/
+{
     -fx-background-color: #012d5a;
     -fx-text-background-color: #ffffff;
-    -fx-text-fill: #ffffff;
+    -fx-background: #012d5a;
+}
+
+.filtered-table-view .table-cell
+    /** controls filtered table views within the app - not hover **/
+{
+    -fx-border-color: transparent;
+
+}
+.filtered-table-view .column-header
+    /** controls filtered table views within the app - not hover **/
+{
+    -fx-background-color: #f1f1f1;
+    -fx-text-fill: #012D5A;
+}
+
+.filtered-table-row-cell
+    /** controls filtered table views within the app - not hover **/
+{
+    -fx-background-color: #f1f1f1;
+    -fx-text-background-color: #012d5a;
+    -fx-text-fill: #012d5a;
 }
 
 
 .alertTopBox
     /** controls the top box with the title of the alert in the alert side bar **/
 {
-    -fx-fill: #012d5a;
-    -stroke: #012d5a;
+    -fx-fill: #012D5A;
+    -stroke: #012D5A;
     -fx-text-fill: white;
 }
 
