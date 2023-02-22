@@ -60,7 +60,6 @@ public class NavBarController {
     menu.setDisable(false);
     header.setDisable(false);
     menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentUser().getFirstName());
-    menu.show();
     header.setOpacity(1);
   }
 
