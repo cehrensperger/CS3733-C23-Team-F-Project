@@ -90,6 +90,13 @@
     -fx-font-weight: bold;
 }
 
+.blueText
+    /** honestly just if you need a text bigger than body but smaller than header and bold **/
+{
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 12pt;
+}
+
 .warningText
     /** This controls the style of the warning text that appears when the help
      button is clicked**/

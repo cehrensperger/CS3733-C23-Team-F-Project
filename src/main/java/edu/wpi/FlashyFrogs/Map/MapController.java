@@ -535,9 +535,13 @@ public class MapController {
       // Create a pane to draw the nodes in
       group.getChildren().add(currentDrawingPane); // Add it to the group
 
+      currentDrawingPane.relocate(0, 0); // Relocate to 0, 0
+
       // Manually set the dimensions to the right size, so that dragging-out doesn't have issues
-      currentDrawingPane.setPrefWidth(imageView.getImage().getWidth());
-      currentDrawingPane.setPrefHeight(imageView.getImage().getHeight());
+      currentDrawingPane.setMinWidth(imageView.getImage().getWidth());
+      currentDrawingPane.setMaxWidth(imageView.getImage().getWidth());
+      currentDrawingPane.setMinHeight(imageView.getImage().getHeight());
+      currentDrawingPane.setMaxHeight(imageView.getImage().getHeight());
 
       // Get the list of nodes
       List<Node> nodes =
