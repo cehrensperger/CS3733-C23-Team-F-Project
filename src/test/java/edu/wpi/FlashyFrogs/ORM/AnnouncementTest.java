@@ -1,20 +1,20 @@
-//package edu.wpi.FlashyFrogs.ORM;
+// package edu.wpi.FlashyFrogs.ORM;
 //
-//import static org.junit.jupiter.api.Assertions.*;
+// import static org.junit.jupiter.api.Assertions.*;
 //
-//import edu.wpi.FlashyFrogs.DBConnection;
-//import java.time.Instant;
-//import java.util.Date;
-//import org.hibernate.HibernateException;
-//import org.hibernate.Session;
-//import org.hibernate.Transaction;
-//import org.junit.jupiter.api.AfterAll;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
+// import edu.wpi.FlashyFrogs.DBConnection;
+// import java.time.Instant;
+// import java.util.Date;
+// import org.hibernate.HibernateException;
+// import org.hibernate.Session;
+// import org.hibernate.Transaction;
+// import org.junit.jupiter.api.AfterAll;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeAll;
+// import org.junit.jupiter.api.Test;
 //
-///** Tests for the announcement class */
-//public class AnnouncementTest {
+/// ** Tests for the announcement class */
+// public class AnnouncementTest {
 //  @BeforeAll
 //  public static void setupDBConnection() {
 //    DBConnection.CONNECTION.connect(); // Connect
@@ -46,7 +46,8 @@
 //
 //    // Use a closure to manage the session to use
 //    try (Session connection = DBConnection.CONNECTION.getSessionFactory().openSession()) {
-//      Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup transaction
+//      Transaction cleanupTransaction = connection.beginTransaction(); // Begin a cleanup
+// transaction
 //      connection.createMutationQuery("DELETE FROM Announcement").executeUpdate();
 //      connection.createMutationQuery("DELETE FROM HospitalUser").executeUpdate();
 //      connection.createMutationQuery("DELETE FROM Department").executeUpdate();
@@ -166,7 +167,8 @@
 //
 //    assertEquals(
 //        originalAnnouncement.hashCode(),
-//        session.createQuery("FROM Announcement", Announcement.class).getSingleResult().hashCode());
+//        session.createQuery("FROM Announcement",
+// Announcement.class).getSingleResult().hashCode());
 //
 //    // Identical announcement
 //    Announcement identicalAnnouncement =
@@ -197,7 +199,8 @@
 //  /** Tests that ON UPDATE CASCADE fails for the Announcement (user PK can not be updated) */
 //  @Test
 //  public void onUpdateCascadeTest() {
-//    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Create a session
+//    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Create a
+// session
 //    Transaction transaction = session.beginTransaction(); // Begin the transaction
 //
 //    HospitalUser user = new HospitalUser("A", "B", "C", HospitalUser.EmployeeType.MEDICAL, null);
@@ -223,7 +226,8 @@
 //    assertEquals(user, session.find(HospitalUser.class, originalId)); // Find the old user
 //    assertEquals(
 //        user,
-//        session.createQuery("FROM Announcement", Announcement.class).getSingleResult().getAuthor());
+//        session.createQuery("FROM Announcement",
+// Announcement.class).getSingleResult().getAuthor());
 //    transaction.commit();
 //
 //    session.close(); // Session close
@@ -232,7 +236,8 @@
 //  /** Tests that ON DELETE SET NULL succeeds for the Announcement */
 //  @Test
 //  public void onDeleteCascadeTest() {
-//    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Create a session
+//    Session session = DBConnection.CONNECTION.getSessionFactory().openSession(); // Create a
+// session
 //    Transaction transaction = session.beginTransaction(); // Begin the transaction
 //
 //    HospitalUser user = new HospitalUser("b", "C", "d", HospitalUser.EmployeeType.MEDICAL, null);
@@ -260,7 +265,8 @@
 //            .createQuery("FROM HospitalUser", HospitalUser.class)
 //            .uniqueResult()); // Find the old user
 //    assertNull(
-//        session.createQuery("FROM Announcement", Announcement.class).getSingleResult().getAuthor());
+//        session.createQuery("FROM Announcement",
+// Announcement.class).getSingleResult().getAuthor());
 //    transaction.commit();
 //
 //    session.close(); // Session close
@@ -272,4 +278,4 @@
 //    assertNotEquals(new Announcement(new Date(), null, "B"), null);
 //    assertNotEquals(new Announcement(new Date(), null, "b"), "adf");
 //  }
-//}
+// }

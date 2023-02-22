@@ -3,8 +3,6 @@ package edu.wpi.FlashyFrogs.ORM;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.Objects;
-
-import javafx.fxml.FXML;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -39,10 +37,11 @@ public class Announcement {
   @ManyToOne
   @Getter
   @JoinColumn(
-  name = "department",
-          foreignKey = @ForeignKey(
-          name = "department_fk",
-                  foreignKeyDefinition =
+      name = "department",
+      foreignKey =
+          @ForeignKey(
+              name = "department_fk",
+              foreignKeyDefinition =
                   "FOREIGN KEY (department) REFERENCES department(longName) ON DELETE SET NULL"))
   private Department department; // Department for the message
 
@@ -78,7 +77,12 @@ public class Announcement {
    * @param announcement the announcement body to create
    */
   public Announcement(
-      @NonNull Date creationDate, HospitalUser author, @NonNull String descriptoin, @NonNull String announcement, @NonNull Department department, @NonNull Severity severity) {
+      @NonNull Date creationDate,
+      HospitalUser author,
+      @NonNull String description,
+      @NonNull String announcement,
+      @NonNull Department department,
+      @NonNull Severity severity) {
     this.creationDate = creationDate;
     this.author = author;
     this.description = description;
@@ -87,9 +91,7 @@ public class Announcement {
     this.severity = severity;
   }
 
-  /**
-   * Enumerated type for the possible severities
-   */
+  /** Enumerated type for the possible severities */
   public enum Severity {
     MILD("mild"),
     INTERMEDIATE("intermediate"),
@@ -102,7 +104,9 @@ public class Announcement {
      *
      * @param severityVal the severity to create. Must not be null
      */
-    Severity(@NonNull String severityVal) {severity = severityVal;}
+    Severity(@NonNull String severityVal) {
+      severity = severityVal;
+    }
 
     /**
      * Override for the toString, returns the severity as a string

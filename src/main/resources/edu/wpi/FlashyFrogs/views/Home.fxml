@@ -59,7 +59,10 @@
                   <Insets bottom="20.0" />
                </padding>
                <content>
-                  <VBox prefHeight="417.0" prefWidth="208.0" />
+                  <VBox fx:id="alertBox" prefHeight="417.0" prefWidth="208.0">
+                     <padding>
+                        <Insets left="18.0" right="18.0" />
+                     </padding></VBox>
                </content>
             </MFXScrollPane>
             <AnchorPane prefHeight="216.0" prefWidth="220.0" VBox.vgrow="ALWAYS">
