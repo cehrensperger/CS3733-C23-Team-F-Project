@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AlertManagerController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AlertManagerController">
    <children>
       <TextArea fx:id="descriptionField" layoutX="20.0" layoutY="87.0" prefHeight="200.0" prefWidth="562.0" promptText="Alert Message:" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-region-background: transparent; -fx-text-area-content: transparent;" styleClass="fields" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0" />
       <TextField fx:id="summaryField" layoutX="22.0" layoutY="49.0" prefHeight="25.0" prefWidth="560.0" promptText="Summary:" styleClass="fields" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
