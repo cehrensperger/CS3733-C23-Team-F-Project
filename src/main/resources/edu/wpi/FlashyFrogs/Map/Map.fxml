@@ -24,7 +24,7 @@
             </effect>
          </Rectangle>
          <Polygon fill="#012d5a" points="30.0, 40.0, 50.0, 40.0, 40.0, 21.0" stroke="#012d5a" strokeType="INSIDE" />
-         <MFXButton onAction="#upFloor" opacity="0.0" prefHeight="0.0" prefWidth="26.0" />
+         <MFXButton style="-fx-cursor: hand" onAction="#upFloor" opacity="0.0" prefHeight="0.0" prefWidth="26.0" />
       </children>
    </StackPane>
    <StackPane layoutX="937.0" layoutY="647.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="70.0">
@@ -35,7 +35,7 @@
             </effect>
          </Rectangle>
          <Polygon fill="#012d5a" points="30.0, 40.0, 50.0, 40.0, 40.0, 21.0" rotate="180.0" stroke="#012d5a" strokeType="INSIDE" />
-         <MFXButton onAction="#downFloor" opacity="0.0" prefHeight="2.0" prefWidth="26.0" text="Button" />
+         <MFXButton style="-fx-cursor: hand" onAction="#downFloor" opacity="0.0" prefHeight="2.0" prefWidth="26.0" text="Button" />
       </children>
    </StackPane>
    <StackPane layoutX="835.0" layoutY="600.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="108.0">
@@ -45,7 +45,7 @@
                <Font size="16.0" />
             </font>
          </Label>
-         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
+         <MFXButton style="-fx-cursor: hand" fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
       </children>
    </StackPane>
    <SearchableComboBox fx:id="filterBox" layoutX="10.0" layoutY="10.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0" />

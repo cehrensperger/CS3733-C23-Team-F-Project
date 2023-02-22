@@ -60,7 +60,6 @@ public class NavBarController {
     menu.setDisable(false);
     header.setDisable(false);
     menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentUser().getFirstName());
-    menu.show();
     header.setOpacity(1);
   }
 
@@ -112,9 +111,27 @@ public class NavBarController {
     header.setOpacity(0);
   }
 
+  /**
+   * Launch About page when About This Application is clicked in the menu bar.
+   *
+   * @throws IOException
+   */
   @FXML
   private void about() throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/About.fxml"));
+    PopOver popOver = new PopOver(newLoad.load());
+    popOver.detach();
+    popOver.show(anchorPane.getScene().getWindow());
+  }
+
+  /**
+   * Launch Acknowledgments page when Acknowledgments is clicked in the menu bar.
+   *
+   * @throws IOException
+   */
+  @FXML
+  private void acknowledgments() throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/acknowledgmentsPage.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     popOver.detach();
     popOver.show(anchorPane.getScene().getWindow());
