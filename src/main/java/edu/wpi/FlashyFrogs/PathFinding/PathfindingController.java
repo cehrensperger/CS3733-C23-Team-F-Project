@@ -12,6 +12,10 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +26,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -34,6 +40,13 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
+  @FXML private Circle cir1;
+  @FXML private Circle cir6;
+  @FXML private Circle cir5;
+  @FXML private Circle cir4;
+  @FXML private Circle cir3;
+  @FXML private Circle cir2;
+  private ParallelTransition parallelTransition;
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
@@ -224,9 +237,88 @@ public class PathfindingController extends AbstractPathVisualizerController impl
             currentPath.get(currentPath.size() - 1)));
   }
 
-  /** Method that handles drawing a new path (AKA the submit button handler) */
+
+
   @SneakyThrows
   public void handleGetPath() {
+    // create a new thread to run getPath() in the background
+    Thread getPathThread =
+            new Thread(
+                    () -> {
+                      // call the original getPath() method in the new thread
+                      getPath();
+                      // when getPath() is done, stop the animation
+                      parallelTransition.stop();
+                      cir1.setVisible(false);
+                      cir2.setVisible(false);
+                      cir3.setVisible(false);
+                      cir4.setVisible(false);
+                      cir5.setVisible(false);
+                      cir6.setVisible(false);
+                    });
+    // start the new thread
+    getPathThread.start();
+
+    // start the animation
+    Animation();
+  }
+
+  public void Animation() {
+    cir1.setVisible(true);
+    cir2.setVisible(true);
+    cir3.setVisible(true);
+    cir4.setVisible(true);
+    cir5.setVisible(true);
+    cir6.setVisible(true);
+    // Create a TranslateTransition for each circle and add a delay
+    TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.2), cir1);
+    tt1.setInterpolator(Interpolator.EASE_BOTH);
+    tt1.setByY(-50);
+    tt1.setAutoReverse(true);
+    tt1.setCycleCount(2);
+    tt1.setDelay(Duration.seconds(0.0));
+    TranslateTransition tt2 = new TranslateTransition(Duration.seconds(0.2), cir2);
+    tt2.setInterpolator(Interpolator.EASE_BOTH);
+    tt2.setByY(-50);
+    tt2.setAutoReverse(true);
+    tt2.setCycleCount(2);
+    tt2.setDelay(Duration.seconds(0.2));
+    TranslateTransition tt3 = new TranslateTransition(Duration.seconds(0.2), cir3);
+    tt3.setInterpolator(Interpolator.EASE_BOTH);
+    tt3.setByY(-50);
+    tt3.setAutoReverse(true);
+    tt3.setCycleCount(2);
+    tt3.setDelay(Duration.seconds(0.4));
+    TranslateTransition tt4 = new TranslateTransition(Duration.seconds(0.2), cir4);
+    tt4.setInterpolator(Interpolator.EASE_BOTH);
+    tt4.setByY(-50);
+    tt4.setAutoReverse(true);
+    tt4.setCycleCount(2);
+    tt4.setDelay(Duration.seconds(0.6));
+    TranslateTransition tt5 = new TranslateTransition(Duration.seconds(0.2), cir5);
+    tt5.setInterpolator(Interpolator.EASE_BOTH);
+    tt5.setByY(-50);
+    tt5.setAutoReverse(true);
+    tt5.setCycleCount(2);
+    tt5.setDelay(Duration.seconds(0.8));
+    TranslateTransition tt6 = new TranslateTransition(Duration.seconds(0.2), cir6);
+    tt6.setInterpolator(Interpolator.EASE_BOTH);
+    tt6.setByY(-50);
+    tt6.setAutoReverse(true);
+    tt6.setCycleCount(2);
+    tt6.setDelay(Duration.seconds(1.0));
+
+    // Create a ParallelTransition to play the animations in parallel
+    ParallelTransition parallelTransition = new ParallelTransition(tt1, tt2, tt3, tt4, tt5, tt6);
+    parallelTransition.setAutoReverse(true);
+    parallelTransition.setCycleCount(ParallelTransition.INDEFINITE);
+
+    // Start the animation
+    parallelTransition.play();
+  }
+  /** Method that handles drawing a new path (AKA the submit button handler) */
+  @SneakyThrows
+  public void getPath() {
     // get start and end locations from text fields
     LocationName startPath = startingBox.valueProperty().get();
     LocationName endPath = destinationBox.valueProperty().get();
