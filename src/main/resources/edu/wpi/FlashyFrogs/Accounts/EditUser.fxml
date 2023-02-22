@@ -20,8 +20,8 @@
             <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="300.0" spacing="25.0">
                <children>
                   <TextField fx:id="username" prefHeight="26.0" prefWidth="206.0" promptText="Username:" styleClass="editUserFields" />
-                  <CustomPasswordField fx:id="pass1" promptText="Password:" styleClass="editUserFields" />
-                  <CustomPasswordField fx:id="pass2" promptText="Confirm Password:" styleClass="editUserFields" />
+                  <CustomPasswordField fx:id="pass1" promptText="Password: (Optional)" styleClass="editUserFields" />
+                  <CustomPasswordField fx:id="pass2" promptText="Confirm Password: (Optional)" styleClass="editUserFields" />
                   <SearchableComboBox fx:id="deptBox" prefHeight="26.0" prefWidth="211.0" promptText="Department:" styleClass="editUserFields">
                      <VBox.margin>
                         <Insets />
