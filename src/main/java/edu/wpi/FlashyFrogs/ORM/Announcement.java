@@ -51,6 +51,13 @@ public class Announcement {
   @Setter
   @Column(nullable = false)
   @NonNull
+  private String description;
+
+  @Basic
+  @Getter
+  @Setter
+  @Column(nullable = false)
+  @NonNull
   private String announcement;
 
   @Basic
@@ -71,9 +78,10 @@ public class Announcement {
    * @param announcement the announcement body to create
    */
   public Announcement(
-      @NonNull Date creationDate, HospitalUser author, @NonNull String announcement, @NonNull Department department, @NonNull Severity severity) {
+      @NonNull Date creationDate, HospitalUser author, @NonNull String descriptoin, @NonNull String announcement, @NonNull Department department, @NonNull Severity severity) {
     this.creationDate = creationDate;
     this.author = author;
+    this.description = description;
     this.announcement = announcement;
     this.department = department;
     this.severity = severity;
