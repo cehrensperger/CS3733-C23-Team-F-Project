@@ -3,250 +3,221 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.CreditsController">
-    <children>
-        <BorderPane layoutX="109.0" layoutY="103.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <left>
-                <VBox prefWidth="220.0" styleClass="sidebar" BorderPane.alignment="TOP_LEFT">
-                    <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="160.0">
-                            <VBox.margin>
-                                <Insets left="18.0" top="18.0" />
-                            </VBox.margin>
-                            <font>
-                                <Font name="Roboto" size="28.0" />
-                            </font>
-                        </Text>
-                        <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" textFill="WHITE">
-                            <VBox.margin>
-                                <Insets left="18.0" top="18.0" />
-                            </VBox.margin>
-                            <font>
-                                <Font size="16.0" />
-                            </font>
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.CreditsController">
+   <children>
+      <VBox layoutX="19.0" layoutY="-1.0" prefHeight="732.0" prefWidth="222.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="160.0">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Roboto" size="28.0" />
+               </font>
+            </Text>
+            <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Information Technology" textFill="WHITE" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="IPT" alignment="BASELINE_LEFT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" textFill="WHITE" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Security" textFill="WHITE" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <AnchorPane VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
+                     <children>
+                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" styleClass="blueBackgroundSideBar" text="Credits" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
                         </MFXButton>
-                        <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Information Technology" textFill="WHITE" wrapText="true">
-                            <VBox.margin>
-                                <Insets left="18.0" top="18.0" />
-                            </VBox.margin>
-                            <font>
-                                <Font size="16.0" />
-                            </font>
+                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" styleClass="backButton" text="Back" textFill="#012d5a">
+                           <VBox.margin>
+                              <Insets bottom="18.0" left="20.0" top="18.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
                         </MFXButton>
-                        <MFXButton fx:id="IPT" alignment="BASELINE_LEFT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Internal Patient Transportation" textFill="WHITE" wrapText="true">
-                            <VBox.margin>
-                                <Insets left="18.0" top="18.0" />
-                            </VBox.margin>
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </MFXButton>
-                        <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" textFill="WHITE" wrapText="true">
-                            <VBox.margin>
-                                <Insets left="18.0" top="18.0" />
-                            </VBox.margin>
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </MFXButton>
-                        <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Security" textFill="WHITE" wrapText="true">
-                            <VBox.margin>
-                                <Insets left="18.0" top="18.0" />
-                            </VBox.margin>
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </MFXButton>
-                        <AnchorPane VBox.vgrow="ALWAYS">
-                            <children>
-                                <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
-                                    <children>
-                                        <MFXButton fx:id="credits" onAction="#handleCredits" prefHeight="25.0" prefWidth="85.0" styleClass="blueBackgroundSideBar" text="Credits" textFill="WHITE">
-                                            <VBox.margin>
-                                                <Insets left="20.0" />
-                                            </VBox.margin>
-                                            <font>
-                                                <Font size="16.0" />
-                                            </font>
-                                        </MFXButton>
-                                        <MFXButton fx:id="back" onAction="#handleBack" prefHeight="25.0" prefWidth="85.0" styleClass="backButton" text="Back" textFill="#012d5a">
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" left="20.0" top="18.0" />
-                                            </VBox.margin>
-                                            <font>
-                                                <Font size="16.0" />
-                                            </font>
-                                        </MFXButton>
-                                    </children>
-                                </VBox>
-                            </children>
-                        </AnchorPane>
-                    </children>
-                </VBox>
-            </left>
-            <center>
-                <VBox alignment="CENTER" prefHeight="720.0" prefWidth="997.0" styleClass="background" BorderPane.alignment="CENTER">
-                    <children>
-                        <HBox alignment="TOP_RIGHT" prefHeight="422.0" prefWidth="1060.0" VBox.vgrow="ALWAYS">
-                            <children>
-                        <VBox prefHeight="586.0" prefWidth="167.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Ian Wright and Owen Krause" wrappingWidth="346.0859069824219">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="132.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Kyla Driscoll and Lindsey Mraz" wrappingWidth="317.1355285644531">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="60.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Audrey Mongillo and Emre Sabaz" wrappingWidth="339.65252685546875">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="68.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Connor Ehrensperger and Jonathan Golden" wrappingWidth="270.49334716796875">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="82.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Joseph Cardarelli and Connor Ehrensperger" wrappingWidth="315.5272521972656">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="86.0" />
-                                 </VBox.margin>
-                              </Text>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="30.0" top="12.0" />
-                           </HBox.margin>
-                        </VBox>
-                                <VBox prefHeight="670.0" prefWidth="479.0" HBox.hgrow="ALWAYS">
-                                    <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Descriptions and Credits" wrappingWidth="434.7284240722656" VBox.vgrow="ALWAYS">
-                                        <font>
-                                            <Font size="28.0" />
-                                        </font>
-                                        <VBox.margin>
-                                            <Insets bottom="40.0" top="40.0" />
-                                        </VBox.margin>
-                                    </Text>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Audio/Visual" wrappingWidth="215.40960693359375">
-                                            <font>
-                                                <Font size="20.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="18.0" />
-                                            </VBox.margin>
-                                        </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for devices like TVs, speakers, and others" wrappingWidth="500.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Information Technology">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for devices or software to be installed or fixed" wrappingWidth="400.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Internal Patient Transportation">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for patients to be transported to a new location in a variety of ways" wrappingWidth="400.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Sanitation">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for spills, biohazards, furniture, clothes, and other items to be cleaned" wrappingWidth="400.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Security">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="18.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for various levels of threats to be neutralized" wrappingWidth="400.0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="20.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <Text fx:id="h1" styleClass="warningText" text="Here are the credits and descriptions for the service request pages">
-                              </Text>
-                                    </children>
-                                    <HBox.margin>
-                                        <Insets right="100.0" />
-                                    </HBox.margin>
-                                </VBox>
-                            </children>
-                            <VBox.margin>
-                                <Insets top="50.0" />
-                            </VBox.margin>
-                        </HBox>
-                    </children>
-                </VBox>
-            </center>
-        </BorderPane>
-    </children>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <Text layoutX="541.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Descriptions and Credits" textAlignment="CENTER" wrappingWidth="588.1779479980469" AnchorPane.leftAnchor="541.0" AnchorPane.topAnchor="55.0">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Text>
+      <VBox layoutX="538.0" layoutY="134.0" prefHeight="490.0" prefWidth="458.0" AnchorPane.topAnchor="155.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Audio/Visual" wrappingWidth="195.40960693359375">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for devices like TVs, speakers, and others" wrappingWidth="356.16259765625">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Information Technology">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for devices or software to be installed or fixed" wrappingWidth="365.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Internal Patient Transportation">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for patients to be transported to a new location in a variety of ways" wrappingWidth="400.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Sanitation">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for spills, biohazards, furniture, clothes, and other items to be cleaned" wrappingWidth="400.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldTextObject" text="Security">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="18.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Request for various levels of threats to be neutralized" wrappingWidth="400.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Text>
+            <Text fx:id="h1" styleClass="warningText" text="Here are the credits and descriptions for the service request pages" />
+         </children>
+      </VBox>
+      <VBox layoutX="1064.0" layoutY="158.0" prefHeight="376.0" prefWidth="180.0" AnchorPane.topAnchor="158.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Ian Wright and Owen Krause" wrappingWidth="107.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Kyla Driscoll and Lindsey Mraz" wrappingWidth="116.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="52.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Audrey Mongillo and Emre Sabaz" wrappingWidth="142.42730712890625">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="52.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Connor Ehrensperger and Jonathan Golden" wrappingWidth="179.49334716796875">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="60.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Joseph Cardarelli and Connor Ehrensperger" wrappingWidth="155.88223266601562">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="74.0" />
+               </VBox.margin>
+            </Text>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>
