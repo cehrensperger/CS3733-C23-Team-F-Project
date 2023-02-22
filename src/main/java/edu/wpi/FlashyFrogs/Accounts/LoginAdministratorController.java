@@ -48,7 +48,7 @@ public class LoginAdministratorController implements IController {
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../Accounts/NewUser.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("NewUser.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     NewUserController newUser = newLoad.getController();
     newUser.setPopOver(popOver);
@@ -127,8 +127,7 @@ public class LoginAdministratorController implements IController {
           // Make sure the user clicked on a populated item
           if (userLoginTable.getSelectionModel().getSelectedItem() != null) {
             UserLogin selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
-            FXMLLoader newLoad =
-                new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
+            FXMLLoader newLoad = new FXMLLoader(getClass().getResource("EditUser.fxml"));
             PopOver popOver = null;
             try {
               popOver = new PopOver(newLoad.load());
