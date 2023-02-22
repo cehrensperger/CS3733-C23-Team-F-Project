@@ -87,6 +87,7 @@ public class MapEditorController implements IController {
 
   @FXML private Circle nodeToDrag;
   private Circle duplicateCircle;
+  private Text locationDragText;
 
   /** Initializes the map editor, adds the map onto it */
 
@@ -132,7 +133,12 @@ public class MapEditorController implements IController {
     duplicateCircle = new Circle(5);
     duplicateCircle.setFill(Color.RED);
     duplicateCircle.setVisible(false);
+
+    locationDragText = new Text("");
+    locationDragText.setVisible(false);
+
     mapPane.getChildren().add(duplicateCircle);
+    mapPane.getChildren().add(locationDragText);
 
     h1.setVisible(false);
     h2.setVisible(false);
@@ -157,10 +163,35 @@ public class MapEditorController implements IController {
                 Dragboard dragboard = row.startDragAndDrop(TransferMode.COPY);
                 dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
                 ClipboardContent clipboardContent = new ClipboardContent();
-                clipboardContent.putString(row.getItem().getLongName());
+                String longName = row.getItem().getLongName();
+                clipboardContent.putString(longName);
                 dragboard.setContent(clipboardContent);
+                locationDragText.setText(longName);
                 mapPane.setOnDragOver(p -> {});
                 mapPane.setOnDragDropped(p -> {});
+
+                root.setOnDragOver(
+                    new EventHandler<DragEvent>() {
+
+                      @Override
+                      public void handle(DragEvent event) {
+                        // System.out.println("in root drag over");
+                        locationDragText.setVisible(true);
+                        locationDragText.setX(event.getX() - 250);
+                        locationDragText.setY(event.getY());
+                      }
+                    });
+
+                root.setOnDragDone(
+                    new EventHandler<DragEvent>() {
+                      @Override
+                      public void handle(DragEvent event) {
+                        locationDragText.setVisible(false);
+                        root.setOnDragDone(p -> {});
+                        root.setOnDragOver(p -> {});
+                      }
+                    });
+
                 for (Node node : mapController.getNodeToCircleMap().keySet()) {
                   Circle circle = mapController.getNodeToCircleMap().get(node);
 
