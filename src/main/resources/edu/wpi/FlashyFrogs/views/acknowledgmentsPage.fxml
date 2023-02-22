@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Acknowledgments" />
-      <HBox prefHeight="443.0" prefWidth="600.0">
+      <TextFlow prefHeight="103.0" prefWidth="600.0" />
+      <HBox prefHeight="420.0" prefWidth="600.0">
          <children>
             <VBox prefHeight="385.0" prefWidth="22.0" />
             <VBox prefHeight="385.0" prefWidth="554.0">
                <children>
                   <TextFlow prefHeight="21.0" prefWidth="554.0">
                      <children>
-                        <Text lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="&#13;&#13;Software Used:" wrappingWidth="145.3367404937744"  style="-fx-font-weight: bold" />
+                        <Label styleClass="bodyBold" text="Software Used:" />
                      </children>
                   </TextFlow>
                   <TextFlow prefHeight="50.0" prefWidth="554.0">
@@ -25,7 +30,8 @@
                   </TextFlow>
                   <TextFlow prefHeight="20.0" prefWidth="554.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dependencies:"  style="-fx-font-weight: bold"/>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold" />
+                        <Label styleClass="bodyBold" text="Dependencies:" />
                      </children>
                   </TextFlow>
                   <TextFlow prefHeight="118.0" prefWidth="554.0">
