@@ -16,7 +16,7 @@ public class AlertController {
   public void initialize() {}
 
   public void insertAnnouncement(Announcement announcement) {
-    summaryField.setText(announcement.getAnnouncement());
+    summaryField.setText(announcement.getDescription());
     String severity = "";
     for (int i = 0; i < announcement.getSeverity().ordinal(); i++) {
       severity = severity + "!";
@@ -26,6 +26,6 @@ public class AlertController {
     authorField.setText(
         announcement.getAuthor().getFirstName() + " " + announcement.getAuthor().getLastName());
     departmentField.setText(announcement.getDepartment().getLongName());
-    descriptionField.setText(announcement.getDescription());
+    descriptionField.setText(announcement.getAnnouncement());
   }
 }
