@@ -127,7 +127,7 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
-                        <SearchableComboBox fx:id="locationBox" promptText="Location of Request" style="-fx-background-color: #F1F1F1;" styleClass="fields">
+                        <SearchableComboBox fx:id="locationBox" promptText="Location of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>

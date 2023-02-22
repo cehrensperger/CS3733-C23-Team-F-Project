@@ -74,6 +74,12 @@
     -fx-text-fill:white;
 }
 
+.blueText
+    /** honestly just if you need a text bigger than body but smaller than header and bold **/
+{
+    -fx-text-fill:white;
+}
+
 .warningText
     /** This controls the style of the warning text that appears when the help
      button is clicked**/
@@ -94,9 +100,9 @@
     /** if you need the blue outline with blue text styling with no set sizes**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color:#F1F1F1;
-    -fx-border-color:#012D5A;
-    -fx-text-fill: #012D5A;
+    -fx-background-color:transparent;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
 }
 
 .blueOutline
@@ -104,9 +110,9 @@
      blue outline) - ex. the toggle all button on the home page.**/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color:#F1F1F1;
-    -fx-border-color:#012D5A;
-    -fx-text-fill: #012D5A;
+    -fx-background-color:transparent;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
 }
 
 .blueBackground
@@ -114,18 +120,18 @@
      white text) - ex. select files in Manage CSVs. **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: #012D5A;
-    -fx-border-color:#012D5A;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #6B6D6F;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
 }
 
 .blueNoSetSize
     /** If you need the blue background with white text with no set size **/
 {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-background-color: #012D5A;
-    -fx-border-color:#012D5A;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #6B6D6F;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
 }
 
 .blueBackgroundSideBar
@@ -152,7 +158,7 @@
 {
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
-    -fx-background-color: #6B6D6F;
+    -fx-background-color: transparent;
     -fx-prompt-text-fill: white;
 }
 
@@ -161,7 +167,7 @@
 {
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
-    -fx-background-color: #6B6D6F;
+    -fx-background-color: transparent;
     -fx-prompt-text-opacity: 50%;
     -fx-prompt-text-fill: white;
 }
@@ -175,8 +181,10 @@
     /** controls all date picker fields within the app **/
 {
     -fx-prompt-text-fill: white;
-    -fx-control-inner-background: #6B6D6F;
-    -fx-control-background: #6B6D6F;
+    -fx-control-inner-background: transparent;
+    -fx-control-background: transparent;
+    -fx-background-color: -fx-control-inner-background;
+
 }
 
 .date-picker > .arrow-button
@@ -190,6 +198,7 @@
     -fx-prompt-text-fill: white;
     -fx-text-fill: white;
     -fx-context-menu-enabled: #012D5A;
+    -fx-control-inner-background: transparent;
 }
 
 .combo-box> .text-field
@@ -465,5 +474,13 @@
 {
     -fx-background-color: #6B6D6F;
     -fx-text-fill: white;
+}
+
+.pathfindingField {
+    /** This controls the input field for controlling what labels to show in the upper right corner of Pathfinding **/
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
+    -fx-background-color: #6B6D6F;
+    -fx-prompt-text-fill: white;
 }
 
