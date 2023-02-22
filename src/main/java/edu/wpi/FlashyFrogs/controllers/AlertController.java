@@ -16,4 +16,17 @@ public class AlertController {
     @FXML private TextArea descriptionField;
     @FXML private TextField authorField;
     @FXML private TextField dateField;
+
+
+    public void initialize() {
+    }
+
+    public void insertAnnouncement(Announcement announcement) {
+        summaryField.setText(announcement.getAnnouncement());
+//        for(int i = 0; i < announcement.getSeverity())
+        dateField.setText(announcement.getCreationDate().toString());
+        authorField.setText(announcement.getAuthor().getFirstName() + " " + announcement.getAuthor().getLastName());
+        departmentField.setText(announcement.getDepartment().getLongName());
+//        descriptionField.setText(announcement.getDescription());
+    }
 }
