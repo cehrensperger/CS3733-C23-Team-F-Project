@@ -93,6 +93,7 @@ public class Announcement {
 
   /** Enumerated type for the possible severities */
   public enum Severity {
+    NONE("none"),
     MILD("mild"),
     INTERMEDIATE("intermediate"),
     SEVERE("severe");
