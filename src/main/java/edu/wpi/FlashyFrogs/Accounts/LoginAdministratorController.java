@@ -32,7 +32,7 @@ public class LoginAdministratorController implements IController {
   @FXML private TableView<UserLogin> userLoginTable;
   @FXML private TableColumn<UserLogin, Number> idCol;
 
-  @FXML private TableColumn<UserLogin, String> rfidCol;
+  @FXML private TableColumn<UserLogin, Boolean> rfidCol;
   @FXML private TableColumn<UserLogin, String> userNameCol;
   @FXML private TableColumn<UserLogin, String> nameCol;
   @FXML private TableColumn<UserLogin, HospitalUser.EmployeeType> empTypeCol;
@@ -85,7 +85,7 @@ public class LoginAdministratorController implements IController {
     rfidCol.setCellValueFactory(
         data -> {
           String rfid = data.getValue().getRFIDBadge();
-          return new SimpleStringProperty(rfid != null ? rfid : "");
+          return new SimpleBooleanProperty(rfid != null);
         });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     nameCol.setCellValueFactory(
@@ -97,12 +97,12 @@ public class LoginAdministratorController implements IController {
     empTypeCol.setCellValueFactory(
         data -> {
           HospitalUser user = data.getValue().getUser();
-          return new SimpleObjectProperty(user.getEmployeeType());
+          return new SimpleObjectProperty<>(user.getEmployeeType());
         });
     deptCol.setCellValueFactory(
         data -> {
           HospitalUser user = data.getValue().getUser();
-          return new SimpleObjectProperty(user.getDepartment());
+          return new SimpleObjectProperty<>(user.getDepartment());
         });
 
     // create logIn table
