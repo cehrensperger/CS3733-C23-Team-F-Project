@@ -40,18 +40,38 @@ public class UserLogin {
 
   @Column(unique = true)
   @Getter
-  @Setter
   private String RFIDBadge; // The users RFID badge ID
 
   @Basic
   @Column(nullable = false)
-  @NonNull
+  @NonNull // Warning can be ignored, it is initialized in the constructor
   @Getter
   private String hash;
 
+  /**
+   * Sets a new password for the user, including hashing it
+   *
+   * @param newPassword the password to set
+   */
   public void setPassword(String newPassword) {
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
     hash = argon2.hash(2, 15 * 1024, 1, newPassword.toCharArray());
+  }
+
+  /**
+   * Sets a new RFID for the user, including hashing it
+   *
+   * @param rfidBadge the password to set
+   */
+  public void setRFIDBadge(String rfidBadge) {
+    // Null-check the badge
+    if (rfidBadge != null) {
+      // If it's valid, encrypt it
+      Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
+      RFIDBadge = argon2.hash(2, 15 * 1024, 1, rfidBadge.toCharArray());
+    } else {
+      RFIDBadge = null; // otherwise clear it
+    }
   }
 
   /** Creates a new UserLogin with empty fields */
@@ -70,12 +90,10 @@ public class UserLogin {
       String RFID,
       @NonNull String thePassword) {
     this.user = user;
-    this.RFIDBadge = RFID;
     this.userName = theUserName;
 
-    // Encrypts password with salt
-    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
-    hash = argon2.hash(2, 15 * 1024, 1, thePassword.toCharArray());
+    setPassword(thePassword);
+    setRFIDBadge(RFID);
   }
 
   /**
@@ -116,11 +134,26 @@ public class UserLogin {
   }
 
   /**
+   * Checks a potential password for this user
+   *
    * @param potentialPassword given by user to be checked against actual password
    * @return true if the password matches the current password, false otherwise
    */
   public boolean checkPasswordEqual(@NonNull String potentialPassword) {
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
     return argon2.verify(hash, potentialPassword.toCharArray());
+  }
+
+  /**
+   * Checks a potential RFID badge for this user
+   *
+   * @param potentialBadge the potential badge for the user
+   * @return true if the logins are equal, false otherwise
+   */
+  public boolean checkRFIDBadgeEqual(@NonNull String potentialBadge) {
+    if (RFIDBadge == null) return false; // Short-circuit if the RFID badge is null
+
+    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
+    return argon2.verify(RFIDBadge, potentialBadge.toCharArray());
   }
 }
