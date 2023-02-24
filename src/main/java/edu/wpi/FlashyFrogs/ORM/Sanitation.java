@@ -108,9 +108,9 @@ public class Sanitation extends ServiceRequest {
 
   /** Enumerated type for the possible types we can create */
   public enum SanitationType {
-    MOPPING("mopping"),
-    SWEEPING("sweeping"),
-    VACUUMING("vacuuming");
+    MOPPING("Mopping"),
+    SWEEPING("Sweeping"),
+    VACUUMING("Vacuuming");
 
     @NonNull public final String SanitationType;
 
