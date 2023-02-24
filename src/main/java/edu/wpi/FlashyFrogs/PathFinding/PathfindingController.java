@@ -226,7 +226,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
       if (nodeName.equals("")) {
         if (errorDeg < -70) {
-          instructions.add(new Instruction("\u{1F88x}Turn Left ", thisNode));
+          instructions.add(new Instruction("\u1F88 Turn Left ", thisNode));
           continueCounter = 0;
         } else if ((errorDeg > -70) && (errorDeg < -45)) {
           instructions.add(new Instruction("\u2196 Take Slight Left ", thisNode));
