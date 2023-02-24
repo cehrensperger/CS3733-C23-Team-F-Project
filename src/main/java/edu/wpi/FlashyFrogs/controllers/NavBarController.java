@@ -5,15 +5,22 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Theme;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 
 @GeneratedExclusion
@@ -29,6 +36,7 @@ public class NavBarController {
   @FXML private MenuButton menu;
 
   @FXML private MenuButton loggedOutMenu;
+  @FXML private Label clockLabel;
 
   @FXML
   public void initialize() {
@@ -49,6 +57,8 @@ public class NavBarController {
     //    helpButton.setDisable(true);
     //    line1.setOpacity(0);
     //    line2.setOpacity(0);
+
+    dateAndTime();
   }
 
   public void logIn() {
@@ -148,5 +158,21 @@ public class NavBarController {
     } else {
       Fapp.setTheme(Theme.LIGHT_THEME);
     }
+  }
+
+  public void dateAndTime() {
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0),
+                event -> {
+                  SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy hh:mm a");
+                  Date date = new Date();
+                  String formattedDate = sdf.format(date);
+                  clockLabel.setText(formattedDate);
+                }),
+            new KeyFrame(Duration.seconds(1)));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
   }
 }

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.SVGPath?>
 
 <BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.NavBarController">
@@ -16,19 +15,12 @@
          <children>
             <HBox alignment="TOP_CENTER" layoutX="66.0" layoutY="28.0" prefHeight="37.0" prefWidth="800.0" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox fx:id="header" alignment="CENTER" styleClass="navBar">
-                     <children>
-                        <Button fx:id="homeButton" mnemonicParsing="false" onAction="#handleHomeButton" styleClass="navBar" text="Home" />
-                        <Line fx:id="line1" endX="100.0" startX="100.0" startY="14.8928861618042" styleClass="navBarLines" />
-                        <Button fx:id="srButton" mnemonicParsing="false" onAction="#handleServiceRequestsButton" styleClass="navBar" text="Service Requests" />
-                        <Line fx:id="line2" endX="100.0" startX="100.0" startY="14.8928861618042" styleClass="navBarLines" />
-                        <Button fx:id="helpButton" mnemonicParsing="false" onAction="#handleHelpButton" styleClass="navBar" text="Help">
-                           <effect>
-                              <Blend />
-                           </effect>
-                        </Button>
-                     </children>
-                  </HBox>
+                  <Label fx:id="clockLabel" text="Time">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <HBox fx:id="header" alignment="CENTER" styleClass="navBar" />
                   <HBox alignment="CENTER_RIGHT" />
                </children>
             </HBox>
@@ -36,7 +28,7 @@
               <items>
                  <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
                  <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
-                 <MenuItem onAction="#changeMode" text="Switch Color Theme"/>
+                 <MenuItem onAction="#changeMode" text="Switch Color Theme" />
                  <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
                   <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />
               </items>
@@ -49,7 +41,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
                   <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
-                  <MenuItem onAction="#changeMode" text="Switch Color Theme"/>
+                  <MenuItem onAction="#changeMode" text="Switch Color Theme" />
                   <MenuItem onAction="#closeApp" text="Close Application" />
                </items>
             </MenuButton>
@@ -57,6 +49,6 @@
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane fx:id="anchorPane" prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
+      <AnchorPane id="clockLabel" fx:id="anchorPane" prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
