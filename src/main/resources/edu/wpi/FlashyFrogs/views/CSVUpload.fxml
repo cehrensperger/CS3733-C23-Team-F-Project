@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="background" prefHeight="350.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
+<AnchorPane prefHeight="350.0" prefWidth="457.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
    <children>
       <MFXButton alignment="BASELINE_LEFT" layoutX="40.0" layoutY="244.0" onAction="#handleChooseFiles" prefHeight="25.0" prefWidth="150.0" styleClass="blueBackground" text="Select Files" AnchorPane.bottomAnchor="73.0" AnchorPane.rightAnchor="267.0">
          <font>
@@ -52,6 +52,6 @@
             </Label>
          </children>
       </VBox>
-      <Label fx:id="errorMessage" alignment="CENTER" layoutX="215.0" layoutY="20.0" prefHeight="17.0" prefWidth="28.0" textFill="RED" AnchorPane.bottomAnchor="313.0" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="20.0" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="215.0" layoutY="20.0" prefHeight="17.0" prefWidth="28.0" textAlignment="CENTER" textFill="RED" AnchorPane.bottomAnchor="313.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>

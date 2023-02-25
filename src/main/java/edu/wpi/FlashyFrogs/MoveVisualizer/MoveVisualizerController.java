@@ -13,11 +13,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -141,9 +143,17 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
    */
   @FXML
   private void addText(ActionEvent actionEvent) {
+    // Don't do anything if the text is empty
+    if (textText.getText().isEmpty()) {
+      return;
+    }
+
     Text text = new Text(textText.getText()); // Create the text
-    text.setStyle("-fx-font-size: 500");
-    text.setWrappingWidth(mapController.getMapWidth() / 2);
+    text.setStyle("-fx-font-size: 250"); // Increase font size
+    text.setTextOrigin(VPos.TOP); // Make sure that the text origin is the top left for coordinates
+
+    // Cap the width at half the screen, however less is okay
+    text.setWrappingWidth(Math.min(mapController.getMapWidth() / 4, text.getWrappingWidth()));
 
     handleAddNode(text); // Add the text
   }
@@ -213,6 +223,95 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     double[] mousePosition = new double[2];
     boolean[] dragEnabled = new boolean[1]; // Whether the drag is enabled
 
+    // Function that validates and executes new X layout and scale
+    BiConsumer<Double, Double> updateX =
+        (layoutX, scale) -> {
+          double adjustmentFactor = ((scale * root.getWidth() - root.getWidth()) / 2);
+          double left = layoutX - adjustmentFactor;
+          double width = scale * root.getWidth();
+
+          // Because scale can be negative, we need to compute the actual bounds
+          // based on the max left and right
+          double actualLeft = Math.min(left, left + width);
+          double actualRight = Math.max(left, left + width);
+
+          // Compute the old adjustment factor, in case we need to "go back"
+          double oldAdjustmentFactor = (root.getScaleX() * root.getWidth() - root.getWidth()) / 2;
+          double oldWidth = root.getScaleX() * root.getWidth();
+
+          // It's valid if it's positive but not outside
+          if (width <= mapController.getMapWidth()) {
+            if (actualLeft >= 0 && actualRight <= mapController.getMapWidth()) {
+              // Set the scale and layout
+              root.setLayoutX(layoutX);
+              root.setScaleX(scale);
+            } else if (actualLeft < 0) {
+              // If it's out in X on the left, go to relative 0
+              if (root.getScaleX() >= 0) {
+                root.setLayoutX(oldAdjustmentFactor);
+              } else {
+                // handle the case of the scale being negative, we need to account for the
+                // adjustment
+                // putting the top left on the wrong side
+                root.setLayoutX(oldAdjustmentFactor - oldWidth);
+              }
+            } else {
+              // On the other side, go to the right
+              if (root.getScaleX() >= 0) {
+                root.setLayoutX(mapController.getMapWidth() - oldWidth + oldAdjustmentFactor);
+              } else {
+                // handle the case of the scale being negative, we need to account for the
+                // adjustment
+                // putting the top left on the wrong side
+                root.setLayoutX(mapController.getMapWidth() + oldAdjustmentFactor);
+              }
+            }
+          }
+        };
+
+    // Function that validates and executes new Y layout and scale
+    BiConsumer<Double, Double> updateY =
+        (layoutY, scale) -> {
+          double adjustmentFactor = ((scale * root.getHeight() - root.getHeight()) / 2);
+          double top = layoutY - adjustmentFactor;
+          double height = scale * root.getHeight();
+
+          // Because scale can be negative, we need to compute the actual bounds
+          // based on the max top and bottom
+          double actualTop = Math.min(top, top + height);
+          double actualBottom = Math.max(top, top + height);
+
+          // Compute the old adjustment factor, in case we need to "go back"
+          double oldAdjustmentFactor = (root.getScaleY() * root.getHeight() - root.getHeight()) / 2;
+          double oldHeight = root.getScaleY() * root.getHeight();
+
+          // It's valid if it's positive but not outside (and the height isn't off)
+          if (height <= mapController.getMapHeight()) {
+            if (actualTop >= 0 && actualBottom <= mapController.getMapHeight()) {
+              // Set the scale and layout
+              root.setLayoutY(layoutY);
+              root.setScaleY(scale);
+            } else if (actualTop < 0) {
+              // If it's out in Y on the top, go to 0 (scaled)
+              if (root.getScaleY() >= 0) {
+                root.setLayoutY(oldAdjustmentFactor);
+              } else {
+                // handle the case of scale being negative, where the adjustment factor
+                // puts the layout on the wrong side
+                root.setLayoutY(oldAdjustmentFactor - oldHeight);
+              }
+            } else {
+              // On the other side, go to the right
+              if (root.getScaleY() >= 0) {
+                root.setLayoutY(mapController.getMapHeight() - oldHeight + oldAdjustmentFactor);
+              } else {
+                //
+                root.setLayoutY(mapController.getMapHeight() + oldAdjustmentFactor);
+              }
+            }
+          }
+        };
+
     node.setOnDragDetected(
         (event) -> {
           // Avoid intercepting from the circle
@@ -239,29 +338,23 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           // Disable the gesture pane (this fixes some weirdness)
           this.mapController.getGesturePane().setGestureEnabled(false);
 
-          // New x and y coords
-          double newX = originalPosition[0] + event.getScreenX() - mousePosition[0];
-          double newY = originalPosition[1] + event.getScreenY() - mousePosition[1];
+          // Divide by scale, so that the mouse distance is actually reflected
+          // in the (potentially zoomed in/out) page
+          // New x and y coords, original + the mouse delta. Since this is layout based, this is
+          // separate from the top
+          // -left based calculate done below!
+          double newX =
+              originalPosition[0]
+                  + (event.getScreenX() - mousePosition[0])
+                      / mapController.getGesturePane().getCurrentScale();
+          double newY =
+              originalPosition[1]
+                  + (event.getScreenY() - mousePosition[1])
+                      / mapController.getGesturePane().getCurrentScale();
 
           // Update the coordinates if they are in bounds
-          if (newX >= 0
-              && newX + root.getBoundsInParent().getWidth() <= mapController.getMapWidth()) {
-            root.setLayoutX(newX);
-          } else if (newX < 0) {
-            root.setLayoutX(0);
-          } else {
-            root.setLayoutX(mapController.getMapWidth() - root.getBoundsInParent().getWidth());
-          }
-
-          // Do the same
-          if (newY >= 0
-              && newY + root.getBoundsInParent().getHeight() <= mapController.getMapHeight()) {
-            root.setLayoutY(newY);
-          } else if (newY < 0) {
-            root.setLayoutY(0);
-          } else {
-            root.setLayoutY(mapController.getMapHeight() - root.getBoundsInParent().getHeight());
-          }
+          updateX.accept(newX, root.getScaleX());
+          updateY.accept(newY, root.getScaleY());
         });
 
     // On drag stop (this represents that?)
@@ -281,6 +374,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     root.setOnContextMenuRequested(
         (event) -> {
           Button deleteButton = new Button("Delete"); // Delete button
+          deleteButton.getStyleClass().addAll("redOutlineNoSetSize");
+          deleteButton.setDefaultButton(true); // Default is this, so that space deletes
 
           PopOver popOver = new PopOver(deleteButton); // Create the pop-over to use
 
@@ -297,6 +392,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     // Drag start coordinates
     double[] dragStart = new double[2];
     double[] startScale = new double[2]; // Starting scales
+    double[] startPosition = new double[2]; // Starting position
     boolean[] dragInProgress =
         new boolean[1]; // Whether a drag is in progress, don't allow resize until progress
 
@@ -312,6 +408,14 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           startScale[0] = root.getScaleX();
           startScale[1] = root.getScaleY();
           dragInProgress[0] = true; // Enable drag
+          startPosition[0] =
+              root.getLayoutX()
+                  - ((root.getScaleX() * root.getWidth() - root.getWidth())
+                      / 2); // Top-left x, for top left updates. Accounts for any current scaling
+          startPosition[1] =
+              root.getLayoutY()
+                  - ((root.getScaleY() * root.getHeight() - root.getHeight())
+                      / 2); // Top-left y, for top left updates. Accounts for any current scaling
         });
 
     // When a drag is in progress
@@ -320,8 +424,29 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           if (dragInProgress[0]) {
             event.consume(); // Consume the event
 
-            root.setScaleX((((event.getScreenX() - dragStart[0]) / dragStart[0])) + startScale[0]);
-            root.setScaleY((((event.getScreenY() - dragStart[1]) / dragStart[1])) + startScale[1]);
+            // Calculate the scales. This math is determined by solving the equalities for scale
+            // newHeight = currentHeight + dragDistance
+            // newHeight = absHeight * scale.
+            // currentHeight = absHeight * currentScale
+            // This whole thing is necessary because JavaFX doesn't recalculate bounds on scale
+            double newScaleX =
+                startScale[0]
+                    + (((event.getScreenX() - dragStart[0])
+                            / mapController.getGesturePane().getCurrentScale())
+                        / root.getWidth());
+            double newScaleY =
+                startScale[1]
+                    + (((event.getScreenY() - dragStart[1])
+                            / mapController.getGesturePane().getCurrentScale())
+                        / root.getHeight());
+
+            // Calculate the shift, essentially the difference in dimension generated by the scaling
+            double shiftX = ((newScaleX - 1) * root.getWidth()) / 2;
+            double shiftY = ((newScaleY - 1) * root.getHeight()) / 2;
+
+            // Update the position and scale if they are good
+            updateX.accept(startPosition[0] + shiftX, newScaleX);
+            updateY.accept(startPosition[1] + shiftY, newScaleY);
           }
         });
 

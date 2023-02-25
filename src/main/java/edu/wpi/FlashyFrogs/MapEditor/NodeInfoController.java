@@ -177,7 +177,7 @@ public class NodeInfoController {
     if (!isNewNode) {
       List<LocationName> locations = node.getCurrentLocation(session, Date.from(Instant.now()));
 
-      System.out.println(locations.size());
+      // System.out.println(locations.size());
       if (!locations.isEmpty()) { // If the location exists
         if (locations.size() < 2) {
 
