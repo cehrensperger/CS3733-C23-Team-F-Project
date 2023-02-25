@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
@@ -19,6 +20,8 @@ import org.controlsfx.control.PopOver;
 @GeneratedExclusion
 public class NavBarController {
 
+  @FXML private MenuItem menuToggleSFX;
+  @FXML private MenuItem loggedOutMenuToggleSFX;
   @FXML private AnchorPane anchorPane;
   @FXML private HBox header;
   @FXML private Line line1;
@@ -41,6 +44,15 @@ public class NavBarController {
     menu.hide();
     header.setDisable(true);
     header.setOpacity(0);
+    //if sounds are turned on, make menu option say that it turns sound off
+    if(Fapp.isSfxOn()) {
+      loggedOutMenuToggleSFX.setText("Turn Sound Effects Off");
+      menuToggleSFX.setText("Turn Sound Effects Off");
+      //if sounds are turned off, make menu option say that it turns sound on
+    } else {
+      loggedOutMenuToggleSFX.setText("Turn Sound Effects On");
+      menuToggleSFX.setText("Turn Sound Effects On");
+    }
     //    srButton.setOpacity(0);
     //    srButton.setDisable(true);
     //    homeButton.setOpacity(0);
@@ -147,6 +159,22 @@ public class NavBarController {
       Fapp.setTheme(Theme.DARK_THEME);
     } else {
       Fapp.setTheme(Theme.LIGHT_THEME);
+    }
+  }
+
+  /**
+   * If sound effects were off, turn them on and say that clicking the menu option again will turn them off.
+   * If sound effects were on, turn them off and say that clicking the menu option again will turn them on.
+   * @param actionEvent
+   */
+  public void toggleSFX(ActionEvent actionEvent) {
+    MenuItem menu = (MenuItem) actionEvent.getSource();
+    if (Fapp.isSfxOn()) {
+      Fapp.setSfxOn(false);
+      menu.setText("Turn Sound Effects On");
+    } else {
+      Fapp.setSfxOn(true);
+      menu.setText("Turn Sound Effects Off");
     }
   }
 }
