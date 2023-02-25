@@ -15,7 +15,9 @@ public class AboutController {
   @FXML private javafx.scene.layout.VBox VBox;
 
   /**
-   * When the name of a team member is clicked, display a popup with their major and a fun fact about them.
+   * When the name of a team member is clicked, display a popup with their major and a fun fact
+   * about them.
+   *
    * @param event
    * @throws IOException
    */
@@ -61,7 +63,7 @@ public class AboutController {
         text = "A CS major from Turkey";
         break;
       case "Ian Wright":
-        text = "";
+        text = "A CS major who is sad there wasn't much snow in 2023";
         break;
     }
     controller.setContent(text);
