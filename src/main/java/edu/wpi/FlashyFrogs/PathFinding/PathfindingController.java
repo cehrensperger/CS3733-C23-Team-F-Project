@@ -244,11 +244,11 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     back.setVisible(true);
 
     ObservableList<Instruction> instructions = FXCollections.observableArrayList();
-
     double curAngle = 0;
 
     pathTable.setItems(instructions);
     for (int i = 0; i < currentPath.size() - 1; i++) { // For each line in the path
+
       Node thisNode = currentPath.get(i);
       Node nextNode = currentPath.get(i + 1);
 
@@ -274,9 +274,17 @@ public class PathfindingController extends AbstractPathVisualizerController impl
               .orElse(new LocationName("", LocationName.LocationType.HALL, ""))
               .getShortName();
 
+      if (i == 0) {
+        String newFloor = "Starting at floor " + currentPath.get(i).getFloor() + ":";
+        instructions.add(new Instruction(newFloor, thisNode));
+      } else if (currentPath.get(i).getFloor() != currentPath.get(i - 1).getFloor()) {
+        String newFloor = "Going to floor " + currentPath.get(i).getFloor() + ":";
+        instructions.add(new Instruction(newFloor, thisNode));
+      }
+
       if (nodeName.equals("")) {
         if (errorDeg < -70) {
-          instructions.add(new Instruction("\u1F88 Turn Left ", thisNode));
+          instructions.add(new Instruction("\u2190 Turn Left ", thisNode));
           continueCounter = 0;
         } else if ((errorDeg > -70) && (errorDeg < -45)) {
           instructions.add(new Instruction("\u2196 Take Slight Left ", thisNode));
