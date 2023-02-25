@@ -5,6 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
@@ -94,7 +95,10 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         .addListener(
             (observable, oldValue, newValue) -> {
               mapController.setDate(
-                  Date.from(newValue.atStartOfDay(ZoneId.of("America/Montreal")).toInstant()));
+                  MapEditorController.add(
+                      Date.from(newValue.atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                      Calendar.MILLISECOND,
+                      1));
               mapController.redraw();
             });
     h1.setVisible(false);
@@ -186,6 +190,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
   /** Method that generates table for textual path instructions */
   private void drawTable() {
+    int continueCounter = 0;
     pathTable.setVisible(true);
 
     ObservableList<Instruction> instructions = FXCollections.observableArrayList();
@@ -220,22 +225,42 @@ public class PathfindingController extends AbstractPathVisualizerController impl
               .getShortName();
 
       if (nodeName.equals("")) {
-        if (errorDeg < -10) {
-          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees", thisNode));
-        } else if (errorDeg > 10) {
-          instructions.add(new Instruction("Turn left " + errorDeg + " degrees", thisNode));
+        if (errorDeg < -70) {
+          instructions.add(new Instruction("\u1F88 Turn Left ", thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > -70) && (errorDeg < -45)) {
+          instructions.add(new Instruction("\u2196 Take Slight Left ", thisNode));
+          continueCounter = 0;
+        } else if (errorDeg > 70) {
+          instructions.add(new Instruction(" \u2192 Turn Right ", thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > 45) && (errorDeg < 70)) {
+          instructions.add(new Instruction("\u2197 Take Slight Right ", thisNode));
+          continueCounter = 0;
         } else {
-          instructions.add(new Instruction("Continue", thisNode));
+          if (continueCounter == 0) {
+            instructions.add(new Instruction("\u2191 Continue", thisNode));
+            continueCounter = continueCounter + 1;
+          }
         }
       } else {
-        if (errorDeg < -10) {
-          instructions.add(
-              new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName, thisNode));
-        } else if (errorDeg > 10) {
-          instructions.add(
-              new Instruction("Turn left " + errorDeg + " degrees at " + nodeName, thisNode));
+        if (errorDeg < -70) {
+          instructions.add(new Instruction("\u2190 Turn Left at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > -70) && (errorDeg < -45)) {
+          instructions.add(new Instruction("\u2196 Take Slight Left at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if (errorDeg > 70) {
+          instructions.add(new Instruction("\u2192 Turn Right at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > 45) && (errorDeg < 70)) {
+          instructions.add(new Instruction("\u2197 Take Slight Right at " + nodeName, thisNode));
+          continueCounter = 0;
         } else {
-          instructions.add(new Instruction("Continue at " + nodeName, thisNode));
+          if (continueCounter == 0) {
+            instructions.add(new Instruction("\u2191 Continue at " + nodeName, thisNode));
+            continueCounter = continueCounter + 1;
+          }
         }
       }
     }
@@ -453,7 +478,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     public void run() {
       Session session = CONNECTION.getSessionFactory().openSession();
 
-      // _______________________________________________________________________________
       // Get the new path from the PathFinder
       Node startNode =
           startingBox
@@ -470,7 +494,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                   Date.from(
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
-      // ___________________________________________________________________________
 
       session.close();
       // Call unlock() on the UI thread when finished

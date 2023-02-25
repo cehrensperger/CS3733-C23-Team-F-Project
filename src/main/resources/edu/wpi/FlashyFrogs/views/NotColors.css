@@ -82,6 +82,13 @@
     -fx-font-size: 14pt;
 }
 
+.middleTextObject
+    /** Mimics .middle for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
+{
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 14pt;
+}
+
 .middleBold
     /** honestly just if you need a text bigger than body but smaller than header and bold **/
 {
@@ -114,6 +121,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 184px;
     -fx-pref-height: 25px;
+    -fx-cursor: pointer;
 }
 
 .blueOutlineNoSetSize
@@ -123,6 +131,7 @@
     -fx-border-radius: 10px !important;
     -fx-font-family: "Roboto Light";
     -fx-font-size: 10pt;
+    -fx-cursor: pointer;
 }
 
 .blueOutline
@@ -135,6 +144,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 150px;
     -fx-pref-height: 25px;
+    -fx-cursor: pointer;
 }
 
 .blueBackground
@@ -147,6 +157,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 150px;
     -fx-pref-height: 25px;
+    -fx-cursor: pointer;
 }
 
 .blueNoSetSize
@@ -167,6 +178,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 184px;
     -fx-pref-height: 25px;
+    -fx-cursor: pointer;
 }
 
 .serviceRequestButtons
@@ -179,7 +191,7 @@
     -fx-pref-width: 184px;
     -fx-pref-height: 75px;
     -fx-text-alignment: Baseline Left;
-    -fx-cursor: hand;
+    -fx-cursor: pointer;
 }
 
 .fields
@@ -269,7 +281,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 100px;
     -fx-pref-height: 25px;
-    -fx-cursor: hand;
+    -fx-cursor: pointer;
 }
 
 .clearButton
@@ -281,7 +293,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 100px;
     -fx-pref-height: 25px;
-    -fx-cursor: hand;
+    -fx-cursor: pointer;
 }
 
 .redOutlineNoSetSize
@@ -292,6 +304,7 @@
     -fx-border-radius: 10px !important;
     -fx-font-family: "Roboto Light";
     -fx-font-size: 10pt;
+    -fx-cursor: pointer;
 }
 
 .cancelButton
@@ -304,6 +317,7 @@
     -fx-font-size: 10pt;
     -fx-pref-width: 150px;
     -fx-pref-height: 25;
+    -fx-cursor: pointer;
 }
 
 .bar
@@ -458,14 +472,14 @@
 {
     -fx-font-size: 16;
     -fx-font-family: "Roboto Light";
-    -fx-cursor: hand;
+    -fx-cursor: pointer;
 }
 
 .check-box
 {
     -fx-font-size: 12pt;
     -fx-font-family: "Roboto Light";
-    -fx-cursor: hand;
+    -fx-cursor: pointer;
 }
 
 .login
@@ -475,6 +489,7 @@
     -fx-border-radius: 10px !important;
     -fx-font-family: "Roboto Light";
     -fx-font-size: 10pt;
+    -fx-cursor: pointer;
 }
 
 .pathfindingField {
@@ -490,11 +505,8 @@
 }
 
 .text-area:focused .content {
-    -fx-border-color: transparent;
-    -fx-background-color:  #f1f1f1;
     -fx-border-radius: 10px;
 }
 .text-area .content {
-    -fx-border-color: transparent;
 }
 

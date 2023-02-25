@@ -12,6 +12,7 @@ import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.util.HashMap;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
@@ -43,6 +45,23 @@ public class LoginController implements IController {
   /** Background text, used for RFID badge capture */
   private String backgroundText = "";
 
+  @NonNull
+  private final HashMap<String, UserLogin> users; // Users in the hospital, username to user
+
+  /** Pre-loads all the users, username to user object */
+  public LoginController() {
+    users = new HashMap<>(); // Create the users map
+
+    // With a session, populate the map
+    try (Session session = CONNECTION.getSessionFactory().openSession()) {
+      // Get the users, cache them
+      session
+          .createQuery("FROM UserLogin", UserLogin.class)
+          .getResultList()
+          .forEach((login) -> users.put(login.getUserName(), login));
+    }
+  }
+
   public void initialize() {
     Fapp.resetStackLogin();
 
@@ -54,35 +73,24 @@ public class LoginController implements IController {
                 .setOnKeyPressed(
                     (event -> {
                       if (event.getCode().equals(KeyCode.ENTER)) {
-                        System.out.println("attempting login");
-                        System.out.println(backgroundText);
                         // If the username exists
                         if (!username.getText().isEmpty()) {
                           loginButton(null); // Try logging in
                         } else {
-                          Session session = CONNECTION.getSessionFactory().openSession();
-                          UserLogin logIn = null;
                           if (!backgroundText.equals("")) {
-                            // Log in
-                            logIn =
-                                session
-                                    .createQuery(
-                                        "FROM UserLogin  WHERE RFIDBadge = :badge", UserLogin.class)
-                                    .setParameter("badge", backgroundText)
-                                    .uniqueResult();
-                          }
-                          // If the login is valid
-                          if (logIn != null) {
-                            CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
-                            Fapp.setScene("views", "Home");
-                            Fapp.logIn();
-                            CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
-                            backgroundText = ""; // Clear the background text
-                          } else {
-                            backgroundText = ""; // Clear the background text
-                          }
+                            for (UserLogin user : users.values()) {
+                              if (user.checkRFIDBadgeEqual(backgroundText)) {
+                                CurrentUserEntity.CURRENT_USER.setCurrentUser(user.getUser());
+                                Fapp.setScene("views", "Home");
+                                Fapp.logIn();
+                                CurrentUserEntity.CURRENT_USER.setCurrentUser(user.getUser());
+                                backgroundText = ""; // Clear the background text
+                                return;
+                              }
+                            }
 
-                          session.close(); // Close the session
+                            backgroundText = ""; // Clear the text otherwise
+                          }
                         }
                       } else {
                         backgroundText += event.getText(); // Add the text to the RFID string
@@ -96,33 +104,17 @@ public class LoginController implements IController {
       // One of the values is left null
       errorMessage.setText("Please fill out all fields!");
       errorMessage.setVisible(true);
+    } else if (users.containsKey(username.getText())
+        && users.get(username.getText()).checkPasswordEqual(password.getText())) {
+      CurrentUserEntity.CURRENT_USER.setCurrentUser(users.get(username.getText()).getUser());
+      Fapp.setScene("views", "Home");
+      Fapp.logIn();
+      CurrentUserEntity.CURRENT_USER.setCurrentUser(users.get(username.getText()).getUser());
+      backgroundText = ""; // Clear the background text
     } else {
-      Session ses = CONNECTION.getSessionFactory().openSession();
-      try {
-        UserLogin logIn =
-            ses.createQuery("FROM UserLogin where userName = :username", UserLogin.class)
-                .setParameter("username", username.getText())
-                .getSingleResult();
-        if (logIn == null) { // Username does not exist in database
-          throw new Exception();
-        } else if (!logIn.checkPasswordEqual(
-            password.getText())) { // Username's Password is not equal to what was inputted
-          throw new Exception();
-        } else { // Username and Password match database
-          username.setText("");
-          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
-          Fapp.setScene("views", "Home");
-          Fapp.logIn();
-          CurrentUserEntity.CURRENT_USER.setCurrentUser(logIn.getUser());
-        }
-        ses.close();
-      } catch (Exception e) {
-        //        System.out.println(e);
-        errorMessage.setText("Invalid Username or Password.");
-        errorMessage.setVisible(true);
-        ses.close();
-        throw e;
-      }
+      // if we haven't exited by this point
+      errorMessage.setText("Invalid Username or Password.");
+      errorMessage.setVisible(true);
     }
   }
 

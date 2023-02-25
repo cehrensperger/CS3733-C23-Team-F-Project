@@ -30,7 +30,7 @@
                <VBox.margin>
                   <Insets bottom="5.0" left="18.0" right="18.0" />
                </VBox.margin></CheckBox>
-            <Text fx:id="h1" styleClass="warningText" text="Select if you would like edges to be auto repaired when nodes are changed" wrappingWidth="170.0">
+            <Text fx:id="h1" styleClass="warningText" text="Select for edges to auto-repair when nodes are changed" wrappingWidth="170.0">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
@@ -45,7 +45,7 @@
                   <Insets bottom="10.0" left="18.0" right="18.0" />
                </VBox.margin>
             </DatePicker>
-            <Text fx:id="h2" styleClass="warningText" text="Select which date the locations should reflect" wrappingWidth="184.0">
+            <Text fx:id="h2" styleClass="warningText" text="Select date locations should reflect" wrappingWidth="184.0">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>
@@ -101,7 +101,7 @@
                   <Insets left="18.0" />
                </VBox.margin>
             </Button>
-            <Text fx:id="h6" styleClass="warningText" text="Quick draw nodes and edges on the map" wrappingWidth="184.0">
+            <Text fx:id="h6" styleClass="warningText" text="Quick draw nodes and edges on the map. Use esc to stop." wrappingWidth="184.0">
                <VBox.margin>
                   <Insets bottom="10.0" left="18.0" />
                </VBox.margin>

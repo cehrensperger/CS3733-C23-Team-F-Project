@@ -48,7 +48,7 @@ public class LoginAdministratorController implements IController {
   }
 
   public void handleNewUser(ActionEvent actionEvent) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("../Accounts/NewUser.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(getClass().getResource("NewUser.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     NewUserController newUser = newLoad.getController();
     newUser.setPopOver(popOver);
@@ -85,7 +85,7 @@ public class LoginAdministratorController implements IController {
     rfidCol.setCellValueFactory(
         data -> {
           String rfid = data.getValue().getRFIDBadge();
-          return new SimpleStringProperty(rfid != null ? rfid : "");
+          return new SimpleStringProperty(rfid != null ? "Yes" : "");
         });
     userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     nameCol.setCellValueFactory(
@@ -97,12 +97,12 @@ public class LoginAdministratorController implements IController {
     empTypeCol.setCellValueFactory(
         data -> {
           HospitalUser user = data.getValue().getUser();
-          return new SimpleObjectProperty(user.getEmployeeType());
+          return new SimpleObjectProperty<>(user.getEmployeeType());
         });
     deptCol.setCellValueFactory(
         data -> {
           HospitalUser user = data.getValue().getUser();
-          return new SimpleObjectProperty(user.getDepartment());
+          return new SimpleObjectProperty<>(user.getDepartment());
         });
 
     // create logIn table
@@ -127,8 +127,7 @@ public class LoginAdministratorController implements IController {
           // Make sure the user clicked on a populated item
           if (userLoginTable.getSelectionModel().getSelectedItem() != null) {
             UserLogin selectedUserLogin = userLoginTable.getSelectionModel().getSelectedItem();
-            FXMLLoader newLoad =
-                new FXMLLoader(getClass().getResource("../Accounts/EditUser.fxml"));
+            FXMLLoader newLoad = new FXMLLoader(getClass().getResource("EditUser.fxml"));
             PopOver popOver = null;
             try {
               popOver = new PopOver(newLoad.load());
