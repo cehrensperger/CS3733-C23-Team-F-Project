@@ -1018,6 +1018,7 @@ public class MapEditorController implements IController {
    * @param circle the circle representing the node
    */
   private void nodeCreation(@NonNull Node node, @NonNull Circle circle) {
+
     // On hover, add an outline to the circle
     circle
         .hoverProperty()
@@ -1125,87 +1126,238 @@ public class MapEditorController implements IController {
           }
         });
 
+    // handles both left and right click since I couldn't get
+      // setOnContextMenuRequested to fire at the correct time
     circle.setOnMouseClicked(
         (event) -> {
-          event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
 
-          // If quick draw is active
-          if (quickDrawActive) {
-            quickDrawHandleNodeClick(node); // handle it
-            return; // Don't do any selection stuff!
+            // need to check to make sure for some reason
+          if (event.isConsumed()) {
+            return;
           }
 
-          // If shift is not down
-          if (!event.isShiftDown()) {
-            selectedNodes.clear(); // Clear
-          }
+          //MouseButton.SECONDARY == right click
+            //TODO: make this work with other ways of doing right click (ctrl + left-click)
 
-          // Otherwise, add this
-          selectedNodes.add(node);
+          if (event.getButton() == MouseButton.SECONDARY) {
+
+            // Connor's notes
+            // if circle is not in selected nodes, it is outside the selection, don't have to worry
+            // about weirdness
+            // node and circle represent the same thing
+            // If circle is not in currently selected nodes, deselect other selected nodes, add this
+            // one and show Ian's popup
+            // If selected nodes is empty, show Ian's popup on circle
+            // If circle is in selected nodes and it is length 1, do above
+            // If circle is in selected nodes and it is more than length 1, do new thing
+            //
+            // If we are dragging or quick draw is on
+            if (event.isConsumed() || dragInProgress || quickDrawActive) {
+              return; // Don't do anything!
+            }
+            // If we're no longer hovering and the pop over exists, delete it. We will
+            // either create a new one
+            // or, keep it deleted
+            clearNodePopOver();
+            if (selectedNodes.contains(node) && selectedNodes.size() > 1) {
+
+                // Bulk right click has occurred
+                // create a popup at the mouse position *in the gesture pane*
+
+                //TODO: make this look a lot better....
+              FXMLLoader contextMenuLoader =
+                  new FXMLLoader(getClass().getResource("GroupSelectionContextMenu.fxml"));
+              try {
+                // Try creating the pop-over
+                circlePopOver = new PopOver(contextMenuLoader.load());
+              } catch (IOException e) {
+                throw new RuntimeException(e); // If it fails, throw an exception
+              }
+
+              //don't let the user drag the popup around
+              circlePopOver.setDetachable(false);
+              GroupSelectionContextMenuController controller =
+                  contextMenuLoader.getController(); // Get the controller to use
+              controller.setCircle(circle);
+              //              List<Circle> circlesToAlign = new ArrayList<>();
+              //              for (Node n : selectedNodes) {
+              //                circlesToAlign.add(mapController.getNodeToCircleMap().get(n));
+              //              }
+              controller.setOnAutoAlign(
+                  e -> {
+                    // TODO: set alignVertical based on standard deviation????
+                    tryAutoAlign((int) circle.getCenterX(), (int) circle.getCenterY(), false);
+                  });
+              circlePopOver.show(circle); // Show the pop-over
+
+              // Disable the gesture pane (this causes clunkyness when you click on the page after
+              // using the pop-up)
+              mapController.getGesturePane().setGestureEnabled(false);
+
+              // On close of the pop-up
+              circlePopOver.setOnHidden(
+                  // Re-enable map gestures
+                  (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
+
+              event.consume();
+            } else {
+
+              // If right-clicked circle is outside the current selection
+              // clear the other selection and do the thing for one node
+              if (!selectedNodes.contains(node)
+                  || (selectedNodes.size() == 1 && selectedNodes.contains(node))) {
+
+                selectedNodes
+                    .clear(); // Clear the selected nodes, so what is happening is perfectly clear
+
+                // Get the node info in FXML form
+                FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
+
+                try {
+                  // Try creating the pop-over
+                  circlePopOver = new PopOver(nodeInfoLoader.load());
+                } catch (IOException e) {
+                  throw new RuntimeException(e); // If it fails, throw an exception
+                }
+
+                NodeInfoController controller =
+                    nodeInfoLoader.getController(); // Get the controller to use
+                controller.setNode(
+                    node,
+                    mapController.getMapSession(),
+                    (oldNode) -> {
+                      selectedNodes.remove(oldNode); // Remove the node
+
+                      mapController.deleteNode(oldNode, false); // On delete, delete
+                      clearNodePopOver();
+                    },
+                    (oldNode, newNode) -> {
+                      mapController.moveNode(oldNode, newNode); // On move move
+                      clearNodePopOver();
+                    },
+                    (oldLocation) -> {
+                      locationTable.getItems().remove(oldLocation);
+                      mapController.removeLocationName(oldLocation);
+                    },
+                    (oldLocation, newLocation, locationNode) -> {
+                      updateLocationInTable(oldLocation, newLocation); // Update the table
+                      // Update the location node
+                      mapController.updateLocationName(oldLocation, newLocation, locationNode);
+                    }, // Update when locations update
+                    false); // Delete on delete
+
+                circlePopOver.show(circle); // Show the pop-over
+
+                // Disable the gesture pane (this causes clunkyness when you click on the page after
+                // using the pop-up)
+                mapController.getGesturePane().setGestureEnabled(false);
+
+                // On close of the pop-up
+                circlePopOver.setOnHidden(
+                    // Re-enable map gestures
+                    (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
+              }
+            }
+
+          } else {
+            event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
+
+            // If quick draw is active
+            if (quickDrawActive) {
+              quickDrawHandleNodeClick(node); // handle it
+              return; // Don't do any selection stuff!
+            }
+
+            // If shift is not down
+            if (!event.isShiftDown()) {
+              selectedNodes.clear(); // Clear
+            }
+
+            // Otherwise, add this
+            selectedNodes.add(node);
+          }
         });
+  }
 
-    // On right-click (context menu)
-    circle.setOnContextMenuRequested(
-        (event) -> {
-          // If we are dragging or quick draw is on
-          if (event.isConsumed() || dragInProgress || quickDrawActive) {
-            return; // Don't do anything!
+  /**
+   * @param x X coordinate of the circle you are aligning to.
+   * @param y Y coordinate of the circle you are aligning to.
+   * @param alignVertical whether to align vertically or horizontally.
+   */
+  private void tryAutoAlign(int x, int y, boolean alignVertical) {
+
+    Collection<Node> nodes =
+        selectedNodes.stream().toList(); // Collection of nodes, so that we can remove them
+
+    for (Node node : nodes) {
+
+      if (alignVertical) {
+        if (x != node.getXCoord()) {
+
+          if (mapController
+                  .getMapSession()
+                  .find(Node.class, createNodeID(node.getFloor(), x, node.getYCoord()))
+              != null) {
+            throw new IllegalArgumentException("Duplicate position detected!");
           }
-          // If we're no longer hovering and the pop over exists, delete it. We will
-          // either create a new one
-          // or, keep it deleted
-          clearNodePopOver();
-
-          selectedNodes
-              .clear(); // Clear the selected nodes, so what is happening is perfectly clear
-
-          // Get the node info in FXML form
-          FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
-
-          try {
-            // Try creating the pop-over
-            circlePopOver = new PopOver(nodeInfoLoader.load());
-          } catch (IOException e) {
-            throw new RuntimeException(e); // If it fails, throw an exception
+        }
+      } else {
+        if (y != node.getYCoord()) {
+          if (mapController
+                  .getMapSession()
+                  .find(Node.class, createNodeID(node.getFloor(), node.getXCoord(), y))
+              != null) {
+            throw new IllegalArgumentException("Duplicate position detected!");
           }
+        }
+      }
+    }
 
-          NodeInfoController controller =
-              nodeInfoLoader.getController(); // Get the controller to use
-          controller.setNode(
-              node,
-              mapController.getMapSession(),
-              (oldNode) -> {
-                selectedNodes.remove(oldNode); // Remove the node
+    selectedNodes.clear();
+    // Now actually do the move
+    for (Node node : nodes) {
+      if (alignVertical) {
+        String newID = createNodeID(node.getFloor(), x, node.getYCoord()); // Get the ID
 
-                mapController.deleteNode(oldNode, false); // On delete, delete
-                clearNodePopOver();
-              },
-              (oldNode, newNode) -> {
-                mapController.moveNode(oldNode, newNode); // On move move
-                clearNodePopOver();
-              },
-              (oldLocation) -> {
-                locationTable.getItems().remove(oldLocation);
-                mapController.removeLocationName(oldLocation);
-              },
-              (oldLocation, newLocation, locationNode) -> {
-                updateLocationInTable(oldLocation, newLocation); // Update the table
-                // Update the location node
-                mapController.updateLocationName(oldLocation, newLocation, locationNode);
-              }, // Update when locations update
-              false); // Delete on delete
+        // Create a query to move the node in the DB
+        mapController
+            .getMapSession()
+            .createMutationQuery(
+                "UPDATE Node n SET n.id = :newID, n.xCoord = "
+                    + ":newXCoord, n.yCoord = :newYCoord WHERE n.id = :oldID")
+            .setParameter("newID", newID)
+            .setParameter("newXCoord", x)
+            .setParameter("newYCoord", node.getYCoord())
+            .setParameter("oldID", node.getId())
+            .executeUpdate();
 
-          circlePopOver.show(circle); // Show the pop-over
+        Node newNode = mapController.getMapSession().find(Node.class, newID); // Get the new node
 
-          // Disable the gesture pane (this causes clunkyness when you click on the page after
-          // using the pop-up)
-          mapController.getGesturePane().setGestureEnabled(false);
+        mapController.moveNode(node, newNode); // Process the node change
 
-          // On close of the pop-up
-          circlePopOver.setOnHidden(
-              // Re-enable map gestures
-              (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
-        });
+        selectedNodes.add(newNode); // Re-add this to the selected
+      } else {
+        String newID = createNodeID(node.getFloor(), node.getXCoord(), y); // Get the ID
+
+        // Create a query to move the node in the DB
+        mapController
+            .getMapSession()
+            .createMutationQuery(
+                "UPDATE Node n SET n.id = :newID, n.xCoord = "
+                    + ":newXCoord, n.yCoord = :newYCoord WHERE n.id = :oldID")
+            .setParameter("newID", newID)
+            .setParameter("newXCoord", node.getXCoord())
+            .setParameter("newYCoord", y)
+            .setParameter("oldID", node.getId())
+            .executeUpdate();
+
+        Node newNode = mapController.getMapSession().find(Node.class, newID); // Get the new node
+
+        mapController.moveNode(node, newNode); // Process the node change
+
+        selectedNodes.add(newNode); // Re-add this to the selected
+      }
+    }
   }
 
   /**
