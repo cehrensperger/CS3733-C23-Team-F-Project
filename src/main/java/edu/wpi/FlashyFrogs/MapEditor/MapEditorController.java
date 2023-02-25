@@ -400,19 +400,6 @@ public class MapEditorController implements IController {
     AnchorPane.setLeftAnchor(map, 0.0);
     AnchorPane.setRightAnchor(map, 0.0);
 
-    // Make the map controller click register clear selected nodes
-    mapController
-        .getGesturePane()
-        .setOnMouseClicked(
-            (event) -> {
-              // Check to ensure the node isn't consumed
-              if (!event.isConsumed()) {
-                selectedNodes.clear(); // Clear the nodes
-              }
-
-              event.consume();
-            });
-
     mapController.setEdgeCreation(
         (edge, line) -> {
           line.toBack(); // Move the line to the back, for visual reasons
@@ -1044,6 +1031,16 @@ public class MapEditorController implements IController {
     locationContainer.setLayoutY(circle.getCenterY() - 20); // Set the Y
   }
 
+  private void disableBoxCreation() {
+    mapController
+        .getCurrentDrawingPane()
+        .setOnDragDetected(
+            event -> {
+              mapController.getCurrentDrawingPane().setOnMouseDragged(e -> {});
+              mapController.getCurrentDrawingPane().setOnMouseReleased(e -> {});
+            });
+  }
+
   /**
    * Function to be called on node creation, handles setting actions for the circles
    *
@@ -1051,6 +1048,7 @@ public class MapEditorController implements IController {
    * @param circle the circle representing the node
    */
   private void nodeCreation(@NonNull Node node, @NonNull Circle circle) {
+
     // On hover, add an outline to the circle
     circle
         .hoverProperty()
@@ -1097,6 +1095,7 @@ public class MapEditorController implements IController {
           if (!dragInProgress) {
             return; // Don't do anything
           }
+
           // Calculate the differential on the positions
           int xDiff = (int) Math.round(event.getX()) - node.getXCoord();
           int yDiff = (int) Math.round(event.getY()) - node.getYCoord();
@@ -1162,7 +1161,9 @@ public class MapEditorController implements IController {
           event.consume();
         });
 
-    circle.setOnMousePressed(
+    // handles both left and right click since I couldn't get
+    // setOnContextMenuRequested to fire at the correct time
+    circle.setOnMouseClicked(
         (event) -> {
 
           // need to check to make sure for some reason
@@ -1271,67 +1272,57 @@ public class MapEditorController implements IController {
               if (!selectedNodes.contains(node)
                   || (selectedNodes.size() == 1 && selectedNodes.contains(node))) {
 
-          selectedNodes
-              .clear(); // Clear the selected nodes, so what is happening is perfectly clear
+                selectedNodes
+                    .clear(); // Clear the selected nodes, so what is happening is perfectly clear
 
-          // Get the node info in FXML form
-          FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
+                // Get the node info in FXML form
+                FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
 
-          try {
-            // Try creating the pop-over
-            circlePopOver = new PopOver(nodeInfoLoader.load());
-          } catch (IOException e) {
-            throw new RuntimeException(e); // If it fails, throw an exception
-          }
+                try {
+                  // Try creating the pop-over
+                  circlePopOver = new PopOver(nodeInfoLoader.load());
+                } catch (IOException e) {
+                  throw new RuntimeException(e); // If it fails, throw an exception
+                }
 
-          NodeInfoController controller =
-              nodeInfoLoader.getController(); // Get the controller to use
-          controller.setNode(
-              node,
-              mapController.getMapSession(),
-              (oldNode) -> {
-                selectedNodes.remove(oldNode); // Remove the node
+                NodeInfoController controller =
+                    nodeInfoLoader.getController(); // Get the controller to use
+                controller.setNode(
+                    node,
+                    mapController.getMapSession(),
+                    (oldNode) -> {
+                      selectedNodes.remove(oldNode); // Remove the node
 
-                mapController.deleteNode(oldNode, false); // On delete, delete
-                clearNodePopOver();
-              },
-              (oldNode, newNode) -> {
-                mapController.moveNode(oldNode, newNode); // On move move
-                clearNodePopOver();
-              },
-              (oldLocation) -> {
-                locationTable.getItems().remove(oldLocation);
-                mapController.removeLocationName(oldLocation);
-              },
-              (oldLocation, newLocation, locationNode) -> {
-                updateLocationInTable(oldLocation, newLocation); // Update the table
-                // Update the location node
-                mapController.updateLocationName(oldLocation, newLocation, locationNode);
-              }, // Update when locations update
-              false); // Delete on delete
+                      mapController.deleteNode(oldNode, false); // On delete, delete
+                      clearNodePopOver();
+                    },
+                    (oldNode, newNode) -> {
+                      mapController.moveNode(oldNode, newNode); // On move move
+                      clearNodePopOver();
+                    },
+                    (oldLocation) -> {
+                      locationTable.getItems().remove(oldLocation);
+                      mapController.removeLocationName(oldLocation);
+                    },
+                    (oldLocation, newLocation, locationNode) -> {
+                      updateLocationInTable(oldLocation, newLocation); // Update the table
+                      // Update the location node
+                      mapController.updateLocationName(oldLocation, newLocation, locationNode);
+                    }, // Update when locations update
+                    false); // Delete on delete
 
-          circlePopOver.show(circle); // Show the pop-over
+                circlePopOver.show(circle); // Show the pop-over
 
-          // Disable the gesture pane (this causes clunkyness when you click on the page after
-          // using the pop-up)
-          mapController.getGesturePane().setGestureEnabled(false);
+                // Disable the gesture pane (this causes clunkyness when you click on the page after
+                // using the pop-up)
+                mapController.getGesturePane().setGestureEnabled(false);
 
-          // On close of the pop-up
-          circlePopOver.setOnHidden(
-              // Re-enable map gestures
-              (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
-        });
-  }
-
-  private void disableBoxCreation() {
-    mapController
-        .getCurrentDrawingPane()
-        .setOnDragDetected(
-            event -> {
-              mapController.getCurrentDrawingPane().setOnMouseDragged(e -> {});
-              mapController.getCurrentDrawingPane().setOnMouseReleased(e -> {});
-            });
-  }
+                // On close of the pop-up
+                circlePopOver.setOnHidden(
+                    // Re-enable map gestures
+                    (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
+              }
+            }
 
           } else {
             event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
@@ -1354,161 +1345,6 @@ public class MapEditorController implements IController {
           event.consume();
         });
   }
-
-    private void setBoxCreation() {
-        mapController
-                .getCurrentDrawingPane()
-                .setOnMousePressed(
-                        event -> {
-                            Timer timer = new Timer();
-                            mapController.getGesturePane().setGestureEnabled(false);
-                            double startX = event.getX();
-                            double startY = event.getY();
-                            Rectangle rect = new Rectangle(startX, startY, 0, 0);
-                            mapController.getCurrentDrawingPane().getChildren().add(rect);
-                            rect.setFill(Paint.valueOf("012D5A"));
-                            rect.setOpacity(0.3);
-
-                            mapController
-                                    .getCurrentDrawingPane()
-                                    .setOnMouseDragged(
-                                            e -> {
-                                                double width = e.getX() - startX;
-                                                double height = e.getY() - startY;
-                                                double kp = 0.2;
-                                                double errorX = 0;
-                                                double errorY = 0;
-
-                                                if (e.getX() >= mapController.getGesturePane().getCurrentX() * -1
-                                                        && e.getX()
-                                                        <= (mapController.getGesturePane().getWidth()
-                                                        / mapController.getGesturePane().getCurrentScaleX()
-                                                        - mapController.getGesturePane().getCurrentX())) {
-                                                    if (width < 0) {
-                                                        rect.setX(e.getX());
-                                                    }
-                                                    rect.setWidth(abs(width));
-                                                }
-                                                if (e.getX()
-                                                        < (mapController.getGesturePane().getCurrentX() * -1)
-                                                        + 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
-                                                    errorX =
-                                                            e.getX()
-                                                                    - ((mapController.getGesturePane().getCurrentX() * -1)
-                                                                    + 50.0 / mapController.getGesturePane().getCurrentScaleX());
-                                                } else if (e.getX()
-                                                        > ((mapController.getGesturePane().getWidth()
-                                                        / mapController.getGesturePane().getCurrentScaleX())
-                                                        - mapController.getGesturePane().getCurrentX())
-                                                        - 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
-                                                    errorX =
-                                                            e.getX()
-                                                                    - (((mapController.getGesturePane().getWidth()
-                                                                    / mapController.getGesturePane().getCurrentScaleX())
-                                                                    - mapController.getGesturePane().getCurrentX())
-                                                                    - 50.0 / mapController.getGesturePane().getCurrentScaleX());
-                                                } else {
-                                                    errorX = 0;
-                                                }
-
-                                                if (e.getY() >= mapController.getGesturePane().getCurrentY() * -1
-                                                        && e.getY()
-                                                        <= (mapController.getGesturePane().getHeight()
-                                                        / mapController.getGesturePane().getCurrentScaleY()
-                                                        - mapController.getGesturePane().getCurrentY())) {
-                                                    if (height < 0) {
-                                                        rect.setY(e.getY());
-                                                    }
-                                                    rect.setHeight(abs(height));
-                                                }
-                                                if (e.getY()
-                                                        < (mapController.getGesturePane().getCurrentY() * -1)
-                                                        + 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
-                                                    errorY =
-                                                            e.getY()
-                                                                    - ((mapController.getGesturePane().getCurrentY() * -1)
-                                                                    + 50.0 / mapController.getGesturePane().getCurrentScaleX());
-                                                } else if (e.getY()
-                                                        > ((mapController.getGesturePane().getHeight()
-                                                        / mapController.getGesturePane().getCurrentScaleY())
-                                                        - mapController.getGesturePane().getCurrentY())
-                                                        - 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
-                                                    errorY =
-                                                            e.getY()
-                                                                    - (((mapController.getGesturePane().getHeight()
-                                                                    / mapController.getGesturePane().getCurrentScaleY())
-                                                                    - mapController.getGesturePane().getCurrentY())
-                                                                    - 50.0 / mapController.getGesturePane().getCurrentScaleY());
-                                                } else {
-                                                    errorY = 0;
-                                                }
-                                                double[] finalErrorX = {errorX};
-                                                double[] finalErrorY = {errorY};
-                                                // todo: make changes work
-                                                double[] width2 = {width};
-                                                double[] height2 = {height};
-
-                                                if (task != null) task.cancel();
-
-                                                task =
-                                                        new TimerTask() {
-                                                            @Override
-                                                            public void run() {
-                                                                Platform.runLater(
-                                                                        () ->
-                                                                                mapController
-                                                                                        .getGesturePane()
-                                                                                        .translateBy(
-                                                                                                new Dimension2D(
-                                                                                                        finalErrorX[0] * kp, finalErrorY[0] * kp)));
-
-                                                                if (mapController.getGesturePane().getCurrentX() * -1
-                                                                        < mapPane.getWidth()
-                                                                        - mapController.getGesturePane().getWidth() * -1
-                                                                        && mapController.getGesturePane().getCurrentX() * -1 > 0) {
-
-                                                                    width2[0] += finalErrorX[0] * kp;
-                                                                    if (width < 0) {
-                                                                        Platform.runLater(
-                                                                                () -> rect.setX(rect.getX() + finalErrorX[0] * kp));
-                                                                    }
-                                                                    Platform.runLater(() -> rect.setWidth(abs(width2[0])));
-                                                                }
-
-                                                                if (mapController.getGesturePane().getCurrentY() * -1
-                                                                        < mapPane.getHeight()
-                                                                        - mapController.getGesturePane().getHeight() * -1
-                                                                        && mapController.getGesturePane().getCurrentY() * -1 > 0) {
-                                                                    height2[0] += finalErrorY[0] * kp;
-                                                                    if (height < 0) {
-                                                                        Platform.runLater(
-                                                                                () -> rect.setY(rect.getY() + finalErrorY[0] * kp));
-                                                                    }
-                                                                    Platform.runLater(() -> rect.setHeight(abs(height2[0])));
-                                                                }
-                                                            }
-                                                        };
-
-                                                timer.scheduleAtFixedRate(task, 0, 15);
-                                            });
-
-                            mapController
-                                    .getCurrentDrawingPane()
-                                    .setOnMouseReleased(
-                                            e -> {
-                                                if (task != null) task.cancel();
-                                                timer.cancel();
-                                                selectedNodes.clear();
-                                                for (Node node : mapController.getNodeToCircleMap().keySet()) {
-                                                    if (rect.contains(new Point2D(node.getXCoord(), node.getYCoord()))) {
-                                                        selectedNodes.add(node);
-                                                    }
-                                                }
-                                                mapController.getCurrentDrawingPane().getChildren().remove(rect);
-                                                mapController.getGesturePane().setGestureEnabled(true);
-                                            });
-                        });
-    }
 
   /**
    * @param x X coordinate of the circle you are aligning to.
@@ -1767,5 +1603,168 @@ public class MapEditorController implements IController {
     }
 
     return Math.sqrt(standardDeviation / length);
+  }
+
+  private void setBoxCreation() {
+    mapController
+        .getCurrentDrawingPane()
+        .setOnMousePressed(
+            event -> {
+              Timer timer = new Timer();
+              mapController.getGesturePane().setGestureEnabled(false);
+              double startX = event.getX();
+              double startY = event.getY();
+              Rectangle rect = new Rectangle(startX, startY, 0, 0);
+              mapController.getCurrentDrawingPane().getChildren().add(rect);
+              rect.setFill(Paint.valueOf("012D5A"));
+              rect.setOpacity(0.3);
+
+              mapController
+                  .getCurrentDrawingPane()
+                  .setOnMouseDragged(
+                      e -> {
+                        if (!e.isConsumed()) {
+                          double width = e.getX() - startX;
+                          double height = e.getY() - startY;
+                          double kp = 0.2;
+                          double errorX = 0;
+                          double errorY = 0;
+
+                          if (e.getX() >= mapController.getGesturePane().getCurrentX() * -1
+                              && e.getX()
+                                  <= (mapController.getGesturePane().getWidth()
+                                          / mapController.getGesturePane().getCurrentScaleX()
+                                      - mapController.getGesturePane().getCurrentX())) {
+                            if (width < 0) {
+                              rect.setX(e.getX());
+                            }
+                            rect.setWidth(abs(width));
+                          }
+                          if (e.getX()
+                              < (mapController.getGesturePane().getCurrentX() * -1)
+                                  + 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
+                            errorX =
+                                e.getX()
+                                    - ((mapController.getGesturePane().getCurrentX() * -1)
+                                        + 50.0 / mapController.getGesturePane().getCurrentScaleX());
+                          } else if (e.getX()
+                              > ((mapController.getGesturePane().getWidth()
+                                          / mapController.getGesturePane().getCurrentScaleX())
+                                      - mapController.getGesturePane().getCurrentX())
+                                  - 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
+                            errorX =
+                                e.getX()
+                                    - (((mapController.getGesturePane().getWidth()
+                                                / mapController.getGesturePane().getCurrentScaleX())
+                                            - mapController.getGesturePane().getCurrentX())
+                                        - 50.0 / mapController.getGesturePane().getCurrentScaleX());
+                          } else {
+                            errorX = 0;
+                          }
+
+                          if (e.getY() >= mapController.getGesturePane().getCurrentY() * -1
+                              && e.getY()
+                                  <= (mapController.getGesturePane().getHeight()
+                                          / mapController.getGesturePane().getCurrentScaleY()
+                                      - mapController.getGesturePane().getCurrentY())) {
+                            if (height < 0) {
+                              rect.setY(e.getY());
+                            }
+                            rect.setHeight(abs(height));
+                          }
+                          if (e.getY()
+                              < (mapController.getGesturePane().getCurrentY() * -1)
+                                  + 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
+                            errorY =
+                                e.getY()
+                                    - ((mapController.getGesturePane().getCurrentY() * -1)
+                                        + 50.0 / mapController.getGesturePane().getCurrentScaleX());
+                          } else if (e.getY()
+                              > ((mapController.getGesturePane().getHeight()
+                                          / mapController.getGesturePane().getCurrentScaleY())
+                                      - mapController.getGesturePane().getCurrentY())
+                                  - 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
+                            errorY =
+                                e.getY()
+                                    - (((mapController.getGesturePane().getHeight()
+                                                / mapController.getGesturePane().getCurrentScaleY())
+                                            - mapController.getGesturePane().getCurrentY())
+                                        - 50.0 / mapController.getGesturePane().getCurrentScaleY());
+                          } else {
+                            errorY = 0;
+                          }
+                          double[] finalErrorX = {errorX};
+                          double[] finalErrorY = {errorY};
+                          // todo: make changes work
+                          double[] width2 = {width};
+                          double[] height2 = {height};
+
+                          if (task != null) task.cancel();
+
+                          task =
+                              new TimerTask() {
+                                @Override
+                                public void run() {
+                                  Platform.runLater(
+                                      () ->
+                                          mapController
+                                              .getGesturePane()
+                                              .translateBy(
+                                                  new Dimension2D(
+                                                      finalErrorX[0] * kp, finalErrorY[0] * kp)));
+
+                                  if (mapController.getGesturePane().getCurrentX() * -1
+                                          < mapPane.getWidth()
+                                              - mapController.getGesturePane().getWidth() * -1
+                                      && mapController.getGesturePane().getCurrentX() * -1 > 0) {
+
+                                    width2[0] += finalErrorX[0] * kp;
+                                    if (width < 0) {
+                                      Platform.runLater(
+                                          () -> rect.setX(rect.getX() + finalErrorX[0] * kp));
+                                    }
+                                    Platform.runLater(() -> rect.setWidth(abs(width2[0])));
+                                  }
+
+                                  if (mapController.getGesturePane().getCurrentY() * -1
+                                          < mapPane.getHeight()
+                                              - mapController.getGesturePane().getHeight() * -1
+                                      && mapController.getGesturePane().getCurrentY() * -1 > 0) {
+                                    height2[0] += finalErrorY[0] * kp;
+                                    if (height < 0) {
+                                      Platform.runLater(
+                                          () -> rect.setY(rect.getY() + finalErrorY[0] * kp));
+                                    }
+                                    Platform.runLater(() -> rect.setHeight(abs(height2[0])));
+                                  }
+                                }
+                              };
+
+                          timer.scheduleAtFixedRate(task, 0, 15);
+                        }
+                      });
+
+              mapController
+                  .getCurrentDrawingPane()
+                  .setOnMouseReleased(
+                      e -> {
+                        if (!e.isConsumed()) {
+                          if (!e.isShiftDown() && !(e.getButton() == MouseButton.SECONDARY)) {
+                            selectedNodes.clear();
+                          }
+
+                          if (task != null) task.cancel();
+                          timer.cancel();
+
+                          for (Node node : mapController.getNodeToCircleMap().keySet()) {
+                            if (rect.contains(new Point2D(node.getXCoord(), node.getYCoord()))) {
+                              selectedNodes.add(node);
+                            }
+                          }
+                          mapController.getCurrentDrawingPane().getChildren().remove(rect);
+                          mapController.getGesturePane().setGestureEnabled(true);
+                        }
+                      });
+            });
   }
 }
