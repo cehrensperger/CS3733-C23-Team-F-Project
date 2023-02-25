@@ -1216,6 +1216,11 @@ public class MapEditorController implements IController {
    * @param yDiff the y-delta
    */
   private void tryCommitBulkMove(int xDiff, int yDiff) {
+    // If there's no delta, do nothing
+    if (xDiff == 0 && yDiff == 0) {
+      return;
+    }
+
     Collection<Node> nodes =
         selectedNodes.stream().toList(); // Collection of nodes, so that we can remove them
 
@@ -1223,9 +1228,11 @@ public class MapEditorController implements IController {
     for (Node node : nodes) {
       if (mapController
               .getMapSession()
-              .find(
-                  Node.class,
+              .createQuery("FROM Node WHERE id = :id", Node.class)
+              .setParameter(
+                  "id",
                   createNodeID(node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff))
+              .uniqueResult()
           != null) {
         throw new IllegalArgumentException("Duplicate position detected!");
       }
