@@ -53,7 +53,6 @@ public class EditUserController implements IController {
     this.username.setText(selectedUserLogin.getUserName());
     this.deptBox.getSelectionModel().select(currentUser.getDepartment());
     this.employeeType.getSelectionModel().select(currentUser.getEmployeeType());
-    this.rfid.setText(currentUserLogin.getRFIDBadge());
 
     initDepartment_EmpType(deptBox, employeeType);
   }

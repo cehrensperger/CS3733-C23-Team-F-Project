@@ -94,10 +94,10 @@ public class ComputerService extends ServiceRequest {
 
   /** Enumerated type for the possible serviceTypes we can create */
   public enum ServiceType {
-    HARDWARE_REPAIR("hardware repair"),
-    SOFTWARE_REPAIR("software repair"),
-    CONNECTION_ISSUE("connection issue"),
-    MISC("miscellaneous");
+    HARDWARE_REPAIR("Hardware Repair"),
+    SOFTWARE_REPAIR("Software Repair"),
+    CONNECTION_ISSUE("Connection Issue"),
+    MISC("Miscellaneous");
 
     @NonNull public final String ServiceType;
 
@@ -123,10 +123,10 @@ public class ComputerService extends ServiceRequest {
 
   /** Enumerated type for the possible DeviceTypes we can create */
   public enum DeviceType {
-    KIOSK("kiosk"),
-    LAPTOP("laptop"),
-    DESKTOP("desktop"),
-    PERSONAL("personal");
+    KIOSK("Kiosk"),
+    LAPTOP("Laptop"),
+    DESKTOP("Desktop"),
+    PERSONAL("Personal");
 
     @NonNull public final String DeviceType;
 
@@ -137,6 +137,16 @@ public class ComputerService extends ServiceRequest {
      */
     DeviceType(@NonNull String deviceType) {
       DeviceType = deviceType;
+    }
+
+    /**
+     * Override for the toString, returns the type as a string
+     *
+     * @return the type as a string
+     */
+    @Override
+    public String toString() {
+      return this.DeviceType;
     }
   }
 }

@@ -96,9 +96,9 @@ public abstract class ServiceRequest {
 
   /** Enumerated type for the possible statuses we can create */
   public enum Status {
-    BLANK("blank"),
-    PROCESSING("processing"),
-    DONE("done");
+    BLANK("Blank"),
+    PROCESSING("Processing"),
+    DONE("Done");
 
     @NonNull public final String status;
 
@@ -124,11 +124,11 @@ public abstract class ServiceRequest {
 
   /** Enumerated type for the possible departments we can create */
   public enum EmpDept {
-    NURSING("nursing"),
-    CARDIOLOGY("cardiology"),
-    RADIOLOGY("radiology"),
-    MAINTENANCE("maintenance"),
-    TRAUMA_UNIT("trauma unit");
+    NURSING("Nursing"),
+    CARDIOLOGY("Cardiology"),
+    RADIOLOGY("Radiology"),
+    MAINTENANCE("Maintenance"),
+    TRAUMA_UNIT("Trauma Unit");
 
     @NonNull public final String EmpDept;
 
@@ -154,9 +154,9 @@ public abstract class ServiceRequest {
 
   /** Enumerated type for the possible urgencies we can create */
   public enum Urgency {
-    VERY_URGENT("very urgent"),
-    MODERATELY_URGENT("moderately urgent"),
-    NOT_URGENT("not urgent");
+    VERY_URGENT("Very Urgent"),
+    MODERATELY_URGENT("Moderately Urgent"),
+    NOT_URGENT("Not Urgent");
 
     @NonNull public final String Urgency;
 
