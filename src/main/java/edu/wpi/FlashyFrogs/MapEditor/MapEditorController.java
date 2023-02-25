@@ -1,5 +1,7 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
+import static java.lang.Math.abs;
+
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
@@ -29,6 +31,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -40,6 +44,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -390,15 +395,6 @@ public class MapEditorController implements IController {
     AnchorPane.setRightAnchor(map, 0.0);
 
     // Make the map controller click register clear selected nodes
-    mapController
-        .getGesturePane()
-        .setOnMouseClicked(
-            (event) -> {
-              // Check to ensure the node isn't consumed
-              if (!event.isConsumed()) {
-                selectedNodes.clear(); // Clear the nodes
-              }
-            });
 
     mapController.setEdgeCreation(
         (edge, line) -> {
@@ -688,6 +684,7 @@ public class MapEditorController implements IController {
                       1));
               mapController.redraw();
             });
+    setBoxCreation();
   }
 
   /**
@@ -922,7 +919,7 @@ public class MapEditorController implements IController {
       h6.setVisible(true);
       h7.setVisible(true);
       hDone = true;
-    } else if (hDone) {
+    } else {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
@@ -1029,6 +1026,7 @@ public class MapEditorController implements IController {
     // Set the on-click processor
     circle.setOnDragDetected(
         (event) -> {
+          disableBoxCreation();
           // If quick draw is enabled
           if (quickDrawActive) {
             return; // Do nothing
@@ -1056,6 +1054,8 @@ public class MapEditorController implements IController {
           if (!dragInProgress) {
             return; // Don't do anything
           }
+
+          disableBoxCreation();
 
           // Calculate the differential on the positions
           int xDiff = (int) Math.round(event.getX()) - node.getXCoord();
@@ -1089,6 +1089,7 @@ public class MapEditorController implements IController {
     // On drag stop, this is the only thing that represents that for some reason
     circle.setOnMouseReleased(
         (event) -> {
+          setBoxCreation();
           // If a drag isn't in progress (for instance simple release)
           if (!dragInProgress) {
             return; // Do nothing
@@ -1123,6 +1124,7 @@ public class MapEditorController implements IController {
           event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
 
           // If quick draw is active
+
           if (quickDrawActive) {
             quickDrawHandleNodeClick(node); // handle it
             return; // Don't do any selection stuff!
@@ -1199,6 +1201,85 @@ public class MapEditorController implements IController {
               // Re-enable map gestures
               (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
         });
+  }
+
+  private void disableBoxCreation() {
+    mapController
+        .getCurrentDrawingPane()
+        .setOnDragDetected(
+            event -> {
+              mapController.getCurrentDrawingPane().setOnMouseDragged(e -> {});
+              mapController.getCurrentDrawingPane().setOnMouseReleased(e -> {});
+            });
+  }
+
+  private void setBoxCreation() {
+    mapController
+        .getCurrentDrawingPane()
+        .setOnMousePressed(
+            event -> {
+              mapController.getGesturePane().setGestureEnabled(false);
+              double startX = event.getX();
+              double startY = event.getY();
+              Rectangle rect = new Rectangle(startX, startY, 0, 0);
+              mapController.getCurrentDrawingPane().getChildren().add(rect);
+              rect.setFill(Paint.valueOf("012D5A"));
+              rect.setOpacity(0.3);
+
+              mapController
+                  .getCurrentDrawingPane()
+                  .setOnMouseDragged(
+                      e -> {
+                        double width = e.getX() - startX;
+                        double height = e.getY() - startY;
+
+                        if (e.getX() >= mapController.getGesturePane().getCurrentX() * -1
+                            && e.getX() <= mapPane.getWidth() - 20) {
+                          if (width < 0) {
+                            rect.setX(e.getX());
+                          }
+                          rect.setWidth(abs(width));
+                        } else if (e.getX()
+                            < (mapController.getGesturePane().getCurrentX() * -1) + 50) {
+                          mapController.getGesturePane().translateBy(new Dimension2D(-10, 0));
+                        } else if (e.getX() > (mapController.getGesturePane().getWidth() - 50)) {
+                          mapController.getGesturePane().translateBy(new Dimension2D(10, 0));
+                        }
+
+                        if (e.getY() >= mapController.getGesturePane().getCurrentY() * -1
+                            && e.getY() <= mapController.getCurrentDrawingPane().getHeight() - 20) {
+                          if (height < 0) {
+                            rect.setY(e.getY());
+                          }
+                          rect.setHeight(abs(height));
+                        } else if (e.getY()
+                            < (mapController.getGesturePane().getCurrentY() * -1) + 50) {
+                          mapController.getGesturePane().translateBy(new Dimension2D(0, -10));
+                        } else if (e.getY() > (mapController.getGesturePane().getHeight() - 50)) {
+                          mapController.getGesturePane().translateBy(new Dimension2D(0, 10));
+                        }
+                      });
+
+              mapController
+                  .getCurrentDrawingPane()
+                  .setOnMouseReleased(
+                      e -> {
+                        selectedNodes.clear();
+                        for (Node node : mapController.getNodeToCircleMap().keySet()) {
+                          if (rect.contains(new Point2D(node.getXCoord(), node.getYCoord()))) {
+                            selectedNodes.add(node);
+                          }
+                        }
+
+                        System.out.println(e.getX());
+                        System.out.println(mapController.getGesturePane().getCurrentX());
+                        System.out.println(mapController.getGesturePane().getCurrentScaleX());
+                        System.out.println(mapPane.getWidth());
+                        System.out.println(mapController.getCurrentDrawingPane().getWidth());
+                        mapController.getCurrentDrawingPane().getChildren().remove(rect);
+                        mapController.getGesturePane().setGestureEnabled(true);
+                      });
+            });
   }
 
   /**
