@@ -7,6 +7,8 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+
+import edu.wpi.FlashyFrogs.Sound;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,8 +87,10 @@ public class AddMoveController {
       // tell the user what they did wrong
     } catch (NullPointerException e) {
       errorMessage.setText("This move already exists.");
+      Sound.ERROR.play();
     } catch (Exception e) {
       errorMessage.setText("Please fill all fields.");
+      Sound.ERROR.play();
       throw (e);
     }
   }

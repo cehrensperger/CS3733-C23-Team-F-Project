@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.Sound;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.time.Instant;
 import java.util.Date;
@@ -68,12 +69,14 @@ public class NodeInfoController {
       yCoordInt = Integer.parseInt(yCoord); // Parse y
     } catch (NumberFormatException error) {
       // If something went wrong, throw an exception indicating as much
+        Sound.ERROR.play();
       throw new IllegalArgumentException("Coordinates must be numeric!");
     }
 
     // If the coordinates are out of bound
     if (xCoordInt < 0 || xCoordInt > 9999 || yCoordInt < 0 || yCoordInt > 9999) {
       throw new IllegalArgumentException(
+              Sound.ERROR.play();
           "Coordinates must be 0 -> 9999!"); // Throw an exception indicating
     }
 
@@ -297,6 +300,7 @@ public class NodeInfoController {
                       .uniqueResult()
                   != null) {
             errorText.setText("A node with that ID already exists! No changes saved.");
+              Sound.ERROR.play();
             return; // Short-circuit, prevent submit
           }
 
