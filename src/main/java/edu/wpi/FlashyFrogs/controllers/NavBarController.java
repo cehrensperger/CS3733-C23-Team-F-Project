@@ -60,7 +60,7 @@ public class NavBarController {
    * clicking the item will turn sound effects on or off: clicking the menu item will turn sound
    * effects on if sound effects are currently set to off, and vice versa
    */
-  public void updateToggleSFX() {
+  private void updateToggleSFX() {
     // if sounds are turned on, make menu option say that it turns sound off
     if (Fapp.isSfxOn()) {
       loggedOutMenuToggleSFX.setText("Turn Sound Effects Off");
@@ -164,7 +164,8 @@ public class NavBarController {
    *
    * @throws IOException
    */
-  public void changeMode() throws IOException {
+  @FXML
+  private void changeMode() throws IOException {
     if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
       Fapp.setTheme(Theme.DARK_THEME);
     } else {
@@ -179,7 +180,8 @@ public class NavBarController {
    *
    * @param actionEvent
    */
-  public void toggleSFX(ActionEvent actionEvent) {
+  @FXML
+  private void toggleSFX(ActionEvent actionEvent) {
     MenuItem menu = (MenuItem) actionEvent.getSource();
     if (Fapp.isSfxOn()) {
       Fapp.setSfxOn(false);
