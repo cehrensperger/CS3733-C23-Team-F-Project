@@ -1127,17 +1127,17 @@ public class MapEditorController implements IController {
         });
 
     // handles both left and right click since I couldn't get
-      // setOnContextMenuRequested to fire at the correct time
+    // setOnContextMenuRequested to fire at the correct time
     circle.setOnMouseClicked(
         (event) -> {
 
-            // need to check to make sure for some reason
+          // need to check to make sure for some reason
           if (event.isConsumed()) {
             return;
           }
 
-          //MouseButton.SECONDARY == right click
-            //TODO: make this work with other ways of doing right click (ctrl + left-click)
+          // MouseButton.SECONDARY == right click
+          // TODO: make this work with other ways of doing right click (ctrl + left-click)
 
           if (event.getButton() == MouseButton.SECONDARY) {
 
@@ -1161,10 +1161,10 @@ public class MapEditorController implements IController {
             clearNodePopOver();
             if (selectedNodes.contains(node) && selectedNodes.size() > 1) {
 
-                // Bulk right click has occurred
-                // create a popup at the mouse position *in the gesture pane*
+              // Bulk right click has occurred
+              // create a popup at the mouse position *in the gesture pane*
 
-                //TODO: make this look a lot better....
+              // TODO: make this look a lot better....
               FXMLLoader contextMenuLoader =
                   new FXMLLoader(getClass().getResource("GroupSelectionContextMenu.fxml"));
               try {
@@ -1174,7 +1174,7 @@ public class MapEditorController implements IController {
                 throw new RuntimeException(e); // If it fails, throw an exception
               }
 
-              //don't let the user drag the popup around
+              // don't let the user drag the popup around
               circlePopOver.setDetachable(false);
               GroupSelectionContextMenuController controller =
                   contextMenuLoader.getController(); // Get the controller to use
