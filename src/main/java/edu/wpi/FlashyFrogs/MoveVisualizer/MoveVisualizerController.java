@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiFunction;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -222,6 +224,16 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     double[] mousePosition = new double[2];
     boolean[] dragEnabled = new boolean[1]; // Whether the drag is enabled
 
+      // Function that validates new X layout and scale
+      BiFunction<Double, Double, Boolean> validateX = (layoutX, scale) -> {
+          return true;
+      };
+
+      // Function that validates new Y layout and scale
+      BiFunction<Double, Double, Boolean> validateY = (layoutY, scale) -> {
+          return true;
+      };
+
     node.setOnDragDetected(
         (event) -> {
           // Avoid intercepting from the circle
@@ -372,8 +384,10 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             double shiftY = ((newScaleY - 1) * root.getHeight()) / 2;
 
             root.setScaleX(newScaleX);
-            root.setScaleY(newScaleY);
             root.setLayoutX(startPosition[0] + shiftX);
+
+
+            root.setScaleY(newScaleY);
             root.setLayoutY(startPosition[1] + shiftY);
           }
         });
