@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.Alerts;
 
 import edu.wpi.FlashyFrogs.ORM.Announcement;
 import javafx.fxml.FXML;

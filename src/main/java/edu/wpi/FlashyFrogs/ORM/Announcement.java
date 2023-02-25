@@ -36,6 +36,7 @@ public class Announcement {
 
   @ManyToOne
   @Getter
+  @Setter
   @JoinColumn(
       name = "department",
       foreignKey =

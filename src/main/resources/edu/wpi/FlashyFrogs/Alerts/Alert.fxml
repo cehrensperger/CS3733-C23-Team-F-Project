@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="208.0" prefWidth="190.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AlertController">
+<AnchorPane prefHeight="208.0" prefWidth="190.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Alerts.AlertController">
     <VBox fx:id="announcementVBox" layoutX="10.0" prefHeight="215.0" prefWidth="220.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <children>
             <StackPane maxWidth="190.0" prefHeight="50.0" prefWidth="190.0">

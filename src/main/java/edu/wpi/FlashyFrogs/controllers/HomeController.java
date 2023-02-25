@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
+import edu.wpi.FlashyFrogs.Alerts.AlertController;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
@@ -400,25 +401,27 @@ public class HomeController implements IController {
   }
 
   public void manageAnnouncements(ActionEvent event) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AlertManager.fxml"));
-    PopOver popOver = new PopOver(newLoad.load()); // create the popover
-
-    AlertManagerController controller = newLoad.getController();
-    controller.setPopOver(popOver);
-
-    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-    javafx.scene.Node node =
-        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
-    popOver.show(node); // display the popover
-
-    popOver
-        .showingProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue) {
-                refreshAlerts();
-              }
-            });
+    Fapp.setScene("Alerts", "AlertManager");
+    //    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/NewAlert.fxml"));
+    //    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+    //
+    //    NewAlertController controller = newLoad.getController();
+    //    controller.setPopOver(popOver);
+    //
+    //    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    //    javafx.scene.Node node =
+    //        (javafx.scene.Node) event.getSource(); // Get the node representation of what called
+    // this
+    //    popOver.show(node); // display the popover
+    //
+    //    popOver
+    //        .showingProperty()
+    //        .addListener(
+    //            (observable, oldValue, newValue) -> {
+    //              if (!newValue) {
+    //                refreshAlerts();
+    //              }
+    //            });
   }
 
   public void onClose() {}
@@ -532,7 +535,7 @@ public class HomeController implements IController {
   }
 
   public void insertAlert(Announcement announcement) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Alert.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("Alerts/Alert.fxml"));
 
     Parent root = newLoad.load();
     alertBox.getChildren().add(root);

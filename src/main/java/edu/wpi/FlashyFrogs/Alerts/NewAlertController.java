@@ -1,4 +1,4 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.Alerts;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
@@ -12,6 +12,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Setter;
@@ -20,13 +21,14 @@ import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class AlertManagerController {
+public class NewAlertController {
+  @Setter private PopOver popOver;
+  @Setter private AlertManagerController alertManagerController;
   @FXML private TextField summaryField;
   @FXML private TextArea descriptionField;
   @FXML private SearchableComboBox<Department> deptBox;
   @FXML private ComboBox<Announcement.Severity> severityBox;
-
-  @Setter private PopOver popOver;
+  @FXML private DatePicker dateField;
 
   public void initialize() {
     Session session = CONNECTION.getSessionFactory().openSession();
@@ -59,10 +61,16 @@ public class AlertManagerController {
         session.persist(announcement);
         transaction.commit();
         session.close();
-        handleCancel(actionEvent);
+        alertManagerController.initialize();
+        popOver.hide();
+        //        handleCancel(actionEvent);
       } catch (RollbackException exception) {
         session.clear();
         // TODO Do something smart and throw an error maybe
+        session.close();
+      } catch (Exception exception) {
+        session.clear();
+        // TODO Do something smart also
         session.close();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
@@ -70,14 +78,5 @@ public class AlertManagerController {
       // TODO Do something smart and throw an error maybe
       session.close();
     }
-  }
-
-  public void handleCancel(javafx.event.ActionEvent actionEvent) {
-    summaryField.setText("");
-    descriptionField.setText("");
-    deptBox.valueProperty().set(null);
-    severityBox.valueProperty().set(null);
-
-    popOver.hide();
   }
 }
