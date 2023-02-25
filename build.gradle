@@ -62,6 +62,8 @@ dependencies {
             'com.onexip:FlexBoxFX:0.1.5.3-SNAPSHOT',
             'com.github.hervegirod:fxsvgimage:1.1',
             'net.java.dev.jna:jna:5.12.1',
+            'org.hibernate:hibernate-c3p0:6.1.6.Final',
+            'com.jfoenix:jfoenix:9.0.10',
 
             'org.apache.commons:commons-math3:3.6.1'
     )

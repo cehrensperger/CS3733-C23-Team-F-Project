@@ -229,6 +229,24 @@ public class MapController {
     }
   }
 
+  public void deleteNodes(List<Node> selectedNodes, boolean autoRepair) {
+    Collection<Node> nodesToDelete = selectedNodes.stream().toList(); // Get the nodes to delete
+
+    selectedNodes.clear(); // Clear the selected nodes. This must happen before deleting
+    // in the
+
+    // On node delete
+    nodesToDelete.forEach(
+        (node) -> {
+          // For each node, delete it
+          deleteNode(node, autoRepair); // Delete the node
+          getMapSession()
+              .createMutationQuery("DELETE FROM " + "Node WHERE id = :id")
+              .setParameter("id", node.getId())
+              .executeUpdate();
+        }); // Delete all selected nodes
+  }
+
   private void deleteAndAutoRepair(Node node) {
 
     List<Node> allChildren = node.getChildren(getMapSession());
@@ -635,77 +653,37 @@ public class MapController {
   private void setDisplayText(Display display) {
     displayEnum = display;
     Collection<VBox> boxes = getNodeToLocationBox().values();
-    LinkedList<Text> list = new LinkedList<>();
 
-    switch (display.name()) {
-      case "LOCATION_NAMES" -> {
-        // orders text as loc, loc, sr...
-        // or as loc, sr...
-        // depending on number of locations
-        for (VBox box : boxes) {
-          for (int i = 0; i < box.getChildren().size(); i++) {
-            Text text = (Text) box.getChildren().get(i);
+    // For each box
+    for (VBox box : boxes) {
+      Collection<Text> locations = new LinkedList<>(); // List of locations
+      Collection<Text> serviceRequests = new LinkedList<>(); // List of service requests
 
-            if (text.getText().contains("_")) {
-              list.add(text);
-              text.setOpacity(0);
-            } else {
-              list.add(0, text);
-              text.setOpacity(1);
-            }
-          }
-          box.getChildren().setAll(list);
-          box.setMouseTransparent(true);
-          list.clear();
+      // For each node in the box (the text)
+      for (javafx.scene.Node node : box.getChildren()) {
+        Text text = (Text) node;
+
+        // If there is an underscore, it's a service request
+        if (text.getText().contains("_")) {
+          serviceRequests.add(text); // Add this to the list of service requests
+
+          // Set this to be visible if and only if we're displaying service requests or both
+          text.setVisible(displayEnum == Display.SERVICE_REQUESTS || displayEnum == Display.BOTH);
+        } else {
+          locations.add(text); // Add this to the list of locations
+
+          // Set this to be visible if and only if we're displaying location names or both
+          text.setVisible(displayEnum == Display.LOCATION_NAMES || displayEnum == Display.BOTH);
         }
       }
-      case "SERVICE_REQUESTS" -> {
-        // orders text with all sr before loc
-        for (VBox box : boxes) {
-          for (int i = 0; i < box.getChildren().size(); i++) {
-            Text text = (Text) box.getChildren().get(i);
 
-            if (text.getText().contains("_")) {
-              list.add(0, text);
-              text.setOpacity(1);
-            } else {
-              list.add(text);
-              text.setOpacity(0);
-            }
-          }
-          box.getChildren().setAll(list);
-          box.setMouseTransparent(true);
-          list.clear();
-        }
-      }
-      case "BOTH" -> {
-        for (VBox box : boxes) {
-          for (int i = 0; i < box.getChildren().size(); i++) {
-            Text text = (Text) box.getChildren().get(i);
-            text.setOpacity(1);
-
-            if (text.getText().contains("_")) {
-              list.add(text);
-            } else {
-              list.add(0, text);
-            }
-          }
-          box.getChildren().setAll(list);
-          box.setMouseTransparent(true);
-          list.clear();
-        }
-      }
-      case "NONE" -> {
-        for (VBox box : boxes) {
-          for (int i = 0; i < box.getChildren().size(); i++) {
-            box.getChildren().get(i).setOpacity(0);
-            Text text = (Text) box.getChildren().get(i);
-            list.add(text);
-          }
-          box.getChildren().setAll(list);
-          box.setMouseTransparent(true);
-          list.clear();
-        }
+      // Add things in the right order. Only case where SRs come first is SRs only
+      if (displayEnum == Display.SERVICE_REQUESTS) {
+        box.getChildren().setAll(serviceRequests); // Start with the requests
+        box.getChildren().addAll(locations); // Add the locations
+      } else {
+        box.getChildren().setAll(locations); // Start with locations
+        box.getChildren().addAll(serviceRequests); // Then requests
       }
     }
   }
