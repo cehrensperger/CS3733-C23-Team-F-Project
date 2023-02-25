@@ -20,9 +20,7 @@ public enum Sound {
     this.audioClip = audioClip;
   }
 
-  /**
-   * Play the sound effect
-   */
+  /** Play the sound effect */
   public void play() {
     if (Fapp.isSfxOn()) {
       this.audioClip.play();
