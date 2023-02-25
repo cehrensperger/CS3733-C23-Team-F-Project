@@ -31,6 +31,7 @@ import javafx.stage.FileChooser;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.SearchableComboBox;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
@@ -39,8 +40,11 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
-  @FXML private TextField textText; // The text to show on the map
-  @FXML private Text noLocationText;
+    @FXML private SearchableComboBox<LocationName> rightLocation; // Right arrow location
+    @FXML private SearchableComboBox<LocationName> leftLocation; // Left arrow location
+    @FXML private TextField headerText; // Text for the header
+    @FXML private TextField textText; // The text to show on the map
+  @FXML private Text noLocationText; // No location error text
   @FXML private FilteredTableView<Move> moveTable; // Table for the moves
   @FXML private FilteredTableColumn<Move, Node> nodeColumn; // Node column
   @FXML private FilteredTableColumn<Move, LocationName> locationColumn; // Location column
@@ -188,6 +192,11 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
     // Open the file chooser, get the file
     File file = fileChooser.showOpenDialog(textText.getScene().getWindow());
+
+    // If the file is null, don't do anything
+    if (file == null) {
+      return; // Exit
+    }
 
     // Create the image
     ImageView image = new ImageView(new Image(new FileInputStream(file)));
@@ -481,4 +490,12 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
       mapController.getCurrentDrawingPane().getChildren().remove(node); // Remove it
     }
   }
+
+    /**
+     * Callback for the enter kiosk button
+     * @param actionEvent the event triggering this
+     */
+  @FXML
+    private void enterKioskMode(ActionEvent actionEvent) {
+    }
 }
