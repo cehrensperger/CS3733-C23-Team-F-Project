@@ -40,10 +40,10 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
-    @FXML private SearchableComboBox<LocationName> rightLocation; // Right arrow location
-    @FXML private SearchableComboBox<LocationName> leftLocation; // Left arrow location
-    @FXML private TextField headerText; // Text for the header
-    @FXML private TextField textText; // The text to show on the map
+  @FXML private SearchableComboBox<LocationName> rightLocation; // Right arrow location
+  @FXML private SearchableComboBox<LocationName> leftLocation; // Left arrow location
+  @FXML private TextField headerText; // Text for the header
+  @FXML private TextField textText; // The text to show on the map
   @FXML private Text noLocationText; // No location error text
   @FXML private FilteredTableView<Move> moveTable; // Table for the moves
   @FXML private FilteredTableColumn<Move, Node> nodeColumn; // Node column
@@ -491,11 +491,11 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     }
   }
 
-    /**
-     * Callback for the enter kiosk button
-     * @param actionEvent the event triggering this
-     */
+  /**
+   * Callback for the enter kiosk button
+   *
+   * @param actionEvent the event triggering this
+   */
   @FXML
-    private void enterKioskMode(ActionEvent actionEvent) {
-    }
+  private void enterKioskMode(ActionEvent actionEvent) {}
 }
