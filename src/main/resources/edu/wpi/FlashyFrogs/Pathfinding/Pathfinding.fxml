@@ -52,7 +52,7 @@
             </SearchableComboBox>
             <Text fx:id="h3" styleClass="warningText" text="Choose an algorithm to generate your path with" wrappingWidth="184.0">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <DatePicker fx:id="moveDatePicker" prefHeight="25.0" prefWidth="184.0" styleClass="fields">
@@ -62,7 +62,17 @@
             </DatePicker>
             <Text fx:id="h5" styleClass="warningText" text="Choose a date for the pathfinding to take place" wrappingWidth="184.0">
                <VBox.margin>
+                  <Insets bottom="10.0" left="18.0" right="18.0" />
+               </VBox.margin>
+            </Text>
+            <SearchableComboBox fx:id="serviceRequestBox" maxWidth="184.0" promptText="Service Request:" styleClass="fields">
+               <VBox.margin>
                   <Insets left="18.0" right="18.0" />
+               </VBox.margin>
+            </SearchableComboBox>
+            <Text fx:id="h7" styleClass="warningText" text="Choose a service request set as &#10;an ending location" wrappingWidth="184.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="18.0" right="18.0" />
                </VBox.margin>
             </Text>
             <CheckBox fx:id="accessibleBox" mnemonicParsing="false" styleClass="body" text="No Stairs">
@@ -71,7 +81,7 @@
                </VBox.margin></CheckBox>
             <Text fx:id="h6" styleClass="warningText" text="Check to exclude stairs from your path" wrappingWidth="184.0">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <MFXButton fx:id="generatePathButton" alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Generate Path">
@@ -84,7 +94,7 @@
             </MFXButton>
             <Text fx:id="h4" styleClass="warningText" text="Click to generate the path!">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <TableView fx:id="pathTable" maxWidth="220.0" prefHeight="200.0" prefWidth="200.0">

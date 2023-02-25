@@ -20,6 +20,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -59,6 +60,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
+  @FXML private SearchableComboBox<String> serviceRequestBox;
   @FXML private CheckBox accessibleBox;
   @FXML private AnchorPane mapPane;
   @FXML private MFXButton mapEditorButton;
@@ -73,6 +75,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML Text h4;
   @FXML Text h5;
   @FXML Text h6;
+  @FXML Text h7;
 
   boolean hDone = false;
 
@@ -107,6 +110,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     h4.setVisible(false);
     h5.setVisible(false);
     h6.setVisible(false);
+    h7.setVisible(false);
     pathTable.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
@@ -179,6 +183,25 @@ public class PathfindingController extends AbstractPathVisualizerController impl
               });
           return row;
         });
+
+    //Only enables generatePathButton if something is selected for both startingBox and destinationBox
+    ChangeListener<Object> listener =
+        (observable, oldValue, newValue) -> {
+          // Check if both ComboBoxes have a selected value
+          boolean isComboBox1Selected = startingBox.getValue() != null;
+          boolean isComboBox2Selected = destinationBox.getValue() != null;
+
+          // If both ComboBoxes have a selected value, enable the button, otherwise disable it
+          generatePathButton.setDisable(!isComboBox1Selected || !isComboBox2Selected);
+        };
+
+    // Add the ChangeListener to both ComboBoxes
+    startingBox.valueProperty().addListener(listener);
+    destinationBox.valueProperty().addListener(listener);
+
+    // Initially disable the button if either ComboBox is not selected
+    generatePathButton.setDisable(
+        startingBox.getValue() == null || destinationBox.getValue() == null);
   }
 
   /** Callback to handle the back button being pressed */
@@ -450,6 +473,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h4.setVisible(true);
       h5.setVisible(true);
       h6.setVisible(true);
+      h7.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
@@ -458,6 +482,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h4.setVisible(false);
       h5.setVisible(false);
       h6.setVisible(false);
+      h7.setVisible(false);
       hDone = false;
     }
   }
