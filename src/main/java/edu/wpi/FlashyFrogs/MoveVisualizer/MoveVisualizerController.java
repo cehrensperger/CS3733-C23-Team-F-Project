@@ -237,6 +237,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
           // Compute the old adjustment factor, in case we need to "go back"
           double oldAdjustmentFactor = (root.getScaleX() * root.getWidth() - root.getWidth()) / 2;
+          double oldWidth = root.getScaleX() * root.getWidth();
 
           // It's valid if it's positive but not outside
           if (width <= mapController.getMapWidth()) {
@@ -252,12 +253,12 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 // handle the case of the scale being negative, we need to account for the
                 // adjustment
                 // putting the top left on the wrong side
-                root.setLayoutX(oldAdjustmentFactor - width);
+                root.setLayoutX(oldAdjustmentFactor - oldWidth);
               }
             } else {
               // On the other side, go to the right
               if (root.getScaleX() >= 0) {
-                root.setLayoutX(mapController.getMapWidth() - width + oldAdjustmentFactor);
+                root.setLayoutX(mapController.getMapWidth() - oldWidth + oldAdjustmentFactor);
               } else {
                 // handle the case of the scale being negative, we need to account for the
                 // adjustment
@@ -282,6 +283,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
           // Compute the old adjustment factor, in case we need to "go back"
           double oldAdjustmentFactor = (root.getScaleY() * root.getHeight() - root.getHeight()) / 2;
+          double oldHeight = root.getScaleY() * root.getHeight();
 
           // It's valid if it's positive but not outside (and the height isn't off)
           if (height <= mapController.getMapHeight()) {
@@ -296,12 +298,12 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               } else {
                 // handle the case of scale being negative, where the adjustment factor
                 // puts the layout on the wrong side
-                root.setLayoutY(oldAdjustmentFactor - height);
+                root.setLayoutY(oldAdjustmentFactor - oldHeight);
               }
             } else {
               // On the other side, go to the right
               if (root.getScaleY() >= 0) {
-                root.setLayoutY(mapController.getMapHeight() - height + oldAdjustmentFactor);
+                root.setLayoutY(mapController.getMapHeight() - oldHeight + oldAdjustmentFactor);
               } else {
                 //
                 root.setLayoutY(mapController.getMapHeight() + oldAdjustmentFactor);
