@@ -54,7 +54,7 @@ public class AboutController {
         text = "A CS major who has two pet sheep";
         break;
       case "Owen Krause":
-        text = "";
+        text = "An RBE major on the swim team";
         break;
       case "Lindsey Mraz":
         text = "A CS and Music major whose favorite animal is the rabbit";

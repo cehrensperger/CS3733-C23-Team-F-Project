@@ -4,9 +4,9 @@ import javafx.scene.text.Text;
 
 public class TeamMemberPopupController {
 
-  public Text text;
+  private Text text;
 
-  public void setContent(String text) {
+  void setContent(String text) {
     this.text.setText(text);
   }
 }
