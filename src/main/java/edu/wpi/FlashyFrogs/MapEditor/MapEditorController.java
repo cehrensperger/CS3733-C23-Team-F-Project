@@ -605,6 +605,7 @@ public class MapEditorController implements IController {
 
     nodeToDrag.setOnDragDetected(
         event -> {
+          Timer timer = new Timer();
           Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
           dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
           ClipboardContent clipboardContent = new ClipboardContent();
@@ -640,7 +641,34 @@ public class MapEditorController implements IController {
                   duplicateCircle.setFill(Paint.valueOf("012D5A"));
                   duplicateCircle.setCenterX(e.getX());
                   duplicateCircle.setCenterY(e.getY());
+                  double kp = 0.03;
+                  double errorX = e.getX() - (mapPane.getWidth() / 2);
+                  double errorY = e.getY() - (mapPane.getHeight() / 2);
+                  double[] effortX = {0};
+                  double[] effortY = {0};
 
+                  if (abs(errorX) > 500) {
+                    effortX[0] = errorX * kp;
+                  }
+                  if (abs(errorY) > 300) {
+                    effortY[0] = errorY * kp;
+                  }
+
+                  if (task != null) task.cancel();
+
+                  task =
+                      new TimerTask() {
+                        @Override
+                        public void run() {
+                          Platform.runLater(
+                              () ->
+                                  mapController
+                                      .getGesturePane()
+                                      .translateBy(new Dimension2D(effortX[0], effortY[0])));
+                        }
+                      };
+
+                  timer.scheduleAtFixedRate(task, 0, 15);
                   // X bounds
                   if (e.getX() < 0) {
                     duplicateCircle.setVisible(false);
@@ -669,6 +697,7 @@ public class MapEditorController implements IController {
 
     duplicateCircle.setOnDragDropped(
         event -> {
+          task.cancel();
           GesturePane gesturePane = mapController.getGesturePane();
           double scale = gesturePane.getCurrentScale();
           double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
@@ -1689,7 +1718,6 @@ public class MapEditorController implements IController {
                           }
                           double[] finalErrorX = {errorX};
                           double[] finalErrorY = {errorY};
-                          // todo: make changes work
                           double[] width2 = {width};
                           double[] height2 = {height};
 
