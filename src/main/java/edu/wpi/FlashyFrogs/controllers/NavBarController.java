@@ -6,19 +6,18 @@ import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Theme;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 
 @GeneratedExclusion
@@ -27,6 +26,8 @@ public class NavBarController {
   @FXML private AnchorPane anchorPane;
   @FXML private HBox header;
   @FXML private MFXButton helpButton;
+
+  @FXML private Pane toast;
   @FXML private MFXButton back;
   @FXML private MFXButton moveVisualizer;
   @FXML private MFXButton loginManager;
@@ -106,9 +107,6 @@ public class NavBarController {
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
-    navDescriptions.setVisible(false);
-    navDescriptions.setDisable(true);
-    navDescriptions.setOpacity(1);
   }
 
   public void logIn() {
@@ -181,16 +179,14 @@ public class NavBarController {
 
   @FXML
   private void showDescriptions(MouseEvent event) throws IOException {
-    navDescriptions.setVisible(true);
-    navDescriptions.setDisable(false);
-    navDescriptions.setOpacity(1);
+    System.out.println("in");
+    toastAnimationForward();
   }
 
   @FXML
   private void hideDescriptions(MouseEvent event) throws IOException {
-    navDescriptions.setVisible(false);
-    navDescriptions.setDisable(true);
-    navDescriptions.setOpacity(0);
+    toastAnimationBackward();
+    System.out.println("out");
   }
 
   @FXML
@@ -389,5 +385,53 @@ public class NavBarController {
     } else {
       Fapp.setTheme(Theme.LIGHT_THEME);
     }
+  }
+
+  public void toastAnimationForward() {
+    // Create a TranslateTransition to move the first rectangle to the left
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.2), toast);
+    translate1.setByX(210);
+    navButtons.setOnMouseEntered(e -> {});
+    translate1.setOnFinished(
+        e -> {
+          toast.setOnMouseExited(
+              event -> {
+                try {
+                  hideDescriptions(event);
+                } catch (IOException ex) {
+                  throw new RuntimeException(ex);
+                }
+              });
+        });
+
+    // Play the animations in sequence
+
+    translate1.play();
+  }
+
+  public void toastAnimationBackward() {
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.2), toast);
+
+    toast.setOnMouseExited(e -> {});
+
+    translateBack1.setOnFinished(
+        e -> {
+          navButtons.setOnMouseEntered(
+              event -> {
+                try {
+                  showDescriptions(event);
+                } catch (IOException ex) {
+                  throw new RuntimeException(ex);
+                }
+              });
+        });
+
+    //    translateBack1.setDelay(Duration.seconds(2));
+    translateBack1.setByX(-210);
+
+    // Play the animations in sequence
+    translateBack1.play();
   }
 }
