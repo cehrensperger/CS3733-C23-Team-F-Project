@@ -278,17 +278,17 @@ public class NavBarController {
 
     popOver.detach(); // Detach the pop-up, so it's not stuck to the button
     javafx.scene.Node node =
-            (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
+        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
 
     popOver
-            .showingProperty()
-            .addListener(
-                    (observable, oldValue, newValue) -> {
-                      if (!newValue) {
-                        home.refreshTable();
-                      }
-                    });
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                home.refreshTable();
+              }
+            });
   }
 
   @FXML
@@ -302,17 +302,17 @@ public class NavBarController {
 
     popOver.detach(); // Detach the pop-up, so it's not stuck to the button
     javafx.scene.Node node =
-            (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
+        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
 
     popOver
-            .showingProperty()
-            .addListener(
-                    (observable, oldValue, newValue) -> {
-                      if (!newValue) {
-                        home.refreshAlerts();
-                      }
-                    });
+        .showingProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (!newValue) {
+                home.refreshAlerts();
+              }
+            });
   }
 
   @FXML
