@@ -1,6 +1,6 @@
 package edu.wpi.FlashyFrogs.Alerts;
 
-import edu.wpi.FlashyFrogs.ORM.Announcement;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -15,17 +15,16 @@ public class AlertController {
 
   public void initialize() {}
 
-  public void insertAnnouncement(Announcement announcement) {
-    summaryField.setText(announcement.getDescription());
+  public void insertAnnouncement(Alert alert) {
+    summaryField.setText(alert.getDescription());
     String severity = "";
-    for (int i = 0; i < announcement.getSeverity().ordinal(); i++) {
+    for (int i = 0; i < alert.getSeverity().ordinal(); i++) {
       severity = severity + "!";
     }
     severityField.setText(severity);
-    dateField.setText(announcement.getCreationDate().toString());
-    authorField.setText(
-        announcement.getAuthor().getFirstName() + " " + announcement.getAuthor().getLastName());
-    departmentField.setText(announcement.getDepartment().getLongName());
-    descriptionField.setText(announcement.getAnnouncement());
+    dateField.setText(alert.getDisplayDate().toString());
+    authorField.setText(alert.getAuthor().getFirstName() + " " + alert.getAuthor().getLastName());
+    departmentField.setText(alert.getDepartment().getLongName());
+    descriptionField.setText(alert.getAnnouncement());
   }
 }

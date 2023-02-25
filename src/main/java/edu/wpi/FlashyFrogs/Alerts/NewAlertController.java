@@ -3,11 +3,11 @@ package edu.wpi.FlashyFrogs.Alerts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
-import edu.wpi.FlashyFrogs.ORM.Announcement;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ORM.Department;
 import jakarta.persistence.RollbackException;
 import java.sql.Date;
-import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -27,8 +27,8 @@ public class NewAlertController {
   @FXML private TextField summaryField;
   @FXML private TextArea descriptionField;
   @FXML private SearchableComboBox<Department> deptBox;
-  @FXML private ComboBox<Announcement.Severity> severityBox;
-  @FXML private DatePicker dateField;
+  @FXML private ComboBox<Alert.Severity> severityBox;
+  @FXML private DatePicker date;
 
   public void initialize() {
     Session session = CONNECTION.getSessionFactory().openSession();
@@ -36,7 +36,7 @@ public class NewAlertController {
         session.createQuery("FROM Department", Department.class).getResultList();
 
     deptBox.setItems(FXCollections.observableArrayList(departments));
-    severityBox.setItems(FXCollections.observableArrayList(Announcement.Severity.values()));
+    severityBox.setItems(FXCollections.observableArrayList(Alert.Severity.values()));
   }
 
   public void handleSubmit(javafx.event.ActionEvent actionEvent) {
@@ -44,13 +44,13 @@ public class NewAlertController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      if (summaryField.getText().equals("") || descriptionField.getText().equals("")) {
+      if (summaryField.getText().equals("") || descriptionField.getText().equals("") || date.getValue().toString().equals("")) {
         throw new NullPointerException();
       }
 
-      Announcement announcement =
-          new Announcement(
-              Date.from(Instant.now()),
+      Alert alert =
+          new Alert(
+              Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
               CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               summaryField.getText(),
               descriptionField.getText(),
@@ -58,7 +58,7 @@ public class NewAlertController {
               severityBox.getValue());
 
       try {
-        session.persist(announcement);
+        session.persist(alert);
         transaction.commit();
         session.close();
         alertManagerController.initialize();

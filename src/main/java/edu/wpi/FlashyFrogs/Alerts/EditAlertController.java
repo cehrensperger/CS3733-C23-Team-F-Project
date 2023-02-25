@@ -2,15 +2,19 @@ package edu.wpi.FlashyFrogs.Alerts;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.ORM.Announcement;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import jakarta.persistence.RollbackException;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Setter;
@@ -22,25 +26,30 @@ import org.hibernate.Transaction;
 public class EditAlertController implements IController {
   @Setter private PopOver popOver;
   @Setter private AlertManagerController alertManagerController;
-  private Announcement currentAlert;
+  private Alert currentAlert;
   @FXML private TextField summaryField;
   @FXML private TextArea descriptionField;
   @FXML private SearchableComboBox<Department> deptBox;
-  @FXML private ComboBox<Announcement.Severity> severityBox;
+  @FXML private ComboBox<Alert.Severity> severityBox;
+  @FXML private DatePicker date;
 
-  public void initialize(Announcement selectedAlert) {
+  public void initialize(Alert selectedAlert) {
     this.currentAlert = selectedAlert;
     this.summaryField.setText(currentAlert.getDescription());
     this.descriptionField.setText(currentAlert.getAnnouncement());
     this.deptBox.getSelectionModel().select(currentAlert.getDepartment());
     this.severityBox.getSelectionModel().select(currentAlert.getSeverity());
+    this.date.setValue(
+        Instant.ofEpochMilli(currentAlert.getDisplayDate().getTime())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<Department> departments =
         session.createQuery("FROM Department", Department.class).getResultList();
 
     deptBox.setItems(FXCollections.observableArrayList(departments));
-    severityBox.setItems(FXCollections.observableArrayList(Announcement.Severity.values()));
+    severityBox.setItems(FXCollections.observableArrayList(Alert.Severity.values()));
   }
 
   public void handleSave(ActionEvent actionEvent) {
@@ -49,7 +58,7 @@ public class EditAlertController implements IController {
 
     try {
       if (summaryField.getText().equals("")
-          || descriptionField.getText().equals("")) { // TODO check dropdowns
+          || descriptionField.getText().equals("") || date.getValue().toString().equals("")) { // TODO check dropdowns
         throw new NullPointerException();
       }
 
@@ -57,6 +66,8 @@ public class EditAlertController implements IController {
       currentAlert.setAnnouncement(descriptionField.getText());
       currentAlert.setSeverity(severityBox.getValue());
       currentAlert.setDepartment(deptBox.getValue());
+      currentAlert.setDisplayDate(
+          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
       try {
         session.merge(currentAlert);
@@ -86,7 +97,7 @@ public class EditAlertController implements IController {
 
     session.beginTransaction();
     session
-        .createMutationQuery("DELETE FROM Announcement alert WHERE id=:ID")
+        .createMutationQuery("DELETE FROM Alert alert WHERE id=:ID")
         .setParameter("ID", currentAlert.getId())
         .executeUpdate();
     session.getTransaction().commit();

@@ -3,7 +3,7 @@ package edu.wpi.FlashyFrogs.Alerts;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
-import edu.wpi.FlashyFrogs.ORM.Announcement;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
@@ -28,12 +28,12 @@ import org.hibernate.Session;
 
 public class AlertManagerController implements IController {
   @FXML private Label errorMessage;
-  @FXML private TableView<Announcement> alertTable;
-  @FXML private TableColumn<Announcement, Number> idCol;
-  @FXML private TableColumn<Announcement, String> descriptionCol;
-  @FXML private TableColumn<Announcement, String> authorCol;
-  @FXML private TableColumn<Announcement, Date> dateCol;
-  @FXML private TableColumn<Announcement, Announcement.Severity> severityCol;
+  @FXML private TableView<Alert> alertTable;
+  @FXML private TableColumn<Alert, Number> idCol;
+  @FXML private TableColumn<Alert, String> descriptionCol;
+  @FXML private TableColumn<Alert, String> authorCol;
+  @FXML private TableColumn<Alert, Date> dateCol;
+  @FXML private TableColumn<Alert, Alert.Severity> severityCol;
   @FXML private Button addNewAlert;
   @FXML private Button back;
 
@@ -79,8 +79,8 @@ public class AlertManagerController implements IController {
     // Set columns on table
     idCol.setCellValueFactory(
         data -> {
-          Announcement announcement = data.getValue();
-          return new SimpleLongProperty(announcement.getId());
+          Alert alert = data.getValue();
+          return new SimpleLongProperty(alert.getId());
         });
     descriptionCol.setCellValueFactory(
         data -> {
@@ -95,7 +95,7 @@ public class AlertManagerController implements IController {
         });
     dateCol.setCellValueFactory(
         data -> {
-          Date date = data.getValue().getCreationDate();
+          Date date = data.getValue().getDisplayDate();
           return new SimpleObjectProperty<>(date);
         });
     severityCol.setCellValueFactory(
@@ -103,15 +103,15 @@ public class AlertManagerController implements IController {
           return new SimpleObjectProperty<>(data.getValue().getSeverity());
         });
 
-    ObservableList<Announcement> announcementObservableList = null;
+    ObservableList<Alert> alertObservableList = null;
     Session session = CONNECTION.getSessionFactory().openSession();
 
     try {
-      List<Announcement> announcements =
-          session.createQuery("SELECT s FROM Announcement s", Announcement.class).getResultList();
-      announcementObservableList = FXCollections.observableList(announcements);
+      List<Alert> alerts =
+          session.createQuery("SELECT s FROM Alert s", Alert.class).getResultList();
+      alertObservableList = FXCollections.observableList(alerts);
       session.close();
-      alertTable.getItems().addAll(announcementObservableList);
+      alertTable.getItems().addAll(alertObservableList);
     } catch (Exception e) {
       session.close();
       throw e;
@@ -119,7 +119,7 @@ public class AlertManagerController implements IController {
     alertTable.setOnMouseClicked(
         event -> {
           if (alertTable.getSelectionModel().getSelectedItem() != null) {
-            Announcement selectedAlert = alertTable.getSelectionModel().getSelectedItem();
+            Alert selectedAlert = alertTable.getSelectionModel().getSelectedItem();
             FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("Alerts/EditAlert.fxml"));
             PopOver popOver = null;
             try {

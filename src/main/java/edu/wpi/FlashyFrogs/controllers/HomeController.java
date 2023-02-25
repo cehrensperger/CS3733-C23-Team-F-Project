@@ -7,6 +7,7 @@ import edu.wpi.FlashyFrogs.Alerts.AlertController;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
@@ -534,14 +535,14 @@ public class HomeController implements IController {
     moveTable.resetFilter();
   }
 
-  public void insertAlert(Announcement announcement) throws IOException {
+  public void insertAlert(Alert alert) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("Alerts/Alert.fxml"));
 
     Parent root = newLoad.load();
     alertBox.getChildren().add(root);
 
     AlertController controller = newLoad.getController();
-    controller.insertAnnouncement(announcement);
+    controller.insertAnnouncement(alert);
   }
 
   @SneakyThrows
@@ -549,10 +550,9 @@ public class HomeController implements IController {
     alertBox.getChildren().clear();
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<Announcement> list =
-        session.createQuery("Select a from Announcement a", Announcement.class).getResultList();
+    List<Alert> list = session.createQuery("Select a from Alert a", Alert.class).getResultList();
 
-    for (Announcement a : list) {
+    for (Alert a : list) {
       insertAlert(a);
     }
   }
