@@ -1031,16 +1031,6 @@ public class MapEditorController implements IController {
     locationContainer.setLayoutY(circle.getCenterY() - 20); // Set the Y
   }
 
-  private void disableBoxCreation() {
-    mapController
-        .getCurrentDrawingPane()
-        .setOnDragDetected(
-            event -> {
-              mapController.getCurrentDrawingPane().setOnMouseDragged(e -> {});
-              mapController.getCurrentDrawingPane().setOnMouseReleased(e -> {});
-            });
-  }
-
   /**
    * Function to be called on node creation, handles setting actions for the circles
    *
@@ -1339,7 +1329,11 @@ public class MapEditorController implements IController {
             }
 
             // Otherwise, add this
-            selectedNodes.add(node);
+            if (selectedNodes.contains(node)) {
+              selectedNodes.remove(node);
+            } else {
+              selectedNodes.add(node);
+            }
           }
 
           event.consume();
