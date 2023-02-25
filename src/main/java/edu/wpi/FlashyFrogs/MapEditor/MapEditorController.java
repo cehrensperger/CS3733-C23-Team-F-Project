@@ -161,6 +161,7 @@ public class MapEditorController implements IController {
             Fapp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
             root.setOnMousePressed(p -> {});
             root.setOnMouseReleased(p -> {});
+            event.consume();
           }
         });
 
@@ -316,6 +317,7 @@ public class MapEditorController implements IController {
                                   }
                                 });
                           }
+                          dragEvent.consume();
                         });
                   } else {
                     row.setOnMouseExited(p -> {});
@@ -326,6 +328,8 @@ public class MapEditorController implements IController {
 
                     row.setOnDragDetected(p -> {});
                   }
+
+                  event.consume();
                 }
               });
           // Add a listener to show the pop-up
@@ -372,6 +376,7 @@ public class MapEditorController implements IController {
                     false);
 
                 tablePopOver.get().show(row); // Show the pop-over on the row
+                mouseEvent.consume();
               });
           return row; // Return the generated row
         });
@@ -398,6 +403,8 @@ public class MapEditorController implements IController {
               if (!event.isConsumed()) {
                 selectedNodes.clear(); // Clear the nodes
               }
+
+              event.consume();
             });
 
     mapController.setEdgeCreation(
@@ -436,6 +443,7 @@ public class MapEditorController implements IController {
 
                 quickDrawHandleNodeClick(newNode); // Handle the node click
               }
+
             });
 
     mapController
@@ -466,6 +474,8 @@ public class MapEditorController implements IController {
                       .add(currentQuickDrawLine); // Add the line
                 }
               }
+
+              mouseEvent.consume();
             });
 
     mapController
@@ -479,6 +489,7 @@ public class MapEditorController implements IController {
                 mapController.getCurrentDrawingPane().getChildren().remove(currentQuickDrawLine);
                 currentQuickDrawLine = null;
               }
+              mouseEvent.consume();
             });
 
     // Handle quick-draw stuff in terms of moving the mouse drags a node around
@@ -496,6 +507,7 @@ public class MapEditorController implements IController {
                         currentQuickDrawCircle.relocate(
                             mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
                       }
+                      mouseEvent.consume();
                     }));
 
     // Set the button handler
@@ -607,8 +619,16 @@ public class MapEditorController implements IController {
           clipboardContent.putString("fjbwef");
           dragboard.setContent(clipboardContent);
 
-          mapPane.setOnDragDone(e -> duplicateCircle.setVisible(false));
-          mapPane.setOnDragExited(e -> duplicateCircle.setVisible(false));
+          mapPane.setOnDragDone(
+              e -> {
+                duplicateCircle.setVisible(false);
+                event.consume();
+              });
+          mapPane.setOnDragExited(
+              e -> {
+                duplicateCircle.setVisible(false);
+                event.consume();
+              });
           mapPane.setOnDragOver(
               e -> {
                 /* data is dragged over the target */
@@ -646,9 +666,14 @@ public class MapEditorController implements IController {
 
                 e.consume();
               });
+          event.consume();
         });
 
-    nodeToDrag.setOnMouseDragged(event -> event.setDragDetect(true));
+    nodeToDrag.setOnMouseDragged(
+        event -> {
+          event.setDragDetect(true);
+          event.consume();
+        });
 
     duplicateCircle.setOnDragDropped(
         event -> {
@@ -676,6 +701,7 @@ public class MapEditorController implements IController {
             // System.out.println("out of bounds");
           }
           duplicateCircle.setVisible(false);
+          event.consume();
         });
 
     viewingDate
@@ -891,6 +917,7 @@ public class MapEditorController implements IController {
     // Set the pop-up content
     popOver.setDetached(true);
     popOver.show(locationTable.getScene().getWindow()); // And show it
+    actionEvent.consume();
   }
 
   /**
@@ -1055,6 +1082,7 @@ public class MapEditorController implements IController {
 
           // Mark that we are dragging
           dragInProgress = true;
+          event.consume();
         });
 
     // On drag
@@ -1092,6 +1120,8 @@ public class MapEditorController implements IController {
                 selectedNode.getXCoord() + xDiff,
                 selectedNode.getYCoord() + yDiff);
           }
+
+          event.consume();
         });
 
     // On drag stop, this is the only thing that represents that for some reason
@@ -1124,6 +1154,8 @@ public class MapEditorController implements IController {
                   selectedCircle, selectedNode, selectedNode.getXCoord(), selectedNode.getYCoord());
             }
           }
+
+          event.consume();
         });
 
     // handles both left and right click since I couldn't get
@@ -1306,6 +1338,8 @@ public class MapEditorController implements IController {
             // Otherwise, add this
             selectedNodes.add(node);
           }
+
+          event.consume();
         });
   }
 
