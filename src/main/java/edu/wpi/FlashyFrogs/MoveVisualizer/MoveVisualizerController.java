@@ -18,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -141,9 +142,17 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
    */
   @FXML
   private void addText(ActionEvent actionEvent) {
+    // Don't do anything if the text is empty
+    if (textText.getText().isEmpty()) {
+      return;
+    }
+
     Text text = new Text(textText.getText()); // Create the text
-    text.setStyle("-fx-font-size: 500");
-    text.setWrappingWidth(mapController.getMapWidth() / 2);
+    text.setStyle("-fx-font-size: 500"); // Increase font size
+    text.setTextOrigin(VPos.TOP); // Make sure that the text origin is the top left for coordinates
+
+    // Cap the width at half the screen, however less is okay
+    text.setWrappingWidth(Math.min(mapController.getMapWidth() / 2, text.getWrappingWidth()));
 
     handleAddNode(text); // Add the text
   }
@@ -239,28 +248,39 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           // Disable the gesture pane (this fixes some weirdness)
           this.mapController.getGesturePane().setGestureEnabled(false);
 
-          // New x and y coords
-          double newX = originalPosition[0] + event.getScreenX() - mousePosition[0];
-          double newY = originalPosition[1] + event.getScreenY() - mousePosition[1];
+          // Divide by scale, so that the mouse distance is actually reflected
+          // in the (potentially zoomed in/out) page
+          // New x and y coords, original + the mouse delta. Since this is layout based, this is
+          // separate from the top
+          // -left based calculate done below!
+          double newX =
+              originalPosition[0]
+                  + (event.getScreenX() - mousePosition[0])
+                      / mapController.getGesturePane().getCurrentScale();
+          double newY =
+              originalPosition[1]
+                  + (event.getScreenY() - mousePosition[1])
+                      / mapController.getGesturePane().getCurrentScale();
 
           // Update the coordinates if they are in bounds
-          if (newX >= 0
-              && newX + root.getBoundsInParent().getWidth() <= mapController.getMapWidth()) {
+          if (newX >= 0 && newX + root.getWidth() <= mapController.getMapWidth()) {
             root.setLayoutX(newX);
           } else if (newX < 0) {
-            root.setLayoutX(0);
+            root.setLayoutX(0); // If it's out of bounds in the X, left = 0
           } else {
-            root.setLayoutX(mapController.getMapWidth() - root.getBoundsInParent().getWidth());
+            root.setLayoutX(
+                mapController.getMapWidth() - root.getWidth()); // Otherwise, max that won't go out
           }
 
           // Do the same
-          if (newY >= 0
-              && newY + root.getBoundsInParent().getHeight() <= mapController.getMapHeight()) {
+          if (newY >= 0 && newY + root.getHeight() <= mapController.getMapHeight()) {
             root.setLayoutY(newY);
           } else if (newY < 0) {
-            root.setLayoutY(0);
+            root.setLayoutY(0); // If it's out of bounds Y, top = 0
           } else {
-            root.setLayoutY(mapController.getMapHeight() - root.getBoundsInParent().getHeight());
+            root.setLayoutY(
+                mapController.getMapHeight()
+                    - root.getHeight()); // Otherwise, Otherwise, max that won't go out
           }
         });
 
@@ -281,6 +301,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     root.setOnContextMenuRequested(
         (event) -> {
           Button deleteButton = new Button("Delete"); // Delete button
+          deleteButton.getStyleClass().addAll("redOutlineNoSetSize");
+          deleteButton.setDefaultButton(true); // Default is this, so that space deletes
 
           PopOver popOver = new PopOver(deleteButton); // Create the pop-over to use
 
