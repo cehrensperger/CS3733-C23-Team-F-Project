@@ -443,7 +443,6 @@ public class MapEditorController implements IController {
 
                 quickDrawHandleNodeClick(newNode); // Handle the node click
               }
-
             });
 
     mapController
