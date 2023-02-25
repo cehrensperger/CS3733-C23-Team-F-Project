@@ -5,6 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.InternalTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
@@ -56,7 +57,7 @@ public class MedicineController implements IController {
     @FXML
     TextField patient;
     @FXML
-    SearchableComboBox locationBox;
+    SearchableComboBox locationofPatient;
     @FXML
     Rectangle check2;
     @FXML
@@ -113,34 +114,31 @@ public class MedicineController implements IController {
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    locationBox.setItems(FXCollections.observableArrayList(locations));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
-    session.close();
+
+    locationofPatient.setButtonCell(
+            new ListCell<LocationName>() {
+        @Override
+        protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText("Transfer To");
+            } else {
+                setText(item.toString());
+            }
+        }
+    });
 
     urgency.setButtonCell(
+            new ListCell<ServiceRequest.Urgency>() {
             super.updateItem(item, empty);
-            if(empty ||item ==null)
-
-    {
-        setText("Urgency");
-    } else
-
-    {
-        setText(item.toString());
+            if (empty || item == null) {
+                setText("Urgency");
+            } else {
+                setText(item.toString());
+            }
+        }
     });
-
-    locationBox.setButtonCell(
-            super.updateItem(item, empty);
-            if(empty ||item ==null)
-
-    {
-        setText("Location of Patient");
-    } else
-
-    {
-        setText(item.toString());
-    });
-
 
 }
 

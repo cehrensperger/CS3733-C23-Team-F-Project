@@ -141,7 +141,7 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <SearchableComboBox fx:id="locationBox" promptText="Location of Patient" styleClass="fields">
+                        <SearchableComboBox fx:id="locationofPatient" promptText="Location of Patient" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
