@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox alignment="TOP_CENTER" maxWidth="580" minHeight="320" minWidth="580" prefHeight="320.0" prefWidth="580.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="VBox" alignment="TOP_CENTER" maxWidth="580" minHeight="350" minWidth="580" prefHeight="370.0" prefWidth="580.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AboutController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="About" VBox.vgrow="ALWAYS">
          <VBox.margin>
@@ -19,8 +19,26 @@
       </HBox>
       <TextFlow prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="This application was created for Worcester Polytechnic Institute’s C23 Software Engineering (CS3733) class, which was taught by Professor Wilson Wong, who is a member of WPI’s Computer Science Department. It was made possible by the aforementioned university, department, and professor; the time and input of Brigham and Women’s Hospital, especially Senior Planner Andrew Shinn; and the development team Flashy Frogs. Flashy Frogs members are as follows:&#13;&#13;Team Coach: Michael O’Connor&#13;Assistant Lead Software Engineers: Joseph Cardarelli, Connor Ehrensperger, Audrey Mongillo&#13;Documentation Analyst: Kyla Driscoll&#13;Scrum Master: Jonathan Golden&#13;Project Manager: Owen Krause&#13;Product Owner: Lindsey Mraz&#13;Back-End Database Engineer: Rusen Sabaz&#13;Lead Software Engineer: Ian Wright" wrappingWidth="305.109375" />
-               </children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="This application was created for Worcester Polytechnic Institute’s C23 Software Engineering (CS3733) class, which was taught by Professor Wilson Wong, who is a member of WPI’s Computer Science Department. It was made possible by the aforementioned university, department, and professor; the time and input of Brigham and Women’s Hospital, especially Senior Planner Andrew Shinn; and the development team Flashy Frogs. Flashy Frogs members are as follows:&#13;&#13;Team Coach: Michael O’Connor&#13;Assistant Lead Software Engineers: " wrappingWidth="305.109375" />
+            <Text styleClass="bodyTextObject" text="Joseph Cardarelli" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text=", " />
+            <Text styleClass="bodyTextObject" text="Connor Ehrensperger" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text=", " />
+            <Text styleClass="bodyTextObject" text="Audrey Mongillo" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text="&#13;Documentation Analyst: "/>
+            <Text styleClass="bodyTextObject" text="Kyla Driscoll" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text="&#13;Scrum Master: "/>
+            <Text styleClass="bodyTextObject" text="Jonathan Golden" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text="&#13;Project Manager: "/>
+            <Text styleClass="bodyTextObject" text="Owen Krause" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text="&#13;Product Owner: "/>
+            <Text styleClass="bodyTextObject" text="Lindsey Mraz" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text="&#13;Back-End Database Engineer: "/>
+            <Text styleClass="bodyTextObject" text="Rusen Sabaz" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text="&#13;Lead Software Engineer: "/>
+            <Text styleClass="bodyTextObject" text="Ian Wright" onMouseClicked="#showTeamMemberInfo"/>
+            <Text styleClass="bodyTextObject" text="&#13;&#13;The Brigham &amp; Women's Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." />
+         </children>
          <VBox.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
