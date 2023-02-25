@@ -12,18 +12,18 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Alerts.EditAlertController">
    <children>
-      <TextArea fx:id="descriptionField" layoutX="20.0" layoutY="87.0" prefHeight="200.0" prefWidth="562.0" promptText="Alert Message:" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-region-background: transparent; -fx-text-area-content: transparent;" styleClass="fields" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0" />
-      <TextField fx:id="summaryField" layoutX="22.0" layoutY="49.0" prefHeight="25.0" prefWidth="560.0" promptText="Summary:" styleClass="fields" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
-      <SearchableComboBox fx:id="deptBox" layoutX="379.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Department:" styleClass="fields" AnchorPane.topAnchor="315.0" />
-      <ComboBox fx:id="severityBox" layoutX="20.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Severity:" styleClass="fields" AnchorPane.topAnchor="315.0" />
-      <MFXButton layoutX="490.0" layoutY="354.0" onAction="#handleSave" prefHeight="27.0" prefWidth="90.0" styleClass="blueNoSetSize" text="Save Alert" AnchorPane.topAnchor="354.0" />
-      <MFXButton layoutX="379.0" layoutY="354.0" onAction="#handleDelete" prefWidth="90.0" styleClass="redOutlineNoSetSize" text="Delete Alert" AnchorPane.topAnchor="354.0" />
       <Label alignment="CENTER" layoutX="162.0" layoutY="14.0" prefHeight="17.0" prefWidth="282.0" styleClass="headerBold" text="Edit Alert" textAlignment="CENTER" AnchorPane.bottomAnchor="369.0" AnchorPane.leftAnchor="159.0" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="14.0" />
-      <DatePicker fx:id="date" layoutX="395.0" layoutY="19.0" />
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="220.0" layoutY="35.0" prefHeight="10.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false">
          <padding>
             <Insets top="8.0" />
          </padding>
       </Label>
+      <TextField fx:id="summaryField" layoutX="22.0" layoutY="49.0" prefHeight="25.0" prefWidth="560.0" promptText="Summary:" styleClass="fields" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
+      <TextArea fx:id="descriptionField" layoutX="20.0" layoutY="87.0" prefHeight="200.0" prefWidth="562.0" promptText="Alert Message:" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-region-background: transparent; -fx-text-area-content: transparent;" styleClass="fields" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0" />
+      <ComboBox fx:id="severityBox" layoutX="20.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Severity:" styleClass="fields" AnchorPane.topAnchor="315.0" />
+      <SearchableComboBox fx:id="deptBox" layoutX="379.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Department:" styleClass="fields" AnchorPane.topAnchor="315.0" />
+      <DatePicker fx:id="date" layoutX="395.0" layoutY="19.0" />
+      <MFXButton layoutX="490.0" layoutY="354.0" onAction="#handleSave" prefHeight="27.0" prefWidth="90.0" styleClass="blueNoSetSize" text="Save Alert" AnchorPane.topAnchor="354.0" />
+      <MFXButton layoutX="379.0" layoutY="354.0" onAction="#handleDelete" prefWidth="90.0" styleClass="redOutlineNoSetSize" text="Delete Alert" AnchorPane.topAnchor="354.0" />
    </children>
 </AnchorPane>
