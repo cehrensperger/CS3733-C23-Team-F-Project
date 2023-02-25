@@ -190,6 +190,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
   /** Method that generates table for textual path instructions */
   private void drawTable() {
+    int continueCounter = 0;
     pathTable.setVisible(true);
 
     ObservableList<Instruction> instructions = FXCollections.observableArrayList();
@@ -224,22 +225,42 @@ public class PathfindingController extends AbstractPathVisualizerController impl
               .getShortName();
 
       if (nodeName.equals("")) {
-        if (errorDeg < -10) {
-          instructions.add(new Instruction("Turn right " + -errorDeg + " degrees", thisNode));
-        } else if (errorDeg > 10) {
-          instructions.add(new Instruction("Turn left " + errorDeg + " degrees", thisNode));
+        if (errorDeg < -70) {
+          instructions.add(new Instruction("\u1F88 Turn Left ", thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > -70) && (errorDeg < -45)) {
+          instructions.add(new Instruction("\u2196 Take Slight Left ", thisNode));
+          continueCounter = 0;
+        } else if (errorDeg > 70) {
+          instructions.add(new Instruction(" \u2192 Turn Right ", thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > 45) && (errorDeg < 70)) {
+          instructions.add(new Instruction("\u2197 Take Slight Right ", thisNode));
+          continueCounter = 0;
         } else {
-          instructions.add(new Instruction("Continue", thisNode));
+          if (continueCounter == 0) {
+            instructions.add(new Instruction("\u2191 Continue", thisNode));
+            continueCounter = continueCounter + 1;
+          }
         }
       } else {
-        if (errorDeg < -10) {
-          instructions.add(
-              new Instruction("Turn right " + -errorDeg + " degrees at " + nodeName, thisNode));
-        } else if (errorDeg > 10) {
-          instructions.add(
-              new Instruction("Turn left " + errorDeg + " degrees at " + nodeName, thisNode));
+        if (errorDeg < -70) {
+          instructions.add(new Instruction("\u2190 Turn Left at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > -70) && (errorDeg < -45)) {
+          instructions.add(new Instruction("\u2196 Take Slight Left at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if (errorDeg > 70) {
+          instructions.add(new Instruction("\u2192 Turn Right at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > 45) && (errorDeg < 70)) {
+          instructions.add(new Instruction("\u2197 Take Slight Right at " + nodeName, thisNode));
+          continueCounter = 0;
         } else {
-          instructions.add(new Instruction("Continue at " + nodeName, thisNode));
+          if (continueCounter == 0) {
+            instructions.add(new Instruction("\u2191 Continue at " + nodeName, thisNode));
+            continueCounter = continueCounter + 1;
+          }
         }
       }
     }
