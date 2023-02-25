@@ -194,10 +194,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     pathTable.setVisible(true);
 
     ObservableList<Instruction> instructions = FXCollections.observableArrayList();
-
-    // if list(i).floor != list(i-1).floor){
-    // new floor subsection
-
     double curAngle = 0;
 
     pathTable.setItems(instructions);
