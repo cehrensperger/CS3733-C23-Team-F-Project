@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import org.controlsfx.control.tableview2.TableColumn2?>
-<?import org.controlsfx.control.tableview2.TableView2?>
+<?import org.controlsfx.control.tableview2.FilteredTableColumn?>
+<?import org.controlsfx.control.tableview2.FilteredTableView?>
 
 <AnchorPane prefHeight="763.0" prefWidth="1124.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MoveVisualizer.MoveVisualizerController">
    <children>
@@ -26,16 +25,16 @@
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin></Text>
-            <TableView2 fx:id="moveTable" columnFixingEnabled="false" prefHeight="387.0" prefWidth="170.0" rowFixingEnabled="false" rowHeaderWidth="0.0">
+            <FilteredTableView fx:id="moveTable" columnFixingEnabled="false" prefHeight="387.0" prefWidth="170.0" rowFixingEnabled="false" rowHeaderWidth="0.0">
                <columns>
-                  <TableColumn2 fx:id="nodeColumn" editable="false" prefWidth="75.0" text="Node " />
-                  <TableColumn2 fx:id="locationColumn" editable="false" prefWidth="75.0" text="Location " />
-                  <TableColumn2 fx:id="dateColumn" editable="false" prefWidth="75.0" text="Date" />
+                  <FilteredTableColumn fx:id="nodeColumn" editable="false" prefWidth="200.0" text="Node " />
+                  <FilteredTableColumn fx:id="locationColumn" editable="false" prefWidth="200.0" text="Location " />
+                  <FilteredTableColumn fx:id="dateColumn" editable="false" prefWidth="200.0" text="Date" />
                </columns>
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
-            </TableView2>
+            </FilteredTableView>
             <TextField fx:id="textText" prefHeight="26.0" prefWidth="93.0" promptText="Enter path text:" styleClass="fields">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />

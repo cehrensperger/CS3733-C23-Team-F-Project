@@ -31,18 +31,20 @@ import javafx.stage.FileChooser;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
-import org.controlsfx.control.tableview2.TableColumn2;
-import org.controlsfx.control.tableview2.TableView2;
+import org.controlsfx.control.tableview2.FilteredTableColumn;
+import org.controlsfx.control.tableview2.FilteredTableView;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
   @FXML private TextField textText; // The text to show on the map
   @FXML private Text noLocationText;
-  @FXML private TableView2<Move> moveTable; // Table for the moves
-  @FXML private TableColumn2<Move, Node> nodeColumn; // Node column
-  @FXML private TableColumn2<Move, LocationName> locationColumn; // Location column
-  @FXML private TableColumn2<Move, Date> dateColumn; // Date column
+  @FXML private FilteredTableView<Move> moveTable; // Table for the moves
+  @FXML private FilteredTableColumn<Move, Node> nodeColumn; // Node column
+  @FXML private FilteredTableColumn<Move, LocationName> locationColumn; // Location column
+  @FXML private FilteredTableColumn<Move, Date> dateColumn; // Date column
   @FXML private AnchorPane mapPane; // Map pane for map display
   private final Collection<javafx.scene.Node> nodes =
       new LinkedList<>(); // Collection of nodes that are on the map
@@ -51,6 +53,15 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @SneakyThrows
   @FXML
   private void initialize() {
+    // Give the columns their filters
+    PopupFilter<Move, Node> nodeFilter = new PopupStringFilter<>(nodeColumn); // Node filter
+    nodeColumn.setOnFilterAction((event) -> nodeFilter.showPopup()); // Node filter action
+    PopupFilter<Move, LocationName> locationFilter =
+        new PopupStringFilter<>(locationColumn); // Loc filter
+    locationColumn.setOnFilterAction((event) -> locationFilter.showPopup()); // Loc filter action
+    PopupFilter<Move, Date> dateFilter = new PopupStringFilter<>(dateColumn); // Date filter
+    dateColumn.setOnFilterAction((event) -> dateFilter.showPopup()); // Date filter action
+
     // Set the columns to not be order-able anymore
     nodeColumn.setReorderable(false);
     locationColumn.setReorderable(false);
