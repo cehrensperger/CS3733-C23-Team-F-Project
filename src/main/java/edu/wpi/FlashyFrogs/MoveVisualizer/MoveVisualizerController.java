@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -223,16 +223,56 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     double[] mousePosition = new double[2];
     boolean[] dragEnabled = new boolean[1]; // Whether the drag is enabled
 
-    // Function that validates new X layout and scale
-    BiFunction<Double, Double, Boolean> validateX =
+    // Function that validates and executes new X layout and scale
+    BiConsumer<Double, Double> updateX =
         (layoutX, scale) -> {
-          return true;
+          double adjustmentFactor = ((scale * root.getWidth() - root.getWidth()) / 2);
+          double left = layoutX - adjustmentFactor;
+          double width = scale * root.getWidth();
+
+          // Because scale can be negative, we need to compute the actual bounds
+          // based on the max left and right
+          double actualLeft = Math.min(left, left + width);
+          double actualRight = Math.max(left, left + width);
+
+          // It's valid if it's positive but not outside
+          if (actualLeft >= 0 && actualRight <= mapController.getMapWidth()) {
+            // Set the scale and layout
+            root.setLayoutX(layoutX);
+            root.setScaleX(scale);
+          } else if (actualLeft < 0) {
+            // If it's out in X on the left, go to relative 0
+            root.setLayoutX(adjustmentFactor);
+          } else {
+            // On the other side, go to the right
+            root.setLayoutX(mapController.getMapWidth() - width + adjustmentFactor);
+          }
         };
 
-    // Function that validates new Y layout and scale
-    BiFunction<Double, Double, Boolean> validateY =
+    // Function that validates and executes new Y layout and scale
+    BiConsumer<Double, Double> updateY =
         (layoutY, scale) -> {
-          return true;
+          double adjustmentFactor = ((scale * root.getHeight() - root.getHeight()) / 2);
+          double top = layoutY - adjustmentFactor;
+          double height = scale * root.getHeight();
+
+          // Because scale can be negative, we need to compute the actual bounds
+          // based on the max top and bottom
+          double actualTop = Math.min(top, top + height);
+          double actualBottom = Math.max(top, top + height);
+
+          // It's valid if it's positive but not outside
+          if (actualTop >= 0 && actualBottom <= mapController.getMapHeight()) {
+            // Set the scale and layout
+            root.setLayoutY(layoutY);
+            root.setScaleY(scale);
+          } else if (actualTop < 0) {
+            // If it's out in Y on the top, go to 0 (scaled)
+            root.setLayoutY(adjustmentFactor);
+          } else {
+            // On the other side, go to the right
+            root.setLayoutY(mapController.getMapHeight() - height + adjustmentFactor);
+          }
         };
 
     node.setOnDragDetected(
@@ -276,25 +316,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                       / mapController.getGesturePane().getCurrentScale();
 
           // Update the coordinates if they are in bounds
-          if (newX >= 0 && newX + root.getWidth() <= mapController.getMapWidth()) {
-            root.setLayoutX(newX);
-          } else if (newX < 0) {
-            root.setLayoutX(0); // If it's out of bounds in the X, left = 0
-          } else {
-            root.setLayoutX(
-                mapController.getMapWidth() - root.getWidth()); // Otherwise, max that won't go out
-          }
-
-          // Do the same
-          if (newY >= 0 && newY + root.getHeight() <= mapController.getMapHeight()) {
-            root.setLayoutY(newY);
-          } else if (newY < 0) {
-            root.setLayoutY(0); // If it's out of bounds Y, top = 0
-          } else {
-            root.setLayoutY(
-                mapController.getMapHeight()
-                    - root.getHeight()); // Otherwise, Otherwise, max that won't go out
-          }
+          updateX.accept(newX, root.getScaleX());
+          updateY.accept(newY, root.getScaleY());
         });
 
     // On drag stop (this represents that?)
@@ -384,11 +407,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             double shiftX = ((newScaleX - 1) * root.getWidth()) / 2;
             double shiftY = ((newScaleY - 1) * root.getHeight()) / 2;
 
-            root.setScaleX(newScaleX);
-            root.setLayoutX(startPosition[0] + shiftX);
-
-            root.setScaleY(newScaleY);
-            root.setLayoutY(startPosition[1] + shiftY);
+            // Update the position and scale if they are good
+            updateX.accept(startPosition[0] + shiftX, newScaleX);
+            updateY.accept(startPosition[1] + shiftY, newScaleY);
           }
         });
 
