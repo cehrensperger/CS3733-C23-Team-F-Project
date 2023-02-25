@@ -76,6 +76,7 @@ public class MapEditorController implements IController {
   @FXML Text h7;
 
   boolean hDone = false;
+  TimerTask task;
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
@@ -527,7 +528,6 @@ public class MapEditorController implements IController {
                                   .setParameter("id", node.getId())
                                   .executeUpdate();
                             }); // Delete all selected nodes
-                        mapController.redraw(); // Redraw on update
                       } else if (event.getCode().equals(KeyCode.DOWN)) { // Reversed top-bottom JFX
                         try {
                           // Try moving up
@@ -814,18 +814,12 @@ public class MapEditorController implements IController {
     addNode.setNode(
         new Node("", "", mapController.getMapFloorProperty().getValue(), 0, 0),
         mapController.getMapSession(), // Get the map session
-        (oldNode) -> {
-          popOver.hide();
-          mapController.redraw();
-        }, // On delete we do nothing but hide
+        (oldNode) -> popOver.hide(), // On delete we do nothing but hide
         (oldNode, newNode) -> {
           mapController.addNode(newNode, false);
           popOver.hide();
         }, // On create new one, process it
-        (oldLocation) -> {
-          mapController.removeLocationName(oldLocation);
-          mapController.redraw();
-        },
+        (oldLocation) -> mapController.removeLocationName(oldLocation),
         (oldLocation, newLocation, node) ->
             mapController.updateLocationName(
                 oldLocation, newLocation, node), // No location processing, no locations
@@ -1015,7 +1009,6 @@ public class MapEditorController implements IController {
    * @param circle the circle representing the node
    */
   private void nodeCreation(@NonNull Node node, @NonNull Circle circle) {
-
     // On hover, add an outline to the circle
     circle
         .hoverProperty()
@@ -1034,7 +1027,6 @@ public class MapEditorController implements IController {
     // Set the on-click processor
     circle.setOnDragDetected(
         (event) -> {
-          disableBoxCreation();
           // If quick draw is enabled
           if (quickDrawActive) {
             return; // Do nothing
@@ -1062,9 +1054,6 @@ public class MapEditorController implements IController {
           if (!dragInProgress) {
             return; // Don't do anything
           }
-
-          disableBoxCreation();
-
           // Calculate the differential on the positions
           int xDiff = (int) Math.round(event.getX()) - node.getXCoord();
           int yDiff = (int) Math.round(event.getY()) - node.getYCoord();
@@ -1097,7 +1086,6 @@ public class MapEditorController implements IController {
     // On drag stop, this is the only thing that represents that for some reason
     circle.setOnMouseReleased(
         (event) -> {
-          setBoxCreation();
           // If a drag isn't in progress (for instance simple release)
           if (!dragInProgress) {
             return; // Do nothing
@@ -1126,238 +1114,89 @@ public class MapEditorController implements IController {
             }
           }
         });
-    // handles both left and right click since I couldn't get
-      // setOnContextMenuRequested to fire at the correct time
-    circle.setOnMouseClicked(
+
+    circle.setOnMousePressed(
         (event) -> {
+          event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
 
-          // need to check to make sure for some reason
-          if (event.isConsumed()) {
-            return;
+          // If quick draw is active
+
+          if (quickDrawActive) {
+            quickDrawHandleNodeClick(node); // handle it
+            return; // Don't do any selection stuff!
           }
 
-          // MouseButton.SECONDARY == right click
-          // TODO: make this work with other ways of doing right click (ctrl + left-click)
-
-          if (event.getButton() == MouseButton.SECONDARY) {
-
-            // Connor's notes
-            // if circle is not in selected nodes, it is outside the selection, don't have to worry
-            // about weirdness
-            // node and circle represent the same thing
-            // If circle is not in currently selected nodes, deselect other selected nodes, add this
-            // one and show Ian's popup
-            // If selected nodes is empty, show Ian's popup on circle
-            // If circle is in selected nodes and it is length 1, do above
-            // If circle is in selected nodes and it is more than length 1, do new thing
-            //
-            // If we are dragging or quick draw is on
-            if (event.isConsumed() || dragInProgress || quickDrawActive) {
-              return; // Don't do anything!
-            }
-            // If we're no longer hovering and the pop over exists, delete it. We will
-            // either create a new one
-            // or, keep it deleted
-            clearNodePopOver();
-            if (selectedNodes.contains(node) && selectedNodes.size() > 1) {
-
-              // Bulk right click has occurred
-              // create a popup at the mouse position *in the gesture pane*
-
-              // TODO: make this look a lot better....
-              FXMLLoader contextMenuLoader =
-                  new FXMLLoader(getClass().getResource("GroupSelectionContextMenu.fxml"));
-              try {
-                // Try creating the pop-over
-                circlePopOver = new PopOver(contextMenuLoader.load());
-              } catch (IOException e) {
-                throw new RuntimeException(e); // If it fails, throw an exception
-              }
-
-              // don't let the user drag the popup around
-              circlePopOver.setDetachable(false);
-              GroupSelectionContextMenuController controller =
-                  contextMenuLoader.getController(); // Get the controller to use
-              controller.setCircle(circle);
-              //              List<Circle> circlesToAlign = new ArrayList<>();
-              //              for (Node n : selectedNodes) {
-              //                circlesToAlign.add(mapController.getNodeToCircleMap().get(n));
-              //              }
-              controller.setOnAutoAlign(
-                  e -> {
-                    // TODO: set alignVertical based on standard deviation????
-                    tryAutoAlign((int) circle.getCenterX(), (int) circle.getCenterY(), false);
-                  });
-              circlePopOver.show(circle); // Show the pop-over
-
-              // Disable the gesture pane (this causes clunkyness when you click on the page after
-              // using the pop-up)
-              mapController.getGesturePane().setGestureEnabled(false);
-
-              // On close of the pop-up
-              circlePopOver.setOnHidden(
-                  // Re-enable map gestures
-                  (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
-
-              event.consume();
-            } else {
-
-              // If right-clicked circle is outside the current selection
-              // clear the other selection and do the thing for one node
-              if (!selectedNodes.contains(node)
-                  || (selectedNodes.size() == 1 && selectedNodes.contains(node))) {
-
-                selectedNodes
-                    .clear(); // Clear the selected nodes, so what is happening is perfectly clear
-
-                // Get the node info in FXML form
-                FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
-
-                try {
-                  // Try creating the pop-over
-                  circlePopOver = new PopOver(nodeInfoLoader.load());
-                } catch (IOException e) {
-                  throw new RuntimeException(e); // If it fails, throw an exception
-                }
-
-                NodeInfoController controller =
-                    nodeInfoLoader.getController(); // Get the controller to use
-                controller.setNode(
-                    node,
-                    mapController.getMapSession(),
-                    (oldNode) -> {
-                      selectedNodes.remove(oldNode); // Remove the node
-
-                      mapController.deleteNode(oldNode, false); // On delete, delete
-                      clearNodePopOver();
-                    },
-                    (oldNode, newNode) -> {
-                      mapController.moveNode(oldNode, newNode); // On move move
-                      clearNodePopOver();
-                    },
-                    (oldLocation) -> {
-                      locationTable.getItems().remove(oldLocation);
-                      mapController.removeLocationName(oldLocation);
-                    },
-                    (oldLocation, newLocation, locationNode) -> {
-                      updateLocationInTable(oldLocation, newLocation); // Update the table
-                      // Update the location node
-                      mapController.updateLocationName(oldLocation, newLocation, locationNode);
-                    }, // Update when locations update
-                    false); // Delete on delete
-
-                circlePopOver.show(circle); // Show the pop-over
-
-                // Disable the gesture pane (this causes clunkyness when you click on the page after
-                // using the pop-up)
-                mapController.getGesturePane().setGestureEnabled(false);
-
-                // On close of the pop-up
-                circlePopOver.setOnHidden(
-                    // Re-enable map gestures
-                    (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
-              }
-            }
-
-          } else {
-            event.consume(); // Consume the event, prevent propagation to the map pane (clears this)
-
-            // If quick draw is active
-            if (quickDrawActive) {
-              quickDrawHandleNodeClick(node); // handle it
-              return; // Don't do any selection stuff!
-            }
-
-            // If shift is not down
-            if (!event.isShiftDown()) {
-              selectedNodes.clear(); // Clear
-            }
-
-            // Otherwise, add this
-            selectedNodes.add(node);
+          // If shift is not down
+          if (!event.isShiftDown()) {
+            selectedNodes.clear(); // Clear
           }
+
+          // Otherwise, add this
+          selectedNodes.add(node);
         });
-  }
 
-  /**
-   * @param x X coordinate of the circle you are aligning to.
-   * @param y Y coordinate of the circle you are aligning to.
-   * @param alignVertical whether to align vertically or horizontally.
-   */
-  private void tryAutoAlign(int x, int y, boolean alignVertical) {
-
-    Collection<Node> nodes =
-        selectedNodes.stream().toList(); // Collection of nodes, so that we can remove them
-
-    for (Node node : nodes) {
-
-      if (alignVertical) {
-        if (x != node.getXCoord()) {
-
-          if (mapController
-                  .getMapSession()
-                  .find(Node.class, createNodeID(node.getFloor(), x, node.getYCoord()))
-              != null) {
-            throw new IllegalArgumentException("Duplicate position detected!");
+    // On right-click (context menu)
+    circle.setOnContextMenuRequested(
+        (event) -> {
+          // If we are dragging or quick draw is on
+          if (event.isConsumed() || dragInProgress || quickDrawActive) {
+            return; // Don't do anything!
           }
-        }
-      } else {
-        if (y != node.getYCoord()) {
-          if (mapController
-                  .getMapSession()
-                  .find(Node.class, createNodeID(node.getFloor(), node.getXCoord(), y))
-              != null) {
-            throw new IllegalArgumentException("Duplicate position detected!");
+          // If we're no longer hovering and the pop over exists, delete it. We will
+          // either create a new one
+          // or, keep it deleted
+          clearNodePopOver();
+
+          selectedNodes
+              .clear(); // Clear the selected nodes, so what is happening is perfectly clear
+
+          // Get the node info in FXML form
+          FXMLLoader nodeInfoLoader = new FXMLLoader(getClass().getResource("NodeInfo.fxml"));
+
+          try {
+            // Try creating the pop-over
+            circlePopOver = new PopOver(nodeInfoLoader.load());
+          } catch (IOException e) {
+            throw new RuntimeException(e); // If it fails, throw an exception
           }
-        }
-      }
-    }
 
-    selectedNodes.clear();
-    // Now actually do the move
-    for (Node node : nodes) {
-      if (alignVertical) {
-        String newID = createNodeID(node.getFloor(), x, node.getYCoord()); // Get the ID
+          NodeInfoController controller =
+              nodeInfoLoader.getController(); // Get the controller to use
+          controller.setNode(
+              node,
+              mapController.getMapSession(),
+              (oldNode) -> {
+                selectedNodes.remove(oldNode); // Remove the node
 
-        // Create a query to move the node in the DB
-        mapController
-            .getMapSession()
-            .createMutationQuery(
-                "UPDATE Node n SET n.id = :newID, n.xCoord = "
-                    + ":newXCoord, n.yCoord = :newYCoord WHERE n.id = :oldID")
-            .setParameter("newID", newID)
-            .setParameter("newXCoord", x)
-            .setParameter("newYCoord", node.getYCoord())
-            .setParameter("oldID", node.getId())
-            .executeUpdate();
+                mapController.deleteNode(oldNode, false); // On delete, delete
+                clearNodePopOver();
+              },
+              (oldNode, newNode) -> {
+                mapController.moveNode(oldNode, newNode); // On move move
+                clearNodePopOver();
+              },
+              (oldLocation) -> {
+                locationTable.getItems().remove(oldLocation);
+                mapController.removeLocationName(oldLocation);
+              },
+              (oldLocation, newLocation, locationNode) -> {
+                updateLocationInTable(oldLocation, newLocation); // Update the table
+                // Update the location node
+                mapController.updateLocationName(oldLocation, newLocation, locationNode);
+              }, // Update when locations update
+              false); // Delete on delete
 
-        Node newNode = mapController.getMapSession().find(Node.class, newID); // Get the new node
+          circlePopOver.show(circle); // Show the pop-over
 
-        mapController.moveNode(node, newNode); // Process the node change
+          // Disable the gesture pane (this causes clunkyness when you click on the page after
+          // using the pop-up)
+          mapController.getGesturePane().setGestureEnabled(false);
 
-        selectedNodes.add(newNode); // Re-add this to the selected
-      } else {
-        String newID = createNodeID(node.getFloor(), node.getXCoord(), y); // Get the ID
-
-        // Create a query to move the node in the DB
-        mapController
-            .getMapSession()
-            .createMutationQuery(
-                "UPDATE Node n SET n.id = :newID, n.xCoord = "
-                    + ":newXCoord, n.yCoord = :newYCoord WHERE n.id = :oldID")
-            .setParameter("newID", newID)
-            .setParameter("newXCoord", node.getXCoord())
-            .setParameter("newYCoord", y)
-            .setParameter("oldID", node.getId())
-            .executeUpdate();
-
-        Node newNode = mapController.getMapSession().find(Node.class, newID); // Get the new node
-
-        mapController.moveNode(node, newNode); // Process the node change
-
-        selectedNodes.add(newNode); // Re-add this to the selected
-      }
-    }
+          // On close of the pop-up
+          circlePopOver.setOnHidden(
+              // Re-enable map gestures
+              (popCloseEvent) -> mapController.getGesturePane().setGestureEnabled(true));
+        });
   }
 
   private void disableBoxCreation() {
@@ -1375,6 +1214,7 @@ public class MapEditorController implements IController {
         .getCurrentDrawingPane()
         .setOnMousePressed(
             event -> {
+              Timer timer = new Timer();
               mapController.getGesturePane().setGestureEnabled(false);
               double startX = event.getX();
               double startY = event.getY();
@@ -1389,50 +1229,135 @@ public class MapEditorController implements IController {
                       e -> {
                         double width = e.getX() - startX;
                         double height = e.getY() - startY;
+                        double kp = 0.2;
+                        double errorX = 0;
+                        double errorY = 0;
 
                         if (e.getX() >= mapController.getGesturePane().getCurrentX() * -1
-                            && e.getX() <= mapPane.getWidth() - 20) {
+                            && e.getX()
+                                <= (mapController.getGesturePane().getWidth()
+                                        / mapController.getGesturePane().getCurrentScaleX()
+                                    - mapController.getGesturePane().getCurrentX())) {
                           if (width < 0) {
                             rect.setX(e.getX());
                           }
                           rect.setWidth(abs(width));
+                        }
+                        if (e.getX()
+                            < (mapController.getGesturePane().getCurrentX() * -1)
+                                + 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
+                          errorX =
+                              e.getX()
+                                  - ((mapController.getGesturePane().getCurrentX() * -1)
+                                      + 50.0 / mapController.getGesturePane().getCurrentScaleX());
                         } else if (e.getX()
-                            < (mapController.getGesturePane().getCurrentX() * -1) + 50) {
-                          mapController.getGesturePane().translateBy(new Dimension2D(-10, 0));
-                        } else if (e.getX() > (mapController.getGesturePane().getWidth() - 50)) {
-                          mapController.getGesturePane().translateBy(new Dimension2D(10, 0));
+                            > ((mapController.getGesturePane().getWidth()
+                                        / mapController.getGesturePane().getCurrentScaleX())
+                                    - mapController.getGesturePane().getCurrentX())
+                                - 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
+                          errorX =
+                              e.getX()
+                                  - (((mapController.getGesturePane().getWidth()
+                                              / mapController.getGesturePane().getCurrentScaleX())
+                                          - mapController.getGesturePane().getCurrentX())
+                                      - 50.0 / mapController.getGesturePane().getCurrentScaleX());
+                        } else {
+                          errorX = 0;
                         }
 
                         if (e.getY() >= mapController.getGesturePane().getCurrentY() * -1
-                            && e.getY() <= mapController.getCurrentDrawingPane().getHeight() - 20) {
+                            && e.getY()
+                                <= (mapController.getGesturePane().getHeight()
+                                        / mapController.getGesturePane().getCurrentScaleY()
+                                    - mapController.getGesturePane().getCurrentY())) {
                           if (height < 0) {
                             rect.setY(e.getY());
                           }
                           rect.setHeight(abs(height));
-                        } else if (e.getY()
-                            < (mapController.getGesturePane().getCurrentY() * -1) + 50) {
-                          mapController.getGesturePane().translateBy(new Dimension2D(0, -10));
-                        } else if (e.getY() > (mapController.getGesturePane().getHeight() - 50)) {
-                          mapController.getGesturePane().translateBy(new Dimension2D(0, 10));
                         }
+                        if (e.getY()
+                            < (mapController.getGesturePane().getCurrentY() * -1)
+                                + 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
+                          errorY =
+                              e.getY()
+                                  - ((mapController.getGesturePane().getCurrentY() * -1)
+                                      + 50.0 / mapController.getGesturePane().getCurrentScaleX());
+                        } else if (e.getY()
+                            > ((mapController.getGesturePane().getHeight()
+                                        / mapController.getGesturePane().getCurrentScaleY())
+                                    - mapController.getGesturePane().getCurrentY())
+                                - 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
+                          errorY =
+                              e.getY()
+                                  - (((mapController.getGesturePane().getHeight()
+                                              / mapController.getGesturePane().getCurrentScaleY())
+                                          - mapController.getGesturePane().getCurrentY())
+                                      - 50.0 / mapController.getGesturePane().getCurrentScaleY());
+                        } else {
+                          errorY = 0;
+                        }
+                        double[] finalErrorX = {errorX};
+                        double[] finalErrorY = {errorY};
+                        // todo: make changes work
+                        double[] width2 = {width};
+                        double[] height2 = {height};
+
+                        if (task != null) task.cancel();
+
+                        task =
+                            new TimerTask() {
+                              @Override
+                              public void run() {
+                                Platform.runLater(
+                                    () ->
+                                        mapController
+                                            .getGesturePane()
+                                            .translateBy(
+                                                new Dimension2D(
+                                                    finalErrorX[0] * kp, finalErrorY[0] * kp)));
+
+                                if (mapController.getGesturePane().getCurrentX() * -1
+                                        < mapPane.getWidth()
+                                            - mapController.getGesturePane().getWidth() * -1
+                                    && mapController.getGesturePane().getCurrentX() * -1 > 0) {
+
+                                  width2[0] += finalErrorX[0] * kp;
+                                  if (width < 0) {
+                                    Platform.runLater(
+                                        () -> rect.setX(rect.getX() + finalErrorX[0] * kp));
+                                  }
+                                  Platform.runLater(() -> rect.setWidth(abs(width2[0])));
+                                }
+
+                                if (mapController.getGesturePane().getCurrentY() * -1
+                                        < mapPane.getHeight()
+                                            - mapController.getGesturePane().getHeight() * -1
+                                    && mapController.getGesturePane().getCurrentY() * -1 > 0) {
+                                  height2[0] += finalErrorY[0] * kp;
+                                  if (height < 0) {
+                                    Platform.runLater(
+                                        () -> rect.setY(rect.getY() + finalErrorY[0] * kp));
+                                  }
+                                  Platform.runLater(() -> rect.setHeight(abs(height2[0])));
+                                }
+                              }
+                            };
+
+                        timer.scheduleAtFixedRate(task, 0, 15);
                       });
 
               mapController
                   .getCurrentDrawingPane()
                   .setOnMouseReleased(
                       e -> {
+                        if (task != null) task.cancel();
+                        timer.cancel();
                         selectedNodes.clear();
                         for (Node node : mapController.getNodeToCircleMap().keySet()) {
                           if (rect.contains(new Point2D(node.getXCoord(), node.getYCoord()))) {
                             selectedNodes.add(node);
                           }
                         }
-
-                        System.out.println(e.getX());
-                        System.out.println(mapController.getGesturePane().getCurrentX());
-                        System.out.println(mapController.getGesturePane().getCurrentScaleX());
-                        System.out.println(mapPane.getWidth());
-                        System.out.println(mapController.getCurrentDrawingPane().getWidth());
                         mapController.getCurrentDrawingPane().getChildren().remove(rect);
                         mapController.getGesturePane().setGestureEnabled(true);
                       });
@@ -1447,11 +1372,6 @@ public class MapEditorController implements IController {
    * @param yDiff the y-delta
    */
   private void tryCommitBulkMove(int xDiff, int yDiff) {
-    // If there's no delta, do nothing
-    if (xDiff == 0 && yDiff == 0) {
-      return;
-    }
-
     Collection<Node> nodes =
         selectedNodes.stream().toList(); // Collection of nodes, so that we can remove them
 
@@ -1459,11 +1379,9 @@ public class MapEditorController implements IController {
     for (Node node : nodes) {
       if (mapController
               .getMapSession()
-              .createQuery("FROM Node WHERE id = :id", Node.class)
-              .setParameter(
-                  "id",
+              .find(
+                  Node.class,
                   createNodeID(node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff))
-              .uniqueResult()
           != null) {
         throw new IllegalArgumentException("Duplicate position detected!");
       }
