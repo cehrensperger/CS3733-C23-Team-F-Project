@@ -11,10 +11,7 @@ import java.time.ZoneId;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import lombok.Setter;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -29,8 +26,10 @@ public class NewAlertController {
   @FXML private SearchableComboBox<Department> deptBox;
   @FXML private ComboBox<Alert.Severity> severityBox;
   @FXML private DatePicker date;
+  @FXML private Label errorMessage;
 
   public void initialize() {
+    errorMessage.setVisible(false);
     Session session = CONNECTION.getSessionFactory().openSession();
     List<Department> departments =
         session.createQuery("FROM Department", Department.class).getResultList();
@@ -44,7 +43,11 @@ public class NewAlertController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      if (summaryField.getText().equals("") || descriptionField.getText().equals("") || date.getValue().toString().equals("")) {
+      if (summaryField.getText().equals("")
+          || deptBox.getValue().equals("")
+          || severityBox.getValue().equals("")
+          || descriptionField.getText().equals("")
+          || date.getValue().toString().equals("")) {
         throw new NullPointerException();
       }
 
@@ -66,16 +69,19 @@ public class NewAlertController {
         //        handleCancel(actionEvent);
       } catch (RollbackException exception) {
         session.clear();
-        // TODO Do something smart and throw an error maybe
+        errorMessage.setVisible(true);
+        errorMessage.setText("Rollback");
         session.close();
       } catch (Exception exception) {
         session.clear();
-        // TODO Do something smart also
+        errorMessage.setVisible(true);
+        errorMessage.setText("exception");
         session.close();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      // TODO Do something smart and throw an error maybe
+      errorMessage.setVisible(true);
+      errorMessage.setText("Fill out all fields");
       session.close();
     }
   }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -19,5 +20,10 @@
       <MFXButton layoutX="379.0" layoutY="354.0" onAction="#handleDelete" prefWidth="90.0" styleClass="redOutlineNoSetSize" text="Delete Alert" AnchorPane.topAnchor="354.0" />
       <Label alignment="CENTER" layoutX="162.0" layoutY="14.0" prefHeight="17.0" prefWidth="282.0" styleClass="headerBold" text="Edit Alert" textAlignment="CENTER" AnchorPane.bottomAnchor="369.0" AnchorPane.leftAnchor="159.0" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="14.0" />
       <DatePicker fx:id="date" layoutX="395.0" layoutY="19.0" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="220.0" layoutY="35.0" prefHeight="10.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false">
+         <padding>
+            <Insets top="8.0" />
+         </padding>
+      </Label>
    </children>
 </AnchorPane>
