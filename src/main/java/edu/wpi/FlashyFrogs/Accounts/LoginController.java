@@ -8,6 +8,7 @@ import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
 // import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -103,6 +104,7 @@ public class LoginController implements IController {
     if (username.getText().equals("") || password.getText().equals("")) {
       // One of the values is left null
       errorMessage.setText("Please fill out all fields!");
+      Sound.ERROR.play();
       errorMessage.setVisible(true);
     } else if (users.containsKey(username.getText())
         && users.get(username.getText()).checkPasswordEqual(password.getText())) {
@@ -114,6 +116,7 @@ public class LoginController implements IController {
     } else {
       // if we haven't exited by this point
       errorMessage.setText("Invalid Username or Password.");
+      Sound.ERROR.play();
       errorMessage.setVisible(true);
     }
   }
