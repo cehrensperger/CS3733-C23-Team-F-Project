@@ -1138,7 +1138,6 @@ public class MapEditorController implements IController {
 
           // MouseButton.SECONDARY == right click
           // TODO: make this work with other ways of doing right click (ctrl + left-click)
-
           if (event.getButton() == MouseButton.SECONDARY) {
 
             // Connor's notes
@@ -1148,8 +1147,8 @@ public class MapEditorController implements IController {
             // If circle is not in currently selected nodes, deselect other selected nodes, add this
             // one and show Ian's popup
             // If selected nodes is empty, show Ian's popup on circle
-            // If circle is in selected nodes and it is length 1, do above
-            // If circle is in selected nodes and it is more than length 1, do new thing
+            // If circle is in selected nodes, and it is length 1, do above
+            // If circle is in selected nodes, and it is more than length 1, do new thing
             //
             // If we are dragging or quick draw is on
             if (event.isConsumed() || dragInProgress || quickDrawActive) {
@@ -1176,17 +1175,48 @@ public class MapEditorController implements IController {
 
               // don't let the user drag the popup around
               circlePopOver.setDetachable(false);
+
+              // load the popup controller
               GroupSelectionContextMenuController controller =
                   contextMenuLoader.getController(); // Get the controller to use
-              controller.setCircle(circle);
-              //              List<Circle> circlesToAlign = new ArrayList<>();
-              //              for (Node n : selectedNodes) {
-              //                circlesToAlign.add(mapController.getNodeToCircleMap().get(n));
-              //              }
+
+              // set the button action handling methods so we don't have to pass state to the
+              // controller I guess
               controller.setOnAutoAlign(
                   e -> {
                     // TODO: set alignVertical based on standard deviation????
-                    tryAutoAlign((int) circle.getCenterX(), (int) circle.getCenterY(), false);
+                    double[] xVals = new double[selectedNodes.size()];
+                    double[] yVals = new double[selectedNodes.size()];
+                    for (int i = 0; i < selectedNodes.size(); i++) {
+                      xVals[i] = selectedNodes.get(i).getXCoord();
+                      yVals[i] = selectedNodes.get(i).getYCoord();
+                    }
+                    double xStdDev = calculateSD(xVals);
+                    double yStdDev = calculateSD(yVals);
+                    tryAutoAlign(
+                        (int) circle.getCenterX(), (int) circle.getCenterY(), yStdDev >= xStdDev);
+                  });
+
+              controller.setOnDeleteLocations(
+                  new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                      for (Node n : selectedNodes) {
+                        for (LocationName loc : mapController.getNodeToLocationNameMap().get(n)) {
+                          System.out.println(loc);
+                          mapController.removeLocationName(loc);
+                        }
+                      }
+                    }
+                  });
+
+              controller.setOnDeleteNodes(
+                  new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+
+                      mapController.deleteNodes(selectedNodes, checkBox.isSelected());
+                    }
                   });
               circlePopOver.show(circle); // Show the pop-over
 
@@ -1518,5 +1548,23 @@ public class MapEditorController implements IController {
   public void showMoveVisualizer(ActionEvent actionEvent) {
     onClose(); // Handle the exit
     Fapp.setScene("MoveVisualizer", "MoveVisualizer");
+  }
+
+  // https://www.programiz.com/java-programming/examples/standard-deviation
+  private static double calculateSD(double[] numArray) {
+    double sum = 0.0, standardDeviation = 0.0;
+    int length = numArray.length;
+
+    for (double num : numArray) {
+      sum += num;
+    }
+
+    double mean = sum / length;
+
+    for (double num : numArray) {
+      standardDeviation += Math.pow(num - mean, 2);
+    }
+
+    return Math.sqrt(standardDeviation / length);
   }
 }

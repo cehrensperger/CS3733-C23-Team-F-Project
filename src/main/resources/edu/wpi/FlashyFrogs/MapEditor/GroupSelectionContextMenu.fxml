@@ -8,9 +8,9 @@
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="147.0" spacing="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <MFXButton fx:id="autoAlign" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#handleAutoAlign" text="Auto-Align" />
-            <MFXButton fx:id="deleteLocations" onAction="#handleDeleteLocations" prefHeight="25.0" prefWidth="200.0" text="Delete Location Names" />
-            <MFXButton fx:id="deleteNodes" maxWidth="1.7976931348623157E308" onAction="#handleDeleteNodes" text="Delete Nodes" />
+            <MFXButton fx:id="autoAlign" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Auto-Align" />
+            <MFXButton fx:id="deleteLocations" prefHeight="25.0" prefWidth="200.0" text="Delete Location Names" />
+            <MFXButton fx:id="deleteNodes" maxWidth="1.7976931348623157E308" text="Delete Nodes" />
          </children>
       </VBox>
    </children>
