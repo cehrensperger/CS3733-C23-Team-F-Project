@@ -229,6 +229,24 @@ public class MapController {
     }
   }
 
+  public void deleteNodes(List<Node> selectedNodes, boolean autoRepair) {
+    Collection<Node> nodesToDelete = selectedNodes.stream().toList(); // Get the nodes to delete
+
+    selectedNodes.clear(); // Clear the selected nodes. This must happen before deleting
+    // in the
+
+    // On node delete
+    nodesToDelete.forEach(
+        (node) -> {
+          // For each node, delete it
+          deleteNode(node, autoRepair); // Delete the node
+          getMapSession()
+              .createMutationQuery("DELETE FROM " + "Node WHERE id = :id")
+              .setParameter("id", node.getId())
+              .executeUpdate();
+        }); // Delete all selected nodes
+  }
+
   private void deleteAndAutoRepair(Node node) {
 
     List<Node> allChildren = node.getChildren(getMapSession());

@@ -110,28 +110,29 @@ public abstract class AbstractPathVisualizerController implements IController {
 
         if (!thisNode.getFloor().equals(lastNode.getFloor())
             && lastNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-          FXMLLoader loader =
-              new FXMLLoader(
-                  AbstractPathVisualizerController.class.getResource("NextFloorPopup.fxml"));
-          PopOver goToNext = new PopOver(loader.load());
-          goToNext.setHeaderAlwaysVisible(false); // Disable the header
-          changeFloorPopOvers.add(goToNext); // Add this to the pop-overs
+          //          FXMLLoader loader =
+          //              new FXMLLoader(
+          //
+          // AbstractPathVisualizerController.class.getResource("NextFloorPopup.fxml"));
+          //          // PopOver goToNext = new PopOver(loader.load());
+          //          goToNext.setHeaderAlwaysVisible(false); // Disable the header
+          //          changeFloorPopOvers.add(goToNext); // Add this to the pop-overs
 
           // Create the controller
-          NextFloorPopupController controller = loader.getController();
-          controller.setPathfindingController(this); // Set its controller to be this
-          controller.setDestination(thisNode); // Go to that
+          // NextFloorPopupController controller = loader.getController();
+          //          controller.setPathfindingController(this); // Set its controller to be this
+          //          controller.setDestination(thisNode); // Go to that
 
           Circle circle = mapController.getNodeToCircleMap().get(lastNode);
           circle.setFill(Color.YELLOW);
           circle.setVisible(true);
 
-          goToNext.show(circle);
-          goToNext.setAutoHide(false);
-          goToNext.setAutoFix(false);
-          goToNext.detach();
-          goToNext.setX(250);
-          goToNext.setY(20);
+          //          goToNext.show(circle);
+          //          goToNext.setAutoHide(false);
+          //          goToNext.setAutoFix(false);
+          //          goToNext.detach();
+          //          goToNext.setX(250);
+          //          goToNext.setY(20);
         } else if (!thisNode.getFloor().equals(lastNode.getFloor())
             && thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
           Circle circle = mapController.getNodeToCircleMap().get(thisNode);
