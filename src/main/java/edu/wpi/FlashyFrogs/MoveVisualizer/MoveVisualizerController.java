@@ -149,11 +149,11 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     }
 
     Text text = new Text(textText.getText()); // Create the text
-    text.setStyle("-fx-font-size: 500"); // Increase font size
+    text.setStyle("-fx-font-size: 250"); // Increase font size
     text.setTextOrigin(VPos.TOP); // Make sure that the text origin is the top left for coordinates
 
     // Cap the width at half the screen, however less is okay
-    text.setWrappingWidth(Math.min(mapController.getMapWidth() / 2, text.getWrappingWidth()));
+    text.setWrappingWidth(Math.min(mapController.getMapWidth() / 4, text.getWrappingWidth()));
 
     handleAddNode(text); // Add the text
   }
@@ -235,17 +235,36 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           double actualLeft = Math.min(left, left + width);
           double actualRight = Math.max(left, left + width);
 
+          // Compute the old adjustment factor, in case we need to "go back"
+          double oldAdjustmentFactor = (root.getScaleX() * root.getWidth() - root.getWidth()) / 2;
+
           // It's valid if it's positive but not outside
-          if (actualLeft >= 0 && actualRight <= mapController.getMapWidth()) {
-            // Set the scale and layout
-            root.setLayoutX(layoutX);
-            root.setScaleX(scale);
-          } else if (actualLeft < 0) {
-            // If it's out in X on the left, go to relative 0
-            root.setLayoutX(adjustmentFactor);
-          } else {
-            // On the other side, go to the right
-            root.setLayoutX(mapController.getMapWidth() - width + adjustmentFactor);
+          if (width <= mapController.getMapWidth()) {
+            if (actualLeft >= 0 && actualRight <= mapController.getMapWidth()) {
+              // Set the scale and layout
+              root.setLayoutX(layoutX);
+              root.setScaleX(scale);
+            } else if (actualLeft < 0) {
+              // If it's out in X on the left, go to relative 0
+              if (root.getScaleX() >= 0) {
+                root.setLayoutX(oldAdjustmentFactor);
+              } else {
+                // handle the case of the scale being negative, we need to account for the
+                // adjustment
+                // putting the top left on the wrong side
+                root.setLayoutX(oldAdjustmentFactor - width);
+              }
+            } else {
+              // On the other side, go to the right
+              if (root.getScaleX() >= 0) {
+                root.setLayoutX(mapController.getMapWidth() - width + oldAdjustmentFactor);
+              } else {
+                // handle the case of the scale being negative, we need to account for the
+                // adjustment
+                // putting the top left on the wrong side
+                root.setLayoutX(mapController.getMapWidth() + oldAdjustmentFactor);
+              }
+            }
           }
         };
 
@@ -261,17 +280,33 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           double actualTop = Math.min(top, top + height);
           double actualBottom = Math.max(top, top + height);
 
-          // It's valid if it's positive but not outside
-          if (actualTop >= 0 && actualBottom <= mapController.getMapHeight()) {
-            // Set the scale and layout
-            root.setLayoutY(layoutY);
-            root.setScaleY(scale);
-          } else if (actualTop < 0) {
-            // If it's out in Y on the top, go to 0 (scaled)
-            root.setLayoutY(adjustmentFactor);
-          } else {
-            // On the other side, go to the right
-            root.setLayoutY(mapController.getMapHeight() - height + adjustmentFactor);
+          // Compute the old adjustment factor, in case we need to "go back"
+          double oldAdjustmentFactor = (root.getScaleY() * root.getHeight() - root.getHeight()) / 2;
+
+          // It's valid if it's positive but not outside (and the height isn't off)
+          if (height <= mapController.getMapHeight()) {
+            if (actualTop >= 0 && actualBottom <= mapController.getMapHeight()) {
+              // Set the scale and layout
+              root.setLayoutY(layoutY);
+              root.setScaleY(scale);
+            } else if (actualTop < 0) {
+              // If it's out in Y on the top, go to 0 (scaled)
+              if (root.getScaleY() >= 0) {
+                root.setLayoutY(oldAdjustmentFactor);
+              } else {
+                // handle the case of scale being negative, where the adjustment factor
+                // puts the layout on the wrong side
+                root.setLayoutY(oldAdjustmentFactor - height);
+              }
+            } else {
+              // On the other side, go to the right
+              if (root.getScaleY() >= 0) {
+                root.setLayoutY(mapController.getMapHeight() - height + oldAdjustmentFactor);
+              } else {
+                //
+                root.setLayoutY(mapController.getMapHeight() + oldAdjustmentFactor);
+              }
+            }
           }
         };
 
