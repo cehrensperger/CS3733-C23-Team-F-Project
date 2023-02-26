@@ -260,22 +260,21 @@ public class MapEditorController implements IController {
 
                                 @Override
                                 public void handle(DragEvent event) {
-                                  // System.out.println("in root drag over");
                                   locationDragText.setVisible(true);
                                   locationDragText.setX(event.getX() - 250);
                                   locationDragText.setY(event.getY());
                                 }
                               });
 
-                          root.setOnDragDone(
-                              new EventHandler<DragEvent>() {
-                                @Override
-                                public void handle(DragEvent event) {
-                                  locationDragText.setVisible(false);
-                                  root.setOnDragDone(p -> {});
-                                  root.setOnDragOver(p -> {});
-                                }
-                              });
+                          //                          root.setOnDragDone(
+                          //                              new EventHandler<DragEvent>() {
+                          //                                @Override
+                          //                                public void handle(DragEvent event) {
+                          //                                  locationDragText.setVisible(false);
+                          //                                  root.setOnDragDone(p -> {});
+                          //                                  root.setOnDragOver(p -> {});
+                          //                                }
+                          //                              });
 
                           for (Node node : mapController.getNodeToCircleMap().keySet()) {
                             Circle circle = mapController.getNodeToCircleMap().get(node);
@@ -611,13 +610,6 @@ public class MapEditorController implements IController {
           clipboardContent.putString("fjbwef");
           dragboard.setContent(clipboardContent);
 
-          mapPane.setOnDragDone(
-              e -> {
-                timer.cancel();
-                task.cancel();
-                duplicateCircle.setVisible(false);
-                event.consume();
-              });
           mapPane.setOnDragEntered(
               e -> {
                 e.acceptTransferModes(TransferMode.ANY);
@@ -626,7 +618,13 @@ public class MapEditorController implements IController {
               });
           mapPane.setOnDragExited(
               e -> {
-                //                timer.cancel();
+                task.cancel();
+                duplicateCircle.setVisible(false);
+                event.consume();
+              });
+          root.setOnDragDone(
+              e -> {
+                timer.cancel();
                 task.cancel();
                 duplicateCircle.setVisible(false);
                 event.consume();
