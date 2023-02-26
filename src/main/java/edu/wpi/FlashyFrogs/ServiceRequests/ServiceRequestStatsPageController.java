@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javafx.beans.property.SimpleObjectProperty;
@@ -22,6 +23,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 import org.hibernate.Session;
 
 public class ServiceRequestStatsPageController implements IController {
@@ -66,29 +69,26 @@ public class ServiceRequestStatsPageController implements IController {
     statusCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getStatus()));
     // statusCol.setReorderable(false);
 
-    //    PopupFilter<ServiceRequest, String> popupTypeFilter = new
-    // PopupStringFilter<>(requestTypeCol);
-    //    requestTypeCol.setOnFilterAction(e -> popupTypeFilter.showPopup());
-    //    PopupFilter<ServiceRequest, Long> popupIDFilter = new PopupStringFilter<>(requestIDCol);
-    //    requestIDCol.setOnFilterAction(e -> popupIDFilter.showPopup());
-    //    PopupFilter<ServiceRequest, HospitalUser> popupEmpFilter = new
-    // PopupStringFilter<>(initEmpCol);
-    //    initEmpCol.setOnFilterAction(e -> popupEmpFilter.showPopup());
-    //    PopupFilter<ServiceRequest, HospitalUser> popupAssignedFilter =
-    //        new PopupStringFilter<>(assignedEmpCol);
-    //    assignedEmpCol.setOnFilterAction(e -> popupAssignedFilter.showPopup());
-    //    PopupFilter<ServiceRequest, Date> popupSubDateFilter = new
-    // PopupStringFilter<>(subDateCol);
-    //    subDateCol.setOnFilterAction(e -> popupSubDateFilter.showPopup());
-    //    PopupFilter<ServiceRequest, ServiceRequest.Urgency> popupUrgencyFilter =
-    //        new PopupStringFilter<>(urgencyCol);
-    //    urgencyCol.setOnFilterAction(e -> popupUrgencyFilter.showPopup());
-    //    PopupFilter<ServiceRequest, LocationName> popupLocationFilter =
-    //        new PopupStringFilter<>(locationCol);
-    //    locationCol.setOnFilterAction(e -> popupLocationFilter.showPopup());
-    //    PopupFilter<ServiceRequest, ServiceRequest.Status> popupStatusFilter =
-    //        new PopupStringFilter<>(statusCol);
-    //    statusCol.setOnFilterAction(e -> popupStatusFilter.showPopup());
+    PopupFilter<ServiceRequest, String> popupTypeFilter = new PopupStringFilter<>(requestTypeCol);
+    requestTypeCol.setOnFilterAction(e -> popupTypeFilter.showPopup());
+    PopupFilter<ServiceRequest, Long> popupIDFilter = new PopupStringFilter<>(requestIDCol);
+    requestIDCol.setOnFilterAction(e -> popupIDFilter.showPopup());
+    PopupFilter<ServiceRequest, HospitalUser> popupEmpFilter = new PopupStringFilter<>(initEmpCol);
+    initEmpCol.setOnFilterAction(e -> popupEmpFilter.showPopup());
+    PopupFilter<ServiceRequest, HospitalUser> popupAssignedFilter =
+        new PopupStringFilter<>(assignedEmpCol);
+    assignedEmpCol.setOnFilterAction(e -> popupAssignedFilter.showPopup());
+    PopupFilter<ServiceRequest, Date> popupSubDateFilter = new PopupStringFilter<>(subDateCol);
+    subDateCol.setOnFilterAction(e -> popupSubDateFilter.showPopup());
+    PopupFilter<ServiceRequest, ServiceRequest.Urgency> popupUrgencyFilter =
+        new PopupStringFilter<>(urgencyCol);
+    urgencyCol.setOnFilterAction(e -> popupUrgencyFilter.showPopup());
+    PopupFilter<ServiceRequest, LocationName> popupLocationFilter =
+        new PopupStringFilter<>(locationCol);
+    locationCol.setOnFilterAction(e -> popupLocationFilter.showPopup());
+    PopupFilter<ServiceRequest, ServiceRequest.Status> popupStatusFilter =
+        new PopupStringFilter<>(statusCol);
+    statusCol.setOnFilterAction(e -> popupStatusFilter.showPopup());
     //
     //    // FILL TABLES
     List<ServiceRequest> serviceRequests;
@@ -131,13 +131,13 @@ public class ServiceRequestStatsPageController implements IController {
     //    srList.remove(srList.size() - 1);
     //
     //    // requestTable.refresh();
-    //    ArrayList<String> graphTypes = new ArrayList<>();
-    //    graphTypes.add("Total Requests by Type");
-    //    graphTypes.add("Total Completed Requests by Type");
-    //    graphTypes.add("Total Requests by Status");
-    //    graphTypes.add("Completed vs Incomplete Service Requests Pie Chart");
-    //    ObservableList<String> observableGraphTypes = FXCollections.observableList(graphTypes);
-    //    graphTypeComboBox.setItems(observableGraphTypes);
+    ArrayList<String> graphTypes = new ArrayList<>();
+    graphTypes.add("Total Requests by Type");
+    graphTypes.add("Total Completed Requests by Type");
+    graphTypes.add("Total Requests by Status");
+    graphTypes.add("Completed vs Incomplete Service Requests Pie Chart");
+    ObservableList<String> observableGraphTypes = FXCollections.observableList(graphTypes);
+    graphTypeComboBox.setItems(observableGraphTypes);
   }
 
   // methods for drop down
@@ -414,6 +414,12 @@ public class ServiceRequestStatsPageController implements IController {
           .forEach(
               data -> {
                 data.getNode()
+                    .setOnMouseEntered(
+                        event -> {
+                          // add label to scene
+                          anchorPane.getChildren().add(label);
+                        });
+                data.getNode()
                     .setOnMouseMoved(
                         // make a label that shows the percentage and total and follows the mouse
                         // around
@@ -424,12 +430,20 @@ public class ServiceRequestStatsPageController implements IController {
                           label.setStyle(
                               "-fx-background-color: #D1D1D1; -fx-text-fill: #000000; -fx-font-size: 20px;");
                           label.setPadding(new Insets(5, 10, 5, 10));
-                          label.setLayoutX(event.getSceneX());
-                          label.setLayoutY(event.getSceneY());
-                          anchorPane.getChildren().add(label);
+                          // prevent label from going off screen
+
+                          if (event.getScreenY() + label.getHeight()
+                              <= anchorPane.getHeight() - 5) {
+                            // label.setLayoutY(event.getSceneY() - label.getHeight());
+                            label.setLayoutY(event.getScreenY());
+                          }
+                          label.setLayoutX(event.getScreenX());
+                          // label.setLayoutY(event.getSceneY());
+
                           label.toFront();
                         });
 
+                // anchorPane.getChildren().add(label);
                 // remove the label when the mouse is no longer over the pie chart
                 data.getNode()
                     .setOnMouseExited(

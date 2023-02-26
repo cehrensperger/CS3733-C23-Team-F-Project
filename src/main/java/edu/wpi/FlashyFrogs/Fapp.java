@@ -155,11 +155,11 @@ public class Fapp extends Application {
     primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
     primaryStage.setScene(scene);
-    // setTheme(Theme.LIGHT_THEME);
+    setTheme(Theme.LIGHT_THEME);
     primaryStage.setFullScreen(true);
     primaryStage.show();
 
-    // setTheme(Theme.LIGHT_THEME);
+    setTheme(Theme.LIGHT_THEME);
   }
 
   @SneakyThrows
