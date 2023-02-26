@@ -1216,26 +1216,17 @@ public class MapEditorController implements IController {
                   });
 
               controller.setOnDeleteLocations(
-                  new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                      for (Node n : selectedNodes) {
-                        for (LocationName loc : mapController.getNodeToLocationNameMap().get(n)) {
-                          System.out.println(loc);
-                          mapController.removeLocationName(loc);
+                      event1 -> {
+                        for (Node n : selectedNodes) {
+                          for (LocationName loc : mapController.getNodeToLocationNameMap().get(n)) {
+                            System.out.println(loc);
+                            mapController.removeLocationName(loc);
+                          }
                         }
-                      }
-                    }
-                  });
+                      });
 
               controller.setOnDeleteNodes(
-                  new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-
-                      mapController.deleteNodes(selectedNodes, checkBox.isSelected());
-                    }
-                  });
+                      event12 -> mapController.deleteNodes(selectedNodes, checkBox.isSelected()));
               circlePopOver.show(circle); // Show the pop-over
 
               // Disable the gesture pane (this causes clunkyness when you click on the page after
