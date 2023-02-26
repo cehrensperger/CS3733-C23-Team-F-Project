@@ -6,17 +6,26 @@ import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Theme;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
@@ -27,7 +36,7 @@ public class NavBarController {
   @FXML private MenuItem menuToggleSFX;
   @FXML private MenuItem loggedOutMenuToggleSFX;
   @FXML private AnchorPane anchorPane;
-  @FXML private HBox header;
+  //@FXML private HBox header;
   @FXML private MFXButton helpButton;
 
   @FXML private Pane toast;
@@ -93,6 +102,7 @@ public class NavBarController {
   @FXML private VBox navDescriptions;
   @FXML private MenuButton menu;
   @FXML private MenuButton loggedOutMenu;
+  @FXML private Label clockLabel;
   boolean isAdmin;
 
   @FXML
@@ -104,12 +114,23 @@ public class NavBarController {
     menu.setVisible(false);
     menu.setDisable(true);
     menu.hide();
-    header.setDisable(true);
-    header.setOpacity(0);
+    // header.setDisable(true);
+    // header.setOpacity(0);
     updateToggleSFX();
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
+    //    srButton.setOpacity(0);
+    //    srButton.setDisable(true);
+    //    homeButton.setOpacity(0);
+    //    homeButton.setDisable(true);
+    //    helpButton.setOpacity(0);
+    //    helpButton.setDisable(true);
+    //    line1.setOpacity(0);
+    //    line2.setOpacity(0);
+
+    dateAndTime();
+    clockLabel.setTextFill(Paint.valueOf("white"));
   }
 
   /**
@@ -137,9 +158,10 @@ public class NavBarController {
     loggedOutMenu.setText("");
     updateToggleSFX();
     menu.setDisable(false);
-    header.setDisable(false);
+    // header.setDisable(false);
     menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentUser().getFirstName());
-    header.setOpacity(1);
+    // header.setOpacity(1);
+    //header.setOpacity(1);
     isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
     navButtons.setVisible(true);
@@ -361,8 +383,8 @@ public class NavBarController {
     menu.hide();
     loggedOutMenu.setDisable(false);
     loggedOutMenu.setText("Welcome, Guest");
-    header.setDisable(true);
-    header.setOpacity(0);
+    //header.setDisable(true);
+    //header.setOpacity(0);
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
@@ -474,5 +496,21 @@ public class NavBarController {
       Fapp.setSfxOn(true);
       menu.setText("Turn Sound Effects Off");
     }
+  }
+
+  public void dateAndTime() {
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0),
+                event -> {
+                  SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy hh:mm a");
+                  Date date = new Date();
+                  String formattedDate = sdf.format(date);
+                  clockLabel.setText(formattedDate);
+                }),
+            new KeyFrame(Duration.seconds(1)));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
   }
 }

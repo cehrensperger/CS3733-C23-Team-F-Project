@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,8 +21,11 @@
          <children>
             <HBox alignment="TOP_CENTER" layoutX="66.0" layoutY="28.0" prefHeight="37.0" prefWidth="800.0" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox fx:id="header" alignment="CENTER" styleClass="navBar" />
-                  <HBox alignment="CENTER_RIGHT" />
+                  <Label fx:id="clockLabel" text="Sun, Jan 01, 2023 12:00 AM">
+                     <HBox.margin>
+                        <Insets top="9.0" />
+                     </HBox.margin>
+                  </Label>
                </children>
             </HBox>
             <MenuButton fx:id="menu" mnemonicParsing="false" styleClass="navBar" textAlignment="RIGHT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
@@ -51,7 +55,7 @@
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane fx:id="anchorPane" prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
+      <AnchorPane id="clockLabel" fx:id="anchorPane" prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
       <AnchorPane prefHeight="685.0" prefWidth="39.0" styleClass="background" BorderPane.alignment="CENTER">
