@@ -4,6 +4,7 @@ import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.Sound;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -115,6 +116,7 @@ class MapEntity {
     // Check to make sure we're adding a second node (and not more)
     if (nodeToLocationNameMap.get(node).size() >= 2) {
       // If so, throw an exception
+      Sound.ERROR.play();
       throw new IllegalStateException("Node already has two locations associated with it!");
     }
 

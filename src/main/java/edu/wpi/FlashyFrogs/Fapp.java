@@ -30,8 +30,7 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class Fapp extends Application {
   @Setter @Getter
-  private static boolean isLightMode =
-      true; // keeps track of whether we are in Light Mode or Dark Mode
+  public static boolean sfxOn = true; // keeps track of whether sound effects are turned on or off
 
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
