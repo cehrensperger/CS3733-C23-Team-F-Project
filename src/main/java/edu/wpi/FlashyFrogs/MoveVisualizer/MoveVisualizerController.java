@@ -1,6 +1,5 @@
 package edu.wpi.FlashyFrogs.MoveVisualizer;
 
-import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -26,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -42,6 +42,7 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
+  @FXML private BorderPane borderPane;
   @FXML private Text adminMessage; // Admin message text
   @FXML private SearchableComboBox<LocationName> leftLocationBox; // Left location search box
   @FXML private SearchableComboBox<LocationName> rightLocationBox; // Right location search box
@@ -226,15 +227,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   /** Help, shows the help menu for the visualizer */
   @Override
   public void help() {}
-
-  /**
-   * Handler for the back button, delegates to Fapp
-   *
-   * @param actionEvent the event triggering this
-   */
-  public void handleBackButton(ActionEvent actionEvent) {
-    Fapp.handleBack();
-  }
 
   /**
    * Adds text to the map
@@ -582,5 +574,10 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
    * @param actionEvent the event triggering this
    */
   @FXML
-  private void enterKioskMode(ActionEvent actionEvent) {}
+  private void enterKioskMode(ActionEvent actionEvent) {
+    AnchorPane.setTopAnchor(borderPane, 0.0);
+    AnchorPane.setLeftAnchor(borderPane, 0.0);
+    AnchorPane.setBottomAnchor(borderPane, 0.0);
+    AnchorPane.setRightAnchor(borderPane, 0.0);
+  }
 }
