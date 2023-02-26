@@ -22,7 +22,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -98,7 +97,6 @@ public class NavBarController {
   @FXML private Text moveText;
 
   @FXML private VBox navButtons;
-  @FXML private VBox navDescriptions;
   @FXML private MenuButton menu;
   @FXML private MenuButton loggedOutMenu;
   @FXML private Label clockLabel;
@@ -129,7 +127,7 @@ public class NavBarController {
     //    line2.setOpacity(0);
 
     dateAndTime();
-    //clockLabel.setTextFill(Paint.valueOf("white"));
+    // clockLabel.setTextFill(Paint.valueOf("white"));
   }
 
   /**
