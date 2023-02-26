@@ -106,7 +106,7 @@ public class MedicineController implements IController {
         h5.setVisible(false);
         h6.setVisible(false);
         h7.setVisible(false);
-    }
+
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<LocationName> locations =
@@ -131,6 +131,8 @@ public class MedicineController implements IController {
 
     urgency.setButtonCell(
             new ListCell<ServiceRequest.Urgency>() {
+                @Override
+                protected void updateItem(ServiceRequest.Urgency item, boolean empty){
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setText("Urgency");
@@ -142,5 +144,5 @@ public class MedicineController implements IController {
 
 }
 
-
+}
 
