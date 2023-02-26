@@ -128,7 +128,7 @@ public class MapEditorController implements IController {
    */
   public static Date add(Date date, int calendarField, int amount) {
     if (date == null) {
-        Sound.ERROR.play();
+      Sound.ERROR.play();
       throw new IllegalArgumentException("The date must not be null");
     }
     Calendar c = Calendar.getInstance();
@@ -210,97 +210,95 @@ public class MapEditorController implements IController {
           row.setOnMouseDragged(event -> event.setDragDetect(true));
 
           row.setOnMouseEntered(
-                  event -> {
+              event -> {
+                if (!mapController.getLocs().contains(row.getItem())) {
+                  Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND);
 
-                    if (!mapController.getLocs().contains(row.getItem())) {
-                      Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND);
+                  row.setOnMouseExited(
+                      event15 -> {
+                        Fapp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
+                        row.setOnMousePressed(p -> {});
+                        row.setOnMouseReleased(p -> {});
+                        nodeToDrag.setOnMousePressed(p -> {});
+                        nodeToDrag.setOnMouseReleased(p -> {});
+                      });
 
-                      row.setOnMouseExited(
-                              event15 -> {
-                                Fapp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
-                                row.setOnMousePressed(p -> {});
-                                row.setOnMouseReleased(p -> {});
-                                nodeToDrag.setOnMousePressed(p -> {});
-                                nodeToDrag.setOnMouseReleased(p -> {});
+                  row.setOnMousePressed(
+                      event14 -> Fapp.getPrimaryStage().getScene().setCursor(Cursor.CLOSED_HAND));
+
+                  row.setOnMouseReleased(
+                      event13 -> Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND));
+
+                  row.setOnDragDetected(
+                      dragEvent -> {
+                        Dragboard dragboard = row.startDragAndDrop(TransferMode.COPY);
+                        dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
+                        ClipboardContent clipboardContent = new ClipboardContent();
+                        String longName = row.getItem().getLongName();
+                        clipboardContent.putString(longName);
+                        dragboard.setContent(clipboardContent);
+                        locationDragText.setText(longName);
+                        mapPane.setOnDragOver(p -> {});
+                        mapPane.setOnDragDropped(p -> {});
+
+                        root.setOnDragOver(
+                            event12 -> {
+                              locationDragText.setVisible(true);
+                              locationDragText.setX(event12.getX() - 250);
+                              locationDragText.setY(event12.getY());
+                            });
+
+                        root.setOnDragDone(event1 -> locationDragText.setVisible(false));
+
+                        for (Node node : mapController.getNodeToCircleMap().keySet()) {
+                          Circle circle = mapController.getNodeToCircleMap().get(node);
+
+                          circle.setOnDragOver(
+                              event18 -> {
+                                event18.acceptTransferModes(TransferMode.COPY);
+                                // "#F6BD38" - Hospital Yellow
+                                circle.setFill(Paint.valueOf("#F6BD38"));
                               });
 
-                      row.setOnMousePressed(
-                              event14 -> Fapp.getPrimaryStage().getScene().setCursor(Cursor.CLOSED_HAND));
+                          circle.setOnDragExited(
+                              event16 -> circle.setFill(Paint.valueOf(Color.BLACK.toString())));
 
-                      row.setOnMouseReleased(
-                              event13 -> Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND));
+                          circle.setOnDragDropped(
+                              event17 -> {
+                                Session session = mapController.getMapSession();
+                                LocationName locationName =
+                                    session.find(
+                                        LocationName.class,
+                                        dragboard.getContent(DataFormat.PLAIN_TEXT));
 
-                      row.setOnDragDetected(
-                          dragEvent -> {
-                            Dragboard dragboard = row.startDragAndDrop(TransferMode.COPY);
-                            dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
-                            ClipboardContent clipboardContent = new ClipboardContent();
-                            String longName = row.getItem().getLongName();
-                            clipboardContent.putString(longName);
-                            dragboard.setContent(clipboardContent);
-                            locationDragText.setText(longName);
-                            mapPane.setOnDragOver(p -> {});
-                            mapPane.setOnDragDropped(p -> {});
+                                Date date =
+                                    Date.from(
+                                        viewingDate
+                                            .getValue()
+                                            .atStartOfDay(ZoneId.systemDefault())
+                                            .toInstant());
 
-                            root.setOnDragOver(
-                                    event12 -> {
-                                      locationDragText.setVisible(true);
-                                      locationDragText.setX(event12.getX() - 250);
-                                      locationDragText.setY(event12.getY());
-                                    });
+                                Move newMove = new Move(node, locationName, date);
 
-                            root.setOnDragDone(
-                                    event1 -> locationDragText.setVisible(false));
+                                session.persist(newMove);
+                                session.flush();
+                                mapController.redraw();
+                              });
+                        }
+                        dragEvent.consume();
+                      });
+                } else {
+                  row.setOnMouseExited(p -> {});
 
-                            for (Node node : mapController.getNodeToCircleMap().keySet()) {
-                              Circle circle = mapController.getNodeToCircleMap().get(node);
+                  row.setOnMousePressed(p -> {});
 
-                              circle.setOnDragOver(
-                                      event18 -> {
-                                        event18.acceptTransferModes(TransferMode.COPY);
-                                        // "#F6BD38" - Hospital Yellow
-                                        circle.setFill(Paint.valueOf("#F6BD38"));
-                                      });
+                  row.setOnMouseReleased(p -> {});
 
-                              circle.setOnDragExited(
-                                      event16 -> circle.setFill(Paint.valueOf(Color.BLACK.toString())));
+                  row.setOnDragDetected(p -> {});
+                }
 
-                              circle.setOnDragDropped(
-                                      event17 -> {
-                                        Session session = mapController.getMapSession();
-                                        LocationName locationName =
-                                            session.find(
-                                                LocationName.class,
-                                                dragboard.getContent(DataFormat.PLAIN_TEXT));
-
-                                        Date date =
-                                            Date.from(
-                                                viewingDate
-                                                    .getValue()
-                                                    .atStartOfDay(ZoneId.systemDefault())
-                                                    .toInstant());
-
-                                        Move newMove = new Move(node, locationName, date);
-
-                                        session.persist(newMove);
-                                        session.flush();
-                                        mapController.redraw();
-                                      });
-                            }
-                            dragEvent.consume();
-                          });
-                    } else {
-                      row.setOnMouseExited(p -> {});
-
-                      row.setOnMousePressed(p -> {});
-
-                      row.setOnMouseReleased(p -> {});
-
-                      row.setOnDragDetected(p -> {});
-                    }
-
-                    event.consume();
-                  });
+                event.consume();
+              });
           // Add a listener to show the pop-up
           row.setOnMouseClicked(
               (mouseEvent) -> {
@@ -1354,7 +1352,7 @@ public class MapEditorController implements IController {
                   .getMapSession()
                   .find(Node.class, createNodeID(node.getFloor(), x, node.getYCoord()))
               != null) {
-              Sound.ERROR.play();
+            Sound.ERROR.play();
             throw new IllegalArgumentException("Duplicate position detected!");
           }
         }
@@ -1364,7 +1362,7 @@ public class MapEditorController implements IController {
                   .getMapSession()
                   .find(Node.class, createNodeID(node.getFloor(), node.getXCoord(), y))
               != null) {
-              Sound.ERROR.play();
+            Sound.ERROR.play();
             throw new IllegalArgumentException("Duplicate position detected!");
           }
         }
@@ -1444,7 +1442,7 @@ public class MapEditorController implements IController {
                   createNodeID(node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff))
               .uniqueResult()
           != null) {
-          Sound.ERROR.play();
+        Sound.ERROR.play();
         throw new IllegalArgumentException("Duplicate position detected!");
       }
     }
@@ -1615,12 +1613,20 @@ public class MapEditorController implements IController {
                   .getCurrentDrawingPane()
                   .setOnMouseDragged(
                       e -> {
+                        //                        System.out.println(mapPane.getWidth());
+                        //
+                        // System.out.println(mapController.getGesturePane().getWidth());
+                        //
+                        // System.out.println(mapController.getCurrentDrawingPane().getWidth());
+                        //
+                        // System.out.println(mapController.getGesturePane().getCurrentX());
+
                         if (!e.isConsumed()) {
                           double width = e.getX() - startX;
                           double height = e.getY() - startY;
                           double kp = 0.2;
-                          double errorX = 0;
-                          double errorY = 0;
+                          double errorX;
+                          double errorY;
 
                           if (e.getX() >= mapController.getGesturePane().getCurrentX() * -1
                               && e.getX()
@@ -1704,9 +1710,12 @@ public class MapEditorController implements IController {
                                                   new Dimension2D(
                                                       finalErrorX[0] * kp, finalErrorY[0] * kp)));
 
-                                  if (mapController.getGesturePane().getCurrentX() * -1
-                                          < mapPane.getWidth()
-                                              - mapController.getGesturePane().getWidth() * -1
+                                  if ((mapController.getGesturePane().getWidth()
+                                                  / mapController
+                                                      .getGesturePane()
+                                                      .getCurrentScaleX()
+                                              - mapController.getGesturePane().getCurrentX())
+                                          < mapController.getCurrentDrawingPane().getWidth()
                                       && mapController.getGesturePane().getCurrentX() * -1 > 0) {
 
                                     width2[0] += finalErrorX[0] * kp;
@@ -1717,9 +1726,12 @@ public class MapEditorController implements IController {
                                     Platform.runLater(() -> rect.setWidth(abs(width2[0])));
                                   }
 
-                                  if (mapController.getGesturePane().getCurrentY() * -1
-                                          < mapPane.getHeight()
-                                              - mapController.getGesturePane().getHeight() * -1
+                                  if ((mapController.getGesturePane().getHeight()
+                                                  / mapController
+                                                      .getGesturePane()
+                                                      .getCurrentScaleY()
+                                              - mapController.getGesturePane().getCurrentY())
+                                          < mapController.getCurrentDrawingPane().getHeight()
                                       && mapController.getGesturePane().getCurrentY() * -1 > 0) {
                                     height2[0] += finalErrorY[0] * kp;
                                     if (height < 0) {
