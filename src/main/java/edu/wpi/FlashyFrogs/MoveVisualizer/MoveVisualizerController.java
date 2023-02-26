@@ -64,10 +64,20 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   private final Collection<javafx.scene.Node> nodes =
       new LinkedList<>(); // Collection of nodes that are on the map
 
+    // Static place to keep the timer, so that it can be canceled when the admin enters the move visualizer
+    private static PauseTransition backToVisualizerTimer = null;
+
   /** Sets up the move visualizer, including all tables, and the map */
   @SneakyThrows
   @FXML
   private void initialize() {
+      // Cancel the timer if it exists
+      if (backToVisualizerTimer != null) {
+          // Stop the visualizer
+          backToVisualizerTimer.stop();
+          backToVisualizerTimer = null; // Cancel the timer
+      }
+
     // Binds the admin message to the admin message entry
     adminMessage
         .textProperty()
@@ -613,10 +623,10 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             });
 
     // Use a pause transition so that it only does the thing on the home screen
-    PauseTransition transition = new PauseTransition(Duration.seconds(1));
+    backToVisualizerTimer = new PauseTransition(Duration.seconds(1));
 
     // Set the transition to close on completion
-    transition.setOnFinished(
+     backToVisualizerTimer.setOnFinished(
         (event) -> {
           // If they are on the login screen and the last press was more than 10 seconds
           // ago
@@ -626,9 +636,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           }
 
           // Redo the transitions
-          transition.play();
+          backToVisualizerTimer.play();
         });
 
-    transition.play(); // Start the timer
+    backToVisualizerTimer.play(); // Start the timer
   }
 }
