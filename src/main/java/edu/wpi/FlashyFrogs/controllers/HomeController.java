@@ -553,10 +553,12 @@ public class HomeController implements IController {
       insertAlert(a);
     }
   }
+
+  // TODO:CHANGE BACK TO MAP EDITOR
   /** Callback to open the map editor from a button */
   @FXML
   public void openMapEditor() {
-    Fapp.setScene("MapEditor", "MapEditorView");
+    Fapp.setScene("ServiceRequests", "ServiceRequestStatsPage");
   }
 
   public void srEditorPopOver() {}
