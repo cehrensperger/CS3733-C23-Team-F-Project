@@ -246,6 +246,8 @@ public class MapEditorController implements IController {
                               locationDragText.setVisible(true);
                               locationDragText.setX(event12.getX() - 250);
                               locationDragText.setY(event12.getY());
+
+
                             });
 
                         root.setOnDragDone(event1 -> locationDragText.setVisible(false));
