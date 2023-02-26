@@ -21,11 +21,10 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.SVGPath;
-import javafx.scene.text.Text;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
@@ -36,7 +35,7 @@ public class NavBarController {
   @FXML private MenuItem menuToggleSFX;
   @FXML private MenuItem loggedOutMenuToggleSFX;
   @FXML private AnchorPane anchorPane;
-  //@FXML private HBox header;
+  // @FXML private HBox header;
   @FXML private MFXButton helpButton;
 
   @FXML private Pane toast;
@@ -161,7 +160,7 @@ public class NavBarController {
     // header.setDisable(false);
     menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentUser().getFirstName());
     // header.setOpacity(1);
-    //header.setOpacity(1);
+    // header.setOpacity(1);
     isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
 
     navButtons.setVisible(true);
@@ -383,8 +382,8 @@ public class NavBarController {
     menu.hide();
     loggedOutMenu.setDisable(false);
     loggedOutMenu.setText("Welcome, Guest");
-    //header.setDisable(true);
-    //header.setOpacity(0);
+    // header.setDisable(true);
+    // header.setOpacity(0);
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
