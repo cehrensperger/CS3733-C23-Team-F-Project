@@ -5,10 +5,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
-import java.util.EmptyStackException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Stack;
+import java.util.*;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -38,9 +35,12 @@ public class Fapp extends Application {
 
   @Getter private static Theme theme;
 
-  public static IController iController;
+  @Getter public static IController iController;
 
   public static Stack<String> prevPage = new Stack<String>();
+
+  // Last keypress time, used for things that require a timeout
+  @Getter @Setter private static Date lastKeyPressTime = new Date();
 
   @Override
   public void init() {
@@ -162,6 +162,25 @@ public class Fapp extends Application {
     setTheme(Theme.LIGHT_THEME);
   }
 
+  /**
+   * Sets the application root manually. Should only be used in special cases
+   *
+   * @param root the root of the app
+   */
+  public static void setRoot(@NonNull javafx.scene.Node root) {
+    // Clear the root
+    controller.getAnchorPane().getChildren().clear();
+
+    // Set this to be the root
+    controller.getAnchorPane().getChildren().add(root);
+
+    // Make it take all available space
+    AnchorPane.setTopAnchor(root, 0.0);
+    AnchorPane.setBottomAnchor(root, 0.0);
+    AnchorPane.setLeftAnchor(root, 0.0);
+    AnchorPane.setRightAnchor(root, 0.0);
+  }
+
   @SneakyThrows
   public static void setScene(String packageName, String sceneName) {
     try {
@@ -183,14 +202,7 @@ public class Fapp extends Application {
     Parent root = loader.load();
     iController = loader.getController();
 
-    AnchorPane mainAnchorPane = controller.getAnchorPane();
-
-    mainAnchorPane.getChildren().clear();
-    mainAnchorPane.getChildren().add(root);
-    AnchorPane.setTopAnchor(root, 0.0);
-    AnchorPane.setBottomAnchor(root, 0.0);
-    AnchorPane.setLeftAnchor(root, 0.0);
-    AnchorPane.setRightAnchor(root, 0.0);
+    setRoot(root);
   }
 
   @SneakyThrows
@@ -217,5 +229,11 @@ public class Fapp extends Application {
   @Override
   public void stop() {
     log.info("Shutting Down");
+  }
+
+  /** Signs the user out without changing the scene */
+  public static void logOutWithoutSceneChange() {
+    // Just have the controller do it
+    controller.signUserOutWithoutSceneChange();
   }
 }

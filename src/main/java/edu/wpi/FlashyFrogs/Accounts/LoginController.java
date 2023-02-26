@@ -13,6 +13,7 @@ import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -73,6 +74,9 @@ public class LoginController implements IController {
                 .getScene()
                 .setOnKeyPressed(
                     (event -> {
+                      // On press, save the keypress
+                      Fapp.setLastKeyPressTime(new Date());
+
                       if (event.getCode().equals(KeyCode.ENTER)) {
                         // If the username exists
                         if (!username.getText().isEmpty()) {

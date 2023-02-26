@@ -1,5 +1,7 @@
 package edu.wpi.FlashyFrogs.MoveVisualizer;
 
+import edu.wpi.FlashyFrogs.Accounts.LoginController;
+import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -8,10 +10,9 @@ import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.function.BiConsumer;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -24,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
@@ -575,9 +577,55 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
    */
   @FXML
   private void enterKioskMode(ActionEvent actionEvent) {
+    // First, make the border pain (messages + map) fullscreen by anchoring it to the root
     AnchorPane.setTopAnchor(borderPane, 0.0);
     AnchorPane.setLeftAnchor(borderPane, 0.0);
     AnchorPane.setBottomAnchor(borderPane, 0.0);
     AnchorPane.setRightAnchor(borderPane, 0.0);
+
+    // Toggle the map controls (no floor/SR interaction)
+    mapController.toggleMapControls();
+
+    // For each node on the map, make it mouse transparent so that it's not editable
+    // (viewers shouldn't be able to move/delete this stuff)
+    for (javafx.scene.Node node : nodes) {
+      node.setMouseTransparent(true);
+    }
+
+    Fapp.logOutWithoutSceneChange(); // Log the user out without going to the login screen
+
+    // Set the key handler for the border pane, if the user presses escape
+    borderPane.setOnKeyPressed(
+        (keyEvent) -> {
+          // We only care about escape
+          if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+            // Go to the login page
+            Fapp.setScene("Accounts", "Login");
+
+            // Create a timer that will return the user to the move visualizer after 30s inactive on
+            // the login page
+            TimerTask goBackToPage =
+                new TimerTask() {
+                  @Override
+                  public void run() {
+                    // If they are on the login screen and the last press was more than 10 seconds
+                    // ago
+                    if (Fapp.getIController().getClass() == LoginController.class
+                        && Fapp.getLastKeyPressTime()
+                            .toInstant()
+                            .minus(10, ChronoUnit.SECONDS)
+                            .isBefore(Instant.now())) {
+                      Fapp.setRoot(borderPane); // Set the root to be this
+                    }
+                  }
+                };
+
+            // Create the timer that will be used
+            Timer timer = new Timer();
+
+            // Every second, check for timeout
+            timer.scheduleAtFixedRate(goBackToPage, 0, 1);
+          }
+        });
   }
 }
