@@ -1,5 +1,7 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
+import static java.lang.Math.abs;
+
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
@@ -8,6 +10,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -29,6 +32,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -40,6 +45,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -71,6 +77,7 @@ public class MapEditorController implements IController {
   @FXML Text h7;
 
   boolean hDone = false;
+  TimerTask task;
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
@@ -121,6 +128,7 @@ public class MapEditorController implements IController {
    */
   public static Date add(Date date, int calendarField, int amount) {
     if (date == null) {
+        Sound.ERROR.play();
       throw new IllegalArgumentException("The date must not be null");
     }
     Calendar c = Calendar.getInstance();
@@ -393,19 +401,6 @@ public class MapEditorController implements IController {
     AnchorPane.setBottomAnchor(map, 0.0);
     AnchorPane.setLeftAnchor(map, 0.0);
     AnchorPane.setRightAnchor(map, 0.0);
-
-    // Make the map controller click register clear selected nodes
-    mapController
-        .getGesturePane()
-        .setOnMouseClicked(
-            (event) -> {
-              // Check to ensure the node isn't consumed
-              if (!event.isConsumed()) {
-                selectedNodes.clear(); // Clear the nodes
-              }
-
-              event.consume();
-            });
 
     mapController.setEdgeCreation(
         (edge, line) -> {
@@ -714,6 +709,7 @@ public class MapEditorController implements IController {
                       1));
               mapController.redraw();
             });
+    setBoxCreation();
   }
 
   /**
@@ -955,7 +951,7 @@ public class MapEditorController implements IController {
       h6.setVisible(true);
       h7.setVisible(true);
       hDone = true;
-    } else if (hDone) {
+    } else {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
@@ -1035,6 +1031,16 @@ public class MapEditorController implements IController {
     VBox locationContainer = mapController.getNodeToLocationBox().get(node); // Get the box
     locationContainer.setLayoutX(circle.getCenterX() + 2.5); // Set the X
     locationContainer.setLayoutY(circle.getCenterY() - 20); // Set the Y
+  }
+
+  private void disableBoxCreation() {
+    mapController
+        .getCurrentDrawingPane()
+        .setOnDragDetected(
+            event -> {
+              mapController.getCurrentDrawingPane().setOnMouseDragged(e -> {});
+              mapController.getCurrentDrawingPane().setOnMouseReleased(e -> {});
+            });
   }
 
   /**
@@ -1361,6 +1367,7 @@ public class MapEditorController implements IController {
                   .getMapSession()
                   .find(Node.class, createNodeID(node.getFloor(), x, node.getYCoord()))
               != null) {
+              Sound.ERROR.play();
             throw new IllegalArgumentException("Duplicate position detected!");
           }
         }
@@ -1370,6 +1377,7 @@ public class MapEditorController implements IController {
                   .getMapSession()
                   .find(Node.class, createNodeID(node.getFloor(), node.getXCoord(), y))
               != null) {
+              Sound.ERROR.play();
             throw new IllegalArgumentException("Duplicate position detected!");
           }
         }
@@ -1449,6 +1457,7 @@ public class MapEditorController implements IController {
                   createNodeID(node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff))
               .uniqueResult()
           != null) {
+          Sound.ERROR.play();
         throw new IllegalArgumentException("Duplicate position detected!");
       }
     }
@@ -1599,5 +1608,168 @@ public class MapEditorController implements IController {
     }
 
     return Math.sqrt(standardDeviation / length);
+  }
+
+  private void setBoxCreation() {
+    mapController
+        .getCurrentDrawingPane()
+        .setOnMousePressed(
+            event -> {
+              Timer timer = new Timer();
+              mapController.getGesturePane().setGestureEnabled(false);
+              double startX = event.getX();
+              double startY = event.getY();
+              Rectangle rect = new Rectangle(startX, startY, 0, 0);
+              mapController.getCurrentDrawingPane().getChildren().add(rect);
+              rect.setFill(Paint.valueOf("012D5A"));
+              rect.setOpacity(0.3);
+
+              mapController
+                  .getCurrentDrawingPane()
+                  .setOnMouseDragged(
+                      e -> {
+                        if (!e.isConsumed()) {
+                          double width = e.getX() - startX;
+                          double height = e.getY() - startY;
+                          double kp = 0.2;
+                          double errorX = 0;
+                          double errorY = 0;
+
+                          if (e.getX() >= mapController.getGesturePane().getCurrentX() * -1
+                              && e.getX()
+                                  <= (mapController.getGesturePane().getWidth()
+                                          / mapController.getGesturePane().getCurrentScaleX()
+                                      - mapController.getGesturePane().getCurrentX())) {
+                            if (width < 0) {
+                              rect.setX(e.getX());
+                            }
+                            rect.setWidth(abs(width));
+                          }
+                          if (e.getX()
+                              < (mapController.getGesturePane().getCurrentX() * -1)
+                                  + 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
+                            errorX =
+                                e.getX()
+                                    - ((mapController.getGesturePane().getCurrentX() * -1)
+                                        + 50.0 / mapController.getGesturePane().getCurrentScaleX());
+                          } else if (e.getX()
+                              > ((mapController.getGesturePane().getWidth()
+                                          / mapController.getGesturePane().getCurrentScaleX())
+                                      - mapController.getGesturePane().getCurrentX())
+                                  - 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
+                            errorX =
+                                e.getX()
+                                    - (((mapController.getGesturePane().getWidth()
+                                                / mapController.getGesturePane().getCurrentScaleX())
+                                            - mapController.getGesturePane().getCurrentX())
+                                        - 50.0 / mapController.getGesturePane().getCurrentScaleX());
+                          } else {
+                            errorX = 0;
+                          }
+
+                          if (e.getY() >= mapController.getGesturePane().getCurrentY() * -1
+                              && e.getY()
+                                  <= (mapController.getGesturePane().getHeight()
+                                          / mapController.getGesturePane().getCurrentScaleY()
+                                      - mapController.getGesturePane().getCurrentY())) {
+                            if (height < 0) {
+                              rect.setY(e.getY());
+                            }
+                            rect.setHeight(abs(height));
+                          }
+                          if (e.getY()
+                              < (mapController.getGesturePane().getCurrentY() * -1)
+                                  + 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
+                            errorY =
+                                e.getY()
+                                    - ((mapController.getGesturePane().getCurrentY() * -1)
+                                        + 50.0 / mapController.getGesturePane().getCurrentScaleX());
+                          } else if (e.getY()
+                              > ((mapController.getGesturePane().getHeight()
+                                          / mapController.getGesturePane().getCurrentScaleY())
+                                      - mapController.getGesturePane().getCurrentY())
+                                  - 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
+                            errorY =
+                                e.getY()
+                                    - (((mapController.getGesturePane().getHeight()
+                                                / mapController.getGesturePane().getCurrentScaleY())
+                                            - mapController.getGesturePane().getCurrentY())
+                                        - 50.0 / mapController.getGesturePane().getCurrentScaleY());
+                          } else {
+                            errorY = 0;
+                          }
+                          double[] finalErrorX = {errorX};
+                          double[] finalErrorY = {errorY};
+                          // todo: make changes work
+                          double[] width2 = {width};
+                          double[] height2 = {height};
+
+                          if (task != null) task.cancel();
+
+                          task =
+                              new TimerTask() {
+                                @Override
+                                public void run() {
+                                  Platform.runLater(
+                                      () ->
+                                          mapController
+                                              .getGesturePane()
+                                              .translateBy(
+                                                  new Dimension2D(
+                                                      finalErrorX[0] * kp, finalErrorY[0] * kp)));
+
+                                  if (mapController.getGesturePane().getCurrentX() * -1
+                                          < mapPane.getWidth()
+                                              - mapController.getGesturePane().getWidth() * -1
+                                      && mapController.getGesturePane().getCurrentX() * -1 > 0) {
+
+                                    width2[0] += finalErrorX[0] * kp;
+                                    if (width < 0) {
+                                      Platform.runLater(
+                                          () -> rect.setX(rect.getX() + finalErrorX[0] * kp));
+                                    }
+                                    Platform.runLater(() -> rect.setWidth(abs(width2[0])));
+                                  }
+
+                                  if (mapController.getGesturePane().getCurrentY() * -1
+                                          < mapPane.getHeight()
+                                              - mapController.getGesturePane().getHeight() * -1
+                                      && mapController.getGesturePane().getCurrentY() * -1 > 0) {
+                                    height2[0] += finalErrorY[0] * kp;
+                                    if (height < 0) {
+                                      Platform.runLater(
+                                          () -> rect.setY(rect.getY() + finalErrorY[0] * kp));
+                                    }
+                                    Platform.runLater(() -> rect.setHeight(abs(height2[0])));
+                                  }
+                                }
+                              };
+
+                          timer.scheduleAtFixedRate(task, 0, 15);
+                        }
+                      });
+
+              mapController
+                  .getCurrentDrawingPane()
+                  .setOnMouseReleased(
+                      e -> {
+                        if (!e.isConsumed()) {
+                          if (!e.isShiftDown() && !(e.getButton() == MouseButton.SECONDARY)) {
+                            selectedNodes.clear();
+                          }
+
+                          if (task != null) task.cancel();
+                          timer.cancel();
+
+                          for (Node node : mapController.getNodeToCircleMap().keySet()) {
+                            if (rect.contains(new Point2D(node.getXCoord(), node.getYCoord()))) {
+                              selectedNodes.add(node);
+                            }
+                          }
+                          mapController.getCurrentDrawingPane().getChildren().remove(rect);
+                          mapController.getGesturePane().setGestureEnabled(true);
+                        }
+                      });
+            });
   }
 }

@@ -9,6 +9,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -163,12 +164,14 @@ public class SanitationEditorController extends ServiceRequestController impleme
         errorMessage.setTextFill(Paint.valueOf("#b6000b"));
         errorMessage.setText("Please fill all fields.");
         session.close();
+        Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
       errorMessage.setTextFill(Paint.valueOf("#b6000b"));
       errorMessage.setText("Please fill all fields.");
       session.close();
+      Sound.ERROR.play();
     }
   }
 
