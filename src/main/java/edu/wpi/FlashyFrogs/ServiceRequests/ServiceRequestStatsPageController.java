@@ -6,7 +6,6 @@ import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javafx.beans.property.SimpleObjectProperty;
@@ -23,8 +22,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
-import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
-import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 import org.hibernate.Session;
 
 public class ServiceRequestStatsPageController implements IController {
@@ -51,83 +48,96 @@ public class ServiceRequestStatsPageController implements IController {
     // need to be the names of the fields
     requestTypeCol.setCellValueFactory(
         p -> new SimpleStringProperty(p.getValue().getRequestType()));
-    requestTypeCol.setReorderable(false);
+    // requestTypeCol.setReorderable(false);
     requestIDCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getId()));
-    requestIDCol.setReorderable(false);
+    // requestIDCol.setReorderable(false);
     initEmpCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getEmp()));
-    initEmpCol.setReorderable(false);
+    // initEmpCol.setReorderable(false);
     assignedEmpCol.setCellValueFactory(
         p -> new SimpleObjectProperty<>(p.getValue().getAssignedEmp()));
-    assignedEmpCol.setReorderable(false);
+    // assignedEmpCol.setReorderable(false);
     subDateCol.setCellValueFactory(
         p -> new SimpleObjectProperty<>(p.getValue().getDateOfSubmission()));
-    subDateCol.setReorderable(false);
+    // subDateCol.setReorderable(false);
     urgencyCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getUrgency()));
-    urgencyCol.setReorderable(false);
+    // urgencyCol.setReorderable(false);
     locationCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getLocation()));
-    locationCol.setReorderable(false);
+    // locationCol.setReorderable(false);
     statusCol.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getStatus()));
-    statusCol.setReorderable(false);
+    // statusCol.setReorderable(false);
 
-    PopupFilter<ServiceRequest, String> popupTypeFilter = new PopupStringFilter<>(requestTypeCol);
-    requestTypeCol.setOnFilterAction(e -> popupTypeFilter.showPopup());
-    PopupFilter<ServiceRequest, Long> popupIDFilter = new PopupStringFilter<>(requestIDCol);
-    requestIDCol.setOnFilterAction(e -> popupIDFilter.showPopup());
-    PopupFilter<ServiceRequest, HospitalUser> popupEmpFilter = new PopupStringFilter<>(initEmpCol);
-    initEmpCol.setOnFilterAction(e -> popupEmpFilter.showPopup());
-    PopupFilter<ServiceRequest, HospitalUser> popupAssignedFilter =
-        new PopupStringFilter<>(assignedEmpCol);
-    assignedEmpCol.setOnFilterAction(e -> popupAssignedFilter.showPopup());
-    PopupFilter<ServiceRequest, Date> popupSubDateFilter = new PopupStringFilter<>(subDateCol);
-    subDateCol.setOnFilterAction(e -> popupSubDateFilter.showPopup());
-    PopupFilter<ServiceRequest, ServiceRequest.Urgency> popupUrgencyFilter =
-        new PopupStringFilter<>(urgencyCol);
-    urgencyCol.setOnFilterAction(e -> popupUrgencyFilter.showPopup());
-    PopupFilter<ServiceRequest, LocationName> popupLocationFilter =
-        new PopupStringFilter<>(locationCol);
-    locationCol.setOnFilterAction(e -> popupLocationFilter.showPopup());
-    PopupFilter<ServiceRequest, ServiceRequest.Status> popupStatusFilter =
-        new PopupStringFilter<>(statusCol);
-    statusCol.setOnFilterAction(e -> popupStatusFilter.showPopup());
-
-    // FILL TABLES
+    //    PopupFilter<ServiceRequest, String> popupTypeFilter = new
+    // PopupStringFilter<>(requestTypeCol);
+    //    requestTypeCol.setOnFilterAction(e -> popupTypeFilter.showPopup());
+    //    PopupFilter<ServiceRequest, Long> popupIDFilter = new PopupStringFilter<>(requestIDCol);
+    //    requestIDCol.setOnFilterAction(e -> popupIDFilter.showPopup());
+    //    PopupFilter<ServiceRequest, HospitalUser> popupEmpFilter = new
+    // PopupStringFilter<>(initEmpCol);
+    //    initEmpCol.setOnFilterAction(e -> popupEmpFilter.showPopup());
+    //    PopupFilter<ServiceRequest, HospitalUser> popupAssignedFilter =
+    //        new PopupStringFilter<>(assignedEmpCol);
+    //    assignedEmpCol.setOnFilterAction(e -> popupAssignedFilter.showPopup());
+    //    PopupFilter<ServiceRequest, Date> popupSubDateFilter = new
+    // PopupStringFilter<>(subDateCol);
+    //    subDateCol.setOnFilterAction(e -> popupSubDateFilter.showPopup());
+    //    PopupFilter<ServiceRequest, ServiceRequest.Urgency> popupUrgencyFilter =
+    //        new PopupStringFilter<>(urgencyCol);
+    //    urgencyCol.setOnFilterAction(e -> popupUrgencyFilter.showPopup());
+    //    PopupFilter<ServiceRequest, LocationName> popupLocationFilter =
+    //        new PopupStringFilter<>(locationCol);
+    //    locationCol.setOnFilterAction(e -> popupLocationFilter.showPopup());
+    //    PopupFilter<ServiceRequest, ServiceRequest.Status> popupStatusFilter =
+    //        new PopupStringFilter<>(statusCol);
+    //    statusCol.setOnFilterAction(e -> popupStatusFilter.showPopup());
+    //
+    //    // FILL TABLES
     List<ServiceRequest> serviceRequests;
-
-    requestTable.setRowHeaderVisible(false);
-    requestTable.refresh();
 
     Session session = CONNECTION.getSessionFactory().openSession();
 
     serviceRequests =
         session.createQuery("SELECT s FROM ServiceRequest s", ServiceRequest.class).getResultList();
-    ObservableList<ServiceRequest> srList = FXCollections.observableList(serviceRequests);
-    //    srList.clear();
-    //    srList.add(
-    //        new Sanitation(
-    //            Sanitation.SanitationType.MOPPING,
-    //            new HospitalUser(
-    //                "sd",
-    //                "asdf",
-    //                "asdf",
-    //                HospitalUser.EmployeeType.ADMIN,
-    //                new Department("asdfasdf", "vfggr")),
-    //            new Date(),
-    //            new Date(),
-    //            ServiceRequest.Urgency.VERY_URGENT,
-    //            new LocationName("asdfasdf", LocationName.LocationType.CONF, "asdfasdf"),
-    //            false,
-    //            Sanitation.BiohazardLevel.BSL1,
-    //            "safdawfsgwrgfgfsfgdfg"));
-    FilteredTableView.configureForFiltering(requestTable, srList);
 
-    requestTable.refresh();
-    ArrayList<String> graphTypes = new ArrayList<>();
-    graphTypes.add("Total Requests by Type");
-    graphTypes.add("Total Completed Requests by Type");
-    graphTypes.add("Total Requests by Status");
-    graphTypes.add("Completed vs Incomplete Service Requests Pie Chart");
-    ObservableList<String> observableGraphTypes = FXCollections.observableList(graphTypes);
-    graphTypeComboBox.setItems(observableGraphTypes);
+    session.close();
+    ObservableList<ServiceRequest> srList = FXCollections.observableList(serviceRequests);
+    //    //    srList.clear();
+    //    //    srList.add(
+    //    //        new Sanitation(
+    //    //            Sanitation.SanitationType.MOPPING,
+    //    //            new HospitalUser(
+    //    //                "sd",
+    //    //                "asdf",
+    //    //                "asdf",
+    //    //                HospitalUser.EmployeeType.ADMIN,
+    //    //                new Department("asdfasdf", "vfggr")),
+    //    //            new Date(),
+    //    //            new Date(),
+    //    //            ServiceRequest.Urgency.VERY_URGENT,
+    //    //            new LocationName("asdfasdf", LocationName.LocationType.CONF, "asdfasdf"),
+    //    //            false,
+    //    //            Sanitation.BiohazardLevel.BSL1,
+    //    //            "safdawfsgwrgfgfsfgdfg"));
+    //    // FilteredTableView.configureForFiltering(requestTable, srList);
+    requestTable.setItems(srList);
+    //    // get rows of requestTable
+    //    //    ObservableList<TablePosition> selectedCells =
+    //    // requestTable.getSelectionModel().getSelectedCells();
+    //    //    for (TablePosition pos : selectedCells) {
+    //    //      int row = pos.getRow();
+    //    //      ServiceRequest item = requestTable.getItems().get(row);
+    //    //      System.out.println(item);
+    //    //    }
+    //
+    //    srList.remove(srList.size() - 1);
+    //
+    //    // requestTable.refresh();
+    //    ArrayList<String> graphTypes = new ArrayList<>();
+    //    graphTypes.add("Total Requests by Type");
+    //    graphTypes.add("Total Completed Requests by Type");
+    //    graphTypes.add("Total Requests by Status");
+    //    graphTypes.add("Completed vs Incomplete Service Requests Pie Chart");
+    //    ObservableList<String> observableGraphTypes = FXCollections.observableList(graphTypes);
+    //    graphTypeComboBox.setItems(observableGraphTypes);
   }
 
   // methods for drop down
