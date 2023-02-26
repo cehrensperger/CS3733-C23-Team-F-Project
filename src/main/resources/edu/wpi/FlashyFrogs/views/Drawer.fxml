@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="687.0" prefWidth="180.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="navDescriptions" onMouseEntered="#showDescriptions" onMouseExited="#hideDescriptions" prefHeight="683.0" prefWidth="180.0" spacing="10.0" style="-fx-background-color: #012d5a;" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <StackPane prefHeight="1.0" prefWidth="180.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="homeButton2" onAction="#handleHomeButton" prefHeight="13.0" prefWidth="180.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="14.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="srButton2" onAction="#handleServiceRequestsButton" prefHeight="27.0" prefWidth="228.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="avService2" onAction="#handleAVService" prefHeight="27.0" prefWidth="212.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="IT Support" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="itSupport2" onAction="#handleITSupport" prefHeight="27.0" prefWidth="203.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Transport" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="transport2" onAction="#handleTransport" prefHeight="27.0" prefWidth="224.0" style="-fx-background-color: transparent;" text=" ">
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </MFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="2.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="medicine2" onAction="#handleMedicine" prefHeight="27.0" prefWidth="200.0" style="-fx-background-color: transparent;" text=" " />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Medicine Delivery" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="2.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Religous" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="religious2" onAction="#handleReligious" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="2.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Sanitation" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="sanitation2" onAction="#handleSanitation" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="4.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Security" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="security2" onAction="#handleSecurity" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="5.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="pathfinding2" onAction="#handlePathfinding" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="1.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane fx:id="mapStack2" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fx:id="mapText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Map Editor" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="mapEditor2" onAction="#handleMapEditor" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="4.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane fx:id="csvStack2" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fx:id="CSVText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="CSV Manager" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="csvManager2" onAction="#handleCSVManager" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="2.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane fx:id="loginStack2" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fx:id="loginText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Login Manager" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="loginManager2" onAction="#handleLoginManager" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane fx:id="alertsStack2" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fx:id="alertsText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Alerts Manager" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="alertsButton2" onAction="#handleAlerts" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" top="2.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane fx:id="moveStack2" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fx:id="moveText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Move Visualizer" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="moveVisualizer2" onAction="#handleMoveVisualizer" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </StackPane>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" />
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Back" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="back2" onAction="#handleBack" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="180.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Help" wrappingWidth="160.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <MFXButton fx:id="helpButton2" onAction="#handleHelpButton" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" left="10.0" />
+               </VBox.margin>
+            </StackPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
