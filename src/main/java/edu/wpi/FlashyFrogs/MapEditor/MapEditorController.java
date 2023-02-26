@@ -208,135 +208,97 @@ public class MapEditorController implements IController {
           row.setOnMouseDragged(event -> event.setDragDetect(true));
 
           row.setOnMouseEntered(
-              new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
+                  event -> {
 
-                  if (!mapController.getLocs().contains(row.getItem())) {
-                    Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND);
+                    if (!mapController.getLocs().contains(row.getItem())) {
+                      Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND);
 
-                    row.setOnMouseExited(
-                        new EventHandler<MouseEvent>() {
-                          @Override
-                          public void handle(MouseEvent event) {
-                            Fapp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
-                            row.setOnMousePressed(p -> {});
-                            row.setOnMouseReleased(p -> {});
-                            nodeToDrag.setOnMousePressed(p -> {});
-                            nodeToDrag.setOnMouseReleased(p -> {});
-                          }
-                        });
-
-                    row.setOnMousePressed(
-                        new EventHandler<MouseEvent>() {
-                          @Override
-                          public void handle(MouseEvent event) {
-                            Fapp.getPrimaryStage().getScene().setCursor(Cursor.CLOSED_HAND);
-                          }
-                        });
-
-                    row.setOnMouseReleased(
-                        new EventHandler<MouseEvent>() {
-                          @Override
-                          public void handle(MouseEvent event) {
-                            Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND);
-                          }
-                        });
-
-                    row.setOnDragDetected(
-                        dragEvent -> {
-                          Dragboard dragboard = row.startDragAndDrop(TransferMode.COPY);
-                          dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
-                          ClipboardContent clipboardContent = new ClipboardContent();
-                          String longName = row.getItem().getLongName();
-                          clipboardContent.putString(longName);
-                          dragboard.setContent(clipboardContent);
-                          locationDragText.setText(longName);
-                          mapPane.setOnDragOver(p -> {});
-                          mapPane.setOnDragDropped(p -> {});
-
-                          root.setOnDragOver(
-                              new EventHandler<DragEvent>() {
-
-                                @Override
-                                public void handle(DragEvent event) {
-                                  locationDragText.setVisible(true);
-                                  locationDragText.setX(event.getX() - 250);
-                                  locationDragText.setY(event.getY());
-                                }
+                      row.setOnMouseExited(
+                              event15 -> {
+                                Fapp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
+                                row.setOnMousePressed(p -> {});
+                                row.setOnMouseReleased(p -> {});
+                                nodeToDrag.setOnMousePressed(p -> {});
+                                nodeToDrag.setOnMouseReleased(p -> {});
                               });
 
-                          //                          root.setOnDragDone(
-                          //                              new EventHandler<DragEvent>() {
-                          //                                @Override
-                          //                                public void handle(DragEvent event) {
-                          //                                  locationDragText.setVisible(false);
-                          //                                  root.setOnDragDone(p -> {});
-                          //                                  root.setOnDragOver(p -> {});
-                          //                                }
-                          //                              });
+                      row.setOnMousePressed(
+                              event14 -> Fapp.getPrimaryStage().getScene().setCursor(Cursor.CLOSED_HAND));
 
-                          for (Node node : mapController.getNodeToCircleMap().keySet()) {
-                            Circle circle = mapController.getNodeToCircleMap().get(node);
+                      row.setOnMouseReleased(
+                              event13 -> Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND));
 
-                            circle.setOnDragOver(
-                                new EventHandler<DragEvent>() {
-                                  @Override
-                                  public void handle(DragEvent event) {
-                                    event.acceptTransferModes(TransferMode.COPY);
-                                    // "#F6BD38" - Hospital Yellow
-                                    circle.setFill(Paint.valueOf("#F6BD38"));
-                                  }
-                                });
+                      row.setOnDragDetected(
+                          dragEvent -> {
+                            Dragboard dragboard = row.startDragAndDrop(TransferMode.COPY);
+                            dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
+                            ClipboardContent clipboardContent = new ClipboardContent();
+                            String longName = row.getItem().getLongName();
+                            clipboardContent.putString(longName);
+                            dragboard.setContent(clipboardContent);
+                            locationDragText.setText(longName);
+                            mapPane.setOnDragOver(p -> {});
+                            mapPane.setOnDragDropped(p -> {});
 
-                            circle.setOnDragExited(
-                                new EventHandler<DragEvent>() {
-                                  @Override
-                                  public void handle(DragEvent event) {
-                                    circle.setFill(Paint.valueOf(Color.BLACK.toString()));
-                                  }
-                                });
+                            root.setOnDragOver(
+                                    event12 -> {
+                                      locationDragText.setVisible(true);
+                                      locationDragText.setX(event12.getX() - 250);
+                                      locationDragText.setY(event12.getY());
+                                    });
 
-                            circle.setOnDragDropped(
-                                new EventHandler<DragEvent>() {
-                                  @Override
-                                  public void handle(DragEvent event) {
-                                    Session session = mapController.getMapSession();
-                                    LocationName locationName =
-                                        session.find(
-                                            LocationName.class,
-                                            dragboard.getContent(DataFormat.PLAIN_TEXT));
+                            root.setOnDragDone(
+                                    event1 -> locationDragText.setVisible(false));
 
-                                    Date date =
-                                        java.util.Date.from(
-                                            viewingDate
-                                                .getValue()
-                                                .atStartOfDay(ZoneId.systemDefault())
-                                                .toInstant());
+                            for (Node node : mapController.getNodeToCircleMap().keySet()) {
+                              Circle circle = mapController.getNodeToCircleMap().get(node);
 
-                                    Move newMove = new Move(node, locationName, date);
+                              circle.setOnDragOver(
+                                      event18 -> {
+                                        event18.acceptTransferModes(TransferMode.COPY);
+                                        // "#F6BD38" - Hospital Yellow
+                                        circle.setFill(Paint.valueOf("#F6BD38"));
+                                      });
 
-                                    session.persist(newMove);
-                                    session.flush();
-                                    mapController.redraw();
-                                  }
-                                });
-                          }
-                          dragEvent.consume();
-                        });
-                  } else {
-                    row.setOnMouseExited(p -> {});
+                              circle.setOnDragExited(
+                                      event16 -> circle.setFill(Paint.valueOf(Color.BLACK.toString())));
 
-                    row.setOnMousePressed(p -> {});
+                              circle.setOnDragDropped(
+                                      event17 -> {
+                                        Session session = mapController.getMapSession();
+                                        LocationName locationName =
+                                            session.find(
+                                                LocationName.class,
+                                                dragboard.getContent(DataFormat.PLAIN_TEXT));
 
-                    row.setOnMouseReleased(p -> {});
+                                        Date date =
+                                            Date.from(
+                                                viewingDate
+                                                    .getValue()
+                                                    .atStartOfDay(ZoneId.systemDefault())
+                                                    .toInstant());
 
-                    row.setOnDragDetected(p -> {});
-                  }
+                                        Move newMove = new Move(node, locationName, date);
 
-                  event.consume();
-                }
-              });
+                                        session.persist(newMove);
+                                        session.flush();
+                                        mapController.redraw();
+                                      });
+                            }
+                            dragEvent.consume();
+                          });
+                    } else {
+                      row.setOnMouseExited(p -> {});
+
+                      row.setOnMousePressed(p -> {});
+
+                      row.setOnMouseReleased(p -> {});
+
+                      row.setOnDragDetected(p -> {});
+                    }
+
+                    event.consume();
+                  });
           // Add a listener to show the pop-up
           row.setOnMouseClicked(
               (mouseEvent) -> {
