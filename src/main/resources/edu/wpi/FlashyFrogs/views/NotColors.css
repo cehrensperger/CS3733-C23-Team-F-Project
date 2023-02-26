@@ -75,6 +75,16 @@
 {
     -fx-font-family: "Roboto";
     -fx-font-size: 10pt;
+    -fx-font-weight: bold;
+}
+
+.bodyBoldWhite
+    /** This styles body text - such as the names and descriptions on the service
+     requests credits page **/
+{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 10pt;
+    -fx-font-weight: bold;
 }
 
 .subtext

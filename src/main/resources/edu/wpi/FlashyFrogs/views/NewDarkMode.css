@@ -64,6 +64,14 @@
     -fx-text-fill:white;
 }
 
+.bodyBoldWhite {
+    /**
+    Header bold but in white
+     */
+    -fx-text-fill: white;
+    -fx-fill: white; /*Neccessary sometimes for some reason on texts*/
+}
+
 .subtext
     /** super small - basically only used in warning text **/
 {

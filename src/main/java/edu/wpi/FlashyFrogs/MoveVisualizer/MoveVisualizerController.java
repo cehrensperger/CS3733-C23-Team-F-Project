@@ -1,6 +1,5 @@
 package edu.wpi.FlashyFrogs.MoveVisualizer;
 
-import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
@@ -39,7 +38,6 @@ import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
-import org.hibernate.Session;
 
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
@@ -97,7 +95,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               public String toString(LocationName object) {
                 if (object != null) {
                   return object
-                      .getShortName(); // If it's not null, return just the string of the location
+                      .toString(); // If it's not null, return just the string of the location
                 } else {
                   return "Left Location"; // Otherwise, default text
                 }
@@ -120,7 +118,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               public String toString(LocationName object) {
                 if (object != null) {
                   return object
-                      .getShortName(); // If it's not null, return just the string of the location
+                      .toString(); // If it's not null, return just the string of the location
                 } else {
                   return "Right Location"; // Otherwise, default text
                 }
@@ -132,15 +130,17 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               }
             });
 
-      // Query the location names
-      ObservableList<LocationName> locationNames =
-          FXCollections.observableList(
-              mapController.getMapSession().createQuery("FROM LocationName", LocationName.class).
-                      getResultList());
+    // Query the location names
+    ObservableList<LocationName> locationNames =
+        FXCollections.observableList(
+            mapController
+                .getMapSession()
+                .createQuery("FROM LocationName", LocationName.class)
+                .getResultList());
 
-      // Set the boxes to contain them
-      leftLocationBox.setItems(locationNames);
-      rightLocationBox.setItems(locationNames);
+    // Set the boxes to contain them
+    leftLocationBox.setItems(locationNames);
+    rightLocationBox.setItems(locationNames);
 
     // Give the columns their filters
     PopupFilter<Move, Node> nodeFilter = new PopupStringFilter<>(nodeColumn); // Node filter

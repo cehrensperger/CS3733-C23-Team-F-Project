@@ -64,6 +64,12 @@
     -fx-text-fill:#000000;
 }
 
+.bodyBoldWhite {
+    /** Used for the map visualizer location names */
+    -fx-text-fill: #f1f1f1;
+    -fx-fill: #f1f1f1; /* This is necessary sometimes for some reason*/
+}
+
 .subtext
     /** super small - basically only used in warning text **/
 {
