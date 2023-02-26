@@ -807,10 +807,10 @@ public class MapController {
   /** Toggles the controls of the map, so that they can be made invisible and disabled */
   public void toggleMapControls() {
     // Disable all the controls, visible also makes things invisible
-    upFloorButton.setVisible(upFloorButton.isVisible());
-    downFloorButton.setVisible(downFloorButton.isVisible());
-    floorSelector.setVisible(floorSelector.isVisible());
-    floorSelectorButton.setVisible(floorSelectorButton.isVisible());
-    filterBox.setVisible(filterBox.isVisible());
+    upFloorButton.setVisible(!upFloorButton.isVisible());
+    downFloorButton.setVisible(!downFloorButton.isVisible());
+    floorSelector.setVisible(!floorSelector.isVisible());
+    floorSelectorButton.setVisible(!floorSelectorButton.isVisible());
+    filterBox.setVisible(!filterBox.isVisible());
   }
 }

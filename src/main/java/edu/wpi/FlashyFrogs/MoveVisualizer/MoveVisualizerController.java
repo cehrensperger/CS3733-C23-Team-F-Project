@@ -14,6 +14,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiConsumer;
+
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +34,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -601,31 +605,25 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
             // Go to the login page
             Fapp.setScene("Accounts", "Login");
-
-            // Create a timer that will return the user to the move visualizer after 30s inactive on
-            // the login page
-            TimerTask goBackToPage =
-                new TimerTask() {
-                  @Override
-                  public void run() {
-                    // If they are on the login screen and the last press was more than 10 seconds
-                    // ago
-                    if (Fapp.getIController().getClass() == LoginController.class
-                        && Fapp.getLastKeyPressTime()
-                            .toInstant()
-                            .minus(10, ChronoUnit.SECONDS)
-                            .isBefore(Instant.now())) {
-                      Fapp.setRoot(borderPane); // Set the root to be this
-                    }
-                  }
-                };
-
-            // Create the timer that will be used
-            Timer timer = new Timer();
-
-            // Every second, check for timeout
-            timer.scheduleAtFixedRate(goBackToPage, 0, 1);
           }
         });
+
+    // Use a pause transition so that it only does the thing on the home screen
+    PauseTransition transition = new PauseTransition(Duration.seconds(10));
+
+    // Set the transition to close on completion
+    transition.setOnFinished((event) -> {
+        // If they are on the login screen and the last press was more than 10 seconds
+            // ago
+            if (Fapp.getIController().getClass() == LoginController.class
+                && Fapp.getLastKeyPressTime()
+                    .minus(10, ChronoUnit.SECONDS)
+                    .isBefore(Instant.now())) {
+             Fapp.setRoot(borderPane); // Set the root to be this
+            }
+    });
+
+    // Use auto-reverse to make this run forever
+    transition.setAutoReverse(true);
   }
 }

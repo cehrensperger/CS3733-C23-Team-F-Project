@@ -5,6 +5,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -40,7 +41,7 @@ public class Fapp extends Application {
   public static Stack<String> prevPage = new Stack<String>();
 
   // Last keypress time, used for things that require a timeout
-  @Getter @Setter private static Date lastKeyPressTime = new Date();
+  @Getter @Setter private static Instant lastKeyPressTime = Instant.now();
 
   @Override
   public void init() {
