@@ -97,7 +97,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               public String toString(LocationName object) {
                 if (object != null) {
                   return object
-                      .toString(); // If it's not null, return just the string of the location
+                      .getShortName(); // If it's not null, return just the string of the location
                 } else {
                   return "Left Location"; // Otherwise, default text
                 }
@@ -120,7 +120,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               public String toString(LocationName object) {
                 if (object != null) {
                   return object
-                      .toString(); // If it's not null, return just the string of the location
+                      .getShortName(); // If it's not null, return just the string of the location
                 } else {
                   return "Right Location"; // Otherwise, default text
                 }
@@ -132,17 +132,15 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               }
             });
 
-    // Create the location session, populate the location boxes
-    try (Session locationSession = DBConnection.CONNECTION.getSessionFactory().openSession()) {
       // Query the location names
       ObservableList<LocationName> locationNames =
           FXCollections.observableList(
-              locationSession.createQuery("FROM LocationName", LocationName.class).getResultList());
+              mapController.getMapSession().createQuery("FROM LocationName", LocationName.class).
+                      getResultList());
 
       // Set the boxes to contain them
       leftLocationBox.setItems(locationNames);
       rightLocationBox.setItems(locationNames);
-    }
 
     // Give the columns their filters
     PopupFilter<Move, Node> nodeFilter = new PopupStringFilter<>(nodeColumn); // Node filter
