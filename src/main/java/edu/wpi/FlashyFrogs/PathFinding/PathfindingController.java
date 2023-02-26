@@ -1,13 +1,14 @@
 package edu.wpi.FlashyFrogs.PathFinding;
 
+import static edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity.CURRENT_USER;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -67,7 +68,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML private DatePicker moveDatePicker;
   @FXML private TableView<Instruction> pathTable;
   @FXML private TableColumn<Instruction, String> pathCol;
-  //  @FXML private Label error;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -139,15 +139,34 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     algorithms.add("Breadth-first");
     algorithms.add("Depth-first");
 
+    // make the list of User's service requests
+    long userID = CURRENT_USER.getCurrentUser().getId();
+    List<ServiceRequest> serviceRequests =
+        session
+            .createQuery(
+                "SELECT s FROM ServiceRequest s WHERE assignedEmp.id = :userID AND s.location IS NOT NULL",
+                ServiceRequest.class)
+            .setParameter("userID", userID)
+            .getResultList();
+
+    List<String> serviceRequestsStrings = new ArrayList<>();
+    for (ServiceRequest request : serviceRequests) {
+      serviceRequestsStrings.add(request.toString());
+    }
+
     // Populate the boxes
     startingBox.setItems(FXCollections.observableList(objects));
     destinationBox.setItems(FXCollections.observableList(objects));
     algorithmBox.setItems(FXCollections.observableList(algorithms));
-
+    if (serviceRequests.isEmpty()) {
+      serviceRequestBox.setVisible(false);
+    } else {
+      serviceRequestBox.setItems(FXCollections.observableList(serviceRequestsStrings));
+    }
     algorithmBox.setValue("A*");
 
     // Get whether the user is an admin
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    boolean isAdmin = CURRENT_USER.getAdmin();
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
@@ -184,7 +203,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
           return row;
         });
 
-    //Only enables generatePathButton if something is selected for both startingBox and destinationBox
+    // Only enables generatePathButton if something is selected for both startingBox and
+    // destinationBox
     ChangeListener<Object> listener =
         (observable, oldValue, newValue) -> {
           // Check if both ComboBoxes have a selected value
@@ -439,6 +459,18 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML
   public void openMapEditor() {
     Fapp.setScene("MapEditor", "MapEditorView");
+  }
+
+  public void serviceRequestDestination() {
+    Session session = mapController.getMapSession();
+    LocationName serviceRequestLoc =
+        session
+            .createQuery(
+                "SELECT s.location FROM ServiceRequest s WHERE s.id = :userID", LocationName.class)
+            .setParameter("userID", CURRENT_USER.getCurrentUser().getId())
+            .getSingleResult();
+    session.close();
+    destinationBox.getSelectionModel().select(serviceRequestLoc);
   }
 
   /**
