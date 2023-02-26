@@ -16,18 +16,19 @@
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
-<AnchorPane prefHeight="763.0" prefWidth="1124.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MoveVisualizer.MoveVisualizerController">
+<AnchorPane styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MoveVisualizer.MoveVisualizerController">
    <children>
-      <VBox styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="763.0" prefWidth="237.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Move Visualizer" wrappingWidth="170.93841552734375">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin>
-            </Text>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sidebar">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Move Visualizer" wrappingWidth="170.93841552734375" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
             <ScrollPane>
                <content>
                   <VBox fillWidth="false" spacing="10.0" styleClass="sidebar">
@@ -111,7 +112,7 @@
             </ScrollPane>
          </children>
       </VBox>
-      <BorderPane fx:id="borderPane" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <BorderPane fx:id="borderPane" layoutX="287.0" prefHeight="763.0" prefWidth="837.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
             <AnchorPane fx:id="mapPane" BorderPane.alignment="CENTER" />
          </center>
@@ -150,6 +151,9 @@
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
       </BorderPane>
    </children>
    <stylesheets>
