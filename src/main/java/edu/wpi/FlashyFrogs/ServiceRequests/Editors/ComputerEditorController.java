@@ -5,6 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -148,12 +149,14 @@ public class ComputerEditorController extends ServiceRequestController implement
         errorMessage.setTextFill(Paint.valueOf("#b6000b"));
         errorMessage.setText("Please fill all fields.");
         session.close();
+        Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
       errorMessage.setTextFill(Paint.valueOf("#b6000b"));
       errorMessage.setText("Please fill all fields.");
       session.close();
+      Sound.ERROR.play();
     }
   }
 
