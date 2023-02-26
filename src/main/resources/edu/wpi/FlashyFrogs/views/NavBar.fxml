@@ -25,13 +25,14 @@
                </children>
             </HBox>
             <MenuButton fx:id="menu" mnemonicParsing="false" styleClass="navBar" textAlignment="RIGHT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
-                  <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
-                  <MenuItem onAction="#changeMode" text="Switch Color Theme" />
-                  <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
+              <items>
+                 <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
+                 <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
+                 <MenuItem fx:id="menuToggleSFX" onAction="#toggleSFX" text=""/>
+                 <MenuItem onAction="#changeMode" text="Switch Color Theme"/>
+                 <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
                   <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />
-               </items>
+              </items>
             </MenuButton>
             <AnchorPane fx:id="SVGPane" minHeight="0.0" minWidth="0.0" prefHeight="18.0" prefWidth="165.0">
                <children>
@@ -41,7 +42,8 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
                   <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
-                  <MenuItem onAction="#changeMode" text="Switch Color Theme" />
+                  <MenuItem fx:id="loggedOutMenuToggleSFX" onAction="#toggleSFX" text=""/>
+                  <MenuItem onAction="#changeMode" text="Switch Color Theme"/>
                   <MenuItem onAction="#closeApp" text="Close Application" />
                </items>
             </MenuButton>
