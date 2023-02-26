@@ -31,6 +31,14 @@
     -fx-text-fill:#000000;
 }
 
+.headerBoldWhite {
+    /**
+    Header bold but in white
+     */
+    -fx-text-fill: #f1f1f1;
+    -fx-fill: #f1f1f1; /* This is necessary sometimes for some reason*/
+}
+
 .headerBoldTextObject
     /** Mimics .headerBold for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
 {
@@ -506,4 +514,14 @@
     -fx-fill: #012D5A;
     -fx-stroke:#F6BD38;
     -fx-stroke-width: 2;
+}
+
+.yellow {
+    /**
+    Yellow color, used for background coloring on the map visualizer page
+     */
+    -fx-fill: #F6BD38;
+    -fx-background-color: #F6BD38;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }

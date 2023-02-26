@@ -31,6 +31,14 @@
     -fx-text-fill:white;
 }
 
+.headerBoldWhite {
+    /**
+    Header bold but in white
+     */
+    -fx-text-fill: white;
+    -fx-fill: white; /*Neccessary sometimes for some reason on texts*/
+}
+
 .headerBoldTextObject
     /** Mimics .headerBold for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
 {
@@ -497,4 +505,14 @@
 
 .text-area .content {
     -fx-border-color: transparent;
+}
+
+.yellow {
+    /**
+    Yellow color, used for background coloring on the map visualizer page
+     */
+    -fx-fill: #F6BD38;
+    -fx-background-color: #F6BD38;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }
