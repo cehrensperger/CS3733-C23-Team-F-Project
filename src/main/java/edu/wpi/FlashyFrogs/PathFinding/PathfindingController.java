@@ -81,6 +81,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML Text h7;
 
   boolean hDone = false;
+  List<ServiceRequest> serviceRequests;
 
   /**
    * Initializes the path finder, sets up the floor selector, and the map including default behavior
@@ -146,7 +147,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
     // make the list of User's service requests
     long userID = CURRENT_USER.getCurrentUser().getId();
-    List<ServiceRequest> serviceRequests =
+    serviceRequests =
         session
             .createQuery(
                 "SELECT s FROM ServiceRequest s WHERE assignedEmp.id = :userID AND s.location IS NOT NULL",
@@ -512,12 +513,21 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   }
 
   public void serviceRequestDestination() {
+    long selectedRequestId = -1;
+    String srText = serviceRequestBox.getValue();
+    for (int i = 0; i < serviceRequests.size(); i++) {
+      if (Long.parseLong(srText.substring(srText.indexOf("_") + 1))
+          == serviceRequests.get(i).getId()) {
+        selectedRequestId = serviceRequests.get(i).getId();
+      }
+    }
     Session session = mapController.getMapSession();
     LocationName serviceRequestLoc =
         session
             .createQuery(
-                "SELECT s.location FROM ServiceRequest s WHERE s.id = :userID", LocationName.class)
-            .setParameter("userID", CURRENT_USER.getCurrentUser().getId())
+                "SELECT s.location FROM ServiceRequest s WHERE s.id = :serviceRequest",
+                LocationName.class)
+            .setParameter("serviceRequest", selectedRequestId)
             .getSingleResult();
     session.close();
     destinationBox.getSelectionModel().select(serviceRequestLoc);
