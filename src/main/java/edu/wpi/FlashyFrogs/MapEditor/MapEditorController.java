@@ -499,7 +499,6 @@ public class MapEditorController implements IController {
                         currentQuickDrawCircle.relocate(
                             mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
                       }
-                      mouseEvent.consume();
                     }));
 
     // Set the button handler
@@ -614,11 +613,21 @@ public class MapEditorController implements IController {
 
           mapPane.setOnDragDone(
               e -> {
+                timer.cancel();
+                task.cancel();
                 duplicateCircle.setVisible(false);
+                event.consume();
+              });
+          mapPane.setOnDragEntered(
+              e -> {
+                e.acceptTransferModes(TransferMode.ANY);
+                duplicateCircle.setVisible(true);
                 event.consume();
               });
           mapPane.setOnDragExited(
               e -> {
+                timer.cancel();
+                task.cancel();
                 duplicateCircle.setVisible(false);
                 event.consume();
               });
@@ -717,10 +726,6 @@ public class MapEditorController implements IController {
           mapController.getMapSession().flush();
           mapController.addNode(newNode, false);
 
-          // make sure the circle is within bounds
-          if (x > 0 && x < mapPane.getWidth() && y > 0 && y < mapPane.getHeight()) {
-            // System.out.println("out of bounds");
-          }
           duplicateCircle.setVisible(false);
           event.consume();
         });
@@ -964,8 +969,6 @@ public class MapEditorController implements IController {
   public void onClose() {
     mapController.exit();
   }
-
-  public void handleQuickDraw() {}
 
   @Override
   public void help() {
