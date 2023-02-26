@@ -48,7 +48,7 @@ public class AVController implements IController {
   @FXML MFXButton clear;
   @FXML MFXButton submit;
   @FXML MFXButton credits;
-  @FXML MFXButton back;
+  @FXML MFXButton equipmentButton;
   @FXML MFXButton AV;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
@@ -201,6 +201,10 @@ public class AVController implements IController {
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
+  }
+
+  public void handleEquipment(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "EquipmentTransport");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {

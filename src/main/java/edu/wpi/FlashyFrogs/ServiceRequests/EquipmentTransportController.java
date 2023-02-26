@@ -33,24 +33,23 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class ITController implements IController {
+public class EquipmentTransportController implements IController {
   @FXML Rectangle check2;
   @FXML Rectangle check1;
   @FXML Pane toast;
   @FXML MFXButton AV;
+  @FXML MFXButton equipmentButton;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
   @FXML MFXButton credits;
-  @FXML MFXButton equipmentButton;
   @FXML MFXButton clear;
   @FXML MFXButton submit;
   @FXML TextField number;
@@ -60,26 +59,12 @@ public class ITController implements IController {
   @FXML SearchableComboBox<ComputerService.DeviceType> type;
   @FXML DatePicker date;
   @FXML TextField description;
-  @FXML Text h1;
-  @FXML Text h2;
-  @FXML Text h3;
-  @FXML Text h4;
-  @FXML Text h5;
-  @FXML Text h6;
-  @FXML Text h7;
   @FXML private Label errorMessage;
 
   boolean hDone = false;
   private Connection connection = null;
 
   public void initialize() {
-    h1.setVisible(false);
-    h2.setVisible(false);
-    h3.setVisible(false);
-    h4.setVisible(false);
-    h5.setVisible(false);
-    h6.setVisible(false);
-    h7.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<LocationName> locations =
@@ -210,22 +195,8 @@ public class ITController implements IController {
 
   public void help() {
     if (!hDone) {
-      h1.setVisible(true);
-      h2.setVisible(true);
-      h3.setVisible(true);
-      h4.setVisible(true);
-      h5.setVisible(true);
-      h6.setVisible(true);
-      h7.setVisible(true);
       hDone = true;
     } else if (hDone) {
-      h1.setVisible(false);
-      h2.setVisible(false);
-      h3.setVisible(false);
-      h4.setVisible(false);
-      h5.setVisible(false);
-      h6.setVisible(false);
-      h7.setVisible(false);
       hDone = false;
     }
   }
