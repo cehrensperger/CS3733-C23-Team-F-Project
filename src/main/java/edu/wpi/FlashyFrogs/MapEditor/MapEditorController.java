@@ -231,6 +231,7 @@ public class MapEditorController implements IController {
 
                   row.setOnDragDetected(
                       dragEvent -> {
+                        Timer timer = new Timer();
                         Dragboard dragboard = row.startDragAndDrop(TransferMode.COPY);
                         dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
                         ClipboardContent clipboardContent = new ClipboardContent();
@@ -247,7 +248,61 @@ public class MapEditorController implements IController {
                               locationDragText.setX(event12.getX() - 250);
                               locationDragText.setY(event12.getY());
 
+                              /*
+                                            double kp = 0.03;
+                                double errorX = e.getX() - (mapPane.getWidth() / 2);
+                                double errorY = e.getY() - (mapPane.getHeight() / 2);
+                                double[] effortX = {0};
+                                double[] effortY = {0};
 
+                                if (abs(errorX) > 500) {
+                                  effortX[0] = errorX * kp;
+                                }
+                                if (abs(errorY) > 300) {
+                                  effortY[0] = errorY * kp;
+                                }
+
+                                if (task != null) task.cancel();
+
+                                task =
+                                    new TimerTask() {
+                                      @Override
+                                      public void run() {
+                                        Platform.runLater(
+                                            () ->
+                                                mapController
+                                                    .getGesturePane()
+                                                    .translateBy(new Dimension2D(effortX[0], effortY[0])));
+                                      }
+                                    };
+
+                                timer.scheduleAtFixedRate(task, 0, 15);
+                                // X bounds
+                                if (e.getX() < 0) {
+                                  duplicateCircle.setVisible(false);
+                                } else if (e.getX() > mapPane.getWidth()) {
+                                  duplicateCircle.setVisible(false);
+                                }
+
+                                // Y bounds
+                                if (e.getY() < 0) {
+                                  duplicateCircle.setVisible(false);
+                                } else if (e.getY() > mapPane.getHeight()) {
+                                  duplicateCircle.setVisible(false);
+                                }
+                              }
+                                             */
+
+                              System.out.print(event12.getX() + "\t");
+                              System.out.print(event12.getSceneX() + "\t");
+                              System.out.print(event12.getScreenX() + "\t");
+                              System.out.print(mapController.getGesturePane().getWidth() + "\t");
+                              System.out.println(root.getWidth());
+
+                              if (event12.getX()
+                                  > mapController.getGesturePane().getWidth() + 220) {
+                                System.out.println("scroll here");
+                              }
                             });
 
                         root.setOnDragDone(event1 -> locationDragText.setVisible(false));
@@ -1218,17 +1273,17 @@ public class MapEditorController implements IController {
                   });
 
               controller.setOnDeleteLocations(
-                      event1 -> {
-                        for (Node n : selectedNodes) {
-                          for (LocationName loc : mapController.getNodeToLocationNameMap().get(n)) {
-                            System.out.println(loc);
-                            mapController.removeLocationName(loc);
-                          }
-                        }
-                      });
+                  event1 -> {
+                    for (Node n : selectedNodes) {
+                      for (LocationName loc : mapController.getNodeToLocationNameMap().get(n)) {
+                        System.out.println(loc);
+                        mapController.removeLocationName(loc);
+                      }
+                    }
+                  });
 
               controller.setOnDeleteNodes(
-                      event12 -> mapController.deleteNodes(selectedNodes, checkBox.isSelected()));
+                  event12 -> mapController.deleteNodes(selectedNodes, checkBox.isSelected()));
               circlePopOver.show(circle); // Show the pop-over
 
               // Disable the gesture pane (this causes clunkyness when you click on the page after
