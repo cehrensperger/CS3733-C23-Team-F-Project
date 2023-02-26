@@ -626,7 +626,7 @@ public class MapEditorController implements IController {
               });
           mapPane.setOnDragExited(
               e -> {
-                timer.cancel();
+                //                timer.cancel();
                 task.cancel();
                 duplicateCircle.setVisible(false);
                 event.consume();
@@ -707,6 +707,7 @@ public class MapEditorController implements IController {
     duplicateCircle.setOnDragDropped(
         event -> {
           task.cancel();
+          System.out.println("i got here");
           GesturePane gesturePane = mapController.getGesturePane();
           double scale = gesturePane.getCurrentScale();
           double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
