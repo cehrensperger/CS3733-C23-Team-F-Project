@@ -11,6 +11,9 @@ import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -552,10 +555,28 @@ public class HomeController implements IController {
     Session session = CONNECTION.getSessionFactory().openSession();
     List<Alert> list = session.createQuery("Select a from Alert a", Alert.class).getResultList();
 
+    Collections.sort(
+        list,
+        new Comparator<Alert>() {
+          @Override
+          public int compare(Alert a1, Alert a2) {
+            return a1.getDisplayDate().compareTo(a2.getDisplayDate());
+          }
+        });
+
     for (Alert a : list) {
-      insertAlert(a);
+      System.out.println(a.getDisplayDate());
+      System.out.println(Date.from(Instant.now()));
+      LocalDateTime ldt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+      LocalDateTime last = ldt.minusDays(7);
+      Date lastWeek = Date.from(last.atZone(ZoneId.systemDefault()).toInstant());
+      if (a.getDisplayDate().before(Date.from(Instant.now()))
+          && a.getDisplayDate().after(lastWeek)) {
+        insertAlert(a);
+      }
     }
   }
+
   /** Callback to open the map editor from a button */
   @FXML
   public void openMapEditor() {
