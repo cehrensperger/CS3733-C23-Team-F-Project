@@ -7,7 +7,6 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.*;
 import javafx.beans.property.SimpleObjectProperty;
@@ -42,7 +41,6 @@ import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class HomeController implements IController {
-  @FXML protected MFXButton mapEditorButton;
   @FXML protected FilteredTableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected FilteredTableColumn<ServiceRequest, Long> requestIDCol;
   @FXML protected FilteredTableColumn<ServiceRequest, HospitalUser> initEmpCol;
@@ -58,14 +56,9 @@ public class HomeController implements IController {
   @FXML protected FilteredTableColumn<MoveWrapper, LocationName> locationNameCol;
   @FXML protected FilteredTableColumn<MoveWrapper, Date> dateCol;
   @FXML protected FilteredTableView<MoveWrapper> moveTable;
-  @FXML protected MFXButton manageLoginsButton;
-  @FXML protected MFXButton manageCSVButton;
 
-  @FXML protected MFXButton manageAnnouncementsButton;
   @FXML protected Label tableText;
   @FXML protected Label tableText2;
-
-  @FXML protected MFXButton editMovesButton;
 
   @FXML protected ScrollPane scrollPane;
   @FXML protected VBox alertBox;
@@ -76,7 +69,6 @@ public class HomeController implements IController {
   @FXML Text h2;
   @FXML Text h3;
   @FXML Text h4;
-  @FXML Text h5;
   boolean hDone = false;
 
   public static class MoveWrapper {
@@ -143,7 +135,6 @@ public class HomeController implements IController {
     h2.setVisible(false);
     h3.setVisible(false);
     h4.setVisible(false);
-    h5.setVisible(false);
 
     Fapp.resetStack();
 
@@ -343,31 +334,9 @@ public class HomeController implements IController {
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
-      manageAnnouncementsButton.setDisable(true);
-      manageAnnouncementsButton.setOpacity(0);
-      manageLoginsButton.setDisable(true);
-      manageLoginsButton.setOpacity(0);
-      manageCSVButton.setDisable(true);
-      manageCSVButton.setOpacity(0);
-      editMovesButton.setDisable(true);
-      editMovesButton.setOpacity(0);
-      mapEditorButton.setDisable(true);
-      mapEditorButton.setOpacity(0);
-
       tableText2.setText("");
     } else {
       tableText.setText("All Service Requests");
-      manageAnnouncementsButton.setDisable(false);
-      manageAnnouncementsButton.setOpacity(1);
-      manageLoginsButton.setDisable(false);
-      manageLoginsButton.setOpacity(1);
-      manageCSVButton.setDisable(false);
-      manageCSVButton.setOpacity(1);
-      editMovesButton.setDisable(false);
-      editMovesButton.setOpacity(1);
-      mapEditorButton.setDisable(false);
-      mapEditorButton.setOpacity(1);
-
       tableText2.setText("Future Moves");
     }
     refreshTable();
@@ -430,14 +399,12 @@ public class HomeController implements IController {
       h2.setVisible(true);
       h3.setVisible(true);
       h4.setVisible(true);
-      h5.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
       h4.setVisible(false);
-      h5.setVisible(false);
       hDone = false;
     }
   }

@@ -156,6 +156,7 @@
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
+
 }
 
 .fields
@@ -501,4 +502,9 @@
 }
 .text-area .content {
     -fx-border-color: transparent;
+}
+.circle{
+    -fx-fill: #012D5A;
+    -fx-stroke:#F6BD38;
+    -fx-stroke-width: 2;
 }
