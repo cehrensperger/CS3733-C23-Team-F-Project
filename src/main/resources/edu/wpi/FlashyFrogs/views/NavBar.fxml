@@ -36,6 +36,7 @@
               <items>
                  <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
                  <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
+                 <MenuItem fx:id="menuToggleSFX" onAction="#toggleSFX" text=""/>
                  <MenuItem onAction="#changeMode" text="Switch Color Theme"/>
                  <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
                   <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeApp" text="Close Application" />
@@ -49,6 +50,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#about" text="About This Application" />
                   <MenuItem mnemonicParsing="false" onAction="#acknowledgments" text="Acknowledgments" />
+                  <MenuItem fx:id="loggedOutMenuToggleSFX" onAction="#toggleSFX" text=""/>
                   <MenuItem onAction="#changeMode" text="Switch Color Theme"/>
                   <MenuItem onAction="#closeApp" text="Close Application" />
                </items>

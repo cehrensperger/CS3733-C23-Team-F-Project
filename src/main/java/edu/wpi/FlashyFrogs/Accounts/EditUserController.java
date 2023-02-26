@@ -5,6 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -85,10 +86,12 @@ public class EditUserController implements IController {
         || employeeType.getValue() == null) {
       // One of the values is left null
       errorMessage.setText("Please fill out all required fields!");
+      Sound.ERROR.play();
       errorMessage.setVisible(true);
     } else if (!pass1.getText().equals(pass2.getText())) {
       // Passwords do not match
       errorMessage.setText("Passwords do not match!");
+      Sound.ERROR.play();
       errorMessage.setVisible(true);
     } else {
       // Save Changes
@@ -133,10 +136,12 @@ public class EditUserController implements IController {
     Session ses = CONNECTION.getSessionFactory().openSession();
     if (currentUserLogin == null) {
       errorMessage.setText("No user selected for deletion");
+      Sound.ERROR.play();
       errorMessage.setVisible(true);
     }
     if (currentUser.equals(CurrentUserEntity.CURRENT_USER.getCurrentUser())) {
       errorMessage.setText("Cannot delete current account");
+      Sound.ERROR.play();
       errorMessage.setVisible(true);
     } else {
       errorMessage.setVisible(false);

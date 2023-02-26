@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.MapEditor;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.Sound;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.beans.property.ObjectProperty;
@@ -61,6 +62,7 @@ public class LocationNameInfoController {
           // If there are empty fields
           if (longName.get().equals("") || shortName.get().equals("")) {
             errorText.setText("Fill in all fields before submitting!"); // Show that
+            Sound.ERROR.play();
           }
         };
 
@@ -132,6 +134,7 @@ public class LocationNameInfoController {
 
             // Show an error
             errorText.setText("A location with that name already exists! No changes saved.");
+            Sound.ERROR.play();
             return; // Short-circuit, prevent submit
           }
 

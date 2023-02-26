@@ -397,8 +397,8 @@
 .table-row-cell:hover
     /** controls table views within the app - hover **/
 {
-    -fx-background-color: #012d5a;
-    -fx-text-background-color: #ffffff;
+    -fx-background-color: #F6BD38;
+    -fx-text-background-color: #012D5a;
     -fx-background: #012d5a;
 
 }
@@ -501,4 +501,9 @@
 }
 .text-area .content {
     -fx-border-color: transparent;
+}
+.circle{
+    -fx-fill: #012D5A;
+    -fx-stroke:#F6BD38;
+    -fx-stroke-width: 2;
 }

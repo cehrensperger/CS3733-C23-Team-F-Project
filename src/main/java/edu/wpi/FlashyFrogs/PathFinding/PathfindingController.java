@@ -47,6 +47,9 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
+  @FXML private Button back;
+  @FXML private Button next;
+  private int selectedIndex = -1;
   @FXML private MFXButton generatePathButton;
   @FXML private Pane animationPane;
   @FXML private Circle cir1;
@@ -112,6 +115,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     h6.setVisible(false);
     h7.setVisible(false);
     pathTable.setVisible(false);
+    next.setVisible(false);
+    back.setVisible(false);
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -184,10 +189,11 @@ public class PathfindingController extends AbstractPathVisualizerController impl
           TableRow<Instruction> row = new TableRow<>(); // Create a new table row to use
 
           // When the user selects a row, just un-select it to avoid breaking formatting
-          row.selectedProperty()
-              .addListener(
-                  // Add a listener that does that
-                  (observable, oldValue, newValue) -> row.updateSelected(false));
+          //          row.selectedProperty()
+          //              .addListener(
+          //
+          //                  // Add a listener that does that
+          //                  (observable, oldValue, newValue) -> row.updateSelected(false));
 
           // Add a listener to show the pop-up
           row.setOnMouseClicked(
@@ -198,8 +204,11 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                   setFloor(row.getItem().node.getFloor());
                   mapController.zoomToCoordinates(
                       2, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
+                  selectedIndex = row.getIndex();
+                  pathTable.getSelectionModel().select(selectedIndex);
                 }
               });
+
           return row;
         });
 
@@ -222,6 +231,45 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     // Initially disable the button if either ComboBox is not selected
     generatePathButton.setDisable(
         startingBox.getValue() == null || destinationBox.getValue() == null);
+    // Set up the next button to select the next row
+    next.setOnAction(
+        event -> {
+          int rowIndex = pathTable.getSelectionModel().getSelectedIndex();
+          int maxIndex = pathTable.getItems().size() - 1;
+          if (selectedIndex < maxIndex) {
+            selectedIndex++;
+            pathTable.getSelectionModel().select(selectedIndex);
+            Instruction instruction = pathTable.getSelectionModel().getSelectedItem();
+            if (instruction != null) {
+
+              setFloor(instruction.node.getFloor());
+              mapController.zoomToCoordinates(
+                  2, instruction.node.getXCoord(), instruction.node.getYCoord());
+            }
+          }
+          if (!pathTable.getItems().isEmpty()) {
+            pathTable.scrollTo(rowIndex);
+          }
+        });
+
+    // Set up the back button to select the previous row
+    back.setOnAction(
+        event -> {
+          int rowIndex = pathTable.getSelectionModel().getSelectedIndex();
+          if (selectedIndex > 0) {
+            selectedIndex--;
+            pathTable.getSelectionModel().select(selectedIndex);
+            Instruction instruction = pathTable.getSelectionModel().getSelectedItem();
+            if (instruction != null) {
+              setFloor(instruction.node.getFloor());
+              mapController.zoomToCoordinates(
+                  2, instruction.node.getXCoord(), instruction.node.getYCoord());
+            }
+          }
+          if (!pathTable.getItems().isEmpty()) {
+            pathTable.scrollTo(rowIndex);
+          }
+        });
   }
 
   /** Callback to handle the back button being pressed */
@@ -235,6 +283,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   private void drawTable() {
     int continueCounter = 0;
     pathTable.setVisible(true);
+    next.setVisible(true);
+    back.setVisible(true);
 
     ObservableList<Instruction> instructions = FXCollections.observableArrayList();
     double curAngle = 0;

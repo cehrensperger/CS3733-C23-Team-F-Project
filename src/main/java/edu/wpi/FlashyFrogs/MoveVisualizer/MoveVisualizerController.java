@@ -31,18 +31,24 @@ import javafx.stage.FileChooser;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
-import org.controlsfx.control.tableview2.TableColumn2;
-import org.controlsfx.control.tableview2.TableView2;
+import org.controlsfx.control.SearchableComboBox;
+import org.controlsfx.control.tableview2.FilteredTableColumn;
+import org.controlsfx.control.tableview2.FilteredTableView;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
+  @FXML private SearchableComboBox<LocationName> rightLocation; // Right arrow location
+  @FXML private SearchableComboBox<LocationName> leftLocation; // Left arrow location
+  @FXML private TextField headerText; // Text for the header
   @FXML private TextField textText; // The text to show on the map
-  @FXML private Text noLocationText;
-  @FXML private TableView2<Move> moveTable; // Table for the moves
-  @FXML private TableColumn2<Move, Node> nodeColumn; // Node column
-  @FXML private TableColumn2<Move, LocationName> locationColumn; // Location column
-  @FXML private TableColumn2<Move, Date> dateColumn; // Date column
+  @FXML private Text noLocationText; // No location error text
+  @FXML private FilteredTableView<Move> moveTable; // Table for the moves
+  @FXML private FilteredTableColumn<Move, Node> nodeColumn; // Node column
+  @FXML private FilteredTableColumn<Move, LocationName> locationColumn; // Location column
+  @FXML private FilteredTableColumn<Move, Date> dateColumn; // Date column
   @FXML private AnchorPane mapPane; // Map pane for map display
   private final Collection<javafx.scene.Node> nodes =
       new LinkedList<>(); // Collection of nodes that are on the map
@@ -51,6 +57,15 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @SneakyThrows
   @FXML
   private void initialize() {
+    // Give the columns their filters
+    PopupFilter<Move, Node> nodeFilter = new PopupStringFilter<>(nodeColumn); // Node filter
+    nodeColumn.setOnFilterAction((event) -> nodeFilter.showPopup()); // Node filter action
+    PopupFilter<Move, LocationName> locationFilter =
+        new PopupStringFilter<>(locationColumn); // Loc filter
+    locationColumn.setOnFilterAction((event) -> locationFilter.showPopup()); // Loc filter action
+    PopupFilter<Move, Date> dateFilter = new PopupStringFilter<>(dateColumn); // Date filter
+    dateColumn.setOnFilterAction((event) -> dateFilter.showPopup()); // Date filter action
+
     // Set the columns to not be order-able anymore
     nodeColumn.setReorderable(false);
     locationColumn.setReorderable(false);
@@ -177,6 +192,11 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
     // Open the file chooser, get the file
     File file = fileChooser.showOpenDialog(textText.getScene().getWindow());
+
+    // If the file is null, don't do anything
+    if (file == null) {
+      return; // Exit
+    }
 
     // Create the image
     ImageView image = new ImageView(new Image(new FileInputStream(file)));
@@ -470,4 +490,12 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
       mapController.getCurrentDrawingPane().getChildren().remove(node); // Remove it
     }
   }
+
+  /**
+   * Callback for the enter kiosk button
+   *
+   * @param actionEvent the event triggering this
+   */
+  @FXML
+  private void enterKioskMode(ActionEvent actionEvent) {}
 }
