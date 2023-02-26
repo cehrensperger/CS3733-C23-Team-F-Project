@@ -205,8 +205,9 @@
 {
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
-    -fx-font-family: "Roboto Light";
-    -fx-font-size: 10pt;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
+    -fx-font-weight: bold;
     -fx-pref-width: 184px;
     -fx-pref-height: 75px;
     -fx-text-alignment: Baseline Left;
