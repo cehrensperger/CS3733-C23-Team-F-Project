@@ -248,64 +248,46 @@ public class MapEditorController implements IController {
                               locationDragText.setX(event12.getX() - 250);
                               locationDragText.setY(event12.getY());
 
-                              /*
-                                            double kp = 0.03;
-                                double errorX = e.getX() - (mapPane.getWidth() / 2);
-                                double errorY = e.getY() - (mapPane.getHeight() / 2);
-                                double[] effortX = {0};
-                                double[] effortY = {0};
+                              double xPos = event12.getX() - mapPane.getLayoutX();
+                              double yPos = event12.getY() - mapPane.getLayoutY();
 
-                                if (abs(errorX) > 500) {
-                                  effortX[0] = errorX * kp;
-                                }
-                                if (abs(errorY) > 300) {
-                                  effortY[0] = errorY * kp;
-                                }
+                              double kp = 0.03;
+                              double errorX = xPos - (mapPane.getWidth() / 2);
+                              double errorY = yPos - (mapPane.getHeight() / 2);
+                              double[] effortX = {0};
+                              double[] effortY = {0};
 
-                                if (task != null) task.cancel();
-
-                                task =
-                                    new TimerTask() {
-                                      @Override
-                                      public void run() {
-                                        Platform.runLater(
-                                            () ->
-                                                mapController
-                                                    .getGesturePane()
-                                                    .translateBy(new Dimension2D(effortX[0], effortY[0])));
-                                      }
-                                    };
-
-                                timer.scheduleAtFixedRate(task, 0, 15);
-                                // X bounds
-                                if (e.getX() < 0) {
-                                  duplicateCircle.setVisible(false);
-                                } else if (e.getX() > mapPane.getWidth()) {
-                                  duplicateCircle.setVisible(false);
-                                }
-
-                                // Y bounds
-                                if (e.getY() < 0) {
-                                  duplicateCircle.setVisible(false);
-                                } else if (e.getY() > mapPane.getHeight()) {
-                                  duplicateCircle.setVisible(false);
-                                }
+                              if (abs(errorX) > 0.9 * (mapPane.getWidth() / 2)) {
+                                effortX[0] = errorX * kp;
                               }
-                                             */
-
-                              System.out.print(event12.getX() + "\t");
-                              System.out.print(event12.getSceneX() + "\t");
-                              System.out.print(event12.getScreenX() + "\t");
-                              System.out.print(mapController.getGesturePane().getWidth() + "\t");
-                              System.out.println(root.getWidth());
-
-                              if (event12.getX()
-                                  > mapController.getGesturePane().getWidth() + 220) {
-                                System.out.println("scroll here");
+                              if (abs(errorY) > 0.9 * (mapPane.getHeight() / 2)) {
+                                effortY[0] = errorY * kp;
                               }
+
+                              if (task != null) task.cancel();
+
+                              task =
+                                  new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                      Platform.runLater(
+                                          () ->
+                                              mapController
+                                                  .getGesturePane()
+                                                  .translateBy(
+                                                      new Dimension2D(effortX[0], effortY[0])));
+                                    }
+                                  };
+
+                              timer.scheduleAtFixedRate(task, 0, 15);
                             });
 
-                        root.setOnDragDone(event1 -> locationDragText.setVisible(false));
+                        root.setOnDragDone(
+                            event1 -> {
+                              locationDragText.setVisible(false);
+                              timer.cancel();
+                              task.cancel();
+                            });
 
                         for (Node node : mapController.getNodeToCircleMap().keySet()) {
                           Circle circle = mapController.getNodeToCircleMap().get(node);
@@ -673,10 +655,10 @@ public class MapEditorController implements IController {
                   double[] effortX = {0};
                   double[] effortY = {0};
 
-                  if (abs(errorX) > 500) {
+                  if (abs(errorX) > 0.9 * (mapPane.getWidth() / 2)) {
                     effortX[0] = errorX * kp;
                   }
-                  if (abs(errorY) > 300) {
+                  if (abs(errorY) > 0.9 * (mapPane.getHeight() / 2)) {
                     effortY[0] = errorY * kp;
                   }
 
@@ -985,6 +967,7 @@ public class MapEditorController implements IController {
   }
 
   public void onClose() {
+    task.cancel();
     mapController.exit();
   }
 
