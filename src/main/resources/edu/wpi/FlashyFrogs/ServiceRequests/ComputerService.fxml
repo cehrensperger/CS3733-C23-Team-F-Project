@@ -200,7 +200,7 @@
             </Text>
          </children>
       </Pane>
-      <VBox layoutX="42.0" layoutY="36.0" prefHeight="711.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1060.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="42.0" layoutY="36.0" maxWidth="220.0" prefHeight="711.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
                <VBox.margin>
@@ -258,7 +258,7 @@
                   <Font size="16.0" />
                </font>
             </MFXButton>
-            <AnchorPane VBox.vgrow="ALWAYS">
+            <AnchorPane maxWidth="220.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
                      <children>

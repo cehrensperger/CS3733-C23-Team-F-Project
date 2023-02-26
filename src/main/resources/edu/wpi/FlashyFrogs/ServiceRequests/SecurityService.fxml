@@ -175,7 +175,7 @@
             </Text>
          </children>
       </Pane>
-      <VBox layoutX="32.0" layoutY="26.0" prefHeight="711.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1060.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="32.0" layoutY="26.0" maxWidth="220.0" prefHeight="711.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
                <VBox.margin>

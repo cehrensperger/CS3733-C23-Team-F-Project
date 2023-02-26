@@ -178,7 +178,7 @@
                               </HBox>
                            </children>
                            <VBox.margin>
-                              <Insets top="37.0" />
+                              <Insets top="35.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox alignment="TOP_CENTER" prefHeight="112.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -272,7 +272,7 @@
             </Text>
          </children>
       </Pane>
-      <VBox layoutX="22.0" layoutY="16.0" prefHeight="711.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1060.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="22.0" layoutY="16.0" maxWidth="220.0" prefHeight="711.0" prefWidth="206.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
                <VBox.margin>

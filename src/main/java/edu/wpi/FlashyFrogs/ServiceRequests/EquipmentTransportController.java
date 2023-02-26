@@ -5,7 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.ComputerService;
+import edu.wpi.FlashyFrogs.ORM.EquipmentTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.Sound;
@@ -52,13 +52,14 @@ public class EquipmentTransportController implements IController {
   @FXML MFXButton credits;
   @FXML MFXButton clear;
   @FXML MFXButton submit;
-  @FXML TextField number;
-  @FXML SearchableComboBox<LocationName> locationBox;
-  @FXML SearchableComboBox<ComputerService.ServiceType> service;
-  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
-  @FXML SearchableComboBox<ComputerService.DeviceType> type;
+
+  @FXML TextField equipment;
+  @FXML SearchableComboBox<LocationName> to;
+  @FXML SearchableComboBox<LocationName> from;
   @FXML DatePicker date;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
   @FXML TextField description;
+
   @FXML private Label errorMessage;
 
   boolean hDone = false;
@@ -72,11 +73,9 @@ public class EquipmentTransportController implements IController {
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    locationBox.setItems(FXCollections.observableArrayList(locations));
-    service.setItems(FXCollections.observableArrayList(ComputerService.ServiceType.values()));
+    to.setItems(FXCollections.observableArrayList(locations));
+    from.setItems(FXCollections.observableArrayList(locations));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
-    type.setItems(FXCollections.observableArrayList(ComputerService.DeviceType.values()));
-    session.close();
 
     urgency.setButtonCell(
         new ListCell<ServiceRequest.Urgency>() {
@@ -91,39 +90,38 @@ public class EquipmentTransportController implements IController {
           }
         });
 
-    locationBox.setButtonCell(
+    to.setButtonCell(
         new ListCell<LocationName>() {
           @Override
           protected void updateItem(LocationName item, boolean empty) {
             super.updateItem(item, empty);
             if (empty || item == null) {
-              setText("Location of Request");
+              setText("Transfer To");
             } else {
               setText(item.toString());
             }
           }
         });
 
-    service.setButtonCell(
-        new ListCell<ComputerService.ServiceType>() {
+    from.setButtonCell(
+        new ListCell<LocationName>() {
           @Override
-          protected void updateItem(ComputerService.ServiceType item, boolean empty) {
+          protected void updateItem(LocationName item, boolean empty) {
             super.updateItem(item, empty);
             if (empty || item == null) {
-              setText("Service Type");
+              setText("Transfer From");
             } else {
               setText(item.toString());
             }
           }
         });
-
-    type.setButtonCell(
-        new ListCell<ComputerService.DeviceType>() {
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
           @Override
-          protected void updateItem(ComputerService.DeviceType item, boolean empty) {
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
             super.updateItem(item, empty);
             if (empty || item == null) {
-              setText("Device Type");
+              setText("Urgency");
             } else {
               setText(item.toString());
             }
@@ -137,30 +135,28 @@ public class EquipmentTransportController implements IController {
 
     try {
       // check
-      if (number.getText().equals("")
-          || locationBox.getValue().toString().equals("")
-          || service.getValue().toString().equals("")
-          || type.getValue().toString().equals("")
+      if (equipment.getText().equals("")
+          || to.getValue().toString().equals("")
+          || from.getValue().toString().equals("")
+          || date.getValue().toString().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      ComputerService informationTechnology =
-          new ComputerService(
+      EquipmentTransport equipmentTransport =
+          new EquipmentTransport(
               CurrentUserEntity.CURRENT_USER.getCurrentUser(),
-              locationBox.getValue(),
               dateNeeded,
               Date.from(Instant.now()),
               urgency.getValue(),
-              type.getValue(),
-              "temp",
-              description.getText(),
-              service.getValue(),
-              number.getText());
+              from.getValue(),
+              to.getValue(),
+              equipment.getText(),
+              description.getText());
 
       try {
-        session.persist(informationTechnology);
+        session.persist(equipmentTransport);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
@@ -184,10 +180,9 @@ public class EquipmentTransportController implements IController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    number.setText("");
-    locationBox.valueProperty().set(null);
-    service.valueProperty().set(null);
-    type.valueProperty().set(null);
+    equipment.setText("");
+    to.valueProperty().set(null);
+    from.valueProperty().set(null);
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
     description.setText("");
