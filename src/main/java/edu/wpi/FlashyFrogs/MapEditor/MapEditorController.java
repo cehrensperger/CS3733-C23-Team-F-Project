@@ -128,7 +128,7 @@ public class MapEditorController implements IController {
    */
   public static Date add(Date date, int calendarField, int amount) {
     if (date == null) {
-        Sound.ERROR.play();
+      Sound.ERROR.play();
       throw new IllegalArgumentException("The date must not be null");
     }
     Calendar c = Calendar.getInstance();
@@ -1367,7 +1367,7 @@ public class MapEditorController implements IController {
                   .getMapSession()
                   .find(Node.class, createNodeID(node.getFloor(), x, node.getYCoord()))
               != null) {
-              Sound.ERROR.play();
+            Sound.ERROR.play();
             throw new IllegalArgumentException("Duplicate position detected!");
           }
         }
@@ -1377,7 +1377,7 @@ public class MapEditorController implements IController {
                   .getMapSession()
                   .find(Node.class, createNodeID(node.getFloor(), node.getXCoord(), y))
               != null) {
-              Sound.ERROR.play();
+            Sound.ERROR.play();
             throw new IllegalArgumentException("Duplicate position detected!");
           }
         }
@@ -1457,7 +1457,7 @@ public class MapEditorController implements IController {
                   createNodeID(node.getFloor(), node.getXCoord() + xDiff, node.getYCoord() + yDiff))
               .uniqueResult()
           != null) {
-          Sound.ERROR.play();
+        Sound.ERROR.play();
         throw new IllegalArgumentException("Duplicate position detected!");
       }
     }

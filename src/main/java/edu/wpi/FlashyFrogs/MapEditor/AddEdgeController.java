@@ -3,9 +3,8 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.util.List;
-
 import edu.wpi.FlashyFrogs.Sound;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
