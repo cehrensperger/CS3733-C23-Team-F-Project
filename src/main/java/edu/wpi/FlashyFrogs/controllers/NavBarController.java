@@ -129,7 +129,7 @@ public class NavBarController {
     //    line2.setOpacity(0);
 
     dateAndTime();
-    clockLabel.setTextFill(Paint.valueOf("white"));
+    //clockLabel.setTextFill(Paint.valueOf("white"));
   }
 
   /**
