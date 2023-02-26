@@ -83,9 +83,9 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </SVGPath>
-                  <SearchableComboBox fx:id="leftLocation" promptText="Left Location" styleClass="pathfindingField" />
+                  <SearchableComboBox fx:id="leftLocationBox" promptText="Left Location" styleClass="pathfindingField" />
                   <SVGPath content="M183.061 13.0607C183.646 12.4749 183.646 11.5251 183.061 10.9393L173.515 1.3934C172.929 0.807612 171.979 0.807612 171.393 1.3934C170.808 1.97918 170.808 2.92893 171.393 3.51472L179.879 12L171.393 20.4853C170.808 21.0711 170.808 22.0208 171.393 22.6066C171.979 23.1924 172.929 23.1924 173.515 22.6066L183.061 13.0607ZM0 13.5H182V10.5H0V13.5Z" />
-                  <SearchableComboBox fx:id="rightLocation" promptText="Right Location" styleClass="pathfindingField" />
+                  <SearchableComboBox fx:id="rightLocationBox" promptText="Right Location" styleClass="pathfindingField" />
                   <MFXButton onAction="#enterKioskMode" styleClass="blueBackgroundSideBar" text="Enter Kiosk Mode">
                      <VBox.margin>
                         <Insets top="30.0" />

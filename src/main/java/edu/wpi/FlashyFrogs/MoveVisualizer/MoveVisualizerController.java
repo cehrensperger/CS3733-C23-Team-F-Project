@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.MoveVisualizer;
 
+import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -28,6 +30,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -36,13 +39,17 @@ import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
+import org.hibernate.Session;
 
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
-  @FXML private SearchableComboBox<LocationName> rightLocation; // Right arrow location
-  @FXML private SearchableComboBox<LocationName> leftLocation; // Left arrow location
-  @FXML private TextField headerText; // Text for the header
+  @FXML private Text adminMessage; // Admin message text
+  @FXML private SearchableComboBox<LocationName> leftLocationBox; // Left location search box
+  @FXML private SearchableComboBox<LocationName> rightLocationBox; // Right location search box
+  @FXML private Text rightLocation; // Right arrow location, actual
+  @FXML private Text leftLocation; // Left arrow location, actual
+  @FXML private TextField headerText; // Text for the header, entry
   @FXML private TextField textText; // The text to show on the map
   @FXML private Text noLocationText; // No location error text
   @FXML private FilteredTableView<Move> moveTable; // Table for the moves
@@ -57,6 +64,86 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @SneakyThrows
   @FXML
   private void initialize() {
+    // Binds the admin message to the admin message entry
+    adminMessage
+        .textProperty()
+        .bindBidirectional(
+            headerText.textProperty(),
+            new StringConverter<>() {
+              @Override
+              public String toString(String object) {
+                // if the text is empty, use sample text
+                if (object.isEmpty()) {
+                  return "Header Text"; // Sample text
+                } else {
+                  return object; // Otherwise, return the object
+                }
+              }
+
+              @Override
+              public String fromString(String string) {
+                return null; // This is not supported, so it does nothing
+              }
+            });
+
+    // Bind the left location text to the location
+    leftLocation
+        .textProperty()
+        .bindBidirectional(
+            leftLocationBox.valueProperty(),
+            new StringConverter<>() {
+              // Converter based on the location
+              @Override
+              public String toString(LocationName object) {
+                if (object != null) {
+                  return object
+                      .toString(); // If it's not null, return just the string of the location
+                } else {
+                  return "Left Location"; // Otherwise, default text
+                }
+              }
+
+              @Override
+              public LocationName fromString(String string) {
+                return null; // This is not supported, so it does nothign
+              }
+            });
+
+    // Bind the right location to the right text
+    rightLocation
+        .textProperty()
+        .bindBidirectional(
+            rightLocationBox.valueProperty(),
+            new StringConverter<>() {
+              // Converter based on the location
+              @Override
+              public String toString(LocationName object) {
+                if (object != null) {
+                  return object
+                      .toString(); // If it's not null, return just the string of the location
+                } else {
+                  return "Right Location"; // Otherwise, default text
+                }
+              }
+
+              @Override
+              public LocationName fromString(String string) {
+                return null; // This is not supported, so it does nothing
+              }
+            });
+
+    // Create the location session, populate the location boxes
+    try (Session locationSession = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      // Query the location names
+      ObservableList<LocationName> locationNames =
+          FXCollections.observableList(
+              locationSession.createQuery("FROM LocationName", LocationName.class).getResultList());
+
+      // Set the boxes to contain them
+      leftLocationBox.setItems(locationNames);
+      rightLocationBox.setItems(locationNames);
+    }
+
     // Give the columns their filters
     PopupFilter<Move, Node> nodeFilter = new PopupStringFilter<>(nodeColumn); // Node filter
     nodeColumn.setOnFilterAction((event) -> nodeFilter.showPopup()); // Node filter action
