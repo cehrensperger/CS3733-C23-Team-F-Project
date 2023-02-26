@@ -169,6 +169,9 @@ public class Fapp extends Application {
    * @param root the root of the app
    */
   public static void setRoot(@NonNull javafx.scene.Node root) {
+    lastKeyPressTime = Instant.now(); // Update the last press time, so that it doesn't snap change after change to login
+
+
     // Clear the root
     controller.getAnchorPane().getChildren().clear();
 

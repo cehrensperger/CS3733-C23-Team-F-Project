@@ -808,7 +808,9 @@ public class MapController {
   public void toggleMapControls() {
     // Disable all the controls, visible also makes things invisible
     upFloorButton.setVisible(!upFloorButton.isVisible());
+    upFloorButton.getParent().setVisible(!upFloorButton.getParent().isVisible());
     downFloorButton.setVisible(!downFloorButton.isVisible());
+    downFloorButton.getParent().setVisible(!downFloorButton.getParent().isVisible());
     floorSelector.setVisible(!floorSelector.isVisible());
     floorSelectorButton.setVisible(!floorSelectorButton.isVisible());
     filterBox.setVisible(!filterBox.isVisible());

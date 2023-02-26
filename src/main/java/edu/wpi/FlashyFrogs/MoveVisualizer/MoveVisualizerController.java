@@ -14,9 +14,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiConsumer;
-
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
@@ -599,31 +598,37 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     Fapp.logOutWithoutSceneChange(); // Log the user out without going to the login screen
 
     // Set the key handler for the border pane, if the user presses escape
-    borderPane.setOnKeyPressed(
-        (keyEvent) -> {
-          // We only care about escape
-          if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
-            // Go to the login page
-            Fapp.setScene("Accounts", "Login");
-          }
-        });
+    borderPane
+        .getScene()
+        .addEventFilter(
+            KeyEvent.KEY_PRESSED,
+            (keyEvent) -> {
+              Fapp.setLastKeyPressTime(Instant.now());
+
+              // We only care about escape
+              if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+                // Go to the login page
+                Fapp.setScene("Accounts", "Login");
+              }
+            });
 
     // Use a pause transition so that it only does the thing on the home screen
-    PauseTransition transition = new PauseTransition(Duration.seconds(10));
+    PauseTransition transition = new PauseTransition(Duration.seconds(1));
 
     // Set the transition to close on completion
-    transition.setOnFinished((event) -> {
-        // If they are on the login screen and the last press was more than 10 seconds
-            // ago
-            if (Fapp.getIController().getClass() == LoginController.class
-                && Fapp.getLastKeyPressTime()
-                    .minus(10, ChronoUnit.SECONDS)
-                    .isBefore(Instant.now())) {
-             Fapp.setRoot(borderPane); // Set the root to be this
-            }
-    });
+    transition.setOnFinished(
+        (event) -> {
+          // If they are on the login screen and the last press was more than 10 seconds
+          // ago
+          if (Fapp.getIController().getClass() == LoginController.class
+              && Fapp.getLastKeyPressTime().plus(10, ChronoUnit.SECONDS).isBefore(Instant.now())) {
+            Fapp.setRoot(borderPane); // Set the root to be this
+          }
 
-    // Use auto-reverse to make this run forever
-    transition.setAutoReverse(true);
+          // Redo the transitions
+          transition.play();
+        });
+
+    transition.play(); // Start the timer
   }
 }
