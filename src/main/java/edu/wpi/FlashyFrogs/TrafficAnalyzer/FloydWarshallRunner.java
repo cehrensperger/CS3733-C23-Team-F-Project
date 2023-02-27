@@ -6,7 +6,10 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinding.AStar;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -20,6 +23,12 @@ public class FloydWarshallRunner {
       costs; // Costs of traveling from one node to another, will be modified
   private static Map<Node, Map<Node, Node>>
       nextHops; // Next hop for a given node to reach another node
+  private static List<Edge> edges1;
+  private static List<Edge> edges2;
+  private static List<Long> counts1;
+  private static List<Long> counts2;
+  private static List<List<Edge>> edgeses;
+  private static ThreadPoolExecutor executor;
 
   @Getter
   private static final Semaphore reCalculationLock =
@@ -52,13 +61,20 @@ public class FloydWarshallRunner {
         new Thread(
             () -> {
               System.out.println("started " + Instant.now());
+
+              // Check the thread status
+              if (!threadShouldTerminate) {
+                generateLists();
+                executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(edgeses.size());
+              }
+
               // Check the thread status
               if (!threadShouldTerminate) {
                 reCalculateEuclideanEdgeWeights(); // Re-calculate the edge weights
               }
 
               // Check it again
-              if (!threadShouldTerminate) {
+              if (!threadShouldTerminate && executor.isTerminated()) {
                 doFloydWarshall(); // Run floyd-warshall
               }
 
@@ -76,47 +92,96 @@ public class FloydWarshallRunner {
     reCalcThread.start(); // Start the thread, this may run in the background
   }
 
+  private static void generateLists() {
+    try (Session querySession = DBConnection.CONNECTION.getSessionFactory().openSession()) {
+      edges1 =
+          querySession
+              .createQuery("Select e from Edge e order by e.node1.id", Edge.class)
+              .getResultList();
+      edges2 =
+          querySession
+              .createQuery("Select e from Edge e order by e.node2.id", Edge.class)
+              .getResultList();
+      counts1 =
+          querySession
+              .createQuery(
+                  "Select count(e) from Edge e, Node n where e.node1 = n group by e.node1.id order by e.node1.id",
+                  Long.class)
+              .getResultList();
+      counts2 =
+          querySession
+              .createQuery(
+                  "Select count(e) from Edge e, Node n where e.node2 = n group by e.node2.id order by e.node2.id",
+                  Long.class)
+              .getResultList();
+
+      edgeses = new ArrayList<>();
+
+      while (edges1.size() > 0 || edges2.size() > 0) {
+        List<Edge> sortedEdges = new ArrayList<>();
+        if (edges1.size() > 0) {
+          for (int i = 0; i < counts1.get(0); i++) {
+            sortedEdges.add(edges1.remove(0));
+          }
+          edgeses.add(sortedEdges);
+          counts1.remove(0);
+        }
+
+        if (edges2.size() > 0) {
+          for (int i = 0; i < counts2.get(0); i++) {
+            sortedEdges.add(edges2.remove(0));
+          }
+          edgeses.add(sortedEdges);
+          counts2.remove(0);
+        }
+      }
+    }
+  }
+
   /**
    * Re-calculates costs to be the euclidean edge weights taken directly from the map. This is a
    * blocking operation and very time consuming
    */
+  @SneakyThrows
   private static void reCalculateEuclideanEdgeWeights() {
-    // First, fetch everything
-    Collection<Node> nodes; // All nodes
-    Collection<Edge> edges; // All edges
+    costs = new HashMap<>(edgeses.size());
+    nextHops = new HashMap<>(edgeses.size());
 
-    // Populate those. This is much faster than doing each individual node->other nodes with its own
-    // query
-    try (Session querySession = DBConnection.CONNECTION.getSessionFactory().openSession()) {
-      // Get all nodes and edges
-      nodes = querySession.createQuery("FROM Node", Node.class).getResultList();
-      edges = querySession.createQuery("FROM Edge", Edge.class).getResultList();
+    for (int i = 0; i < edgeses.size(); i++) {
+      int finalI = i;
+      executor.execute(
+          () -> {
+            // For each edge
+            for (Edge edge : edgeses.get(finalI)) {
+              // If the costs don't have the start node
+              if (!costs.containsKey(edge.getNode1())) {
+                // Save stuff
+                costs.put(edge.getNode1(), new HashMap<>(edgeses.size())); // Save the costs
+                nextHops.put(edge.getNode1(), new HashMap<>(edgeses.size())); // Save the next hops
+              }
+
+              // If the costs don't have the start node
+              if (!costs.containsKey(edge.getNode2())) {
+                costs.put(edge.getNode2(), new HashMap<>(edgeses.size())); // Save the costs
+                nextHops.put(edge.getNode2(), new HashMap<>(edgeses.size())); // Save the next hops
+              }
+
+              double cost =
+                  AStar.euclideanDistance(edge.getNode1(), edge.getNode2()); // Calculate the
+              costs.get(edge.getNode1()).put(edge.getNode2(), cost); // Save costs
+              costs.get(edge.getNode2()).put(edge.getNode1(), cost); // Save costs
+              nextHops.get(edge.getNode1()).put(edge.getNode2(), edge.getNode2()); // Next hop
+              nextHops.get(edge.getNode2()).put(edge.getNode1(), edge.getNode1()); // Next hop
+            }
+          });
     }
+    executor.shutdown();
 
-    // Pre-size for speed
-    costs = new HashMap<>(nodes.size());
-    nextHops = new HashMap<>(nodes.size());
-
-    // For each edge
-    for (Edge edge : edges) {
-      // If the costs don't have the start node
-      if (!costs.containsKey(edge.getNode1())) {
-        // Save stuff
-        costs.put(edge.getNode1(), new HashMap<>(nodes.size())); // Save the costs
-        nextHops.put(edge.getNode1(), new HashMap<>(nodes.size())); // Save the next hops
-      }
-
-      // If the costs don't have the start node
-      if (!costs.containsKey(edge.getNode2())) {
-        costs.put(edge.getNode2(), new HashMap<>(nodes.size())); // Save the costs
-        nextHops.put(edge.getNode2(), new HashMap<>(nodes.size())); // Save the next hops
-      }
-
-      double cost = AStar.euclideanDistance(edge.getNode1(), edge.getNode2()); // Calculate the
-      costs.get(edge.getNode1()).put(edge.getNode2(), cost); // Save costs
-      costs.get(edge.getNode2()).put(edge.getNode1(), cost); // Save costs
-      nextHops.get(edge.getNode1()).put(edge.getNode2(), edge.getNode2()); // Next hop
-      nextHops.get(edge.getNode2()).put(edge.getNode1(), edge.getNode1()); // Next hop
+    try {
+      executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+    } catch (InterruptedException e) {
+      System.out.println("Execution Interrupted");
+      throw e;
     }
   }
 
@@ -125,6 +190,7 @@ public class FloydWarshallRunner {
    * map. This is a long, blocking, time consuming operation
    */
   private static void doFloydWarshall() {
+
     // Run FW, basically for each node i (yes the middle one) check if k is a shortcut to get to j
     // as opposed to
     // going directly
