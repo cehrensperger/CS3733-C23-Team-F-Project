@@ -78,6 +78,13 @@
     -fx-font-weight: bold;
 }
 
+.sidebar-color {
+    /** Sidebar background color for non-sized elements */
+    -fx-background-color: #d1d1d1 !important;
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+}
+
 .bodyBoldWhite
     /** This styles body text - such as the names and descriptions on the service
      requests credits page **/
@@ -186,6 +193,14 @@
     -fx-border-radius: 10px !important;
     -fx-font-family: "Roboto Light";
     -fx-font-size: 10pt;
+}
+
+.blueNoRadius {
+    /** Blue with no radding or size */
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 10pt;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }
 
 .blueBackgroundSideBar

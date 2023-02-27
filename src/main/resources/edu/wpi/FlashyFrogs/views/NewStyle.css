@@ -145,6 +145,15 @@
     -fx-text-fill: #ffffff;
 }
 
+.blueNoRadius
+    /** This is a smaller version of the credits button styling (blue background with
+     white text) - ex. select files in Manage CSVs  **/
+{
+    -fx-background-color: #012D5A;
+    -fx-border-color:#012D5A;
+    -fx-text-fill: #ffffff;
+}
+
 .blueNoSetSize
     /** If you need the blue background with white text with no set size **/
 {
@@ -305,6 +314,11 @@
 .sidebar
     /** This sets the sidebar on all of the pages **/
 {
+    -fx-background-color: #d1d1d1 !important;
+}
+
+.sidebar-color {
+    /** Sidebar background color for non-sized elements */
     -fx-background-color: #d1d1d1 !important;
 }
 

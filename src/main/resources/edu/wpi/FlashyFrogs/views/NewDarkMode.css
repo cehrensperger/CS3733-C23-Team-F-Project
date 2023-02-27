@@ -156,6 +156,14 @@
     -fx-text-fill: white;
 }
 
+.blueNoRadius
+    /** If you need the blue background with white text with no set size **/
+{
+    -fx-background-color: #6B6D6F;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
+}
+
 .blueBackgroundSideBar
     /** This is used for the sidebar buttons with blue backgrounds - ex. switch color, manage CSVs, etc. **/
 {
@@ -309,6 +317,11 @@
 .sidebar
     /** This sets the sidebar on all of the pages **/
 {
+    -fx-background-color: #6B6D6F !important;
+}
+
+.sidebar-color {
+    /** Sidebar background color for non-sized elements */
     -fx-background-color: #6B6D6F !important;
 }
 
