@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs;
 
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.TrafficAnalyzer.FloydWarshallRunner;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
@@ -53,6 +54,8 @@ public class Fapp extends Application {
    * making the app take forever to launch
    */
   private void preloadResources() {
+    FloydWarshallRunner.reCalculate(); // Have the floyd-warshall runner do its thing
+
     // Map loader
     new Thread(
             () -> {

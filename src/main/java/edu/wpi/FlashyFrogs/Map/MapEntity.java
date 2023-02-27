@@ -5,6 +5,7 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.Sound;
+import edu.wpi.FlashyFrogs.TrafficAnalyzer.FloydWarshallRunner;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -210,6 +211,8 @@ class MapEntity {
   /** Commits any changes that have been made using the map session */
   void commitMapChanges() {
     mapTransaction.commit(); // Commit
+
+    FloydWarshallRunner.reCalculate(); // Trigger FW to recalculate
 
     mapTransaction = getMapSession().beginTransaction(); // Begin a new transaction
   }
