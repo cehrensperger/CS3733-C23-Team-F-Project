@@ -78,6 +78,7 @@ public class ReligiousController implements IController{
     Text h5;
     @FXML
     Text h6;
+    @FXML Label errorMessage;
 
     boolean hDone = false;
 

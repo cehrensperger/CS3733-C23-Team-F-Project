@@ -81,4 +81,8 @@ public class MedicineDelivery extends ServiceRequest {
     this.medicine = medicine;
     this.dosage = dosage;
   }
+
+  public MedicineDelivery(String text, LocationName value, String text1, String text2, String text3, Urgency value1, Date date, Date from, HospitalUser currentUser) {
+    super();
+  }
 }
