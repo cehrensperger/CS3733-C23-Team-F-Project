@@ -30,6 +30,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -47,7 +48,8 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
-  @FXML private BorderPane borderPane;
+    @FXML private VBox directionsBox;
+    @FXML private BorderPane borderPane;
   @FXML private Text adminMessage; // Admin message text
   @FXML private SearchableComboBox<LocationName> leftLocationBox; // Left location search box
   @FXML private SearchableComboBox<LocationName> rightLocationBox; // Right location search box
