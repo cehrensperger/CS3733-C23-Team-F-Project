@@ -57,7 +57,7 @@
         <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.UserLogin"/>
-        <mapping class="edu.wpi.FlashyFrogs.ORM.Announcement"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Alert"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.HospitalUser"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Department"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.EquipmentTransport"/>
