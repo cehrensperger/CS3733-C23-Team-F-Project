@@ -7,9 +7,7 @@ import edu.wpi.FlashyFrogs.PathFinding.AStar;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -28,6 +26,7 @@ public class FloydWarshallRunner {
   private static final Semaphore reCalculationLock =
       new Semaphore(
           1); // Lock to force waiting on recalculation. Sem for different thread lock/unlock
+
   private static Thread
       reCalcThread; // Re-calc thread, to prevent duplicate work on many re-calc requests
   private static boolean threadShouldTerminate; // Signal that the thread should terminate
@@ -70,6 +69,8 @@ public class FloydWarshallRunner {
               if (!threadShouldTerminate) {
                 reCalculationLock.release(); // Unlock at the end
               }
+
+              System.out.println("ended " + Instant.now());
             });
     reCalcThread.setDaemon(
         true); // Set this to be a daemon, no sense in it forcing the program to stay open
@@ -94,73 +95,31 @@ public class FloydWarshallRunner {
       edges = querySession.createQuery("FROM Edge", Edge.class).getResultList();
     }
 
-    // Collection of threads, as we will use one for each node
-    Collection<Thread> threads = new LinkedList<>();
+    // Pre-size for speed
+    costs = new HashMap<>(nodes.size());
+    nextHops = new HashMap<>(nodes.size());
 
-    // These must be concurrent hash maps, as different threads will modify it. Also pre-size for
-    // speed
-    costs = new ConcurrentHashMap<>(nodes.size());
-    nextHops = new ConcurrentHashMap<>(nodes.size());
+    // For each edge
+    for (Edge edge : edges) {
+      // If the costs don't have the start node
+      if (!costs.containsKey(edge.getNode1())) {
+        // Save stuff
+        costs.put(edge.getNode1(), new HashMap<>(nodes.size())); // Save the costs
+        nextHops.put(edge.getNode1(), new HashMap<>(nodes.size())); // Save the next hops
+      }
 
-    // For each node, create a thread to process it
-    nodes.forEach(
-        (node) -> {
-          // Just stop if the thread should terminate
-          if (threadShouldTerminate) {
-            return;
-          }
+      // If the costs don't have the start node
+      if (!costs.containsKey(edge.getNode2())) {
+        costs.put(edge.getNode2(), new HashMap<>(nodes.size())); // Save the costs
+        nextHops.put(edge.getNode2(), new HashMap<>(nodes.size())); // Save the next hops
+      }
 
-          // Create the thread
-          Thread t =
-              new Thread(
-                  () -> {
-                    // Weights for this node to other node relationships. Pre-allocate for speed as
-                    // these
-                    // will grow in FW, so the initial extra size is worth it
-                    Map<Node, Double> weights = new HashMap<>(nodes.size());
-                    Map<Node, Node> hops = new HashMap<>(nodes.size());
-
-                    // For each edge
-                    for (Edge edge : edges) {
-                      // If the thread should terminate
-                      if (threadShouldTerminate) {
-                        return; // Just exit, whatever state is fine
-                      }
-
-                      // If the first node is this
-                      if (edge.getNode1().equals(node)) {
-                        // Add the weight to the weights
-                        weights.put(
-                            edge.getNode2(), AStar.euclideanDistance(node, edge.getNode2()));
-                        hops.put(edge.getNode2(), edge.getNode2()); // Save the hop
-                      } else if (edge.getNode2().equals(node)) { // If the second one
-                        // Add the weight to the weights
-                        weights.put(
-                            edge.getNode1(), AStar.euclideanDistance(node, edge.getNode1()));
-                        hops.put(edge.getNode1(), edge.getNode1()); // Save the hop
-                      }
-                    }
-
-                    // Add the costs and hops to the concurrent map. This is done once at the end,
-                    // as this is potentially competing with the other threads for HashMap access
-                    costs.put(node, weights);
-                    nextHops.put(node, hops);
-                  });
-
-          // Add this to the list of threads
-          threads.add(t);
-          t.start(); // Start the thread
-        });
-
-    // Wait for each thread to finish
-    threads.forEach(
-        thread -> {
-          try {
-            thread.join(); // Wait for the thread
-          } catch (InterruptedException e) {
-            throw new RuntimeException(e); // Thanks Java :)
-          }
-        });
+      double cost = AStar.euclideanDistance(edge.getNode1(), edge.getNode2()); // Calculate the
+      costs.get(edge.getNode1()).put(edge.getNode2(), cost); // Save costs
+      costs.get(edge.getNode2()).put(edge.getNode1(), cost); // Save costs
+      nextHops.get(edge.getNode1()).put(edge.getNode2(), edge.getNode2()); // Next hop
+      nextHops.get(edge.getNode2()).put(edge.getNode1(), edge.getNode1()); // Next hop
+    }
   }
 
   /**
