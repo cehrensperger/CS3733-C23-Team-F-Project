@@ -1,28 +1,30 @@
 package edu.wpi.FlashyFrogs.PathFinding;
 
+import static edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity.CURRENT_USER;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import jakarta.persistence.RollbackException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
-import javafx.animation.Interpolator;
-import javafx.animation.ParallelTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -31,7 +33,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import lombok.Getter;
@@ -45,6 +49,9 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
+  @FXML Pane errtoast;
+  @FXML Rectangle errcheck2;
+  @FXML Rectangle errcheck1;
   @FXML private Button back;
   @FXML private Button next;
   private int selectedIndex = -1;
@@ -62,13 +69,13 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
+  @FXML private SearchableComboBox<String> serviceRequestBox;
   @FXML private CheckBox accessibleBox;
   @FXML private AnchorPane mapPane;
   @FXML private MFXButton mapEditorButton;
   @FXML private DatePicker moveDatePicker;
   @FXML private TableView<Instruction> pathTable;
   @FXML private TableColumn<Instruction, String> pathCol;
-  //  @FXML private Label error;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -76,8 +83,10 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML Text h4;
   @FXML Text h5;
   @FXML Text h6;
+  @FXML Text h7;
 
   boolean hDone = false;
+  List<ServiceRequest> serviceRequests;
 
   /**
    * Initializes the path finder, sets up the floor selector, and the map including default behavior
@@ -110,6 +119,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     h4.setVisible(false);
     h5.setVisible(false);
     h6.setVisible(false);
+    h7.setVisible(false);
     pathTable.setVisible(false);
     next.setVisible(false);
     back.setVisible(false);
@@ -140,15 +150,34 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     algorithms.add("Breadth-first");
     algorithms.add("Depth-first");
 
+    // make the list of User's service requests
+    long userID = CURRENT_USER.getCurrentUser().getId();
+    serviceRequests =
+        session
+            .createQuery(
+                "SELECT s FROM ServiceRequest s WHERE assignedEmp.id = :userID AND s.location IS NOT NULL",
+                ServiceRequest.class)
+            .setParameter("userID", userID)
+            .getResultList();
+
+    List<String> serviceRequestsStrings = new ArrayList<>();
+    for (ServiceRequest request : serviceRequests) {
+      serviceRequestsStrings.add(request.toString());
+    }
+
     // Populate the boxes
     startingBox.setItems(FXCollections.observableList(objects));
     destinationBox.setItems(FXCollections.observableList(objects));
     algorithmBox.setItems(FXCollections.observableList(algorithms));
-
+    if (serviceRequests.isEmpty()) {
+      serviceRequestBox.setVisible(false);
+    } else {
+      serviceRequestBox.setItems(FXCollections.observableList(serviceRequestsStrings));
+    }
     algorithmBox.setValue("A*");
 
     // Get whether the user is an admin
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    boolean isAdmin = CURRENT_USER.getAdmin();
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
@@ -188,6 +217,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
           return row;
         });
+
     // Set up the next button to select the next row
     next.setOnAction(
         event -> {
@@ -227,6 +257,43 @@ public class PathfindingController extends AbstractPathVisualizerController impl
             pathTable.scrollTo(rowIndex);
           }
         });
+
+    serviceRequestBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              long selectedRequestId = -1;
+              String srText = serviceRequestBox.getValue();
+              for (ServiceRequest serviceRequest : serviceRequests) {
+                if (Long.parseLong(srText.substring(srText.indexOf("_") + 1))
+                    == serviceRequest.getId()) {
+                  selectedRequestId = serviceRequest.getId();
+                }
+              }
+              destinationBox
+                  .getSelectionModel()
+                  .select(session.find(ServiceRequest.class, selectedRequestId).getLocation());
+            });
+
+    // Only enables generatePathButton if something is selected for both startingBox and
+    // destinationBox
+    ChangeListener<Object> listener =
+        (observable, oldValue, newValue) -> {
+          // Check if both ComboBoxes have a selected value
+          boolean isComboBox1Selected = startingBox.getValue() != null;
+          boolean isComboBox2Selected = destinationBox.getValue() != null;
+
+          // If both ComboBoxes have a selected value, enable the button, otherwise disable it
+          generatePathButton.setDisable(!isComboBox1Selected || !isComboBox2Selected);
+        };
+
+    // Add the ChangeListener to both ComboBoxes
+    startingBox.valueProperty().addListener(listener);
+    destinationBox.valueProperty().addListener(listener);
+
+    // Initially disable the button if either ComboBox is not selected
+    generatePathButton.setDisable(
+        startingBox.getValue() == null || destinationBox.getValue() == null);
   }
 
   /** Callback to handle the back button being pressed */
@@ -331,30 +398,42 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
   @SneakyThrows
   public void handleGetPath() {
-    generatePathButton.setDisable(true);
-    // start the animation
-    Animation();
-    // get start and end locations from text fields
-    LocationName startPath = startingBox.valueProperty().get();
-    LocationName endPath = destinationBox.valueProperty().get();
-    Boolean accessible = accessibleBox.isSelected();
-
-    // get algorithm to use in pathfinding from algorithmBox
-    if (algorithmBox.getValue() != null) {
-      switch (algorithmBox.getValue()) {
-        case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
-        case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
-        default -> pathFinder.setAlgorithm(new AStar());
+    try {
+      if (destinationBox.getValue().equals("") && (startingBox.getValue().equals(""))) {
+        generatePathButton.setDisable(true);
+        throw new NullPointerException();
       }
+      try {
+        generatePathButton.setDisable(true);
+        // start the animation
+        Animation();
+        // get start and end locations from text fields
+        LocationName startPath = startingBox.valueProperty().get();
+        LocationName endPath = destinationBox.valueProperty().get();
+        Boolean accessible = accessibleBox.isSelected();
+
+        // get algorithm to use in pathfinding from algorithmBox
+        if (algorithmBox.getValue() != null) {
+          switch (algorithmBox.getValue()) {
+            case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
+            case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
+            default -> pathFinder.setAlgorithm(new AStar());
+          }
+        }
+
+        unColorFloor(); // hide the last drawn path
+        // acquire the lock
+        lock.lock();
+
+        // create a new thread with myRunnable
+        Thread thread = new Thread(myRunnable);
+        thread.start();
+      } catch (RollbackException exception) {
+        errortoastAnimation();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      errortoastAnimation();
     }
-
-    unColorFloor(); // hide the last drawn path
-    // acquire the lock
-    lock.lock();
-
-    // create a new thread with myRunnable
-    Thread thread = new Thread(myRunnable);
-    thread.start();
   }
 
   public void unlock() {
@@ -491,6 +570,45 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     popOver.show(node.getScene().getWindow());
   }
 
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-280);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    sequence.setOnFinished(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            generatePathButton.setDisable(false);
+          }
+        });
+  }
+
   @Override
   public void help() {
     if (!hDone) {
@@ -500,6 +618,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h4.setVisible(true);
       h5.setVisible(true);
       h6.setVisible(true);
+      h7.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
@@ -508,6 +627,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h4.setVisible(false);
       h5.setVisible(false);
       h6.setVisible(false);
+      h7.setVisible(false);
       hDone = false;
     }
   }

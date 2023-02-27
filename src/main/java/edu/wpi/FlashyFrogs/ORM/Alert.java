@@ -8,8 +8,8 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-@Table(name = "announcement")
-public class Announcement {
+@Table(name = "alert")
+public class Alert {
   @Id
   @Basic
   @Column(nullable = false)
@@ -20,8 +20,16 @@ public class Announcement {
   @Temporal(TemporalType.DATE)
   @Column(nullable = false)
   @Getter
+  @Setter
   @NonNull
-  private Date creationDate; // Date that the announcement was created
+  private Date startDisplayDate; // Date that the announcement is for
+
+  @Temporal(TemporalType.DATE)
+  @Column(nullable = false)
+  @Getter
+  @Setter
+  @NonNull
+  private Date endDisplayDate; // Date that the announcement is for
 
   @ManyToOne
   @Getter
@@ -36,6 +44,7 @@ public class Announcement {
 
   @ManyToOne
   @Getter
+  @Setter
   @JoinColumn(
       name = "department",
       foreignKey =
@@ -67,23 +76,25 @@ public class Announcement {
   private Severity severity;
 
   /** Empty constructor, required by hibernate */
-  public Announcement() {}
+  public Alert() {}
 
   /**
    * Creates the announcement with the given parameters
    *
-   * @param creationDate the date to create
+   * @param startDisplayDate the date to create
    * @param author the author of the announcement
    * @param announcement the announcement body to create
    */
-  public Announcement(
-      @NonNull Date creationDate,
+  public Alert(
+      @NonNull Date startDisplayDate,
+      @NonNull Date endDisplayDate,
       HospitalUser author,
       @NonNull String description,
       @NonNull String announcement,
       @NonNull Department department,
       @NonNull Severity severity) {
-    this.creationDate = creationDate;
+    this.startDisplayDate = startDisplayDate;
+    this.endDisplayDate = endDisplayDate;
     this.author = author;
     this.description = description;
     this.announcement = announcement;
@@ -132,7 +143,7 @@ public class Announcement {
     if (o == null || getClass() != o.getClass())
       return false; // If they aren't the same class or one is null, bad
 
-    Announcement that = (Announcement) o; // Compare announcements
+    Alert that = (Alert) o; // Compare announcements
 
     return getId() == that.getId(); // Check IDs, do it based on that
   }
