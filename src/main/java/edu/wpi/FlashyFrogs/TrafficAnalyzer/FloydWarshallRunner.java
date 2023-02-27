@@ -29,7 +29,6 @@ public class FloydWarshallRunner {
   private static Thread
       reCalcThread; // Re-calc thread, to prevent duplicate work on many re-calc requests
   private static boolean threadShouldTerminate; // Signal that the thread should terminate
-
   /**
    * Method to re-calculate the costs and next hops Floyd-Warshall from scratch via Floyd-Warshall
    * and DB queries. The update is run in the background, and holds reCalculationLock while it is
@@ -156,25 +155,27 @@ public class FloydWarshallRunner {
     }
   }
 
-    /**
-     * Reconstructs the path from node one to node two using the current state of Floyd Warshall
-     * @param nodeOne the starting node
-     * @param nodeTwo the ending node
-     * @return the ending node
-     * @throws NullPointerException if the path couldn't be found
-     */
-    @NonNull
-  private static List<Node> reconstructPath(@NonNull Node nodeOne, @NonNull Node nodeTwo) {
-      List<Node> result = new LinkedList<>(); // Result list
-      Node nextHop = nodeOne; // The next hop in the path
+  /**
+   * Reconstructs the path from node one to node two using the current state of Floyd Warshall
+   *
+   * @param nodeOne the starting node
+   * @param nodeTwo the ending node
+   * @return the ending node
+   * @throws NullPointerException if the path couldn't be found
+   */
+  @NonNull
+  public static List<Node> reconstructPath(@NonNull Node nodeOne, @NonNull Node nodeTwo) {
+    List<Node> result = new LinkedList<>(); // Result list
+    Node nextHop = nodeOne; // The next hop in the path
 
-      // While the node isn't the target node
-      while (!nextHop.equals(nodeTwo)) {
-          result.add(nextHop); // Add the result to the path
+    // While the node isn't the target node
+    while (!nextHop.equals(nodeTwo)) {
+      result.add(nextHop); // Add the result to the path
 
-          nextHop = nextHops.get(nextHop).get(nodeTwo); // Get the next hop on the path to the destination
-      }
+      nextHop =
+          nextHops.get(nextHop).get(nodeTwo); // Get the next hop on the path to the destination
+    }
 
-      return result; // Return the targeted path
+    return result; // Return the targeted path
   }
 }
