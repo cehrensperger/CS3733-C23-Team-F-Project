@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleObjectProperty;
@@ -195,6 +196,52 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     // Get the moves
     List<Move> moves =
         mapController.getMapSession().createQuery("FROM Move", Move.class).getResultList();
+
+    List<LocationName> moveLocations = moves.stream().map(Move::getLocation).toList();
+    // get rid of the earliest move for each location
+    // sort by location name
+    moves.sort(Comparator.comparing(o -> o.getLocation().toString()));
+
+    // only keep the ones that have multiple entries for a location
+    moves =
+        moves.stream()
+            .filter(move -> Collections.frequency(moveLocations, move.getLocation()) > 1)
+            .collect(Collectors.toList());
+
+    LocationName currentLocation = moves.get(0).getLocation();
+    Date minDate = moves.get(0).getMoveDate();
+    Move earliestMove = moves.get(0);
+
+    List<Move> movesToRemove = new ArrayList<>();
+
+    for (int i = 0; i < moves.size(); i++) {
+      Move newMove = moves.get(i);
+      LocationName newLocation = newMove.getLocation();
+      if (!newLocation.equals(currentLocation)) {
+        minDate = newMove.getMoveDate();
+        movesToRemove.add(earliestMove);
+        earliestMove = moves.get(i);
+        currentLocation = newLocation;
+
+      } else {
+
+        // if newDate is earlier than current earliest date
+        if (newMove.getMoveDate().compareTo(minDate) < 0) {
+          earliestMove = newMove;
+        }
+
+        currentLocation = newLocation;
+      }
+    }
+
+    // remove the earliest move for the last grouping
+    movesToRemove.add(earliestMove);
+
+    // remove moves that should be removed by filtering the list of
+    // moves and only keep the ones that are not set to be removed
+    moves =
+        moves.stream().filter(move -> !movesToRemove.contains(move)).collect(Collectors.toList());
+
     moveTable.setItems(FXCollections.observableList(moves)); // set the items in the table
 
     pathFinder.setAlgorithm(new AStar()); // Select A* as what we will use
