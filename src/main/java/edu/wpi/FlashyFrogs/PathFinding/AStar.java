@@ -110,7 +110,7 @@ public class AStar implements IFindPath {
    * @param node2 second node
    * @return distance between the two nodes
    */
-  private double euclideanDistance(@NonNull Node node1, @NonNull Node node2) {
+  public static double euclideanDistance(@NonNull Node node1, @NonNull Node node2) {
     int x1 = node1.getXCoord();
     int x2 = node2.getXCoord();
     int y1 = node1.getYCoord();
