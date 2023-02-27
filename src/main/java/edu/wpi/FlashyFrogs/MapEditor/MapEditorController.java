@@ -78,6 +78,7 @@ public class MapEditorController implements IController {
 
   boolean hDone = false;
   TimerTask task;
+  Timer timer;
 
   @FXML
   private TableColumn<LocationName, String> longName; // Attribute for the name column of the table
@@ -231,7 +232,7 @@ public class MapEditorController implements IController {
 
                   row.setOnDragDetected(
                       dragEvent -> {
-                        Timer timer = new Timer();
+                        timer = new Timer(true);
                         Dragboard dragboard = row.startDragAndDrop(TransferMode.COPY);
                         dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
                         ClipboardContent clipboardContent = new ClipboardContent();
@@ -257,15 +258,14 @@ public class MapEditorController implements IController {
                               double[] effortX = {0};
                               double[] effortY = {0};
 
-                              if (abs(errorX) > 0.9 * (mapPane.getWidth() / 2)) {
+                              if (abs(errorX) > 0.95 * (mapPane.getWidth() / 2)) {
                                 effortX[0] = errorX * kp;
                               }
-                              if (abs(errorY) > 0.9 * (mapPane.getHeight() / 2)) {
+                              if (abs(errorY) > 0.95 * (mapPane.getHeight() / 2)) {
                                 effortY[0] = errorY * kp;
                               }
 
                               if (task != null) task.cancel();
-
                               task =
                                   new TimerTask() {
                                     @Override
@@ -285,7 +285,7 @@ public class MapEditorController implements IController {
                         root.setOnDragDone(
                             event1 -> {
                               locationDragText.setVisible(false);
-                              timer.cancel();
+                              if (timer != null) timer.cancel();
                               task.cancel();
                             });
 
@@ -604,7 +604,7 @@ public class MapEditorController implements IController {
 
     nodeToDrag.setOnDragDetected(
         event -> {
-          Timer timer = new Timer();
+          timer = new Timer(true);
           Dragboard dragboard = nodeToDrag.startDragAndDrop(TransferMode.COPY);
           dragboard.setDragView(ResourceDictionary.TRANSPARENT_IMAGE.resource);
           ClipboardContent clipboardContent = new ClipboardContent();
@@ -625,7 +625,7 @@ public class MapEditorController implements IController {
               });
           root.setOnDragDone(
               e -> {
-                timer.cancel();
+                if (timer != null) timer.cancel();
                 task.cancel();
                 duplicateCircle.setVisible(false);
                 event.consume();
@@ -1090,6 +1090,7 @@ public class MapEditorController implements IController {
     // Set the on-click processor
     circle.setOnDragDetected(
         (event) -> {
+          timer = new Timer(true);
           // If quick draw is enabled
           if (quickDrawActive) {
             return; // Do nothing
@@ -1124,15 +1125,81 @@ public class MapEditorController implements IController {
           int yDiff = (int) Math.round(event.getY()) - node.getYCoord();
 
           // Check to make sure that each dragged node is in bounds
+          Node lowest = selectedNodes.get(0);
+          Node highest = selectedNodes.get(0);
+          Node left = selectedNodes.get(0);
+          Node right = selectedNodes.get(0);
           for (Node selectedNode : selectedNodes) {
-            // Check the bounds
-            if (selectedNode.getXCoord() + xDiff < 0
-                || selectedNode.getXCoord() + xDiff > mapController.getMapWidth()
-                || selectedNode.getYCoord() + yDiff < 0
-                || selectedNode.getYCoord() + yDiff > mapController.getMapHeight()) {
-              return;
-            }
+            if (selectedNode.getXCoord() < left.getXCoord()) left = selectedNode;
+            if (selectedNode.getXCoord() > right.getXCoord()) right = selectedNode;
+            if (selectedNode.getYCoord() < lowest.getXCoord()) lowest = selectedNode;
+            if (selectedNode.getYCoord() > highest.getXCoord()) highest = selectedNode;
           }
+
+          double mapCenterX =
+              (mapController.getGesturePane().getCurrentX() * -1)
+                  + ((mapController.getGesturePane().getWidth()
+                          / mapController.getGesturePane().getCurrentScaleX())
+                      / 2);
+
+          double mapCenterY =
+              (mapController.getGesturePane().getCurrentY() * -1)
+                  + ((mapController.getGesturePane().getHeight()
+                          / mapController.getGesturePane().getCurrentScaleY())
+                      / 2);
+
+          System.out.print(mapCenterX + "\t");
+          System.out.print(mapController.getGesturePane().getWidth() / 2 + "\t");
+          System.out.print(mapController.getCurrentDrawingPane().getWidth() / 2 + "\t");
+          System.out.println(mapController.getGesturePane().getCurrentX());
+
+          double kp = 0.03;
+          double leftErrorX =
+              mapController.getNodeToCircleMap().get(left).getCenterX() - mapCenterX;
+          double rightErrorX =
+              mapController.getNodeToCircleMap().get(right).getCenterX() - mapCenterX;
+          double highErrorY =
+              mapController.getNodeToCircleMap().get(highest).getCenterY() - mapCenterY;
+          double lowErrorY =
+              mapController.getNodeToCircleMap().get(lowest).getCenterY() - mapCenterY;
+
+          double[] effortX = {0};
+          double[] effortY = {0};
+
+          if (abs(leftErrorX)
+              > 0.9
+                  * (mapPane.getWidth() / mapController.getGesturePane().getCurrentScaleX() / 2)) {
+            effortX[0] = leftErrorX * kp;
+          } else if (abs(rightErrorX)
+              > 0.9
+                  * (mapPane.getWidth() / mapController.getGesturePane().getCurrentScaleX() / 2)) {
+            effortX[0] = rightErrorX * kp;
+          }
+          if (abs(highErrorY)
+              > 0.9
+                  * (mapPane.getHeight() / mapController.getGesturePane().getCurrentScaleY() / 2)) {
+            effortY[0] = highErrorY * kp;
+          } else if (abs(lowErrorY)
+              > 0.9
+                  * (mapPane.getHeight() / mapController.getGesturePane().getCurrentScaleY() / 2)) {
+            effortY[0] = lowErrorY * kp;
+          }
+
+          if (task != null) task.cancel();
+
+          task =
+              new TimerTask() {
+                @Override
+                public void run() {
+                  Platform.runLater(
+                      () ->
+                          mapController
+                              .getGesturePane()
+                              .translateBy(new Dimension2D(effortX[0], effortY[0])));
+                }
+              };
+
+          timer.scheduleAtFixedRate(task, 0, 15);
 
           // For each selected node
           for (Node selectedNode : selectedNodes) {
@@ -1153,6 +1220,9 @@ public class MapEditorController implements IController {
     // On drag stop, this is the only thing that represents that for some reason
     circle.setOnMouseReleased(
         (event) -> {
+          task.cancel();
+          if (timer != null) timer.cancel();
+
           // If a drag isn't in progress (for instance simple release)
           if (!dragInProgress) {
             return; // Do nothing
@@ -1631,7 +1701,7 @@ public class MapEditorController implements IController {
         .getCurrentDrawingPane()
         .setOnMousePressed(
             event -> {
-              Timer timer = new Timer();
+              Timer timer = new Timer(true);
               mapController.getGesturePane().setGestureEnabled(false);
               double startX = event.getX();
               double startY = event.getY();
