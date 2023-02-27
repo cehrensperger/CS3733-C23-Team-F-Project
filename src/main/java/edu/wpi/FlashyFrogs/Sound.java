@@ -1,13 +1,13 @@
 package edu.wpi.FlashyFrogs;
 
-import java.io.File;
+import java.util.Objects;
 import javafx.scene.media.AudioClip;
 import lombok.NonNull;
 
 public enum Sound {
   ERROR(
       new AudioClip(
-          new File("src/main/resources/edu/wpi/FlashyFrogs/Sounds/Error.wav").toURI().toString()));
+          Objects.requireNonNull(Sound.class.getResource("Sounds/Error.wav")).toString()));
 
   @NonNull public final AudioClip audioClip;
 
