@@ -166,7 +166,7 @@ public class ServiceRequestStatsPageController implements IController {
   public void help() {}
 
   /**
-   * Handles the graph type combo box
+   * Sets the chart to show the data for the selected graph type
    *
    * @param actionEvent
    */
@@ -233,10 +233,14 @@ public class ServiceRequestStatsPageController implements IController {
                           data.getNode()
                               .setStyle(
                                   "-fx-bar-fill: #012D5A; "
-                                      + "-fx-border-color: #F6BD38; "
+                                      + "-fx-border-color: #000000; "
                                       + "-fx-border-width: 3px 3px 0px 3px;");
                         });
               });
+
+      // get total of values in chart
+
+      attachLabel(chart, series);
 
       replaceChart(chart);
     } else if (graphTypeComboBox.getValue().equals("Total Completed Requests by Type")) {
@@ -244,6 +248,9 @@ public class ServiceRequestStatsPageController implements IController {
       Axis<String> xAxis = new CategoryAxis();
       Axis<Number> yAxis = new NumberAxis();
       BarChart<String, Number> chart = new BarChart<>(xAxis, yAxis);
+      // make axis integer based
+      // yAxis.setAutoRanging(false);
+
       XYChart.Series<String, Number> series = new XYChart.Series<>();
       series
           .getData()
@@ -307,7 +314,6 @@ public class ServiceRequestStatsPageController implements IController {
       AnchorPane.setLeftAnchor(chart, sideBar.getWidth() + 50);
       AnchorPane.setRightAnchor(chart, 200.0);
 
-      // set bar color
       chart
           .getData()
           .forEach(
@@ -318,13 +324,13 @@ public class ServiceRequestStatsPageController implements IController {
                           data.getNode()
                               .setStyle(
                                   "-fx-bar-fill: #012D5A; "
-                                      + "-fx-border-color: #F6BD38; "
+                                      + "-fx-border-color: #000000; "
                                       + "-fx-border-width: 3px 3px 0px 3px;");
                         });
               });
 
       chart.setLegendVisible(false);
-
+      attachLabel(chart, series);
       replaceChart(chart);
 
     } else if (graphTypeComboBox.getValue().equals("Total Requests by Status")) {
@@ -332,7 +338,7 @@ public class ServiceRequestStatsPageController implements IController {
       // set bar colors to be thicker
 
       Axis<String> xAxis = new CategoryAxis();
-      Axis<Number> yAxis = new NumberAxis();
+      NumberAxis yAxis = new NumberAxis();
       BarChart<String, Number> chart = new BarChart<>(xAxis, yAxis);
       XYChart.Series<String, Number> series = new XYChart.Series<>();
 
@@ -369,7 +375,7 @@ public class ServiceRequestStatsPageController implements IController {
               });
 
       chart.setLegendVisible(false);
-
+      attachLabel(chart, series);
       // remove old chart and add new chart with same layout
       replaceChart(chart);
     } else if (graphTypeComboBox
@@ -408,6 +414,9 @@ public class ServiceRequestStatsPageController implements IController {
       // remove legend
       chart.setLegendVisible(false);
 
+      // get total
+      double total = chart.getData().stream().mapToDouble(PieChart.Data::getPieValue).sum();
+
       // show percentages on mouse moved along with the total in parentheses
       chart
           .getData()
@@ -426,7 +435,8 @@ public class ServiceRequestStatsPageController implements IController {
                         event -> {
                           label.setText(
                               String.format(
-                                  "%.1f%% (%d)", data.getPieValue(), (int) data.getPieValue()));
+                                  "%.1f%% (%d)",
+                                  ((data.getPieValue() / total) * 100), (int) data.getPieValue()));
                           label.setStyle(
                               "-fx-background-color: #D1D1D1; -fx-text-fill: #000000; -fx-font-size: 20px;");
                           label.setPadding(new Insets(5, 10, 5, 10));
@@ -460,6 +470,95 @@ public class ServiceRequestStatsPageController implements IController {
       // remove old chart and add new chart with same layout
       replaceChart(chart);
     }
+  }
+
+  private void attachLabel(BarChart<String, Number> chart, XYChart.Series<String, Number> series) {
+    double total =
+        series.getData().stream().mapToDouble(data -> data.getYValue().doubleValue()).sum();
+    Label label = new Label();
+    label.setLayoutX(chart.getLayoutX());
+    label.setLayoutY(chart.getLayoutY());
+    label.setVisible(false);
+    anchorPane.getChildren().add(label);
+    System.out.println(anchorPane.getHeight());
+
+    // put totals above bar
+
+    chart
+        .getData()
+        .forEach(
+            s -> {
+              s.getData()
+                  .forEach(
+                      data -> {
+                        data.getNode()
+                            .setOnMouseEntered(
+                                event -> {
+                                  System.out.println(anchorPane.getHeight());
+                                  if (event.getScreenY() + label.getHeight()
+                                      <= anchorPane.getHeight() - 5) {
+                                    // label.setLayoutY(event.getSceneY() - label.getHeight());
+                                    label.setLayoutY(500);
+                                  } else {
+                                    label.setLayoutY(500);
+                                    System.out.println(anchorPane.getHeight());
+                                  }
+                                  label.setMouseTransparent(true);
+                                  // add label to scene
+                                  label.setText(
+                                      String.format(
+                                          "%.1f%% (%d)",
+                                          ((data.getYValue().doubleValue() / total) * 100),
+                                          (int) data.getYValue().intValue()));
+                                  label.setStyle(
+                                      "-fx-background-color: #D1D1D1; -fx-text-fill: #000000; -fx-font-size: 20px;");
+                                  label.setPadding(new Insets(5, 10, 5, 10));
+                                  // prevent label from going off screen
+
+                                  label.setLayoutX(event.getScreenX());
+                                  // label.setLayoutY(event.getSceneY());
+
+                                  label.toFront();
+                                  label.setVisible(true);
+                                  System.out.println(anchorPane.getHeight());
+                                });
+                        data.getNode()
+                            .setOnMouseMoved(
+                                // make a label that shows the percentage and total and follows
+                                // the mouse
+                                // around
+                                event -> {
+                                  if (event.getScreenY() + label.getHeight()
+                                      <= anchorPane.getHeight() - 5) {
+                                    label.setLayoutY(event.getSceneY() - label.getHeight());
+                                    // label.setLayoutY(event.getScreenY());
+                                  } else {
+                                    label.setLayoutY(event.getScreenY() - label.getHeight() - 20);
+                                  }
+                                  label.setMouseTransparent(true);
+                                  label.setText(
+                                      String.format(
+                                          "%.1f%% (%d)",
+                                          ((data.getYValue().doubleValue() / total) * 100),
+                                          (int) data.getYValue().intValue()));
+                                  label.setStyle(
+                                      "-fx-background-color: #D1D1D1; -fx-text-fill: #000000; -fx-font-size: 20px;");
+                                  label.setPadding(new Insets(5, 10, 5, 10));
+                                  // prevent label from going off screen
+
+                                  label.setLayoutX(event.getScreenX());
+                                  // label.setLayoutY(event.getSceneY());
+
+                                  label.toFront();
+                                });
+
+                        data.getNode()
+                            .setOnMouseExited(
+                                event -> {
+                                  label.setVisible(false);
+                                });
+                      });
+            });
   }
 
   /**

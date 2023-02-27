@@ -249,7 +249,7 @@ public class NavBarController {
 
   @FXML
   private void handleServiceRequestsButton(ActionEvent event) throws IOException {
-    Fapp.setScene("ServiceRequests", "Credits");
+    Fapp.setScene("ServiceRequests", "ServiceRequestStatsPage");
   }
 
   @FXML
