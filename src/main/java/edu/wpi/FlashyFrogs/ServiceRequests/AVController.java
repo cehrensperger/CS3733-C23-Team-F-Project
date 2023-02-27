@@ -19,6 +19,8 @@ import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+
 import javafx.animation.FillTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
@@ -31,9 +33,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.util.Duration;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
@@ -42,11 +44,15 @@ import org.hibernate.Transaction;
 @GeneratedExclusion
 public class AVController implements IController {
 
+  @FXML Pane errtoast;
+  @FXML Rectangle errcheck2;
+  @FXML Rectangle errcheck1;
   @FXML Rectangle check2;
   @FXML Rectangle check1;
   @FXML Pane toast;
   @FXML MFXButton clear;
   @FXML MFXButton submit;
+  private Timer animationTimer;
   @FXML MFXButton credits;
   @FXML MFXButton back;
   @FXML MFXButton AV;
@@ -119,7 +125,7 @@ public class AVController implements IController {
     session.close();
   }
 
-  public void handleSubmit(ActionEvent actionEvent) throws IOException {
+  public void handleSubmit(ActionEvent actionEvent) throws IOException, InterruptedException {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
@@ -151,22 +157,22 @@ public class AVController implements IController {
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
         toastAnimation();
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
-        errorMessage.setText("Please fill all fields.");
+        submit.setDisable(true);
+        errortoastAnimation();
         session.close();
         Sound.ERROR.play();
+        submit.setDisable(false);
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-      errorMessage.setText("Please fill all fields.");
+      submit.setDisable(true);
+      errortoastAnimation();
       session.close();
       Sound.ERROR.play();
+      submit.setDisable(false);
     }
   }
 
@@ -229,22 +235,23 @@ public class AVController implements IController {
 
   public void toastAnimation() {
     // Create a TranslateTransition to move the first rectangle to the left
-    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(1.0), toast);
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), toast);
     translate1.setByX(-280.0);
     translate1.setAutoReverse(true);
-
+    check1.setFill(Color.web("#012D5A"));
+    check2.setFill(Color.web("#012D5A"));
     // Create FillTransitions to fill the second and third rectangles in sequence
     FillTransition fill2 =
         new FillTransition(
-            Duration.seconds(0.3), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
+            Duration.seconds(0.1), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
     FillTransition fill3 =
         new FillTransition(
-            Duration.seconds(0.3), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
+            Duration.seconds(0.1), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
     SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
 
     // Create a TranslateTransition to move the first rectangle back to its original position
-    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(1.0), toast);
-    translateBack1.setDelay(Duration.seconds(2));
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), toast);
+    translateBack1.setDelay(Duration.seconds(0.5));
     translateBack1.setByX(280.0);
 
     // Play the animations in sequence
@@ -253,6 +260,39 @@ public class AVController implements IController {
     sequence.setCycleCount(1);
     sequence.setAutoReverse(false);
     sequence.play();
+  }
+
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-280);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+            new FillTransition(
+                    Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+            new FillTransition(
+                    Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+            new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    errtoast.getTransforms().clear();
   }
 
   @Override
