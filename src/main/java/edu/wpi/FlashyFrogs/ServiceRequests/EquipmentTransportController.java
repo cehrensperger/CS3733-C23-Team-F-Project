@@ -24,6 +24,7 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -40,6 +41,9 @@ import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class EquipmentTransportController implements IController {
+  @FXML Pane errtoast;
+  @FXML Rectangle errcheck2;
+  @FXML Rectangle errcheck1;
   @FXML Rectangle check2;
   @FXML Rectangle check1;
   @FXML Pane toast;
@@ -230,30 +234,70 @@ public class EquipmentTransportController implements IController {
 
   public void toastAnimation() {
     // Create a TranslateTransition to move the first rectangle to the left
-    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(1.0), toast);
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), toast);
     translate1.setByX(-280.0);
     translate1.setAutoReverse(true);
-
+    check1.setFill(Color.web("#012D5A"));
+    check2.setFill(Color.web("#012D5A"));
     // Create FillTransitions to fill the second and third rectangles in sequence
     FillTransition fill2 =
-        new FillTransition(
-            Duration.seconds(0.3), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
+            new FillTransition(
+                    Duration.seconds(0.1), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
     FillTransition fill3 =
-        new FillTransition(
-            Duration.seconds(0.3), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
+            new FillTransition(
+                    Duration.seconds(0.1), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
     SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
 
     // Create a TranslateTransition to move the first rectangle back to its original position
-    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(1.0), toast);
-    translateBack1.setDelay(Duration.seconds(2));
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), toast);
+    translateBack1.setDelay(Duration.seconds(0.5));
     translateBack1.setByX(280.0);
 
     // Play the animations in sequence
     SequentialTransition sequence =
-        new SequentialTransition(translate1, fillSequence, translateBack1);
+            new SequentialTransition(translate1, fillSequence, translateBack1);
     sequence.setCycleCount(1);
     sequence.setAutoReverse(false);
     sequence.play();
+  }
+
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-280);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+            new FillTransition(
+                    Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+            new FillTransition(
+                    Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+            new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    sequence.setOnFinished(
+            new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent event) {
+                submit.setDisable(false);
+              }
+            });
   }
 
   public void onClose() {}

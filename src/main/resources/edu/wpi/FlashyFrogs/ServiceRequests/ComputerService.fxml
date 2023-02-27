@@ -276,5 +276,17 @@
             </AnchorPane>
          </children>
       </VBox>
+      <Pane fx:id="errtoast" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Fill All Fields" wrappingWidth="180.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
