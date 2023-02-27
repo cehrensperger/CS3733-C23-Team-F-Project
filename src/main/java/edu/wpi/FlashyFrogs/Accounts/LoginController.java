@@ -146,7 +146,7 @@ public class LoginController implements IController {
 
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
-    System.out.println("opening pathfinding");
+//    System.out.println("opening pathfinding");
     CurrentUserEntity.CURRENT_USER.setCurrentUser(
         new HospitalUser("a", "a", "a", HospitalUser.EmployeeType.STAFF, new Department()));
     Fapp.setScene("Pathfinding", "Pathfinding");
