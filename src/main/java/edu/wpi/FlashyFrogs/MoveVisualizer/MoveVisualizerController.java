@@ -224,6 +224,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
                   // Set the floor
                   mapController.getMapFloorProperty().setValue(oldLocation.getFloor());
+
+                  drawTable(new Date()); // Draw the table
                 } else {
                   noLocationText.setVisible(true);
                 }

@@ -20,6 +20,8 @@
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
+<?import org.controlsfx.control.tableview2.TableView2?>
+<?import org.controlsfx.control.tableview2.TableColumn2?>
 <AnchorPane styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MoveVisualizer.MoveVisualizerController">
    <children>
       <VBox prefHeight="763.0" prefWidth="237.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -128,17 +130,17 @@
                               <SVGPath content="M14.9998 0L29.9998 18H-0.000170137L14.9998 0Z" styleClass="bodyBoldWhite" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="4.0" />
                            </children>
                         </AnchorPane>
-                        <TableView fx:id="pathTable" prefHeight="276.0" prefWidth="237.0">
+                        <TableView2 fx:id="pathTable" prefHeight="276.0" prefWidth="237.0">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" />
                            </VBox.margin>
                            <columns>
-                              <TableColumn fx:id="pathCol" prefWidth="75.0" text="Directions" />
+                              <TableColumn2 fx:id="pathCol" prefWidth="75.0" text="Directions" />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
-                        </TableView>
+                        </TableView2>
                         <HBox alignment="CENTER" prefHeight="108.0" prefWidth="192.0">
                            <children>
                               <Button fx:id="back" mnemonicParsing="false" style="-fx-background-color: WHITE;">

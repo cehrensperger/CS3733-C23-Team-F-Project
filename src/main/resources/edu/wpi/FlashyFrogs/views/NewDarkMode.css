@@ -422,6 +422,15 @@
 
 }
 
+.filtered-table-row-cell:hover
+    /** controls table views within the app - hover **/
+{
+    -fx-background-color: #012d5a;
+    -fx-text-background-color: #ffffff;
+    -fx-background: #012d5a;
+
+}
+
 .table-row-cell:selected
     /** controls the cells when they are hovered over in table views **/
 {
