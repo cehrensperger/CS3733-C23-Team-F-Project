@@ -68,7 +68,7 @@
                   <Insets bottom="10.0" left="18.0" right="18.0" />
                </VBox.margin>
             </Text>
-            <SearchableComboBox fx:id="serviceRequestBox" maxWidth="184.0" onAction="#serviceRequestDestination" promptText="Service Request:" styleClass="fields">
+            <SearchableComboBox fx:id="serviceRequestBox" maxWidth="184.0" promptText="Service Request:" styleClass="fields">
                <VBox.margin>
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>

@@ -1,4 +1,3 @@
 package edu.wpi.FlashyFrogs.ServiceRequests.Editors;
 
-public class EquipmentEditorController {
-}
+public class EquipmentEditorController {}

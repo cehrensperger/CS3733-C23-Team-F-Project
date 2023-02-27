@@ -213,25 +213,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
           return row;
         });
 
-    // Only enables generatePathButton if something is selected for both startingBox and
-    // destinationBox
-    ChangeListener<Object> listener =
-        (observable, oldValue, newValue) -> {
-          // Check if both ComboBoxes have a selected value
-          boolean isComboBox1Selected = startingBox.getValue() != null;
-          boolean isComboBox2Selected = destinationBox.getValue() != null;
-
-          // If both ComboBoxes have a selected value, enable the button, otherwise disable it
-          generatePathButton.setDisable(!isComboBox1Selected || !isComboBox2Selected);
-        };
-
-    // Add the ChangeListener to both ComboBoxes
-    startingBox.valueProperty().addListener(listener);
-    destinationBox.valueProperty().addListener(listener);
-
-    // Initially disable the button if either ComboBox is not selected
-    generatePathButton.setDisable(
-        startingBox.getValue() == null || destinationBox.getValue() == null);
     // Set up the next button to select the next row
     next.setOnAction(
         event -> {
@@ -271,6 +252,43 @@ public class PathfindingController extends AbstractPathVisualizerController impl
             pathTable.scrollTo(rowIndex);
           }
         });
+
+    serviceRequestBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              long selectedRequestId = -1;
+              String srText = serviceRequestBox.getValue();
+              for (ServiceRequest serviceRequest : serviceRequests) {
+                if (Long.parseLong(srText.substring(srText.indexOf("_") + 1))
+                    == serviceRequest.getId()) {
+                  selectedRequestId = serviceRequest.getId();
+                }
+              }
+              destinationBox
+                  .getSelectionModel()
+                  .select(session.find(ServiceRequest.class, selectedRequestId).getLocation());
+            });
+
+    // Only enables generatePathButton if something is selected for both startingBox and
+    // destinationBox
+    ChangeListener<Object> listener =
+        (observable, oldValue, newValue) -> {
+          // Check if both ComboBoxes have a selected value
+          boolean isComboBox1Selected = startingBox.getValue() != null;
+          boolean isComboBox2Selected = destinationBox.getValue() != null;
+
+          // If both ComboBoxes have a selected value, enable the button, otherwise disable it
+          generatePathButton.setDisable(!isComboBox1Selected || !isComboBox2Selected);
+        };
+
+    // Add the ChangeListener to both ComboBoxes
+    startingBox.valueProperty().addListener(listener);
+    destinationBox.valueProperty().addListener(listener);
+
+    // Initially disable the button if either ComboBox is not selected
+    generatePathButton.setDisable(
+        startingBox.getValue() == null || destinationBox.getValue() == null);
   }
 
   /** Callback to handle the back button being pressed */
@@ -510,27 +528,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML
   public void openMapEditor() {
     Fapp.setScene("MapEditor", "MapEditorView");
-  }
-
-  public void serviceRequestDestination() {
-    long selectedRequestId = -1;
-    String srText = serviceRequestBox.getValue();
-    for (int i = 0; i < serviceRequests.size(); i++) {
-      if (Long.parseLong(srText.substring(srText.indexOf("_") + 1))
-          == serviceRequests.get(i).getId()) {
-        selectedRequestId = serviceRequests.get(i).getId();
-      }
-    }
-    Session session = mapController.getMapSession();
-    LocationName serviceRequestLoc =
-        session
-            .createQuery(
-                "SELECT s.location FROM ServiceRequest s WHERE s.id = :serviceRequest",
-                LocationName.class)
-            .setParameter("serviceRequest", selectedRequestId)
-            .getSingleResult();
-    session.close();
-    destinationBox.getSelectionModel().select(serviceRequestLoc);
   }
 
   /**
