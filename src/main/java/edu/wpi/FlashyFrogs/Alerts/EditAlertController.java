@@ -28,7 +28,8 @@ public class EditAlertController implements IController {
   @FXML private TextArea descriptionField;
   @FXML private SearchableComboBox<Department> deptBox;
   @FXML private ComboBox<Alert.Severity> severityBox;
-  @FXML private DatePicker date;
+  @FXML private DatePicker startDate;
+  @FXML private DatePicker endDate;
   @FXML private Label errorMessage;
 
   public void initialize(Alert selectedAlert) {
@@ -38,8 +39,12 @@ public class EditAlertController implements IController {
     this.descriptionField.setText(currentAlert.getAnnouncement());
     this.deptBox.getSelectionModel().select(currentAlert.getDepartment());
     this.severityBox.getSelectionModel().select(currentAlert.getSeverity());
-    this.date.setValue(
-        Instant.ofEpochMilli(currentAlert.getDisplayDate().getTime())
+    this.startDate.setValue(
+        Instant.ofEpochMilli(currentAlert.getStartDisplayDate().getTime())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
+    this.endDate.setValue(
+        Instant.ofEpochMilli(currentAlert.getStartDisplayDate().getTime())
             .atZone(ZoneId.systemDefault())
             .toLocalDate());
 
@@ -60,7 +65,8 @@ public class EditAlertController implements IController {
           || deptBox.getValue().equals("")
           || severityBox.getValue().equals("")
           || descriptionField.getText().equals("")
-          || date.getValue().toString().equals("")) {
+          || endDate.getValue().toString().equals("")
+          || startDate.getValue().toString().equals("")) {
         throw new NullPointerException();
       }
 
@@ -68,8 +74,10 @@ public class EditAlertController implements IController {
       currentAlert.setAnnouncement(descriptionField.getText());
       currentAlert.setSeverity(severityBox.getValue());
       currentAlert.setDepartment(deptBox.getValue());
-      currentAlert.setDisplayDate(
-          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      currentAlert.setStartDisplayDate(
+          Date.from(startDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      currentAlert.setEndDisplayDate(
+          Date.from(endDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
       try {
         session.merge(currentAlert);

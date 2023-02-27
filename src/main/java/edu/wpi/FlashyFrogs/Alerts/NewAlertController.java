@@ -25,7 +25,8 @@ public class NewAlertController {
   @FXML private TextArea descriptionField;
   @FXML private SearchableComboBox<Department> deptBox;
   @FXML private ComboBox<Alert.Severity> severityBox;
-  @FXML private DatePicker date;
+  @FXML private DatePicker startDate;
+  @FXML private DatePicker endDate;
   @FXML private Label errorMessage;
 
   public void initialize() {
@@ -47,13 +48,15 @@ public class NewAlertController {
           || deptBox.getValue().equals("")
           || severityBox.getValue().equals("")
           || descriptionField.getText().equals("")
-          || date.getValue().toString().equals("")) {
+          || startDate.getValue().toString().equals("")
+          || endDate.getValue().toString().equals("")) {
         throw new NullPointerException();
       }
 
       Alert alert =
           new Alert(
-              Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+              Date.from(startDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+              Date.from(endDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
               CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               summaryField.getText(),
               descriptionField.getText(),

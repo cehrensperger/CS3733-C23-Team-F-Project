@@ -22,7 +22,7 @@ public class AlertController {
       severity = severity + "!";
     }
     severityField.setText(severity);
-    dateField.setText(alert.getDisplayDate().toString());
+    // dateField.setText(alert.getStartDisplayDate().toString());
     authorField.setText(alert.getAuthor().getFirstName() + " " + alert.getAuthor().getLastName());
     departmentField.setText(alert.getDepartment().getLongName());
     descriptionField.setText(alert.getAnnouncement());

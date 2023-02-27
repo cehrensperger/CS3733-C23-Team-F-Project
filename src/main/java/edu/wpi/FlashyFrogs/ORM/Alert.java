@@ -22,7 +22,14 @@ public class Alert {
   @Getter
   @Setter
   @NonNull
-  private Date displayDate; // Date that the announcement is for
+  private Date startDisplayDate; // Date that the announcement is for
+
+  @Temporal(TemporalType.DATE)
+  @Column(nullable = false)
+  @Getter
+  @Setter
+  @NonNull
+  private Date endDisplayDate; // Date that the announcement is for
 
   @ManyToOne
   @Getter
@@ -74,18 +81,20 @@ public class Alert {
   /**
    * Creates the announcement with the given parameters
    *
-   * @param displayDate the date to create
+   * @param startDisplayDate the date to create
    * @param author the author of the announcement
    * @param announcement the announcement body to create
    */
   public Alert(
-      @NonNull Date displayDate,
+      @NonNull Date startDisplayDate,
+      @NonNull Date endDisplayDate,
       HospitalUser author,
       @NonNull String description,
       @NonNull String announcement,
       @NonNull Department department,
       @NonNull Severity severity) {
-    this.displayDate = displayDate;
+    this.startDisplayDate = startDisplayDate;
+    this.endDisplayDate = endDisplayDate;
     this.author = author;
     this.description = description;
     this.announcement = announcement;

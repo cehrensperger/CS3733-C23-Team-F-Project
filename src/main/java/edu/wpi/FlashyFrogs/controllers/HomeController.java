@@ -11,8 +11,6 @@ import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -527,18 +525,15 @@ public class HomeController implements IController {
         new Comparator<Alert>() {
           @Override
           public int compare(Alert a1, Alert a2) {
-            return a1.getDisplayDate().compareTo(a2.getDisplayDate());
+            return a1.getStartDisplayDate().compareTo(a2.getStartDisplayDate());
           }
         });
 
     for (Alert a : list) {
-      System.out.println(a.getDisplayDate());
+      System.out.println(a.getStartDisplayDate());
       System.out.println(Date.from(Instant.now()));
-      LocalDateTime ldt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
-      LocalDateTime last = ldt.minusDays(7);
-      Date lastWeek = Date.from(last.atZone(ZoneId.systemDefault()).toInstant());
-      if (a.getDisplayDate().before(Date.from(Instant.now()))
-          && a.getDisplayDate().after(lastWeek)) {
+      if (a.getStartDisplayDate().before(Date.from(Instant.now()))
+          && a.getEndDisplayDate().after(Date.from(Instant.now()))) {
         insertAlert(a);
       }
     }

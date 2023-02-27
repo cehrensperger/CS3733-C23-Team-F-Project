@@ -95,7 +95,7 @@ public class AlertManagerController implements IController {
         });
     dateCol.setCellValueFactory(
         data -> {
-          Date date = data.getValue().getDisplayDate();
+          Date date = data.getValue().getStartDisplayDate();
           return new SimpleObjectProperty<>(date);
         });
     severityCol.setCellValueFactory(

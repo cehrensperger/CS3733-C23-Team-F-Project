@@ -22,7 +22,8 @@
       <TextArea fx:id="descriptionField" layoutX="20.0" layoutY="87.0" prefHeight="200.0" prefWidth="562.0" promptText="Alert Message:" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-region-background: transparent; -fx-text-area-content: transparent;" styleClass="fields" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0" />
       <ComboBox fx:id="severityBox" layoutX="20.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Severity:" styleClass="fields" AnchorPane.topAnchor="315.0" />
       <SearchableComboBox fx:id="deptBox" layoutX="379.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Department:" styleClass="fields" AnchorPane.topAnchor="315.0" />
-      <DatePicker fx:id="date" layoutX="395.0" layoutY="19.0" />
+      <DatePicker fx:id="startDate" layoutX="20.0" layoutY="19.0" promptText="Start Date" />
+      <DatePicker fx:id="endDate" layoutX="395.0" layoutY="19.0" promptText="End Date" />
       <MFXButton layoutX="490.0" layoutY="354.0" onAction="#handleSave" prefHeight="27.0" prefWidth="90.0" styleClass="blueNoSetSize" text="Save Alert" AnchorPane.topAnchor="354.0" />
       <MFXButton layoutX="379.0" layoutY="354.0" onAction="#handleDelete" prefWidth="90.0" styleClass="redOutlineNoSetSize" text="Delete Alert" AnchorPane.topAnchor="354.0" />
    </children>
