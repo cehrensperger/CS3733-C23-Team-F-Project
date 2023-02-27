@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Alerts.AlertManagerController">
+    <children>
+        <Label alignment="CENTER" layoutX="280.0" layoutY="14.0" styleClass="titleTextNonTextObject" text="Alert Manager" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="279.2" AnchorPane.topAnchor="14.0">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Label>
+        <HBox alignment="CENTER" layoutX="-2.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="1280.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="102.0">
+            <children>
+                <TableView fx:id="alertTable" prefHeight="504.0" prefWidth="1306.0" HBox.hgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="idCol" maxWidth="199.99999690055847" prefWidth="61.59997630119324" text="ID" />
+                        <TableColumn fx:id="descriptionCol" prefWidth="424.5" text="Description" />
+                        <TableColumn fx:id="authorCol" prefWidth="194.5" text="Author" />
+                        <TableColumn fx:id="dateCol" prefWidth="340.0" text="Date" />
+                        <TableColumn fx:id="severityCol" prefWidth="222.0" text="Severity" />
+                    </columns>
+                    <HBox.margin>
+                        <Insets left="18.0" right="18.0" />
+                    </HBox.margin>
+                </TableView>
+            </children>
+        </HBox>
+        <Text fx:id="h1" fill="#b6000b" layoutX="20.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can manage all of the alerts">
+            <font>
+                <Font size="10.0" />
+            </font>
+        </Text>
+        <Label fx:id="errorMessage" layoutX="936.0" layoutY="608.0" />
+        <MFXButton fx:id="addNewAlert" layoutX="1135.0" layoutY="661.0" minWidth="-Infinity" onAction="#handleNewAlert" prefHeight="25.0" prefWidth="184.0" styleClass="blueNoSetSize" text="Create New Alert" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="18.0">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </MFXButton>
+        <MFXButton fx:id="back" layoutX="20.0" layoutY="662.0" minWidth="-Infinity" onAction="#handleBack" prefHeight="25.0" prefWidth="184.0" styleClass="backButton" text="Back" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </MFXButton>
+    </children>
+</AnchorPane>

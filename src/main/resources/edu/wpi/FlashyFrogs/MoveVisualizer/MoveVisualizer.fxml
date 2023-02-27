@@ -6,6 +6,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
@@ -14,95 +16,144 @@
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
-<AnchorPane prefHeight="763.0" prefWidth="1124.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MoveVisualizer.MoveVisualizerController">
+<AnchorPane styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MoveVisualizer.MoveVisualizerController">
    <children>
-      <ScrollPane prefWidth="237.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <VBox fillWidth="false" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="sidebar">
+      <VBox prefHeight="763.0" prefWidth="237.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sidebar">
                <children>
-                  <Text fx:id="noLocationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Selected Move has no old location mapping!" visible="false" wrappingWidth="184.0">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Move Visualizer" wrappingWidth="170.93841552734375" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Move Selector" wrappingWidth="169.9388885498047">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Text>
-                  <FilteredTableView fx:id="moveTable" columnFixingEnabled="false" rowFixingEnabled="false" rowHeaderWidth="0.0">
-                     <columns>
-                        <FilteredTableColumn fx:id="nodeColumn" editable="false" prefWidth="200.0" text="Node " />
-                        <FilteredTableColumn fx:id="locationColumn" editable="false" prefWidth="200.0" text="Location " />
-                        <FilteredTableColumn fx:id="dateColumn" editable="false" prefWidth="200.0" text="Date" />
-                     </columns>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </FilteredTableView>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Draggable Content" wrappingWidth="135.50381469726562">
-                     <VBox.margin>
-                        <Insets top="30.0" />
-                     </VBox.margin>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Draggable Text" wrappingWidth="135.50381469726562">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Text>
-                  <TextField fx:id="textText" prefHeight="31.0" prefWidth="184.0" promptText="Drag Text" styleClass="fields">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </TextField>
-                  <MFXButton mnemonicParsing="false" onAction="#addText" prefHeight="26.0" styleClass="blueBackgroundSideBar" text="Add Text">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </MFXButton>
-                  <MFXButton mnemonicParsing="false" onAction="#addImage" prefHeight="26.0" styleClass="blueBackgroundSideBar" text="Add Image">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </MFXButton>
-                  <MFXButton mnemonicParsing="false" onAction="#clearNodes" prefHeight="26.0" prefWidth="184.0" styleClass="redOutlineNoSetSize" text="Clear Items">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </MFXButton>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Border Content" wrappingWidth="182.33912658691406">
-                     <VBox.margin>
-                        <Insets top="30.0" />
-                     </VBox.margin>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Header" wrappingWidth="184.0" />
-                  <TextField fx:id="headerText" prefHeight="31.0" prefWidth="184.0" promptText="Header Text" styleClass="fields" />
-                  <SVGPath content="M-5.06066 10.9393C-5.64645 11.5251 -5.64645 12.4749 -5.06066 13.0607L4.48528 22.6066C5.07107 23.1924 6.02082 23.1924 6.6066 22.6066C7.19239 22.0208 7.19239 21.0711 6.6066 20.4853L-1.87868 12L6.6066 3.51472C7.19239 2.92893 7.19239 1.97918 6.6066 1.3934C6.02082 0.807612 5.07107 0.807612 4.48528 1.3934L-5.06066 10.9393ZM178 10.5L-4 10.5V13.5L178 13.5V10.5Z">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </SVGPath>
-                  <SearchableComboBox fx:id="leftLocation" promptText="Left Location" styleClass="pathfindingField" />
-                  <SVGPath content="M183.061 13.0607C183.646 12.4749 183.646 11.5251 183.061 10.9393L173.515 1.3934C172.929 0.807612 171.979 0.807612 171.393 1.3934C170.808 1.97918 170.808 2.92893 171.393 3.51472L179.879 12L171.393 20.4853C170.808 21.0711 170.808 22.0208 171.393 22.6066C171.979 23.1924 172.929 23.1924 173.515 22.6066L183.061 13.0607ZM0 13.5H182V10.5H0V13.5Z" />
-                  <SearchableComboBox fx:id="rightLocation" promptText="Right Location" styleClass="pathfindingField" />
-                  <MFXButton onAction="#enterKioskMode" styleClass="blueBackgroundSideBar" text="Enter Kiosk Mode">
-                     <VBox.margin>
-                        <Insets top="30.0" />
-                     </VBox.margin>
-                  </MFXButton>
                </children>
-               <padding>
-                  <Insets left="18.0" right="18.0" top="100.0" />
-               </padding>
+            </AnchorPane>
+            <ScrollPane>
+               <content>
+                  <VBox fillWidth="false" spacing="10.0" styleClass="sidebar">
+                     <children>
+                        <Text fx:id="noLocationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Selected Move has no old location mapping!" visible="false" wrappingWidth="184.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Move Selector" wrappingWidth="169.9388885498047">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Text>
+                        <FilteredTableView fx:id="moveTable" columnFixingEnabled="false" prefHeight="400.0" prefWidth="184.0" rowFixingEnabled="false" rowHeaderWidth="0.0">
+                           <columns>
+                              <FilteredTableColumn fx:id="nodeColumn" editable="false" prefWidth="200.0" text="Node" />
+                              <FilteredTableColumn fx:id="locationColumn" editable="false" prefWidth="200.0" text="Location" />
+                              <FilteredTableColumn fx:id="dateColumn" editable="false" prefWidth="200.0" text="Date" />
+                           </columns>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </FilteredTableView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Draggable Content" wrappingWidth="135.50381469726562">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Draggable Text" wrappingWidth="135.50381469726562">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TextField fx:id="textText" prefHeight="31.0" prefWidth="184.0" promptText="Drag Text" styleClass="fields">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <MFXButton mnemonicParsing="false" onAction="#addText" prefHeight="26.0" styleClass="blueBackgroundSideBar" text="Add Text">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </MFXButton>
+                        <MFXButton mnemonicParsing="false" onAction="#addImage" prefHeight="26.0" styleClass="blueBackgroundSideBar" text="Add Image">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </MFXButton>
+                        <MFXButton mnemonicParsing="false" onAction="#clearNodes" prefHeight="26.0" prefWidth="184.0" styleClass="redOutlineNoSetSize" text="Clear Items">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </MFXButton>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Border Content" wrappingWidth="182.33912658691406">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Header" wrappingWidth="184.0" />
+                        <TextField fx:id="headerText" prefHeight="31.0" prefWidth="184.0" promptText="Header Text" styleClass="fields" />
+                        <SVGPath content="M-5.06066 10.9393C-5.64645 11.5251 -5.64645 12.4749 -5.06066 13.0607L4.48528 22.6066C5.07107 23.1924 6.02082 23.1924 6.6066 22.6066C7.19239 22.0208 7.19239 21.0711 6.6066 20.4853L-1.87868 12L6.6066 3.51472C7.19239 2.92893 7.19239 1.97918 6.6066 1.3934C6.02082 0.807612 5.07107 0.807612 4.48528 1.3934L-5.06066 10.9393ZM178 10.5L-4 10.5V13.5L178 13.5V10.5Z">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </SVGPath>
+                        <SearchableComboBox fx:id="leftLocationBox" promptText="Left Location" styleClass="pathfindingField" />
+                        <SVGPath content="M183.061 13.0607C183.646 12.4749 183.646 11.5251 183.061 10.9393L173.515 1.3934C172.929 0.807612 171.979 0.807612 171.393 1.3934C170.808 1.97918 170.808 2.92893 171.393 3.51472L179.879 12L171.393 20.4853C170.808 21.0711 170.808 22.0208 171.393 22.6066C171.979 23.1924 172.929 23.1924 173.515 22.6066L183.061 13.0607ZM0 13.5H182V10.5H0V13.5Z" />
+                        <SearchableComboBox fx:id="rightLocationBox" promptText="Right Location" styleClass="pathfindingField" />
+                        <MFXButton onAction="#enterKioskMode" styleClass="blueBackgroundSideBar" text="Enter Kiosk Mode">
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="30.0" />
+                           </VBox.margin>
+                        </MFXButton>
+                     </children>
+                     <padding>
+                        <Insets left="18.0" right="18.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+      <BorderPane fx:id="borderPane" layoutX="287.0" prefHeight="763.0" prefWidth="837.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <AnchorPane fx:id="mapPane" BorderPane.alignment="CENTER" />
+         </center>
+         <top>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="yellow" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fx:id="adminMessage" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+         <left>
+            <VBox alignment="CENTER" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" spacing="10.0" styleClass="blueBackground" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="20.0" />
+               </BorderPane.margin>
+               <children>
+                  <SVGPath content="M1.93115 43.4038C-0.607258 45.9422 -0.607258 50.0578 1.93115 52.5962L43.2969 93.9619C45.8353 96.5003 49.9509 96.5003 52.4893 93.9619C55.0277 91.4235 55.0277 87.308 52.4893 84.7696L15.7197 48L52.4893 11.2304C55.0277 8.69204 55.0277 4.57647 52.4893 2.03806C49.9509 -0.500349 45.8353 -0.500349 43.2969 2.03806L1.93115 43.4038ZM126.527 41.5L6.52734 41.5V54.5L126.527 54.5V41.5Z" styleClass="yellow" />
+                  <Text fx:id="leftLocation" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldWhite" text="this is a lcoation" textAlignment="CENTER" wrappingWidth="175.0" />
+               </children>
             </VBox>
-         </content>
-      </ScrollPane>
-      <AnchorPane fx:id="mapPane" layoutX="257.0" layoutY="28.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Move Visualizer" wrappingWidth="170.93841552734375" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="10.0">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <MFXButton alignment="CENTER" layoutX="19.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="27.0" prefWidth="185.0" styleClass="backButton" text="Back" visible="false" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0" />
+         </left>
+         <right>
+            <VBox alignment="CENTER" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" spacing="10.0" styleClass="blueBackground" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="20.0" />
+               </BorderPane.margin>
+               <children>
+                  <SVGPath content="M124.596 52.5962C127.135 50.0578 127.135 45.9422 124.596 43.4038L83.2304 2.03806C80.692 -0.500349 76.5765 -0.500349 74.0381 2.03806C71.4997 4.57647 71.4997 8.69204 74.0381 11.2304L110.808 48L74.0381 84.7696C71.4997 87.308 71.4997 91.4235 74.0381 93.9619C76.5765 96.5003 80.692 96.5003 83.2304 93.9619L124.596 52.5962ZM120 41.5L-7.62939e-06 41.5V54.5L120 54.5V41.5Z" styleClass="yellow" />
+                  <Text fx:id="rightLocation" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldWhite" text="This is a lcoation" textAlignment="CENTER" wrappingWidth="175.0" />
+               </children>
+            </VBox>
+         </right>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </BorderPane>
    </children>
 </AnchorPane>

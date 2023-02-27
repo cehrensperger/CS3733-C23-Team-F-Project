@@ -12,17 +12,17 @@ import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import jakarta.persistence.RollbackException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
-import javafx.animation.Interpolator;
-import javafx.animation.ParallelTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -31,7 +31,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import lombok.Getter;
@@ -45,6 +47,9 @@ import org.hibernate.Session;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
+  @FXML Pane errtoast;
+  @FXML Rectangle errcheck2;
+  @FXML Rectangle errcheck1;
   @FXML private Button back;
   @FXML private Button next;
   private int selectedIndex = -1;
@@ -331,30 +336,42 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
   @SneakyThrows
   public void handleGetPath() {
-    generatePathButton.setDisable(true);
-    // start the animation
-    Animation();
-    // get start and end locations from text fields
-    LocationName startPath = startingBox.valueProperty().get();
-    LocationName endPath = destinationBox.valueProperty().get();
-    Boolean accessible = accessibleBox.isSelected();
-
-    // get algorithm to use in pathfinding from algorithmBox
-    if (algorithmBox.getValue() != null) {
-      switch (algorithmBox.getValue()) {
-        case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
-        case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
-        default -> pathFinder.setAlgorithm(new AStar());
+    try {
+      if (destinationBox.getValue().equals("") && (startingBox.getValue().equals(""))) {
+        generatePathButton.setDisable(true);
+        throw new NullPointerException();
       }
+      try {
+        generatePathButton.setDisable(true);
+        // start the animation
+        Animation();
+        // get start and end locations from text fields
+        LocationName startPath = startingBox.valueProperty().get();
+        LocationName endPath = destinationBox.valueProperty().get();
+        Boolean accessible = accessibleBox.isSelected();
+
+        // get algorithm to use in pathfinding from algorithmBox
+        if (algorithmBox.getValue() != null) {
+          switch (algorithmBox.getValue()) {
+            case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
+            case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
+            default -> pathFinder.setAlgorithm(new AStar());
+          }
+        }
+
+        unColorFloor(); // hide the last drawn path
+        // acquire the lock
+        lock.lock();
+
+        // create a new thread with myRunnable
+        Thread thread = new Thread(myRunnable);
+        thread.start();
+      } catch (RollbackException exception) {
+        errortoastAnimation();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      errortoastAnimation();
     }
-
-    unColorFloor(); // hide the last drawn path
-    // acquire the lock
-    lock.lock();
-
-    // create a new thread with myRunnable
-    Thread thread = new Thread(myRunnable);
-    thread.start();
   }
 
   public void unlock() {
@@ -489,6 +506,45 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     popOver.detach();
     javafx.scene.Node node = (javafx.scene.Node) event.getSource();
     popOver.show(node.getScene().getWindow());
+  }
+
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-280);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    sequence.setOnFinished(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            generatePathButton.setDisable(false);
+          }
+        });
   }
 
   @Override
