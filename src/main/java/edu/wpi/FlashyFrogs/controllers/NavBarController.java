@@ -371,8 +371,13 @@ public class NavBarController {
 
   @FXML
   private void signOut() {
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
     Fapp.setScene("Accounts", "Login");
+    signUserOutWithoutSceneChange();
+  }
+
+  /** */
+  public void signUserOutWithoutSceneChange() {
+    CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
     menu.setText("");
     menu.setDisable(true);
     loggedOutMenu.setVisible(true);
