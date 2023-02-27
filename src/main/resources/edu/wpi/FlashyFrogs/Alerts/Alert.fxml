@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="208.0" prefWidth="190.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AlertController">
+<AnchorPane prefHeight="208.0" prefWidth="190.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Alerts.AlertController">
     <VBox fx:id="announcementVBox" layoutX="10.0" prefHeight="215.0" prefWidth="220.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <children>
             <StackPane maxWidth="190.0" prefHeight="50.0" prefWidth="190.0">
@@ -72,7 +72,6 @@
                             <HBox prefHeight="100.0" prefWidth="180.0" spacing="8.0" VBox.vgrow="NEVER">
                                 <children>
                                     <Label fx:id="authorField" prefHeight="17.0" prefWidth="102.0" text="Author: Wilson Wong" HBox.hgrow="NEVER" />
-                                    <Label fx:id="dateField" alignment="CENTER_RIGHT" minWidth="60.0" prefHeight="17.0" prefWidth="81.0" text="2-10-2023" textAlignment="RIGHT" />
                                 </children>
                                 <VBox.margin>
                                     <Insets left="5.0" right="5.0" />
