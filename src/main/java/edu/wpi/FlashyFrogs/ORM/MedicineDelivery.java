@@ -1,11 +1,10 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "MedicineDelivery")
@@ -59,7 +58,7 @@ public class MedicineDelivery extends ServiceRequest {
    * @param dateOfSubmission the Date to use in the dateOfSubmission field
    * @param urgency the Urgency to use in the urgency field
    */
-  public MedicineDelivery (
+  public MedicineDelivery(
       @NonNull String patientID,
       LocationName theLocation,
       @NonNull String reason,
@@ -82,7 +81,16 @@ public class MedicineDelivery extends ServiceRequest {
     this.dosage = dosage;
   }
 
-  public MedicineDelivery(String text, LocationName value, String text1, String text2, String text3, Urgency value1, Date date, Date from, HospitalUser currentUser) {
+  public MedicineDelivery(
+      String text,
+      LocationName value,
+      String text1,
+      String text2,
+      String text3,
+      Urgency value1,
+      Date date,
+      Date from,
+      HospitalUser currentUser) {
     super();
   }
 }

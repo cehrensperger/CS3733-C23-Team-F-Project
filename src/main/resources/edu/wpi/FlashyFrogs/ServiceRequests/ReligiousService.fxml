@@ -169,7 +169,7 @@
                         </TextField>
                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields" />
                         <VBox prefHeight="63.0" prefWidth="250.0" />
-                        <DatePicker fx:id="date" prefHeight="30.0" prefWidth="250.0" promptText="Date Preference" styleClass="fields" />
+                        <DatePicker fx:id="serviceDate" prefHeight="30.0" prefWidth="250.0" promptText="Date Preference" styleClass="fields" />
                         <VBox prefHeight="255.0" prefWidth="250.0" />
                         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>

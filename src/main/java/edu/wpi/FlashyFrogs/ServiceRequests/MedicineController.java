@@ -156,7 +156,7 @@ public class MedicineController implements IController {
                 throw new NullPointerException();
         }
 
-        Date date =
+        Date date2 =
                 Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             MedicineDelivery delivery =
@@ -167,7 +167,7 @@ public class MedicineController implements IController {
                             medicine.getText(),
                             dosage.getText(),
                             urgency.getValue(),
-                            date,
+                            date2,
                             Date.from(Instant.now()),
                             CurrentUserEntity.CURRENT_USER.getCurrentUser());
 

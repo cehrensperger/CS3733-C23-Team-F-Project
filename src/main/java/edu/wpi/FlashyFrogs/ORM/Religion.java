@@ -1,11 +1,10 @@
 package edu.wpi.FlashyFrogs.ORM;
 
 import jakarta.persistence.*;
+import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "Religion")
@@ -58,8 +57,7 @@ public class Religion extends ServiceRequest {
       @NonNull Urgency urgency,
       @NonNull Date datePreference,
       @NonNull Date dateOfSubmission,
-      HospitalUser emp
-      ) {
+      HospitalUser emp) {
     this.patientID = patientID;
     super.setLocation(theLocation);
     super.setEmp(emp);
