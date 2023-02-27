@@ -29,7 +29,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -181,21 +180,18 @@ public class SanitationController implements IController {
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
         toastAnimation();
-
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-        errorMessage.setText("Please fill all fields.");
+        submit.setDisable(true);
+
         session.close();
         Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-      errorMessage.setText("Please fill all fields.");
+      submit.setDisable(true);
+      errortoastAnimation();
       session.close();
       Sound.ERROR.play();
     }
@@ -274,11 +270,11 @@ public class SanitationController implements IController {
     check2.setFill(Color.web("#012D5A"));
     // Create FillTransitions to fill the second and third rectangles in sequence
     FillTransition fill2 =
-            new FillTransition(
-                    Duration.seconds(0.1), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
+        new FillTransition(
+            Duration.seconds(0.1), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
     FillTransition fill3 =
-            new FillTransition(
-                    Duration.seconds(0.1), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
+        new FillTransition(
+            Duration.seconds(0.1), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
     SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
 
     // Create a TranslateTransition to move the first rectangle back to its original position
@@ -288,7 +284,7 @@ public class SanitationController implements IController {
 
     // Play the animations in sequence
     SequentialTransition sequence =
-            new SequentialTransition(translate1, fillSequence, translateBack1);
+        new SequentialTransition(translate1, fillSequence, translateBack1);
     sequence.setCycleCount(1);
     sequence.setAutoReverse(false);
     sequence.play();
@@ -305,11 +301,11 @@ public class SanitationController implements IController {
     errcheck2.setFill(Color.web("#012D5A"));
     // Create FillTransitions to fill the second and third rectangles in sequence
     FillTransition fill2 =
-            new FillTransition(
-                    Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
     FillTransition fill3 =
-            new FillTransition(
-                    Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
     SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
 
     // Create a TranslateTransition to move the first rectangle back to its original position
@@ -319,19 +315,20 @@ public class SanitationController implements IController {
 
     // Play the animations in sequence
     SequentialTransition sequence =
-            new SequentialTransition(translate1, fillSequence, translateBack1);
+        new SequentialTransition(translate1, fillSequence, translateBack1);
     sequence.setCycleCount(1);
     sequence.setAutoReverse(false);
     sequence.jumpTo(Duration.ZERO);
     sequence.playFromStart();
     sequence.setOnFinished(
-            new EventHandler<ActionEvent>() {
-              @Override
-              public void handle(ActionEvent event) {
-                submit.setDisable(false);
-              }
-            });
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            submit.setDisable(false);
+          }
+        });
   }
+
   @Override
   public void onClose() {}
 }
