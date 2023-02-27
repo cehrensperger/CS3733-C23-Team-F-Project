@@ -19,7 +19,6 @@ import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 import javafx.animation.FillTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
