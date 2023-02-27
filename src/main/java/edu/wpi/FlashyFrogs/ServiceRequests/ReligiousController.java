@@ -38,6 +38,9 @@ import org.hibernate.Transaction;
 
 public class ReligiousController implements IController {
 
+  @FXML MFXButton MD;
+  @FXML MFXButton medicine;
+  @FXML MFXButton religious;
   @FXML TextField patient;
   @FXML SearchableComboBox<LocationName> locationofPatient;
   @FXML TextField religion;
@@ -123,7 +126,8 @@ public class ReligiousController implements IController {
         throw new NullPointerException();
       }
 
-      Date date1 = Date.from(serviceDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      Date date1 =
+          Date.from(serviceDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
       Religion religious =
           new Religion(
@@ -188,6 +192,18 @@ public class ReligiousController implements IController {
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "Credits");
+  }
+
+  public void handleBack(ActionEvent actionEvent) throws IOException {
+    Fapp.handleBack();
+  }
+
+  public void handleMD(ActionEvent actionEvent) throws IOException {
+    Fapp.handleBack();
+  }
+
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.handleBack();
   }
 
   public void help() {
