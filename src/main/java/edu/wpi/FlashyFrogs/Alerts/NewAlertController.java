@@ -1,40 +1,42 @@
-package edu.wpi.FlashyFrogs.controllers;
+package edu.wpi.FlashyFrogs.Alerts;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
-import edu.wpi.FlashyFrogs.ORM.Announcement;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ORM.Department;
 import jakarta.persistence.RollbackException;
 import java.sql.Date;
-import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import lombok.Setter;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class AlertManagerController {
+public class NewAlertController {
+  @Setter private PopOver popOver;
+  @Setter private AlertManagerController alertManagerController;
   @FXML private TextField summaryField;
   @FXML private TextArea descriptionField;
   @FXML private SearchableComboBox<Department> deptBox;
-  @FXML private ComboBox<Announcement.Severity> severityBox;
-
-  @Setter private PopOver popOver;
+  @FXML private ComboBox<Alert.Severity> severityBox;
+  @FXML private DatePicker startDate;
+  @FXML private DatePicker endDate;
+  @FXML private Label errorMessage;
 
   public void initialize() {
+    errorMessage.setVisible(false);
     Session session = CONNECTION.getSessionFactory().openSession();
     List<Department> departments =
         session.createQuery("FROM Department", Department.class).getResultList();
 
     deptBox.setItems(FXCollections.observableArrayList(departments));
-    severityBox.setItems(FXCollections.observableArrayList(Announcement.Severity.values()));
+    severityBox.setItems(FXCollections.observableArrayList(Alert.Severity.values()));
   }
 
   public void handleSubmit(javafx.event.ActionEvent actionEvent) {
@@ -42,13 +44,19 @@ public class AlertManagerController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      if (summaryField.getText().equals("") || descriptionField.getText().equals("")) {
+      if (summaryField.getText().equals("")
+          || deptBox.getValue().equals("")
+          || severityBox.getValue().equals("")
+          || descriptionField.getText().equals("")
+          || startDate.getValue().toString().equals("")
+          || endDate.getValue().toString().equals("")) {
         throw new NullPointerException();
       }
 
-      Announcement announcement =
-          new Announcement(
-              Date.from(Instant.now()),
+      Alert alert =
+          new Alert(
+              Date.from(startDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+              Date.from(endDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
               CurrentUserEntity.CURRENT_USER.getCurrentUser(),
               summaryField.getText(),
               descriptionField.getText(),
@@ -56,28 +64,28 @@ public class AlertManagerController {
               severityBox.getValue());
 
       try {
-        session.persist(announcement);
+        session.persist(alert);
         transaction.commit();
         session.close();
-        handleCancel(actionEvent);
+        alertManagerController.initialize();
+        popOver.hide();
+        //        handleCancel(actionEvent);
       } catch (RollbackException exception) {
         session.clear();
-        // TODO Do something smart and throw an error maybe
+        errorMessage.setVisible(true);
+        errorMessage.setText("Rollback");
+        session.close();
+      } catch (Exception exception) {
+        session.clear();
+        errorMessage.setVisible(true);
+        errorMessage.setText("exception");
         session.close();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      // TODO Do something smart and throw an error maybe
+      errorMessage.setVisible(true);
+      errorMessage.setText("Fill out all fields");
       session.close();
     }
-  }
-
-  public void handleCancel(javafx.event.ActionEvent actionEvent) {
-    summaryField.setText("");
-    descriptionField.setText("");
-    deptBox.valueProperty().set(null);
-    severityBox.valueProperty().set(null);
-
-    popOver.hide();
   }
 }

@@ -329,26 +329,28 @@ public class NavBarController {
 
   @FXML
   private void handleAlerts(ActionEvent event) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AlertManager.fxml"));
-    PopOver popOver = new PopOver(newLoad.load()); // create the popover
-    HomeController home = new HomeController();
-
-    AlertManagerController controller = newLoad.getController();
-    controller.setPopOver(popOver);
-
-    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-    javafx.scene.Node node =
-        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
-    popOver.show(node); // display the popover
-
-    popOver
-        .showingProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue) {
-                home.refreshAlerts();
-              }
-            });
+    Fapp.setScene("Alerts", "AlertManager");
+    //    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AlertManager.fxml"));
+    //    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+    //    HomeController home = new HomeController();
+    //
+    //    AlertManagerController controller = newLoad.getController();
+    //    controller.setPopOver(popOver);
+    //
+    //    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    //    javafx.scene.Node node =
+    //        (javafx.scene.Node) event.getSource(); // Get the node representation of what called
+    // this
+    //    popOver.show(node); // display the popover
+    //
+    //    popOver
+    //        .showingProperty()
+    //        .addListener(
+    //            (observable, oldValue, newValue) -> {
+    //              if (!newValue) {
+    //                home.refreshAlerts();
+    //              }
+    //            });
   }
 
   @FXML
