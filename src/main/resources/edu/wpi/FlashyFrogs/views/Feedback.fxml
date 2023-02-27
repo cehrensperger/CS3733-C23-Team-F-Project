@@ -26,7 +26,7 @@
                      <children>
                         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="submited" text="Successfully Submited!" />
+                              <Label fx:id="submited" text="Successfully Submitted!" />
                            </children>
                            <HBox.margin>
                               <Insets top="6.0" />

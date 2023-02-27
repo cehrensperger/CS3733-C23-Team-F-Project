@@ -349,7 +349,7 @@ public class HomeController implements IController {
 
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
-    System.out.println("opening pathfinding");
+    //    System.out.println("opening pathfinding");
     Fapp.setScene("Pathfinding", "Pathfinding");
   }
 
@@ -518,7 +518,13 @@ public class HomeController implements IController {
     alertBox.getChildren().clear();
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<Alert> list = session.createQuery("Select a from Alert a", Alert.class).getResultList();
+    List<Alert> list =
+        session
+            .createQuery(
+                "SELECT a FROM Alert a WHERE :day BETWEEN startDisplayDate AND endDisplayDate",
+                Alert.class)
+            .setParameter("day", Date.from(Instant.now()))
+            .getResultList();
 
     Collections.sort(
         list,
@@ -530,10 +536,10 @@ public class HomeController implements IController {
         });
 
     for (Alert a : list) {
-      if (a.getStartDisplayDate().before(Date.from(Instant.now()))
-          && a.getEndDisplayDate().after(Date.from(Instant.now()))) {
-        insertAlert(a);
-      }
+      //      if (a.getStartDisplayDate().before(Date.from(Instant.now()))
+      //          && a.getEndDisplayDate().after(Date.from(Instant.now()))) {
+      insertAlert(a);
+      //      }
     }
   }
 

@@ -24,7 +24,8 @@
                         <TableColumn fx:id="idCol" maxWidth="199.99999690055847" prefWidth="61.59997630119324" text="ID" />
                         <TableColumn fx:id="descriptionCol" prefWidth="424.5" text="Description" />
                         <TableColumn fx:id="authorCol" prefWidth="194.5" text="Author" />
-                        <TableColumn fx:id="dateCol" prefWidth="340.0" text="Date" />
+                        <TableColumn fx:id="startDateCol" prefWidth="340.0" text="Start Date" />
+                  <TableColumn fx:id="endDateCol" prefWidth="340.0" text="End Date" />
                         <TableColumn fx:id="severityCol" prefWidth="222.0" text="Severity" />
                     </columns>
                     <HBox.margin>

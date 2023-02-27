@@ -145,6 +145,15 @@
     -fx-text-fill: #ffffff;
 }
 
+.blueNoRadius
+    /** This is a smaller version of the credits button styling (blue background with
+     white text) - ex. select files in Manage CSVs  **/
+{
+    -fx-background-color: #012D5A;
+    -fx-border-color:#012D5A;
+    -fx-text-fill: #ffffff;
+}
+
 .blueNoSetSize
     /** If you need the blue background with white text with no set size **/
 {
@@ -222,6 +231,16 @@
     -fx-text-fill: #012D5A;
     -fx-context-menu-enabled: #012D5A;
 
+}
+
+.searchable-combo-box .list-cell {
+    -fx-text-background-color: #012D5a;
+}
+
+.searchable-combo-box .list-cell:hover {
+    -fx-background-color: #F6BD38;
+    -fx-text-background-color: #012D5a;
+    -fx-background: #F6BD38;
 }
 
 .combo-box> .text-field
@@ -305,6 +324,11 @@
 .sidebar
     /** This sets the sidebar on all of the pages **/
 {
+    -fx-background-color: #d1d1d1 !important;
+}
+
+.sidebar-color {
+    /** Sidebar background color for non-sized elements */
     -fx-background-color: #d1d1d1 !important;
 }
 
@@ -401,22 +425,6 @@
     -fx-text-fill: #012d5a;
 }
 
-.filtered-table-row-cell
-{
-    -fx-background-color: #f1f1f1;
-    -fx-background: #f1f1f1;
-    -fx-text-background-color: #012d5a;
-    -fx-text-fill: #012d5a;
-}
-
-.table-row-cell:hover
-    /** controls table views within the app - hover **/
-{
-    -fx-background-color: #F6BD38;
-    -fx-text-background-color: #012D5a;
-    -fx-background: #012d5a;
-
-}
 
 .table-row-cell:selected
     /** controls the cells when they are hovered over in table views **/
@@ -426,25 +434,12 @@
     -fx-background: #012d5a;
 }
 
-.filtered-table-view .table-cell
-    /** controls filtered table views within the app - not hover **/
+.table-row-cell:hover
+    /** controls table views within the app - hover **/
 {
-    -fx-border-color: transparent;
-
-}
-.filtered-table-view .column-header
-    /** controls filtered table views within the app - not hover **/
-{
-    -fx-background-color: #f1f1f1;
-    -fx-text-fill: #012D5A;
-}
-
-.filtered-table-row-cell
-    /** controls filtered table views within the app - not hover **/
-{
-    -fx-background-color: #f1f1f1;
-    -fx-text-background-color: #012d5a;
-    -fx-text-fill: #012d5a;
+    -fx-background-color: #F6BD38;
+    -fx-text-background-color: #012D5a;
+    -fx-background: #F6BD38;
 }
 
 .alertTopBox
@@ -529,8 +524,6 @@
      */
     -fx-fill: #F6BD38;
     -fx-background-color: #F6BD38;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
 }
 
 .navSlide:focused

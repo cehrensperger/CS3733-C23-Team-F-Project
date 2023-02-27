@@ -219,14 +219,14 @@ public class NavBarController {
 
   @FXML
   private void showDescriptions(MouseEvent event) throws IOException {
-    System.out.println("in");
+    //    System.out.println("in");
     toastAnimationForward();
   }
 
   @FXML
   private void hideDescriptions(MouseEvent event) throws IOException {
     toastAnimationBackward();
-    System.out.println("out");
+    //    System.out.println("out");
   }
 
   @FXML
@@ -401,7 +401,7 @@ public class NavBarController {
    */
   @FXML
   private void about() throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/About.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("About/About.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     popOver.detach();
     popOver.show(anchorPane.getScene().getWindow());

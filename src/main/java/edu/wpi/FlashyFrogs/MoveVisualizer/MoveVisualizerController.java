@@ -15,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiConsumer;
 import javafx.animation.PauseTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +31,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -47,6 +49,7 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
+  @FXML private VBox directionsBox;
   @FXML private BorderPane borderPane;
   @FXML private Text adminMessage; // Admin message text
   @FXML private SearchableComboBox<LocationName> leftLocationBox; // Left location search box
@@ -71,7 +74,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   /** Sets up the move visualizer, including all tables, and the map */
   @SneakyThrows
   @FXML
-  private void initialize() {
+  protected void initialize() {
     // Cancel the timer if it exists
     if (backToVisualizerTimer != null) {
       // Stop the visualizer
@@ -173,7 +176,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     locationColumn.setReorderable(false);
     dateColumn.setReorderable(false);
 
-    mapPane.getChildren().add(map);
+    mapPane.getChildren().add(0, map);
 
     // Anchor it to take up the whole map pane
     AnchorPane.setLeftAnchor(map, 0.0);
@@ -224,6 +227,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
                   // Set the floor
                   mapController.getMapFloorProperty().setValue(oldLocation.getFloor());
+
+                  drawTable(new Date()); // Draw the table
                 } else {
                   noLocationText.setVisible(true);
                 }
@@ -237,6 +242,24 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         .addListener(
             (observable, oldValue, newValue) -> {
               clearNodes(null); // Clear the nodes on floor change
+            });
+
+    super.initialize(); // Call the supers initialize method
+
+    // The box with the directions should pop-out when its hovered
+    directionsBox
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              TranslateTransition transition =
+                  new TranslateTransition(Duration.seconds(.5), directionsBox);
+              if (newValue) {
+                transition.setToY(-299);
+              } else {
+                transition.setToY(0);
+              }
+
+              transition.play();
             });
   }
 
