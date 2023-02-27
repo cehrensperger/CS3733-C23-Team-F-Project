@@ -401,7 +401,7 @@ public class NavBarController {
    */
   @FXML
   private void about() throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/About.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("About/About.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     popOver.detach();
     popOver.show(anchorPane.getScene().getWindow());
