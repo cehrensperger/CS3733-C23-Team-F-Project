@@ -1203,11 +1203,6 @@ public class MapEditorController implements IController {
             task.cancel();
           }
 
-          Node finalLeft = left;
-          Node finalRight = right;
-          Node finalHighest = highest;
-          Node finalLowest = lowest;
-
           task =
               new TimerTask() {
                 @Override
@@ -1217,7 +1212,7 @@ public class MapEditorController implements IController {
                       () ->
                           mapController
                               .getGesturePane()
-                              .translateBy(new Dimension2D(effortX[0], effortY[0])));
+                              .translateBy(new Dimension2D(round(effortX[0]), round(effortY[0]))));
 
                   Platform.runLater(
                       () -> {
@@ -1226,11 +1221,13 @@ public class MapEditorController implements IController {
                               mapController.getNodeToCircleMap().get(node),
                               node,
                               (int)
-                                  (mapController.getNodeToCircleMap().get(node).getCenterX()
-                                      + effortX[0]),
+                                  round(
+                                      mapController.getNodeToCircleMap().get(node).getCenterX()
+                                          + effortX[0]),
                               (int)
-                                  (mapController.getNodeToCircleMap().get(node).getCenterY()
-                                      + effortY[0]));
+                                  round(
+                                      mapController.getNodeToCircleMap().get(node).getCenterY()
+                                          + effortY[0]));
                         }
                       });
                 }
@@ -1597,10 +1594,10 @@ public class MapEditorController implements IController {
     selectedNodes.clear(); // Clear the selected nodes. Do this all at once for efficiency
 
     if (mapController.getNodeToCircleMap().get(left).getCenterX() < 20) {
-      xDiff = 200 - left.getXCoord();
+      xDiff = 50 - left.getXCoord();
     }
     if (mapController.getNodeToLocationBox().get(highest).getLayoutY() < 20) {
-      yDiff = 200 - highest.getYCoord();
+      yDiff = 50 - highest.getYCoord();
     }
     if (mapController.getNodeToLocationBox().get(lowest).getLayoutY()
             + mapController.getNodeToLocationBox().get(lowest).getHeight()
@@ -1610,7 +1607,7 @@ public class MapEditorController implements IController {
               (round(
                       (mapController.getCurrentDrawingPane().getHeight()
                               - mapController.getNodeToLocationBox().get(lowest).getHeight())
-                          - 200)
+                          - 100)
                   - lowest.getYCoord());
     }
     if (mapController.getNodeToLocationBox().get(right).getLayoutX()
