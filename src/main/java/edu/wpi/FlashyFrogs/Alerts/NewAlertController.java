@@ -52,6 +52,9 @@ public class NewAlertController {
           || endDate.getValue().toString().equals("")) {
         throw new NullPointerException();
       }
+      if (startDate.getValue().isAfter(endDate.getValue())) {
+        throw new IllegalArgumentException();
+      }
 
       Alert alert =
           new Alert(
@@ -85,6 +88,11 @@ public class NewAlertController {
       session.clear();
       errorMessage.setVisible(true);
       errorMessage.setText("Fill out all fields");
+      session.close();
+    } catch (IllegalArgumentException exception) {
+      session.clear();
+      errorMessage.setVisible(true);
+      errorMessage.setText("Start and end date are flipped");
       session.close();
     }
   }

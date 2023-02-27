@@ -32,7 +32,8 @@ public class AlertManagerController implements IController {
   @FXML private TableColumn<Alert, Number> idCol;
   @FXML private TableColumn<Alert, String> descriptionCol;
   @FXML private TableColumn<Alert, String> authorCol;
-  @FXML private TableColumn<Alert, Date> dateCol;
+  @FXML private TableColumn<Alert, Date> startDateCol;
+  @FXML private TableColumn<Alert, Date> endDateCol;
   @FXML private TableColumn<Alert, Alert.Severity> severityCol;
   @FXML private Button addNewAlert;
   @FXML private Button back;
@@ -93,9 +94,14 @@ public class AlertManagerController implements IController {
           return new SimpleStringProperty(
               user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
         });
-    dateCol.setCellValueFactory(
+    startDateCol.setCellValueFactory(
         data -> {
           Date date = data.getValue().getStartDisplayDate();
+          return new SimpleObjectProperty<>(date);
+        });
+    endDateCol.setCellValueFactory(
+        data -> {
+          Date date = data.getValue().getEndDisplayDate();
           return new SimpleObjectProperty<>(date);
         });
     severityCol.setCellValueFactory(

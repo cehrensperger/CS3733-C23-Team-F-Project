@@ -69,6 +69,9 @@ public class EditAlertController implements IController {
           || startDate.getValue().toString().equals("")) {
         throw new NullPointerException();
       }
+      if (startDate.getValue().isAfter(endDate.getValue())) {
+        throw new IllegalArgumentException();
+      }
 
       currentAlert.setDescription(summaryField.getText());
       currentAlert.setAnnouncement(descriptionField.getText());
@@ -101,6 +104,11 @@ public class EditAlertController implements IController {
       session.clear();
       errorMessage.setVisible(true);
       errorMessage.setText("Fill out all fields");
+      session.close();
+    } catch (IllegalArgumentException exception) {
+      session.clear();
+      errorMessage.setVisible(true);
+      errorMessage.setText("Start and end date are flipped");
       session.close();
     }
   }
