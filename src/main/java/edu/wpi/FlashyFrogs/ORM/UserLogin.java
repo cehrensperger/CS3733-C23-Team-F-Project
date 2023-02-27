@@ -42,6 +42,10 @@ public class UserLogin {
   @Getter
   private String RFIDBadge; // The users RFID badge ID
 
+  @Column(unique = true)
+  @Getter
+  private String RFIDPW; // The users RFID badge PW
+
   @Basic
   @Column(nullable = false)
   @NonNull // Warning can be ignored, it is initialized in the constructor
@@ -66,11 +70,15 @@ public class UserLogin {
   public void setRFIDBadge(String rfidBadge) {
     // Null-check the badge
     if (rfidBadge != null) {
+      String rfidPW = rfidBadge.substring(0, 5);
+      String rfidID = rfidBadge.substring(5, 10);
+      RFIDBadge = rfidID;
       // If it's valid, encrypt it
       Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
-      RFIDBadge = argon2.hash(2, 15 * 1024, 1, rfidBadge.toCharArray());
+      RFIDPW = argon2.hash(2, 15 * 1024, 1, rfidPW.toCharArray());
     } else {
       RFIDBadge = null; // otherwise clear it
+      RFIDPW = null;
     }
   }
 
@@ -151,9 +159,9 @@ public class UserLogin {
    * @return true if the logins are equal, false otherwise
    */
   public boolean checkRFIDBadgeEqual(@NonNull String potentialBadge) {
-    if (RFIDBadge == null) return false; // Short-circuit if the RFID badge is null
+    if (RFIDPW == null) return false; // Short-circuit if the RFID badge is null
 
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
-    return argon2.verify(RFIDBadge, potentialBadge.toCharArray());
+    return argon2.verify(RFIDPW, potentialBadge.toCharArray());
   }
 }
