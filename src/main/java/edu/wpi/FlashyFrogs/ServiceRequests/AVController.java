@@ -20,12 +20,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
-
 import javafx.animation.FillTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -35,7 +35,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.util.Duration;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
@@ -52,7 +51,6 @@ public class AVController implements IController {
   @FXML Pane toast;
   @FXML MFXButton clear;
   @FXML MFXButton submit;
-  private Timer animationTimer;
   @FXML MFXButton credits;
   @FXML MFXButton equipmentButton;
   @FXML MFXButton AV;
@@ -161,10 +159,9 @@ public class AVController implements IController {
       } catch (RollbackException exception) {
         session.clear();
         submit.setDisable(true);
-        errortoastAnimation();
+
         session.close();
         Sound.ERROR.play();
-        submit.setDisable(false);
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
@@ -172,7 +169,6 @@ public class AVController implements IController {
       errortoastAnimation();
       session.close();
       Sound.ERROR.play();
-      submit.setDisable(false);
     }
   }
 
@@ -277,11 +273,11 @@ public class AVController implements IController {
     errcheck2.setFill(Color.web("#012D5A"));
     // Create FillTransitions to fill the second and third rectangles in sequence
     FillTransition fill2 =
-            new FillTransition(
-                    Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
     FillTransition fill3 =
-            new FillTransition(
-                    Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
     SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
 
     // Create a TranslateTransition to move the first rectangle back to its original position
@@ -291,12 +287,18 @@ public class AVController implements IController {
 
     // Play the animations in sequence
     SequentialTransition sequence =
-            new SequentialTransition(translate1, fillSequence, translateBack1);
+        new SequentialTransition(translate1, fillSequence, translateBack1);
     sequence.setCycleCount(1);
     sequence.setAutoReverse(false);
     sequence.jumpTo(Duration.ZERO);
     sequence.playFromStart();
-    errtoast.getTransforms().clear();
+    sequence.setOnFinished(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            submit.setDisable(false);
+          }
+        });
   }
 
   @Override
