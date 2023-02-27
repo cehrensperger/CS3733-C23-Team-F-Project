@@ -119,7 +119,10 @@
       </VBox>
       <BorderPane fx:id="borderPane" layoutX="287.0" prefHeight="763.0" prefWidth="837.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <AnchorPane fx:id="mapPane" BorderPane.alignment="CENTER" />
+            <AnchorPane fx:id="mapPane" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXButton onAction="#handleAudioDirections" prefHeight="25.0" prefWidth="112.0" text="Audio Directions" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
          </center>
          <top>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="yellow" BorderPane.alignment="CENTER">

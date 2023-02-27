@@ -8,8 +8,9 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinding.AStar;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -37,6 +38,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import javax.sound.sampled.*;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -664,5 +666,39 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         });
 
     backToVisualizerTimer.play(); // Start the timer
+  }
+
+  @FXML
+  public void handleAudioDirections()
+      throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+
+    String speakText =
+        leftLocation.getText().toLowerCase()
+            + " is on your left. "
+            + rightLocation.getText().toLowerCase()
+            + " is on your right.";
+
+    speakText = speakText.replace("location", "locayshun");
+
+    String APIKey = "54ae4e48f3f946a784bf132823b112b5";
+
+    // Form the URL with required information
+    URL url =
+        new URL(
+            "http://api.voicerss.org/?"
+                + "key="
+                + URLEncoder.encode(APIKey, "UTF-8")
+                + "&src="
+                + URLEncoder.encode(speakText, "UTF-8")
+                + "&hl="
+                + URLEncoder.encode("en-us", "UTF-8")
+                + "&voice=");
+
+    InputStream inps = new BufferedInputStream(url.openStream());
+
+    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inps);
+    Clip clip = AudioSystem.getClip();
+    clip.open(audioInputStream);
+    clip.start();
   }
 }
