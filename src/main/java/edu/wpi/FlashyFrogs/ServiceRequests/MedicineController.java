@@ -5,10 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
-import edu.wpi.FlashyFrogs.ORM.InternalTransport;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Security;
-import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -50,7 +47,7 @@ public class MedicineController implements IController {
     @FXML
     TextField dosage;
     @FXML
-    SearchableComboBox urgency;
+    SearchableComboBox<ServiceRequest.Urgency> urgency;
     @FXML
     DatePicker date;
     @FXML
@@ -58,7 +55,7 @@ public class MedicineController implements IController {
     @FXML
     TextField patient;
     @FXML
-    SearchableComboBox locationofPatient;
+    SearchableComboBox<LocationName> locationofPatient;
     @FXML
     Rectangle check2;
     @FXML

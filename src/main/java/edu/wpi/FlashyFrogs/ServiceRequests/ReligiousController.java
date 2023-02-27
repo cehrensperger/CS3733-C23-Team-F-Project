@@ -7,6 +7,7 @@ import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
+import edu.wpi.FlashyFrogs.ORM.Religion;
 import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -41,10 +42,10 @@ import org.hibernate.Transaction;
 public class ReligiousController implements IController{
 
     @FXML TextField patient;
-    @FXML SearchableComboBox locationofPatient;
+    @FXML SearchableComboBox<LocationName> locationofPatient;
     @FXML TextField religion;
     @FXML TextField requestDescription;
-    @FXML SearchableComboBox urgency;
+    @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
     @FXML DatePicker date;
     @FXML Rectangle check1;
     @FXML Rectangle check2;
@@ -140,8 +141,8 @@ public class ReligiousController implements IController{
                 Date date =
                         Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-                ReligiousRequest religious =
-                        new ReligiousRequest(
+                Religion religious =
+                        new Religion(
                                 patient.getText(),
                                 locationofPatient.getValue(),
                                 religion.getText(),
