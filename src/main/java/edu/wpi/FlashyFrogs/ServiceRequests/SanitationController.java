@@ -48,7 +48,7 @@ public class SanitationController implements IController {
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
   @FXML MFXButton credits;
-  @FXML MFXButton back;
+  @FXML MFXButton equipmentButton;
   @FXML MFXButton clear;
   @FXML MFXButton submit;
 
@@ -231,6 +231,10 @@ public class SanitationController implements IController {
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
+  }
+
+  public void handleEquipment(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "EquipmentTransport");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {

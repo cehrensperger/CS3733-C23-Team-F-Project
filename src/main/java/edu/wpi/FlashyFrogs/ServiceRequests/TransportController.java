@@ -42,12 +42,12 @@ public class TransportController implements IController {
   @FXML Rectangle check1;
   @FXML Pane toast;
   @FXML MFXButton AV;
+  @FXML MFXButton equipmentButton;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
   @FXML MFXButton credits;
-  @FXML MFXButton back;
 
   @FXML TextField patient;
   @FXML SearchableComboBox<InternalTransport.VisionStatus> vision;
@@ -319,6 +319,10 @@ public class TransportController implements IController {
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
+  }
+
+  public void handleEquipment(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "EquipmentTransport");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {
