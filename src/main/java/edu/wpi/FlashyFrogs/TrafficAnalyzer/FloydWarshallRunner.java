@@ -5,11 +5,10 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinding.AStar;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.hibernate.Session;
 
@@ -155,5 +154,27 @@ public class FloydWarshallRunner {
         }
       }
     }
+  }
+
+    /**
+     * Reconstructs the path from node one to node two using the current state of Floyd Warshall
+     * @param nodeOne the starting node
+     * @param nodeTwo the ending node
+     * @return the ending node
+     * @throws NullPointerException if the path couldn't be found
+     */
+    @NonNull
+  private static List<Node> reconstructPath(@NonNull Node nodeOne, @NonNull Node nodeTwo) {
+      List<Node> result = new LinkedList<>(); // Result list
+      Node nextHop = nodeOne; // The next hop in the path
+
+      // While the node isn't the target node
+      while (!nextHop.equals(nodeTwo)) {
+          result.add(nextHop); // Add the result to the path
+
+          nextHop = nextHops.get(nextHop).get(nodeTwo); // Get the next hop on the path to the destination
+      }
+
+      return result; // Return the targeted path
   }
 }
