@@ -146,7 +146,7 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <TextField fx:id="personal1" promptText="Reason for prescription" styleClass="fields" />
+                        <TextField fx:id="reason" promptText="Reason for prescription" styleClass="fields" />
                      </children>
                      <HBox.margin>
                         <Insets right="50.0" />
