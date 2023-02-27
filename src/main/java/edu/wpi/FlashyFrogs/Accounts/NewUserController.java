@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Department;
 import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.UserLogin;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -58,10 +59,12 @@ public class NewUserController implements IController {
         || employeeType.getValue() == null) {
       // One of the values is left null
       errorMessage.setText("Please fill out all required fields!");
+      Sound.ERROR.play();
       errorMessage.setVisible(true);
     } else if (!pass1.getText().equals(pass2.getText())) {
       // Passwords do not match
       errorMessage.setText("Passwords do not match!");
+      Sound.ERROR.play();
       errorMessage.setVisible(true);
     } else {
       // Save Username and Password to db
@@ -96,6 +99,7 @@ public class NewUserController implements IController {
           loginAdministratorController.initialize();
         } catch (Exception e) {
           errorMessage.setText("That badge ID is already taken. User added without a badge ID.");
+          Sound.ERROR.play();
           errorMessage.setVisible(true);
           transaction.rollback();
         }

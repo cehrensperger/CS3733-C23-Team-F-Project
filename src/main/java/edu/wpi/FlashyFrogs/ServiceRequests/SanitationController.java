@@ -8,6 +8,7 @@ import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Sanitation;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -23,11 +24,11 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -37,6 +38,9 @@ import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class SanitationController implements IController {
+  @FXML Pane errtoast;
+  @FXML Rectangle errcheck2;
+  @FXML Rectangle errcheck1;
 
   @FXML Rectangle check2;
   @FXML Rectangle check1;
@@ -47,7 +51,7 @@ public class SanitationController implements IController {
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
   @FXML MFXButton credits;
-  @FXML MFXButton back;
+  @FXML MFXButton equipmentButton;
   @FXML MFXButton clear;
   @FXML MFXButton submit;
 
@@ -176,21 +180,20 @@ public class SanitationController implements IController {
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
         toastAnimation();
-
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-        errorMessage.setText("Please fill all fields.");
+        submit.setDisable(true);
+
         session.close();
+        Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-      errorMessage.setText("Please fill all fields.");
+      submit.setDisable(true);
+      errortoastAnimation();
       session.close();
+      Sound.ERROR.play();
     }
   }
 
@@ -230,6 +233,10 @@ public class SanitationController implements IController {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
 
+  public void handleEquipment(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "EquipmentTransport");
+  }
+
   public void handleIT(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "ComputerService");
   }
@@ -256,22 +263,23 @@ public class SanitationController implements IController {
 
   public void toastAnimation() {
     // Create a TranslateTransition to move the first rectangle to the left
-    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(1.0), toast);
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), toast);
     translate1.setByX(-280.0);
     translate1.setAutoReverse(true);
-
+    check1.setFill(Color.web("#012D5A"));
+    check2.setFill(Color.web("#012D5A"));
     // Create FillTransitions to fill the second and third rectangles in sequence
     FillTransition fill2 =
         new FillTransition(
-            Duration.seconds(0.3), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
+            Duration.seconds(0.1), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
     FillTransition fill3 =
         new FillTransition(
-            Duration.seconds(0.3), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
+            Duration.seconds(0.1), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
     SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
 
     // Create a TranslateTransition to move the first rectangle back to its original position
-    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(1.0), toast);
-    translateBack1.setDelay(Duration.seconds(2));
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), toast);
+    translateBack1.setDelay(Duration.seconds(0.5));
     translateBack1.setByX(280.0);
 
     // Play the animations in sequence
@@ -280,6 +288,45 @@ public class SanitationController implements IController {
     sequence.setCycleCount(1);
     sequence.setAutoReverse(false);
     sequence.play();
+  }
+
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-280);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    sequence.setOnFinished(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            submit.setDisable(false);
+          }
+        });
   }
 
   @Override

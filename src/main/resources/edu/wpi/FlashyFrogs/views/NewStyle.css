@@ -31,6 +31,14 @@
     -fx-text-fill:#000000;
 }
 
+.headerBoldWhite {
+    /**
+    Header bold but in white
+     */
+    -fx-text-fill: #f1f1f1;
+    -fx-fill: #f1f1f1; /* This is necessary sometimes for some reason*/
+}
+
 .headerBoldTextObject
     /** Mimics .headerBold for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
 {
@@ -54,6 +62,12 @@
      requests credits page **/
 {
     -fx-text-fill:#000000;
+}
+
+.bodyBoldWhite {
+    /** Used for the map visualizer location names */
+    -fx-text-fill: #f1f1f1;
+    -fx-fill: #f1f1f1; /* This is necessary sometimes for some reason*/
 }
 
 .subtext
@@ -156,6 +170,7 @@
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
+
 }
 
 .fields
@@ -397,8 +412,8 @@
 .table-row-cell:hover
     /** controls table views within the app - hover **/
 {
-    -fx-background-color: #012d5a;
-    -fx-text-background-color: #ffffff;
+    -fx-background-color: #F6BD38;
+    -fx-text-background-color: #012D5a;
     -fx-background: #012d5a;
 
 }
@@ -501,4 +516,19 @@
 }
 .text-area .content {
     -fx-border-color: transparent;
+}
+.circle{
+    -fx-fill: #012D5A;
+    -fx-stroke:#F6BD38;
+    -fx-stroke-width: 2;
+}
+
+.yellow {
+    /**
+    Yellow color, used for background coloring on the map visualizer page
+     */
+    -fx-fill: #F6BD38;
+    -fx-background-color: #F6BD38;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }

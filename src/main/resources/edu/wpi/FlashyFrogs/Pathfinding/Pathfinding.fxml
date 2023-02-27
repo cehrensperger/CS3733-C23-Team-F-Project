@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
@@ -103,17 +104,17 @@
             </TableView>
             <HBox prefHeight="108.0" prefWidth="192.0">
                <children>
-                  <Button fx:id="back" mnemonicParsing="false">
+                  <Button fx:id="back" mnemonicParsing="false" style="-fx-background-color: WHITE;">
                      <graphic>
-                        <Polygon fill="DODGERBLUE" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="-90.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="-90.0" stroke="#012d5a" strokeType="INSIDE" />
                      </graphic>
                      <HBox.margin>
                         <Insets left="18.0" right="89.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="next" mnemonicParsing="false">
+                  <Button fx:id="next" mnemonicParsing="false" style="-fx-background-color: WHITE;" textFill="WHITE">
                      <graphic>
-                        <Polygon fill="DODGERBLUE" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="90.0" stroke="#012d5a" strokeType="INSIDE" strokeWidth="2.0" />
                      </graphic>
                      <HBox.margin>
                         <Insets right="18.0" />
@@ -130,17 +131,17 @@
          <children>
             <AnchorPane fx:id="mapPane" prefHeight="10.0" prefWidth="10.0">
                <children>
-                  <StackPane layoutX="825.0" layoutY="590.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="108.0" />
                   <Pane fx:id="animationPane" mouseTransparent="true" prefHeight="680.0" prefWidth="765.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Circle fx:id="cir1" fill="DODGERBLUE" layoutX="375.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir6" fill="DODGERBLUE" layoutX="625.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir5" fill="DODGERBLUE" layoutX="575.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir4" fill="DODGERBLUE" layoutX="525.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir3" fill="DODGERBLUE" layoutX="475.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir2" fill="DODGERBLUE" layoutX="425.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="cir1" fill="DODGERBLUE" layoutX="375.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
+                        <Circle fx:id="cir6" fill="DODGERBLUE" layoutX="625.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
+                        <Circle fx:id="cir5" fill="DODGERBLUE" layoutX="575.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
+                        <Circle fx:id="cir4" fill="DODGERBLUE" layoutX="525.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
+                        <Circle fx:id="cir3" fill="DODGERBLUE" layoutX="475.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
+                        <Circle fx:id="cir2" fill="DODGERBLUE" layoutX="425.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
                      </children>
                   </Pane>
+                  <StackPane layoutX="825.0" layoutY="590.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="108.0" />
                </children>
             </AnchorPane>
          </children>
@@ -155,5 +156,17 @@
             <Font size="16.0" />
          </font>
       </MFXButton>
+      <Pane fx:id="errtoast" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="68.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Choose Location" wrappingWidth="201.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 public class CreditsController implements IController {
 
   @FXML MFXButton credits;
-  @FXML MFXButton back;
+  @FXML MFXButton equipmentButton;
   @FXML MFXButton AV;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
@@ -28,6 +28,10 @@ public class CreditsController implements IController {
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
+  }
+
+  public void handleEquipment(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "EquipmentTransport");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {

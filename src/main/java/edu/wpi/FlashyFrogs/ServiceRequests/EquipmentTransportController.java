@@ -5,8 +5,8 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
+import edu.wpi.FlashyFrogs.ORM.EquipmentTransport;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Security;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -33,51 +33,42 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class SecurityController implements IController {
+public class EquipmentTransportController implements IController {
   @FXML Pane errtoast;
   @FXML Rectangle errcheck2;
   @FXML Rectangle errcheck1;
-
   @FXML Rectangle check2;
   @FXML Rectangle check1;
   @FXML Pane toast;
-  @FXML MFXButton clear;
-  @FXML MFXButton submit;
-  @FXML MFXButton credits;
-  @FXML MFXButton equipmentButton;
   @FXML MFXButton AV;
+  @FXML MFXButton equipmentButton;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
   @FXML MFXButton sanitation;
   @FXML MFXButton security;
-  @FXML Text h1;
-  @FXML Text h2;
-  @FXML Text h3;
-  @FXML Text h4;
-  @FXML Text h5;
-  @FXML SearchableComboBox<LocationName> locationBox;
-  @FXML SearchableComboBox<Security.ThreatType> threat;
-  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
+  @FXML MFXButton credits;
+  @FXML MFXButton clear;
+  @FXML MFXButton submit;
+
+  @FXML TextField equipment;
+  @FXML SearchableComboBox<LocationName> to;
+  @FXML SearchableComboBox<LocationName> from;
   @FXML DatePicker date;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
   @FXML TextField description;
+
   @FXML private Label errorMessage;
 
   boolean hDone = false;
   private Connection connection = null;
 
   public void initialize() {
-    h1.setVisible(false);
-    h2.setVisible(false);
-    h3.setVisible(false);
-    h4.setVisible(false);
-    h5.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<LocationName> locations =
@@ -85,10 +76,9 @@ public class SecurityController implements IController {
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
-    locationBox.setItems(FXCollections.observableArrayList(locations));
-    threat.setItems(FXCollections.observableArrayList(Security.ThreatType.values()));
+    to.setItems(FXCollections.observableArrayList(locations));
+    from.setItems(FXCollections.observableArrayList(locations));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
-    session.close();
 
     urgency.setButtonCell(
         new ListCell<ServiceRequest.Urgency>() {
@@ -103,25 +93,38 @@ public class SecurityController implements IController {
           }
         });
 
-    locationBox.setButtonCell(
+    to.setButtonCell(
         new ListCell<LocationName>() {
           @Override
           protected void updateItem(LocationName item, boolean empty) {
             super.updateItem(item, empty);
             if (empty || item == null) {
-              setText("Location of Request");
+              setText("Transfer To");
             } else {
               setText(item.toString());
             }
           }
         });
-    threat.setButtonCell(
-        new ListCell<Security.ThreatType>() {
+
+    from.setButtonCell(
+        new ListCell<LocationName>() {
           @Override
-          protected void updateItem(Security.ThreatType item, boolean empty) {
+          protected void updateItem(LocationName item, boolean empty) {
             super.updateItem(item, empty);
             if (empty || item == null) {
-              setText("Threat Type");
+              setText("Transfer From");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
             } else {
               setText(item.toString());
             }
@@ -135,28 +138,28 @@ public class SecurityController implements IController {
 
     try {
       // check
-      if (locationBox.getValue().toString().equals("")
-          || threat.getValue().toString().equals("")
+      if (equipment.getText().equals("")
+          || to.getValue().toString().equals("")
+          || from.getValue().toString().equals("")
           || date.getValue().toString().equals("")
           || description.getText().equals("")) {
         throw new NullPointerException();
       }
+      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      Date dateOfRequest =
-          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-      Security securityRequest =
-          new Security(
-              description.getText(),
-              locationBox.getValue(),
+      EquipmentTransport equipmentTransport =
+          new EquipmentTransport(
               CurrentUserEntity.CURRENT_USER.getCurrentUser(),
-              dateOfRequest,
+              dateNeeded,
               Date.from(Instant.now()),
               urgency.getValue(),
-              threat.getValue());
+              from.getValue(),
+              to.getValue(),
+              equipment.getText(),
+              description.getText());
 
       try {
-        session.persist(securityRequest);
+        session.persist(equipmentTransport);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
@@ -178,27 +181,18 @@ public class SecurityController implements IController {
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    locationBox.valueProperty().set(null);
-    threat.valueProperty().set(null);
-    urgency.valueProperty().set(null);
+    equipment.setText("");
+    to.valueProperty().set(null);
+    from.valueProperty().set(null);
     date.valueProperty().set(null);
+    urgency.valueProperty().set(null);
     description.setText("");
   }
 
   public void help() {
     if (!hDone) {
-      h1.setVisible(true);
-      h2.setVisible(true);
-      h3.setVisible(true);
-      h4.setVisible(true);
-      h5.setVisible(true);
       hDone = true;
     } else if (hDone) {
-      h1.setVisible(false);
-      h2.setVisible(false);
-      h3.setVisible(false);
-      h4.setVisible(false);
-      h5.setVisible(false);
       hDone = false;
     }
   }
@@ -303,6 +297,5 @@ public class SecurityController implements IController {
         });
   }
 
-  @Override
   public void onClose() {}
 }
