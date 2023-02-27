@@ -6,6 +6,9 @@ import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +24,10 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
@@ -170,7 +177,7 @@ public class ServiceRequestStatsPageController implements IController {
    *
    * @param actionEvent
    */
-  public void handleGraphTypeComboBox(ActionEvent actionEvent) {
+  public void handleGraphTypeComboBox(ActionEvent actionEvent) throws IOException {
 
     Label label = new Label();
 
@@ -243,6 +250,9 @@ public class ServiceRequestStatsPageController implements IController {
       attachLabel(chart, series);
 
       replaceChart(chart);
+
+      writeToExcelFile(series);
+
     } else if (graphTypeComboBox.getValue().equals("Total Completed Requests by Type")) {
 
       Axis<String> xAxis = new CategoryAxis();
@@ -332,6 +342,7 @@ public class ServiceRequestStatsPageController implements IController {
       chart.setLegendVisible(false);
       attachLabel(chart, series);
       replaceChart(chart);
+      writeToExcelFile(series);
 
     } else if (graphTypeComboBox.getValue().equals("Total Requests by Status")) {
 
@@ -369,7 +380,7 @@ public class ServiceRequestStatsPageController implements IController {
                           data.getNode()
                               .setStyle(
                                   "-fx-bar-fill: #012D5A; "
-                                      + "-fx-border-color: #F6BD38; "
+                                      + "-fx-border-color: #000000; "
                                       + "-fx-border-width: 3px 3px 0px 3px;");
                         });
               });
@@ -378,6 +389,7 @@ public class ServiceRequestStatsPageController implements IController {
       attachLabel(chart, series);
       // remove old chart and add new chart with same layout
       replaceChart(chart);
+      writeToExcelFile(series);
     } else if (graphTypeComboBox
         .getValue()
         .equals("Completed vs Incomplete Service Requests Pie Chart")) {
@@ -470,6 +482,38 @@ public class ServiceRequestStatsPageController implements IController {
       // remove old chart and add new chart with same layout
       replaceChart(chart);
     }
+  }
+
+  private static void writeToExcelFile(XYChart.Series<String, Number> series) throws IOException {
+    // download chart to excel document
+    // output stream for excel file
+
+    // check if file already exists and increment the number at the end of the file name until it
+    // doesn't exist
+    int j = 1;
+    while (new File("workbook" + j + ".xls").exists()) {
+      j++;
+    }
+
+    FileOutputStream out = new FileOutputStream("workbook" + j + ".xls");
+
+    Workbook workbook = new HSSFWorkbook();
+    Sheet sheet = workbook.createSheet("Service Requests");
+    Row row = sheet.createRow(0);
+
+    // fill rows with data in chart
+    for (int i = 0; i < series.getData().size(); i++) {
+      row = sheet.createRow(i + 2);
+      row.createCell(0).setCellValue(series.getData().get(i).getXValue());
+      row.createCell(1).setCellValue(series.getData().get(i).getYValue().intValue());
+
+      System.out.println(series.getData().get(i).getXValue());
+      System.out.println(series.getData().get(i).getYValue().intValue());
+    }
+
+    // write to excel file
+    workbook.write(out);
+    out.close();
   }
 
   private void attachLabel(BarChart<String, Number> chart, XYChart.Series<String, Number> series) {
