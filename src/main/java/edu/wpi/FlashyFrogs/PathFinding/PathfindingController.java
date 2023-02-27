@@ -231,9 +231,10 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         generatePathButton.setDisable(true);
         throw new NullPointerException();
       }
-      try {generatePathButton.setDisable(true);
-    // start the animation
-    Animation();
+      try {
+        generatePathButton.setDisable(true);
+        // start the animation
+        Animation();
 
         // get algorithm to use in pathfinding from algorithmBox
         if (algorithmBox.getValue() != null) {

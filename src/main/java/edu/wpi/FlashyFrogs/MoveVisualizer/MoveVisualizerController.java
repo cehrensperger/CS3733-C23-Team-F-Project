@@ -48,8 +48,8 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
-    @FXML private VBox directionsBox;
-    @FXML private BorderPane borderPane;
+  @FXML private VBox directionsBox;
+  @FXML private BorderPane borderPane;
   @FXML private Text adminMessage; // Admin message text
   @FXML private SearchableComboBox<LocationName> leftLocationBox; // Left location search box
   @FXML private SearchableComboBox<LocationName> rightLocationBox; // Right location search box
