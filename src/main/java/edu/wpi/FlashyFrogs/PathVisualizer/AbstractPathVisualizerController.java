@@ -18,7 +18,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
@@ -96,77 +95,23 @@ public abstract class AbstractPathVisualizerController implements IController {
     back.setVisible(false);
 
     // Set up the next button to select the next row
-    next.setOnAction(
-        event -> {
-          int rowIndex = pathTable.getSelectionModel().getSelectedIndex();
-          int maxIndex = pathTable.getItems().size() - 1;
-          if (selectedIndex < maxIndex) {
-            selectedIndex++;
-            pathTable.getSelectionModel().select(selectedIndex);
-            PathfindingController.Instruction instruction =
-                pathTable.getSelectionModel().getSelectedItem();
-            if (instruction != null) {
-
-              mapController.getMapFloorProperty().setValue(instruction.node.getFloor());
-              mapController.zoomToCoordinates(
-                  2, instruction.node.getXCoord(), instruction.node.getYCoord());
-            }
-          }
-          if (!pathTable.getItems().isEmpty()) {
-            pathTable.scrollTo(rowIndex);
-          }
-        });
+    next.setOnAction(event -> pathTable.getSelectionModel().selectBelowCell());
 
     // Set up the back button to select the previous row
-    back.setOnAction(
-        event -> {
-          int rowIndex = pathTable.getSelectionModel().getSelectedIndex();
-          if (selectedIndex > 0) {
-            selectedIndex--;
-            pathTable.getSelectionModel().select(selectedIndex);
-            PathfindingController.Instruction instruction =
-                pathTable.getSelectionModel().getSelectedItem();
-            if (instruction != null) {
-              mapController.getMapFloorProperty().setValue(instruction.node.getFloor());
-              mapController.zoomToCoordinates(
-                  2, instruction.node.getXCoord(), instruction.node.getYCoord());
-            }
-          }
-          if (!pathTable.getItems().isEmpty()) {
-            pathTable.scrollTo(rowIndex);
-          }
-        });
+    back.setOnAction(event -> pathTable.getSelectionModel().selectAboveCell());
 
     pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
 
-    pathTable.setRowFactory(
-        param -> {
-          TableRow<PathfindingController.Instruction> row =
-              new TableRow<>(); // Create a new table row to use
-
-          // When the user selects a row, just un-select it to avoid breaking formatting
-          //          row.selectedProperty()
-          //              .addListener(
-          //
-          //                  // Add a listener that does that
-          //                  (observable, oldValue, newValue) -> row.updateSelected(false));
-
-          // Add a listener to show the pop-up
-          row.setOnMouseClicked(
-              (event) -> {
-                // If the pop over exists and is either not focused or we are showing a new
-                // row
-                if (row != null) {
-                  mapController.getMapFloorProperty().setValue(row.getItem().node.getFloor());
-                  mapController.zoomToCoordinates(
-                      2, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
-                  selectedIndex = row.getIndex();
-                  pathTable.getSelectionModel().select(selectedIndex);
-                }
-              });
-
-          return row;
-        });
+    // On selection change, zoom to the right property
+    pathTable
+        .getSelectionModel()
+        .selectedItemProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              mapController.getMapFloorProperty().setValue(newValue.node.getFloor());
+              mapController.zoomToCoordinates(
+                  2, newValue.node.getXCoord(), newValue.node.getYCoord());
+            });
   }
 
   /**

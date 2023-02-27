@@ -15,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiConsumer;
 import javafx.animation.PauseTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -244,6 +245,22 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             });
 
     super.initialize(); // Call the supers initialize method
+
+    // The box with the directions should pop-out when its hovered
+    directionsBox
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              TranslateTransition transition =
+                  new TranslateTransition(Duration.seconds(.5), directionsBox);
+              if (newValue) {
+                transition.setToY(-299);
+              } else {
+                transition.setToY(0);
+              }
+
+              transition.play();
+            });
   }
 
   /** Help, shows the help menu for the visualizer */
