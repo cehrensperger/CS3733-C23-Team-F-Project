@@ -1,13 +1,14 @@
 package edu.wpi.FlashyFrogs.PathFinding;
 
+import static edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity.CURRENT_USER;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -19,6 +20,7 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -67,13 +69,13 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
+  @FXML private SearchableComboBox<String> serviceRequestBox;
   @FXML private CheckBox accessibleBox;
   @FXML private AnchorPane mapPane;
   @FXML private MFXButton mapEditorButton;
   @FXML private DatePicker moveDatePicker;
   @FXML private TableView<Instruction> pathTable;
   @FXML private TableColumn<Instruction, String> pathCol;
-  //  @FXML private Label error;
 
   @FXML Text h1;
   @FXML Text h2;
@@ -81,8 +83,10 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML Text h4;
   @FXML Text h5;
   @FXML Text h6;
+  @FXML Text h7;
 
   boolean hDone = false;
+  List<ServiceRequest> serviceRequests;
 
   /**
    * Initializes the path finder, sets up the floor selector, and the map including default behavior
@@ -115,6 +119,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     h4.setVisible(false);
     h5.setVisible(false);
     h6.setVisible(false);
+    h7.setVisible(false);
     pathTable.setVisible(false);
     next.setVisible(false);
     back.setVisible(false);
@@ -145,15 +150,34 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     algorithms.add("Breadth-first");
     algorithms.add("Depth-first");
 
+    // make the list of User's service requests
+    long userID = CURRENT_USER.getCurrentUser().getId();
+    serviceRequests =
+        session
+            .createQuery(
+                "SELECT s FROM ServiceRequest s WHERE assignedEmp.id = :userID AND s.location IS NOT NULL",
+                ServiceRequest.class)
+            .setParameter("userID", userID)
+            .getResultList();
+
+    List<String> serviceRequestsStrings = new ArrayList<>();
+    for (ServiceRequest request : serviceRequests) {
+      serviceRequestsStrings.add(request.toString());
+    }
+
     // Populate the boxes
     startingBox.setItems(FXCollections.observableList(objects));
     destinationBox.setItems(FXCollections.observableList(objects));
     algorithmBox.setItems(FXCollections.observableList(algorithms));
-
+    if (serviceRequests.isEmpty()) {
+      serviceRequestBox.setVisible(false);
+    } else {
+      serviceRequestBox.setItems(FXCollections.observableList(serviceRequestsStrings));
+    }
     algorithmBox.setValue("A*");
 
     // Get whether the user is an admin
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    boolean isAdmin = CURRENT_USER.getAdmin();
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
@@ -193,6 +217,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
           return row;
         });
+
     // Set up the next button to select the next row
     next.setOnAction(
         event -> {
@@ -232,6 +257,43 @@ public class PathfindingController extends AbstractPathVisualizerController impl
             pathTable.scrollTo(rowIndex);
           }
         });
+
+    serviceRequestBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              long selectedRequestId = -1;
+              String srText = serviceRequestBox.getValue();
+              for (ServiceRequest serviceRequest : serviceRequests) {
+                if (Long.parseLong(srText.substring(srText.indexOf("_") + 1))
+                    == serviceRequest.getId()) {
+                  selectedRequestId = serviceRequest.getId();
+                }
+              }
+              destinationBox
+                  .getSelectionModel()
+                  .select(session.find(ServiceRequest.class, selectedRequestId).getLocation());
+            });
+
+    // Only enables generatePathButton if something is selected for both startingBox and
+    // destinationBox
+    ChangeListener<Object> listener =
+        (observable, oldValue, newValue) -> {
+          // Check if both ComboBoxes have a selected value
+          boolean isComboBox1Selected = startingBox.getValue() != null;
+          boolean isComboBox2Selected = destinationBox.getValue() != null;
+
+          // If both ComboBoxes have a selected value, enable the button, otherwise disable it
+          generatePathButton.setDisable(!isComboBox1Selected || !isComboBox2Selected);
+        };
+
+    // Add the ChangeListener to both ComboBoxes
+    startingBox.valueProperty().addListener(listener);
+    destinationBox.valueProperty().addListener(listener);
+
+    // Initially disable the button if either ComboBox is not selected
+    generatePathButton.setDisable(
+        startingBox.getValue() == null || destinationBox.getValue() == null);
   }
 
   /** Callback to handle the back button being pressed */
@@ -556,6 +618,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h4.setVisible(true);
       h5.setVisible(true);
       h6.setVisible(true);
+      h7.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
@@ -564,6 +627,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h4.setVisible(false);
       h5.setVisible(false);
       h6.setVisible(false);
+      h7.setVisible(false);
       hDone = false;
     }
   }
