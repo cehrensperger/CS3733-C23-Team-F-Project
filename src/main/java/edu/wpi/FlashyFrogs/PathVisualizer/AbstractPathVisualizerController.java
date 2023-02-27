@@ -6,17 +6,30 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinding.PathFinder;
+import edu.wpi.FlashyFrogs.PathFinding.PathfindingController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.commons.math3.util.MathUtils;
 import org.controlsfx.control.PopOver;
 
 /**
@@ -24,6 +37,13 @@ import org.controlsfx.control.PopOver;
  * the map controller, and enables classes that extend this to easily visualize paths
  */
 public abstract class AbstractPathVisualizerController implements IController {
+  protected int selectedIndex = -1;
+  @FXML protected TableView<PathfindingController.Instruction> pathTable;
+  @FXML protected TableColumn<PathfindingController.Instruction, String> pathCol;
+
+  @FXML protected Button back;
+  @FXML protected Button next;
+
   @NonNull protected final MapController mapController; // Map controller
 
   @NonNull protected final Pane map; // Pane representing the map
@@ -67,6 +87,86 @@ public abstract class AbstractPathVisualizerController implements IController {
             text.setVisible(false); // Set hallways to not be visible
           }
         }));
+  }
+
+  @FXML
+  protected void initialize() {
+    pathTable.setVisible(false);
+    next.setVisible(false);
+    back.setVisible(false);
+
+    // Set up the next button to select the next row
+    next.setOnAction(
+        event -> {
+          int rowIndex = pathTable.getSelectionModel().getSelectedIndex();
+          int maxIndex = pathTable.getItems().size() - 1;
+          if (selectedIndex < maxIndex) {
+            selectedIndex++;
+            pathTable.getSelectionModel().select(selectedIndex);
+            PathfindingController.Instruction instruction =
+                pathTable.getSelectionModel().getSelectedItem();
+            if (instruction != null) {
+
+              mapController.getMapFloorProperty().setValue(instruction.node.getFloor());
+              mapController.zoomToCoordinates(
+                  2, instruction.node.getXCoord(), instruction.node.getYCoord());
+            }
+          }
+          if (!pathTable.getItems().isEmpty()) {
+            pathTable.scrollTo(rowIndex);
+          }
+        });
+
+    // Set up the back button to select the previous row
+    back.setOnAction(
+        event -> {
+          int rowIndex = pathTable.getSelectionModel().getSelectedIndex();
+          if (selectedIndex > 0) {
+            selectedIndex--;
+            pathTable.getSelectionModel().select(selectedIndex);
+            PathfindingController.Instruction instruction =
+                pathTable.getSelectionModel().getSelectedItem();
+            if (instruction != null) {
+              mapController.getMapFloorProperty().setValue(instruction.node.getFloor());
+              mapController.zoomToCoordinates(
+                  2, instruction.node.getXCoord(), instruction.node.getYCoord());
+            }
+          }
+          if (!pathTable.getItems().isEmpty()) {
+            pathTable.scrollTo(rowIndex);
+          }
+        });
+
+    pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
+
+    pathTable.setRowFactory(
+        param -> {
+          TableRow<PathfindingController.Instruction> row =
+              new TableRow<>(); // Create a new table row to use
+
+          // When the user selects a row, just un-select it to avoid breaking formatting
+          //          row.selectedProperty()
+          //              .addListener(
+          //
+          //                  // Add a listener that does that
+          //                  (observable, oldValue, newValue) -> row.updateSelected(false));
+
+          // Add a listener to show the pop-up
+          row.setOnMouseClicked(
+              (event) -> {
+                // If the pop over exists and is either not focused or we are showing a new
+                // row
+                if (row != null) {
+                  mapController.getMapFloorProperty().setValue(row.getItem().node.getFloor());
+                  mapController.zoomToCoordinates(
+                      2, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
+                  selectedIndex = row.getIndex();
+                  pathTable.getSelectionModel().select(selectedIndex);
+                }
+              });
+
+          return row;
+        });
   }
 
   /**
@@ -192,6 +292,97 @@ public abstract class AbstractPathVisualizerController implements IController {
     mapController.exit();
   }
 
+  /** Method that generates table for textual path instructions */
+  protected void drawTable(@NonNull Date date) {
+    int continueCounter = 0;
+    pathTable.setVisible(true);
+    next.setVisible(true);
+    back.setVisible(true);
+
+    ObservableList<Instruction> instructions = FXCollections.observableArrayList();
+    double curAngle = 0;
+
+    pathTable.setItems(instructions);
+    for (int i = 0; i < currentPath.size() - 1; i++) { // For each line in the path
+
+      Node thisNode = currentPath.get(i);
+      Node nextNode = currentPath.get(i + 1);
+
+      double target =
+          Math.atan2(
+              (nextNode.getYCoord() - thisNode.getYCoord()),
+              (nextNode.getXCoord() - thisNode.getXCoord()));
+      double errorTheta = target - curAngle;
+      curAngle = target;
+
+      errorTheta = MathUtils.normalizeAngle(errorTheta, 0.0);
+
+      int errorDeg = (int) Math.toDegrees(errorTheta);
+
+      String nodeName =
+          thisNode.getCurrentLocation(mapController.getMapSession(), date).stream()
+              .findFirst()
+              .orElse(new LocationName("", LocationName.LocationType.HALL, ""))
+              .getShortName();
+
+      if (i == 0) {
+        String newFloor = "Starting at floor " + currentPath.get(i).getFloor() + ":";
+        instructions.add(new Instruction(newFloor, thisNode));
+      } else if (currentPath.get(i).getFloor() != currentPath.get(i - 1).getFloor()) {
+        String newFloor = "Going to floor " + currentPath.get(i).getFloor() + ":";
+        instructions.add(new Instruction(newFloor, thisNode));
+      }
+
+      if (nodeName.equals("")) {
+        if (errorDeg < -70) {
+          instructions.add(new Instruction("← Turn Left ", thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > -70) && (errorDeg < -45)) {
+          instructions.add(new Instruction("↖ Take Slight Left ", thisNode));
+          continueCounter = 0;
+        } else if (errorDeg > 70) {
+          instructions.add(new Instruction(" → Turn Right ", thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > 45) && (errorDeg < 70)) {
+          instructions.add(new Instruction("↗ Take Slight Right ", thisNode));
+          continueCounter = 0;
+        } else {
+          if (continueCounter == 0) {
+            instructions.add(new Instruction("↑ Continue", thisNode));
+            continueCounter = continueCounter + 1;
+          }
+        }
+      } else {
+        if (errorDeg < -70) {
+          instructions.add(new Instruction("← Turn Left at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > -70) && (errorDeg < -45)) {
+          instructions.add(new Instruction("↖ Take Slight Left at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if (errorDeg > 70) {
+          instructions.add(new Instruction("→ Turn Right at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else if ((errorDeg > 45) && (errorDeg < 70)) {
+          instructions.add(new Instruction("↗ Take Slight Right at " + nodeName, thisNode));
+          continueCounter = 0;
+        } else {
+          if (continueCounter == 0) {
+            instructions.add(new Instruction("↑ Continue at " + nodeName, thisNode));
+            continueCounter = continueCounter + 1;
+          }
+        }
+      }
+    }
+
+    instructions.add(
+        new Instruction(
+            "You have arrived at "
+                + currentPath
+                    .get(currentPath.size() - 1)
+                    .getCurrentLocation(mapController.getMapSession(), date),
+            currentPath.get(currentPath.size() - 1)));
+  }
+
   /**
    * Zooms the path-finder to the selected node on the floor of that node
    *
@@ -203,5 +394,15 @@ public abstract class AbstractPathVisualizerController implements IController {
 
     // Go to the nodes coordinates
     mapController.zoomToCoordinates(2, node.getXCoord(), node.getYCoord());
+  }
+
+  public static class Instruction {
+    @Getter @Setter private String instruction;
+    @Getter @Setter private Node node;
+
+    Instruction(String instruction, Node node) {
+      this.instruction = instruction;
+      this.node = node;
+    }
   }
 }

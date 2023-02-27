@@ -71,7 +71,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   /** Sets up the move visualizer, including all tables, and the map */
   @SneakyThrows
   @FXML
-  private void initialize() {
+  protected void initialize() {
     // Cancel the timer if it exists
     if (backToVisualizerTimer != null) {
       // Stop the visualizer
@@ -238,6 +238,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             (observable, oldValue, newValue) -> {
               clearNodes(null); // Clear the nodes on floor change
             });
+
+    super.initialize(); // Call the supers initialize method
   }
 
   /** Help, shows the help menu for the visualizer */
