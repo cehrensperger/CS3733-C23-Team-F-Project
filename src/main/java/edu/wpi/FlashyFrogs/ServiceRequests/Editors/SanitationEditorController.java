@@ -105,7 +105,6 @@ public class SanitationEditorController extends ServiceRequestController impleme
   }
 
   public void updateFields() {
-    System.out.println(sanitationReq.getLocation());
     locationBox.setValue(sanitationReq.getLocation());
     sanitationType.setValue(sanitationReq.getType());
     urgency.setValue(sanitationReq.getUrgency());
