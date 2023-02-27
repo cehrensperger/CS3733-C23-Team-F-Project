@@ -45,6 +45,8 @@ import org.hibernate.Session;
  */
 @GeneratedExclusion
 public class MapController {
+  @FXML private MFXButton upFloorButton;
+  @FXML private MFXButton downFloorButton;
   @FXML private Label floorSelector; // Floor selector label
   @FXML private MFXButton floorSelectorButton; // Floor selector button
   @FXML private SearchableComboBox<Display> filterBox; // Box enabling selection of what is showing
@@ -800,5 +802,17 @@ public class MapController {
    */
   public double getMapHeight() {
     return currentDrawingPane.getHeight();
+  }
+
+  /** Toggles the controls of the map, so that they can be made invisible and disabled */
+  public void toggleMapControls() {
+    // Disable all the controls, visible also makes things invisible
+    upFloorButton.setVisible(!upFloorButton.isVisible());
+    upFloorButton.getParent().setVisible(!upFloorButton.getParent().isVisible());
+    downFloorButton.setVisible(!downFloorButton.isVisible());
+    downFloorButton.getParent().setVisible(!downFloorButton.getParent().isVisible());
+    floorSelector.setVisible(!floorSelector.isVisible());
+    floorSelectorButton.setVisible(!floorSelectorButton.isVisible());
+    filterBox.setVisible(!filterBox.isVisible());
   }
 }
