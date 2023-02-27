@@ -44,9 +44,7 @@ import javax.swing.*;
 @GeneratedExclusion
 public class MedicineController implements IController {
 
-    public TextField reason;
-    @FXML
-    TextField personal1;
+    @FXML TextField reason;
     @FXML
     TextField medicine;
     @FXML
