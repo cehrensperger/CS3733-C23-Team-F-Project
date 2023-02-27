@@ -207,7 +207,6 @@ public class MedicineController implements IController {
     Fapp.handleBack();
   }
 
-
   public void help() {
     if (!hDone) {
       h1.setVisible(true);

@@ -12,6 +12,8 @@ import javafx.scene.text.Text;
 @GeneratedExclusion
 public class CreditsController implements IController {
 
+  @FXML MFXButton MD;
+  @FXML MFXButton religious;
   @FXML MFXButton credits;
   @FXML MFXButton back;
   @FXML MFXButton AV;
@@ -44,6 +46,14 @@ public class CreditsController implements IController {
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "SecurityService");
+  }
+
+  public void handleMD(ActionEvent actionEvent) throws IOException {
+    Fapp.handleBack();
+  }
+
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.handleBack();
   }
 
   public void handleCredits(ActionEvent actionEvent) throws IOException {
