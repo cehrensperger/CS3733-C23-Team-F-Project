@@ -3,18 +3,23 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
+<?import org.controlsfx.control.tableview2.TableColumn2?>
+<?import org.controlsfx.control.tableview2.TableView2?>
 
 <AnchorPane styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MoveVisualizer.MoveVisualizerController">
    <children>
@@ -133,7 +138,7 @@
                </BorderPane.margin>
                <children>
                   <SVGPath content="M1.93115 43.4038C-0.607258 45.9422 -0.607258 50.0578 1.93115 52.5962L43.2969 93.9619C45.8353 96.5003 49.9509 96.5003 52.4893 93.9619C55.0277 91.4235 55.0277 87.308 52.4893 84.7696L15.7197 48L52.4893 11.2304C55.0277 8.69204 55.0277 4.57647 52.4893 2.03806C49.9509 -0.500349 45.8353 -0.500349 43.2969 2.03806L1.93115 43.4038ZM126.527 41.5L6.52734 41.5V54.5L126.527 54.5V41.5Z" styleClass="yellow" />
-                  <Text fx:id="leftLocation" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldWhite" text="this is a lcoation" textAlignment="CENTER" wrappingWidth="175.0" />
+                  <Text fx:id="leftLocation" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldWhite" textAlignment="CENTER" wrappingWidth="175.0" />
                </children>
             </VBox>
          </left>
@@ -144,7 +149,7 @@
                </BorderPane.margin>
                <children>
                   <SVGPath content="M124.596 52.5962C127.135 50.0578 127.135 45.9422 124.596 43.4038L83.2304 2.03806C80.692 -0.500349 76.5765 -0.500349 74.0381 2.03806C71.4997 4.57647 71.4997 8.69204 74.0381 11.2304L110.808 48L74.0381 84.7696C71.4997 87.308 71.4997 91.4235 74.0381 93.9619C76.5765 96.5003 80.692 96.5003 83.2304 93.9619L124.596 52.5962ZM120 41.5L-7.62939e-06 41.5V54.5L120 54.5V41.5Z" styleClass="yellow" />
-                  <Text fx:id="rightLocation" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldWhite" text="This is a lcoation" textAlignment="CENTER" wrappingWidth="175.0" />
+                  <Text fx:id="rightLocation" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerBoldWhite" textAlignment="CENTER" wrappingWidth="175.0" />
                </children>
             </VBox>
          </right>
@@ -155,5 +160,63 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </BorderPane>
+      <VBox fx:id="directionsBox" alignment="TOP_CENTER" prefHeight="329.0" prefWidth="257.0" spacing="10.0" styleClass="sidebar-color" AnchorPane.bottomAnchor="-299.0" AnchorPane.rightAnchor="230.0">
+         <children>
+            <AnchorPane maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="257.0" styleClass="blueNoRadius">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyBoldWhite" text="Pathfinding Directions" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0" />
+                  <SVGPath content="M7.49991 0L14.9999 10H-8.50683e-05L7.49991 0Z" styleClass="bodyBoldWhite" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0" />
+               </children>
+            </AnchorPane>
+            <TableView2 fx:id="pathTable" prefHeight="276.0" prefWidth="237.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </VBox.margin>
+               <columns>
+                  <TableColumn2 fx:id="pathCol" prefWidth="75.0" text="Directions" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView2>
+            <HBox alignment="CENTER" spacing="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="subtext" text="Previous" wrappingWidth="41.0">
+                     <HBox.margin>
+                        <Insets right="-0.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="subtext" text="  Next" wrappingWidth="41.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="108.0" prefWidth="192.0" spacing="90.0">
+               <children>
+                  <Button fx:id="back" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="-90.0" stroke="#012d5a" strokeType="INSIDE" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="next" mnemonicParsing="false" style="-fx-background-color: transparent;" textFill="WHITE">
+                     <graphic>
+                        <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="90.0" stroke="#012d5a" strokeType="INSIDE" strokeWidth="2.0" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
    </children>
+   <stylesheets>
+      <URL value="@../views/NewStyle.css" />
+      <URL value="@../views/NotColors.css" />
+   </stylesheets>
 </AnchorPane>

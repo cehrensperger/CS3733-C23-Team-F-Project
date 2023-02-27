@@ -79,15 +79,29 @@ public class LoginController implements IController {
                           loginButton(null); // Try logging in
                         } else {
                           if (!backgroundText.equals("")) {
-                            for (UserLogin user : users.values()) {
-                              if (user.checkRFIDBadgeEqual(backgroundText)) {
-                                CurrentUserEntity.CURRENT_USER.setCurrentUser(user.getUser());
-                                Fapp.setScene("views", "Home");
-                                Fapp.logIn();
-                                CurrentUserEntity.CURRENT_USER.setCurrentUser(user.getUser());
-                                backgroundText = ""; // Clear the background text
-                                return;
-                              }
+                            UserLogin user;
+                            String id = backgroundText.substring(5, 10);
+                            String pw = backgroundText.substring(0, 5);
+                            System.out.println(id);
+                            System.out.println(pw);
+                            try (Session session = CONNECTION.getSessionFactory().openSession()) {
+                              // Get the users, cache them
+                              user =
+                                  session
+                                      .createQuery(
+                                          "FROM UserLogin WHERE RFIDBadge = :id", UserLogin.class)
+                                      .setParameter("id", id)
+                                      .uniqueResult();
+                            }
+                            System.out.println(user.getUserName());
+                            System.out.println(user.checkRFIDBadgeEqual(pw));
+                            if (user.checkRFIDBadgeEqual(pw)) {
+                              CurrentUserEntity.CURRENT_USER.setCurrentUser(user.getUser());
+                              Fapp.setScene("views", "Home");
+                              Fapp.logIn();
+                              CurrentUserEntity.CURRENT_USER.setCurrentUser(user.getUser());
+                              backgroundText = ""; // Clear the background text
+                              return;
                             }
 
                             backgroundText = ""; // Clear the text otherwise
@@ -146,7 +160,7 @@ public class LoginController implements IController {
 
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
-    System.out.println("opening pathfinding");
+    //    System.out.println("opening pathfinding");
     CurrentUserEntity.CURRENT_USER.setCurrentUser(
         new HospitalUser("a", "a", "a", HospitalUser.EmployeeType.STAFF, new Department()));
     Fapp.setScene("Pathfinding", "Pathfinding");
