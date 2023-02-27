@@ -530,8 +530,6 @@ public class HomeController implements IController {
         });
 
     for (Alert a : list) {
-      System.out.println(a.getStartDisplayDate());
-      System.out.println(Date.from(Instant.now()));
       if (a.getStartDisplayDate().before(Date.from(Instant.now()))
           && a.getEndDisplayDate().after(Date.from(Instant.now()))) {
         insertAlert(a);
