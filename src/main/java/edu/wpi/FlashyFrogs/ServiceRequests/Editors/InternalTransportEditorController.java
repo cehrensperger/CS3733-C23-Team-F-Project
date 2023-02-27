@@ -2,7 +2,6 @@ package edu.wpi.FlashyFrogs.ServiceRequests.Editors;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.HospitalUser;
 import edu.wpi.FlashyFrogs.ORM.InternalTransport;
@@ -171,25 +170,6 @@ public class InternalTransportEditorController extends ServiceRequestController
 
       Date dateOfTransport =
           Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-      InternalTransport transport =
-          new InternalTransport(
-              patient.getText(),
-              vision.getValue(),
-              hearing.getValue(),
-              consciousness.getValue(),
-              condition.getValue(),
-              from.getValue(),
-              to.getValue(),
-              urgency.getValue(),
-              equipment.getValue(),
-              dateOfTransport,
-              Date.from(Instant.now()),
-              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
-              mode.getValue(),
-              isolation.isSelected(),
-              personal.getText(),
-              reason.getText());
 
       tpReq.setReason(reason.getText());
       tpReq.setAssignedEmp(assignedBox.getValue());
