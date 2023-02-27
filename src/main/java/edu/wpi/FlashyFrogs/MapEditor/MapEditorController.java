@@ -1,6 +1,7 @@
 package edu.wpi.FlashyFrogs.MapEditor;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.round;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
@@ -216,7 +217,7 @@ public class MapEditorController implements IController {
                   Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND);
 
                   row.setOnMouseExited(
-                      event15 -> {
+                      event5 -> {
                         Fapp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
                         row.setOnMousePressed(p -> {});
                         row.setOnMouseReleased(p -> {});
@@ -252,7 +253,7 @@ public class MapEditorController implements IController {
                               double xPos = event12.getX() - mapPane.getLayoutX();
                               double yPos = event12.getY() - mapPane.getLayoutY();
 
-                              double kp = 0.03;
+                              double kp = 0.01;
                               double errorX = xPos - (mapPane.getWidth() / 2);
                               double errorY = yPos - (mapPane.getHeight() / 2);
                               double[] effortX = {0};
@@ -279,14 +280,14 @@ public class MapEditorController implements IController {
                                     }
                                   };
 
-                              timer.scheduleAtFixedRate(task, 0, 15);
+                              timer.scheduleAtFixedRate(task, 0, 5);
                             });
 
                         root.setOnDragDone(
                             event1 -> {
                               locationDragText.setVisible(false);
                               if (timer != null) timer.cancel();
-                              task.cancel();
+                              if (task != null) task.cancel();
                             });
 
                         for (Node node : mapController.getNodeToCircleMap().keySet()) {
@@ -619,14 +620,14 @@ public class MapEditorController implements IController {
               });
           mapPane.setOnDragExited(
               e -> {
-                task.cancel();
+                if (task != null) task.cancel();
                 duplicateCircle.setVisible(false);
                 event.consume();
               });
           root.setOnDragDone(
               e -> {
                 if (timer != null) timer.cancel();
-                task.cancel();
+                if (task != null) task.cancel();
                 duplicateCircle.setVisible(false);
                 event.consume();
               });
@@ -649,7 +650,7 @@ public class MapEditorController implements IController {
                   duplicateCircle.setFill(Paint.valueOf("012D5A"));
                   duplicateCircle.setCenterX(e.getX());
                   duplicateCircle.setCenterY(e.getY());
-                  double kp = 0.03;
+                  double kp = 0.01;
                   double errorX = e.getX() - (mapPane.getWidth() / 2);
                   double errorY = e.getY() - (mapPane.getHeight() / 2);
                   double[] effortX = {0};
@@ -676,7 +677,7 @@ public class MapEditorController implements IController {
                         }
                       };
 
-                  timer.scheduleAtFixedRate(task, 0, 15);
+                  timer.scheduleAtFixedRate(task, 0, 5);
                   // X bounds
                   if (e.getX() < 0) {
                     duplicateCircle.setVisible(false);
@@ -705,8 +706,7 @@ public class MapEditorController implements IController {
 
     duplicateCircle.setOnDragDropped(
         event -> {
-          task.cancel();
-          System.out.println("i got here");
+          if (task != null) task.cancel();
           GesturePane gesturePane = mapController.getGesturePane();
           double scale = gesturePane.getCurrentScale();
           double x = (duplicateCircle.getCenterX() / scale) + gesturePane.getCurrentX() * -1;
@@ -967,7 +967,8 @@ public class MapEditorController implements IController {
   }
 
   public void onClose() {
-    task.cancel();
+    if (task != null) task.cancel();
+    if (timer != null) timer.cancel();
     mapController.exit();
   }
 
@@ -1037,6 +1038,24 @@ public class MapEditorController implements IController {
    */
   private void moveCircleToPosition(
       @NonNull Circle circle, @NonNull Node node, int newX, int newY) {
+
+    if (circle.getCenterX() < 5) {
+      return;
+    }
+    if (mapController.getNodeToLocationBox().get(node).getLayoutY() < 5) {
+      return;
+    }
+    if (mapController.getNodeToLocationBox().get(node).getLayoutY()
+            + mapController.getNodeToLocationBox().get(node).getHeight()
+        > mapController.getCurrentDrawingPane().getHeight() - 5) {
+      return;
+    }
+    if (mapController.getNodeToLocationBox().get(node).getLayoutX()
+            + mapController.getNodeToLocationBox().get(node).getWidth()
+        > mapController.getCurrentDrawingPane().getWidth() - 5) {
+      return;
+    }
+
     // Update the positions
     circle.setCenterX(newX); // X
     circle.setCenterY(newY); // Y
@@ -1124,7 +1143,7 @@ public class MapEditorController implements IController {
           int xDiff = (int) Math.round(event.getX()) - node.getXCoord();
           int yDiff = (int) Math.round(event.getY()) - node.getYCoord();
 
-          // Check to make sure that each dragged node is in bounds
+          // get the 4 outside most nodes
           Node lowest = selectedNodes.get(0);
           Node highest = selectedNodes.get(0);
           Node left = selectedNodes.get(0);
@@ -1132,8 +1151,8 @@ public class MapEditorController implements IController {
           for (Node selectedNode : selectedNodes) {
             if (selectedNode.getXCoord() < left.getXCoord()) left = selectedNode;
             if (selectedNode.getXCoord() > right.getXCoord()) right = selectedNode;
-            if (selectedNode.getYCoord() < lowest.getXCoord()) lowest = selectedNode;
-            if (selectedNode.getYCoord() > highest.getXCoord()) highest = selectedNode;
+            if (selectedNode.getYCoord() > lowest.getYCoord()) lowest = selectedNode;
+            if (selectedNode.getYCoord() < highest.getYCoord()) highest = selectedNode;
           }
 
           double mapCenterX =
@@ -1148,12 +1167,7 @@ public class MapEditorController implements IController {
                           / mapController.getGesturePane().getCurrentScaleY())
                       / 2);
 
-          System.out.print(mapCenterX + "\t");
-          System.out.print(mapController.getGesturePane().getWidth() / 2 + "\t");
-          System.out.print(mapController.getCurrentDrawingPane().getWidth() / 2 + "\t");
-          System.out.println(mapController.getGesturePane().getCurrentX());
-
-          double kp = 0.03;
+          double kp = 0.01;
           double leftErrorX =
               mapController.getNodeToCircleMap().get(left).getCenterX() - mapCenterX;
           double rightErrorX =
@@ -1185,21 +1199,44 @@ public class MapEditorController implements IController {
             effortY[0] = lowErrorY * kp;
           }
 
-          if (task != null) task.cancel();
+          if (task != null) {
+            task.cancel();
+          }
+
+          Node finalLeft = left;
+          Node finalRight = right;
+          Node finalHighest = highest;
+          Node finalLowest = lowest;
 
           task =
               new TimerTask() {
                 @Override
                 public void run() {
+
                   Platform.runLater(
                       () ->
                           mapController
                               .getGesturePane()
                               .translateBy(new Dimension2D(effortX[0], effortY[0])));
+
+                  Platform.runLater(
+                      () -> {
+                        for (Node node : selectedNodes) {
+                          moveCircleToPosition(
+                              mapController.getNodeToCircleMap().get(node),
+                              node,
+                              (int)
+                                  (mapController.getNodeToCircleMap().get(node).getCenterX()
+                                      + effortX[0]),
+                              (int)
+                                  (mapController.getNodeToCircleMap().get(node).getCenterY()
+                                      + effortY[0]));
+                        }
+                      });
                 }
               };
 
-          timer.scheduleAtFixedRate(task, 0, 15);
+          timer.scheduleAtFixedRate(task, 0, 5);
 
           // For each selected node
           for (Node selectedNode : selectedNodes) {
@@ -1220,7 +1257,7 @@ public class MapEditorController implements IController {
     // On drag stop, this is the only thing that represents that for some reason
     circle.setOnMouseReleased(
         (event) -> {
-          task.cancel();
+          if (task != null) task.cancel();
           if (timer != null) timer.cancel();
 
           // If a drag isn't in progress (for instance simple release)
@@ -1329,7 +1366,6 @@ public class MapEditorController implements IController {
                   event1 -> {
                     for (Node n : selectedNodes) {
                       for (LocationName loc : mapController.getNodeToLocationNameMap().get(n)) {
-                        System.out.println(loc);
                         mapController.removeLocationName(loc);
                       }
                     }
@@ -1530,6 +1566,11 @@ public class MapEditorController implements IController {
       return;
     }
 
+    Node lowest = selectedNodes.get(0);
+    Node highest = selectedNodes.get(0);
+    Node left = selectedNodes.get(0);
+    Node right = selectedNodes.get(0);
+
     Collection<Node> nodes =
         selectedNodes.stream().toList(); // Collection of nodes, so that we can remove them
 
@@ -1546,9 +1587,43 @@ public class MapEditorController implements IController {
         Sound.ERROR.play();
         throw new IllegalArgumentException("Duplicate position detected!");
       }
+
+      if (node.getXCoord() < left.getXCoord()) left = node;
+      else if (node.getXCoord() > right.getXCoord()) right = node;
+      else if (node.getYCoord() > lowest.getYCoord()) lowest = node;
+      else if (node.getYCoord() < highest.getYCoord()) highest = node;
     }
 
     selectedNodes.clear(); // Clear the selected nodes. Do this all at once for efficiency
+
+    if (mapController.getNodeToCircleMap().get(left).getCenterX() < 20) {
+      xDiff = 200 - left.getXCoord();
+    }
+    if (mapController.getNodeToLocationBox().get(highest).getLayoutY() < 20) {
+      yDiff = 200 - highest.getYCoord();
+    }
+    if (mapController.getNodeToLocationBox().get(lowest).getLayoutY()
+            + mapController.getNodeToLocationBox().get(lowest).getHeight()
+        > mapController.getCurrentDrawingPane().getHeight() - 20) {
+      yDiff =
+          (int)
+              (round(
+                      (mapController.getCurrentDrawingPane().getHeight()
+                              - mapController.getNodeToLocationBox().get(lowest).getHeight())
+                          - 200)
+                  - lowest.getYCoord());
+    }
+    if (mapController.getNodeToLocationBox().get(right).getLayoutX()
+            + mapController.getNodeToLocationBox().get(right).getWidth()
+        > mapController.getCurrentDrawingPane().getWidth() - 20) {
+      xDiff =
+          (int)
+              (round(
+                      (mapController.getCurrentDrawingPane().getWidth()
+                              - -mapController.getNodeToLocationBox().get(right).getWidth())
+                          - 200)
+                  - right.getXCoord());
+    }
 
     // Now actually do the move
     for (Node node : nodes) {
@@ -1714,14 +1789,6 @@ public class MapEditorController implements IController {
                   .getCurrentDrawingPane()
                   .setOnMouseDragged(
                       e -> {
-                        //                        System.out.println(mapPane.getWidth());
-                        //
-                        // System.out.println(mapController.getGesturePane().getWidth());
-                        //
-                        // System.out.println(mapController.getCurrentDrawingPane().getWidth());
-                        //
-                        // System.out.println(mapController.getGesturePane().getCurrentX());
-
                         if (!e.isConsumed()) {
                           double width = e.getX() - startX;
                           double height = e.getY() - startY;
@@ -1844,7 +1911,7 @@ public class MapEditorController implements IController {
                                 }
                               };
 
-                          timer.scheduleAtFixedRate(task, 0, 15);
+                          timer.scheduleAtFixedRate(task, 0, 5);
                         }
                       });
 
