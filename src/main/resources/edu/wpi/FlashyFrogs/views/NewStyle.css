@@ -532,3 +532,17 @@
     -fx-background-radius: 10;
     -fx-border-radius: 10;
 }
+
+.navSlide:focused
+    /** This controls the background color of the menu-item when it is hovered over **/
+{
+    -fx-background-color: #F6BD38;
+    -fx-text-fill: #012D5A;
+}
+
+.navSlide:selected
+    /** This controls the background color of the menu-item when it is hovered over **/
+{
+    -fx-background-color: #F6BD38;
+    -fx-text-fill: #012D5A;
+}
