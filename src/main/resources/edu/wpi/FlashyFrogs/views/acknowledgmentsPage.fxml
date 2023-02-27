@@ -17,27 +17,66 @@
                <content>
                   <VBox prefHeight="385.0" prefWidth="554.0">
                      <children>
-                        <TextFlow prefHeight="21.0" prefWidth="554.0">
-                           <children>
-                              <Label styleClass="bodyBold" text="Software Used:" />
-                           </children>
-                        </TextFlow>
-                        <TextFlow prefHeight="50.0" prefWidth="554.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="IntelliJ, Figma, SceneBuilder, Google Workspace, Docker, PostrgresQL, Slack, Discord&#13;" />
-                           </children>
-                        </TextFlow>
-                        <TextFlow prefHeight="20.0" prefWidth="554.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold" />
-                              <Label styleClass="bodyBold" text="Dependencies:" />
-                           </children>
-                        </TextFlow>
-                        <TextFlow prefHeight="118.0" prefWidth="554.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="palexdev/MaterialFX GitHub Repository,&#13; tom91136/GestureFX GitHub Repository,&#13; MVN Repository ControlsFX 11.1.2,&#13; MVN Repository Apache Derby Client JDBC Driver 10.16.1.1,&#13; Apache Derby 10.16.1.1 Release,&#13; MVN Repository Apache Derby Shared Code 10.16.1.1,&#13; MVN repository SLF4J API Module 1.7.30,&#13; MVN Repository SLF4J Simple Binding 1.7.30,&#13; MVN Repository UCP 19.6.0.0,&#13; MVN Repositpry Ojdbc8 19.6.0.0, MVN Repository HIbernate Core RElocation 6.1.6.Final,&#13; Ehcache 3.10 Documentation,&#13; Ehcache 3.10 Documentation,&#13; MVN Repository Old JAXB Core 4.0.2,&#13; MVN Repository,&#13; MVN Repository,&#13; JAXB API 2.3.1,&#13; JAXB Runtime 4.0.2,&#13; MVN Repository PostgreSQL JDBC Driver 42.5.1,&#13; MVN Repository Argon2 JVM 2.1.1,&#13; MVN Repository Argon2 JVM 2.1.1,&#13; onexip/FlexBoxFX GitHub Repository,&#13; hervegirod/fxsgimage GitHub Repository" wrappingWidth="546.38671875" />
-                           </children>
-                        </TextFlow>
+                              <Label styleClass="bodyBold" text="APIs:&#13;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Java OpenJDK 17.0.5 LTS&#13;
+JavaFX 19 SDK&#13;
+MaterialFX 11.13.8&#13;
+GestureFX 0.7.1&#13;
+ControlsFX 11.1.2&#13;
+SQLite JDBC 3.30.1&#13;
+ApacheDerby 10.16.1.1&#13;
+SLF4J API 1.7.30 and Simple Binding 1.7.30&#13;
+Oracle Database JDBC UCP 19.6.0.0 and OJDBC8 19.6.0.0&#13;
+Hibernate 6.1.6.Final&#13;
+Ehcache 3.10.6&#13;
+JAXB Core 4.0.2&#13;
+JAXB API 2.3.1&#13;
+JAXB Runtime 4.0.2&#13;
+PostgreSQL JDBC Driver 42.5.1&#13;
+Argon2 JVM 2.11&#13;
+FlexBoxFX 0.1.5.3-SNAPSHOT&#13;
+fxsvgimage 1.1&#13;
+Java Native Access 5.12.1&#13;
+Hibernate ORM C3P0 6.1.6.Final&#13;
+JFoeniX 9.0.10&#13;
+Apache Commons Math 3.6.1&#13;
+TestFX Core 4.0.16-alpha&#13;
+JUnit Jupiter API 5.8.1&#13;
+TestFX JUnit 5 4.0.16-alpha&#13;
+OJDBC10 19.3.0.0&#13;
+JUnit Jupiter Engine 5.8.1&#13;
+JUnit Jupiter (Aggregator) 5.6.0&#13;" />
+                              <Label styleClass="bodyBold" text="Icons:&#13;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Icons on left sidebar when logged in: SVG Repo https://www.svgrepo.com/&#13;
+Mass General Brigham icon and text on navbar at top: color and font altered from the one present on the Brigham and Women’s website https://www.massgeneralbrigham.org/content/experience-fragments/mgb-global/global/en/site/footer/master/_jcr_content/root/container_1627538517/container/container/image.coreimg.svg/1672848798937/logo-with-white-text.svg&#13;
+Mass General Brigham icon and text on login page: Brigham and Women’s website https://give.brighamandwomens.org/wp-content/uploads/2021/06/Brigham_and_Womens_Hospital_horiz_rgb-1.png&#13;
+" wrappingWidth="546.38671875" />
+                              <Label styleClass="bodyBold" text="Images:&#13;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Image of hospital building on Home.fxml (Brigham-Womens-TO-USE.jpg): Brigham and Women’s website https://www.massgeneralbrigham.org/content/mgb-global/global/en/patient-care/international/about/brigham-and-womens-hospital/_jcr_content/root/container_924996778/hero_banner.coreimg.jpeg/1667229588893/international-bwh-1428x1110.jpeg&#13;
+Map of hospital floors (L1.png, L2.png, one.png, two.png, three.png): provided by Brigham and Women’s Hospital&#13;
+" wrappingWidth="546.38671875" />
+                              <Label styleClass="bodyBold" text="Plugins:&#13;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Jacoco&#13;
+Spotless 6.14.0&#13;
+io.freefair.lombok 6.6.1&#13;
+org.openjfx.javafxplugin 0.0.13&#13;
+" wrappingWidth="546.38671875" />
+                              <Label styleClass="bodyBold" text="Repositories:&#13;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="MavenCentral&#13;
+JCenter&#13;
+https://apisite.crmyers.dev/maven&#13;
+JitPack&#13;
+OSS Sonatype Snapshots Nexus Repository Manager&#13;
+" wrappingWidth="546.38671875" />
+                              <Label styleClass="bodyBold" text="Miscellaneous:&#13;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Coded in IntelliJ Ultimate and SceneBuilder 19.0.0&#13;
+UI mockups created with Figma&#13;
+Diagrams created with draw.io&#13;
+Team communication platforms: Slack and Discord&#13;
+Ran and tested program on Docker&#13;
+Version control software: GitHub&#13;
+Error and submit sounds (Error.wav, Submitted.wav) : Lindsey Mraz using Ableton Live 11 and Audacity&#13;
+" wrappingWidth="546.38671875" />
                      </children>
                   </VBox>
                </content>

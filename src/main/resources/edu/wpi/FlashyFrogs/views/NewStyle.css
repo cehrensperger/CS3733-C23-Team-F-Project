@@ -525,3 +525,12 @@
     -fx-fill: #F6BD38;
     -fx-background-color: #F6BD38;
 }
+
+.scroll-pane {
+    /** Right now, only used on acknowledgementsPage as a placeholder **/
+    -fx-background-color: transparent;
+}
+.scroll-pane > .viewport {
+    /** Right now, only used on acknowledgementsPage as a placeholder **/
+    -fx-background-color: transparent;
+}
