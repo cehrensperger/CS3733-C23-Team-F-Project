@@ -183,6 +183,7 @@ public class ITController implements IController {
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         submit.setDisable(true);
@@ -237,6 +238,14 @@ public class ITController implements IController {
 
   public void handleEquipment(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "EquipmentTransport");
+  }
+
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
   }
 
   public void handleIT(ActionEvent actionEvent) throws IOException {

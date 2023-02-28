@@ -181,6 +181,7 @@ public class SanitationController implements IController {
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         submit.setDisable(true);
@@ -231,6 +232,14 @@ public class SanitationController implements IController {
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
+  }
+
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
   }
 
   public void handleEquipment(ActionEvent actionEvent) throws IOException {

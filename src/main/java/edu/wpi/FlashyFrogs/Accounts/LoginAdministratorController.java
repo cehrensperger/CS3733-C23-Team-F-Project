@@ -38,7 +38,6 @@ public class LoginAdministratorController implements IController {
   @FXML private TableColumn<UserLogin, HospitalUser.EmployeeType> empTypeCol;
   @FXML private TableColumn<UserLogin, Department> deptCol;
   @FXML private Button addNewUser;
-  @FXML private Button back;
 
   @FXML Text h1;
   boolean hDone = false;
@@ -57,14 +56,12 @@ public class LoginAdministratorController implements IController {
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
     addNewUser.setDisable(true);
-    back.setDisable(true);
     popOver
         .showingProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
               if (!newValue) {
                 addNewUser.setDisable(false);
-                back.setDisable(false);
               }
             });
   }
@@ -142,14 +139,12 @@ public class LoginAdministratorController implements IController {
             Node node = (Node) event.getSource();
             popOver.show(node.getScene().getWindow());
             addNewUser.setDisable(true);
-            back.setDisable(true);
             popOver
                 .showingProperty()
                 .addListener(
                     (observable, oldValue, newValue) -> {
                       if (!newValue) {
                         addNewUser.setDisable(false);
-                        back.setDisable(false);
                       }
                     });
           }

@@ -27,7 +27,7 @@ public class AboutController {
     if (currentPopOver != null) {
       currentPopOver.hide();
     }
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/TeamMemberPopup.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("About/TeamMemberPopup.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     currentPopOver = popOver;
     popOver.detach();

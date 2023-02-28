@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="VBox" alignment="TOP_CENTER" fillWidth="false" minHeight="550.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AboutController">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="About" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin></Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="This application was created for Worcester Polytechnic Institute’s C23 Software Engineering (CS3733) class, which was taught by Professor Wilson Wong, who is a member of WPI’s Computer Science Department. It was made possible by the aforementioned university, department, and professor; the time and input of Brigham and Women’s Hospital, especially Senior Planner Andrew Shinn; and the development team Flashy Frogs and their TA and Team Coach Michael O'Connor. Flashy Frogs members are listed below. Click on their names for more information!" wrappingWidth="800.0">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Text>
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Joseph.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Assistant Lead Software Engineer">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Joseph Cardarelli" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Connor.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Assistant Lead Software Engineer">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Connor Ehrensperger" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Audrey.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Assistant Lead Software Engineer">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Audrey Mongillo" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Kyla.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Documentation Analyst">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Kyla Driscoll" />
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Jonathan.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Scrum Master">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Jonathan Golden" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Owen.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Project Manager">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Owen Krause" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Lindsey.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Product Owner">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Lindsey Mraz" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Emre.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Back-End Database Engineer">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Rusen Sabaz" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Ian.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text styleClass="bodyTextObject" text="Lead Software Engineer">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></Text>
+                  <Text onMouseClicked="#showTeamMemberInfo" styleClass="bodyTextObject" text="Ian Wright" />
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <Text styleClass="bodyTextObject" text="The Brigham &amp; Women's Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes.">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Text>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</VBox>

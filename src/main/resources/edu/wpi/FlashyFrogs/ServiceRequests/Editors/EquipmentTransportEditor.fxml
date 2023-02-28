@@ -50,6 +50,20 @@
                                         <Insets bottom="18.0" />
                                     </VBox.margin>
                                 </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Admin Information" wrappingWidth="250.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin>
+                        </Text>
+                        <SearchableComboBox fx:id="assignedBox" promptText="Assigned User" styleClass="fields">
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin>
+                        </SearchableComboBox>
+                        <SearchableComboBox fx:id="statusBox" promptText="Status" styleClass="fields" />
                             </children>
                             <HBox.margin>
                                 <Insets right="50.0" />
@@ -99,7 +113,7 @@
                                         </HBox>
                                         <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                             <children>
-                                                <MFXButton fx:id="submit" alignment="CENTER" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
+                                                <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
                                                     <font>
                                                         <Font size="16.0" />
                                                     </font>

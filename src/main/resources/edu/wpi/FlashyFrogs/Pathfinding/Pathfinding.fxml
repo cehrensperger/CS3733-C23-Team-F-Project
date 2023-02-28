@@ -156,11 +156,6 @@
             </AnchorPane>
          </children>
       </StackPane>
-      <MFXButton onAction="#handleBack" prefHeight="32.0" prefWidth="184.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </MFXButton>
       <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="19.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Map Editor" visible="false" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />

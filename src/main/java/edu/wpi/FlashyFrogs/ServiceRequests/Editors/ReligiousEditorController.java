@@ -23,35 +23,30 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class EquipmentEditorController extends ServiceRequestController implements IController {
-  @FXML Rectangle check2;
-  @FXML Rectangle check1;
+public class ReligiousEditorController extends ServiceRequestController implements IController {
+
   @FXML MFXButton clear;
   @FXML MFXButton submit;
-
-  @FXML TextField equipment;
-  @FXML SearchableComboBox<LocationName> to;
-  @FXML SearchableComboBox<LocationName> from;
-  @FXML DatePicker date;
-  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
-  @FXML TextField description;
+  @FXML Label errorMessage;
   @FXML SearchableComboBox<HospitalUser> assignedBox;
   @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
-
-  private EquipmentTransport tpReq = new EquipmentTransport();
-  PopOver popOver;
-
-  @FXML private Label errorMessage;
+  @FXML TextField patient;
+  @FXML SearchableComboBox<LocationName> locationofPatient;
+  @FXML TextField religion;
+  @FXML TextField requestDescription;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
+  @FXML DatePicker serviceDate;
 
   boolean hDone = false;
   private Connection connection = null;
+  private Religion relReq = new Religion();
+  PopOver popOver;
 
   public void initialize() {
 
@@ -66,28 +61,27 @@ public class EquipmentEditorController extends ServiceRequestController implemen
 
     users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
-    to.setItems(FXCollections.observableArrayList(locations));
-    from.setItems(FXCollections.observableArrayList(locations));
-    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
+    locationofPatient.setItems(FXCollections.observableArrayList(locations));
     assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
   }
 
   public void updateFields() {
-    description.setText(tpReq.getDescription());
-    to.setValue(tpReq.getLocation());
-    from.setValue(tpReq.getMoveTo());
-    urgency.setValue(tpReq.getUrgency());
-    equipment.setText(tpReq.getEquipment());
-    statusBox.setValue(tpReq.getStatus());
-    date.setValue(
-        Instant.ofEpochMilli(tpReq.getDate().getTime())
+    patient.setText(relReq.getPatientID());
+    locationofPatient.setValue(relReq.getLocation());
+    assignedBox.setValue(relReq.getAssignedEmp());
+    urgency.setValue(relReq.getUrgency());
+    serviceDate.setValue(
+        Instant.ofEpochMilli(relReq.getDate().getTime())
             .atZone(ZoneId.systemDefault())
             .toLocalDate());
-
-    if (tpReq.getAssignedEmp() != null) {
-      assignedBox.setValue(tpReq.getAssignedEmp());
+    requestDescription.setText(relReq.getDescription());
+    statusBox.setValue(relReq.getStatus());
+    religion.setText(relReq.getReligion());
+    if (relReq.getAssignedEmp() != null) {
+      assignedBox.setValue(relReq.getAssignedEmp());
     }
   }
 
@@ -99,32 +93,31 @@ public class EquipmentEditorController extends ServiceRequestController implemen
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    System.out.println("here");
+
     try {
       // check
-      if (equipment.getText().equals("")
-          || to.getValue().toString().equals("")
-          || from.getValue().toString().equals("")
-          || date.getValue().toString().equals("")
-          || urgency.getValue().toString().equals("")
-          || description.getText().equals("")) {
-        System.out.println("here2");
+      if (locationofPatient.getValue().toString().equals("")
+          || patient.getText().equals("")
+          || religion.getText().equals("")
+          || serviceDate.getValue().toString().equals("")
+          || requestDescription.getText().equals("")) {
         throw new NullPointerException();
       }
 
-      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      Date dateOfRequest =
+          Date.from(serviceDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      tpReq.setEquipment(equipment.getText());
-      tpReq.setAssignedEmp(assignedBox.getValue());
-      tpReq.setUrgency(urgency.getValue());
-      tpReq.setStatus(statusBox.getValue());
-      tpReq.setLocation(from.getValue());
-      tpReq.setMoveTo(to.getValue());
-      tpReq.setDate(dateNeeded);
-      tpReq.setDescription(description.getText());
+      relReq.setPatientID(patient.getText());
+      relReq.setLocation(locationofPatient.getValue());
+      relReq.setAssignedEmp(assignedBox.getValue());
+      relReq.setDate(dateOfRequest);
+      relReq.setStatus(statusBox.getValue());
+      relReq.setReligion(religion.getText());
+      relReq.setDescription(requestDescription.getText());
+      relReq.setUrgency(urgency.getValue());
 
       try {
-        session.merge(tpReq);
+        session.merge(relReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
@@ -147,16 +140,16 @@ public class EquipmentEditorController extends ServiceRequestController implemen
 
   @Override
   public void setRequest(ServiceRequest request) {
-    tpReq = (EquipmentTransport) request;
+    relReq = (Religion) request;
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    equipment.setText("");
-    to.valueProperty().set(null);
-    from.valueProperty().set(null);
-    date.valueProperty().set(null);
+    locationofPatient.valueProperty().set(null);
     urgency.valueProperty().set(null);
-    description.setText("");
+    serviceDate.valueProperty().set(null);
+    religion.setText("");
+    patient.setText("");
+    requestDescription.setText("");
   }
 
   @Override
@@ -164,11 +157,14 @@ public class EquipmentEditorController extends ServiceRequestController implemen
 
   public void help() {
     if (!hDone) {
+
       hDone = true;
     } else if (hDone) {
+
       hDone = false;
     }
   }
 
+  @Override
   public void onClose() {}
 }
