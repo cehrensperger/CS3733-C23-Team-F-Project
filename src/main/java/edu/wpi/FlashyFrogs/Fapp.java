@@ -33,8 +33,7 @@ public class Fapp extends Application {
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
   private static NavBarController controller;
-
-  @Getter private static Theme theme;
+  @Getter private static Theme theme = Theme.LIGHT_THEME;
 
   @Getter public static IController iController;
 
@@ -135,10 +134,10 @@ public class Fapp extends Application {
     preloadResources();
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
+    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("Accounts/Login.fxml"));
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
 
     final BorderPane root = loader.load();
-    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("Accounts/Login.fxml"));
     controller = ((NavBarController) loader.getController());
     AnchorPane mainAnchorPane = controller.getAnchorPane();
     AnchorPane innerAnchorPane = homePage.load();
@@ -159,8 +158,6 @@ public class Fapp extends Application {
     setTheme(Theme.LIGHT_THEME);
     primaryStage.setFullScreen(true);
     primaryStage.show();
-
-    setTheme(Theme.LIGHT_THEME);
   }
 
   /**
