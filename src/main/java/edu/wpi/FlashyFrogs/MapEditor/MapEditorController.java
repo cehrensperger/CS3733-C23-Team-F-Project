@@ -3,19 +3,20 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import static java.lang.Math.abs;
 import static java.lang.Math.round;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
-import edu.wpi.FlashyFrogs.ORM.Edge;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Move;
-import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
 import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import jakarta.persistence.RollbackException;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -318,9 +319,188 @@ public class MapEditorController implements IController {
                                             .atStartOfDay(ZoneId.systemDefault())
                                             .toInstant());
 
+                                // Move newMove = new Move(node, locationName, date);
+                                Node fromNode = locationName.getCurrentNode(date);
                                 Move newMove = new Move(node, locationName, date);
+                                session.flush();
+                                if (newMove.getLocation().getCurrentNode(date) != null) {
+                                  FXMLLoader newLoad =
+                                      new FXMLLoader(
+                                          Fapp.class.getResource(
+                                              "MapEditor/EquipmentTransferConfirmationPopOver.fxml"));
+                                  PopOver popOver = null; // create the popover
+                                  AtomicReference<PopOver> equipmentPopOver =
+                                      new AtomicReference<>();
+                                  try {
+                                    popOver = new PopOver(newLoad.load());
+                                  } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                  }
+
+                                  EquipmentTransferConfirmationPopOverController controller =
+                                      newLoad.getController();
+                                  PopOver finalPopOver = popOver;
+                                  controller
+                                      .getNoButton()
+                                      .setOnAction(
+                                          e -> {
+                                            finalPopOver.hide();
+                                          });
+
+                                  controller
+                                      .getYesButton()
+                                      .setOnAction(
+                                          e -> {
+                                            finalPopOver.hide();
+
+                                            FXMLLoader newNewLoader =
+                                                new FXMLLoader(
+                                                    Fapp.class.getResource(
+                                                        "MapEditor/EquipmentTransportPopOver.fxml"));
+
+                                            try {
+                                              equipmentPopOver.set(
+                                                  new PopOver(newNewLoader.load()));
+                                              EquipmentTransportPopOverController
+                                                  equipmentTransportPopOverController =
+                                                      newNewLoader.getController();
+                                              equipmentPopOver.get().detach();
+                                              equipmentTransportPopOverController
+                                                  .getTo()
+                                                  .setValue(locationName);
+                                              equipmentTransportPopOverController.setFromNode(
+                                                  fromNode);
+                                              equipmentTransportPopOverController
+                                                  .getFrom()
+                                                  .setText("From Node: " + fromNode.toString());
+                                              equipmentTransportPopOverController
+                                                  .getSubmitButton()
+                                                  .setOnAction(
+                                                      ev -> {
+                                                        try {
+                                                          // check
+                                                          if (equipmentTransportPopOverController
+                                                                  .getEquipment()
+                                                                  .getText()
+                                                                  .equals("")
+                                                              || equipmentTransportPopOverController
+                                                                  .getTo()
+                                                                  .getValue()
+                                                                  .toString()
+                                                                  .equals("")
+                                                              || equipmentTransportPopOverController
+                                                                  .getDate()
+                                                                  .getValue()
+                                                                  .toString()
+                                                                  .equals("")
+                                                              || equipmentTransportPopOverController
+                                                                  .getDescription()
+                                                                  .getText()
+                                                                  .equals("")) {
+                                                            throw new NullPointerException();
+                                                          }
+
+                                                          Date dateNeeded =
+                                                              Date.from(
+                                                                  equipmentTransportPopOverController
+                                                                      .getDate()
+                                                                      .getValue()
+                                                                      .atStartOfDay(
+                                                                          ZoneId.systemDefault())
+                                                                      .toInstant());
+
+                                                          EquipmentTransport equipmentTransport =
+                                                              new EquipmentTransport(
+                                                                  CurrentUserEntity.CURRENT_USER
+                                                                      .getCurrentUser(),
+                                                                  dateNeeded,
+                                                                  Date.from(Instant.now()),
+                                                                  equipmentTransportPopOverController
+                                                                      .getUrgency()
+                                                                      .getValue(),
+                                                                  equipmentTransportPopOverController
+                                                                      .getTo()
+                                                                      .getValue(),
+                                                                  // what is this?
+                                                                  fromNode,
+                                                                  equipmentTransportPopOverController
+                                                                      .getEquipment()
+                                                                      .getText(),
+                                                                  equipmentTransportPopOverController
+                                                                      .getDescription()
+                                                                      .getText());
+
+                                                          try {
+                                                            session.persist(equipmentTransport);
+                                                            equipmentPopOver.get().hide();
+                                                            // toastAnimation();
+                                                            Sound.SUBMITTED.play();
+                                                          } catch (RollbackException exception) {
+                                                            Sound.ERROR.play();
+                                                          }
+                                                        } catch (ArrayIndexOutOfBoundsException
+                                                            | NullPointerException exception) {
+                                                          Sound.ERROR.play();
+                                                        }
+                                                      });
+                                              equipmentPopOver.get().show(mapPane);
+                                            } catch (IOException ex) {
+                                              throw new RuntimeException(ex);
+                                            }
+                                          });
+
+                                  popOver.detach(); // Detach the pop-up, so it's not stuck to the
+                                  // button
+
+                                  popOver.show(mapPane); // display the popover
+
+                                  //                                      popOver
+                                  //                                          .showingProperty()
+                                  //                                          .addListener(
+                                  //                                              (observable,
+                                  // oldValue, newValue) -> {
+                                  //                                                if
+                                  // (!newValue) {
+                                  //                                                  try {
+                                  //
+                                  // controller.handleSubmit(
+                                  //
+                                  // mapController.getMapSession());
+                                  //                                                  } catch
+                                  // (IOException e) {
+                                  //                                                    throw
+                                  // new RuntimeException(e);
+                                  //                                                  }
+                                  //                                                }
+                                  //                                              });
+                                }
 
                                 session.persist(newMove);
+
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.setTime(newMove.getMoveDate());
+                                calendar.add(Calendar.DAY_OF_YEAR, 7);
+                                Date weekLater = calendar.getTime();
+
+                                calendar = Calendar.getInstance();
+                                calendar.setTime(newMove.getMoveDate());
+                                calendar.add(Calendar.DAY_OF_YEAR, -7);
+                                Date weekEarlier = calendar.getTime();
+
+                                Alert alert =
+                                    new Alert(
+                                        weekEarlier,
+                                        weekLater,
+                                        CurrentUserEntity.CURRENT_USER.getCurrentUser(),
+                                        "Recent Move!",
+                                        newMove.getLocation().getLongName()
+                                            + " has moved! Check the move visualizer for more details.",
+                                        CurrentUserEntity.CURRENT_USER
+                                            .getCurrentUser()
+                                            .getDepartment(),
+                                        Alert.Severity.MILD);
+                                session.persist(alert);
+
                                 session.flush();
                                 mapController.redraw();
                               });
@@ -485,22 +665,25 @@ public class MapEditorController implements IController {
               mouseEvent.consume();
             });
 
+    // back button no longer exists
+
     // Handle quick-draw stuff in terms of moving the mouse drags a node around
-    Platform.runLater(
-        () ->
-            mapPane
-                .getScene() // Get the root scene, so the mouse follows everywhere
-                .addEventFilter(
-                    MouseEvent.MOUSE_MOVED,
-                    (mouseEvent) -> {
-                      // System.out.println(root.getHeight());
-                      // If quick draw is enabled
-                      if (quickDrawActive) {
-                        // Set the circles position
-                        currentQuickDrawCircle.relocate(
-                            mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
-                      }
-                    }));
+    //    Platform.runLater(
+    //        () ->
+    //            backButton
+    //                .getScene()
+    //                .addEventFilter(
+    //                    MouseEvent.MOUSE_MOVED,
+    //                    (mouseEvent) -> {
+    //                      // System.out.println(root.getHeight());
+    //                      // If quick draw is enabled
+    //                      if (quickDrawActive) {
+    //                        // Set the circles position
+    //                        currentQuickDrawCircle.relocate(
+    //                            mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
+    //                      }
+    //                      mouseEvent.consume();
+    //                    }));
 
     // Set the button handler
     Platform.runLater(
