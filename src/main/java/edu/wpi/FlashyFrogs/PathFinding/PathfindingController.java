@@ -41,7 +41,12 @@ import javafx.util.Duration;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
+import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.internal.wire.MqttConnect;
 import org.hibernate.Session;
+import org.eclipse.paho.*;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
@@ -483,15 +488,12 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
 
-      SerialPort port = SerialPort.getCommPort("Pololu A-Star 32U4");
-      port.openPort(16);
-      port.setBaudRate(115200);
-
-      for (Node node : currentPath) {
-        port.writeBytes(node.getId().getBytes(StandardCharsets.UTF_16), node.getId().length());
+      String publisherId = UUID.randomUUID().toString();
+      try {
+        IMqttClient publisher = new MqttClient("tcp://iot.eclipse.org:1883", publisherId);
+      } catch (MqttException e) {
+        throw new RuntimeException(e);
       }
-
-      port.closePort();
 
       session.close();
       // Call unlock() on the UI thread when finished
