@@ -26,6 +26,12 @@ class EdgeMapItem extends MapItem {
     return edge.toString();
   }
 
+  @NonNull
+  @Override
+  String type() {
+    return "Edge";
+  }
+
   /**
    * @return
    */
@@ -40,8 +46,9 @@ class EdgeMapItem extends MapItem {
 
   @Override
   Point2D getMapCoordinates() {
-    // Return the coordinates for the start of the edge
-    return new Point2D(edge.getNode1().getXCoord(), edge.getNode2().getYCoord());
+    // Return the average for both axes, so should be the middle of the line
+    return new Point2D((edge.getNode1().getXCoord() + edge.getNode2().getXCoord())/2.0,
+            (edge.getNode1().getYCoord() + edge.getNode2().getYCoord())/2.0);
   }
 
   @Override

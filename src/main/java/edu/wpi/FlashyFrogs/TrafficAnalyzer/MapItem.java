@@ -27,6 +27,13 @@ abstract class MapItem {
   abstract String getMapItemString();
 
   /**
+   * Gets the type of map item this is
+   * @return the type of map item this is, as a string
+   */
+  @NonNull
+  abstract String type();
+
+  /**
    * Gets the number of uses of the map item
    *
    * @return the number of uses of the map item

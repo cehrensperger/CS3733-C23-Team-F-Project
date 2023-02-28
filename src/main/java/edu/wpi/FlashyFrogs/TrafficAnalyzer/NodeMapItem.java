@@ -29,6 +29,11 @@ class NodeMapItem extends MapItem {
     return node.toString();
   }
 
+  @Override
+  @NonNull String type() {
+    return "Node";
+  }
+
   /**
    * Gets the floor for the node
    *
@@ -52,7 +57,7 @@ class NodeMapItem extends MapItem {
 
   @Override
   Shape getMapBacking(@NonNull MapController mapController) {
-    return null;
+    return mapController.getNodeToCircleMap().get(this.node);
   }
 
   /**

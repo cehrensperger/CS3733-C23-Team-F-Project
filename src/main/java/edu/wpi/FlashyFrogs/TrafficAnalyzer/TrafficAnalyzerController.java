@@ -8,7 +8,6 @@ import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.time.ZoneId;
 import java.util.*;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,6 +32,7 @@ public class TrafficAnalyzerController implements IController {
   @FXML private DatePicker viewDate; // View date
   @FXML private TextField requestWeighting; // Weighting for requests
   @FXML private TableView2<MapItem> weightTable; // Weighting
+  @FXML private TableColumn<MapItem, String> typeColumn; // Table column
   @FXML private TableColumn<MapItem, String> mapItemColumn; // Map items
   @FXML private TableColumn<MapItem, Number> usesColumn; // Uses
   private MapController mapController; // The map controller
@@ -49,6 +49,8 @@ public class TrafficAnalyzerController implements IController {
   @SneakyThrows
   private void initialize() {
     // Set the table up
+    typeColumn.setCellValueFactory((row) -> new SimpleStringProperty(row.getValue().type()));
+    typeColumn.setReorderable(false);
     mapItemColumn.setCellValueFactory(
         (row) -> new SimpleStringProperty(row.getValue().getMapItemString()));
     mapItemColumn.setReorderable(false);
@@ -98,7 +100,9 @@ public class TrafficAnalyzerController implements IController {
               }
             });
 
-        FloydWarshallRunner.getReCalculationLock().acquire(); // Get the FW lock TODO: EMRE WAIT FOR THIS INITIALLY. NO BUTTONS UNTIL THIS IS DONE
+    FloydWarshallRunner.getReCalculationLock()
+        .acquire(); // Get the FW lock TODO: EMRE WAIT FOR THIS INITIALLY. NO BUTTONS UNTIL THIS IS
+    // DONE
   }
 
   /** Handles coloring a floor with the heat map, based on the generated colors */
@@ -110,7 +114,9 @@ public class TrafficAnalyzerController implements IController {
     // For each item on this floor of the map
     for (MapItem mapItem : floorToMapItems.get(mapController.getMapFloorProperty().getValue())) {
       // Set its color to be the calculated color
-      mapItem.getMapBacking(mapController).setFill(calculateColor(mapItem));
+      Color calculatedColor = calculateColor(mapItem); // Calculate the color
+      mapItem.getMapBacking(mapController).setFill(calculatedColor);
+      mapItem.getMapBacking(mapController).setStroke(calculatedColor);
     }
   }
 
@@ -336,7 +342,7 @@ public class TrafficAnalyzerController implements IController {
   @NonNull
   private Color calculateColor(@NonNull MapItem mapItem) {
     // Step factor, max-min over number possible
-    double stepFactor = (maxWeight - minWeight) / 256.0; // Calculate the step
+    double stepFactor = (maxWeight - minWeight) / 255.0; // Calculate the step
 
     // Calculate the weight for this, this - min / factor
     double weight = (mapItem.getNumUses() - minWeight) / stepFactor;
