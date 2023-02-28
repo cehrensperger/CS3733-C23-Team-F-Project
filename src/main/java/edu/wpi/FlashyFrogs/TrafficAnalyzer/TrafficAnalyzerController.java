@@ -8,6 +8,8 @@ import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.time.ZoneId;
 import java.util.*;
+
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -53,8 +55,6 @@ public class TrafficAnalyzerController implements IController {
     usesColumn.setCellValueFactory((row) -> new SimpleIntegerProperty(row.getValue().getNumUses()));
     usesColumn.setReorderable(false);
 
-    FloydWarshallRunner.getReCalculationLock().acquire(); // Get the FW lock
-
     // Load the map
     FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("Map/Map.fxml"));
 
@@ -97,6 +97,8 @@ public class TrafficAnalyzerController implements IController {
                     2, (int) Math.round(mapPoint.getX()), (int) Math.round(mapPoint.getY()));
               }
             });
+
+        FloydWarshallRunner.getReCalculationLock().acquire(); // Get the FW lock TODO: EMRE WAIT FOR THIS INITIALLY. NO BUTTONS UNTIL THIS IS DONE
   }
 
   /** Handles coloring a floor with the heat map, based on the generated colors */
@@ -113,6 +115,7 @@ public class TrafficAnalyzerController implements IController {
   }
 
   /** Processes an update on the traffic analyzer. Fills the table with the associated values */
+  // TODO: EMRE THIS IS SAFE TO RUN IN A SEPARATE THREAD, WAIT FOR THIS AND THEN CALL COLORFLOOR
   private void update(double serviceWeight, @NonNull Date date) {
     // Create the queue, the comparator is comparing the number of uses
     Map<edu.wpi.FlashyFrogs.ORM.Node, MapItem> nodeMapItems = new HashMap<>(); // Node items
@@ -208,7 +211,7 @@ public class TrafficAnalyzerController implements IController {
     minWeight = items.get(items.size() - 1).getNumUses(); // Get the min weight
 
     // Weight table
-    weightTable.setItems(FXCollections.observableList(items));
+    Platform.runLater(() -> weightTable.setItems(items));
   }
 
   /**
