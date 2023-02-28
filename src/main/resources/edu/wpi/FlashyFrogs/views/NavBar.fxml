@@ -20,7 +20,7 @@
          <children>
             <HBox alignment="TOP_CENTER" layoutX="66.0" layoutY="28.0" prefHeight="37.0" prefWidth="800.0" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label fx:id="clockLabel" text="Sun, Jan 01, 2023 12:00 AM">
+                  <Label fx:id="clockLabel" styleClass="navBar" text="Sun, Jan 01, 2023 12:00 AM">
                      <HBox.margin>
                         <Insets top="9.0" />
                      </HBox.margin>

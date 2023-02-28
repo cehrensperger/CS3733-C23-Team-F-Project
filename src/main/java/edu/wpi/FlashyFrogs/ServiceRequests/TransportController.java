@@ -285,6 +285,7 @@ public class TransportController implements IController {
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         submit.setDisable(true);

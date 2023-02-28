@@ -7,7 +7,10 @@ import lombok.NonNull;
 public enum Sound {
   ERROR(
       new AudioClip(
-          Objects.requireNonNull(Sound.class.getResource("Sounds/Error.wav")).toString()));
+          Objects.requireNonNull(Sound.class.getResource("Sounds/Error.wav")).toString())),
+  SUBMITTED(
+      new AudioClip(
+          Objects.requireNonNull(Sound.class.getResource("Sounds/Submitted.wav")).toString()));
 
   @NonNull public final AudioClip audioClip;
 
