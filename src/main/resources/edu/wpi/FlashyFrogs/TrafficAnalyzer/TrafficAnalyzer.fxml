@@ -44,7 +44,7 @@
                   <Insets />
                </VBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" onAction="#updateMap" styleClass="blueBackgroundSideBar" text="Update Map" />
+            <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateMap" styleClass="blueBackgroundSideBar" text="Update Map" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Top Edges">
                <VBox.margin>
                   <Insets top="20.0" />
@@ -55,7 +55,7 @@
                   <TableColumn fx:id="typeColumn" prefWidth="75.0" text="Type" />
                   <TableColumn fx:id="mapItemColumn" prefWidth="100.0" text="Map Item" />
                   <TableColumn fx:id="usesColumn" prefWidth="100.0" text="Number of Uses" />
-                  <TableColumn fx:id="serviceRequestsColumn" prefWidth="75.0" text="Number of Service Requests" />
+                  <TableColumn fx:id="serviceRequestsColumn" prefWidth="125.0" text="Number of Service Requests" />
                </columns>
             </TableView2>
          </children>

@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
@@ -30,6 +31,7 @@ import lombok.SneakyThrows;
 import org.controlsfx.control.tableview2.TableView2;
 
 public class TrafficAnalyzerController implements IController {
+  @FXML private Button updateButton; // Update button so we can disable it
   @FXML private AnchorPane mapPane; // Map pane
   @FXML private DatePicker viewDate; // View date
   @FXML private TextField requestWeighting; // Weighting for requests
@@ -104,6 +106,14 @@ public class TrafficAnalyzerController implements IController {
           line.setStrokeWidth(7);
         });
 
+    // Disable all hallway text
+    mapController.setLocationCreation(
+        (node, location, text) -> {
+          if (location.getLocationType().equals(LocationName.LocationType.HALL)) {
+            text.setVisible(false);
+          }
+        });
+
     // On weight table selection, zoom to on the map
     weightTable
         .getSelectionModel()
@@ -124,9 +134,38 @@ public class TrafficAnalyzerController implements IController {
               }
             });
 
-    FloydWarshallRunner.getReCalculationLock()
-        .acquire(); // Get the FW lock TODO: EMRE WAIT FOR THIS INITIALLY. NO BUTTONS UNTIL THIS IS
-    // DONE
+    // On date change, update the map controllers date and redraw
+    viewDate.setOnAction(
+        (action) -> {
+          mapController.setDate(
+              Date.from(viewDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+          mapController.redraw();
+        });
+
+    // Create a thread that waits for any FW backing updates to complete
+    new Thread(
+            () -> {
+              // Disable the button, start an animation
+              Platform.runLater(
+                  () -> {
+                    mapController.startAnimation();
+                    updateButton.setDisable(true);
+                  });
+
+              try {
+                FloydWarshallRunner.getReCalculationLock().acquire(); // Get the FW locks
+              } catch (InterruptedException e) {
+                throw new RuntimeException(e); // Thanks Java :)
+              }
+
+              // Stop the animation, re-enable the button
+              Platform.runLater(
+                  () -> {
+                    mapController.stopAnimation();
+                    updateButton.setDisable(false);
+                  });
+            })
+        .start();
   }
 
   /** Handles coloring a floor with the heat map, based on the generated colors */
@@ -145,7 +184,6 @@ public class TrafficAnalyzerController implements IController {
   }
 
   /** Processes an update on the traffic analyzer. Fills the table with the associated values */
-  // TODO: EMRE THIS IS SAFE TO RUN IN A SEPARATE THREAD, WAIT FOR THIS AND THEN CALL COLORFLOOR
   private void update(double serviceWeight, @NonNull Date date) {
     Collection<Thread> threads = new LinkedList<>();
 
@@ -190,6 +228,10 @@ public class TrafficAnalyzerController implements IController {
 
     // For each location
     for (LocationName locationName : nodeToLocationName.keySet()) {
+      if (locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+        continue; // Skip all hallways
+      }
+
       // Create a thread to process it
       Thread thread =
           new Thread(
@@ -197,7 +239,6 @@ public class TrafficAnalyzerController implements IController {
                 for (LocationName otherLocation : nodeToLocationName.keySet()) {
                   // Skip locations that are this one, and ignore if either are hallways
                   if (locationName.equals(otherLocation)
-                      || locationName.getLocationType().equals(LocationName.LocationType.HALL)
                       || otherLocation.getLocationType().equals(LocationName.LocationType.HALL)) {
                     continue;
                   }
@@ -412,18 +453,32 @@ public class TrafficAnalyzerController implements IController {
         throw new NumberFormatException();
       }
 
-      update(
-          number,
-          Date.from(
-              viewDate
-                  .getValue()
-                  .atStartOfDay(ZoneId.systemDefault())
-                  .toInstant())); // If everything worked, update the map
-    } catch (NumberFormatException err) {
-      // TODO: error catching
-    }
+      // Start a thread that starts the animation, does the calculation, does the coloring
+      new Thread(
+              () -> {
+                Platform.runLater(
+                    () -> {
+                      mapController.startAnimation();
+                      updateButton.setDisable(true);
+                    });
+                update(
+                    number,
+                    Date.from(
+                        viewDate
+                            .getValue()
+                            .atStartOfDay(ZoneId.systemDefault())
+                            .toInstant())); // If everything worked, update the map
 
-    colorFloor(); // Color the floor
+                Platform.runLater(
+                    () -> {
+                      mapController.stopAnimation();
+                      updateButton.setDisable(false);
+                      colorFloor();
+                    });
+              })
+          .start();
+    } catch (NumberFormatException err) {
+    }
   }
 
   /**
