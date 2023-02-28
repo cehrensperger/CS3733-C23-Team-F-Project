@@ -38,8 +38,8 @@ import org.hibernate.Transaction;
 
 public class ReligiousController implements IController {
 
-  @FXML MFXButton MD;
   @FXML MFXButton religious;
+  @FXML MFXButton medicine;
   @FXML TextField patient;
   @FXML SearchableComboBox<LocationName> locationofPatient;
   @FXML TextField religion;
@@ -52,7 +52,6 @@ public class ReligiousController implements IController {
   @FXML MFXButton clear;
   @FXML MFXButton submit;
   @FXML MFXButton credits;
-  @FXML MFXButton back;
   @FXML MFXButton AV;
   @FXML MFXButton IT;
   @FXML MFXButton IPT;
@@ -173,6 +172,10 @@ public class ReligiousController implements IController {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
 
+  public void handleEquipment(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "EquipmentTransport");
+  }
+
   public void handleIT(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "ComputerService");
   }
@@ -197,12 +200,12 @@ public class ReligiousController implements IController {
     Fapp.handleBack();
   }
 
-  public void handleMD(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "Medicine Delivery");
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
   }
 
-  public void handleReligious(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "Religious");
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
   }
 
   public void help() {

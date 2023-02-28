@@ -314,6 +314,22 @@
                   <Font size="16.0" />
                </font>
             </MFXButton>
+            <MFXButton fx:id="medicine" alignment="BASELINE_LEFT" onAction="#handleMedicine" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Medicine Delivery" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="religious" alignment="BASELINE_LEFT" onAction="#handleReligious" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Religous" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+            </MFXButton>
             <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" wrapText="true">
                <VBox.margin>
                   <Insets left="18.0" top="18.0" />
@@ -330,7 +346,7 @@
                   <Font size="16.0" />
                </font>
             </MFXButton>
-            <AnchorPane VBox.vgrow="ALWAYS">
+            <AnchorPane prefHeight="147.0" prefWidth="181.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
                      <children>

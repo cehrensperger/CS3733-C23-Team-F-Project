@@ -52,20 +52,20 @@ public class CreditsController implements IController {
     Fapp.setScene("ServiceRequests", "SecurityService");
   }
 
-  public void handleMD(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "Medicine Delivery");
-  }
-
-  public void handleReligious(ActionEvent actionEvent) throws IOException {
-    Fapp.setScene("ServiceRequests", "Religious");
-  }
-
   public void handleCredits(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "Credits");
   }
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
+  }
+
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
   }
 
   public void onClose() {}
