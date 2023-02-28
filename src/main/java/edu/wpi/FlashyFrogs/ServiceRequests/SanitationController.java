@@ -234,6 +234,14 @@ public class SanitationController implements IController {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
 
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
+  }
+
   public void handleEquipment(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "EquipmentTransport");
   }

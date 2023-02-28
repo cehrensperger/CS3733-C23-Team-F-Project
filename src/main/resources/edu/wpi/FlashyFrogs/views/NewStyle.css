@@ -526,6 +526,20 @@
     -fx-background-color: #F6BD38;
 }
 
+.navSlide:focused
+    /** This controls the background color of the menu-item when it is hovered over **/
+{
+    -fx-background-color: #F6BD38;
+    -fx-text-fill: #012D5A;
+}
+
+.navSlide:selected
+    /** This controls the background color of the menu-item when it is hovered over **/
+{
+    -fx-background-color: #F6BD38;
+    -fx-text-fill: #012D5A;
+}
+
 .scroll-pane {
     /** Right now, only used on acknowledgementsPage as a placeholder **/
     -fx-background-color: transparent;

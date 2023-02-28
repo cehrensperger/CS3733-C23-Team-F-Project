@@ -22,30 +22,29 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class EquipmentEditorController extends ServiceRequestController implements IController {
-  @FXML Rectangle check2;
-  @FXML Rectangle check1;
+public class MedicineDeliveryEditorController extends ServiceRequestController
+    implements IController {
+
   @FXML MFXButton clear;
   @FXML MFXButton submit;
 
-  @FXML TextField equipment;
-  @FXML SearchableComboBox<LocationName> to;
-  @FXML SearchableComboBox<LocationName> from;
-  @FXML DatePicker date;
+  @FXML TextField reason;
+  @FXML TextField medicine;
+  @FXML TextField dosage;
   @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
-  @FXML TextField description;
+  @FXML DatePicker date;
+  @FXML TextField patient;
+  @FXML SearchableComboBox<LocationName> locationofPatient;
   @FXML SearchableComboBox<HospitalUser> assignedBox;
   @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
 
-  private EquipmentTransport tpReq = new EquipmentTransport();
+  private MedicineDelivery tpReq = new MedicineDelivery();
   PopOver popOver;
 
   @FXML private Label errorMessage;
@@ -66,8 +65,7 @@ public class EquipmentEditorController extends ServiceRequestController implemen
 
     users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
-    to.setItems(FXCollections.observableArrayList(locations));
-    from.setItems(FXCollections.observableArrayList(locations));
+    locationofPatient.setItems(FXCollections.observableArrayList(locations));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
@@ -75,11 +73,12 @@ public class EquipmentEditorController extends ServiceRequestController implemen
   }
 
   public void updateFields() {
-    description.setText(tpReq.getDescription());
-    to.setValue(tpReq.getLocation());
-    from.setValue(tpReq.getMoveTo());
+    patient.setText(tpReq.getPatientID());
+    locationofPatient.setValue(tpReq.getLocation());
+    reason.setText(tpReq.getReason());
+    medicine.setText(tpReq.getMedicine());
+    dosage.setText(dosage.getText());
     urgency.setValue(tpReq.getUrgency());
-    equipment.setText(tpReq.getEquipment());
     statusBox.setValue(tpReq.getStatus());
     date.setValue(
         Instant.ofEpochMilli(tpReq.getDate().getTime())
@@ -102,26 +101,28 @@ public class EquipmentEditorController extends ServiceRequestController implemen
     System.out.println("here");
     try {
       // check
-      if (equipment.getText().equals("")
-          || to.getValue().toString().equals("")
-          || from.getValue().toString().equals("")
+      if (patient.getText().equals("")
+          || locationofPatient.getValue().toString().equals("")
+          || reason.getText().equals("")
+          || medicine.getText().equals("")
           || date.getValue().toString().equals("")
           || urgency.getValue().toString().equals("")
-          || description.getText().equals("")) {
+          || dosage.getText().equals("")) {
         System.out.println("here2");
         throw new NullPointerException();
       }
 
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      tpReq.setEquipment(equipment.getText());
+      tpReq.setPatientID(patient.getText());
+      tpReq.setLocation(locationofPatient.getValue());
+      tpReq.setReason(reason.getText());
       tpReq.setAssignedEmp(assignedBox.getValue());
       tpReq.setUrgency(urgency.getValue());
       tpReq.setStatus(statusBox.getValue());
-      tpReq.setLocation(from.getValue());
-      tpReq.setMoveTo(to.getValue());
+      tpReq.setMedicine(medicine.getText());
+      tpReq.setDosage(Double.parseDouble(dosage.getText()));
       tpReq.setDate(dateNeeded);
-      tpReq.setDescription(description.getText());
 
       try {
         session.merge(tpReq);
@@ -131,15 +132,11 @@ public class EquipmentEditorController extends ServiceRequestController implemen
         popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-        errorMessage.setText("Please fill all fields.");
         session.close();
         Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-      errorMessage.setText("Please fill all fields.");
       session.close();
       Sound.ERROR.play();
     }
@@ -147,16 +144,19 @@ public class EquipmentEditorController extends ServiceRequestController implemen
 
   @Override
   public void setRequest(ServiceRequest request) {
-    tpReq = (EquipmentTransport) request;
+    tpReq = (MedicineDelivery) request;
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    equipment.setText("");
-    to.valueProperty().set(null);
-    from.valueProperty().set(null);
-    date.valueProperty().set(null);
+    patient.setText("");
+    locationofPatient.valueProperty().set(null);
+    reason.setText("");
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
+    medicine.setText("");
+    dosage.setText("");
     urgency.valueProperty().set(null);
-    description.setText("");
+    date.valueProperty().set(null);
   }
 
   @Override
