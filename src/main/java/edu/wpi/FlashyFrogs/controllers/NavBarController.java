@@ -122,6 +122,8 @@ public class NavBarController {
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
+    toast.setVisible(false);
+    toast.setDisable(true);
     //    srButton.setOpacity(0);
     //    srButton.setDisable(true);
     //    homeButton.setOpacity(0);
@@ -191,6 +193,8 @@ public class NavBarController {
     navButtons.setVisible(true);
     navButtons.setDisable(false);
     navButtons.setOpacity(1);
+    toast.setVisible(true);
+    toast.setDisable(false);
 
     if (!isAdmin) {
       mapEditor.setDisable(true);
@@ -424,6 +428,8 @@ public class NavBarController {
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
+    toast.setVisible(false);
+    toast.setDisable(true);
   }
 
   /**

@@ -154,8 +154,13 @@ class MapEntity {
 
     // If there is a location name, remove it
     if (nodeToLocationNameMap.containsKey(node)) {
+      LocationName[] locationsToDelete =
+          nodeToLocationNameMap.get(node).toArray(new LocationName[0]);
+
       // For each location name, remove it
-      nodeToLocationNameMap.get(node).forEach(this::removeLocationName);
+      for (LocationName locationName : locationsToDelete) {
+        removeLocationName(locationName);
+      }
 
       nodeToLocationBox.remove(node); // Remove the node to location name box
     }
