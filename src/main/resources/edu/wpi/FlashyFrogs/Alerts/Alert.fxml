@@ -33,7 +33,7 @@
                                             <Font size="18.0" />
                                         </font>
                                     </Label>
-                                    <Label fx:id="summaryField" prefHeight="20.0" prefWidth="155.0" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
+                                    <Label fx:id="summaryField" prefHeight="20.0" prefWidth="180.0" text="Fire Alarm Testing" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
                                         <font>
                                             <Font size="16.0" />
                                         </font>
