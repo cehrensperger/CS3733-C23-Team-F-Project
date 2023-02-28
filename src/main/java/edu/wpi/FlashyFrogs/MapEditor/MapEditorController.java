@@ -9,7 +9,6 @@ import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
-import edu.wpi.FlashyFrogs.ServiceRequests.EquipmentTransportController;
 import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -367,6 +366,8 @@ public class MapEditorController implements IController {
                                               Fapp.class.getResource(
                                                   "MapEditor/EquipmentTransferConfirmationPopOver.fxml"));
                                       PopOver popOver = null; // create the popover
+                                      AtomicReference<PopOver> equipmentPopOver =
+                                          new AtomicReference<>();
                                       try {
                                         popOver = new PopOver(newLoad.load());
                                       } catch (IOException e) {
@@ -375,20 +376,34 @@ public class MapEditorController implements IController {
 
                                       EquipmentTransferConfirmationPopOverController controller =
                                           newLoad.getController();
-                                        PopOver finalPopOver = popOver;
-                                        controller.getNoButton().setOnAction(e -> {
-                                            finalPopOver.hide();
-                                        });
+                                      PopOver finalPopOver = popOver;
+                                      controller
+                                          .getNoButton()
+                                          .setOnAction(
+                                              e -> {
+                                                finalPopOver.hide();
+                                              });
 
-                                        controller.getYesButton().setOnAction(e -> {
-                                            finalPopOver.hide();
+                                      controller
+                                          .getYesButton()
+                                          .setOnAction(
+                                              e -> {
+                                                finalPopOver.hide();
 
-                                            FXMLLoader newNewLoader =
+                                                FXMLLoader newNewLoader =
                                                     new FXMLLoader(
-                                                            Fapp.class.getResource(
-                                                                    "MapEditor/EquipmentTransportPopOver.fxml"));
+                                                        Fapp.class.getResource(
+                                                            "MapEditor/EquipmentTransportPopOver.fxml"));
 
-                                        });
+                                                try {
+                                                  equipmentPopOver.set(
+                                                      new PopOver(newNewLoader.load()));
+                                                  equipmentPopOver.get().detach();
+                                                  equipmentPopOver.get().show(mapPane);
+                                                } catch (IOException ex) {
+                                                  throw new RuntimeException(ex);
+                                                }
+                                              });
 
                                       popOver
                                           .detach(); // Detach the pop-up, so it's not stuck to the
@@ -396,19 +411,25 @@ public class MapEditorController implements IController {
 
                                       popOver.show(mapPane); // display the popover
 
-                                      popOver
-                                          .showingProperty()
-                                          .addListener(
-                                              (observable, oldValue, newValue) -> {
-                                                if (!newValue) {
-                                                  try {
-                                                    controller.handleSubmit(
-                                                        mapController.getMapSession());
-                                                  } catch (IOException e) {
-                                                    throw new RuntimeException(e);
-                                                  }
-                                                }
-                                              });
+                                      //                                      popOver
+                                      //                                          .showingProperty()
+                                      //                                          .addListener(
+                                      //                                              (observable,
+                                      // oldValue, newValue) -> {
+                                      //                                                if
+                                      // (!newValue) {
+                                      //                                                  try {
+                                      //
+                                      // controller.handleSubmit(
+                                      //
+                                      // mapController.getMapSession());
+                                      //                                                  } catch
+                                      // (IOException e) {
+                                      //                                                    throw
+                                      // new RuntimeException(e);
+                                      //                                                  }
+                                      //                                                }
+                                      //                                              });
                                     }
 
                                     session.flush();
@@ -578,22 +599,22 @@ public class MapEditorController implements IController {
             });
 
     // Handle quick-draw stuff in terms of moving the mouse drags a node around
-    Platform.runLater(
-        () ->
-            backButton
-                .getScene()
-                .addEventFilter(
-                    MouseEvent.MOUSE_MOVED,
-                    (mouseEvent) -> {
-                      // System.out.println(root.getHeight());
-                      // If quick draw is enabled
-                      if (quickDrawActive) {
-                        // Set the circles position
-                        currentQuickDrawCircle.relocate(
-                            mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
-                      }
-                      mouseEvent.consume();
-                    }));
+    //    Platform.runLater(
+    //        () ->
+    //            backButton
+    //                .getScene()
+    //                .addEventFilter(
+    //                    MouseEvent.MOUSE_MOVED,
+    //                    (mouseEvent) -> {
+    //                      // System.out.println(root.getHeight());
+    //                      // If quick draw is enabled
+    //                      if (quickDrawActive) {
+    //                        // Set the circles position
+    //                        currentQuickDrawCircle.relocate(
+    //                            mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
+    //                      }
+    //                      mouseEvent.consume();
+    //                    }));
 
     // Set the button handler
     Platform.runLater(

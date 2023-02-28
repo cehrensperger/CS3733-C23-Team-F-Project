@@ -6,19 +6,9 @@ import lombok.Getter;
 
 public class EquipmentTransferConfirmationPopOverController {
 
+  @FXML @Getter private MFXButton noButton;
 
-    @FXML
-    @Getter
-    private MFXButton noButton;
+  @FXML @Getter private MFXButton yesButton;
 
-    @FXML
-    @Getter
-    private MFXButton yesButton;
-
-    public void initialize() {
-
-    }
-
-
-
+  public void initialize() {}
 }
