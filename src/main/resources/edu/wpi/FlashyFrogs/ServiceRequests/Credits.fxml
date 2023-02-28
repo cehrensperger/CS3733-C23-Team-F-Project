@@ -6,6 +6,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.tableview2.FilteredTableColumn?>
+<?import org.controlsfx.control.tableview2.FilteredTableView?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.CreditsController">
    <children>
@@ -141,18 +143,6 @@
                   <Insets top="74.0" />
                </VBox.margin>
             </Text>
-         </children>
-      </VBox>
-      <VBox layoutX="42.0" layoutY="36.0" maxWidth="220.0" prefHeight="711.0" prefWidth="206.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
-               <VBox.margin>
-                  <Insets left="18.0" top="18.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
             <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" wrapText="true">
                <VBox.margin>
                   <Insets left="18.0" top="18.0" />
@@ -233,6 +223,27 @@
                   </VBox>
                </children>
             </AnchorPane>
+         </children>
+      </VBox>
+      <VBox layoutX="42.0" layoutY="36.0" maxWidth="220.0" prefHeight="711.0" prefWidth="206.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <FilteredTableView fx:id="requestTable" prefHeight="1033.0" prefWidth="206.0">
+               <columns>
+                  <FilteredTableColumn fx:id="requestTypeCol" prefWidth="100.0" text="Type" />
+                  <FilteredTableColumn fx:id="requestIDCol" prefWidth="100.0" text="ID" />
+               </columns>
+               <VBox.margin>
+                  <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
+               </VBox.margin>
+            </FilteredTableView>
          </children>
       </VBox>
    </children>
