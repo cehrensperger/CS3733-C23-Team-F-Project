@@ -232,6 +232,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
     Queue<Node> nodeQueue = new LinkedList<Node>();
     List<Node> visitedList = new ArrayList<Node>();
+    // add original node to visited list so a loop is not created
     visitedList.add(defaultNode);
 
     // add the node that is not the start node (defaultNode) to the queue
@@ -242,13 +243,15 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     }
 
     boolean locationNameFound = false;
+    // "travel" down both edges to find the connected node
     Set<LocationName> leftLocationNames = null;
     Set<LocationName> rightLocationNames = null;
 
     while (nodeQueue.size() > 0 && !locationNameFound) {
       // get and remove node at top of queue
       Node nextNode = nodeQueue.poll();
-      // add this nodes children to the queue
+
+      // find all edges for this node and add all of its neighbors to queue
       for (Node child : getChildrenFromEdges(edges, nextNode)) {
         if (!visitedList.contains(child)) {
           nodeQueue.add(child);
@@ -262,11 +265,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             containsNonHall = true;
           }
         }
+        // if a location name was found that is not a hall, quit and save the location name(s)
         if (containsNonHall) {
           locationNameFound = true;
           leftLocationNames = locs;
         }
       }
+      //        doesn't have a location name
     }
 
     // reset data structures used for BFS
@@ -321,16 +326,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     } else {
       rightLocationBox.setValue(rightLocationNames.stream().findFirst().get());
     }
-
-    // "travel" down both edges to find the connected node
-    // left ex.
-    //    node on other end of edge that is connected to default node
-    //        doesn't have a location name
-    //        so find all edges for this node and add all of its neighbors to queue
-    //        remember to add original node to visited list
-    //    loop through all neighbors, adding their neighbors to the queue and checking if any of
-    // them have a location name
-    //    stop once you have a node with a location name and put that name on the left signage
     // do the same for the right
 
     // Set the boxes to contain them
