@@ -240,6 +240,14 @@ public class ITController implements IController {
     Fapp.setScene("ServiceRequests", "EquipmentTransport");
   }
 
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
+  }
+
   public void handleIT(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "ComputerService");
   }

@@ -339,6 +339,14 @@ public class TransportController implements IController {
     Fapp.setScene("ServiceRequests", "SanitationService");
   }
 
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
+  }
+
   public void handleSecurity(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "SecurityService");
   }
