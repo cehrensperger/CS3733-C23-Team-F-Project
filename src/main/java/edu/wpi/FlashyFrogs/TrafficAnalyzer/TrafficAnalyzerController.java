@@ -122,8 +122,9 @@ public class TrafficAnalyzerController implements IController {
     for (LocationName locationName : nodeToLocationName.keySet()) {
       for (LocationName otherLocation : nodeToLocationName.keySet()) {
         // Skip locations that are this one, and ignore if either are hallways
-        if (locationName.equals(otherLocation) || locationName.getLocationType().equals(LocationName.LocationType.HALL)
-                || otherLocation.getLocationType().equals(LocationName.LocationType.HALL)) {
+        if (locationName.equals(otherLocation)
+            || locationName.getLocationType().equals(LocationName.LocationType.HALL)
+            || otherLocation.getLocationType().equals(LocationName.LocationType.HALL)) {
           continue;
         }
 
@@ -149,7 +150,8 @@ public class TrafficAnalyzerController implements IController {
           nodeMapItems.get(nextHop).getRelevantPaths().add(new Path(locationName, otherLocation));
 
           // Try to find the edge in one order
-          Edge edge = mapController.getMapSession().find(Edge.class, new Edge(nextHop, nextNextHop));
+          Edge edge =
+              mapController.getMapSession().find(Edge.class, new Edge(nextHop, nextNextHop));
 
           // That failing
           if (edge == null) {
@@ -171,7 +173,8 @@ public class TrafficAnalyzerController implements IController {
     }
 
     // Create the items
-    ObservableList<MapItem> items = FXCollections.observableList(nodeMapItems.values().stream().toList());
+    ObservableList<MapItem> items =
+        FXCollections.observableList(nodeMapItems.values().stream().toList());
     items.addAll(edgeMapItems.values().stream().toList());
 
     // Sort by the number of uses

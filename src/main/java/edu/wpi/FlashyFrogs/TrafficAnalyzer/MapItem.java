@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.TrafficAnalyzer;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import java.util.Collection;
 import java.util.LinkedList;
-
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
 import lombok.Getter;
@@ -14,9 +13,7 @@ abstract class MapItem {
   @NonNull @Getter
   private final Collection<Path> relevantPaths; // Paths that are relevant to this map item
 
-  /**
-   * Constructor, sets the relevant paths for this
-   */
+  /** Constructor, sets the relevant paths for this */
   MapItem() {
     this.relevantPaths = new LinkedList<>();
   }

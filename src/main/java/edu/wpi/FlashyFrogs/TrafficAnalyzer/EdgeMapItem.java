@@ -3,7 +3,6 @@ package edu.wpi.FlashyFrogs.TrafficAnalyzer;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
-import java.util.Collection;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
 import lombok.NonNull;

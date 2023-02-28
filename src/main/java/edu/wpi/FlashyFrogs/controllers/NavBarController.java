@@ -39,6 +39,10 @@ public class NavBarController {
 
   @FXML private Pane toast;
   @FXML private Text backText;
+  @FXML private Text heatText;
+  @FXML private SVGPath heatSVG;
+  @FXML MFXButton heat;
+  @FXML MFXButton heat2;
 
   @FXML private MFXButton back;
   @FXML private SVGPath backSVG;
@@ -209,6 +213,10 @@ public class NavBarController {
       moveVisualizer2.setDisable(true);
       SVGMap.setOpacity(0);
       SVGCSV.setOpacity(0);
+      heat.setDisable(true);
+      heat2.setDisable(true);
+      heatText.setOpacity(0);
+      heatSVG.setOpacity(0);
 
       SVGLogin.setOpacity(0);
 
@@ -241,6 +249,10 @@ public class NavBarController {
       loginText.setOpacity(1);
       alertsText.setOpacity(1);
       moveText.setOpacity(1);
+      heat.setDisable(false);
+      heat2.setDisable(false);
+      heatText.setOpacity(1);
+      heatSVG.setOpacity(1);
     }
   }
 
@@ -310,7 +322,7 @@ public class NavBarController {
 
   @FXML
   private void handleHeat(ActionEvent event) throws IOException {
-    Fapp.setScene("ServiceRequests", "trafficAnalyzer");
+    Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
   }
 
   @FXML
