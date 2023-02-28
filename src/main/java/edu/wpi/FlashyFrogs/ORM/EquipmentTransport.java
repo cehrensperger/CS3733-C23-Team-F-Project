@@ -30,16 +30,16 @@ public class EquipmentTransport extends ServiceRequest {
   @Getter
   @Setter
   @JoinColumn(
-      name = "moveTo",
+      name = "moveFrom",
       foreignKey =
           @ForeignKey(
-              name = "location_name1_fk",
+              name = "node1_fk",
               foreignKeyDefinition =
-                  "FOREIGN KEY (moveTo) REFERENCES locationname(longName) "
+                  "FOREIGN KEY (moveFrom) REFERENCES node(id) "
                       + "ON UPDATE CASCADE ON DELETE SET NULL"))
   @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
   @ManyToOne
-  private LocationName moveTo; // Location the request is needed for (source)
+  private Node moveFrom; // Location the request is needed for (source)
 
   /** Creates a new AudioVisual with a generated id */
   public EquipmentTransport() {
@@ -57,7 +57,7 @@ public class EquipmentTransport extends ServiceRequest {
    * @param location the LocationName to use in the location field
    * @param equipment the String to use in the equipment field
    * @param description the String to use in the description field
-   * @param moveTo the LocationName to use in the moveTo field
+   * @param moveFrom the Node to use in the moveFrom field
    */
   public EquipmentTransport(
       HospitalUser emp,
@@ -65,7 +65,7 @@ public class EquipmentTransport extends ServiceRequest {
       @NonNull Date dateOfSubmission,
       @NonNull Urgency urgency,
       @NonNull LocationName location,
-      @NonNull LocationName moveTo,
+      @NonNull Node moveFrom,
       @NonNull String description,
       @NonNull String equipment) {
     super.setEmp(emp);
@@ -75,7 +75,7 @@ public class EquipmentTransport extends ServiceRequest {
     super.setUrgency(urgency);
     super.setRequestType("EquipmentTransport");
     super.setLocation(location);
-    this.moveTo = moveTo;
+    this.moveFrom = moveFrom;
     this.description = description;
     this.equipment = equipment;
   }

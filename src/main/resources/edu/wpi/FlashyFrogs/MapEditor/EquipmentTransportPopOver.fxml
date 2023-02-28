@@ -13,7 +13,6 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.EquipmentTransportPopOverController">
    <children>
       <VBox alignment="CENTER" layoutX="230.0" layoutY="11.0" prefHeight="740.0" prefWidth="830.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -72,11 +71,11 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <SearchableComboBox fx:id="from" promptText="Transfer From" styleClass="fields">
+                        <Label fx:id="from" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
-                        </SearchableComboBox>
+                        </Label>
                         <DatePicker fx:id="date" prefHeight="0.0" prefWidth="250.0" promptText="Date Preference" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
@@ -101,7 +100,7 @@
                               </HBox>
                               <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
+                                    <MFXButton fx:id="submitButton" alignment="CENTER" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
