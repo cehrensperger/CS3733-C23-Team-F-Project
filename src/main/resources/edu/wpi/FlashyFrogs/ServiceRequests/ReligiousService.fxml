@@ -2,9 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,11 +13,11 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.TransportController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.ReligiousController">
    <children>
       <VBox alignment="CENTER" layoutX="240.0" layoutY="-3.0" prefWidth="840.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Internal Patient Transport Service Request">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Religious Service Request">
                <font>
                   <Font size="28.0" />
                </font>
@@ -36,24 +34,9 @@
                               <Insets top="45.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h2" styleClass="warningText" text="What is the level of vision of the patient being transported" textAlignment="RIGHT" wrappingWidth="100.0">
+                        <Text fx:id="h2" styleClass="warningText" text="What is the location of the patient" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="13.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="h3" styleClass="warningText" text="What is the level of hearing of the patient being transported" textAlignment="RIGHT" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="h4" styleClass="warningText" text="What is the level of consciousness of the patient being transported" textAlignment="RIGHT" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="6.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="h5" styleClass="warningText" text="What is the condition of the patient being transported" textAlignment="RIGHT" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="4.0" />
                            </VBox.margin>
                         </Text>
                      </children>
@@ -76,24 +59,9 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <SearchableComboBox fx:id="vision" promptText="Vision" styleClass="fields">
+                        <SearchableComboBox fx:id="locationofPatient" promptText="Location of Patient" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
-                           </VBox.margin>
-                        </SearchableComboBox>
-                        <SearchableComboBox fx:id="hearing" promptText="Hearing" styleClass="fields">
-                           <VBox.margin>
-                              <Insets bottom="18.0" />
-                           </VBox.margin>
-                        </SearchableComboBox>
-                        <SearchableComboBox fx:id="consciousness" promptText="Consciousness" styleClass="fields">
-                           <VBox.margin>
-                              <Insets bottom="18.0" />
-                           </VBox.margin>
-                        </SearchableComboBox>
-                        <SearchableComboBox fx:id="condition" promptText="Condition" styleClass="fields">
-                           <VBox.margin>
-                              <Insets />
                            </VBox.margin>
                         </SearchableComboBox>
                      </children>
@@ -112,50 +80,22 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
-                        <SearchableComboBox fx:id="to" promptText="Transfer To" styleClass="fields">
-                           <VBox.margin>
-                              <Insets bottom="18.0" />
-                           </VBox.margin>
-                        </SearchableComboBox>
-                        <SearchableComboBox fx:id="from" promptText="Transfer From" styleClass="fields">
-                           <VBox.margin>
-                              <Insets bottom="18.0" />
-                           </VBox.margin>
-                        </SearchableComboBox>
-                        <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
-                           <VBox.margin>
-                              <Insets bottom="18.0" />
-                           </VBox.margin>
-                        </SearchableComboBox>
-                        <SearchableComboBox fx:id="equipment" promptText="Equipment" styleClass="fields">
-                           <VBox.margin>
-                              <Insets bottom="18.0" />
-                           </VBox.margin>
-                        </SearchableComboBox>
-                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields" />
-                        <SearchableComboBox fx:id="mode" promptText="Mode of Transfer" styleClass="fields">
-                           <VBox.margin>
-                              <Insets bottom="18.0" top="18.0" />
-                           </VBox.margin>
-                        </SearchableComboBox>
-                        <TextField fx:id="personal" promptText="Personal Items to be Sent" styleClass="fields">
+                        <TextField fx:id="religion" promptText="Religion" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField fx:id="reason" promptText="Reason For Transfer" styleClass="fields">
+                        <TextField fx:id="requestDescription" promptText="Description of request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <CheckBox fx:id="isolation" mnemonicParsing="false" prefHeight="32.0" prefWidth="286.0" styleClass="fields" text="Needs Isolation?">
+                        <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields" />
+                        <DatePicker fx:id="serviceDate" prefHeight="30.0" prefWidth="250.0" promptText="Date Preference" styleClass="fields">
                            <VBox.margin>
-                              <Insets bottom="18.0" />
+                              <Insets top="18.0" />
                            </VBox.margin>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </CheckBox>
+                        </DatePicker>
                         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
@@ -178,20 +118,8 @@
                               </HBox>
                            </children>
                            <VBox.margin>
-                              <Insets top="35.0" />
+                              <Insets top="301.0" />
                            </VBox.margin>
-                        </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="112.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label fx:id="errorMessage">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
                         </HBox>
                      </children>
                      <HBox.margin>
@@ -203,51 +131,23 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                      <children>
-                        <Text fx:id="h6" styleClass="warningText" text="What is the location the patient will be trasported to" wrappingWidth="100.0">
+                        <Text fx:id="h3" styleClass="warningText" text="What is the religion of the patient" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="44.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h7" styleClass="warningText" text="What is the location the patient will be trasported from" wrappingWidth="100.0">
+                        <Text fx:id="h4" styleClass="warningText" text="Provide a description of the request" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="12.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h8" styleClass="warningText" text="What is the urgency of the transport" wrappingWidth="100.0">
+                        <Text fx:id="h5" styleClass="warningText" text="What is the urgency of the delivery" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="16.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h9" styleClass="warningText" text="What equipment will be needed for the transport" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="18.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="h10" styleClass="warningText" text="What is the preferred date of the transport" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="18.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="h11" styleClass="warningText" text="How will the patient be transported" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="22.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="h13" styleClass="warningText" text="Select a personal item that will need to be sent with the patient to their new location" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="2.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="h14" styleClass="warningText" text="Explain why this patient is being transported" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="4.0" />
-                           </VBox.margin>
-                        </Text>
-                        <Text fx:id="h12" styleClass="warningText" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="100.0">
-                           <VBox.margin>
-                              <Insets top="6.0" />
-                           </VBox.margin>
-                        </Text>
+                        <VBox prefHeight="12.0" prefWidth="100.0" />
+                        <Text fx:id="h6" styleClass="warningText" text="What is the preffered date of service" wrappingWidth="100.0" />
                      </children>
                   </VBox>
                </children>
@@ -265,14 +165,14 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#f6bd38" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
             <Rectangle fx:id="check2" arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="7.0" layoutX="22.0" layoutY="21.0" rotate="-45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="45.0" />
             <Rectangle fx:id="check1" arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="7.0" layoutX="12.0" layoutY="29.0" rotate="-138.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
-            <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Successfully Submitted" wrappingWidth="180.009765625">
+            <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Succesfully Submitted" wrappingWidth="180.009765625">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
          </children>
       </Pane>
-      <VBox layoutX="22.0" layoutY="16.0" maxWidth="220.0" prefHeight="711.0" prefWidth="206.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="42.0" layoutY="36.0" maxWidth="220.0" prefHeight="711.0" prefWidth="206.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
                <VBox.margin>
@@ -346,7 +246,7 @@
                   <Font size="16.0" />
                </font>
             </MFXButton>
-            <AnchorPane prefHeight="147.0" prefWidth="181.0" VBox.vgrow="ALWAYS">
+            <AnchorPane VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
                      <children>
@@ -364,17 +264,5 @@
             </AnchorPane>
          </children>
       </VBox>
-      <Pane fx:id="errtoast" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
-            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
-            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
-            <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Fill All Fields" wrappingWidth="180.009765625">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-         </children>
-      </Pane>
    </children>
 </AnchorPane>

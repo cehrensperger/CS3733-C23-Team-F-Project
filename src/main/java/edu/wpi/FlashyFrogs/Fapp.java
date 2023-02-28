@@ -42,6 +42,7 @@ public class Fapp extends Application {
 
   // Last keypress time, used for things that require a timeout
   @Getter @Setter private static Instant lastKeyPressTime = Instant.now();
+  private static String hold;
 
   @Override
   public void init() {
@@ -148,7 +149,6 @@ public class Fapp extends Application {
     AnchorPane.setLeftAnchor(innerAnchorPane, 0.0);
     AnchorPane.setRightAnchor(innerAnchorPane, 0.0);
     Fapp.rootPane = root;
-
     final Scene scene = new Scene(root);
 
     // Disable full-screen exit and combo
