@@ -2,14 +2,14 @@ package edu.wpi.FlashyFrogs.MapEditor;
 
 import static java.lang.Math.abs;
 
+import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Map.MapController;
-import edu.wpi.FlashyFrogs.ORM.Edge;
-import edu.wpi.FlashyFrogs.ORM.LocationName;
-import edu.wpi.FlashyFrogs.ORM.Move;
-import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ResourceDictionary;
+import edu.wpi.FlashyFrogs.ServiceRequests.EquipmentTransportController;
 import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -320,6 +320,97 @@ public class MapEditorController implements IController {
                                     Move newMove = new Move(node, locationName, date);
 
                                     session.persist(newMove);
+
+                                    LocalDate weekEarlier =
+                                        newMove
+                                            .getMoveDate()
+                                            .toInstant()
+                                            .atZone(ZoneId.systemDefault())
+                                            .toLocalDate();
+                                    weekEarlier.minusDays(7);
+                                    Date weekEarlierDate =
+                                        Date.from(
+                                            weekEarlier
+                                                .atStartOfDay()
+                                                .atZone(ZoneId.systemDefault())
+                                                .toInstant());
+                                    LocalDate weekLater =
+                                        newMove
+                                            .getMoveDate()
+                                            .toInstant()
+                                            .atZone(ZoneId.systemDefault())
+                                            .toLocalDate();
+                                    weekLater.plusDays(7);
+                                    Date weekLaterDate =
+                                        Date.from(
+                                            weekLater
+                                                .atStartOfDay()
+                                                .atZone(ZoneId.systemDefault())
+                                                .toInstant());
+                                    Alert alert =
+                                        new Alert(
+                                            weekEarlierDate,
+                                            weekLaterDate,
+                                            CurrentUserEntity.CURRENT_USER.getCurrentUser(),
+                                            "Recent Move!",
+                                            newMove.getLocation().getLongName()
+                                                + " has moved! Check the move visualizer for more details.",
+                                            CurrentUserEntity.CURRENT_USER
+                                                .getCurrentUser()
+                                                .getDepartment(),
+                                            Alert.Severity.MILD);
+                                    session.persist(alert);
+
+                                    if (newMove.getLocation().getCurrentNode(date) != null) {
+                                      FXMLLoader newLoad =
+                                          new FXMLLoader(
+                                              Fapp.class.getResource(
+                                                  "MapEditor/EquipmentTransferConfirmationPopOver.fxml"));
+                                      PopOver popOver = null; // create the popover
+                                      try {
+                                        popOver = new PopOver(newLoad.load());
+                                      } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                      }
+
+                                      EquipmentTransferConfirmationPopOverController controller =
+                                          newLoad.getController();
+                                        PopOver finalPopOver = popOver;
+                                        controller.getNoButton().setOnAction(e -> {
+                                            finalPopOver.hide();
+                                        });
+
+                                        controller.getYesButton().setOnAction(e -> {
+                                            finalPopOver.hide();
+
+                                            FXMLLoader newNewLoader =
+                                                    new FXMLLoader(
+                                                            Fapp.class.getResource(
+                                                                    "MapEditor/EquipmentTransportPopOver.fxml"));
+
+                                        });
+
+                                      popOver
+                                          .detach(); // Detach the pop-up, so it's not stuck to the
+                                      // button
+
+                                      popOver.show(mapPane); // display the popover
+
+                                      popOver
+                                          .showingProperty()
+                                          .addListener(
+                                              (observable, oldValue, newValue) -> {
+                                                if (!newValue) {
+                                                  try {
+                                                    controller.handleSubmit(
+                                                        mapController.getMapSession());
+                                                  } catch (IOException e) {
+                                                    throw new RuntimeException(e);
+                                                  }
+                                                }
+                                              });
+                                    }
+
                                     session.flush();
                                     mapController.redraw();
                                   }

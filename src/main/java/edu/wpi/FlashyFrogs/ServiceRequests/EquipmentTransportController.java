@@ -34,6 +34,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import lombok.Setter;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -64,6 +66,7 @@ public class EquipmentTransportController implements IController {
   @FXML TextField description;
 
   @FXML private Label errorMessage;
+  @Setter private PopOver popOver;
 
   boolean hDone = false;
   private Connection connection = null;
@@ -133,6 +136,7 @@ public class EquipmentTransportController implements IController {
   }
 
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
+    if (popOver != null) popOver.hide();
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
 
@@ -165,6 +169,7 @@ public class EquipmentTransportController implements IController {
         handleClear(actionEvent);
         toastAnimation();
         Sound.SUBMITTED.play();
+        if (popOver != null) popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
         submit.setDisable(true);
@@ -177,6 +182,56 @@ public class EquipmentTransportController implements IController {
       submit.setDisable(true);
       errortoastAnimation();
       session.close();
+      Sound.ERROR.play();
+    }
+  }
+
+  public void handleSubmit(Session session) throws IOException {
+
+    // Session session = CONNECTION.getSessionFactory().openSession();
+    // Transaction transaction = session.beginTransaction();
+
+    try {
+      // check
+      if (equipment.getText().equals("")
+          || to.getValue().toString().equals("")
+          || from.getValue().toString().equals("")
+          || date.getValue().toString().equals("")
+          || description.getText().equals("")) {
+        throw new NullPointerException();
+      }
+      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+      EquipmentTransport equipmentTransport =
+          new EquipmentTransport(
+              CurrentUserEntity.CURRENT_USER.getCurrentUser(),
+              dateNeeded,
+              Date.from(Instant.now()),
+              urgency.getValue(),
+              from.getValue(),
+              to.getValue(),
+              equipment.getText(),
+              description.getText());
+
+      try {
+        session.persist(equipmentTransport);
+        //        session.close();
+        //        handleClear(new ActionEvent());
+        toastAnimation();
+        Sound.SUBMITTED.play();
+        //        if (popOver != null) popOver.hide();
+      } catch (RollbackException exception) {
+        //        session.clear();
+        submit.setDisable(true);
+
+        //        session.close();
+        Sound.ERROR.play();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      //      session.clear();
+      submit.setDisable(true);
+      errortoastAnimation();
+      //      session.close();
       Sound.ERROR.play();
     }
   }
