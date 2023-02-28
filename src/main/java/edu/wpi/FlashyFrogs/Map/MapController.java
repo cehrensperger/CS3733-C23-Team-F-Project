@@ -477,7 +477,7 @@ public class MapController {
       Node node = (Node) t.get(t.getElements().get(1));
 
       if (node.getFloor().equals(mapEntity.getMapFloor().getValue())) {
-        Text text = new Text(t.getElements().get(0).toString());
+        Text text = new Text(t.get(t.getElements().get(0)).toString());
         getNodeToLocationBox().get(node).getChildren().add(text);
       }
     }
