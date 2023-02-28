@@ -1,7 +1,6 @@
 package edu.wpi.FlashyFrogs.PathFinding;
 
 import static edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity.CURRENT_USER;
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
@@ -362,8 +361,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   class MyRunnable implements Runnable {
 
     public void run() {
-      Session session = CONNECTION.getSessionFactory().openSession();
-
       // Get the new path from the PathFinder
       Node startNode =
           startingBox
@@ -381,7 +378,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
 
-      session.close();
       // Call unlock() on the UI thread when finished
       Platform.runLater(PathfindingController.this::unlock);
     }

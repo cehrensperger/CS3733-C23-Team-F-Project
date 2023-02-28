@@ -26,6 +26,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -50,6 +51,10 @@ import org.hibernate.Session;
  */
 @GeneratedExclusion
 public class MapController {
+  @FXML
+  private AnchorPane
+      root; // Root, used so we can make everyhting mouse transparent during animations
+
   @FXML private HBox animationPane;
   @FXML private Circle cir1;
   @FXML private Circle cir2;
@@ -844,6 +849,8 @@ public class MapController {
    * Thread
    */
   public void startAnimation() {
+    root.setMouseTransparent(true); // Make this intercept all mouse clicks
+
     parallelTransition.stop();
 
     cir1.setVisible(true);
@@ -902,6 +909,8 @@ public class MapController {
 
   /** Handles stopping the map animation. Handles hiding and stopping it */
   public void stopAnimation() {
+    root.setMouseTransparent(false); // Make this intercept all mouse clicks
+
     // stop the animation
     parallelTransition.jumpTo(Duration.ZERO);
     parallelTransition.stop();

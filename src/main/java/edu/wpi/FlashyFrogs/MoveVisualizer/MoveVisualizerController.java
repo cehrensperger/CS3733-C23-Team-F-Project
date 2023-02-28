@@ -73,7 +73,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @FXML private FilteredTableColumn<Move, LocationName> locationColumn; // Location column
   @FXML private FilteredTableColumn<Move, Date> dateColumn; // Date column
   @FXML private AnchorPane mapPane; // Map pane for map display
-  private int selectedRow; // The old row for the table, used to prevent duplicate display requests
+  private int selectedRow =
+      -1; // The old row for the table, used to prevent duplicate display requests
   private final Collection<javafx.scene.Node> nodes =
       new LinkedList<>(); // Collection of nodes that are on the map
 
@@ -217,6 +218,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               if (selectedRow != -1
                   && moveTable.getSelectionModel().getSelectedIndex() != selectedRow) {
                 moveTable.getSelectionModel().select(selectedRow); // Go to that
+                return; // Don't do anythign else
+              } else if (moveTable.getSelectionModel().getSelectedIndex() == selectedRow) {
+                return; // Don't do naything else
               }
 
               noLocationText.setVisible(false); // Reset the no location text
@@ -244,19 +248,21 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                   mapController.startAnimation();
                   new Thread(
                           () -> {
-                            // Get and draw the path
-                            List<Node> path =
-                                pathFinder.findPath(oldLocation, newValue.getNode(), false);
+                            currentPath =
+                                pathFinder.findPath(
+                                    oldLocation, newValue.getNode(), false); // Save the path
 
                             // In the UI thread
                             Platform.runLater(
                                 () -> {
-                                  currentPath = path; // Save the path
-
                                   // Set the floor
                                   mapController
                                       .getMapFloorProperty()
                                       .setValue(oldLocation.getFloor());
+
+                                  // Go to the nodes floor
+                                  mapController.getMapFloorProperty().setValue(currentPath.get(0).getFloor());
+                                  mapController.zoomToCoordinates(2, currentPath.get(0).getXCoord(), currentPath.get(0).getYCoord());
 
                                   drawTable(new Date()); // Draw the table
 
