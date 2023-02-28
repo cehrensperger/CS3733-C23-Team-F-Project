@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.MoveVisualizer;
 
 import edu.wpi.FlashyFrogs.Accounts.LoginController;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
@@ -15,6 +16,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -38,6 +40,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import javax.sound.sampled.*;
 import lombok.NonNull;
@@ -73,6 +76,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   // Static place to keep the timer, so that it can be canceled when the admin enters the move
   // visualizer
   private static PauseTransition backToVisualizerTimer = null;
+
+  // make singleton?
+  private static LocationName defaultLocation;
 
   /** Sets up the move visualizer, including all tables, and the map */
   @SneakyThrows
@@ -160,6 +166,172 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 .getMapSession()
                 .createQuery("FROM LocationName", LocationName.class)
                 .getResultList());
+
+    defaultLocation = locationNames.get(0);
+    // Query the edges
+    List<Edge> edges =
+        mapController.getMapSession().createQuery("FROM Edge", Edge.class).getResultList();
+
+    // find all edges
+
+    Node defaultNode = defaultLocation.getCurrentNode(new Date());
+    // find the edges connected to this node
+    List<Edge> edgesConnectToFirstNode =
+        edges.stream()
+            .filter(
+                new Predicate<Edge>() {
+                  @Override
+                  public boolean test(Edge edge) {
+                    return edge.getNode1().equals(defaultNode)
+                        || edge.getNode2().equals(defaultNode);
+                  }
+                })
+            .collect(Collectors.toList());
+
+    // compare them to find the pair that is closest to 180 degrees
+    // if there is only one edge, make left or right signage a dead end
+
+    double closestTo180 = 999;
+    Pair<Edge, Edge> pairClosestTo180 = null;
+    // check all pairs of edges
+    for (int i = 0; i < edgesConnectToFirstNode.size(); i++) {
+      for (int j = i + 1; j < edgesConnectToFirstNode.size(); j++) {
+
+        // get node that is not the origin node
+        Node thisNode = edgesConnectToFirstNode.get(i).getNode1();
+        if (edgesConnectToFirstNode.get(i).getNode1().equals(defaultNode)) {
+          thisNode = edgesConnectToFirstNode.get(i).getNode2();
+        }
+        Node nextNode = edgesConnectToFirstNode.get(j).getNode1();
+        if (edgesConnectToFirstNode.get(j).getNode1().equals(defaultNode)) {
+          thisNode = edgesConnectToFirstNode.get(j).getNode2();
+        }
+
+        double[] a = {
+          (thisNode.getXCoord() - defaultNode.getXCoord()),
+          (thisNode.getYCoord() - defaultNode.getYCoord())
+        };
+
+        double[] b = {
+          (nextNode.getXCoord() - defaultNode.getXCoord()),
+          (nextNode.getYCoord() - defaultNode.getYCoord())
+        };
+
+        double angle = angleBetweenVectors(a, b, 2);
+
+        if (Math.abs(180 - angle) < closestTo180) {
+          closestTo180 = Math.abs(180 - angle);
+          pairClosestTo180 =
+              new Pair<>(edgesConnectToFirstNode.get(i), edgesConnectToFirstNode.get(j));
+        }
+      }
+    }
+
+    System.out.println();
+    // once you have the pair of edges that are closest to 180 degrees
+
+    Queue<Node> nodeQueue = new LinkedList<Node>();
+    List<Node> visitedList = new ArrayList<Node>();
+    visitedList.add(defaultNode);
+
+    // add the node that is not the start node (defaultNode) to the queue
+    if (!pairClosestTo180.getValue().getNode1().equals(defaultNode)) {
+      nodeQueue.add(pairClosestTo180.getValue().getNode1());
+    } else {
+      nodeQueue.add(pairClosestTo180.getValue().getNode2());
+    }
+
+    boolean locationNameFound = false;
+    Set<LocationName> leftLocationNames = null;
+    Set<LocationName> rightLocationNames = null;
+
+    while (nodeQueue.size() > 0 && !locationNameFound) {
+      // get and remove node at top of queue
+      Node nextNode = nodeQueue.poll();
+      // add this nodes children to the queue
+      for (Node child : getChildrenFromEdges(edges, nextNode)) {
+        if (!visitedList.contains(child)) {
+          nodeQueue.add(child);
+        }
+      }
+      Set<LocationName> locs = mapController.getNodeToLocationNameMap().get(nextNode);
+      if (locs != null) {
+        boolean containsNonHall = false;
+        for (LocationName locationName : locs) {
+          if (!locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+            containsNonHall = true;
+          }
+        }
+        if (containsNonHall) {
+          locationNameFound = true;
+          leftLocationNames = locs;
+        }
+      }
+    }
+
+    // reset data structures used for BFS
+    nodeQueue = new LinkedList<Node>();
+    visitedList = new ArrayList<Node>();
+    visitedList.add(defaultNode);
+    locationNameFound = false;
+
+    // add the node that is not the start node (defaultNode) to the queue
+    if (!pairClosestTo180.getKey().getNode1().equals(defaultNode)) {
+      nodeQueue.add(pairClosestTo180.getKey().getNode1());
+    } else {
+      nodeQueue.add(pairClosestTo180.getKey().getNode2());
+    }
+    while (nodeQueue.size() > 0 && !locationNameFound) {
+      // get and remove node at top of queue
+      Node nextNode = nodeQueue.poll();
+      // add this node's children to the queue if they have not already been visited!
+      // nodeQueue.addAll(getChildrenFromEdges(edges, nextNode));
+      for (Node child : getChildrenFromEdges(edges, nextNode)) {
+        if (!visitedList.contains(child)) {
+          nodeQueue.add(child);
+        }
+      }
+      Set<LocationName> locs = mapController.getNodeToLocationNameMap().get(nextNode);
+      if (locs != null) {
+
+        boolean containsNonHall = false;
+        for (LocationName locationName : locs) {
+          if (!locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+            containsNonHall = true;
+          }
+        }
+
+        if (containsNonHall) {
+
+          locationNameFound = true;
+          rightLocationNames = locs;
+        }
+      }
+    }
+
+    // assert leftLocationNames != null;
+    if (leftLocationNames == null) {
+
+    } else {
+      leftLocationBox.setValue(leftLocationNames.stream().findFirst().get());
+    }
+
+    if (rightLocationNames == null) {
+
+    } else {
+      rightLocationBox.setValue(rightLocationNames.stream().findFirst().get());
+    }
+
+    // "travel" down both edges to find the connected node
+    // left ex.
+    //    node on other end of edge that is connected to default node
+    //        doesn't have a location name
+    //        so find all edges for this node and add all of its neighbors to queue
+    //        remember to add original node to visited list
+    //    loop through all neighbors, adding their neighbors to the queue and checking if any of
+    // them have a location name
+    //    stop once you have a node with a location name and put that name on the left signage
+    // do the same for the right
 
     // Set the boxes to contain them
     leftLocationBox.setItems(locationNames);
@@ -713,6 +885,83 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         });
 
     backToVisualizerTimer.play(); // Start the timer
+  }
+
+  // https://www.geeksforgeeks.org/program-to-calculate-angle-between-two-n-dimensional-vectors/
+  // get angle
+  // Java program for the above approach
+
+  // Function to find the magnitude
+  // of the given vector
+  private static double magnitude(double arr[], int N) {
+
+    // Stores the final magnitude
+    double magnitude = 0;
+
+    // Traverse the array
+    for (int i = 0; i < N; i++) magnitude += arr[i] * arr[i];
+
+    // Return square root of magnitude
+    return Math.sqrt(magnitude);
+  }
+
+  // Function to find the dot
+  // product of two vectors
+  private static double dotProduct(double[] arr, double[] brr, int N) {
+
+    // Stores dot product
+    double product = 0;
+
+    // Traverse the array
+    for (int i = 0; i < N; i++) product = product + arr[i] * brr[i];
+
+    // Return the product
+    return product;
+  }
+
+  private static double angleBetweenVectors(double[] arr, double[] brr, int N) {
+
+    // Stores dot product of two vectors
+    double dotProductOfVectors = dotProduct(arr, brr, N);
+
+    // Stores magnitude of vector A
+    double magnitudeOfA = magnitude(arr, N);
+
+    // Stores magnitude of vector B
+    double magnitudeOfB = magnitude(brr, N);
+
+    // Stores angle between given vectors
+    double angle = dotProductOfVectors / (magnitudeOfA * magnitudeOfB);
+    angle = Math.toDegrees(Math.acos(angle));
+    // Print the angle
+    return angle;
+  }
+
+  private List<Node> getChildrenFromEdges(List<Edge> edges, Node node) {
+
+    List<Node> children = new ArrayList<>();
+
+    // find the edges connected to this node
+    edges =
+        edges.stream()
+            .filter(
+                new Predicate<Edge>() {
+                  @Override
+                  public boolean test(Edge edge) {
+                    return edge.getNode1().equals(node) || edge.getNode2().equals(node);
+                  }
+                })
+            .collect(Collectors.toList());
+
+    for (Edge edge : edges) {
+      if (!edge.getNode1().equals(node)) {
+        children.add(edge.getNode1());
+      } else {
+        children.add(edge.getNode2());
+      }
+    }
+
+    return children;
   }
 
   @FXML
