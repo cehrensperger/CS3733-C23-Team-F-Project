@@ -57,7 +57,7 @@
       <AnchorPane id="clockLabel" fx:id="anchorPane" prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
-      <AnchorPane prefHeight="685.0" prefWidth="39.0" styleClass="background" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="685.0" prefWidth="40.0" styleClass="background" BorderPane.alignment="CENTER">
          <children>
             <VBox fx:id="toast" alignment="CENTER" layoutX="-303.0" prefHeight="685.0" prefWidth="220.0" spacing="21.7" style="-fx-background-color: #012d5a;" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-220.0" AnchorPane.topAnchor="0.0">
                <children>

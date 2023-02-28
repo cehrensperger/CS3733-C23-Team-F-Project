@@ -7,6 +7,7 @@ import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Religion;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -28,7 +29,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -82,6 +82,7 @@ public class ReligiousController implements IController {
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
+    locationofPatient.setItems(FXCollections.observableArrayList(locations));
 
     locationofPatient.setButtonCell(
         new ListCell<LocationName>() {
@@ -89,7 +90,7 @@ public class ReligiousController implements IController {
           protected void updateItem(LocationName item, boolean empty) {
             super.updateItem(item, empty);
             if (empty || item == null) {
-              setText("Transfer To");
+              setText("Location of Patient");
             } else {
               setText(item.toString());
             }
@@ -115,12 +116,12 @@ public class ReligiousController implements IController {
     Transaction transaction = session.beginTransaction();
 
     try {
-      if (patient.getText().equals("")
-          || locationofPatient.getValue().toString().equals("")
-          || religion.getText().toString().equals("")
-          || requestDescription.getText().toString().equals("")
-          || urgency.getValue().toString().equals("")
-          || serviceDate.getValue().toString().equals("")) {
+      // check
+      if (locationofPatient.getValue().toString().equals("")
+          || patient.getText().equals("")
+          || religion.getText().equals("")
+          || serviceDate.getValue().toString().equals("")
+          || requestDescription.getText().equals("")) {
         throw new NullPointerException();
       }
 
@@ -139,24 +140,25 @@ public class ReligiousController implements IController {
               CurrentUserEntity.CURRENT_USER.getCurrentUser());
 
       try {
-        session.persist(religion);
+        session.persist(religious);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
-        errorMessage.setText("Please fill all fields.");
+        submit.setDisable(true);
+
         session.close();
+        Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errorMessage.setTextFill((Paint.valueOf("#b6000b")));
-      errorMessage.setText("Please fill all fields.");
+      submit.setDisable(true);
+      // errortoastAnimation();
       session.close();
+      Sound.ERROR.play();
     }
   }
 
