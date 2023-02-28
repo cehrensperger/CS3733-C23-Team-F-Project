@@ -13,9 +13,19 @@ abstract class MapItem {
   @NonNull @Getter
   private final Collection<Path> relevantPaths; // Paths that are relevant to this map item
 
+  private final double serviceRequestWeight; // Weight for the service requests
+  @Getter private int numServiceRequests = 0; // Number of service requests this has
+
   /** Constructor, sets the relevant paths for this */
-  MapItem() {
+  MapItem(double serviceRequestWeight) {
     this.relevantPaths = new ConcurrentLinkedQueue<>();
+
+    this.serviceRequestWeight = serviceRequestWeight; // Save the weight
+  }
+
+  /** Adds a service request to this */
+  void addServiceRequest(int numRequests) {
+    numServiceRequests += numRequests; // Add one to the count
   }
 
   /**
@@ -35,12 +45,12 @@ abstract class MapItem {
   abstract String type();
 
   /**
-   * Gets the number of uses of the map item
+   * Gets the number of uses of the map item, including service requests
    *
-   * @return the number of uses of the map item
+   * @return the number of uses of the map item, including service requests
    */
-  int getNumUses() {
-    return relevantPaths.size();
+  double getTotalWeight() {
+    return relevantPaths.size() + numServiceRequests * serviceRequestWeight;
   }
 
   /**

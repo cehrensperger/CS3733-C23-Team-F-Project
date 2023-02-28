@@ -13,8 +13,10 @@ class NodeMapItem extends MapItem {
    * Constructor, sets the relevant paths for this
    *
    * @param node the node this uses
+   * @param serviceRequestWeight weight for service requests, used in weight calculation
    */
-  NodeMapItem(@NonNull Node node) {
+  NodeMapItem(@NonNull Node node, double serviceRequestWeight) {
+    super(serviceRequestWeight);
     this.node = node; // Save the node
   }
 

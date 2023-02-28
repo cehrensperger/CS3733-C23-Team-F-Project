@@ -11,7 +11,14 @@ import lombok.NonNull;
 class EdgeMapItem extends MapItem {
   @NonNull final Edge edge; // Edge this map item uses
 
-  public EdgeMapItem(@NonNull Edge edge) {
+  /**
+   * Creates an edge map item
+   *
+   * @param edge the edge
+   * @param serviceRequestWeight the weight the service request should have
+   */
+  public EdgeMapItem(@NonNull Edge edge, double serviceRequestWeight) {
+    super(serviceRequestWeight);
     this.edge = edge; // Save the edge
   }
 

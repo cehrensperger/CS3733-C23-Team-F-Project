@@ -37,11 +37,12 @@ public class TrafficAnalyzerController implements IController {
   @FXML private TableColumn<MapItem, String> typeColumn; // Table column
   @FXML private TableColumn<MapItem, String> mapItemColumn; // Map items
   @FXML private TableColumn<MapItem, Number> usesColumn; // Uses
+  @FXML private TableColumn<MapItem, Number> serviceRequestsColumn; // Service requests
   private MapController mapController; // The map controller
 
   // Max and min weights for the map
-  private int maxWeight;
-  private int minWeight;
+  private double maxWeight;
+  private double minWeight;
 
   private Map<edu.wpi.FlashyFrogs.ORM.Node.Floor, Collection<MapItem>>
       floorToMapItems; // Floor to map items
@@ -56,8 +57,12 @@ public class TrafficAnalyzerController implements IController {
     mapItemColumn.setCellValueFactory(
         (row) -> new SimpleStringProperty(row.getValue().getMapItemString()));
     mapItemColumn.setReorderable(false);
-    usesColumn.setCellValueFactory((row) -> new SimpleIntegerProperty(row.getValue().getNumUses()));
+    usesColumn.setCellValueFactory(
+        (row) -> new SimpleIntegerProperty(row.getValue().getRelevantPaths().size()));
     usesColumn.setReorderable(false);
+    serviceRequestsColumn.setCellValueFactory(
+        (row) -> new SimpleIntegerProperty(row.getValue().getNumServiceRequests()));
+    serviceRequestsColumn.setReorderable(false);
 
     // Load the map
     FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("Map/Map.fxml"));
@@ -144,6 +149,26 @@ public class TrafficAnalyzerController implements IController {
         new HashSet<>(
             mapController.getMapSession().createQuery("FROM Edge", Edge.class).getResultList());
 
+    // Get the count of service requests for each location
+    List<Object[]> serviceRequestsRaw =
+        mapController
+            .getMapSession()
+            .createQuery(
+                "SELECT loc, COUNT(*) FROM ServiceRequest sr JOIN sr.location loc GROUP BY loc",
+                Object[].class)
+            .getResultList();
+
+    Map<LocationName, Integer> locationToServiceRequestCount = new HashMap<>();
+
+    // Save the counts
+    serviceRequestsRaw.forEach(
+        (Object[] raw) -> {
+          LocationName locationName = (LocationName) raw[0]; // Cast location name
+          long count = (long) raw[1]; // Cast count
+
+          locationToServiceRequestCount.put(locationName, (int) count); // Save it
+        });
+
     // Create the queue, the comparator is comparing the number of uses
     Map<edu.wpi.FlashyFrogs.ORM.Node, MapItem> nodeMapItems =
         new ConcurrentHashMap<>(FloydWarshallRunner.getNextHops().size()); // Node items
@@ -181,15 +206,10 @@ public class TrafficAnalyzerController implements IController {
                   edu.wpi.FlashyFrogs.ORM.Node nextHop = nodeOne; // The next hop in the path
 
                   // While the node isn't the target node
-                  while (!nextHop.equals(nodeTwo)) {
-                    edu.wpi.FlashyFrogs.ORM.Node nextNextHop =
-                        FloydWarshallRunner.getNextHops()
-                            .get(nextHop)
-                            .get(nodeTwo); // Get the next hop on the path to the destination
-
+                  while (true) {
                     // If we haven't seen this node before
                     if (!nodeMapItems.containsKey(nextHop)) {
-                      nodeMapItems.put(nextHop, new NodeMapItem(nextHop)); // Save it
+                      nodeMapItems.put(nextHop, new NodeMapItem(nextHop, serviceWeight)); // Save it
 
                       // Add this to its floor
                       floorToMapItems
@@ -203,6 +223,23 @@ public class TrafficAnalyzerController implements IController {
                         .getRelevantPaths()
                         .add(new Path(locationName, otherLocation));
 
+                    // Do SRs too
+                    nodeMapItems
+                        .get(nextHop)
+                        .addServiceRequest(
+                            locationToServiceRequestCount.getOrDefault(otherLocation, 0));
+
+                    // Stop here if we reached the target. Stop precisely here so that the last node
+                    // also gets its weight covered
+                    if (nextHop.equals(nodeTwo)) {
+                      break;
+                    }
+
+                    edu.wpi.FlashyFrogs.ORM.Node nextNextHop =
+                        FloydWarshallRunner.getNextHops()
+                            .get(nextHop)
+                            .get(nodeTwo); // Get the next hop on the path to the destination
+
                     // Try to find the edge in one order
                     Edge edge = new Edge(nextHop, nextNextHop);
 
@@ -214,7 +251,7 @@ public class TrafficAnalyzerController implements IController {
 
                     // If we haven't seen the edge
                     if (!edgeMapItems.containsKey(edge)) {
-                      edgeMapItems.put(edge, new EdgeMapItem(edge)); // Save it
+                      edgeMapItems.put(edge, new EdgeMapItem(edge, serviceWeight)); // Save it
 
                       MapItem edgeItem = edgeMapItems.get(edge); // Get the edge item we just made
 
@@ -232,25 +269,14 @@ public class TrafficAnalyzerController implements IController {
                         .getRelevantPaths()
                         .add(new Path(locationName, otherLocation));
 
+                    // Add service requests
+                    edgeMapItems
+                        .get(edge)
+                        .addServiceRequest(
+                            locationToServiceRequestCount.getOrDefault(otherLocation, 0));
+
                     nextHop = nextNextHop; // The next hop is this
                   }
-
-                  // We have to manually process the last node
-                  // If we haven't seen this node before
-                  if (!nodeMapItems.containsKey(nodeTwo)) {
-                    nodeMapItems.put(nodeTwo, new NodeMapItem(nodeTwo)); // Save it
-
-                    // Add this to its floor
-                    floorToMapItems
-                        .get(nodeMapItems.get(nodeTwo).getMapFloor())
-                        .add(nodeMapItems.get(nodeTwo));
-                  }
-
-                  // Either way, add this to the relevant paths
-                  nodeMapItems
-                      .get(nodeTwo)
-                      .getRelevantPaths()
-                      .add(new Path(locationName, otherLocation));
                 }
               });
       // Save and start the thread
@@ -277,10 +303,10 @@ public class TrafficAnalyzerController implements IController {
     items.addAll(edgeMapItems.values());
 
     // Sort by the number of uses, descending
-    items.sort(Comparator.comparingInt(MapItem::getNumUses).reversed());
+    items.sort(Comparator.comparingDouble(MapItem::getTotalWeight).reversed());
 
-    maxWeight = items.get(0).getNumUses(); // Get the max weight
-    minWeight = items.get(items.size() - 1).getNumUses(); // Get the min weight
+    maxWeight = items.get(0).getTotalWeight(); // Get the max weight
+    minWeight = items.get(items.size() - 1).getTotalWeight(); // Get the min weight
 
     // Weight table
     Platform.runLater(() -> weightTable.setItems(items));
@@ -408,7 +434,7 @@ public class TrafficAnalyzerController implements IController {
     double stepFactor = (maxWeight - minWeight) / 255.0; // Calculate the step
 
     // Calculate the weight for this, this - min / factor
-    double weight = (mapItem.getNumUses() - minWeight) / stepFactor;
+    double weight = (mapItem.getTotalWeight() - minWeight) / stepFactor;
 
     int roundedWeight = (int) Math.round(weight); // Round the weight
 
