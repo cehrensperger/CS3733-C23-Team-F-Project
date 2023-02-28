@@ -67,7 +67,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @FXML private Text leftLocation; // Left arrow location, actual
   @FXML private TextField headerText; // Text for the header, entry
   @FXML private TextField textText; // The text to show on the map
-  @FXML private Text noLocationText; // No location error text
   @FXML private FilteredTableView<Move> moveTable; // Table for the moves
   @FXML private FilteredTableColumn<Move, Node> nodeColumn; // Node column
   @FXML private FilteredTableColumn<Move, LocationName> locationColumn; // Location column
@@ -223,8 +222,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 return; // Don't do naything else
               }
 
-              noLocationText.setVisible(false); // Reset the no location text
-
               unColorFloor(); // Clear the old styilng stuff
 
               // If something is selected
@@ -279,7 +276,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                       .start();
                 } else {
                   errortoastAnimation();
-                  noLocationText.setVisible(true);
                 }
               }
 
