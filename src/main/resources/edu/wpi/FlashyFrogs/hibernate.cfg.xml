@@ -54,6 +54,8 @@
         <mapping class="edu.wpi.FlashyFrogs.ORM.InternalTransport"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.ComputerService"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.AudioVisual"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.Religion"/>
+        <mapping class="edu.wpi.FlashyFrogs.ORM.MedicineDelivery"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.Node"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.LocationName"/>
         <mapping class="edu.wpi.FlashyFrogs.ORM.UserLogin"/>
