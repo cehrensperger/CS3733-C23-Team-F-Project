@@ -9,6 +9,7 @@ import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -53,6 +54,7 @@ public class HomeController implements IController {
   @FXML protected FilteredTableColumn<ServiceRequest, LocationName> locationCol;
   @FXML protected FilteredTableColumn<ServiceRequest, ServiceRequest.Status> statusCol;
 
+  @FXML protected MFXButton editMovesButton;
   @FXML protected FilteredTableView<ServiceRequest> requestTable;
 
   @FXML protected FilteredTableColumn<MoveWrapper, edu.wpi.FlashyFrogs.ORM.Node> nodeIDCol;
@@ -338,9 +340,13 @@ public class HomeController implements IController {
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
       tableText2.setText("");
+      editMovesButton.setDisable(true);
+      editMovesButton.setVisible(false);
     } else {
       tableText.setText("All Service Requests");
       tableText2.setText("Future Moves");
+      editMovesButton.setDisable(false);
+      editMovesButton.setVisible(true);
     }
     refreshTable();
 

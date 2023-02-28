@@ -16,82 +16,6 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.EquipmentTransportController">
     <children>
-        <VBox layoutX="12.0" layoutY="6.0" maxWidth="220.0" prefHeight="711.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1060.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
-                    <VBox.margin>
-                        <Insets left="18.0" top="18.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Text>
-                <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" wrapText="true">
-                    <VBox.margin>
-                        <Insets left="18.0" top="18.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font name="Roboto Light" size="16.0" />
-                    </font>
-                </MFXButton>
-            <MFXButton fx:id="equipmentButton" alignment="BASELINE_LEFT" onAction="#handleEquipment" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Equipment Transport" wrapText="true">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="18.0" top="18.0" />
-               </VBox.margin>
-            </MFXButton>
-                <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Information Technology" wrapText="true">
-                    <VBox.margin>
-                        <Insets left="18.0" top="18.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </MFXButton>
-                <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Internal Patient Transportation" wrapText="true">
-                    <VBox.margin>
-                        <Insets left="18.0" top="18.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </MFXButton>
-                <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" wrapText="true">
-                    <VBox.margin>
-                        <Insets left="18.0" top="18.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </MFXButton>
-                <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Security" wrapText="true">
-                    <VBox.margin>
-                        <Insets left="18.0" top="18.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </MFXButton>
-                <AnchorPane maxWidth="220.0" VBox.vgrow="ALWAYS">
-                    <children>
-                        <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
-                     <children>
-                        <MFXButton fx:id="credits" alignment="BASELINE_LEFT" onAction="#handleCredits" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Credits" wrapText="true">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets bottom="18.0" left="18.0" />
-                           </VBox.margin>
-                        </MFXButton>
-                     </children>
-                        </VBox>
-                    </children>
-                </AnchorPane>
-            </children>
-        </VBox>
         <VBox alignment="CENTER" layoutX="220.0" layoutY="1.0" prefHeight="740.0" prefWidth="1063.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Equipment Transport Service Request">
@@ -247,5 +171,97 @@
             </Text>
          </children>
       </Pane>
+      <VBox layoutX="42.0" layoutY="36.0" maxWidth="220.0" prefHeight="711.0" prefWidth="206.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Roboto Light" size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="equipmentButton" alignment="BASELINE_LEFT" onAction="#handleEquipment" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Equipment Transport" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Information Technology" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Internal Patient Transportation" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="medicine" alignment="BASELINE_LEFT" onAction="#handleMedicine" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Medicine Delivery" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="religious" alignment="BASELINE_LEFT" onAction="#handleReligious" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Religous" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Security" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <AnchorPane VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
+                     <children>
+                        <MFXButton fx:id="credits" alignment="BASELINE_LEFT" onAction="#handleCredits" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Credits" wrapText="true">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="18.0" left="18.0" />
+                           </VBox.margin>
+                        </MFXButton>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>

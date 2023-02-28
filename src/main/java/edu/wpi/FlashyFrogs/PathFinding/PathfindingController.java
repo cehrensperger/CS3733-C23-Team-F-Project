@@ -222,7 +222,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   /** Callback to handle the back button being pressed */
   @SneakyThrows
   @FXML
-  private void handleBack() {
+  public void handleBack() {
     Fapp.handleBack(); // Delegate to Fapp
   }
 
