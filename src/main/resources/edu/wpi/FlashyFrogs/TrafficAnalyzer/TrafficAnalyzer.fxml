@@ -29,13 +29,13 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Text>
-            <DatePicker fx:id="viewDate" styleClass="fields" />
+            <DatePicker fx:id="viewDate" promptText="Traffic Date" styleClass="fields" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Service Request Weighting">
                <VBox.margin>
                   <Insets top="30.0" />
                </VBox.margin>
             </Text>
-            <TextField fx:id="requestWeighting" styleClass="fields">
+            <TextField fx:id="requestWeighting" promptText="Request Weighting" styleClass="fields">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
