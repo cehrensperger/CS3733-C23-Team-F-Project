@@ -488,8 +488,8 @@ public class MapEditorController implements IController {
     // Handle quick-draw stuff in terms of moving the mouse drags a node around
     Platform.runLater(
         () ->
-            backButton
-                .getScene()
+            mapPane
+                .getScene() // Get the root scene, so the mouse follows everywhere
                 .addEventFilter(
                     MouseEvent.MOUSE_MOVED,
                     (mouseEvent) -> {
