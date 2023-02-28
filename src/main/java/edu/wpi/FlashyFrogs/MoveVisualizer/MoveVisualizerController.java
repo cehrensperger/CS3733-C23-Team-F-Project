@@ -261,8 +261,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                                       .setValue(oldLocation.getFloor());
 
                                   // Go to the nodes floor
-                                  mapController.getMapFloorProperty().setValue(currentPath.get(0).getFloor());
-                                  mapController.zoomToCoordinates(2, currentPath.get(0).getXCoord(), currentPath.get(0).getYCoord());
+                                  mapController
+                                      .getMapFloorProperty()
+                                      .setValue(currentPath.get(0).getFloor());
+                                  mapController.zoomToCoordinates(
+                                      2,
+                                      currentPath.get(0).getXCoord(),
+                                      currentPath.get(0).getYCoord());
 
                                   drawTable(new Date()); // Draw the table
 

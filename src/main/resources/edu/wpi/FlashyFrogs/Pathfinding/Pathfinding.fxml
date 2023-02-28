@@ -112,7 +112,7 @@
             </TableView>
             <HBox prefHeight="108.0" prefWidth="192.0">
                <children>
-                  <Button fx:id="back" mnemonicParsing="false">
+                  <Button fx:id="back" mnemonicParsing="false" style="-fx-background-color: transparent;">
                      <graphic>
                         <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="-90.0" stroke="#012d5a" strokeType="INSIDE" />
                      </graphic>
@@ -120,7 +120,7 @@
                         <Insets left="18.0" right="89.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="next" mnemonicParsing="false" textFill="WHITE">
+                  <Button fx:id="next" mnemonicParsing="false" style="-fx-background-color: transparent;" textFill="WHITE">
                      <graphic>
                         <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="90.0" stroke="#012d5a" strokeType="INSIDE" strokeWidth="2.0" />
                      </graphic>
