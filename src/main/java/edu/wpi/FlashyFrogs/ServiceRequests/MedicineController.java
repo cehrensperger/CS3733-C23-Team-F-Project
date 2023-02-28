@@ -199,12 +199,12 @@ public class MedicineController implements IController {
     Fapp.setScene("ServiceRequests", "Credits");
   }
 
-  public void handleBack(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
+  public void handleMD(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "Medicine Delivery");
   }
 
-  public void handleMD(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "Religious");
   }
 
   public void help() {

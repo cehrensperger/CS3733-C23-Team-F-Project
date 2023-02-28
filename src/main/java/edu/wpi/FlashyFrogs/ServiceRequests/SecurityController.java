@@ -41,6 +41,8 @@ import org.hibernate.Transaction;
 @GeneratedExclusion
 public class SecurityController implements IController {
 
+  @FXML MFXButton MD;
+  @FXML MFXButton religious;
   @FXML Rectangle check2;
   @FXML Rectangle check1;
   @FXML Pane toast;
@@ -225,6 +227,14 @@ public class SecurityController implements IController {
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
+  }
+
+  public void handleMD(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "Medicine Delivery");
+  }
+
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "Religious");
   }
 
   public void toastAnimation() {

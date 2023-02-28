@@ -258,11 +258,11 @@ public class ITController implements IController {
   }
 
   public void handleMD(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
+    Fapp.setScene("ServiceRequests", "Medicine Delivery");
   }
 
   public void handleReligious(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
+    Fapp.setScene("ServiceRequests", "Religious");
   }
 
   public void toastAnimation() {

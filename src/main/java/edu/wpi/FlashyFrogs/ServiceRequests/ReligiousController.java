@@ -39,7 +39,6 @@ import org.hibernate.Transaction;
 public class ReligiousController implements IController {
 
   @FXML MFXButton MD;
-  @FXML MFXButton medicine;
   @FXML MFXButton religious;
   @FXML TextField patient;
   @FXML SearchableComboBox<LocationName> locationofPatient;
@@ -199,11 +198,11 @@ public class ReligiousController implements IController {
   }
 
   public void handleMD(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
+    Fapp.setScene("ServiceRequests", "Medicine Delivery");
   }
 
   public void handleReligious(ActionEvent actionEvent) throws IOException {
-    Fapp.handleBack();
+    Fapp.setScene("ServiceRequests", "Religious");
   }
 
   public void help() {
