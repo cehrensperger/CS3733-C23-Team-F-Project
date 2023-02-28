@@ -4,7 +4,6 @@ import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinding.AStar;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import lombok.Getter;
@@ -53,7 +52,6 @@ public class FloydWarshallRunner {
     reCalcThread =
         new Thread(
             () -> {
-              System.out.println("started " + Instant.now());
               // Check the thread status
               if (!threadShouldTerminate) {
                 reCalculateEuclideanEdgeWeights(); // Re-calculate the edge weights
@@ -69,8 +67,6 @@ public class FloydWarshallRunner {
               if (!threadShouldTerminate) {
                 reCalculationLock.release(); // Unlock at the end
               }
-
-              System.out.println("ended " + Instant.now());
             });
     reCalcThread.setDaemon(
         true); // Set this to be a daemon, no sense in it forcing the program to stay open

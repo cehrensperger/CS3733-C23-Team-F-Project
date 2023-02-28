@@ -50,7 +50,7 @@
                <columns>
                   <TableColumn fx:id="typeColumn" prefWidth="75.0" text="Type" />
                   <TableColumn fx:id="mapItemColumn" prefWidth="100.0" text="Map Item" />
-                  <TableColumn fx:id="usesColumn" prefWidth="300.0" text="Number of Uses" />
+                  <TableColumn fx:id="usesColumn" prefWidth="75.0" text="Number of Uses" />
                </columns>
             </TableView2>
          </children>

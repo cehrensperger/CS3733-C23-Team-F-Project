@@ -80,6 +80,18 @@ public class TrafficAnalyzerController implements IController {
               colorFloor(); // Color the floor
             });
 
+    // Set the circles to be thick
+    mapController.setNodeCreation(
+        (node, circle) -> {
+          circle.setRadius(10);
+        });
+
+    // Set the edges to be thick
+    mapController.setEdgeCreation(
+        (edge, line) -> {
+          line.setStrokeWidth(7);
+        });
+
     // On weight table selection, zoom to on the map
     weightTable
         .getSelectionModel()
@@ -199,6 +211,20 @@ public class TrafficAnalyzerController implements IController {
 
           nextHop = nextNextHop; // The next hop is this
         }
+
+        // We have to manually process the last node
+        // If we haven't seen this node before
+        if (!nodeMapItems.containsKey(nodeTwo)) {
+          nodeMapItems.put(nodeTwo, new NodeMapItem(nodeTwo)); // Save it
+
+          // Add this to its floor
+          floorToMapItems
+              .get(nodeMapItems.get(nodeTwo).getMapFloor())
+              .add(nodeMapItems.get(nodeTwo));
+        }
+
+        // Either way, add this to the relevant paths
+        nodeMapItems.get(nodeTwo).getRelevantPaths().add(new Path(locationName, otherLocation));
       }
     }
 
@@ -234,10 +260,9 @@ public class TrafficAnalyzerController implements IController {
         mapController
             .getMapSession()
             .createQuery(
-                "FROM Move WHERE node.floor = :floor AND moveDate < :providedDate "
+                "FROM Move WHERE moveDate < :providedDate "
                     + "ORDER BY moveDate DESC",
                 Move.class)
-            .setParameter("floor", mapController.getMapFloorProperty().getValue())
             .setParameter("providedDate", date)
             .getResultList();
 

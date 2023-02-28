@@ -47,8 +47,9 @@ class EdgeMapItem extends MapItem {
   @Override
   Point2D getMapCoordinates() {
     // Return the average for both axes, so should be the middle of the line
-    return new Point2D((edge.getNode1().getXCoord() + edge.getNode2().getXCoord())/2.0,
-            (edge.getNode1().getYCoord() + edge.getNode2().getYCoord())/2.0);
+    return new Point2D(
+        (edge.getNode1().getXCoord() + edge.getNode2().getXCoord()) / 2.0,
+        (edge.getNode1().getYCoord() + edge.getNode2().getYCoord()) / 2.0);
   }
 
   @Override

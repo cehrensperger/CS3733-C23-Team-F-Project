@@ -28,6 +28,7 @@ abstract class MapItem {
 
   /**
    * Gets the type of map item this is
+   *
    * @return the type of map item this is, as a string
    */
   @NonNull

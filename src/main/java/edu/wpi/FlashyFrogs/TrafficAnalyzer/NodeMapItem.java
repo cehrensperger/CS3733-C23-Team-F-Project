@@ -30,7 +30,8 @@ class NodeMapItem extends MapItem {
   }
 
   @Override
-  @NonNull String type() {
+  @NonNull
+  String type() {
     return "Node";
   }
 
