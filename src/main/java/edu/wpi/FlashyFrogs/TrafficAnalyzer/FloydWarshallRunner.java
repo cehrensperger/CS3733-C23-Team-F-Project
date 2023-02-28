@@ -8,7 +8,6 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.hibernate.Session;
 
@@ -16,8 +15,11 @@ import org.hibernate.Session;
  * Runner for Floyd-Warshall, contains static variables for caching and variables to get the results
  */
 public class FloydWarshallRunner {
+  @Getter
   private static Map<Node, Map<Node, Double>>
       costs; // Costs of traveling from one node to another, will be modified
+
+  @Getter
   private static Map<Node, Map<Node, Node>>
       nextHops; // Next hop for a given node to reach another node
 
@@ -153,29 +155,5 @@ public class FloydWarshallRunner {
         }
       }
     }
-  }
-
-  /**
-   * Reconstructs the path from node one to node two using the current state of Floyd Warshall
-   *
-   * @param nodeOne the starting node
-   * @param nodeTwo the ending node
-   * @return the ending node
-   * @throws NullPointerException if the path couldn't be found
-   */
-  @NonNull
-  public static List<Node> reconstructPath(@NonNull Node nodeOne, @NonNull Node nodeTwo) {
-    List<Node> result = new LinkedList<>(); // Result list
-    Node nextHop = nodeOne; // The next hop in the path
-
-    // While the node isn't the target node
-    while (!nextHop.equals(nodeTwo)) {
-      result.add(nextHop); // Add the result to the path
-
-      nextHop =
-          nextHops.get(nextHop).get(nodeTwo); // Get the next hop on the path to the destination
-    }
-
-    return result; // Return the targeted path
   }
 }

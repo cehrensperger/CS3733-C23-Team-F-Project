@@ -7,7 +7,6 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 class Path {
-    @Getter
-    @NonNull private LocationName startLocation; // Start location
-    @Getter @NonNull private LocationName endLocation; // End location
+  @Getter @NonNull private LocationName startLocation; // Start location
+  @Getter @NonNull private LocationName endLocation; // End location
 }
