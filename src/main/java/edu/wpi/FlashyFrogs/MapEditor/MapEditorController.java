@@ -598,6 +598,8 @@ public class MapEditorController implements IController {
               mouseEvent.consume();
             });
 
+    //back button no longer exists
+
     // Handle quick-draw stuff in terms of moving the mouse drags a node around
     //    Platform.runLater(
     //        () ->
