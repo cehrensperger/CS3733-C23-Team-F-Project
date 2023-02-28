@@ -137,21 +137,30 @@ public class TrafficAnalyzerController implements IController {
           mapController.redraw();
         });
 
-
     // Create a thread that waits for any FW backing updates to complete
-    new Thread(() -> {
-      // Disable the button, start an animation
-      Platform.runLater(() -> {mapController.startAnimation(); updateButton.setDisable(true);});
+    new Thread(
+            () -> {
+              // Disable the button, start an animation
+              Platform.runLater(
+                  () -> {
+                    mapController.startAnimation();
+                    updateButton.setDisable(true);
+                  });
 
-      try {
-        FloydWarshallRunner.getReCalculationLock().acquire(); // Get the FW locks
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e); // Thanks Java :)
-      }
+              try {
+                FloydWarshallRunner.getReCalculationLock().acquire(); // Get the FW locks
+              } catch (InterruptedException e) {
+                throw new RuntimeException(e); // Thanks Java :)
+              }
 
-      // Stop the animation, re-enable the button
-      Platform.runLater(() -> {mapController.stopAnimation(); updateButton.setDisable(false);});
-    }).start();
+              // Stop the animation, re-enable the button
+              Platform.runLater(
+                  () -> {
+                    mapController.stopAnimation();
+                    updateButton.setDisable(false);
+                  });
+            })
+        .start();
   }
 
   /** Handles coloring a floor with the heat map, based on the generated colors */
@@ -440,18 +449,29 @@ public class TrafficAnalyzerController implements IController {
       }
 
       // Start a thread that starts the animation, does the calculation, does the coloring
-      new Thread(() -> {
-        Platform.runLater(() -> {mapController.startAnimation(); updateButton.setDisable(true);});
-        update(
-                number,
-                Date.from(
+      new Thread(
+              () -> {
+                Platform.runLater(
+                    () -> {
+                      mapController.startAnimation();
+                      updateButton.setDisable(true);
+                    });
+                update(
+                    number,
+                    Date.from(
                         viewDate
-                                .getValue()
-                                .atStartOfDay(ZoneId.systemDefault())
-                                .toInstant())); // If everything worked, update the map
+                            .getValue()
+                            .atStartOfDay(ZoneId.systemDefault())
+                            .toInstant())); // If everything worked, update the map
 
-        Platform.runLater(() -> {mapController.stopAnimation(); updateButton.setDisable(false); colorFloor();});
-      }).start();
+                Platform.runLater(
+                    () -> {
+                      mapController.stopAnimation();
+                      updateButton.setDisable(false);
+                      colorFloor();
+                    });
+              })
+          .start();
     } catch (NumberFormatException err) {
     }
   }
