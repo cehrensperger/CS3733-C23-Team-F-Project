@@ -18,6 +18,7 @@ import javafx.animation.FillTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -72,6 +73,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @FXML private FilteredTableColumn<Move, LocationName> locationColumn; // Location column
   @FXML private FilteredTableColumn<Move, Date> dateColumn; // Date column
   @FXML private AnchorPane mapPane; // Map pane for map display
+    private int selectedRow; // The old row for the table, used to prevent duplicate display requests
   private final Collection<javafx.scene.Node> nodes =
       new LinkedList<>(); // Collection of nodes that are on the map
 
@@ -211,9 +213,14 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         .selectedItemProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
+                // If something is new selected, and it's not this, and we have one it must be set
+                if (selectedRow != -1 && moveTable.getSelectionModel().getSelectedIndex() != selectedRow) {
+                    moveTable.getSelectionModel().select(selectedRow); // Go to that
+                }
+
               noLocationText.setVisible(false); // Reset the no location text
 
-              unColorFloor();
+              unColorFloor(); // Clear the old styilng stuff
 
               // If something is selected
               if (newValue != null) {
@@ -230,13 +237,28 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
                 // If the location isn't null
                 if (oldLocation != null) {
-                  // Get and draw the path
-                  currentPath = pathFinder.findPath(oldLocation, newValue.getNode(), false);
+                    // Save the selected row
+                    selectedRow = moveTable.getSelectionModel().getSelectedIndex();
 
-                  // Set the floor
-                  mapController.getMapFloorProperty().setValue(oldLocation.getFloor());
+                    mapController.startAnimation();
+                    new Thread(() -> {
+                        // Get and draw the path
+                        List<Node> path = pathFinder.findPath(oldLocation, newValue.getNode(), false);
 
-                  drawTable(new Date()); // Draw the table
+                        // In the UI thread
+                        Platform.runLater(() -> {
+                            currentPath = path; // Save the path
+
+                            // Set the floor
+                            mapController.getMapFloorProperty().setValue(oldLocation.getFloor());
+
+                            drawTable(new Date()); // Draw the table
+
+                            selectedRow = -1; // Clear the selected row
+
+                            mapController.stopAnimation(); // Stop the animation
+                        });
+                    }).start();
                 } else {
                   errortoastAnimation();
                   noLocationText.setVisible(true);
