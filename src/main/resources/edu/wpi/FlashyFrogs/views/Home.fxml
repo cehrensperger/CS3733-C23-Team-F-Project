@@ -23,9 +23,9 @@
                   <Insets left="18.0" top="18.0" />
                </VBox.margin>
             </Text>
-            <AnchorPane prefHeight="666.0" prefWidth="220.0">
+            <AnchorPane prefHeight="641.0" prefWidth="220.0">
                <children>
-                  <MFXScrollPane fx:id="scrollPane" prefHeight="601.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="-58.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <MFXScrollPane fx:id="scrollPane" prefHeight="635.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="-180.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets bottom="20.0" />
                      </padding>
@@ -39,18 +39,11 @@
                   </MFXScrollPane>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="61.0" prefWidth="221.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Text fx:id="h1" fill="#b6000b" layoutX="16.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New alerts appear in the sidebar. Click on them for more information." textAlignment="CENTER" wrappingWidth="188.0" AnchorPane.topAnchor="39.33203125">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </Text>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </AnchorPane>
+            <Text fx:id="h1" fill="#b6000b" strokeType="OUTSIDE" strokeWidth="0.0" text="New alerts appear in the sidebar. Click on them for more information." textAlignment="CENTER" wrappingWidth="220.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
          </children>
       </VBox>
       <Label fx:id="tableText" layoutX="240.0" layoutY="115.0" styleClass="headerBold" text="All Service Requests">
