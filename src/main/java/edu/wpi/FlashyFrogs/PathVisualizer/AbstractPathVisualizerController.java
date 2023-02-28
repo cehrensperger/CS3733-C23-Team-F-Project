@@ -280,39 +280,39 @@ public abstract class AbstractPathVisualizerController implements IController {
 
       if (nodeName.equals("")) {
         if (errorDeg < -70) {
-          instructions.add(new Instruction("← Turn Left ", thisNode));
+          instructions.add(new Instruction("\u2190 Turn Left ", thisNode));
           continueCounter = 0;
         } else if ((errorDeg > -70) && (errorDeg < -45)) {
-          instructions.add(new Instruction("↖ Take Slight Left ", thisNode));
+          instructions.add(new Instruction("\u2196 Take Slight Left ", thisNode));
           continueCounter = 0;
         } else if (errorDeg > 70) {
-          instructions.add(new Instruction(" → Turn Right ", thisNode));
+          instructions.add(new Instruction(" \u2192 Turn Right ", thisNode));
           continueCounter = 0;
         } else if ((errorDeg > 45) && (errorDeg < 70)) {
-          instructions.add(new Instruction("↗ Take Slight Right ", thisNode));
+          instructions.add(new Instruction("\u2197 Take Slight Right ", thisNode));
           continueCounter = 0;
         } else {
           if (continueCounter == 0) {
-            instructions.add(new Instruction("↑ Continue", thisNode));
+            instructions.add(new Instruction("\u2191 Continue", thisNode));
             continueCounter = continueCounter + 1;
           }
         }
       } else {
         if (errorDeg < -70) {
-          instructions.add(new Instruction("← Turn Left at " + nodeName, thisNode));
+          instructions.add(new Instruction("\u2190 Turn Left at " + nodeName, thisNode));
           continueCounter = 0;
         } else if ((errorDeg > -70) && (errorDeg < -45)) {
-          instructions.add(new Instruction("↖ Take Slight Left at " + nodeName, thisNode));
+          instructions.add(new Instruction("\u2196 Take Slight Left at " + nodeName, thisNode));
           continueCounter = 0;
         } else if (errorDeg > 70) {
-          instructions.add(new Instruction("→ Turn Right at " + nodeName, thisNode));
+          instructions.add(new Instruction("\u2192 Turn Right at " + nodeName, thisNode));
           continueCounter = 0;
         } else if ((errorDeg > 45) && (errorDeg < 70)) {
-          instructions.add(new Instruction("↗ Take Slight Right at " + nodeName, thisNode));
+          instructions.add(new Instruction("\u2197 Take Slight Right at " + nodeName, thisNode));
           continueCounter = 0;
         } else {
           if (continueCounter == 0) {
-            instructions.add(new Instruction("↑ Continue at " + nodeName, thisNode));
+            instructions.add(new Instruction("\u2191 Continue at " + nodeName, thisNode));
             continueCounter = continueCounter + 1;
           }
         }

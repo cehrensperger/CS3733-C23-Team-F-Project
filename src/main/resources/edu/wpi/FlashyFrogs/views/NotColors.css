@@ -559,3 +559,11 @@
     -fx-background-radius: 10;
     -fx-border-radius: 10;
 }
+
+.scroll-pane {
+    /** Right now, only used on acknowledgementsPage as a placeholder **/
+}
+.scroll-pane > .viewport {
+    /** Right now, only used on acknowledgementsPage as a placeholder **/
+}
+
