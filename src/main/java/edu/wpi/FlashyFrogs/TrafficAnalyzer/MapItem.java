@@ -2,7 +2,7 @@ package edu.wpi.FlashyFrogs.TrafficAnalyzer;
 
 import edu.wpi.FlashyFrogs.Map.MapController;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
 import lombok.Getter;
@@ -15,7 +15,7 @@ abstract class MapItem {
 
   /** Constructor, sets the relevant paths for this */
   MapItem() {
-    this.relevantPaths = new LinkedList<>();
+    this.relevantPaths = new ConcurrentLinkedQueue<>();
   }
 
   /**

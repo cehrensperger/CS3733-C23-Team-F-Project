@@ -8,6 +8,8 @@ import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -135,98 +137,136 @@ public class TrafficAnalyzerController implements IController {
   /** Processes an update on the traffic analyzer. Fills the table with the associated values */
   // TODO: EMRE THIS IS SAFE TO RUN IN A SEPARATE THREAD, WAIT FOR THIS AND THEN CALL COLORFLOOR
   private void update(double serviceWeight, @NonNull Date date) {
-    // Create the queue, the comparator is comparing the number of uses
-    Map<edu.wpi.FlashyFrogs.ORM.Node, MapItem> nodeMapItems = new HashMap<>(); // Node items
-    Map<Edge, MapItem> edgeMapItems = new HashMap<>(); // Edge items
+    Collection<Thread> threads = new LinkedList<>();
 
-    floorToMapItems = new HashMap<>(); // Create the floor to map items list
+    // Get the edges, so that we can check which direction they go without doing session.find
+    Set<Edge> edges =
+        new HashSet<>(
+            mapController.getMapSession().createQuery("FROM Edge", Edge.class).getResultList());
+
+    // Create the queue, the comparator is comparing the number of uses
+    Map<edu.wpi.FlashyFrogs.ORM.Node, MapItem> nodeMapItems =
+        new ConcurrentHashMap<>(FloydWarshallRunner.getNextHops().size()); // Node items
+    Map<Edge, MapItem> edgeMapItems = new ConcurrentHashMap<>(edges.size()); // Edge items
+
+    floorToMapItems = new ConcurrentHashMap<>(); // Create the floor to map items list
 
     for (edu.wpi.FlashyFrogs.ORM.Node.Floor floor : edu.wpi.FlashyFrogs.ORM.Node.Floor.values()) {
-      floorToMapItems.put(floor, new LinkedList<>()); // Create the map on the floor
+      floorToMapItems.put(floor, new ConcurrentLinkedQueue<>()); // Create the map on the floor
     }
 
     Map<LocationName, edu.wpi.FlashyFrogs.ORM.Node> nodeToLocationName =
         getNodeToLocationNameMap(date);
 
+    // For each location
     for (LocationName locationName : nodeToLocationName.keySet()) {
-      for (LocationName otherLocation : nodeToLocationName.keySet()) {
-        // Skip locations that are this one, and ignore if either are hallways
-        if (locationName.equals(otherLocation)
-            || locationName.getLocationType().equals(LocationName.LocationType.HALL)
-            || otherLocation.getLocationType().equals(LocationName.LocationType.HALL)) {
-          continue;
-        }
+      // Create a thread to process it
+      Thread thread =
+          new Thread(
+              () -> {
+                for (LocationName otherLocation : nodeToLocationName.keySet()) {
+                  // Skip locations that are this one, and ignore if either are hallways
+                  if (locationName.equals(otherLocation)
+                      || locationName.getLocationType().equals(LocationName.LocationType.HALL)
+                      || otherLocation.getLocationType().equals(LocationName.LocationType.HALL)) {
+                    continue;
+                  }
 
-        // node to location name
-        edu.wpi.FlashyFrogs.ORM.Node nodeOne = nodeToLocationName.get(locationName); // One
-        edu.wpi.FlashyFrogs.ORM.Node nodeTwo = nodeToLocationName.get(otherLocation); // Two
+                  // node to location name
+                  edu.wpi.FlashyFrogs.ORM.Node nodeOne =
+                      nodeToLocationName.get(locationName); // One
+                  edu.wpi.FlashyFrogs.ORM.Node nodeTwo =
+                      nodeToLocationName.get(otherLocation); // Two
 
-        edu.wpi.FlashyFrogs.ORM.Node nextHop = nodeOne; // The next hop in the path
+                  edu.wpi.FlashyFrogs.ORM.Node nextHop = nodeOne; // The next hop in the path
 
-        // While the node isn't the target node
-        while (!nextHop.equals(nodeTwo)) {
-          edu.wpi.FlashyFrogs.ORM.Node nextNextHop =
-              FloydWarshallRunner.getNextHops()
-                  .get(nextHop)
-                  .get(nodeTwo); // Get the next hop on the path to the destination
+                  // While the node isn't the target node
+                  while (!nextHop.equals(nodeTwo)) {
+                    edu.wpi.FlashyFrogs.ORM.Node nextNextHop =
+                        FloydWarshallRunner.getNextHops()
+                            .get(nextHop)
+                            .get(nodeTwo); // Get the next hop on the path to the destination
 
-          // If we haven't seen this node before
-          if (!nodeMapItems.containsKey(nextHop)) {
-            nodeMapItems.put(nextHop, new NodeMapItem(nextHop)); // Save it
+                    // If we haven't seen this node before
+                    if (!nodeMapItems.containsKey(nextHop)) {
+                      nodeMapItems.put(nextHop, new NodeMapItem(nextHop)); // Save it
 
-            // Add this to its floor
-            floorToMapItems
-                .get(nodeMapItems.get(nextHop).getMapFloor())
-                .add(nodeMapItems.get(nextHop));
-          }
+                      // Add this to its floor
+                      floorToMapItems
+                          .get(nodeMapItems.get(nextHop).getMapFloor())
+                          .add(nodeMapItems.get(nextHop));
+                    }
 
-          // Either way, add this to the relevant paths
-          nodeMapItems.get(nextHop).getRelevantPaths().add(new Path(locationName, otherLocation));
+                    // Either way, add this to the relevant paths
+                    nodeMapItems
+                        .get(nextHop)
+                        .getRelevantPaths()
+                        .add(new Path(locationName, otherLocation));
 
-          // Try to find the edge in one order
-          Edge edge =
-              mapController.getMapSession().find(Edge.class, new Edge(nextHop, nextNextHop));
+                    // Try to find the edge in one order
+                    Edge edge = new Edge(nextHop, nextNextHop);
 
-          // That failing
-          if (edge == null) {
-            // Try the other order
-            edge = mapController.getMapSession().find(Edge.class, new Edge(nextNextHop, nextHop));
-          }
+                    // That failing
+                    if (!edges.contains(edge)) {
+                      // Try the other order
+                      edge = new Edge(nextNextHop, nextHop);
+                    }
 
-          // If we haven't seen the edge
-          if (!edgeMapItems.containsKey(edge)) {
-            edgeMapItems.put(edge, new EdgeMapItem(edge)); // Save it
+                    // If we haven't seen the edge
+                    if (!edgeMapItems.containsKey(edge)) {
+                      edgeMapItems.put(edge, new EdgeMapItem(edge)); // Save it
 
-            MapItem edgeItem = edgeMapItems.get(edge); // Get the edge item we just made
+                      MapItem edgeItem = edgeMapItems.get(edge); // Get the edge item we just made
 
-            // If the edge item is valid floor-wise (can be cross floor and therefore invalid)
-            if (edgeItem.getMapFloor() != null) {
-              // Add this to the floor map
-              floorToMapItems.get(edgeItem.getMapFloor()).add(edgeItem);
-            }
-          }
+                      // If the edge item is valid floor-wise (can be cross floor and therefore
+                      // invalid)
+                      if (edgeItem.getMapFloor() != null) {
+                        // Add this to the floor map
+                        floorToMapItems.get(edgeItem.getMapFloor()).add(edgeItem);
+                      }
+                    }
 
-          // Either way, save this path as relevant
-          edgeMapItems.get(edge).getRelevantPaths().add(new Path(locationName, otherLocation));
+                    // Either way, save this path as relevant
+                    edgeMapItems
+                        .get(edge)
+                        .getRelevantPaths()
+                        .add(new Path(locationName, otherLocation));
 
-          nextHop = nextNextHop; // The next hop is this
-        }
+                    nextHop = nextNextHop; // The next hop is this
+                  }
 
-        // We have to manually process the last node
-        // If we haven't seen this node before
-        if (!nodeMapItems.containsKey(nodeTwo)) {
-          nodeMapItems.put(nodeTwo, new NodeMapItem(nodeTwo)); // Save it
+                  // We have to manually process the last node
+                  // If we haven't seen this node before
+                  if (!nodeMapItems.containsKey(nodeTwo)) {
+                    nodeMapItems.put(nodeTwo, new NodeMapItem(nodeTwo)); // Save it
 
-          // Add this to its floor
-          floorToMapItems
-              .get(nodeMapItems.get(nodeTwo).getMapFloor())
-              .add(nodeMapItems.get(nodeTwo));
-        }
+                    // Add this to its floor
+                    floorToMapItems
+                        .get(nodeMapItems.get(nodeTwo).getMapFloor())
+                        .add(nodeMapItems.get(nodeTwo));
+                  }
 
-        // Either way, add this to the relevant paths
-        nodeMapItems.get(nodeTwo).getRelevantPaths().add(new Path(locationName, otherLocation));
-      }
+                  // Either way, add this to the relevant paths
+                  nodeMapItems
+                      .get(nodeTwo)
+                      .getRelevantPaths()
+                      .add(new Path(locationName, otherLocation));
+                }
+              });
+      // Save and start the thread
+      threads.add(thread);
+      thread.start();
     }
+
+    // Wait for each thred to finish
+    threads.forEach(
+        thread -> {
+          try {
+            thread.join();
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e); // Thanks Java :)
+          }
+        });
 
     // Create the items
     ObservableList<MapItem> items = FXCollections.observableArrayList();
@@ -260,9 +300,7 @@ public class TrafficAnalyzerController implements IController {
         mapController
             .getMapSession()
             .createQuery(
-                "FROM Move WHERE moveDate < :providedDate "
-                    + "ORDER BY moveDate DESC",
-                Move.class)
+                "FROM Move WHERE moveDate < :providedDate " + "ORDER BY moveDate DESC", Move.class)
             .setParameter("providedDate", date)
             .getResultList();
 
