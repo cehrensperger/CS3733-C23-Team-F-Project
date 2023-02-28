@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.function.BiConsumer;
-
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -841,7 +840,8 @@ public class MapController {
   }
 
   /**
-   * Starts the map loading animation, handling showing and starting it. This MUST be run in the UI Thread
+   * Starts the map loading animation, handling showing and starting it. This MUST be run in the UI
+   * Thread
    */
   public void startAnimation() {
     parallelTransition.stop();
@@ -900,9 +900,7 @@ public class MapController {
     parallelTransition.playFromStart();
   }
 
-  /**
-   * Handles stopping the map animation. Handles hiding and stopping it
-   */
+  /** Handles stopping the map animation. Handles hiding and stopping it */
   public void stopAnimation() {
     // stop the animation
     parallelTransition.jumpTo(Duration.ZERO);

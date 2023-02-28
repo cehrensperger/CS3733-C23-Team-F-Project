@@ -40,7 +40,7 @@
                   <Insets />
                </VBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" onAction="#updateMap" styleClass="blueBackgroundSideBar" text="Update Map" />
+            <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateMap" styleClass="blueBackgroundSideBar" text="Update Map" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Top Edges">
                <VBox.margin>
                   <Insets top="20.0" />
