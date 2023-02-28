@@ -143,6 +143,7 @@ public class SecurityEditorController extends ServiceRequestController implement
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
 

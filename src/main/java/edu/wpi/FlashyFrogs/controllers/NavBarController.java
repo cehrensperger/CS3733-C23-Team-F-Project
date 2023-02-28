@@ -33,6 +33,10 @@ public class NavBarController {
 
   @FXML private MenuItem menuToggleSFX;
   @FXML private MenuItem loggedOutMenuToggleSFX;
+
+  @FXML private MenuItem menuToggleTheme;
+  @FXML private MenuItem loggedOutMenuToggleTheme;
+
   @FXML private AnchorPane anchorPane;
   // @FXML private HBox header;
   @FXML private MFXButton helpButton;
@@ -123,6 +127,7 @@ public class NavBarController {
     // header.setDisable(true);
     // header.setOpacity(0);
     updateToggleSFX();
+    updateMode();
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
@@ -164,6 +169,24 @@ public class NavBarController {
   }
 
   /**
+   * If sound effects were off, turn them on and say that clicking the menu option again will turn
+   * them off. If sound effects were on, turn them off and say that clicking the menu option again
+   * will turn them on.
+   */
+  @FXML
+  private void toggleSFX() {
+    if (Fapp.isSfxOn()) {
+      Fapp.setSfxOn(false);
+      loggedOutMenuToggleSFX.setText("Turn Sound Effects On");
+      menuToggleSFX.setText("Turn Sound Effects On");
+    } else {
+      Fapp.setSfxOn(true);
+      loggedOutMenuToggleSFX.setText("Turn Sound Effects Off");
+      menuToggleSFX.setText("Turn Sound Effects Off");
+    }
+  }
+
+  /**
    * Updates the text on the menu item that toggles sound effects on and off to reflect whether
    * clicking the item will turn sound effects on or off: clicking the menu item will turn sound
    * effects on if sound effects are currently set to off, and vice versa
@@ -180,13 +203,46 @@ public class NavBarController {
     }
   }
 
+  /**
+   * Change the color theme between Dark and Light Mode when the menu option to do so is clicked on
+   * NavBar.fxml. Also changes message on the menu option based on whether clicking it will change
+   * to Light or Dark Mode.
+   *
+   * @throws IOException
+   */
+  @FXML
+  private void changeMode() throws IOException {
+    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
+      Fapp.setTheme(Theme.DARK_THEME);
+      menuToggleTheme.setText("Switch to Light Mode");
+      loggedOutMenuToggleTheme.setText("Switch to Light Mode");
+    } else {
+      Fapp.setTheme(Theme.LIGHT_THEME);
+      menuToggleTheme.setText("Switch to Dark Mode");
+      loggedOutMenuToggleTheme.setText("Switch to Dark Mode");
+    }
+  }
+
+  /**
+   * If Light Mode is on, say that clicking the menu option again will switch to Dark Mode. If Dark
+   * Mode is on, say that clicking the menu option again will switch to Light Mode.
+   */
+  private void updateMode() {
+    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
+      menuToggleTheme.setText("Switch to Dark Mode");
+      loggedOutMenuToggleTheme.setText("Switch to Dark Mode");
+    } else {
+      menuToggleTheme.setText("Switch to Light Mode");
+      loggedOutMenuToggleTheme.setText("Switch to Light Mode");
+    }
+  }
+
   public void logIn() {
     loggedOutMenu.setDisable(true);
     loggedOutMenu.setVisible(false);
     menu.setVisible(true);
     loggedOutMenu.hide();
     loggedOutMenu.setText("");
-    updateToggleSFX();
     menu.setDisable(false);
     // header.setDisable(false);
     menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentUser().getFirstName());
@@ -475,21 +531,6 @@ public class NavBarController {
     popOver.show(anchorPane.getScene().getWindow());
   }
 
-  /**
-   * Change the color theme between Dark and Light Mode when the Switch Color Scheme button is
-   * clicked on NavBar.fxml.
-   *
-   * @throws IOException
-   */
-  @FXML
-  private void changeMode() throws IOException {
-    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
-      Fapp.setTheme(Theme.DARK_THEME);
-    } else {
-      Fapp.setTheme(Theme.LIGHT_THEME);
-    }
-  }
-
   public void toastAnimationForward() {
     // Create a TranslateTransition to move the first rectangle to the left
     TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.2), toast);
@@ -536,25 +577,6 @@ public class NavBarController {
 
     // Play the animations in sequence
     translateBack1.play();
-  }
-
-  /**
-   * If sound effects were off, turn them on and say that clicking the menu option again will turn
-   * them off. If sound effects were on, turn them off and say that clicking the menu option again
-   * will turn them on.
-   *
-   * @param actionEvent
-   */
-  @FXML
-  private void toggleSFX(ActionEvent actionEvent) {
-    MenuItem menu = (MenuItem) actionEvent.getSource();
-    if (Fapp.isSfxOn()) {
-      Fapp.setSfxOn(false);
-      menu.setText("Turn Sound Effects On");
-    } else {
-      Fapp.setSfxOn(true);
-      menu.setText("Turn Sound Effects Off");
-    }
   }
 
   public void dateAndTime() {
