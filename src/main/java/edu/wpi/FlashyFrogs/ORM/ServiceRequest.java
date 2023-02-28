@@ -5,7 +5,6 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "ServiceRequest")
@@ -35,7 +34,6 @@ public abstract class ServiceRequest {
               foreignKeyDefinition =
                   "FOREIGN KEY (location) REFERENCES locationname(longName) "
                       + "ON UPDATE CASCADE ON DELETE SET NULL"))
-  @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
   @ManyToOne
   private LocationName location; // Location the request is needed for (source)
 

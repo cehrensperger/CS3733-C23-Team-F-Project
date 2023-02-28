@@ -40,11 +40,6 @@
                <content>
                   <VBox fillWidth="false" spacing="10.0" styleClass="sidebar">
                      <children>
-                        <Text fx:id="noLocationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Selected Move has no old location mapping!" visible="false" wrappingWidth="184.0">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Move Selector" wrappingWidth="169.9388885498047">
                            <VBox.margin>
                               <Insets />
@@ -112,7 +107,7 @@
                         </MFXButton>
                      </children>
                      <padding>
-                        <Insets left="18.0" right="18.0" />
+                        <Insets left="18.0" right="18.0" top="20.0" />
                      </padding>
                   </VBox>
                </content>

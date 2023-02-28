@@ -88,7 +88,10 @@ public class EquipmentEditorController extends ServiceRequestController implemen
   public void updateFields() {
     description.setText(tpReq.getDescription());
     to.setValue(tpReq.getLocation());
-    from.setValue(tpReq.getMoveTo());
+    from.setValue(
+        tpReq.getMoveFrom().getCurrentLocation(tpReq.getDateOfSubmission()).stream()
+            .findFirst()
+            .get());
     urgency.setValue(tpReq.getUrgency());
     equipment.setText(tpReq.getEquipment());
     statusBox.setValue(tpReq.getStatus());
@@ -129,8 +132,10 @@ public class EquipmentEditorController extends ServiceRequestController implemen
       tpReq.setAssignedEmp(assignedBox.getValue());
       tpReq.setUrgency(urgency.getValue());
       tpReq.setStatus(statusBox.getValue());
-      tpReq.setLocation(from.getValue());
-      tpReq.setMoveTo(to.getValue());
+      tpReq.setMoveFrom(from.getValue().getCurrentNode(new Date()));
+      tpReq.setDateOfSubmission(new Date());
+      // equipment only has one location now (to location)
+      tpReq.setLocation(to.getValue());
       tpReq.setDate(dateNeeded);
       tpReq.setDescription(description.getText());
 

@@ -280,39 +280,40 @@ public abstract class AbstractPathVisualizerController implements IController {
 
       if (nodeName.equals("")) {
         if (errorDeg < -70) {
-          instructions.add(new Instruction("\u2190 Turn Left ", thisNode));
+          instructions.add(new Instruction("\t\u2190 Turn left", thisNode));
           continueCounter = 0;
         } else if ((errorDeg > -70) && (errorDeg < -45)) {
-          instructions.add(new Instruction("\u2196 Take Slight Left ", thisNode));
+          instructions.add(new Instruction("\t\u2196 Take a slight left", thisNode));
           continueCounter = 0;
         } else if (errorDeg > 70) {
-          instructions.add(new Instruction(" \u2192 Turn Right ", thisNode));
+          instructions.add(new Instruction("\t\u2192 Turn right", thisNode));
           continueCounter = 0;
         } else if ((errorDeg > 45) && (errorDeg < 70)) {
-          instructions.add(new Instruction("\u2197 Take Slight Right ", thisNode));
+          instructions.add(new Instruction("\t\u2197 Take a slight right", thisNode));
           continueCounter = 0;
         } else {
           if (continueCounter == 0) {
-            instructions.add(new Instruction("\u2191 Continue", thisNode));
+            instructions.add(new Instruction("\t\u2191 Continue", thisNode));
             continueCounter = continueCounter + 1;
           }
         }
       } else {
         if (errorDeg < -70) {
-          instructions.add(new Instruction("\u2190 Turn Left at " + nodeName, thisNode));
+          instructions.add(new Instruction("\t\u2190 Turn left at " + nodeName, thisNode));
           continueCounter = 0;
         } else if ((errorDeg > -70) && (errorDeg < -45)) {
-          instructions.add(new Instruction("\u2196 Take Slight Left at " + nodeName, thisNode));
+          instructions.add(new Instruction("\t\u2196 Take a slight left at " + nodeName, thisNode));
           continueCounter = 0;
         } else if (errorDeg > 70) {
-          instructions.add(new Instruction("\u2192 Turn Right at " + nodeName, thisNode));
+          instructions.add(new Instruction("\t\u2192 Turn right at " + nodeName, thisNode));
           continueCounter = 0;
         } else if ((errorDeg > 45) && (errorDeg < 70)) {
-          instructions.add(new Instruction("\u2197 Take Slight Right at " + nodeName, thisNode));
+          instructions.add(
+              new Instruction("\t\u2197 Take a slight right at " + nodeName, thisNode));
           continueCounter = 0;
         } else {
           if (continueCounter == 0) {
-            instructions.add(new Instruction("\u2191 Continue at " + nodeName, thisNode));
+            instructions.add(new Instruction("\t\u2191 Continue at " + nodeName, thisNode));
             continueCounter = continueCounter + 1;
           }
         }
@@ -324,7 +325,8 @@ public abstract class AbstractPathVisualizerController implements IController {
             "You have arrived at "
                 + currentPath
                     .get(currentPath.size() - 1)
-                    .getCurrentLocation(mapController.getMapSession(), date),
+                    .getCurrentLocation(mapController.getMapSession(), date)
+                    .get(0),
             currentPath.get(currentPath.size() - 1)));
   }
 

@@ -10,6 +10,9 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import javafx.animation.FillTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,16 +23,24 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.tableview2.TableView2;
 
 public class TrafficAnalyzerController implements IController {
+  @FXML private Pane errtoast;
+  @FXML private Rectangle errcheck2;
+  @FXML private Rectangle errcheck1;
+  @FXML private Button updateButton; // Update button so we can disable it
   @FXML private AnchorPane mapPane; // Map pane
   @FXML private DatePicker viewDate; // View date
   @FXML private TextField requestWeighting; // Weighting for requests
@@ -104,6 +115,14 @@ public class TrafficAnalyzerController implements IController {
           line.setStrokeWidth(7);
         });
 
+    // Disable all hallway text
+    mapController.setLocationCreation(
+        (node, location, text) -> {
+          if (location.getLocationType().equals(LocationName.LocationType.HALL)) {
+            text.setVisible(false);
+          }
+        });
+
     // On weight table selection, zoom to on the map
     weightTable
         .getSelectionModel()
@@ -124,9 +143,38 @@ public class TrafficAnalyzerController implements IController {
               }
             });
 
-    FloydWarshallRunner.getReCalculationLock()
-        .acquire(); // Get the FW lock TODO: EMRE WAIT FOR THIS INITIALLY. NO BUTTONS UNTIL THIS IS
-    // DONE
+    // On date change, update the map controllers date and redraw
+    viewDate.setOnAction(
+        (action) -> {
+          mapController.setDate(
+              Date.from(viewDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+          mapController.redraw();
+        });
+
+    // Create a thread that waits for any FW backing updates to complete
+    new Thread(
+            () -> {
+              // Disable the button, start an animation
+              Platform.runLater(
+                  () -> {
+                    mapController.startAnimation();
+                    updateButton.setDisable(true);
+                  });
+
+              try {
+                FloydWarshallRunner.getReCalculationLock().acquire(); // Get the FW locks
+              } catch (InterruptedException e) {
+                throw new RuntimeException(e); // Thanks Java :)
+              }
+
+              // Stop the animation, re-enable the button
+              Platform.runLater(
+                  () -> {
+                    mapController.stopAnimation();
+                    updateButton.setDisable(false);
+                  });
+            })
+        .start();
   }
 
   /** Handles coloring a floor with the heat map, based on the generated colors */
@@ -145,7 +193,6 @@ public class TrafficAnalyzerController implements IController {
   }
 
   /** Processes an update on the traffic analyzer. Fills the table with the associated values */
-  // TODO: EMRE THIS IS SAFE TO RUN IN A SEPARATE THREAD, WAIT FOR THIS AND THEN CALL COLORFLOOR
   private void update(double serviceWeight, @NonNull Date date) {
     Collection<Thread> threads = new LinkedList<>();
 
@@ -190,6 +237,10 @@ public class TrafficAnalyzerController implements IController {
 
     // For each location
     for (LocationName locationName : nodeToLocationName.keySet()) {
+      if (locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+        continue; // Skip all hallways
+      }
+
       // Create a thread to process it
       Thread thread =
           new Thread(
@@ -197,7 +248,6 @@ public class TrafficAnalyzerController implements IController {
                 for (LocationName otherLocation : nodeToLocationName.keySet()) {
                   // Skip locations that are this one, and ignore if either are hallways
                   if (locationName.equals(otherLocation)
-                      || locationName.getLocationType().equals(LocationName.LocationType.HALL)
                       || otherLocation.getLocationType().equals(LocationName.LocationType.HALL)) {
                     continue;
                   }
@@ -399,6 +449,7 @@ public class TrafficAnalyzerController implements IController {
    * @param actionEvent the event triggering this
    */
   public void updateMap(ActionEvent actionEvent) {
+    updateButton.setDisable(true); // Prevent duplicate actions
     clearHeatMap(); // Clear to start with
 
     // Try converting the weighting to a positive number)
@@ -412,18 +463,33 @@ public class TrafficAnalyzerController implements IController {
         throw new NumberFormatException();
       }
 
-      update(
-          number,
-          Date.from(
-              viewDate
-                  .getValue()
-                  .atStartOfDay(ZoneId.systemDefault())
-                  .toInstant())); // If everything worked, update the map
-    } catch (NumberFormatException err) {
-      // TODO: error catching
-    }
+      // Start a thread that starts the animation, does the calculation, does the coloring
+      new Thread(
+              () -> {
+                Platform.runLater(
+                    () -> {
+                      mapController.startAnimation();
+                      updateButton.setDisable(true);
+                    });
+                update(
+                    number,
+                    Date.from(
+                        viewDate
+                            .getValue()
+                            .atStartOfDay(ZoneId.systemDefault())
+                            .toInstant())); // If everything worked, update the map
 
-    colorFloor(); // Color the floor
+                Platform.runLater(
+                    () -> {
+                      mapController.stopAnimation();
+                      updateButton.setDisable(false);
+                      colorFloor();
+                    });
+              })
+          .start();
+    } catch (NumberFormatException err) {
+      errortoastAnimation(); // Show the error on failure
+    }
   }
 
   /**
@@ -445,5 +511,39 @@ public class TrafficAnalyzerController implements IController {
 
     // Return the color, red - the rounded weight
     return Color.rgb(roundedWeight, 0, 255 - roundedWeight);
+  }
+
+  /** Shows the error toast animation, to show errors in the box */
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-280);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    sequence.setOnFinished(event -> updateButton.setDisable(false));
   }
 }
