@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.Map;
 
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import java.util.Set;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,36 @@ public class FloorSelectorController {
 
   @FXML
   public void initialize() {}
+
+  /**
+   * Sets the allowed floors for the selector. Does nothing if the allowed floors is null or empty
+   *
+   * @param allowedFloors the floors allowed on the selector
+   */
+  void setAllowedFloors(Set<Node.Floor> allowedFloors) {
+    if (allowedFloors == null || allowedFloors.size() == 0)
+      return; // Exit in the exit conditions (above)
+
+    if (!allowedFloors.contains(Node.Floor.ONE)) {
+      button1.setVisible(false);
+    }
+
+    if (!allowedFloors.contains(Node.Floor.TWO)) {
+      button2.setVisible(false);
+    }
+
+    if (!allowedFloors.contains(Node.Floor.THREE)) {
+      button3.setVisible(false);
+    }
+
+    if (!allowedFloors.contains(Node.Floor.L1)) {
+      buttonL1.setVisible(false);
+    }
+
+    if (!allowedFloors.contains(Node.Floor.L2)) {
+      buttonL2.setVisible(false);
+    }
+  }
 
   @FXML
   public void changeFloor(ActionEvent event) {

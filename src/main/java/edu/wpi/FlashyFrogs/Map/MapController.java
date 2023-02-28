@@ -85,6 +85,9 @@ public class MapController {
 
   @Getter private List<LocationName> locs;
 
+  // List of allowed floors
+  @Getter @Setter private Set<Node.Floor> allowedFloors;
+
   /** Initialize, zooms to the middle of the map */
   @FXML
   private void initialize() {
@@ -748,6 +751,20 @@ public class MapController {
     int floorLevel = mapEntity.getMapFloor().getValue().ordinal() + 1;
     if (floorLevel > Node.Floor.values().length - 1) floorLevel = 0;
 
+    // If there are restrictions on what floors are allowed, and this floor doesn't match it
+    if (allowedFloors != null && allowedFloors.size() > 0) {
+      // While we aren't on the right floor
+      while (!allowedFloors.contains(Node.Floor.values()[floorLevel])) {
+        floorLevel += 1; // Try going up again
+
+        // Handle the wrap case
+        if (floorLevel >= Node.Floor.values().length) {
+          floorLevel = 0;
+        }
+      }
+    }
+
+    // Update the floor
     mapEntity.getMapFloor().setValue(Node.Floor.values()[floorLevel]);
   }
 
@@ -760,6 +777,20 @@ public class MapController {
     int floorLevel = mapEntity.getMapFloor().getValue().ordinal() - 1;
     if (floorLevel < 0) floorLevel = Node.Floor.values().length - 1;
 
+    // If there are restrictions on what floors are allowed, and this floor doesn't match it
+    if (allowedFloors != null && allowedFloors.size() > 0) {
+      // While we aren't on the right floor
+      while (!allowedFloors.contains(Node.Floor.values()[floorLevel])) {
+        floorLevel -= 1; // Try going up again
+
+        // Handle the wrap case
+        if (floorLevel < 0) {
+          floorLevel = Node.Floor.values().length - 1;
+        }
+      }
+    }
+
+    // Set this to be the floor
     mapEntity.getMapFloor().setValue(Node.Floor.values()[floorLevel]);
   }
 
@@ -777,6 +808,8 @@ public class MapController {
     popOver.setHeaderAlwaysVisible(false); // Hide the header
     FloorSelectorController floorPopup = newLoad.getController();
     floorPopup.setFloorProperty(this.mapEntity.getMapFloor());
+
+    floorPopup.setAllowedFloors(allowedFloors); // Set the allowed floors to what we have
 
     popOver.detach(); // Detach the pop-up, so it's not stuck to the button
     javafx.scene.Node node =
