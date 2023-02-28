@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.TrafficAnalyzer;
 
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.Map.MapController;
+import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.controllers.IController;
@@ -10,6 +11,7 @@ import java.util.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -111,16 +113,17 @@ public class TrafficAnalyzerController implements IController {
   /** Processes an update on the traffic analyzer. Fills the table with the associated values */
   private void update(double serviceWeight, @NonNull Date date) {
     // Create the queue, the comparator is comparing the number of uses
-    PriorityQueue<MapItem> mapQueue =
-        new PriorityQueue<>(Comparator.comparingInt(MapItem::getNumUses));
+    Map<edu.wpi.FlashyFrogs.ORM.Node, MapItem> nodeMapItems = new HashMap<>(); // Node items
+    Map<Edge, MapItem> edgeMapItems = new HashMap<>(); // Edge items
 
     Map<LocationName, edu.wpi.FlashyFrogs.ORM.Node> nodeToLocationName =
         getNodeToLocationNameMap(date);
 
     for (LocationName locationName : nodeToLocationName.keySet()) {
       for (LocationName otherLocation : nodeToLocationName.keySet()) {
-        // Skip locations that are this one
-        if (locationName.equals(otherLocation)) {
+        // Skip locations that are this one, and ignore if either are hallways
+        if (locationName.equals(otherLocation) || locationName.getLocationType().equals(LocationName.LocationType.HALL)
+                || otherLocation.getLocationType().equals(LocationName.LocationType.HALL)) {
           continue;
         }
 
@@ -137,13 +140,48 @@ public class TrafficAnalyzerController implements IController {
                   .get(nextHop)
                   .get(nodeTwo); // Get the next hop on the path to the destination
 
-          nextHop = nextNextHop;
+          // If we haven't seen this node before
+          if (!nodeMapItems.containsKey(nextHop)) {
+            nodeMapItems.put(nextHop, new NodeMapItem(nextHop)); // Save it
+          }
+
+          // Either way, add this to the relevant paths
+          nodeMapItems.get(nextHop).getRelevantPaths().add(new Path(locationName, otherLocation));
+
+          // Try to find the edge in one order
+          Edge edge = mapController.getMapSession().find(Edge.class, new Edge(nextHop, nextNextHop));
+
+          // That failing
+          if (edge == null) {
+            // Try the other order
+            edge = mapController.getMapSession().find(Edge.class, new Edge(nextNextHop, nextHop));
+          }
+
+          // If we haven't seen the edge
+          if (!edgeMapItems.containsKey(edge)) {
+            edgeMapItems.put(edge, new EdgeMapItem(edge)); // Save it
+          }
+
+          // Either way, save this path as relevant
+          edgeMapItems.get(edge).getRelevantPaths().add(new Path(locationName, otherLocation));
+
+          nextHop = nextNextHop; // The next hop is this
         }
       }
     }
 
+    // Create the items
+    ObservableList<MapItem> items = FXCollections.observableList(nodeMapItems.values().stream().toList());
+    items.addAll(edgeMapItems.values().stream().toList());
+
+    // Sort by the number of uses
+    items.sort(Comparator.comparingInt(MapItem::getNumUses));
+
+    maxWeight = items.get(0).getNumUses(); // Get the max weight
+    minWeight = items.get(items.size() - 1).getNumUses(); // Get the min weight
+
     // Weight table
-    weightTable.setItems(FXCollections.observableList(mapQueue.stream().toList()));
+    weightTable.setItems(FXCollections.observableList(items));
   }
 
   /**

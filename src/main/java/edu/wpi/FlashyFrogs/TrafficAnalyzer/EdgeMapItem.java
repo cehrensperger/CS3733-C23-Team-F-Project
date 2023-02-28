@@ -12,8 +12,7 @@ import lombok.NonNull;
 class EdgeMapItem extends MapItem {
   @NonNull final Edge edge; // Edge this map item uses
 
-  public EdgeMapItem(@NonNull Edge edge, @NonNull Collection<Path> paths) {
-    super(paths); // Save the paths
+  public EdgeMapItem(@NonNull Edge edge) {
     this.edge = edge; // Save the edge
   }
 
