@@ -23,7 +23,7 @@ repositories {
 
 javafx {
     version = "19"
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.media']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.media']
 }
 
 
@@ -64,9 +64,14 @@ dependencies {
             'net.java.dev.jna:jna:5.12.1',
             'org.hibernate:hibernate-c3p0:6.1.6.Final',
             'com.jfoenix:jfoenix:9.0.10',
+            // https://mvnrepository.com/artifact/com.fazecast/jSerialComm
+            'com.fazecast:jSerialComm:2.9.3',
 
-            'org.apache.commons:commons-math3:3.6.1'
+
+                    'org.apache.commons:commons-math3:3.6.1'
     )
+
+
 
     testImplementation(
             "org.testfx:testfx-core:4.0.16-alpha",

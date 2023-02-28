@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.PathFinding;
 import static edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity.CURRENT_USER;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import com.fazecast.jSerialComm.*;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
@@ -14,6 +15,7 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -480,6 +482,16 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                   Date.from(
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
+
+      SerialPort port = SerialPort.getCommPort("Pololu A-Star 32U4");
+      port.openPort(16);
+      port.setBaudRate(115200);
+
+      for (Node node : currentPath) {
+        port.writeBytes(node.getId().getBytes(StandardCharsets.UTF_16), node.getId().length());
+      }
+
+      port.closePort();
 
       session.close();
       // Call unlock() on the UI thread when finished
