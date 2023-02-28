@@ -65,7 +65,7 @@ public class Religion extends ServiceRequest {
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);
-    super.setRequestType("Security");
+    super.setRequestType("Religion");
     this.religion = religion;
     this.description = request;
   }

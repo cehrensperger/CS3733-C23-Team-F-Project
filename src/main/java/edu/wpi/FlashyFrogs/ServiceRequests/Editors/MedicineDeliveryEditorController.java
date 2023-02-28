@@ -29,7 +29,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -37,7 +36,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class SecurityEditorController extends ServiceRequestController implements IController {
+public class MedicineDeliveryEditorController extends ServiceRequestController
+    implements IController {
 
   @FXML Pane errtoast;
   @FXML Rectangle errcheck2;
@@ -45,33 +45,29 @@ public class SecurityEditorController extends ServiceRequestController implement
   @FXML Rectangle check2;
   @FXML Rectangle check1;
   @FXML Pane toast;
+
   @FXML MFXButton clear;
   @FXML MFXButton submit;
-  @FXML Text h1;
-  @FXML Text h2;
-  @FXML Text h3;
-  @FXML Text h4;
-  @FXML Text h5;
-  @FXML SearchableComboBox<LocationName> locationBox;
-  @FXML SearchableComboBox<HospitalUser> assignedBox;
-  @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
-  @FXML SearchableComboBox<Security.ThreatType> threat;
+
+  @FXML TextField reason;
+  @FXML TextField medicine;
+  @FXML TextField dosage;
   @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
   @FXML DatePicker date;
-  @FXML TextField description;
+  @FXML TextField patient;
+  @FXML SearchableComboBox<LocationName> locationofPatient;
+  @FXML SearchableComboBox<HospitalUser> assignedBox;
+  @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
+
+  private MedicineDelivery tpReq = new MedicineDelivery();
+  PopOver popOver;
+
   @FXML private Label errorMessage;
 
   boolean hDone = false;
   private Connection connection = null;
-  private Security secReq = new Security();
-  PopOver popOver;
 
   public void initialize() {
-    h1.setVisible(false);
-    h2.setVisible(false);
-    h3.setVisible(false);
-    h4.setVisible(false);
-    h5.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
     List<LocationName> locations =
@@ -84,27 +80,28 @@ public class SecurityEditorController extends ServiceRequestController implement
 
     users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
-    locationBox.setItems(FXCollections.observableArrayList(locations));
+    locationofPatient.setItems(FXCollections.observableArrayList(locations));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
-    threat.setItems(FXCollections.observableArrayList(Security.ThreatType.values()));
-    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
   }
 
   public void updateFields() {
-    locationBox.setValue(secReq.getLocation());
-    urgency.setValue(secReq.getUrgency());
-    statusBox.setValue(secReq.getStatus());
+    patient.setText(tpReq.getPatientID());
+    locationofPatient.setValue(tpReq.getLocation());
+    reason.setText(tpReq.getReason());
+    medicine.setText(tpReq.getMedicine());
+    dosage.setText(dosage.getText());
+    urgency.setValue(tpReq.getUrgency());
+    statusBox.setValue(tpReq.getStatus());
     date.setValue(
-        Instant.ofEpochMilli(secReq.getDate().getTime())
+        Instant.ofEpochMilli(tpReq.getDate().getTime())
             .atZone(ZoneId.systemDefault())
             .toLocalDate());
-    threat.setValue(secReq.getThreatType());
-    statusBox.setValue(secReq.getStatus());
-    description.setText(secReq.getIncidentReport());
-    if (secReq.getAssignedEmp() != null) {
-      assignedBox.setValue(secReq.getAssignedEmp());
+
+    if (tpReq.getAssignedEmp() != null) {
+      assignedBox.setValue(tpReq.getAssignedEmp());
     }
   }
 
@@ -116,61 +113,67 @@ public class SecurityEditorController extends ServiceRequestController implement
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-
+    System.out.println("here");
     try {
       // check
-      if (locationBox.getValue().toString().equals("")
-          || threat.getValue().toString().equals("")
+      if (patient.getText().equals("")
+          || locationofPatient.getValue().toString().equals("")
+          || reason.getText().equals("")
+          || medicine.getText().equals("")
           || date.getValue().toString().equals("")
-          || description.getText().equals("")) {
+          || urgency.getValue().toString().equals("")
+          || dosage.getText().equals("")) {
+        System.out.println("here2");
         throw new NullPointerException();
       }
 
-      Date dateOfRequest =
-          Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      secReq.setIncidentReport(description.getText());
-      secReq.setAssignedEmp(assignedBox.getValue());
-      secReq.setUrgency(urgency.getValue());
-      secReq.setStatus(statusBox.getValue());
-      secReq.setLocation(locationBox.getValue());
-      secReq.setThreatType(threat.getValue());
-      secReq.setDate(dateOfRequest);
+      tpReq.setPatientID(patient.getText());
+      tpReq.setLocation(locationofPatient.getValue());
+      tpReq.setReason(reason.getText());
+      tpReq.setAssignedEmp(assignedBox.getValue());
+      tpReq.setUrgency(urgency.getValue());
+      tpReq.setStatus(statusBox.getValue());
+      tpReq.setMedicine(medicine.getText());
+      tpReq.setDosage(Double.parseDouble(dosage.getText()));
+      tpReq.setDate(dateNeeded);
 
       try {
-        session.merge(secReq);
+        session.merge(tpReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
         toastAnimation();
-        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
-
-        errortoastAnimation();
         session.close();
+        errortoastAnimation();
         Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-
-      errortoastAnimation();
       session.close();
+      errortoastAnimation();
       Sound.ERROR.play();
     }
   }
 
   @Override
   public void setRequest(ServiceRequest request) {
-    secReq = (Security) request;
+    tpReq = (MedicineDelivery) request;
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    locationBox.valueProperty().set(null);
-    threat.valueProperty().set(null);
+    patient.setText("");
+    locationofPatient.valueProperty().set(null);
+    reason.setText("");
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
+    medicine.setText("");
+    dosage.setText("");
     urgency.valueProperty().set(null);
     date.valueProperty().set(null);
-    description.setText("");
   }
 
   @Override
@@ -178,18 +181,8 @@ public class SecurityEditorController extends ServiceRequestController implement
 
   public void help() {
     if (!hDone) {
-      h1.setVisible(true);
-      h2.setVisible(true);
-      h3.setVisible(true);
-      h4.setVisible(true);
-      h5.setVisible(true);
       hDone = true;
     } else if (hDone) {
-      h1.setVisible(false);
-      h2.setVisible(false);
-      h3.setVisible(false);
-      h4.setVisible(false);
-      h5.setVisible(false);
       hDone = false;
     }
   }
@@ -268,6 +261,5 @@ public class SecurityEditorController extends ServiceRequestController implement
         });
   }
 
-  @Override
   public void onClose() {}
 }

@@ -5,6 +5,7 @@ import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.Sound;
+import edu.wpi.FlashyFrogs.TrafficAnalyzer.FloydWarshallRunner;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -154,8 +155,13 @@ class MapEntity {
 
     // If there is a location name, remove it
     if (nodeToLocationNameMap.containsKey(node)) {
+      LocationName[] locationsToDelete =
+          nodeToLocationNameMap.get(node).toArray(new LocationName[0]);
+
       // For each location name, remove it
-      nodeToLocationNameMap.get(node).forEach(this::removeLocationName);
+      for (LocationName locationName : locationsToDelete) {
+        removeLocationName(locationName);
+      }
 
       nodeToLocationBox.remove(node); // Remove the node to location name box
     }
@@ -210,6 +216,8 @@ class MapEntity {
   /** Commits any changes that have been made using the map session */
   void commitMapChanges() {
     mapTransaction.commit(); // Commit
+
+    FloydWarshallRunner.reCalculate(); // Trigger FW to recalculate
 
     mapTransaction = getMapSession().beginTransaction(); // Begin a new transaction
   }
