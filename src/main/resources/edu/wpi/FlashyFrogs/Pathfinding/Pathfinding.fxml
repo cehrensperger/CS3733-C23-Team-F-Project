@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
    <children>
       <VBox maxWidth="220.0" prefHeight="720.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -140,7 +140,7 @@
          <children>
             <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox fx:id="animationPane" alignment="CENTER" spacing="10.0" style="-fx-background-color: blue">
+                  <HBox fx:id="animationPane" alignment="CENTER" spacing="10.0">
                      <children>
                         <Circle fx:id="cir1" fill="DODGERBLUE" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
                         <Circle fx:id="cir2" fill="DODGERBLUE" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />

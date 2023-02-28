@@ -316,12 +316,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     //    cir4.setTranslateY(0);
     //    cir5.setTranslateY(0);
     //    cir6.setTranslateY(0);
-    cir1.setTranslateX(300);
-    cir2.setTranslateX(300);
-    cir3.setTranslateX(300);
-    cir4.setTranslateX(300);
-    cir5.setTranslateX(300);
-    cir6.setTranslateX(300);
     // Create a TranslateTransition for each circle and add a delay
     TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.2), cir1);
     tt1.setInterpolator(Interpolator.EASE_BOTH);
