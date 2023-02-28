@@ -71,6 +71,11 @@ public class TrafficAnalyzerController implements IController {
 
     mapPane.getChildren().add(map); // Add the map to the children
 
+    // Load scale (which indicates which colors indicate more activity)
+    FXMLLoader loader2 = new FXMLLoader(Fapp.class.getResource("TrafficAnalyzer/Scale.fxml"));
+    Node map2 = loader2.load();
+    mapPane.getChildren().add(map2); // Add scale to the children
+
     // Set the map to use the anchor pane to take all available space
     AnchorPane.setTopAnchor(map, 0.0);
     AnchorPane.setBottomAnchor(map, 0.0);

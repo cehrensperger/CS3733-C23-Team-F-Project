@@ -11,6 +11,10 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.tableview2.TableView2?>
 
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import java.awt.Color?>
 <AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.TrafficAnalyzer.TrafficAnalyzerController">
    <stylesheets>
       <URL value="@../views/NotColors.css" />
