@@ -3,11 +3,15 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
+import edu.wpi.FlashyFrogs.Alerts.AlertController;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -50,6 +54,7 @@ public class HomeController implements IController {
   @FXML protected FilteredTableColumn<ServiceRequest, LocationName> locationCol;
   @FXML protected FilteredTableColumn<ServiceRequest, ServiceRequest.Status> statusCol;
 
+  @FXML protected MFXButton editMovesButton;
   @FXML protected FilteredTableView<ServiceRequest> requestTable;
 
   @FXML protected FilteredTableColumn<MoveWrapper, edu.wpi.FlashyFrogs.ORM.Node> nodeIDCol;
@@ -335,9 +340,13 @@ public class HomeController implements IController {
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
       tableText2.setText("");
+      editMovesButton.setDisable(true);
+      editMovesButton.setVisible(false);
     } else {
       tableText.setText("All Service Requests");
       tableText2.setText("Future Moves");
+      editMovesButton.setDisable(false);
+      editMovesButton.setVisible(true);
     }
     refreshTable();
 
@@ -346,7 +355,7 @@ public class HomeController implements IController {
 
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
-    System.out.println("opening pathfinding");
+    //    System.out.println("opening pathfinding");
     Fapp.setScene("Pathfinding", "Pathfinding");
   }
 
@@ -369,25 +378,27 @@ public class HomeController implements IController {
   }
 
   public void manageAnnouncements(ActionEvent event) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AlertManager.fxml"));
-    PopOver popOver = new PopOver(newLoad.load()); // create the popover
-
-    AlertManagerController controller = newLoad.getController();
-    controller.setPopOver(popOver);
-
-    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-    javafx.scene.Node node =
-        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
-    popOver.show(node); // display the popover
-
-    popOver
-        .showingProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue) {
-                refreshAlerts();
-              }
-            });
+    Fapp.setScene("Alerts", "AlertManager");
+    //    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/NewAlert.fxml"));
+    //    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+    //
+    //    NewAlertController controller = newLoad.getController();
+    //    controller.setPopOver(popOver);
+    //
+    //    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    //    javafx.scene.Node node =
+    //        (javafx.scene.Node) event.getSource(); // Get the node representation of what called
+    // this
+    //    popOver.show(node); // display the popover
+    //
+    //    popOver
+    //        .showingProperty()
+    //        .addListener(
+    //            (observable, oldValue, newValue) -> {
+    //              if (!newValue) {
+    //                refreshAlerts();
+    //              }
+    //            });
   }
 
   public void onClose() {}
@@ -498,14 +509,14 @@ public class HomeController implements IController {
     moveTable.resetFilter();
   }
 
-  public void insertAlert(Announcement announcement) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Alert.fxml"));
+  public void insertAlert(Alert alert) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("Alerts/Alert.fxml"));
 
     Parent root = newLoad.load();
     alertBox.getChildren().add(root);
 
     AlertController controller = newLoad.getController();
-    controller.insertAnnouncement(announcement);
+    controller.insertAnnouncement(alert);
   }
 
   @SneakyThrows
@@ -513,15 +524,33 @@ public class HomeController implements IController {
     alertBox.getChildren().clear();
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<Announcement> list =
-        session.createQuery("Select a from Announcement a", Announcement.class).getResultList();
+    List<Alert> list =
+        session
+            .createQuery(
+                "SELECT a FROM Alert a WHERE :day BETWEEN startDisplayDate AND endDisplayDate",
+                Alert.class)
+            .setParameter("day", Date.from(Instant.now()))
+            .getResultList();
 
-    for (Announcement a : list) {
+    Collections.sort(
+        list,
+        new Comparator<Alert>() {
+          @Override
+          public int compare(Alert a1, Alert a2) {
+            return a1.getStartDisplayDate().compareTo(a2.getStartDisplayDate());
+          }
+        });
+
+    for (Alert a : list) {
+      //      if (a.getStartDisplayDate().before(Date.from(Instant.now()))
+      //          && a.getEndDisplayDate().after(Date.from(Instant.now()))) {
       insertAlert(a);
+      //      }
     }
   }
 
   // TODO:CHANGE BACK TO MAP EDITOR
+
   /** Callback to open the map editor from a button */
   @FXML
   public void openMapEditor() {

@@ -1,52 +1,51 @@
 package edu.wpi.FlashyFrogs.PathFinding;
 
+import static edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity.CURRENT_USER;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
-import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.MapEditor.MapEditorController;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import jakarta.persistence.RollbackException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
-import javafx.animation.Interpolator;
-import javafx.animation.ParallelTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 import lombok.SneakyThrows;
-import org.apache.commons.math3.util.MathUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
-  @FXML private Button back;
-  @FXML private Button next;
+  @FXML Pane errtoast;
+  @FXML Rectangle errcheck2;
+  @FXML Rectangle errcheck1;
   private int selectedIndex = -1;
   @FXML private MFXButton generatePathButton;
   @FXML private Pane animationPane;
@@ -62,12 +61,11 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
+  @FXML private SearchableComboBox<String> serviceRequestBox;
   @FXML private CheckBox accessibleBox;
   @FXML private AnchorPane mapPane;
   @FXML private MFXButton mapEditorButton;
   @FXML private DatePicker moveDatePicker;
-  @FXML private TableView<Instruction> pathTable;
-  @FXML private TableColumn<Instruction, String> pathCol;
   //  @FXML private Label error;
 
   @FXML Text h1;
@@ -76,8 +74,10 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML Text h4;
   @FXML Text h5;
   @FXML Text h6;
+  @FXML Text h7;
 
   boolean hDone = false;
+  List<ServiceRequest> serviceRequests;
 
   /**
    * Initializes the path finder, sets up the floor selector, and the map including default behavior
@@ -110,9 +110,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     h4.setVisible(false);
     h5.setVisible(false);
     h6.setVisible(false);
-    pathTable.setVisible(false);
-    next.setVisible(false);
-    back.setVisible(false);
+    h7.setVisible(false);
+
     // set resizing behavior
     Fapp.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {});
 
@@ -140,15 +139,34 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     algorithms.add("Breadth-first");
     algorithms.add("Depth-first");
 
+    // make the list of User's service requests
+    long userID = CURRENT_USER.getCurrentUser().getId();
+    serviceRequests =
+        session
+            .createQuery(
+                "SELECT s FROM ServiceRequest s WHERE assignedEmp.id = :userID AND s.location IS NOT NULL",
+                ServiceRequest.class)
+            .setParameter("userID", userID)
+            .getResultList();
+
+    List<String> serviceRequestsStrings = new ArrayList<>();
+    for (ServiceRequest request : serviceRequests) {
+      serviceRequestsStrings.add(request.toString());
+    }
+
     // Populate the boxes
     startingBox.setItems(FXCollections.observableList(objects));
     destinationBox.setItems(FXCollections.observableList(objects));
     algorithmBox.setItems(FXCollections.observableList(algorithms));
-
+    if (serviceRequests.isEmpty()) {
+      serviceRequestBox.setVisible(false);
+    } else {
+      serviceRequestBox.setItems(FXCollections.observableList(serviceRequestsStrings));
+    }
     algorithmBox.setValue("A*");
 
     // Get whether the user is an admin
-    boolean isAdmin = CurrentUserEntity.CURRENT_USER.getAdmin();
+    boolean isAdmin = CURRENT_USER.getAdmin();
 
     // Decide what to do with the admin button based on that
     if (!isAdmin) {
@@ -159,202 +177,87 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       mapEditorButton.setOpacity(1);
     }
 
-    pathCol.setCellValueFactory(new PropertyValueFactory<>("instruction"));
+    super.initialize(); // Call the supers intitialize
 
-    pathTable.setRowFactory(
-        param -> {
-          TableRow<Instruction> row = new TableRow<>(); // Create a new table row to use
-
-          // When the user selects a row, just un-select it to avoid breaking formatting
-          //          row.selectedProperty()
-          //              .addListener(
-          //
-          //                  // Add a listener that does that
-          //                  (observable, oldValue, newValue) -> row.updateSelected(false));
-
-          // Add a listener to show the pop-up
-          row.setOnMouseClicked(
-              (event) -> {
-                // If the pop over exists and is either not focused or we are showing a new
-                // row
-                if (row != null) {
-                  setFloor(row.getItem().node.getFloor());
-                  mapController.zoomToCoordinates(
-                      2, row.getItem().node.getXCoord(), row.getItem().node.getYCoord());
-                  selectedIndex = row.getIndex();
-                  pathTable.getSelectionModel().select(selectedIndex);
+    serviceRequestBox
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              long selectedRequestId = -1;
+              String srText = serviceRequestBox.getValue();
+              for (ServiceRequest serviceRequest : serviceRequests) {
+                if (Long.parseLong(srText.substring(srText.indexOf("_") + 1))
+                    == serviceRequest.getId()) {
+                  selectedRequestId = serviceRequest.getId();
                 }
-              });
+              }
+              destinationBox
+                  .getSelectionModel()
+                  .select(session.find(ServiceRequest.class, selectedRequestId).getLocation());
+            });
 
-          return row;
-        });
-    // Set up the next button to select the next row
-    next.setOnAction(
-        event -> {
-          int rowIndex = pathTable.getSelectionModel().getSelectedIndex();
-          int maxIndex = pathTable.getItems().size() - 1;
-          if (selectedIndex < maxIndex) {
-            selectedIndex++;
-            pathTable.getSelectionModel().select(selectedIndex);
-            Instruction instruction = pathTable.getSelectionModel().getSelectedItem();
-            if (instruction != null) {
+    // Only enables generatePathButton if something is selected for both startingBox and
+    // destinationBox
+    ChangeListener<Object> listener =
+        (observable, oldValue, newValue) -> {
+          // Check if both ComboBoxes have a selected value
+          boolean isComboBox1Selected = startingBox.getValue() != null;
+          boolean isComboBox2Selected = destinationBox.getValue() != null;
 
-              setFloor(instruction.node.getFloor());
-              mapController.zoomToCoordinates(
-                  2, instruction.node.getXCoord(), instruction.node.getYCoord());
-            }
-          }
-          if (!pathTable.getItems().isEmpty()) {
-            pathTable.scrollTo(rowIndex);
-          }
-        });
+          // If both ComboBoxes have a selected value, enable the button, otherwise disable it
+          generatePathButton.setDisable(!isComboBox1Selected || !isComboBox2Selected);
+        };
 
-    // Set up the back button to select the previous row
-    back.setOnAction(
-        event -> {
-          int rowIndex = pathTable.getSelectionModel().getSelectedIndex();
-          if (selectedIndex > 0) {
-            selectedIndex--;
-            pathTable.getSelectionModel().select(selectedIndex);
-            Instruction instruction = pathTable.getSelectionModel().getSelectedItem();
-            if (instruction != null) {
-              setFloor(instruction.node.getFloor());
-              mapController.zoomToCoordinates(
-                  2, instruction.node.getXCoord(), instruction.node.getYCoord());
-            }
-          }
-          if (!pathTable.getItems().isEmpty()) {
-            pathTable.scrollTo(rowIndex);
-          }
-        });
+    // Add the ChangeListener to both ComboBoxes
+    startingBox.valueProperty().addListener(listener);
+    destinationBox.valueProperty().addListener(listener);
+
+    // Initially disable the button if either ComboBox is not selected
+    generatePathButton.setDisable(
+        startingBox.getValue() == null || destinationBox.getValue() == null);
   }
 
   /** Callback to handle the back button being pressed */
   @SneakyThrows
   @FXML
-  private void handleBack() {
+  public void handleBack() {
     Fapp.handleBack(); // Delegate to Fapp
-  }
-
-  /** Method that generates table for textual path instructions */
-  private void drawTable() {
-    int continueCounter = 0;
-    pathTable.setVisible(true);
-    next.setVisible(true);
-    back.setVisible(true);
-
-    ObservableList<Instruction> instructions = FXCollections.observableArrayList();
-    double curAngle = 0;
-
-    pathTable.setItems(instructions);
-    for (int i = 0; i < currentPath.size() - 1; i++) { // For each line in the path
-
-      Node thisNode = currentPath.get(i);
-      Node nextNode = currentPath.get(i + 1);
-
-      double target =
-          Math.atan2(
-              (nextNode.getYCoord() - thisNode.getYCoord()),
-              (nextNode.getXCoord() - thisNode.getXCoord()));
-      double errorTheta = target - curAngle;
-      curAngle = target;
-
-      errorTheta = MathUtils.normalizeAngle(errorTheta, 0.0);
-
-      int errorDeg = (int) Math.toDegrees(errorTheta);
-
-      String nodeName =
-          thisNode
-              .getCurrentLocation(
-                  mapController.getMapSession(),
-                  Date.from(
-                      moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))
-              .stream()
-              .findFirst()
-              .orElse(new LocationName("", LocationName.LocationType.HALL, ""))
-              .getShortName();
-
-      if (i == 0) {
-        String newFloor = "Starting at floor " + currentPath.get(i).getFloor() + ":";
-        instructions.add(new Instruction(newFloor, thisNode));
-      } else if (currentPath.get(i).getFloor() != currentPath.get(i - 1).getFloor()) {
-        String newFloor = "Going to floor " + currentPath.get(i).getFloor() + ":";
-        instructions.add(new Instruction(newFloor, thisNode));
-      }
-
-      if (nodeName.equals("")) {
-        if (errorDeg < -70) {
-          instructions.add(new Instruction("\u2190 Turn Left ", thisNode));
-          continueCounter = 0;
-        } else if ((errorDeg > -70) && (errorDeg < -45)) {
-          instructions.add(new Instruction("\u2196 Take Slight Left ", thisNode));
-          continueCounter = 0;
-        } else if (errorDeg > 70) {
-          instructions.add(new Instruction(" \u2192 Turn Right ", thisNode));
-          continueCounter = 0;
-        } else if ((errorDeg > 45) && (errorDeg < 70)) {
-          instructions.add(new Instruction("\u2197 Take Slight Right ", thisNode));
-          continueCounter = 0;
-        } else {
-          if (continueCounter == 0) {
-            instructions.add(new Instruction("\u2191 Continue", thisNode));
-            continueCounter = continueCounter + 1;
-          }
-        }
-      } else {
-        if (errorDeg < -70) {
-          instructions.add(new Instruction("\u2190 Turn Left at " + nodeName, thisNode));
-          continueCounter = 0;
-        } else if ((errorDeg > -70) && (errorDeg < -45)) {
-          instructions.add(new Instruction("\u2196 Take Slight Left at " + nodeName, thisNode));
-          continueCounter = 0;
-        } else if (errorDeg > 70) {
-          instructions.add(new Instruction("\u2192 Turn Right at " + nodeName, thisNode));
-          continueCounter = 0;
-        } else if ((errorDeg > 45) && (errorDeg < 70)) {
-          instructions.add(new Instruction("\u2197 Take Slight Right at " + nodeName, thisNode));
-          continueCounter = 0;
-        } else {
-          if (continueCounter == 0) {
-            instructions.add(new Instruction("\u2191 Continue at " + nodeName, thisNode));
-            continueCounter = continueCounter + 1;
-          }
-        }
-      }
-    }
-
-    instructions.add(
-        new Instruction(
-            "You have arrived at " + destinationBox.valueProperty().get(),
-            currentPath.get(currentPath.size() - 1)));
   }
 
   @SneakyThrows
   public void handleGetPath() {
-    generatePathButton.setDisable(true);
-    // start the animation
-    Animation();
-    // get start and end locations from text fields
-    LocationName startPath = startingBox.valueProperty().get();
-    LocationName endPath = destinationBox.valueProperty().get();
-    Boolean accessible = accessibleBox.isSelected();
-
-    // get algorithm to use in pathfinding from algorithmBox
-    if (algorithmBox.getValue() != null) {
-      switch (algorithmBox.getValue()) {
-        case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
-        case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
-        default -> pathFinder.setAlgorithm(new AStar());
+    try {
+      if (destinationBox.getValue().equals("") && (startingBox.getValue().equals(""))) {
+        generatePathButton.setDisable(true);
+        throw new NullPointerException();
       }
+      try {
+        generatePathButton.setDisable(true);
+        // start the animation
+        Animation();
+
+        // get algorithm to use in pathfinding from algorithmBox
+        if (algorithmBox.getValue() != null) {
+          switch (algorithmBox.getValue()) {
+            case "Breadth-first" -> pathFinder.setAlgorithm(new BreadthFirst());
+            case "Depth-first" -> pathFinder.setAlgorithm(new DepthFirst());
+            default -> pathFinder.setAlgorithm(new AStar());
+          }
+        }
+
+        unColorFloor(); // hide the last drawn path
+        // acquire the lock
+        lock.lock();
+
+        // create a new thread with myRunnable
+        Thread thread = new Thread(myRunnable);
+        thread.start();
+      } catch (RollbackException exception) {
+        errortoastAnimation();
+      }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
+      errortoastAnimation();
     }
-
-    unColorFloor(); // hide the last drawn path
-    // acquire the lock
-    lock.lock();
-
-    // create a new thread with myRunnable
-    Thread thread = new Thread(myRunnable);
-    thread.start();
   }
 
   public void unlock() {
@@ -367,13 +270,16 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       //      error.setText("No path found");
       System.out.println("no path found");
     } else {
-      setFloor(currentPath.get(0).getFloor()); // Go to the starting floor
+      mapController
+          .getMapFloorProperty()
+          .setValue(currentPath.get(0).getFloor()); // Go to the starting floor
       // Zoom to the coordinates of the starting node
       mapController.zoomToCoordinates(
           5, currentPath.get(0).getXCoord(), currentPath.get(0).getYCoord());
       colorFloor(); // Draw the path
-      setFloor(currentPath.get(0).getFloor());
-      drawTable();
+      mapController.getMapFloorProperty().setValue(currentPath.get(0).getFloor());
+      drawTable(
+          Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     }
     // stop the animation
     parallelTransition.jumpTo(Duration.ZERO);
@@ -491,6 +397,45 @@ public class PathfindingController extends AbstractPathVisualizerController impl
     popOver.show(node.getScene().getWindow());
   }
 
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-280);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    sequence.setOnFinished(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            generatePathButton.setDisable(false);
+          }
+        });
+  }
+
   @Override
   public void help() {
     if (!hDone) {
@@ -500,6 +445,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h4.setVisible(true);
       h5.setVisible(true);
       h6.setVisible(true);
+      h7.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
@@ -508,26 +454,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       h4.setVisible(false);
       h5.setVisible(false);
       h6.setVisible(false);
+      h7.setVisible(false);
       hDone = false;
-    }
-  }
-
-  /**
-   * Sets the floor for the map
-   *
-   * @param floor the new floort
-   */
-  public void setFloor(@NonNull Node.Floor floor) {
-    mapController.getMapFloorProperty().setValue(floor);
-  }
-
-  public static class Instruction {
-    @Getter @Setter private String instruction;
-    @Getter @Setter private Node node;
-
-    Instruction(String instruction, Node node) {
-      this.instruction = instruction;
-      this.node = node;
     }
   }
   /** Method that handles drawing a new path (AKA the submit button handler) */
@@ -555,7 +483,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
       session.close();
       // Call unlock() on the UI thread when finished
-      Platform.runLater(() -> unlock());
+      Platform.runLater(PathfindingController.this::unlock);
     }
   }
 }

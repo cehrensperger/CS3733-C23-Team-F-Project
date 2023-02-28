@@ -38,7 +38,10 @@ public class NavBarController {
   @FXML private MFXButton helpButton;
 
   @FXML private Pane toast;
+  @FXML private Text backText;
+
   @FXML private MFXButton back;
+  @FXML private SVGPath backSVG;
   @FXML private MFXButton moveVisualizer;
   @FXML private MFXButton loginManager;
   @FXML private MFXButton csvManager;
@@ -51,6 +54,8 @@ public class NavBarController {
   @FXML private MFXButton transport;
   @FXML private MFXButton itSupport;
   @FXML private MFXButton avService;
+  @FXML private MFXButton equipmentTransport;
+  @FXML private MFXButton equipmentTransport2;
   @FXML private MFXButton srButton;
   @FXML private MFXButton homeButton;
   @FXML private MFXButton alertsButton;
@@ -117,6 +122,8 @@ public class NavBarController {
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
+    toast.setVisible(false);
+    toast.setDisable(true);
     //    srButton.setOpacity(0);
     //    srButton.setDisable(true);
     //    homeButton.setOpacity(0);
@@ -128,6 +135,28 @@ public class NavBarController {
 
     dateAndTime();
     // clockLabel.setTextFill(Paint.valueOf("white"));
+    back.setDisable(true);
+    backSVG.setOpacity(0);
+    back2.setDisable(true);
+    backText.setVisible(false);
+  }
+
+  public void refresh() {
+
+    if (Fapp.getIController() != null) {
+      IController current = Fapp.getIController();
+      if (current.getClass() != HomeController.class) {
+        backSVG.setOpacity(1);
+        back2.setDisable(false);
+        back.setDisable(false);
+        backText.setVisible(true);
+      } else {
+        back.setDisable(true);
+        backSVG.setOpacity(0);
+        back2.setDisable(true);
+        backText.setVisible(false);
+      }
+    }
   }
 
   /**
@@ -164,6 +193,8 @@ public class NavBarController {
     navButtons.setVisible(true);
     navButtons.setDisable(false);
     navButtons.setOpacity(1);
+    toast.setVisible(true);
+    toast.setDisable(false);
 
     if (!isAdmin) {
       mapEditor.setDisable(true);
@@ -219,14 +250,14 @@ public class NavBarController {
 
   @FXML
   private void showDescriptions(MouseEvent event) throws IOException {
-    System.out.println("in");
+    //    System.out.println("in");
     toastAnimationForward();
   }
 
   @FXML
   private void hideDescriptions(MouseEvent event) throws IOException {
     toastAnimationBackward();
-    System.out.println("out");
+    //    System.out.println("out");
   }
 
   @FXML
@@ -298,6 +329,11 @@ public class NavBarController {
   }
 
   @FXML
+  private void handleEquipment(ActionEvent event) throws IOException {
+    Fapp.setScene("ServiceRequests", "EquipmentTransport");
+  }
+
+  @FXML
   private void handleAVService(ActionEvent event) throws IOException {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
   }
@@ -329,26 +365,28 @@ public class NavBarController {
 
   @FXML
   private void handleAlerts(ActionEvent event) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AlertManager.fxml"));
-    PopOver popOver = new PopOver(newLoad.load()); // create the popover
-    HomeController home = new HomeController();
-
-    AlertManagerController controller = newLoad.getController();
-    controller.setPopOver(popOver);
-
-    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-    javafx.scene.Node node =
-        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
-    popOver.show(node); // display the popover
-
-    popOver
-        .showingProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue) {
-                home.refreshAlerts();
-              }
-            });
+    Fapp.setScene("Alerts", "AlertManager");
+    //    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AlertManager.fxml"));
+    //    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+    //    HomeController home = new HomeController();
+    //
+    //    AlertManagerController controller = newLoad.getController();
+    //    controller.setPopOver(popOver);
+    //
+    //    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    //    javafx.scene.Node node =
+    //        (javafx.scene.Node) event.getSource(); // Get the node representation of what called
+    // this
+    //    popOver.show(node); // display the popover
+    //
+    //    popOver
+    //        .showingProperty()
+    //        .addListener(
+    //            (observable, oldValue, newValue) -> {
+    //              if (!newValue) {
+    //                home.refreshAlerts();
+    //              }
+    //            });
   }
 
   @FXML
@@ -360,7 +398,7 @@ public class NavBarController {
 
   @FXML
   private void handleBack(ActionEvent event) throws IOException {
-    Fapp.handleBack();
+    //
   }
 
   @FXML
@@ -371,8 +409,13 @@ public class NavBarController {
 
   @FXML
   private void signOut() {
-    CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
     Fapp.setScene("Accounts", "Login");
+    signUserOutWithoutSceneChange();
+  }
+
+  /** */
+  public void signUserOutWithoutSceneChange() {
+    CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
     menu.setText("");
     menu.setDisable(true);
     loggedOutMenu.setVisible(true);
@@ -385,6 +428,8 @@ public class NavBarController {
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
+    toast.setVisible(false);
+    toast.setDisable(true);
   }
 
   /**
@@ -394,7 +439,7 @@ public class NavBarController {
    */
   @FXML
   private void about() throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/About.fxml"));
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("About/About.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
     popOver.detach();
     popOver.show(anchorPane.getScene().getWindow());
@@ -431,7 +476,7 @@ public class NavBarController {
   public void toastAnimationForward() {
     // Create a TranslateTransition to move the first rectangle to the left
     TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.2), toast);
-    translate1.setByX(210);
+    translate1.setByX(260);
     navButtons.setOnMouseEntered(e -> {});
     translate1.setOnFinished(
         e -> {
@@ -470,7 +515,7 @@ public class NavBarController {
         });
 
     //    translateBack1.setDelay(Duration.seconds(2));
-    translateBack1.setByX(-210);
+    translateBack1.setByX(-260);
 
     // Play the animations in sequence
     translateBack1.play();

@@ -20,7 +20,7 @@ public class CSVParser {
 
   /**
    * Static method that reads files from the CSVs and uploads them to the database. Will either
-   * succesfully upload everything to the database OR nothing
+   * successfully upload everything to the database OR nothing
    *
    * @param nodeFile the node file
    * @param edgeFile the edge file

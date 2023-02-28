@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs.MoveVisualizer;
 
+import edu.wpi.FlashyFrogs.Accounts.LoginController;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
@@ -9,13 +10,15 @@ import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.function.BiConsumer;
+import javafx.animation.PauseTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -24,10 +27,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
+import javafx.util.StringConverter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -40,9 +49,14 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
-  @FXML private SearchableComboBox<LocationName> rightLocation; // Right arrow location
-  @FXML private SearchableComboBox<LocationName> leftLocation; // Left arrow location
-  @FXML private TextField headerText; // Text for the header
+  @FXML private VBox directionsBox;
+  @FXML private BorderPane borderPane;
+  @FXML private Text adminMessage; // Admin message text
+  @FXML private SearchableComboBox<LocationName> leftLocationBox; // Left location search box
+  @FXML private SearchableComboBox<LocationName> rightLocationBox; // Right location search box
+  @FXML private Text rightLocation; // Right arrow location, actual
+  @FXML private Text leftLocation; // Left arrow location, actual
+  @FXML private TextField headerText; // Text for the header, entry
   @FXML private TextField textText; // The text to show on the map
   @FXML private Text noLocationText; // No location error text
   @FXML private FilteredTableView<Move> moveTable; // Table for the moves
@@ -53,10 +67,101 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   private final Collection<javafx.scene.Node> nodes =
       new LinkedList<>(); // Collection of nodes that are on the map
 
+  // Static place to keep the timer, so that it can be canceled when the admin enters the move
+  // visualizer
+  private static PauseTransition backToVisualizerTimer = null;
+
   /** Sets up the move visualizer, including all tables, and the map */
   @SneakyThrows
   @FXML
-  private void initialize() {
+  protected void initialize() {
+    // Cancel the timer if it exists
+    if (backToVisualizerTimer != null) {
+      // Stop the visualizer
+      backToVisualizerTimer.stop();
+      backToVisualizerTimer = null; // Cancel the timer
+    }
+
+    // Binds the admin message to the admin message entry
+    adminMessage
+        .textProperty()
+        .bindBidirectional(
+            headerText.textProperty(),
+            new StringConverter<>() {
+              @Override
+              public String toString(String object) {
+                // if the text is empty, use sample text
+                if (object.isEmpty()) {
+                  return "Header Text"; // Sample text
+                } else {
+                  return object; // Otherwise, return the object
+                }
+              }
+
+              @Override
+              public String fromString(String string) {
+                return null; // This is not supported, so it does nothing
+              }
+            });
+
+    // Bind the left location text to the location
+    leftLocation
+        .textProperty()
+        .bindBidirectional(
+            leftLocationBox.valueProperty(),
+            new StringConverter<>() {
+              // Converter based on the location
+              @Override
+              public String toString(LocationName object) {
+                if (object != null) {
+                  return object
+                      .toString(); // If it's not null, return just the string of the location
+                } else {
+                  return "Left Location"; // Otherwise, default text
+                }
+              }
+
+              @Override
+              public LocationName fromString(String string) {
+                return null; // This is not supported, so it does nothign
+              }
+            });
+
+    // Bind the right location to the right text
+    rightLocation
+        .textProperty()
+        .bindBidirectional(
+            rightLocationBox.valueProperty(),
+            new StringConverter<>() {
+              // Converter based on the location
+              @Override
+              public String toString(LocationName object) {
+                if (object != null) {
+                  return object
+                      .toString(); // If it's not null, return just the string of the location
+                } else {
+                  return "Right Location"; // Otherwise, default text
+                }
+              }
+
+              @Override
+              public LocationName fromString(String string) {
+                return null; // This is not supported, so it does nothing
+              }
+            });
+
+    // Query the location names
+    ObservableList<LocationName> locationNames =
+        FXCollections.observableList(
+            mapController
+                .getMapSession()
+                .createQuery("FROM LocationName", LocationName.class)
+                .getResultList());
+
+    // Set the boxes to contain them
+    leftLocationBox.setItems(locationNames);
+    rightLocationBox.setItems(locationNames);
+
     // Give the columns their filters
     PopupFilter<Move, Node> nodeFilter = new PopupStringFilter<>(nodeColumn); // Node filter
     nodeColumn.setOnFilterAction((event) -> nodeFilter.showPopup()); // Node filter action
@@ -71,7 +176,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     locationColumn.setReorderable(false);
     dateColumn.setReorderable(false);
 
-    mapPane.getChildren().add(map);
+    mapPane.getChildren().add(0, map);
 
     // Anchor it to take up the whole map pane
     AnchorPane.setLeftAnchor(map, 0.0);
@@ -122,6 +227,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
                   // Set the floor
                   mapController.getMapFloorProperty().setValue(oldLocation.getFloor());
+
+                  drawTable(new Date()); // Draw the table
                 } else {
                   noLocationText.setVisible(true);
                 }
@@ -136,20 +243,29 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             (observable, oldValue, newValue) -> {
               clearNodes(null); // Clear the nodes on floor change
             });
+
+    super.initialize(); // Call the supers initialize method
+
+    // The box with the directions should pop-out when its hovered
+    directionsBox
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              TranslateTransition transition =
+                  new TranslateTransition(Duration.seconds(.5), directionsBox);
+              if (newValue) {
+                transition.setToY(-299);
+              } else {
+                transition.setToY(0);
+              }
+
+              transition.play();
+            });
   }
 
   /** Help, shows the help menu for the visualizer */
   @Override
   public void help() {}
-
-  /**
-   * Handler for the back button, delegates to Fapp
-   *
-   * @param actionEvent the event triggering this
-   */
-  public void handleBackButton(ActionEvent actionEvent) {
-    Fapp.handleBack();
-  }
 
   /**
    * Adds text to the map
@@ -497,5 +613,56 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
    * @param actionEvent the event triggering this
    */
   @FXML
-  private void enterKioskMode(ActionEvent actionEvent) {}
+  private void enterKioskMode(ActionEvent actionEvent) {
+    // First, make the border pain (messages + map) fullscreen by anchoring it to the root
+    AnchorPane.setTopAnchor(borderPane, 0.0);
+    AnchorPane.setLeftAnchor(borderPane, 0.0);
+    AnchorPane.setBottomAnchor(borderPane, 0.0);
+    AnchorPane.setRightAnchor(borderPane, 0.0);
+
+    // Toggle the map controls (no floor/SR interaction)
+    mapController.toggleMapControls();
+
+    // For each node on the map, make it mouse transparent so that it's not editable
+    // (viewers shouldn't be able to move/delete this stuff)
+    for (javafx.scene.Node node : nodes) {
+      node.setMouseTransparent(true);
+    }
+
+    Fapp.logOutWithoutSceneChange(); // Log the user out without going to the login screen
+
+    // Set the key handler for the border pane, if the user presses escape
+    borderPane
+        .getScene()
+        .addEventFilter(
+            KeyEvent.KEY_PRESSED,
+            (keyEvent) -> {
+              Fapp.setLastKeyPressTime(Instant.now());
+
+              // We only care about escape
+              if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+                // Go to the login page
+                Fapp.setScene("Accounts", "Login");
+              }
+            });
+
+    // Use a pause transition so that it only does the thing on the home screen
+    backToVisualizerTimer = new PauseTransition(Duration.seconds(1));
+
+    // Set the transition to close on completion
+    backToVisualizerTimer.setOnFinished(
+        (event) -> {
+          // If they are on the login screen and the last press was more than 10 seconds
+          // ago
+          if (Fapp.getIController().getClass() == LoginController.class
+              && Fapp.getLastKeyPressTime().plus(10, ChronoUnit.SECONDS).isBefore(Instant.now())) {
+            Fapp.setRoot(borderPane); // Set the root to be this
+          }
+
+          // Redo the transitions
+          backToVisualizerTimer.play();
+        });
+
+    backToVisualizerTimer.play(); // Start the timer
+  }
 }

@@ -37,6 +37,15 @@
     -fx-font-size: 20pt;
 }
 
+.headerBoldWhite
+    /** This styles bold headers - such as the titles of the sections on the service
+     requests credits page **/
+{
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-font-size: 20pt;
+}
+
 .headerBoldTextObject
     /** Mimics .headerBold for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
 {
@@ -66,6 +75,23 @@
 {
     -fx-font-family: "Roboto";
     -fx-font-size: 10pt;
+    -fx-font-weight: bold;
+}
+
+.sidebar-color {
+    /** Sidebar background color for non-sized elements */
+    -fx-background-color: #d1d1d1 !important;
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+}
+
+.bodyBoldWhite
+    /** This styles body text - such as the names and descriptions on the service
+     requests credits page **/
+{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 10pt;
+    -fx-font-weight: bold;
 }
 
 .subtext
@@ -169,6 +195,14 @@
     -fx-font-size: 10pt;
 }
 
+.blueNoRadius {
+    /** Blue with no radding or size */
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 10pt;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
 .blueBackgroundSideBar
     /** This is used for the sidebar buttons with blue backgrounds - ex. switch color, manage CSVs, etc. **/
 {
@@ -190,7 +224,7 @@
     -fx-font-size: 12pt;
     -fx-font-weight: bold;
     -fx-pref-width: 184px;
-    -fx-pref-height: 75px;
+    -fx-pref-height: 65px;
     -fx-text-alignment: Baseline Left;
     -fx-cursor: pointer;
 }
@@ -245,6 +279,14 @@
 {
     -fx-background-radius: 10 10 10 10;
 
+}
+
+.searchable-combo-box .list-cell {
+    -fx-font-size: 13;
+    -fx-font-family: "Roboto Light";
+}
+
+.searchable-combo-box .list-cell:hover {
 }
 
 .combo-box> .text-field
@@ -474,6 +516,8 @@
     -fx-font-size: 16;
     -fx-font-family: "Roboto Light";
     -fx-cursor: pointer;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
 }
 
 .check-box
@@ -509,5 +553,17 @@
     -fx-border-radius: 10px;
 }
 .text-area .content {
+}
+
+.yellow {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.scroll-pane {
+    /** Right now, only used on acknowledgementsPage as a placeholder **/
+}
+.scroll-pane > .viewport {
+    /** Right now, only used on acknowledgementsPage as a placeholder **/
 }
 

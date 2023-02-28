@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
@@ -55,7 +56,7 @@
             </SearchableComboBox>
             <Text fx:id="h3" styleClass="warningText" text="Choose an algorithm to generate your path with" wrappingWidth="184.0">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <DatePicker fx:id="moveDatePicker" prefHeight="25.0" prefWidth="184.0" styleClass="fields">
@@ -65,7 +66,17 @@
             </DatePicker>
             <Text fx:id="h5" styleClass="warningText" text="Choose a date for the pathfinding to take place" wrappingWidth="184.0">
                <VBox.margin>
+                  <Insets bottom="10.0" left="18.0" right="18.0" />
+               </VBox.margin>
+            </Text>
+            <SearchableComboBox fx:id="serviceRequestBox" maxWidth="184.0" promptText="Service Request:" styleClass="fields">
+               <VBox.margin>
                   <Insets left="18.0" right="18.0" />
+               </VBox.margin>
+            </SearchableComboBox>
+            <Text fx:id="h7" styleClass="warningText" text="Choose a service request set as &#10;an ending location" wrappingWidth="184.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="18.0" right="18.0" />
                </VBox.margin>
             </Text>
             <CheckBox fx:id="accessibleBox" mnemonicParsing="false" styleClass="body" text="No Stairs">
@@ -74,7 +85,7 @@
                </VBox.margin></CheckBox>
             <Text fx:id="h6" styleClass="warningText" text="Check to exclude stairs from your path" wrappingWidth="184.0">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <MFXButton fx:id="generatePathButton" alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Generate Path">
@@ -87,7 +98,7 @@
             </MFXButton>
             <Text fx:id="h4" styleClass="warningText" text="Click to generate the path!">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <TableView fx:id="pathTable" maxWidth="220.0" prefHeight="200.0" prefWidth="200.0">
@@ -145,15 +156,22 @@
             </AnchorPane>
          </children>
       </StackPane>
-      <MFXButton onAction="#handleBack" prefHeight="32.0" prefWidth="184.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </MFXButton>
       <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="19.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Map Editor" visible="false" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />
          </font>
       </MFXButton>
+      <Pane fx:id="errtoast" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="68.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Choose Location" wrappingWidth="201.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
