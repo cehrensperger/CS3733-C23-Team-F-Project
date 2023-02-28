@@ -325,7 +325,8 @@ public abstract class AbstractPathVisualizerController implements IController {
             "You have arrived at "
                 + currentPath
                     .get(currentPath.size() - 1)
-                    .getCurrentLocation(mapController.getMapSession(), date).get(0),
+                    .getCurrentLocation(mapController.getMapSession(), date)
+                    .get(0),
             currentPath.get(currentPath.size() - 1)));
   }
 

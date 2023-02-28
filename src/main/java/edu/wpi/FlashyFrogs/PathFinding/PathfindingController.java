@@ -389,7 +389,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
         for (Node node : currentPath) {
           if (ports[0].isOpen() || ports[0].openPort()) {
-//            System.out.println("Port opened successfully");
+            //            System.out.println("Port opened successfully");
             byte[] bytes = node.getId().getBytes(StandardCharsets.US_ASCII);
             ports[0].writeBytes(bytes, bytes.length);
           } else {
@@ -405,7 +405,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         }
 
         ports[0].closePort();
-//        System.out.println("Port closed");
+        //        System.out.println("Port closed");
       }
 
       // Call unlock() on the UI thread when finished
