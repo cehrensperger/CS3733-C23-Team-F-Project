@@ -41,12 +41,7 @@ import javafx.util.Duration;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
-import org.eclipse.paho.client.mqttv3.IMqttClient;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.internal.wire.MqttConnect;
 import org.hibernate.Session;
-import org.eclipse.paho.*;
 
 @GeneratedExclusion
 public class PathfindingController extends AbstractPathVisualizerController implements IController {
@@ -488,11 +483,32 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
 
-      String publisherId = UUID.randomUUID().toString();
-      try {
-        IMqttClient publisher = new MqttClient("tcp://iot.eclipse.org:1883", publisherId);
-      } catch (MqttException e) {
-        throw new RuntimeException(e);
+      SerialPort[] ports = SerialPort.getCommPorts();
+
+      if (ports.length != 0) {
+
+        ports[0].setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
+        ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 0); // Blocking write
+
+        for (Node node : currentPath) {
+          if (ports[0].isOpen() || ports[0].openPort()) {
+//            System.out.println("Port opened successfully");
+            byte[] bytes = node.getId().getBytes(StandardCharsets.US_ASCII);
+            ports[0].writeBytes(bytes, bytes.length);
+          } else {
+            System.out.println("Failed to open port");
+            System.out.println(ports[0].getLastErrorCode());
+          }
+        }
+
+        if (ports[0].isOpen() || ports[0].openPort()) {
+          String endMessage = "endMessage00";
+          byte[] bytes = endMessage.getBytes(StandardCharsets.US_ASCII);
+          ports[0].writeBytes(bytes, bytes.length);
+        }
+
+        ports[0].closePort();
+//        System.out.println("Port closed");
       }
 
       session.close();
