@@ -44,7 +44,7 @@ public class EditAlertController implements IController {
             .atZone(ZoneId.systemDefault())
             .toLocalDate());
     this.endDate.setValue(
-        Instant.ofEpochMilli(currentAlert.getStartDisplayDate().getTime())
+        Instant.ofEpochMilli(currentAlert.getEndDisplayDate().getTime())
             .atZone(ZoneId.systemDefault())
             .toLocalDate());
 

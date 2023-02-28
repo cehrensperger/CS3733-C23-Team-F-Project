@@ -20,7 +20,7 @@
          <children>
             <HBox alignment="TOP_CENTER" layoutX="66.0" layoutY="28.0" prefHeight="37.0" prefWidth="800.0" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label fx:id="clockLabel" text="Sun, Jan 01, 2023 12:00 AM">
+                  <Label fx:id="clockLabel" styleClass="navBar" text="Sun, Jan 01, 2023 12:00 AM">
                      <HBox.margin>
                         <Insets top="9.0" />
                      </HBox.margin>
@@ -57,39 +57,39 @@
       <AnchorPane id="clockLabel" fx:id="anchorPane" prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
-      <AnchorPane prefHeight="685.0" prefWidth="39.0" styleClass="background" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="685.0" prefWidth="40.0" styleClass="background" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="toast" alignment="CENTER" prefWidth="180.0" spacing="12.0" style="-fx-background-color: #012d5a;" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-180.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="toast" alignment="CENTER" layoutX="-303.0" prefHeight="685.0" prefWidth="220.0" spacing="21.7" style="-fx-background-color: #012d5a;" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-220.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <StackPane prefHeight="0.0" prefWidth="170.0">
+                  <StackPane prefHeight="27.0" prefWidth="237.0" styleClass="navSlide">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="160.0">
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Home" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <MFXButton fx:id="homeButton2" onAction="#handleHomeButton" prefHeight="13.0" prefWidth="180.0" style="-fx-background-color: transparent;" text=" " />
+                        <MFXButton fx:id="homeButton2" onAction="#handleHomeButton" prefHeight="13.0" prefWidth="180.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="10.0" top="12.0" />
+                        <Insets top="12.0" />
                      </VBox.margin>
                   </StackPane>
                   <StackPane prefHeight="0.0" prefWidth="170.0">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="160.0">
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Service Requests" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <MFXButton fx:id="srButton2" onAction="#handleServiceRequestsButton" prefHeight="27.0" prefWidth="228.0" style="-fx-background-color: transparent;" text=" " />
+                        <MFXButton fx:id="srButton2" onAction="#handleServiceRequestsButton" prefHeight="27.0" prefWidth="174.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </StackPane>
                   <StackPane prefHeight="0.0" prefWidth="170.0">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding" wrappingWidth="160.0">
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Pathfinding" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -102,67 +102,67 @@
                   </StackPane>
                   <StackPane fx:id="mapStack2" prefHeight="0.0" prefWidth="170.0">
                      <children>
-                        <Text fx:id="mapText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Map Editor" wrappingWidth="160.0">
+                        <Text fx:id="mapText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Map Editor" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <MFXButton fx:id="mapEditor2" onAction="#handleMapEditor" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+                        <MFXButton fx:id="mapEditor2" onAction="#handleMapEditor" prefHeight="27.0" prefWidth="199.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="csvStack2" prefHeight="0.0" prefWidth="170.0">
                      <children>
-                        <Text fx:id="CSVText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="CSV Manager" wrappingWidth="160.0">
+                        <Text fx:id="CSVText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="CSV Manager" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <MFXButton fx:id="csvManager2" onAction="#handleCSVManager" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+                        <MFXButton fx:id="csvManager2" onAction="#handleCSVManager" prefHeight="27.0" prefWidth="191.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="loginStack2" prefHeight="0.0" prefWidth="170.0">
                      <children>
-                        <Text fx:id="loginText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Login Manager" wrappingWidth="160.0">
+                        <Text fx:id="loginText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Login Manager" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <MFXButton fx:id="loginManager2" onAction="#handleLoginManager" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+                        <MFXButton fx:id="loginManager2" onAction="#handleLoginManager" prefHeight="27.0" prefWidth="196.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="alertsStack2" prefHeight="0.0" prefWidth="170.0">
                      <children>
-                        <Text fx:id="alertsText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Alerts Manager" wrappingWidth="160.0">
+                        <Text fx:id="alertsText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Alerts Manager" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <MFXButton fx:id="alertsButton2" onAction="#handleAlerts" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+                        <MFXButton fx:id="alertsButton2" onAction="#handleAlerts" prefHeight="27.0" prefWidth="223.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets left="5.0" />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="moveStack2" prefHeight="0.0" prefWidth="170.0">
                      <children>
-                        <Text fx:id="moveText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Move Visualizer" wrappingWidth="160.0">
+                        <Text fx:id="moveText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Move Visualizer" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <MFXButton fx:id="moveVisualizer2" onAction="#handleMoveVisualizer" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+                        <MFXButton fx:id="moveVisualizer2" onAction="#handleMoveVisualizer" prefHeight="27.0" prefWidth="189.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets left="5.0" />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="alertsStack21" prefHeight="0.0" prefWidth="170.0">
@@ -176,38 +176,39 @@
                      </children>
                   </StackPane>
                   <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="180.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_LEFT" prefHeight="285.0" prefWidth="309.0" spacing="10.0" VBox.vgrow="ALWAYS">
                      <children>
                         <StackPane prefHeight="0.0" prefWidth="170.0">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Back" wrappingWidth="160.0">
+                              <Text fx:id="backText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Back" wrappingWidth="210.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Text>
-                              <MFXButton fx:id="back2" onAction="#handleBack" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+                              <MFXButton fx:id="back2" onAction="#handleBack" prefHeight="27.0" prefWidth="191.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                            </children>
                            <VBox.margin>
-                              <Insets left="10.0" top="20.0" />
+                              <Insets left="5.0" top="20.0" />
                            </VBox.margin>
                         </StackPane>
                         <StackPane prefHeight="0.0" prefWidth="170.0">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Help" wrappingWidth="160.0">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Help" wrappingWidth="210.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Text>
-                              <MFXButton fx:id="helpButton2" onAction="#handleHelpButton" prefHeight="27.0" prefWidth="268.0" style="-fx-background-color: transparent;" text=" " />
+                              <MFXButton fx:id="helpButton2" onAction="#handleHelpButton" prefHeight="27.0" prefWidth="186.0" style="-fx-background-color: transparent;" text=" " />
                            </children>
                            <VBox.margin>
-                              <Insets bottom="16.0" left="10.0" />
+                              <Insets bottom="16.0" left="5.0" />
                            </VBox.margin>
                         </StackPane>
                      </children>
                   </VBox>
                </children>
             </VBox>
-            <VBox fx:id="navButtons" alignment="TOP_CENTER" onMouseEntered="#showDescriptions" prefHeight="684.0" spacing="10.0" style="-fx-background-color: #012d5a;" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="navButtons" alignment="TOP_CENTER" onMouseEntered="#showDescriptions" prefHeight="684.0" spacing="20.0" style="-fx-background-color: #012d5a;" styleClass="navBar" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <StackPane prefHeight="8.0" prefWidth="40.0">
                      <VBox.margin>
@@ -289,7 +290,7 @@
                         <StackPane prefHeight="8.0" prefWidth="40.0">
                            <children>
                               <MFXButton fx:id="back" onAction="#handleBack" prefHeight="19.0" prefWidth="40.0" style="-fx-background-color: transparent;" text="  " />
-                              <SVGPath content="M3.00026 9.83313L1.76282 10.9527L0.525391 9.83313L1.76282 8.71354L3.00026 9.83313ZM32.7503 22.4998C32.7503 23.3743 31.9668 24.0831 31.0003 24.0831C30.0337 24.0831 29.2503 23.3743 29.2503 22.4998H32.7503ZM10.5128 18.8694L1.76282 10.9527L4.2377 8.71354L12.9877 16.6302L10.5128 18.8694ZM1.76282 8.71354L10.5128 0.796875L12.9877 3.03606L4.2377 10.9527L1.76282 8.71354ZM3.00026 8.2498H20.5003V11.4165H3.00026V8.2498ZM32.7503 19.3331V22.4998H29.2503V19.3331H32.7503ZM20.5003 8.2498C27.2658 8.2498 32.7503 13.212 32.7503 19.3331H29.2503C29.2503 14.9609 25.3327 11.4165 20.5003 11.4165V8.2498Z" fill="WHITE" />
+                              <SVGPath fx:id="backSVG" content="M3.00026 9.83313L1.76282 10.9527L0.525391 9.83313L1.76282 8.71354L3.00026 9.83313ZM32.7503 22.4998C32.7503 23.3743 31.9668 24.0831 31.0003 24.0831C30.0337 24.0831 29.2503 23.3743 29.2503 22.4998H32.7503ZM10.5128 18.8694L1.76282 10.9527L4.2377 8.71354L12.9877 16.6302L10.5128 18.8694ZM1.76282 8.71354L10.5128 0.796875L12.9877 3.03606L4.2377 10.9527L1.76282 8.71354ZM3.00026 8.2498H20.5003V11.4165H3.00026V8.2498ZM32.7503 19.3331V22.4998H29.2503V19.3331H32.7503ZM20.5003 8.2498C27.2658 8.2498 32.7503 13.212 32.7503 19.3331H29.2503C29.2503 14.9609 25.3327 11.4165 20.5003 11.4165V8.2498Z" fill="WHITE" />
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" />

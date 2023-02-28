@@ -285,6 +285,7 @@ public class TransportController implements IController {
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         submit.setDisable(true);
@@ -336,6 +337,14 @@ public class TransportController implements IController {
 
   public void handleSanitation(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "SanitationService");
+  }
+
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
   }
 
   public void handleSecurity(ActionEvent actionEvent) throws IOException {

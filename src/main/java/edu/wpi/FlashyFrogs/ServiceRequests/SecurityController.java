@@ -45,6 +45,8 @@ public class SecurityController implements IController {
   @FXML Rectangle errcheck2;
   @FXML Rectangle errcheck1;
 
+  @FXML MFXButton MD;
+  @FXML MFXButton religious;
   @FXML Rectangle check2;
   @FXML Rectangle check1;
   @FXML Pane toast;
@@ -161,6 +163,7 @@ public class SecurityController implements IController {
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         submit.setDisable(true);
@@ -211,6 +214,14 @@ public class SecurityController implements IController {
     Fapp.setScene("ServiceRequests", "EquipmentTransport");
   }
 
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
+  }
+
   public void handleIT(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "ComputerService");
   }
@@ -233,6 +244,10 @@ public class SecurityController implements IController {
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
     Fapp.handleBack();
+  }
+
+  public void handleMD(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "Medicine Delivery");
   }
 
   public void toastAnimation() {

@@ -155,6 +155,7 @@ public class AVController implements IController {
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         submit.setDisable(true);
@@ -202,6 +203,14 @@ public class AVController implements IController {
 
   public void handleAV(ActionEvent actionEvent) throws IOException {
     Fapp.setScene("ServiceRequests", "AudioVisualService");
+  }
+
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
+
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
   }
 
   public void handleEquipment(ActionEvent actionEvent) throws IOException {
@@ -262,9 +271,6 @@ public class AVController implements IController {
   }
 
   public void errortoastAnimation() {
-    errtoast.getTransforms().clear();
-    errtoast.setLayoutX(0);
-
     TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
     translate1.setByX(-280);
     translate1.setAutoReverse(true);
