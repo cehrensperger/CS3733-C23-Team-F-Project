@@ -168,11 +168,9 @@ public class NavBarController {
    * If sound effects were off, turn them on and say that clicking the menu option again will turn
    * them off. If sound effects were on, turn them off and say that clicking the menu option again
    * will turn them on.
-   *
-   * @param actionEvent
    */
   @FXML
-  private void toggleSFX(ActionEvent actionEvent) {
+  private void toggleSFX() {
     if (Fapp.isSfxOn()) {
       Fapp.setSfxOn(false);
       loggedOutMenuToggleSFX.setText("Turn Sound Effects On");
