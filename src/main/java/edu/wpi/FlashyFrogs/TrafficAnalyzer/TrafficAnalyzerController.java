@@ -103,6 +103,8 @@ public class TrafficAnalyzerController implements IController {
   private void colorFloor() {
     mapController.redraw(); // Redraw on the map, to clear styling
 
+    if (floorToMapItems == null) return; // Do nothing if there is no map
+
     // For each item on this floor of the map
     for (MapItem mapItem : floorToMapItems.get(mapController.getMapFloorProperty().getValue())) {
       // Set its color to be the calculated color
@@ -115,6 +117,12 @@ public class TrafficAnalyzerController implements IController {
     // Create the queue, the comparator is comparing the number of uses
     Map<edu.wpi.FlashyFrogs.ORM.Node, MapItem> nodeMapItems = new HashMap<>(); // Node items
     Map<Edge, MapItem> edgeMapItems = new HashMap<>(); // Edge items
+
+    floorToMapItems = new HashMap<>(); // Create the floor to map items list
+
+    for (edu.wpi.FlashyFrogs.ORM.Node.Floor floor : edu.wpi.FlashyFrogs.ORM.Node.Floor.values()) {
+      floorToMapItems.put(floor, new LinkedList<>()); // Create the map on the floor
+    }
 
     Map<LocationName, edu.wpi.FlashyFrogs.ORM.Node> nodeToLocationName =
         getNodeToLocationNameMap(date);
@@ -144,6 +152,11 @@ public class TrafficAnalyzerController implements IController {
           // If we haven't seen this node before
           if (!nodeMapItems.containsKey(nextHop)) {
             nodeMapItems.put(nextHop, new NodeMapItem(nextHop)); // Save it
+
+            // Add this to its floor
+            floorToMapItems
+                .get(nodeMapItems.get(nextHop).getMapFloor())
+                .add(nodeMapItems.get(nextHop));
           }
 
           // Either way, add this to the relevant paths
@@ -162,6 +175,14 @@ public class TrafficAnalyzerController implements IController {
           // If we haven't seen the edge
           if (!edgeMapItems.containsKey(edge)) {
             edgeMapItems.put(edge, new EdgeMapItem(edge)); // Save it
+
+            MapItem edgeItem = edgeMapItems.get(edge); // Get the edge item we just made
+
+            // If the edge item is valid floor-wise (can be cross floor and therefore invalid)
+            if (edgeItem.getMapFloor() != null) {
+              // Add this to the floor map
+              floorToMapItems.get(edgeItem.getMapFloor()).add(edgeItem);
+            }
           }
 
           // Either way, save this path as relevant
@@ -173,12 +194,15 @@ public class TrafficAnalyzerController implements IController {
     }
 
     // Create the items
-    ObservableList<MapItem> items =
-        FXCollections.observableList(nodeMapItems.values().stream().toList());
-    items.addAll(edgeMapItems.values().stream().toList());
+    ObservableList<MapItem> items = FXCollections.observableArrayList();
 
-    // Sort by the number of uses
-    items.sort(Comparator.comparingInt(MapItem::getNumUses));
+    // For each item
+    // Add the item
+    items.addAll(nodeMapItems.values());
+    items.addAll(edgeMapItems.values());
+
+    // Sort by the number of uses, descending
+    items.sort(Comparator.comparingInt(MapItem::getNumUses).reversed());
 
     maxWeight = items.get(0).getNumUses(); // Get the max weight
     minWeight = items.get(items.size() - 1).getNumUses(); // Get the min weight
