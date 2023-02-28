@@ -278,6 +278,11 @@ public class NavBarController {
   }
 
   @FXML
+  private void handleHeat(ActionEvent event) throws IOException {
+    Fapp.setScene("ServiceRequests", "trafficAnalyzer");
+  }
+
+  @FXML
   private void handleReligious(ActionEvent event) throws IOException {
     Fapp.setScene("ServiceRequests", "ReligiousService");
   }
