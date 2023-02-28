@@ -167,7 +167,7 @@
                   </StackPane>
                   <StackPane fx:id="alertsStack21" prefHeight="0.0" prefWidth="170.0">
                      <children>
-                        <Text fx:id="heatText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Heat Map" wrappingWidth="210.0">
+                        <Text fx:id="heatText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Traffic Analyzer" wrappingWidth="210.0">
                            <font>
                               <Font size="16.0" />
                            </font>
