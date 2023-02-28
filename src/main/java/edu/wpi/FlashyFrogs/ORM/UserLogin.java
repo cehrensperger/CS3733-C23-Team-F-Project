@@ -7,10 +7,13 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "userlogin")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserLogin {
   /**
    * Reference to the user ID that is being logged in. Does not update on user change, as that is

@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs;
 
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.TrafficAnalyzer.FloydWarshallRunner;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
@@ -33,8 +34,7 @@ public class Fapp extends Application {
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
   private static NavBarController controller;
-
-  @Getter private static Theme theme;
+  @Getter private static Theme theme = Theme.LIGHT_THEME;
 
   @Getter public static IController iController;
 
@@ -54,6 +54,8 @@ public class Fapp extends Application {
    * making the app take forever to launch
    */
   private void preloadResources() {
+    FloydWarshallRunner.reCalculate(); // Have the floyd-warshall runner do its thing
+
     // Map loader
     new Thread(
             () -> {
@@ -135,10 +137,10 @@ public class Fapp extends Application {
     preloadResources();
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
+    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("Accounts/Login.fxml"));
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
 
     final BorderPane root = loader.load();
-    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("Accounts/Login.fxml"));
     controller = ((NavBarController) loader.getController());
     AnchorPane mainAnchorPane = controller.getAnchorPane();
     AnchorPane innerAnchorPane = homePage.load();
@@ -159,8 +161,6 @@ public class Fapp extends Application {
     setTheme(Theme.LIGHT_THEME);
     primaryStage.setFullScreen(true);
     primaryStage.show();
-
-    setTheme(Theme.LIGHT_THEME);
   }
 
   /**

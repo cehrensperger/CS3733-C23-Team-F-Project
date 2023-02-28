@@ -6,6 +6,7 @@ import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
@@ -27,7 +28,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -85,6 +85,7 @@ public class MedicineController implements IController {
 
     locations.sort(Comparator.comparing(LocationName::getShortName));
 
+    locationofPatient.setItems(FXCollections.observableArrayList(locations));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
 
     locationofPatient.setButtonCell(
@@ -137,31 +138,32 @@ public class MedicineController implements IController {
               locationofPatient.getValue(),
               reason.getText(),
               medicine.getText(),
-              dosage.getText(),
+              Double.parseDouble(dosage.getText()),
               urgency.getValue(),
               date2,
               Date.from(Instant.now()),
               CurrentUserEntity.CURRENT_USER.getCurrentUser());
 
       try {
-        session.persist(medicine);
+        session.persist(delivery);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#012D5A"));
-        errorMessage.setText("Successfully submitted.");
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(javafx.scene.paint.Paint.valueOf("#b6000b"));
-        errorMessage.setText("Please fill all fields.");
+        submit.setDisable(true);
+
         session.close();
+        Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errorMessage.setTextFill((Paint.valueOf("#b6000b")));
-      errorMessage.setText("Please fill all fields.");
+      submit.setDisable(true);
+      // errortoastAnimation();
       session.close();
+      Sound.ERROR.play();
     }
   }
 

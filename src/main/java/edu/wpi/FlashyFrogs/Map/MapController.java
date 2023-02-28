@@ -425,7 +425,7 @@ public class MapController {
       tuples =
           getMapSession()
               .createQuery(
-                  "Select s.id, m.node "
+                  "Select s, m.node "
                       + "From ServiceRequest s, Move m "
                       + "WHERE m.location = s.location "
                       + "AND m.moveDate = (Select max(m2.moveDate)"
@@ -434,12 +434,13 @@ public class MapController {
                       + "                  GROUP BY m2.location "
                       + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
                   Tuple.class)
+              .setCacheable(true)
               .getResultList();
     } else {
       tuples =
           getMapSession()
               .createQuery(
-                  "Select s.id, m.node "
+                  "Select s, m.node "
                       + "From ServiceRequest s, Move m "
                       + "WHERE s.assignedEmp = :user "
                       + "AND m.location = s.location "
@@ -450,15 +451,15 @@ public class MapController {
                       + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
                   Tuple.class)
               .setParameter("user", currentUser)
+              .setCacheable(true)
               .getResultList();
     }
 
     for (Tuple t : tuples) {
       Node node = (Node) t.get(t.getElements().get(1));
-      ServiceRequest sr = getMapSession().find(ServiceRequest.class, t.get(t.getElements().get(0)));
 
       if (node.getFloor().equals(mapEntity.getMapFloor().getValue())) {
-        Text text = new Text(sr.toString());
+        Text text = new Text(t.getElements().get(0).toString());
         getNodeToLocationBox().get(node).getChildren().add(text);
       }
     }
@@ -642,17 +643,18 @@ public class MapController {
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out
       gesturePane.setMaxScale(10); // Set the max scale
 
-      Date date2 = MapEditorController.addMilliseconds(date, -1);
-
       locs =
           getMapSession()
               .createQuery("select location from Move m where moveDate = :date", LocationName.class)
               .setParameter("date", MapEditorController.addMilliseconds(date, -1))
+              .setCacheable(true)
               .getResultList();
     }
   }
 
   private void setDisplayText(Display display) {
+    if (displayEnum == display) return; // Don't do anything if there's no change
+
     displayEnum = display;
     Collection<VBox> boxes = getNodeToLocationBox().values();
 
