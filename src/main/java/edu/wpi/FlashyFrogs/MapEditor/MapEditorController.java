@@ -320,36 +320,20 @@ public class MapEditorController implements IController {
 
                                     session.persist(newMove);
 
-                                    LocalDate weekEarlier =
-                                        newMove
-                                            .getMoveDate()
-                                            .toInstant()
-                                            .atZone(ZoneId.systemDefault())
-                                            .toLocalDate();
-                                    weekEarlier.minusDays(7);
-                                    Date weekEarlierDate =
-                                        Date.from(
-                                            weekEarlier
-                                                .atStartOfDay()
-                                                .atZone(ZoneId.systemDefault())
-                                                .toInstant());
-                                    LocalDate weekLater =
-                                        newMove
-                                            .getMoveDate()
-                                            .toInstant()
-                                            .atZone(ZoneId.systemDefault())
-                                            .toLocalDate();
-                                    weekLater.plusDays(7);
-                                    Date weekLaterDate =
-                                        Date.from(
-                                            weekLater
-                                                .atStartOfDay()
-                                                .atZone(ZoneId.systemDefault())
-                                                .toInstant());
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.setTime(newMove.getMoveDate());
+                                    calendar.add(Calendar.DAY_OF_YEAR, 7);
+                                    Date weekLater = calendar.getTime();
+
+                                    calendar = Calendar.getInstance();
+                                    calendar.setTime(newMove.getMoveDate());
+                                    calendar.add(Calendar.DAY_OF_YEAR, -7);
+                                    Date weekEarlier = calendar.getTime();
+
                                     Alert alert =
                                         new Alert(
-                                            weekEarlierDate,
-                                            weekLaterDate,
+                                            weekEarlier,
+                                            weekLater,
                                             CurrentUserEntity.CURRENT_USER.getCurrentUser(),
                                             "Recent Move!",
                                             newMove.getLocation().getLongName()
