@@ -75,7 +75,7 @@ public class MedicineDelivery extends ServiceRequest {
     super.setDateOfSubmission(dateOfSubmission);
     super.setStatus(Status.BLANK);
     super.setUrgency(urgency);
-    super.setRequestType("Security");
+    super.setRequestType("MedicineDelivery");
     this.reason = reason;
     this.medicine = medicine;
     this.dosage = dosage;

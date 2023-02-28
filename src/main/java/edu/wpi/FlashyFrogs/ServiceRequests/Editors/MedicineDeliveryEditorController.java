@@ -22,31 +22,35 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Paint;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class ReligiousEditorController extends ServiceRequestController implements IController {
+public class MedicineDeliveryEditorController extends ServiceRequestController
+    implements IController {
 
   @FXML MFXButton clear;
   @FXML MFXButton submit;
-  @FXML Label errorMessage;
-  @FXML SearchableComboBox<HospitalUser> assignedBox;
-  @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
+
+  @FXML TextField reason;
+  @FXML TextField medicine;
+  @FXML TextField dosage;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
+  @FXML DatePicker date;
   @FXML TextField patient;
   @FXML SearchableComboBox<LocationName> locationofPatient;
-  @FXML TextField religion;
-  @FXML TextField requestDescription;
-  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
-  @FXML DatePicker serviceDate;
+  @FXML SearchableComboBox<HospitalUser> assignedBox;
+  @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
+
+  private MedicineDelivery tpReq = new MedicineDelivery();
+  PopOver popOver;
+
+  @FXML private Label errorMessage;
 
   boolean hDone = false;
   private Connection connection = null;
-  private Religion relReq = new Religion();
-  PopOver popOver;
 
   public void initialize() {
 
@@ -62,26 +66,27 @@ public class ReligiousEditorController extends ServiceRequestController implemen
     users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
     locationofPatient.setItems(FXCollections.observableArrayList(locations));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
-    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
   }
 
   public void updateFields() {
-    patient.setText(relReq.getPatientID());
-    locationofPatient.setValue(relReq.getLocation());
-    assignedBox.setValue(relReq.getAssignedEmp());
-    urgency.setValue(relReq.getUrgency());
-    serviceDate.setValue(
-        Instant.ofEpochMilli(relReq.getDate().getTime())
+    patient.setText(tpReq.getPatientID());
+    locationofPatient.setValue(tpReq.getLocation());
+    reason.setText(tpReq.getReason());
+    medicine.setText(tpReq.getMedicine());
+    dosage.setText(dosage.getText());
+    urgency.setValue(tpReq.getUrgency());
+    statusBox.setValue(tpReq.getStatus());
+    date.setValue(
+        Instant.ofEpochMilli(tpReq.getDate().getTime())
             .atZone(ZoneId.systemDefault())
             .toLocalDate());
-    requestDescription.setText(relReq.getDescription());
-    statusBox.setValue(relReq.getStatus());
-    religion.setText(relReq.getReligion());
-    if (relReq.getAssignedEmp() != null) {
-      assignedBox.setValue(relReq.getAssignedEmp());
+
+    if (tpReq.getAssignedEmp() != null) {
+      assignedBox.setValue(tpReq.getAssignedEmp());
     }
   }
 
@@ -93,46 +98,45 @@ public class ReligiousEditorController extends ServiceRequestController implemen
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-
+    System.out.println("here");
     try {
       // check
-      if (locationofPatient.getValue().toString().equals("")
-          || patient.getText().equals("")
-          || religion.getText().equals("")
-          || serviceDate.getValue().toString().equals("")
-          || requestDescription.getText().equals("")) {
+      if (patient.getText().equals("")
+          || locationofPatient.getValue().toString().equals("")
+          || reason.getText().equals("")
+          || medicine.getText().equals("")
+          || date.getValue().toString().equals("")
+          || urgency.getValue().toString().equals("")
+          || dosage.getText().equals("")) {
+        System.out.println("here2");
         throw new NullPointerException();
       }
 
-      Date dateOfRequest =
-          Date.from(serviceDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      relReq.setPatientID(patient.getText());
-      relReq.setLocation(locationofPatient.getValue());
-      relReq.setAssignedEmp(assignedBox.getValue());
-      relReq.setDate(dateOfRequest);
-      relReq.setStatus(statusBox.getValue());
-      relReq.setReligion(religion.getText());
-      relReq.setDescription(requestDescription.getText());
-      relReq.setUrgency(urgency.getValue());
+      tpReq.setPatientID(patient.getText());
+      tpReq.setLocation(locationofPatient.getValue());
+      tpReq.setReason(reason.getText());
+      tpReq.setAssignedEmp(assignedBox.getValue());
+      tpReq.setUrgency(urgency.getValue());
+      tpReq.setStatus(statusBox.getValue());
+      tpReq.setMedicine(medicine.getText());
+      tpReq.setDosage(Double.parseDouble(dosage.getText()));
+      tpReq.setDate(dateNeeded);
 
       try {
-        session.merge(relReq);
+        session.merge(tpReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
         popOver.hide();
       } catch (RollbackException exception) {
         session.clear();
-        errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-        errorMessage.setText("Please fill all fields.");
         session.close();
         Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errorMessage.setTextFill(Paint.valueOf("#b6000b"));
-      errorMessage.setText("Please fill all fields.");
       session.close();
       Sound.ERROR.play();
     }
@@ -140,16 +144,19 @@ public class ReligiousEditorController extends ServiceRequestController implemen
 
   @Override
   public void setRequest(ServiceRequest request) {
-    relReq = (Religion) request;
+    tpReq = (MedicineDelivery) request;
   }
 
   public void handleClear(ActionEvent actionEvent) throws IOException {
-    locationofPatient.valueProperty().set(null);
-    urgency.valueProperty().set(null);
-    serviceDate.valueProperty().set(null);
-    religion.setText("");
     patient.setText("");
-    requestDescription.setText("");
+    locationofPatient.valueProperty().set(null);
+    reason.setText("");
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
+    medicine.setText("");
+    dosage.setText("");
+    urgency.valueProperty().set(null);
+    date.valueProperty().set(null);
   }
 
   @Override
@@ -157,14 +164,11 @@ public class ReligiousEditorController extends ServiceRequestController implemen
 
   public void help() {
     if (!hDone) {
-
       hDone = true;
     } else if (hDone) {
-
       hDone = false;
     }
   }
 
-  @Override
   public void onClose() {}
 }
