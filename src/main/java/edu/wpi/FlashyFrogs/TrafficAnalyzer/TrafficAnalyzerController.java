@@ -99,6 +99,14 @@ public class TrafficAnalyzerController implements IController {
           line.setStrokeWidth(7);
         });
 
+    // Disable all hallway text
+    mapController.setLocationCreation(
+        (node, location, text) -> {
+          if (location.getLocationType().equals(LocationName.LocationType.HALL)) {
+            text.setVisible(false);
+          }
+        });
+
     // On weight table selection, zoom to on the map
     weightTable
         .getSelectionModel()
@@ -118,6 +126,14 @@ public class TrafficAnalyzerController implements IController {
                     2, (int) Math.round(mapPoint.getX()), (int) Math.round(mapPoint.getY()));
               }
             });
+
+    // On date change, update the map controllers date and redraw
+    viewDate.setOnAction(
+        (action) -> {
+          mapController.setDate(
+              Date.from(viewDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+          mapController.redraw();
+        });
 
     FloydWarshallRunner.getReCalculationLock()
         .acquire(); // Get the FW lock TODO: EMRE WAIT FOR THIS INITIALLY. NO BUTTONS UNTIL THIS IS
@@ -185,6 +201,10 @@ public class TrafficAnalyzerController implements IController {
 
     // For each location
     for (LocationName locationName : nodeToLocationName.keySet()) {
+      if (locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+        continue; // Skip all hallways
+      }
+
       // Create a thread to process it
       Thread thread =
           new Thread(
@@ -192,7 +212,6 @@ public class TrafficAnalyzerController implements IController {
                 for (LocationName otherLocation : nodeToLocationName.keySet()) {
                   // Skip locations that are this one, and ignore if either are hallways
                   if (locationName.equals(otherLocation)
-                      || locationName.getLocationType().equals(LocationName.LocationType.HALL)
                       || otherLocation.getLocationType().equals(LocationName.LocationType.HALL)) {
                     continue;
                   }

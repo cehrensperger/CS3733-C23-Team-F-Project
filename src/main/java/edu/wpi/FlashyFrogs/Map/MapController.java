@@ -595,8 +595,7 @@ public class MapController {
       // Get the moves before now
       List<Move> moves =
           getMapSession()
-              .createQuery("FROM Move WHERE node.floor = :floor ORDER BY moveDate DESC", Move.class)
-              .setParameter("floor", mapEntity.getMapFloor().getValue())
+              .createQuery("FROM Move ORDER BY moveDate DESC", Move.class)
               .setCacheable(true)
               .stream()
               .filter((move) -> move.getMoveDate().before(date))
@@ -612,15 +611,24 @@ public class MapController {
             && nodeToLocationCount.get(move.getNode()) == 1) {
           nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
 
+          // If we haven't placed this
           if (!placedLocations.contains(move.getLocation())) {
-            addLocationName(move.getLocation(), move.getNode());
-            placedLocations.add(move.getLocation());
+            // If this is on the floor
+            if (move.getNode().getFloor().equals(getMapFloorProperty().getValue())) {
+              addLocationName(move.getLocation(), move.getNode()); // Place it
+            }
+            placedLocations.add(move.getLocation()); // Either way, save it
           }
         } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
+          // If we haven't placed this location
           if (!placedLocations.contains(move.getLocation())) {
-            addLocationName(move.getLocation(), move.getNode());
+            // If the floor is correct
+            if (move.getNode().getFloor().equals(getMapFloorProperty().getValue())) {
+              // Save this
+              addLocationName(move.getLocation(), move.getNode());
+            }
             placedLocations.add(move.getLocation());
           }
         }
