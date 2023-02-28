@@ -319,196 +319,191 @@ public class MapEditorController implements IController {
                                             .atStartOfDay(ZoneId.systemDefault())
                                             .toInstant());
 
-                                //Move newMove = new Move(node, locationName, date);
-                                    Node fromNode = locationName.getCurrentNode(date);
+                                // Move newMove = new Move(node, locationName, date);
+                                Node fromNode = locationName.getCurrentNode(date);
+                                Move newMove = new Move(node, locationName, date);
+                                session.flush();
+                                if (newMove.getLocation().getCurrentNode(date) != null) {
+                                  FXMLLoader newLoad =
+                                      new FXMLLoader(
+                                          Fapp.class.getResource(
+                                              "MapEditor/EquipmentTransferConfirmationPopOver.fxml"));
+                                  PopOver popOver = null; // create the popover
+                                  AtomicReference<PopOver> equipmentPopOver =
+                                      new AtomicReference<>();
+                                  try {
+                                    popOver = new PopOver(newLoad.load());
+                                  } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                  }
 
-                                    Move newMove = new Move(node, locationName, date);
-                                    if (newMove.getLocation().getCurrentNode(date) != null) {
-                                      FXMLLoader newLoad =
-                                          new FXMLLoader(
-                                              Fapp.class.getResource(
-                                                  "MapEditor/EquipmentTransferConfirmationPopOver.fxml"));
-                                      PopOver popOver = null; // create the popover
-                                      AtomicReference<PopOver> equipmentPopOver =
-                                          new AtomicReference<>();
-                                      try {
-                                        popOver = new PopOver(newLoad.load());
-                                      } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                      }
+                                  EquipmentTransferConfirmationPopOverController controller =
+                                      newLoad.getController();
+                                  PopOver finalPopOver = popOver;
+                                  controller
+                                      .getNoButton()
+                                      .setOnAction(
+                                          e -> {
+                                            finalPopOver.hide();
+                                          });
 
-                                      EquipmentTransferConfirmationPopOverController controller =
-                                          newLoad.getController();
-                                      PopOver finalPopOver = popOver;
-                                      controller
-                                          .getNoButton()
-                                          .setOnAction(
-                                              e -> {
-                                                finalPopOver.hide();
-                                              });
+                                  controller
+                                      .getYesButton()
+                                      .setOnAction(
+                                          e -> {
+                                            finalPopOver.hide();
 
-                                      controller
-                                          .getYesButton()
-                                          .setOnAction(
-                                              e -> {
-                                                finalPopOver.hide();
+                                            FXMLLoader newNewLoader =
+                                                new FXMLLoader(
+                                                    Fapp.class.getResource(
+                                                        "MapEditor/EquipmentTransportPopOver.fxml"));
 
-                                                FXMLLoader newNewLoader =
-                                                    new FXMLLoader(
-                                                        Fapp.class.getResource(
-                                                            "MapEditor/EquipmentTransportPopOver.fxml"));
+                                            try {
+                                              equipmentPopOver.set(
+                                                  new PopOver(newNewLoader.load()));
+                                              EquipmentTransportPopOverController
+                                                  equipmentTransportPopOverController =
+                                                      newNewLoader.getController();
+                                              equipmentPopOver.get().detach();
+                                              equipmentTransportPopOverController
+                                                  .getTo()
+                                                  .setValue(locationName);
+                                              equipmentTransportPopOverController.setFromNode(
+                                                  fromNode);
+                                              equipmentTransportPopOverController
+                                                  .getFrom()
+                                                  .setText("From Node: " + fromNode.toString());
+                                              equipmentTransportPopOverController
+                                                  .getSubmitButton()
+                                                  .setOnAction(
+                                                      ev -> {
+                                                        try {
+                                                          // check
+                                                          if (equipmentTransportPopOverController
+                                                                  .getEquipment()
+                                                                  .getText()
+                                                                  .equals("")
+                                                              || equipmentTransportPopOverController
+                                                                  .getTo()
+                                                                  .getValue()
+                                                                  .toString()
+                                                                  .equals("")
+                                                              || equipmentTransportPopOverController
+                                                                  .getDate()
+                                                                  .getValue()
+                                                                  .toString()
+                                                                  .equals("")
+                                                              || equipmentTransportPopOverController
+                                                                  .getDescription()
+                                                                  .getText()
+                                                                  .equals("")) {
+                                                            throw new NullPointerException();
+                                                          }
 
-                                                try {
-                                                  equipmentPopOver.set(
-                                                      new PopOver(newNewLoader.load()));
-                                                  EquipmentTransportPopOverController
-                                                      equipmentTransportPopOverController =
-                                                          newNewLoader.getController();
-                                                  equipmentPopOver.get().detach();
-                                                  equipmentTransportPopOverController
-                                                      .getTo()
-                                                      .setValue(locationName);
-                                                  equipmentTransportPopOverController.setFromNode(
-                                                      fromNode);
-                                                  equipmentTransportPopOverController
-                                                      .getFrom()
-                                                      .setText("From Node: " + fromNode.toString());
-                                                  equipmentTransportPopOverController
-                                                      .getSubmitButton()
-                                                      .setOnAction(
-                                                          ev -> {
-                                                            try {
-                                                              // check
-                                                              if (equipmentTransportPopOverController
-                                                                      .getEquipment()
-                                                                      .getText()
-                                                                      .equals("")
-                                                                  || equipmentTransportPopOverController
-                                                                      .getTo()
-                                                                      .getValue()
-                                                                      .toString()
-                                                                      .equals("")
-                                                                  || equipmentTransportPopOverController
+                                                          Date dateNeeded =
+                                                              Date.from(
+                                                                  equipmentTransportPopOverController
                                                                       .getDate()
                                                                       .getValue()
-                                                                      .toString()
-                                                                      .equals("")
-                                                                  || equipmentTransportPopOverController
+                                                                      .atStartOfDay(
+                                                                          ZoneId.systemDefault())
+                                                                      .toInstant());
+
+                                                          EquipmentTransport equipmentTransport =
+                                                              new EquipmentTransport(
+                                                                  CurrentUserEntity.CURRENT_USER
+                                                                      .getCurrentUser(),
+                                                                  dateNeeded,
+                                                                  Date.from(Instant.now()),
+                                                                  equipmentTransportPopOverController
+                                                                      .getUrgency()
+                                                                      .getValue(),
+                                                                  equipmentTransportPopOverController
+                                                                      .getTo()
+                                                                      .getValue(),
+                                                                  // what is this?
+                                                                  fromNode,
+                                                                  equipmentTransportPopOverController
+                                                                      .getEquipment()
+                                                                      .getText(),
+                                                                  equipmentTransportPopOverController
                                                                       .getDescription()
-                                                                      .getText()
-                                                                      .equals("")) {
-                                                                throw new NullPointerException();
-                                                              }
+                                                                      .getText());
 
-                                                              Date dateNeeded =
-                                                                  Date.from(
-                                                                      equipmentTransportPopOverController
-                                                                          .getDate()
-                                                                          .getValue()
-                                                                          .atStartOfDay(
-                                                                              ZoneId
-                                                                                  .systemDefault())
-                                                                          .toInstant());
+                                                          try {
+                                                            session.persist(equipmentTransport);
+                                                            equipmentPopOver.get().hide();
+                                                            // toastAnimation();
+                                                            Sound.SUBMITTED.play();
+                                                          } catch (RollbackException exception) {
+                                                            Sound.ERROR.play();
+                                                          }
+                                                        } catch (ArrayIndexOutOfBoundsException
+                                                            | NullPointerException exception) {
+                                                          Sound.ERROR.play();
+                                                        }
+                                                      });
+                                              equipmentPopOver.get().show(mapPane);
+                                            } catch (IOException ex) {
+                                              throw new RuntimeException(ex);
+                                            }
+                                          });
 
-                                                              EquipmentTransport
-                                                                  equipmentTransport =
-                                                                      new EquipmentTransport(
-                                                                          CurrentUserEntity
-                                                                              .CURRENT_USER
-                                                                              .getCurrentUser(),
-                                                                          dateNeeded,
-                                                                          Date.from(Instant.now()),
-                                                                          equipmentTransportPopOverController
-                                                                              .getUrgency()
-                                                                              .getValue(),
-                                                                          equipmentTransportPopOverController
-                                                                              .getTo()
-                                                                              .getValue(),
-                                                                          // what is this?
-                                                                          node,
-                                                                          equipmentTransportPopOverController
-                                                                              .getEquipment()
-                                                                              .getText(),
-                                                                          equipmentTransportPopOverController
-                                                                              .getDescription()
-                                                                              .getText());
+                                  popOver.detach(); // Detach the pop-up, so it's not stuck to the
+                                  // button
 
-                                                              try {
-                                                                session.persist(equipmentTransport);
-                                                                equipmentPopOver.get().hide();
-                                                                // toastAnimation();
-                                                                Sound.SUBMITTED.play();
-                                                              } catch (
-                                                                  RollbackException exception) {
-                                                                Sound.ERROR.play();
-                                                              }
-                                                            } catch (ArrayIndexOutOfBoundsException
-                                                                | NullPointerException exception) {
-                                                              Sound.ERROR.play();
-                                                            }
-                                                          });
-                                                  equipmentPopOver.get().show(mapPane);
-                                                } catch (IOException ex) {
-                                                  throw new RuntimeException(ex);
-                                                }
-                                              });
+                                  popOver.show(mapPane); // display the popover
 
-                                      popOver
-                                          .detach(); // Detach the pop-up, so it's not stuck to the
-                                      // button
+                                  //                                      popOver
+                                  //                                          .showingProperty()
+                                  //                                          .addListener(
+                                  //                                              (observable,
+                                  // oldValue, newValue) -> {
+                                  //                                                if
+                                  // (!newValue) {
+                                  //                                                  try {
+                                  //
+                                  // controller.handleSubmit(
+                                  //
+                                  // mapController.getMapSession());
+                                  //                                                  } catch
+                                  // (IOException e) {
+                                  //                                                    throw
+                                  // new RuntimeException(e);
+                                  //                                                  }
+                                  //                                                }
+                                  //                                              });
+                                }
 
-                                      popOver.show(mapPane); // display the popover
+                                session.persist(newMove);
 
-                                      //                                      popOver
-                                      //                                          .showingProperty()
-                                      //                                          .addListener(
-                                      //                                              (observable,
-                                      // oldValue, newValue) -> {
-                                      //                                                if
-                                      // (!newValue) {
-                                      //                                                  try {
-                                      //
-                                      // controller.handleSubmit(
-                                      //
-                                      // mapController.getMapSession());
-                                      //                                                  } catch
-                                      // (IOException e) {
-                                      //                                                    throw
-                                      // new RuntimeException(e);
-                                      //                                                  }
-                                      //                                                }
-                                      //                                              });
-                                    }
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.setTime(newMove.getMoveDate());
+                                calendar.add(Calendar.DAY_OF_YEAR, 7);
+                                Date weekLater = calendar.getTime();
 
-                                    session.persist(newMove);
+                                calendar = Calendar.getInstance();
+                                calendar.setTime(newMove.getMoveDate());
+                                calendar.add(Calendar.DAY_OF_YEAR, -7);
+                                Date weekEarlier = calendar.getTime();
 
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(newMove.getMoveDate());
-                                    calendar.add(Calendar.DAY_OF_YEAR, 7);
-                                    Date weekLater = calendar.getTime();
+                                Alert alert =
+                                    new Alert(
+                                        weekEarlier,
+                                        weekLater,
+                                        CurrentUserEntity.CURRENT_USER.getCurrentUser(),
+                                        "Recent Move!",
+                                        newMove.getLocation().getLongName()
+                                            + " has moved! Check the move visualizer for more details.",
+                                        CurrentUserEntity.CURRENT_USER
+                                            .getCurrentUser()
+                                            .getDepartment(),
+                                        Alert.Severity.MILD);
+                                session.persist(alert);
 
-                                    calendar = Calendar.getInstance();
-                                    calendar.setTime(newMove.getMoveDate());
-                                    calendar.add(Calendar.DAY_OF_YEAR, -7);
-                                    Date weekEarlier = calendar.getTime();
-
-                                    Alert alert =
-                                        new Alert(
-                                            weekEarlier,
-                                            weekLater,
-                                            CurrentUserEntity.CURRENT_USER.getCurrentUser(),
-                                            "Recent Move!",
-                                            newMove.getLocation().getLongName()
-                                                + " has moved! Check the move visualizer for more details.",
-                                            CurrentUserEntity.CURRENT_USER
-                                                .getCurrentUser()
-                                                .getDepartment(),
-                                            Alert.Severity.MILD);
-                                    session.persist(alert);
-
-                                    session.flush();
-                                    mapController.redraw();
-                                  });
+                                session.flush();
+                                mapController.redraw();
+                              });
                         }
                         dragEvent.consume();
                       });

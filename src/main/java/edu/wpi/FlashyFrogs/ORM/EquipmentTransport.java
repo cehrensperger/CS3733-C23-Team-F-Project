@@ -5,7 +5,6 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "EquipmentTransport")
@@ -37,7 +36,6 @@ public class EquipmentTransport extends ServiceRequest {
               foreignKeyDefinition =
                   "FOREIGN KEY (moveFrom) REFERENCES node(id) "
                       + "ON UPDATE CASCADE ON DELETE SET NULL"))
-  @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
   @ManyToOne
   private Node moveFrom; // Location the request is needed for (source)
 
