@@ -271,9 +271,6 @@ public class AVController implements IController {
   }
 
   public void errortoastAnimation() {
-    errtoast.getTransforms().clear();
-    errtoast.setLayoutX(0);
-
     TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
     translate1.setByX(-280);
     translate1.setAutoReverse(true);
