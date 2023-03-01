@@ -6,6 +6,7 @@
     /** **/
 }
 
+
 .titleText
     /** This styles any title texts within the app - including the title
     at the top of the sidebar **/
@@ -547,4 +548,9 @@
 .scroll-pane > .viewport {
     /** Right now, only used on acknowledgementsPage as a placeholder **/
     -fx-background-color: transparent;
+}
+
+.icon
+{
+    -fx-fill: #000000;
 }
