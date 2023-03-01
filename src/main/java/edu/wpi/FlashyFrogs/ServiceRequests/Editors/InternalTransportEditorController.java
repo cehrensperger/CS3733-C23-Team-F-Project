@@ -245,6 +245,20 @@ public class InternalTransportEditorController extends ServiceRequestController
     reason.setText("");
   }
 
+  public void handleDelete(ActionEvent event) {
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    session.beginTransaction();
+    session
+        .createMutationQuery("DELETE FROM InternalTransport WHERE id=:ID")
+        .setParameter("ID", tpReq.getId())
+        .executeUpdate();
+    session.getTransaction().commit();
+    session.close();
+
+    popOver.hide();
+  }
+
   @Override
   protected void handleBack(ActionEvent event) throws IOException {}
 
