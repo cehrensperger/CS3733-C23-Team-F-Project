@@ -37,9 +37,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
@@ -147,7 +145,6 @@ public class LoginController implements IController {
     if (username.getText().equals("") || password.getText().equals("")) {
       // One of the values is left null
       errortoastAnimation();
-      fadeOutAnimation();
       login.setDisable(true);
       Sound.ERROR.play();
 
