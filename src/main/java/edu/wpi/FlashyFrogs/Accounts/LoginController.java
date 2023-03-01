@@ -145,7 +145,6 @@ public class LoginController implements IController {
     if (username.getText().equals("") || password.getText().equals("")) {
       // One of the values is left null
       errortoastAnimation();
-      fadeOutAnimation();
       login.setDisable(true);
       Sound.ERROR.play();
 
