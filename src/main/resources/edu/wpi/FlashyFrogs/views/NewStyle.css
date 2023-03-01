@@ -557,3 +557,21 @@
 {
     -fx-fill: #000000;
 }
+
+.creditsButton:hover
+{
+    -fx-background-color: #F6BD38;
+    -fx-text-fill: #012D5A;
+}
+
+.creditsButton:selected
+{
+    -fx-background-color: #F6BD38;
+    -fx-text-fill: #012D5A;
+}
+
+.creditsButton
+{
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+}
