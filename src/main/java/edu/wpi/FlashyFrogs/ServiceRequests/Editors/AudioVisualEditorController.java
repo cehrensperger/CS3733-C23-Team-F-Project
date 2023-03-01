@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -98,6 +99,58 @@ public class AudioVisualEditorController extends ServiceRequestController implem
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
+
+    assignedBox.setButtonCell(
+        new ListCell<HospitalUser>() {
+          @Override
+          protected void updateItem(HospitalUser item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Assigned User");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    statusBox.setButtonCell(
+        new ListCell<ServiceRequest.Status>() {
+          @Override
+          protected void updateItem(ServiceRequest.Status item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Status");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    locationBox.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Location of Request");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
   }
 
   @Override
@@ -174,6 +227,8 @@ public class AudioVisualEditorController extends ServiceRequestController implem
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
     description.setText("");
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
   }
 
   public void handleDelete(ActionEvent actionEvent) {

@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -85,14 +86,67 @@ public class MedicineDeliveryEditorController extends ServiceRequestController
     assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
     session.close();
+
+    locationofPatient.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Transfer To");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    assignedBox.setButtonCell(
+        new ListCell<HospitalUser>() {
+          @Override
+          protected void updateItem(HospitalUser item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Assigned User");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    statusBox.setButtonCell(
+        new ListCell<ServiceRequest.Status>() {
+          @Override
+          protected void updateItem(ServiceRequest.Status item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Status");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
   }
 
   public void updateFields() {
+
     patient.setText(tpReq.getPatientID());
     locationofPatient.setValue(tpReq.getLocation());
     reason.setText(tpReq.getReason());
     medicine.setText(tpReq.getMedicine());
-    dosage.setText(dosage.getText());
+    dosage.setText(Double.toString(tpReq.getDosage()));
     urgency.setValue(tpReq.getUrgency());
     statusBox.setValue(tpReq.getStatus());
     date.setValue(
@@ -174,6 +228,8 @@ public class MedicineDeliveryEditorController extends ServiceRequestController
     dosage.setText("");
     urgency.valueProperty().set(null);
     date.valueProperty().set(null);
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
   }
 
   public void handleDelete(ActionEvent event) {

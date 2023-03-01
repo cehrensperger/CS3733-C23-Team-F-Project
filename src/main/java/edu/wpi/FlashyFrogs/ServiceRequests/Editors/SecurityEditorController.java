@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -90,6 +91,70 @@ public class SecurityEditorController extends ServiceRequestController implement
     threat.setItems(FXCollections.observableArrayList(Security.ThreatType.values()));
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
+
+    assignedBox.setButtonCell(
+        new ListCell<HospitalUser>() {
+          @Override
+          protected void updateItem(HospitalUser item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Assigned User");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    statusBox.setButtonCell(
+        new ListCell<ServiceRequest.Status>() {
+          @Override
+          protected void updateItem(ServiceRequest.Status item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Status");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    locationBox.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Location of Request");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    threat.setButtonCell(
+        new ListCell<Security.ThreatType>() {
+          @Override
+          protected void updateItem(Security.ThreatType item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Threat Type");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
   }
 
   public void updateFields() {
@@ -171,6 +236,8 @@ public class SecurityEditorController extends ServiceRequestController implement
     urgency.valueProperty().set(null);
     date.valueProperty().set(null);
     description.setText("");
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
   }
 
   public void handleDelete(ActionEvent event) {

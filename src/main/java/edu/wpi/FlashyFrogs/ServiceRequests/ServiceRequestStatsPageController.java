@@ -5,6 +5,7 @@ import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.controllers.IController;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,6 +41,7 @@ public class ServiceRequestStatsPageController implements IController {
   @FXML private AnchorPane anchorPane;
   @FXML private AnchorPane statsAnchorPane;
   @FXML private VBox sideBar;
+  @FXML MFXButton download;
 
   @FXML protected FilteredTableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected FilteredTableColumn<ServiceRequest, Long> requestIDCol;
@@ -723,5 +725,9 @@ public class ServiceRequestStatsPageController implements IController {
         break;
       }
     }
+  }
+
+  public void handleDownload(ActionEvent event) throws IOException {
+    //
   }
 }
