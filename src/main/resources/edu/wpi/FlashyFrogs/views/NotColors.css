@@ -5,7 +5,10 @@
 {
     /** **/
 }
-
+.textFont
+{
+    -fx-font-family: "Roboto Light";
+}
 .titleText
     /** This styles any title texts within the app - including the title
     at the top of the sidebar **/
