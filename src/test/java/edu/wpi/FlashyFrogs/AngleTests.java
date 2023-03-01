@@ -44,7 +44,6 @@ public class AngleTests {
     // Stores angle between given vectors
     double angle = dotProductOfVectors / (magnitudeOfA * magnitudeOfB);
     angle = Math.acos(angle);
-    System.out.println(Math.toDegrees(angle));
   }
 
   @Test
