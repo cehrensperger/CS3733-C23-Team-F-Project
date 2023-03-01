@@ -156,24 +156,16 @@ public class MapEditorController implements IController {
                   }
                 });
             root.setOnMouseReleased(
-                new EventHandler<MouseEvent>() {
-                  @Override
-                  public void handle(MouseEvent event) {
-                    Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND);
-                  }
-                });
+                event15 -> Fapp.getPrimaryStage().getScene().setCursor(Cursor.OPEN_HAND));
           }
         });
 
     nodeToDrag.setOnMouseExited(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-            Fapp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
-            root.setOnMousePressed(p -> {});
-            root.setOnMouseReleased(p -> {});
-            event.consume();
-          }
+        event -> {
+          Fapp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
+          root.setOnMousePressed(p -> {});
+          root.setOnMouseReleased(p -> {});
+          event.consume();
         });
 
     viewingDate.setValue(LocalDate.now());
@@ -194,7 +186,6 @@ public class MapEditorController implements IController {
     h4.setVisible(false);
     h5.setVisible(false);
     h6.setVisible(false);
-    h7.setVisible(false);
     longName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 
     AtomicReference<PopOver> tablePopOver =

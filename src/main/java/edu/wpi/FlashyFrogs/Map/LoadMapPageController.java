@@ -81,7 +81,7 @@ public class LoadMapPageController implements IController {
     deleteTransaction.commit(); // Commit the transaction
     session.close();
     if (fileData.allFilesChosen()) {
-//      System.out.println("Correct num of files!");
+      //      System.out.println("Correct num of files!");
 
       try {
         CSVParser.readFiles(
