@@ -68,13 +68,25 @@ public class CSVParser {
         fields = nodeFileScanner.nextLine().split(",");
 
         // Create the Node
-        Node node =
-            new Node(
-                fields[0], // ID
-                fields[4], // Building
-                Node.Floor.getEnum(fields[3]), // Floor
-                Integer.parseInt(fields[1]), // X-Coord
-                Integer.parseInt(fields[2])); // Y-Coord
+        Node node = null;
+        if (fields.length == 4) {
+          node =
+              new Node(
+                  fields[0], // ID
+                  "", // Building
+                  Node.Floor.getEnum(fields[3]), // Floor
+                  Integer.parseInt(fields[1]), // X-Coord
+                  Integer.parseInt(fields[2])); // Y-Coord
+        } else {
+
+          node =
+              new Node(
+                  fields[0], // ID
+                  fields[4], // Building
+                  Node.Floor.getEnum(fields[3]), // Floor
+                  Integer.parseInt(fields[1]), // X-Coord
+                  Integer.parseInt(fields[2])); // Y-Coord
+        }
         nodes.put(fields[0], node); // Put the node into the table with its ID
         session.persist(node);
       }
