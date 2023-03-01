@@ -29,12 +29,12 @@
                <children>
                   <VBox alignment="TOP_RIGHT" prefHeight="582.0" prefWidth="91.0">
                      <children>
-                        <Text fx:id="h1" styleClass="warningText" text="Enter the ID of the patient being transported" textAlignment="RIGHT" wrappingWidth="100.0">
+                        <Text fx:id="h1" styleClass="warningText" text="ID of the Patient Service is Needed For" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="45.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h2" styleClass="warningText" text="What is the location of the patient" textAlignment="RIGHT" wrappingWidth="100.0">
+                        <Text fx:id="h2" styleClass="warningText" text="Current Location of the Patient" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="13.0" />
                            </VBox.margin>
@@ -54,11 +54,19 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Patient ID">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <TextField fx:id="patient" prefHeight="13.0" prefWidth="250.0" promptText="Patient ID" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Location of Patient">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <SearchableComboBox fx:id="locationofPatient" promptText="Location of Patient" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
@@ -72,7 +80,7 @@
                   <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#43e81a" height="500.0" stroke="BLACK" strokeType="INSIDE" styleClass="bar" width="10.0" />
                   <VBox prefHeight="159.0" prefWidth="200.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Transfer Information" wrappingWidth="250.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Religion Information" wrappingWidth="250.0">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -80,47 +88,41 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Religion">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <TextField fx:id="religion" promptText="Religion" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField fx:id="requestDescription" promptText="Description of request" styleClass="fields">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Urgency">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
+                        <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin></SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Date Preference">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
+                        <DatePicker fx:id="serviceDate" prefHeight="30.0" prefWidth="250.0" promptText="Date Preference" styleClass="fields">
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin>
+                        </DatePicker>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Description of Request">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
+                        <TextField fx:id="requestDescription" promptText="Description of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields" />
-                        <DatePicker fx:id="serviceDate" prefHeight="30.0" prefWidth="250.0" promptText="Date Preference" styleClass="fields">
-                           <VBox.margin>
-                              <Insets top="18.0" />
-                           </VBox.margin>
-                        </DatePicker>
-                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="301.0" />
-                           </VBox.margin>
-                        </HBox>
                      </children>
                      <HBox.margin>
                         <Insets left="50.0" />
@@ -131,23 +133,23 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                      <children>
-                        <Text fx:id="h3" styleClass="warningText" text="What is the religion of the patient" wrappingWidth="100.0">
+                        <Text fx:id="h3" styleClass="warningText" text="Religion of the Patient (e.g., Christianity, Judaism, etc)" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="44.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h4" styleClass="warningText" text="Provide a description of the request" wrappingWidth="100.0">
+                        <Text fx:id="h4" styleClass="warningText" text="Urgency of the Request" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="12.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h5" styleClass="warningText" text="What is the urgency of the delivery" wrappingWidth="100.0">
+                        <Text fx:id="h5" styleClass="warningText" text="Date Service is Needed On" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="16.0" />
                            </VBox.margin>
                         </Text>
                         <VBox prefHeight="12.0" prefWidth="100.0" />
-                        <Text fx:id="h6" styleClass="warningText" text="What is the preffered date of service" wrappingWidth="100.0" />
+                        <Text fx:id="h6" styleClass="warningText" text="Additional Infromation for the Request" wrappingWidth="100.0" />
                      </children>
                   </VBox>
                </children>
@@ -264,5 +266,27 @@
             </AnchorPane>
          </children>
       </VBox>
+      <HBox alignment="TOP_CENTER" layoutX="1007.0" layoutY="578.0" prefHeight="21.0" prefWidth="250.0" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

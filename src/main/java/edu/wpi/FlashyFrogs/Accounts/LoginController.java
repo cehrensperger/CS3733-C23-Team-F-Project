@@ -96,6 +96,13 @@ public class LoginController implements IController {
                                       .setParameter("id", id)
                                       .uniqueResult();
                             }
+
+                            // If we got a bad login
+                            if (user == null) {
+                              backgroundText = ""; // Clear the login text
+                              return; // And exit
+                            }
+
                             System.out.println(user.getUserName());
                             System.out.println(user.checkRFIDBadgeEqual(pw));
                             if (user.checkRFIDBadgeEqual(pw)) {

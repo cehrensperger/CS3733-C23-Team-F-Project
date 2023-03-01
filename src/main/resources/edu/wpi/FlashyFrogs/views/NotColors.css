@@ -569,3 +569,9 @@
     /** Right now, only used on acknowledgementsPage as a placeholder **/
 }
 
+.srText
+{
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 12pt;
+}
+
