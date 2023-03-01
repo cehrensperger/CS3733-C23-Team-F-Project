@@ -1972,129 +1972,139 @@ public class MapEditorController implements IController {
                   .getCurrentDrawingPane()
                   .setOnMouseDragged(
                       e -> {
-                        if (!e.isConsumed()) {
-                          double width = e.getX() - startX;
-                          double height = e.getY() - startY;
-                          double kp = 0.2;
-                          double errorX;
-                          double errorY;
+                        if (!e.isSecondaryButtonDown()) {
+                          if (!e.isConsumed()) {
+                            double width = e.getX() - startX;
+                            double height = e.getY() - startY;
+                            double kp = 0.2;
+                            double errorX;
+                            double errorY;
 
-                          if (e.getX() >= mapController.getGesturePane().getCurrentX() * -1
-                              && e.getX()
-                                  <= (mapController.getGesturePane().getWidth()
-                                          / mapController.getGesturePane().getCurrentScaleX()
-                                      - mapController.getGesturePane().getCurrentX())) {
-                            if (width < 0) {
-                              rect.setX(e.getX());
+                            if (e.getX() >= mapController.getGesturePane().getCurrentX() * -1
+                                && e.getX()
+                                    <= (mapController.getGesturePane().getWidth()
+                                            / mapController.getGesturePane().getCurrentScaleX()
+                                        - mapController.getGesturePane().getCurrentX())) {
+                              if (width < 0) {
+                                rect.setX(e.getX());
+                              }
+                              rect.setWidth(abs(width));
                             }
-                            rect.setWidth(abs(width));
-                          }
-                          if (e.getX()
-                              < (mapController.getGesturePane().getCurrentX() * -1)
-                                  + 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
-                            errorX =
-                                e.getX()
-                                    - ((mapController.getGesturePane().getCurrentX() * -1)
-                                        + 50.0 / mapController.getGesturePane().getCurrentScaleX());
-                          } else if (e.getX()
-                              > ((mapController.getGesturePane().getWidth()
-                                          / mapController.getGesturePane().getCurrentScaleX())
-                                      - mapController.getGesturePane().getCurrentX())
-                                  - 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
-                            errorX =
-                                e.getX()
-                                    - (((mapController.getGesturePane().getWidth()
-                                                / mapController.getGesturePane().getCurrentScaleX())
-                                            - mapController.getGesturePane().getCurrentX())
-                                        - 50.0 / mapController.getGesturePane().getCurrentScaleX());
-                          } else {
-                            errorX = 0;
-                          }
-
-                          if (e.getY() >= mapController.getGesturePane().getCurrentY() * -1
-                              && e.getY()
-                                  <= (mapController.getGesturePane().getHeight()
-                                          / mapController.getGesturePane().getCurrentScaleY()
-                                      - mapController.getGesturePane().getCurrentY())) {
-                            if (height < 0) {
-                              rect.setY(e.getY());
-                            }
-                            rect.setHeight(abs(height));
-                          }
-                          if (e.getY()
-                              < (mapController.getGesturePane().getCurrentY() * -1)
-                                  + 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
-                            errorY =
-                                e.getY()
-                                    - ((mapController.getGesturePane().getCurrentY() * -1)
-                                        + 50.0 / mapController.getGesturePane().getCurrentScaleX());
-                          } else if (e.getY()
-                              > ((mapController.getGesturePane().getHeight()
-                                          / mapController.getGesturePane().getCurrentScaleY())
-                                      - mapController.getGesturePane().getCurrentY())
-                                  - 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
-                            errorY =
-                                e.getY()
-                                    - (((mapController.getGesturePane().getHeight()
-                                                / mapController.getGesturePane().getCurrentScaleY())
-                                            - mapController.getGesturePane().getCurrentY())
-                                        - 50.0 / mapController.getGesturePane().getCurrentScaleY());
-                          } else {
-                            errorY = 0;
-                          }
-                          double[] finalErrorX = {errorX};
-                          double[] finalErrorY = {errorY};
-                          double[] width2 = {width};
-                          double[] height2 = {height};
-
-                          if (task != null) task.cancel();
-
-                          task =
-                              new TimerTask() {
-                                @Override
-                                public void run() {
-                                  Platform.runLater(
-                                      () ->
-                                          mapController
-                                              .getGesturePane()
-                                              .translateBy(
-                                                  new Dimension2D(
-                                                      finalErrorX[0] * kp, finalErrorY[0] * kp)));
-
-                                  if ((mapController.getGesturePane().getWidth()
+                            if (e.getX()
+                                < (mapController.getGesturePane().getCurrentX() * -1)
+                                    + 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
+                              errorX =
+                                  e.getX()
+                                      - ((mapController.getGesturePane().getCurrentX() * -1)
+                                          + 50.0
+                                              / mapController.getGesturePane().getCurrentScaleX());
+                            } else if (e.getX()
+                                > ((mapController.getGesturePane().getWidth()
+                                            / mapController.getGesturePane().getCurrentScaleX())
+                                        - mapController.getGesturePane().getCurrentX())
+                                    - 50.0 / mapController.getGesturePane().getCurrentScaleX()) {
+                              errorX =
+                                  e.getX()
+                                      - (((mapController.getGesturePane().getWidth()
                                                   / mapController
                                                       .getGesturePane()
-                                                      .getCurrentScaleX()
+                                                      .getCurrentScaleX())
                                               - mapController.getGesturePane().getCurrentX())
-                                          < mapController.getCurrentDrawingPane().getWidth()
-                                      && mapController.getGesturePane().getCurrentX() * -1 > 0) {
+                                          - 50.0
+                                              / mapController.getGesturePane().getCurrentScaleX());
+                            } else {
+                              errorX = 0;
+                            }
 
-                                    width2[0] += finalErrorX[0] * kp;
-                                    if (width < 0) {
-                                      Platform.runLater(
-                                          () -> rect.setX(rect.getX() + finalErrorX[0] * kp));
-                                    }
-                                    Platform.runLater(() -> rect.setWidth(abs(width2[0])));
-                                  }
-
-                                  if ((mapController.getGesturePane().getHeight()
+                            if (e.getY() >= mapController.getGesturePane().getCurrentY() * -1
+                                && e.getY()
+                                    <= (mapController.getGesturePane().getHeight()
+                                            / mapController.getGesturePane().getCurrentScaleY()
+                                        - mapController.getGesturePane().getCurrentY())) {
+                              if (height < 0) {
+                                rect.setY(e.getY());
+                              }
+                              rect.setHeight(abs(height));
+                            }
+                            if (e.getY()
+                                < (mapController.getGesturePane().getCurrentY() * -1)
+                                    + 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
+                              errorY =
+                                  e.getY()
+                                      - ((mapController.getGesturePane().getCurrentY() * -1)
+                                          + 50.0
+                                              / mapController.getGesturePane().getCurrentScaleX());
+                            } else if (e.getY()
+                                > ((mapController.getGesturePane().getHeight()
+                                            / mapController.getGesturePane().getCurrentScaleY())
+                                        - mapController.getGesturePane().getCurrentY())
+                                    - 50.0 / mapController.getGesturePane().getCurrentScaleY()) {
+                              errorY =
+                                  e.getY()
+                                      - (((mapController.getGesturePane().getHeight()
                                                   / mapController
                                                       .getGesturePane()
-                                                      .getCurrentScaleY()
+                                                      .getCurrentScaleY())
                                               - mapController.getGesturePane().getCurrentY())
-                                          < mapController.getCurrentDrawingPane().getHeight()
-                                      && mapController.getGesturePane().getCurrentY() * -1 > 0) {
-                                    height2[0] += finalErrorY[0] * kp;
-                                    if (height < 0) {
-                                      Platform.runLater(
-                                          () -> rect.setY(rect.getY() + finalErrorY[0] * kp));
-                                    }
-                                    Platform.runLater(() -> rect.setHeight(abs(height2[0])));
-                                  }
-                                }
-                              };
+                                          - 50.0
+                                              / mapController.getGesturePane().getCurrentScaleY());
+                            } else {
+                              errorY = 0;
+                            }
+                            double[] finalErrorX = {errorX};
+                            double[] finalErrorY = {errorY};
+                            double[] width2 = {width};
+                            double[] height2 = {height};
 
-                          timer.scheduleAtFixedRate(task, 0, 5);
+                            if (task != null) task.cancel();
+
+                            task =
+                                new TimerTask() {
+                                  @Override
+                                  public void run() {
+                                    Platform.runLater(
+                                        () ->
+                                            mapController
+                                                .getGesturePane()
+                                                .translateBy(
+                                                    new Dimension2D(
+                                                        finalErrorX[0] * kp, finalErrorY[0] * kp)));
+
+                                    if ((mapController.getGesturePane().getWidth()
+                                                    / mapController
+                                                        .getGesturePane()
+                                                        .getCurrentScaleX()
+                                                - mapController.getGesturePane().getCurrentX())
+                                            < mapController.getCurrentDrawingPane().getWidth()
+                                        && mapController.getGesturePane().getCurrentX() * -1 > 0) {
+
+                                      width2[0] += finalErrorX[0] * kp;
+                                      if (width < 0) {
+                                        Platform.runLater(
+                                            () -> rect.setX(rect.getX() + finalErrorX[0] * kp));
+                                      }
+                                      Platform.runLater(() -> rect.setWidth(abs(width2[0])));
+                                    }
+
+                                    if ((mapController.getGesturePane().getHeight()
+                                                    / mapController
+                                                        .getGesturePane()
+                                                        .getCurrentScaleY()
+                                                - mapController.getGesturePane().getCurrentY())
+                                            < mapController.getCurrentDrawingPane().getHeight()
+                                        && mapController.getGesturePane().getCurrentY() * -1 > 0) {
+                                      height2[0] += finalErrorY[0] * kp;
+                                      if (height < 0) {
+                                        Platform.runLater(
+                                            () -> rect.setY(rect.getY() + finalErrorY[0] * kp));
+                                      }
+                                      Platform.runLater(() -> rect.setHeight(abs(height2[0])));
+                                    }
+                                  }
+                                };
+
+                            timer.scheduleAtFixedRate(task, 0, 5);
+                          }
                         }
                       });
 
