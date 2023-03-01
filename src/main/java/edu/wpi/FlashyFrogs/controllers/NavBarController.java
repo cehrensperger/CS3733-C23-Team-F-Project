@@ -481,7 +481,7 @@ public class NavBarController {
 
   @FXML
   private void handleServiceRequestsButton(ActionEvent event) throws IOException {
-    Fapp.setScene("ServiceRequests", "ServiceRequestStatsPage");
+    Fapp.setScene("ServiceRequests", "Credits");
   }
 
   @FXML
@@ -516,7 +516,7 @@ public class NavBarController {
 
   @FXML
   private void handleStats(ActionEvent event) throws IOException {
-    // Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
+    Fapp.setScene("ServiceRequests", "ServiceRequestStatsPage");
   }
 
   @FXML
