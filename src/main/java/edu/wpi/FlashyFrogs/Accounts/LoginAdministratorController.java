@@ -40,6 +40,7 @@ public class LoginAdministratorController implements IController {
   @FXML private Button addNewUser;
 
   @FXML Text h1;
+  @FXML Text h2;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -69,6 +70,7 @@ public class LoginAdministratorController implements IController {
   public void initialize() throws Exception {
     errorMessage.setVisible(false);
     h1.setVisible(false);
+    h2.setVisible(false);
 
     // Clear old table before init
     userLoginTable.getItems().clear();
@@ -158,9 +160,11 @@ public class LoginAdministratorController implements IController {
   public void help() {
     if (!hDone) {
       h1.setVisible(true);
+      h2.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
+      h2.setVisible(false);
       hDone = false;
     }
   }

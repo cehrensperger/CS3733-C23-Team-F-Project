@@ -34,7 +34,7 @@
                 </TableView>
             </children>
         </HBox>
-        <Text fx:id="h1" fill="#b6000b" layoutX="20.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can manage all of the alerts">
+        <Text fx:id="h1" fill="#b6000b" layoutX="20.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can manage all of the alerts. Click on a row in the table to edit a current alert.">
             <font>
                 <Font size="10.0" />
             </font>
@@ -45,5 +45,10 @@
                 <Font size="16.0" />
             </font>
         </MFXButton>
+      <Text fx:id="h2" fill="#b6000b" layoutX="937.0" layoutY="688.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click here to add a new alert" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="225.900390625">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
     </children>
 </AnchorPane>

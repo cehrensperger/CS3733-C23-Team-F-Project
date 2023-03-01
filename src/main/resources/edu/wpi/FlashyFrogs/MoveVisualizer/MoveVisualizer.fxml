@@ -44,6 +44,11 @@
                               <Insets bottom="-20.0" top="5.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text fx:id="h1" styleClass="warningText" text="Where is this kiosk view going to be located" wrappingWidth="174.096435546875">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Text>
                         <Text fx:id="noLocationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Selected Move has no old location mapping!" visible="false" wrappingWidth="184.0">
                            <VBox.margin>
                               <Insets />
@@ -64,14 +69,21 @@
                               <Insets />
                            </VBox.margin>
                         </FilteredTableView>
+                        <Text fx:id="h2" styleClass="warningText" text="Click to select a node you want to visualize" wrappingWidth="174.096435546875" />
+                        <MFXButton onAction="#enterKioskMode" styleClass="blueBackgroundSideBar" text="Enter Kiosk Mode">
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="30.0" />
+                           </VBox.margin>
+                        </MFXButton>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Draggable Content" wrappingWidth="135.50381469726562">
                            <VBox.margin>
                               <Insets top="30.0" />
                            </VBox.margin>
                         </Text>
+                        <Text fx:id="h3" styleClass="warningText" text="Add/clear text/images to the kiosk display" wrappingWidth="174.096435546875" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Draggable Text" wrappingWidth="135.50381469726562">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets top="5.0" />
                            </VBox.margin>
                         </Text>
                         <TextField fx:id="textText" prefHeight="31.0" prefWidth="184.0" promptText="Drag Text" styleClass="fields">
@@ -101,19 +113,17 @@
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Header" wrappingWidth="184.0" />
                         <TextField fx:id="headerText" prefHeight="31.0" prefWidth="184.0" promptText="Header Text" styleClass="fields" />
+                        <Text fx:id="h4" styleClass="warningText" text="Add a header to the kiosk display" wrappingWidth="174.096435546875" />
                         <SVGPath content="M-5.06066 10.9393C-5.64645 11.5251 -5.64645 12.4749 -5.06066 13.0607L4.48528 22.6066C5.07107 23.1924 6.02082 23.1924 6.6066 22.6066C7.19239 22.0208 7.19239 21.0711 6.6066 20.4853L-1.87868 12L6.6066 3.51472C7.19239 2.92893 7.19239 1.97918 6.6066 1.3934C6.02082 0.807612 5.07107 0.807612 4.48528 1.3934L-5.06066 10.9393ZM178 10.5L-4 10.5V13.5L178 13.5V10.5Z">
                            <VBox.margin>
-                              <Insets top="15.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </SVGPath>
                         <SearchableComboBox fx:id="leftLocationBox" promptText="Left Location" styleClass="fields" />
+                        <Text fx:id="h5" styleClass="warningText" text="Choose a location to the left of the kiosk" wrappingWidth="174.096435546875" />
                         <SVGPath content="M183.061 13.0607C183.646 12.4749 183.646 11.5251 183.061 10.9393L173.515 1.3934C172.929 0.807612 171.979 0.807612 171.393 1.3934C170.808 1.97918 170.808 2.92893 171.393 3.51472L179.879 12L171.393 20.4853C170.808 21.0711 170.808 22.0208 171.393 22.6066C171.979 23.1924 172.929 23.1924 173.515 22.6066L183.061 13.0607ZM0 13.5H182V10.5H0V13.5Z" />
                         <SearchableComboBox fx:id="rightLocationBox" promptText="Right Location" styleClass="fields" />
-                        <MFXButton onAction="#enterKioskMode" styleClass="blueBackgroundSideBar" text="Enter Kiosk Mode">
-                           <VBox.margin>
-                              <Insets bottom="20.0" top="30.0" />
-                           </VBox.margin>
-                        </MFXButton>
+                        <Text fx:id="h6" styleClass="warningText" text="Choose a location to the right of the kiosk" wrappingWidth="174.096435546875" />
                      </children>
                      <padding>
                         <Insets left="18.0" right="18.0" top="20.0" />

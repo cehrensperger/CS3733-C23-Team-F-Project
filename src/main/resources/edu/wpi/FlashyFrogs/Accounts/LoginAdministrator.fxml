@@ -34,7 +34,7 @@
             </TableView>
          </children>
       </HBox>
-      <Text fx:id="h1" fill="#b6000b" layoutX="20.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can manage all of the accounts and their preferences">
+      <Text fx:id="h1" fill="#b6000b" layoutX="20.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can edit all of the accounts and their preferences. You can also delete accounts">
          <font>
             <Font size="10.0" />
          </font>
@@ -45,5 +45,10 @@
             <Font size="16.0" />
          </font>
       </MFXButton>
+      <Text fx:id="h2" fill="#b6000b" layoutX="913.0" layoutY="689.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click here to add a new user account" AnchorPane.bottomAnchor="28.0" AnchorPane.rightAnchor="214.1044921875">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
