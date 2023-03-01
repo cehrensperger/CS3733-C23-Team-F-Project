@@ -488,17 +488,19 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       if (ports.length != 0) {
 
         ports[0].setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
-        ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 0); // Blocking write
+        ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 16); // Blocking write
 
-        for (Node node : currentPath) {
-          if (ports[0].isOpen() || ports[0].openPort()) {
-//            System.out.println("Port opened successfully");
-            byte[] bytes = node.getId().getBytes(StandardCharsets.US_ASCII);
-            ports[0].writeBytes(bytes, bytes.length);
-          } else {
-            System.out.println("Failed to open port");
-            System.out.println(ports[0].getLastErrorCode());
-          }
+        //        for (Node node : currentPath) {
+        if (ports[0].isOpen() || ports[0].openPort()) {
+          //            System.out.println("Port opened successfully");
+          byte[] bytes = startNode.getId().getBytes(StandardCharsets.US_ASCII);
+          ports[0].writeBytes(bytes, bytes.length);
+          bytes = endNode.getId().getBytes(StandardCharsets.US_ASCII);
+          ports[0].writeBytes(bytes, bytes.length);
+        } else {
+          System.out.println("Failed to open port");
+          System.out.println(ports[0].getLastErrorCode());
+          //          }
         }
 
         if (ports[0].isOpen() || ports[0].openPort()) {
@@ -508,7 +510,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         }
 
         ports[0].closePort();
-//        System.out.println("Port closed");
+        //        System.out.println("Port closed");
       }
 
       session.close();
