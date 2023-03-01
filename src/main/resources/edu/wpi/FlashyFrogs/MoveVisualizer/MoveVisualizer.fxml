@@ -40,7 +40,7 @@
                <content>
                   <VBox fillWidth="false" spacing="10.0" styleClass="sidebar">
                      <children>
-                        <SearchableComboBox fx:id="defaultLocation" promptText="Location of Kiosk" styleClass="pathfindingField">
+                        <SearchableComboBox fx:id="defaultLocation" promptText="Location of Kiosk" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="-20.0" top="5.0" />
                            </VBox.margin>
@@ -237,8 +237,4 @@
          </children>
       </Pane>
    </children>
-   <stylesheets>
-      <URL value="@../views/NewStyle.css" />
-      <URL value="@../views/NotColors.css" />
-   </stylesheets>
 </AnchorPane>
