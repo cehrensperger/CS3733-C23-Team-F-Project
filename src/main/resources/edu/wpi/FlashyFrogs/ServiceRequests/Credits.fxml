@@ -13,7 +13,7 @@
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
-<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.CreditsController">
+<BorderPane styleClass="background" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.CreditsController">
    <left>
       <VBox maxWidth="220.0" prefHeight="720.0" prefWidth="206.0" styleClass="sidebar" BorderPane.alignment="CENTER">
          <children>

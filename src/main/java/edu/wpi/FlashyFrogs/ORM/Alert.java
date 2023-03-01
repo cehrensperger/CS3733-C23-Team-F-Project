@@ -104,10 +104,10 @@ public class Alert {
 
   /** Enumerated type for the possible severities */
   public enum Severity {
-    NONE("none"),
-    MILD("mild"),
-    INTERMEDIATE("intermediate"),
-    SEVERE("severe");
+    NONE("None"),
+    MILD("Mild"),
+    INTERMEDIATE("Intermediate"),
+    SEVERE("Severe");
 
     @NonNull public final String severity;
 

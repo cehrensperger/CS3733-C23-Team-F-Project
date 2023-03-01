@@ -850,6 +850,16 @@ public class MapController {
     Display(@NonNull String displayOption) {
       DisplayOption = displayOption;
     }
+
+    /**
+     * Gets a string representation of the display option
+     *
+     * @return the string of the display
+     */
+    @Override
+    public String toString() {
+      return DisplayOption;
+    }
   }
 
   /**

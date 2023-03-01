@@ -551,6 +551,13 @@
 /** -fx-pref-height: 26px; **/
 }
 
+.text-area .content
+{
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-background-color: transparent;
+}
+
 .text-area:focused .content {
     -fx-border-radius: 10px;
 }

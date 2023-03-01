@@ -58,6 +58,11 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Best Contact Number">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                                         <TextField fx:id="number" promptText="Best Contact Number" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="105.0" />
@@ -69,6 +74,11 @@
                                  </font>
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Location of Request">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
                                  </VBox.margin>
                               </Text>
                               <SearchableComboBox fx:id="locationBox" promptText="Location of Request" styleClass="fields">
@@ -83,11 +93,21 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Assigned Employee">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <SearchableComboBox fx:id="assignedBox" promptText="Assigned User" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Request Status">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <SearchableComboBox fx:id="statusBox" promptText="Status" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
@@ -109,26 +129,51 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Service Type" wrappingWidth="70.84619140625">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                                         <SearchableComboBox fx:id="service" promptText="Service Type" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Device Type">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <SearchableComboBox fx:id="type" promptText="Device Type" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Date Needed By">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <DatePicker fx:id="date" prefHeight="31.0" prefWidth="287.0" promptText="Date (needed by)" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </DatePicker>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Urgency">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Description of Request">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                                         <TextField fx:id="description" promptText="Description of Request" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="162.0" />

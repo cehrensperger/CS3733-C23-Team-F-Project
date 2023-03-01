@@ -222,7 +222,7 @@
                         </Text>
                         <HBox alignment="CENTER_LEFT" maxHeight="88.0" maxWidth="252.0" minHeight="26.0" minWidth="183.0" prefHeight="30.0" prefWidth="250.0" spacing="10.0" styleClass="fields">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Needs Isolation?">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Needs Isolation?">
                                  <HBox.margin>
                                     <Insets left="7.0" />
                                  </HBox.margin>

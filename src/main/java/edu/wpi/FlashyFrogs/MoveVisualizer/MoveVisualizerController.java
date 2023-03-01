@@ -66,6 +66,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   public Pane errtoast;
   public Rectangle errcheck2;
   public Rectangle errcheck1;
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+  @FXML Text h5;
+  @FXML Text h6;
+  boolean hDone = false;
   @FXML private VBox directionsBox;
   @FXML private BorderPane borderPane;
   @FXML private Text adminMessage; // Admin message text
@@ -97,6 +104,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @SneakyThrows
   @FXML
   protected void initialize() {
+
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
+    h5.setVisible(false);
+    h6.setVisible(false);
 
     // Cancel the timer if it exists
     if (backToVisualizerTimer != null) {
@@ -181,42 +195,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 .createQuery("FROM LocationName", LocationName.class)
                 .getResultList());
 
-    defaultLocation.setValue(locationNames.get(0));
-
     // Query the edges
     List<Edge> edges =
         mapController.getMapSession().createQuery("FROM Edge", Edge.class).getResultList();
-
-    // find all edges
-
-    Node defaultNode =
-        defaultLocation
-            .selectionModelProperty()
-            .getValue()
-            .getSelectedItem()
-            .getCurrentNode(new Date());
-    // find the edges connected to this node
-    List<Edge> edgesConnectToFirstNode =
-        edges.stream()
-            .filter(
-                new Predicate<Edge>() {
-                  @Override
-                  public boolean test(Edge edge) {
-                    return edge.getNode1().equals(defaultNode)
-                        || edge.getNode2().equals(defaultNode);
-                  }
-                })
-            .collect(Collectors.toList());
-
-    // compare them to find the pair that is closest to 180 degrees
-    // if there is only one edge, make left or right signage a dead end
-
-    if (defaultNode != null) {
-
-      generateLeftAndRight(edges, defaultNode, edgesConnectToFirstNode);
-    } else {
-      //      System.out.println("No node associated with this location!");
-    }
 
     // Set the boxes to contain them
     leftLocationBox.setItems(locationNames);
@@ -226,7 +207,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             locationNames.stream()
                 .filter(p -> p.getLocationType() != LocationName.LocationType.ELEV)
                 .collect(Collectors.toList())));
-    defaultLocation.setValue(defaultLocation.getItems().get(0));
     defaultLocation
         .valueProperty()
         .addListener(
@@ -422,7 +402,11 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         .getMapFloorProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              clearNodes(null); // Clear the nodes on floor change
+              // On floor change
+              for (javafx.scene.Node node : nodes) {
+                // Add all nodes
+                mapController.getCurrentDrawingPane().getChildren().add(node);
+              }
             });
 
     super.initialize(); // Call the supers initialize method
@@ -588,7 +572,26 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
   /** Help, shows the help menu for the visualizer */
   @Override
-  public void help() {}
+  public void help() {
+
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      h5.setVisible(true);
+      h6.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      h5.setVisible(false);
+      h6.setVisible(false);
+      hDone = false;
+    }
+  }
 
   /**
    * Adds text to the map

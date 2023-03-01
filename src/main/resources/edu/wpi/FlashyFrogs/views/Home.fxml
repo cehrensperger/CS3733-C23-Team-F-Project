@@ -25,7 +25,7 @@
             </Text>
             <AnchorPane prefHeight="641.0" prefWidth="220.0">
                <children>
-                  <MFXScrollPane fx:id="scrollPane" prefHeight="635.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="-180.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <MFXScrollPane fx:id="scrollPane" prefHeight="664.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets bottom="20.0" />
                      </padding>
