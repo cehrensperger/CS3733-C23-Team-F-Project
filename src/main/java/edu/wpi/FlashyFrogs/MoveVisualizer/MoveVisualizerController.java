@@ -346,7 +346,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         .selectedItemProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              System.out.println("selected item property listener");
               // If something is new selected, and it's not this, and we have one it must be set
               if (selectedRow != -1
                   && moveTable.getSelectionModel().getSelectedIndex() != selectedRow) {
@@ -356,7 +355,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 return; // Don't do naything else
               }
 
-              System.out.println("uncoloring");
 
               unColorFloor(); // Clear the old styilng stuff
 
@@ -385,7 +383,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                                 pathFinder.findPath(
                                     oldLocation, newValue.getNode(), false); // Save the path
 
-                            System.out.println("coloring");
                             colorFloor(); // Redraw
 
                             // In the UI thread

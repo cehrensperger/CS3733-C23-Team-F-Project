@@ -11,7 +11,6 @@ import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.HashMap;
@@ -66,8 +65,8 @@ public class LoginController implements IController {
 
   public void initialize() {
 
-    //NavBarController newNav = new NavBarController();
-    //newNav.guestPathfinding();
+    // NavBarController newNav = new NavBarController();
+    // newNav.guestPathfinding();
     Fapp.resetStackLogin();
 
     // Set up the key press handler
