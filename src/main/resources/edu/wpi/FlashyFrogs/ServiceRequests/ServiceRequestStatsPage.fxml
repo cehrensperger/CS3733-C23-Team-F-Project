@@ -15,7 +15,7 @@
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestStatsPageController">
+<AnchorPane fx:id="anchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestStatsPageController">
    <children>
       <FilteredTableView fx:id="requestTable" layoutX="236.0" layoutY="66.0" prefHeight="344.0" prefWidth="997.0" AnchorPane.bottomAnchor="310.0" AnchorPane.leftAnchor="236.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="66.0">
          <columns>
@@ -137,6 +137,10 @@
          </children>
       </VBox>
       <ComboBox fx:id="graphTypeComboBox" layoutX="740.0" layoutY="457.0" onAction="#handleGraphTypeComboBox" prefHeight="26.0" prefWidth="310.0" promptText="Graph Type" styleClass="fields" AnchorPane.bottomAnchor="237.0" AnchorPane.leftAnchor="735.0" />
-      <MFXButton fx:id="download" layoutX="1130.0" layoutY="625.0" onAction="#handleDownload" prefHeight="26.0" prefWidth="150.0" styleClass="blueNoSetSize" text="Download Graphs" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0" />
+      <MFXButton fx:id="download" layoutX="1130.0" layoutY="625.0" onAction="#handleDownload" prefHeight="26.0" prefWidth="150.0" styleClass="blueNoSetSize" text="Download Graph" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0" />
+      <Text fx:id="h1" layoutX="236.0" layoutY="51.0" styleClass="warningText" text="Here are all service requests" wrappingWidth="284.0" AnchorPane.leftAnchor="236.0" AnchorPane.topAnchor="38.0" />
+      <Text fx:id="h3" layoutX="735.0" layoutY="496.0" styleClass="warningText" text="Choose what data you would like to view on the graph" wrappingWidth="310.0" AnchorPane.bottomAnchor="221.2578125" AnchorPane.leftAnchor="735.0" />
+      <Text fx:id="h2" layoutX="260.0" layoutY="425.0" styleClass="warningText" text="Once you choose a type of graph, the data will appear below" wrappingWidth="406.0" AnchorPane.bottomAnchor="292.2578125" AnchorPane.leftAnchor="260.0" />
+      <Text fx:id="h4" layoutX="900.0" layoutY="658.0" styleClass="warningText" text="Click if you would like to download the graph you have generated" wrappingWidth="366.0" AnchorPane.bottomAnchor="58.0" AnchorPane.rightAnchor="14.0" />
    </children>
 </AnchorPane>

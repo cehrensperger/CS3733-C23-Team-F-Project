@@ -552,3 +552,7 @@
     /** Right now, only used on acknowledgementsPage as a placeholder **/
     -fx-background-color: transparent;
 }
+.srText
+{
+    -fx-fill: #000000;
+}

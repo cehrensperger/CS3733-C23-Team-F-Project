@@ -107,6 +107,7 @@
      button is clicked**/
 {
     -fx-fill: #b6000b;
+    -fx-background-color: #F6BD38;
 }
 
 .backButton
