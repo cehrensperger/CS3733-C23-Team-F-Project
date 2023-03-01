@@ -1435,16 +1435,20 @@ public class MapEditorController implements IController {
           timer.scheduleAtFixedRate(task, 0, 5);
 
           // First, validate the bounds
-          if (mapController.getNodeToLocationBox().get(finalRight).getBoundsInParent().getMaxX()
+          if (finalRight.getXCoord()
+                  + mapController.getNodeToCircleMap().get(finalRight).getRadius() / 2
                   + xDiff
               > mapController.getMapWidth()) return;
-          if (mapController.getNodeToCircleMap().get(finalLeft).getBoundsInParent().getMinX()
+          if (finalLeft.getXCoord()
+                  - mapController.getNodeToCircleMap().get(finalLeft).getRadius() / 2
                   + xDiff
               < 0) return;
-          if (mapController.getNodeToLocationBox().get(finalLowest).getBoundsInParent().getMaxY()
+          if (finalLowest.getYCoord()
+                  + mapController.getNodeToCircleMap().get(finalLowest).getRadius() / 2
                   + yDiff
               > mapController.getMapHeight()) return;
-          if (mapController.getNodeToLocationBox().get(finalHighest).getBoundsInParent().getMinY()
+          if (finalHighest.getYCoord()
+                  - mapController.getNodeToCircleMap().get(finalHighest).getRadius() / 2
                   + yDiff
               < 0) return;
 
