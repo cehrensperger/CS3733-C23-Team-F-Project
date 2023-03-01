@@ -1385,7 +1385,7 @@ public class MapEditorController implements IController {
 
                         // First, validate bounds
                         if (mapController
-                                        .getNodeToLocationBox()
+                                        .getNodeToCircleMap()
                                         .get(finalRight)
                                         .getBoundsInParent()
                                         .getMaxX()
@@ -1399,14 +1399,14 @@ public class MapEditorController implements IController {
                                     + effortX[0]
                                 < 0
                             || mapController
-                                        .getNodeToLocationBox()
+                                        .getNodeToCircleMap()
                                         .get(finalLowest)
                                         .getBoundsInParent()
                                         .getMaxY()
                                     + effortY[0]
                                 > mapController.getMapHeight()
                             || mapController
-                                        .getNodeToLocationBox()
+                                        .getNodeToCircleMap()
                                         .get(finalHighest)
                                         .getBoundsInParent()
                                         .getMinY()
@@ -1570,8 +1570,11 @@ public class MapEditorController implements IController {
                     }
                     double xStdDev = calculateSD(xVals);
                     double yStdDev = calculateSD(yVals);
-                    tryAutoAlign(
-                        (int) circle.getCenterX(), (int) circle.getCenterY(), yStdDev >= xStdDev);
+                    try {
+                      tryAutoAlign(
+                          (int) circle.getCenterX(), (int) circle.getCenterY(), yStdDev >= xStdDev);
+                    } catch (IllegalArgumentException ignored) {
+                    }
                   });
 
               controller.setOnDeleteLocations(
