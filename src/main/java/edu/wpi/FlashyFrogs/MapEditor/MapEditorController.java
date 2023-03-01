@@ -883,8 +883,8 @@ public class MapEditorController implements IController {
 
     nodeToDrag.setOnMouseDragged(
         event -> {
-          event.setDragDetect(true);
           event.consume();
+          event.setDragDetect(true);
         });
 
     duplicateCircle.setOnDragDropped(
@@ -1317,6 +1317,7 @@ public class MapEditorController implements IController {
     // On drag
     circle.setOnMouseDragged(
         (event) -> {
+          event.consume();
           // If a drag is in not progress
           if (!dragInProgress) {
             return; // Don't do anything
