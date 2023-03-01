@@ -110,7 +110,6 @@
 .backButton
     /** This is used for all back buttons within the app **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:transparent;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
@@ -119,7 +118,6 @@
 .blueOutlineNoSetSize
     /** if you need the blue outline with blue text styling with no set sizes **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:transparent;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
@@ -129,7 +127,6 @@
     /** This is a smaller version of the back button styling (transparent background with
      blue outline) - ex. the toggle all button on the home page **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: transparent;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
@@ -139,7 +136,6 @@
     /** This is a smaller version of the credits button styling (blue background with
      white text) - ex. select files in Manage CSVs  **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
@@ -157,7 +153,6 @@
 .blueNoSetSize
     /** If you need the blue background with white text with no set size **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
@@ -166,7 +161,6 @@
 .blueBackgroundSideBar
     /** This is used for the sidebar buttons with blue backgrounds - ex. switch color, manage CSVs, etc. **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
@@ -175,7 +169,6 @@
 .serviceRequestButtons
     /** This is used for the sidebar buttons for service requests **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
@@ -279,7 +272,6 @@
 .submitButton
     /** This is used for the submit buttons on the service requests pages **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
@@ -288,7 +280,6 @@
 .clearButton
     /** sets the clear button on the service requests page **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: transparent;
     -fx-border-color:#b6000b;
     -fx-text-fill: #b6000b;
@@ -298,7 +289,6 @@
     /** if you need the styling of a clear or exit style button with
      no set size**/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: transparent;
     -fx-border-color:#b6000b;
     -fx-text-fill: #b6000b;
@@ -308,7 +298,6 @@
     /** This is similar styling to the clear buttons in the service requests
      but it is a bigger button - ex. cancel button Manage CSVs **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #f1f1f1;
     -fx-border-color:#b6000b;
     -fx-text-fill: #b6000b;
@@ -350,6 +339,13 @@
     -fx-stroke: #34587a;
 }
 
+.button:hover {
+    -fx-background-color: #d1d1d1;
+    -fx-text-fill: black;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+}
+
 .menu-button .arrow-button
     /** controls the background of the arrow next to the current employee name **/
 {
@@ -374,13 +370,10 @@
 
 .menu-button:hover .label {
     -fx-text-fill: #F6BD38;
-    -fx-fill: #F6BD38;
-    -fx-border-color: #012D5A;
 }
 
 .menu-button:hover .arrow {
     -fx-background-color: #F6BD38;
-    -fx-control-inner-background: #012D5A;
 }
 
 .menu-item .label
@@ -388,7 +381,7 @@
 {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-text-fill: #012D5A;
+    -fx-text-fill: #012D5A !important;
 }
 .menu-item:focused
     /** This controls the background color of the menu-item when it is hovered over **/
@@ -540,6 +533,7 @@
 .yellowNav {
     -fx-fill: #F6BD38;
     -fx-font-family: "Roboto";
+    -fx-border-color: transparent !important;
     -fx-font-weight: bold !important;
 }
 
