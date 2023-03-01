@@ -261,7 +261,7 @@
                   <Font size="16.0" />
                </font>
             </MFXButton>
-            <AnchorPane VBox.vgrow="ALWAYS">
+            <AnchorPane prefHeight="147.0" prefWidth="181.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
                      <children>
