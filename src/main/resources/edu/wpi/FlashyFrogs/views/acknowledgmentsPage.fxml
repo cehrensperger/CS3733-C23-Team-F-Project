@@ -14,7 +14,7 @@
       <HBox prefHeight="420.0" prefWidth="700.0">
          <children>
             <VBox prefHeight="385.0" prefWidth="22.0" />
-            <ScrollPane>
+            <ScrollPane fitToWidth="true">
                <content>
                   <VBox prefHeight="385.0" prefWidth="700.0">
                      <children>
