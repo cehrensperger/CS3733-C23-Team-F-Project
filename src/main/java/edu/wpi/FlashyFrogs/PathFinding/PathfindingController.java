@@ -10,6 +10,7 @@ import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.ORM.ServiceRequest;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
+import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -241,9 +242,11 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         thread.start();
       } catch (RollbackException exception) {
         errortoastAnimation();
+        Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       errortoastAnimation();
+      Sound.ERROR.play();
     }
   }
 
