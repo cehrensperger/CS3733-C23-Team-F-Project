@@ -66,6 +66,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   public Pane errtoast;
   public Rectangle errcheck2;
   public Rectangle errcheck1;
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+  @FXML Text h5;
+  @FXML Text h6;
+  boolean hDone = false;
   @FXML private VBox directionsBox;
   @FXML private BorderPane borderPane;
   @FXML private Text adminMessage; // Admin message text
@@ -97,6 +104,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @SneakyThrows
   @FXML
   protected void initialize() {
+
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
+    h5.setVisible(false);
+    h6.setVisible(false);
 
     // Cancel the timer if it exists
     if (backToVisualizerTimer != null) {
@@ -588,7 +602,26 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
   /** Help, shows the help menu for the visualizer */
   @Override
-  public void help() {}
+  public void help() {
+
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      h5.setVisible(true);
+      h6.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      h5.setVisible(false);
+      h6.setVisible(false);
+      hDone = false;
+    }
+  }
 
   /**
    * Adds text to the map

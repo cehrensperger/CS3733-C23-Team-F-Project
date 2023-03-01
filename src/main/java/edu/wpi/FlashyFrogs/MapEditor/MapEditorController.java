@@ -1117,7 +1117,7 @@ public class MapEditorController implements IController {
     // Set the pop-up content
     popOver.setDetached(true);
     popOver.show(locationTable.getScene().getWindow()); // And show it
-    actionEvent.consume();
+    // actionEvent.consume();
   }
 
   /**
@@ -1870,6 +1870,16 @@ public class MapEditorController implements IController {
       currentQuickDrawCircle = new Circle(5, Color.BLACK);
       currentQuickDrawCircle.setOpacity(.25); // Set it to be slightly transparent
       currentQuickDrawCircle.relocate(actionEvent.getSceneX(), actionEvent.getSceneY() - 27);
+      // set current quick draw circle to follow the mouse
+      root.getScene()
+          .addEventFilter(
+              MouseEvent.MOUSE_MOVED,
+              event -> {
+                if (quickDrawActive) {
+                  currentQuickDrawCircle.relocate(event.getSceneX(), event.getSceneY() - 27);
+                }
+              });
+
       root.getChildren().add(currentQuickDrawCircle); // And add
     } else {
       // If disabled, delete it

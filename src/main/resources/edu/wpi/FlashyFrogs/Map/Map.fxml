@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.lang.String?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import net.kurobako.gesturefx.GesturePane?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.shape.Circle?>
 <AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Map.MapController">
     <GesturePane fx:id="gesturePane" fitHeight="false" fitMode="COVER" fitWidth="false" hbarPolicy="NEVER" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Group fx:id="group" />
     </GesturePane>
-   <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" mouseTransparent="true">
+   <VBox alignment="CENTER" mouseTransparent="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox fx:id="animationPane" alignment="CENTER" spacing="10.0" visible="false">
                      <children>
-                        <Circle fx:id="cir1" fill="DODGERBLUE" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false"/>
-                        <Circle fx:id="cir2" fill="DODGERBLUE" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false"/>
-                        <Circle fx:id="cir3" fill="DODGERBLUE" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false"/>
-                        <Circle fx:id="cir4" fill="DODGERBLUE" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false"/>
-                        <Circle fx:id="cir5" fill="DODGERBLUE" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false"/>
-                        <Circle fx:id="cir6" fill="DODGERBLUE" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false"/>
+                        <Circle fx:id="cir1" fill="DODGERBLUE" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
+                        <Circle fx:id="cir2" fill="DODGERBLUE" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
+                        <Circle fx:id="cir3" fill="DODGERBLUE" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
+                        <Circle fx:id="cir4" fill="DODGERBLUE" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
+                        <Circle fx:id="cir5" fill="DODGERBLUE" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
+                        <Circle fx:id="cir6" fill="DODGERBLUE" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
                      </children>
                   </HBox>
                </children>
@@ -62,8 +63,12 @@
                <Font size="16.0" />
             </font>
          </Label>
-         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0"/>
+         <MFXButton fx:id="floorSelectorButton" onAction="#openFloorSelector" opacity="0.0" prefHeight="25.0" prefWidth="66.0" />
       </children>
    </StackPane>
-   <SearchableComboBox fx:id="filterBox" layoutX="10.0" layoutY="10.0" styleClass="pathfindingField" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0" />
+   <SearchableComboBox fx:id="filterBox" layoutX="10.0" layoutY="10.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="30.0">
+      <styleClass>
+         <String fx:value="fields" />
+         <String fx:value="pathfindingField" />
+      </styleClass></SearchableComboBox>
 </AnchorPane>

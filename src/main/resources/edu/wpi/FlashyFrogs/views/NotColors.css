@@ -277,18 +277,18 @@
     -fx-background-radius: 0 10 10 0;
 }
 
-.searchable-combo-box
+.combo-box
     /** controls all searchable combo boxes within the app **/
 {
     -fx-background-radius: 10 10 10 10;
 
 }
 
-.searchable-combo-box .list-cell {
+.combo-box .list-cell {
 
 }
 
-.searchable-combo-box .list-cell:hover {
+.combo-box .list-cell:hover {
 }
 
 .combo-box> .text-field
@@ -549,6 +549,13 @@
     -fx-font-weight: normal;
 /** -fx-pref-width: 200px; (not sure if we want to set width and height in here) **/
 /** -fx-pref-height: 26px; **/
+}
+
+.text-area .content
+{
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-background-color: transparent;
 }
 
 .text-area:focused .content {

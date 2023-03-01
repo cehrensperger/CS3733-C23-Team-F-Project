@@ -39,6 +39,7 @@ public class AlertManagerController implements IController {
   @FXML private Button back;
 
   @FXML Text h1;
+  @FXML Text h2;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -73,6 +74,7 @@ public class AlertManagerController implements IController {
   public void initialize() throws Exception {
     errorMessage.setVisible(false);
     h1.setVisible(false);
+    h2.setVisible(false);
 
     // Clear old table before init
     alertTable.getItems().clear();
@@ -161,9 +163,11 @@ public class AlertManagerController implements IController {
   public void help() {
     if (!hDone) {
       h1.setVisible(true);
+      h2.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
+      h2.setVisible(false);
       hDone = false;
     }
   }
