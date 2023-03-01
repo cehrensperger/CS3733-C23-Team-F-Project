@@ -212,9 +212,14 @@ public class Fapp extends Application {
 
   @SneakyThrows
   public static void handleBack() {
-    prevPage.pop();
-    String[] page = prevPage.pop().split(",");
-    Fapp.setScene(page[0], page[1]);
+    if (prevPage.size() > 1) {
+      prevPage.pop();
+      String[] page = prevPage.pop().split(",");
+      Fapp.setScene(page[0], page[1]);
+    } else {
+      Fapp.logOutWithoutSceneChange();
+      Fapp.setScene("Accounts", "Login");
+    }
   }
 
   public static void resetStack() {

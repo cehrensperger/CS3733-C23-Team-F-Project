@@ -152,10 +152,6 @@ public class NavBarController {
 
     dateAndTime();
     // clockLabel.setTextFill(Paint.valueOf("white"));
-    back.setDisable(true);
-    backSVG.setOpacity(0);
-    back2.setDisable(true);
-    backText.setVisible(false);
 
     // Setup the nav button hover handlers
     for (int i = 0; i < navButtons.getChildren().size(); i++) {
@@ -608,7 +604,7 @@ public class NavBarController {
 
   @FXML
   private void handleBack(ActionEvent event) throws IOException {
-    //
+    Fapp.handleBack();
   }
 
   @FXML
