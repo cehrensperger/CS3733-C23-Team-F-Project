@@ -399,7 +399,7 @@
 {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-text-fill: #012D5A;
+    -fx-text-fill: #012D5A !important;
 }
 .menu-item:focused
     /** This controls the background color of the menu-item when it is hovered over **/
