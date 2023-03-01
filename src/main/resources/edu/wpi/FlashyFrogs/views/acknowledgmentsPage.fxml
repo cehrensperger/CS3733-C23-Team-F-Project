@@ -8,17 +8,17 @@
 <?import javafx.scene.text.TextFlow?>
 
 <?import javafx.scene.control.Hyperlink?>
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AcknowledgmentsController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AcknowledgmentsController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Acknowledgments" />
-      <HBox prefHeight="420.0" prefWidth="600.0">
+      <HBox prefHeight="420.0" prefWidth="700.0">
          <children>
             <VBox prefHeight="385.0" prefWidth="22.0" />
             <ScrollPane>
                <content>
-                  <VBox prefHeight="385.0" prefWidth="554.0">
+                  <VBox prefHeight="385.0" prefWidth="700.0">
                      <children>
-                              <Label styleClass="bodyBold" text="APIs:&#13;" />
+                              <Label styleClass="bodyBold" text="APIs:" />
                          <Hyperlink fx:id="JavaOpenJDK" styleClass="body" text="Java OpenJDK 17.0.5 LTS" />
                          <Hyperlink fx:id="JavaFX19SDK" styleClass="body" text="JavaFX 19 SDK" />
                          <Hyperlink fx:id="MaterialFX" styleClass="body" text="MaterialFX 11.13.8" />
@@ -49,25 +49,25 @@
                          <Hyperlink fx:id="OJDBC10" styleClass="body" text="OJDBC10 19.3.0.0" />
                          <Hyperlink fx:id="JUnitJupiterEngine" styleClass="body" text="JUnit Jupiter Engine 5.8.1" />
                          <Hyperlink fx:id="JUnitJupiterAggregator" styleClass="body" text="JUnit Jupiter (Aggregator) 5.6.0" />
-                              <Label styleClass="bodyBold" text="Icons:&#13;" />
+                              <Label styleClass="bodyBold" text="Icons:" />
                          <Hyperlink fx:id="Icons" styleClass="body" text="SVG Repo" />
                          <Hyperlink fx:id="MassIcon1" styleClass="body" text="Mass General Brigham icon on navbar" />
                          <Hyperlink fx:id="MassIcon2" styleClass="body" text="Mass General Brigham icon on login page" />
-                              <Label styleClass="bodyBold" text="Images:&#13;" />
+                              <Label styleClass="bodyBold" text="Images:" />
                          <Hyperlink fx:id="HospitalPic" styleClass="body" text="Image of hospital building on home page" />
                          <Hyperlink styleClass="body" text="Map of hospital floors (L1.png, L2.png, one.png, two.png, three.png): provided by Brigham and Women’s Hospital" />
-                              <Label styleClass="bodyBold" text="Plugins:&#13;" />
+                              <Label styleClass="bodyBold" text="Plugins:" />
                          <Hyperlink fx:id="Jacoco" styleClass="body" text="Jacoco" />
                          <Hyperlink fx:id="Spotless" styleClass="body" text="Spotless 6.14.0" />
                          <Hyperlink fx:id="lombok" styleClass="body" text="io.freefair.lombok 6.6.1" />
                          <Hyperlink fx:id="openjfx" styleClass="body" text="org.openjfx.javafxplugin 0.0.13" />
-                              <Label styleClass="bodyBold" text="Repositories:&#13;" />
+                              <Label styleClass="bodyBold" text="Repositories:" />
                          <Hyperlink styleClass="body" text="MavenCentral" />
                          <Hyperlink styleClass="body" text="JCenter" />
                          <Hyperlink styleClass="body" text="https://apisite.crmyers.dev/maven" />
                          <Hyperlink fx:id="JitPack" styleClass="body" text="JitPack" />
                          <Hyperlink fx:id="OSS" styleClass="body" text="OSS Sonatype Snapshots Nexus Repository Manager" />
-                              <Label styleClass="bodyBold" text="Miscellaneous:&#13;" />
+                              <Label styleClass="bodyBold" text="Miscellaneous:" />
                          <Hyperlink fx:id="IntelliJ" styleClass="body" text="Coded in IntelliJ Ultimate" />
                          <Hyperlink fx:id="SceneBuilder" styleClass="body" text="Coded in SceneBuilder 19.0.0" />
                          <Hyperlink fx:id="Figma" styleClass="body" text="UI mockups created with Figma" />
