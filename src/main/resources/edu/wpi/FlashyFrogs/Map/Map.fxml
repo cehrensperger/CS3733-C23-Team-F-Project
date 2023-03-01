@@ -13,6 +13,7 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
@@ -20,6 +21,7 @@
     <GesturePane fx:id="gesturePane" fitHeight="false" fitMode="COVER" fitWidth="false" hbarPolicy="NEVER" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Group fx:id="group" />
     </GesturePane>
+   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warningText" text="Use CTRL + SCROLL To Zoom" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
    <VBox alignment="CENTER" mouseTransparent="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox fx:id="animationPane" alignment="CENTER" spacing="10.0" visible="false">

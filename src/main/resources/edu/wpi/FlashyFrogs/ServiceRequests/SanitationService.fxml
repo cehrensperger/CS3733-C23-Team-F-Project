@@ -84,13 +84,13 @@
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin></DatePicker>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Urgency" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Request Urgency" />
                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Biohazard" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Biohazard Status" />
                         <SearchableComboBox fx:id="biohazard" promptText="Biohazard" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
@@ -102,7 +102,7 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Patient Isolation" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Isolation Status" />
                         <HBox alignment="CENTER_LEFT" maxHeight="88.0" maxWidth="252.0" minHeight="26.0" minWidth="183.0" prefHeight="30.0" prefWidth="250.0" spacing="10.0" styleClass="fields">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Needs Isolation?">

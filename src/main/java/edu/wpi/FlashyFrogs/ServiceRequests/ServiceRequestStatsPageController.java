@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javafx.animation.FillTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -25,8 +28,12 @@ import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -38,7 +45,9 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 import org.hibernate.Session;
 
 public class ServiceRequestStatsPageController implements IController {
-
+  @FXML javafx.scene.shape.Rectangle check2;
+  @FXML Rectangle check1;
+  @FXML Pane toast;
   @FXML private AnchorPane anchorPane;
   @FXML private AnchorPane statsAnchorPane;
   @FXML private VBox sideBar;
@@ -307,6 +316,7 @@ public class ServiceRequestStatsPageController implements IController {
           e -> {
             try {
               writeToExcelFile(series, graphTypeComboBox.getValue());
+              toastAnimation();
             } catch (IOException ioException) {
               ioException.printStackTrace();
             }
@@ -404,6 +414,7 @@ public class ServiceRequestStatsPageController implements IController {
       downloadButton.setOnAction(
           e -> {
             try {
+              toastAnimation();
               writeToExcelFile(series, graphTypeComboBox.getValue());
             } catch (IOException ioException) {
               ioException.printStackTrace();
@@ -458,6 +469,7 @@ public class ServiceRequestStatsPageController implements IController {
       downloadButton.setOnAction(
           e -> {
             try {
+              toastAnimation();
               writeToExcelFile(series, graphTypeComboBox.getValue());
             } catch (IOException ioException) {
               ioException.printStackTrace();
@@ -775,5 +787,40 @@ public class ServiceRequestStatsPageController implements IController {
         break;
       }
     }
+  }
+
+  public void toastAnimation() {
+    System.out.println("im in the animation");
+    // Create a TranslateTransition to move the first rectangle to the left
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), toast);
+    translate1.setByX(-280.0);
+    translate1.setAutoReverse(true);
+
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1),
+            check1,
+            javafx.scene.paint.Color.web("#012D5A"),
+            javafx.scene.paint.Color.web("#F6BD38"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1),
+            check2,
+            javafx.scene.paint.Color.web("#012D5A"),
+            Color.web("#F6BD38"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), toast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.play();
   }
 }

@@ -195,42 +195,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 .createQuery("FROM LocationName", LocationName.class)
                 .getResultList());
 
-    defaultLocation.setValue(locationNames.get(0));
-
     // Query the edges
     List<Edge> edges =
         mapController.getMapSession().createQuery("FROM Edge", Edge.class).getResultList();
-
-    // find all edges
-
-    Node defaultNode =
-        defaultLocation
-            .selectionModelProperty()
-            .getValue()
-            .getSelectedItem()
-            .getCurrentNode(new Date());
-    // find the edges connected to this node
-    List<Edge> edgesConnectToFirstNode =
-        edges.stream()
-            .filter(
-                new Predicate<Edge>() {
-                  @Override
-                  public boolean test(Edge edge) {
-                    return edge.getNode1().equals(defaultNode)
-                        || edge.getNode2().equals(defaultNode);
-                  }
-                })
-            .collect(Collectors.toList());
-
-    // compare them to find the pair that is closest to 180 degrees
-    // if there is only one edge, make left or right signage a dead end
-
-    if (defaultNode != null) {
-
-      generateLeftAndRight(edges, defaultNode, edgesConnectToFirstNode);
-    } else {
-      //      System.out.println("No node associated with this location!");
-    }
 
     // Set the boxes to contain them
     leftLocationBox.setItems(locationNames);
@@ -240,7 +207,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
             locationNames.stream()
                 .filter(p -> p.getLocationType() != LocationName.LocationType.ELEV)
                 .collect(Collectors.toList())));
-    defaultLocation.setValue(defaultLocation.getItems().get(0));
     defaultLocation
         .valueProperty()
         .addListener(
@@ -436,7 +402,11 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         .getMapFloorProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              clearNodes(null); // Clear the nodes on floor change
+              // On floor change
+              for (javafx.scene.Node node : nodes) {
+                // Add all nodes
+                mapController.getCurrentDrawingPane().getChildren().add(node);
+              }
             });
 
     super.initialize(); // Call the supers initialize method
