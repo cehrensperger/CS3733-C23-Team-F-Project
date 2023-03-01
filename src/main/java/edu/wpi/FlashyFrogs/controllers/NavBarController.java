@@ -510,7 +510,7 @@ public class NavBarController {
 
   @FXML
   private void handleHeat(ActionEvent event) throws IOException {
-    Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
+    Fapp.setScene("TrafficAnalyzer", "TrafficAnalyzer");
   }
 
   @FXML

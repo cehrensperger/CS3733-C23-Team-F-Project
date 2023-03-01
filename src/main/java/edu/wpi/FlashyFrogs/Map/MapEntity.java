@@ -204,7 +204,7 @@ class MapEntity {
             .findFirst()
             .orElse(null);
 
-    if (toDelete == null) return; // Don't do anything if we get nothing back
+    if (toDelete == null) return; // Don't do anything if we get nothing back, different floor
 
     // Delete it from the mapping, don't remove the location name map
     nodeToLocationNameMap.get(toDelete).remove(locationName);

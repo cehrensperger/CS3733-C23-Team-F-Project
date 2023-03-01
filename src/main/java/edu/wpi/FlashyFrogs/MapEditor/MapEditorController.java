@@ -1571,10 +1571,22 @@ public class MapEditorController implements IController {
               controller.setOnDeleteLocations(
                   event1 -> {
                     for (Node n : selectedNodes) {
-                      for (LocationName loc : mapController.getNodeToLocationNameMap().get(n)) {
-                        mapController.removeLocationName(loc);
+                      LocationName[] locations =
+                          mapController
+                              .getNodeToLocationNameMap()
+                              .get(n)
+                              .toArray(new LocationName[0]);
+                      for (LocationName location : locations) {
+                        mapController
+                            .getMapSession()
+                            .createMutationQuery("DELETE FROM LocationName l WHERE l = :l")
+                            .setParameter("l", location)
+                            .executeUpdate();
+                        mapController.removeLocationName(location);
                       }
                     }
+
+                    mapController.redraw();
                   });
 
               controller.setOnDeleteNodes(
