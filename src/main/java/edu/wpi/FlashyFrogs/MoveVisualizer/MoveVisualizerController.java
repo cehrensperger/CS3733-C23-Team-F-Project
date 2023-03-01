@@ -432,13 +432,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
               colorFloor(); // Redraw
             });
 
-    mapController
-        .getMapFloorProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              clearNodes(null); // Clear the nodes on floor change
-            });
-
     super.initialize(); // Call the supers initialize method
 
     // The box with the directions should pop-out when its hovered

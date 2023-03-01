@@ -54,6 +54,11 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Location of Request">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                                         <SearchableComboBox fx:id="locationBox" promptText="Location of Request" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
@@ -67,11 +72,21 @@
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Assigned Employee">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <SearchableComboBox fx:id="assignedBox" promptText="Assigned User" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Request Status">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <SearchableComboBox fx:id="statusBox" promptText="Status" styleClass="fields" />
                                     </children>
                                     <HBox.margin>
@@ -89,26 +104,59 @@
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Sanitation Type">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                                         <SearchableComboBox fx:id="sanitationType" promptText="Sanitation Type" styleClass="fields">
                                             <VBox.margin>
                                                 <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
-                                        <DatePicker fx:id="date" prefHeight="26.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Date Preference">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
+                                        <DatePicker fx:id="date" prefHeight="26.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields">
+                                 <VBox.margin>
+                                    <Insets bottom="18.0" />
+                                 </VBox.margin></DatePicker>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Request Urgency">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                                             <VBox.margin>
-                                                <Insets bottom="18.0" top="18.0" />
+                                                <Insets bottom="18.0" />
                                             </VBox.margin>
                                         </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Biohazard Status">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <SearchableComboBox fx:id="biohazard" promptText="Biohazard" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin>
                               </SearchableComboBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Description of Request">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <TextField fx:id="description" prefWidth="200.0" promptText="Description of Request" styleClass="fields">
                                  <VBox.margin>
                                     <Insets bottom="18.0" />
                                  </VBox.margin></TextField>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Isolation Status">
+                                 <VBox.margin>
+                                    <Insets bottom="1.0" />
+                                 </VBox.margin>
+                              </Text>
                               <CheckBox fx:id="isolation" mnemonicParsing="false" prefHeight="32.0" prefWidth="286.0" styleClass="fields" text="Needs Isolation?">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
