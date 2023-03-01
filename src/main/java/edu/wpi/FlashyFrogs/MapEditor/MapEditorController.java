@@ -2148,6 +2148,9 @@ public class MapEditorController implements IController {
                             mapController.getGesturePane().setGestureEnabled(true);
                           }
                         });
+              } else {
+                mapController.getCurrentDrawingPane().setOnMouseDragged((e) -> {});
+                mapController.getCurrentDrawingPane().setOnMouseReleased((e) -> {});
               }
             });
   }
