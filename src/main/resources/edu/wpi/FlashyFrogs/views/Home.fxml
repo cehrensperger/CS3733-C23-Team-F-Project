@@ -86,7 +86,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Text fx:id="h2" fill="#b6000b" layoutX="462.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all submitted service requests. Look in the table to find details about each request." AnchorPane.rightAnchor="388.0">
+      <Text fx:id="h2" fill="#b6000b" layoutX="493.068359375" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all submitted service requests. Look in the table to find details about each request." AnchorPane.rightAnchor="385.53515625">
          <font>
             <Font size="10.0" />
          </font>
