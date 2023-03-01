@@ -50,7 +50,10 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Location for Requested Equipment" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Location of Request">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <SearchableComboBox fx:id="locationBox" promptText="Location of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
@@ -72,60 +75,50 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Type of Device Requested" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Device Type">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <TextField fx:id="device" promptText="Device Type" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Reason for Request" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Reason for Request">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <TextField fx:id="reason" promptText="Reason for Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Date Equipment is Needed" />
-                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="378.0" promptText="Date (needed by)" styleClass="fields">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Date Needed By">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
+                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="378.0" promptText="Date (Needed By)" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin></DatePicker>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Urgency of Request" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Urgency">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Additional Information " />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Description of Request">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <TextField fx:id="description" prefWidth="200.0" promptText="Description of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="108.0" />
                            </VBox.margin>
                         </TextField>
-                        <HBox alignment="TOP_CENTER" prefHeight="29.0" prefWidth="200.0">
-                           <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textFill="WHITE">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="144.0" />
-                           </VBox.margin>
-                        </HBox>
                         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                            <VBox.margin>
                               <Insets top="5.0" />
@@ -298,5 +291,27 @@
             </AnchorPane>
          </children>
       </VBox>
+      <HBox alignment="TOP_CENTER" layoutX="990.0" layoutY="599.0" prefHeight="21.0" prefWidth="250.0" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

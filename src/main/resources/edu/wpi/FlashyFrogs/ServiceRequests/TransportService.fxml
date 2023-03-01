@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -182,7 +181,7 @@
                               <Insets bottom="1.0" />
                            </VBox.margin>
                         </Text>
-                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields">
+                        <DatePicker fx:id="date" prefHeight="26.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin></DatePicker>
@@ -234,54 +233,17 @@
                               <Insets bottom="2.0" top="2.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="35.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="250.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label fx:id="errorMessage">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
                      </children>
                      <HBox.margin>
                         <Insets left="50.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox prefHeight="582.0" prefWidth="89.0">
+                  <VBox prefHeight="568.0" prefWidth="100.0">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                      <children>
-                        <Text fx:id="h6" styleClass="warningText" text="What is the location the patient will be trasported to" wrappingWidth="100.0">
+                        <Text fx:id="h6" styleClass="warningText" text="What  location the patient will be trasported to" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="44.0" />
                            </VBox.margin>
@@ -291,17 +253,17 @@
                               <Insets top="12.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h8" styleClass="warningText" text="What is the urgency of the transport" wrappingWidth="100.0">
+                        <Text fx:id="h8" styleClass="warningText" text="What is the urgency " wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="16.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h9" styleClass="warningText" text="What equipment will be needed for the transport" wrappingWidth="100.0">
+                        <Text fx:id="h9" styleClass="warningText" text="What equipment is needed" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="18.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h10" styleClass="warningText" text="What is the preferred date of the transport" wrappingWidth="100.0">
+                        <Text fx:id="h10" styleClass="warningText" text="What is the preferred date" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="18.0" />
                            </VBox.margin>
@@ -321,7 +283,7 @@
                               <Insets top="4.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="h12" styleClass="warningText" text="Are there any isolation or precautionary measures that need to be taken during this transport" wrappingWidth="100.0">
+                        <Text fx:id="h12" styleClass="warningText" text="Isolation  that needs to be taken" wrappingWidth="100.0">
                            <VBox.margin>
                               <Insets top="6.0" />
                            </VBox.margin>
@@ -454,5 +416,27 @@
             </Text>
          </children>
       </Pane>
+      <HBox alignment="TOP_CENTER" layoutX="1032.0" layoutY="707.0" prefHeight="21.0" prefWidth="250.0" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
