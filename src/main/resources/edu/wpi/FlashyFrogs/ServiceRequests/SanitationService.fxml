@@ -116,27 +116,6 @@
                               <Insets bottom="2.0" top="2.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="19.0" prefWidth="200.0">
-                           <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="clear" onAction="#handleClear" styleClass="clearButton" text="Clear" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textFill="WHITE">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="200.0" />
-                           </VBox.margin>
-                        </HBox>
                         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="errorMessage">
@@ -314,5 +293,27 @@
             </AnchorPane>
          </children>
       </VBox>
+      <HBox alignment="TOP_CENTER" layoutX="1016.0" layoutY="666.0" prefHeight="21.0" prefWidth="250.0" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

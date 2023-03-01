@@ -52,7 +52,10 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Your Contact Information" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Best Contact Number">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <TextField fx:id="number" promptText="Best Contact Number" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="105.0" />
@@ -66,7 +69,10 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Location of the Device" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Location of Request">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <SearchableComboBox fx:id="locationBox" promptText="Location of Request" styleClass="fields" />
                      </children>
                      <HBox.margin>
@@ -84,61 +90,51 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Type of Service Requested" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Service Type">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <SearchableComboBox fx:id="service" promptText="Service Type" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Type of Device Requested" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Device Type">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <SearchableComboBox fx:id="type" promptText="Device Type" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Date Needed By" />
-                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="287.0" promptText="Date (needed by)" styleClass="fields">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Date Needed By">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
+                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="287.0" promptText="Date (Needed By)" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </DatePicker>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Urgency of Service" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Urgency">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Additional Request Information" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Description of Request">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin></Text>
                         <TextField fx:id="description" promptText="Description of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="162.0" />
                            </VBox.margin>
                         </TextField>
-                        <HBox alignment="TOP_CENTER" prefHeight="32.0" prefWidth="200.0">
-                           <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="clear" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <MFXButton fx:id="submit" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textFill="WHITE">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="90.0" />
-                           </VBox.margin>
-                        </HBox>
                         <HBox alignment="TOP_CENTER" prefHeight="140.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="errorMessage">
@@ -311,5 +307,27 @@
             </AnchorPane>
          </children>
       </VBox>
+      <HBox alignment="TOP_CENTER" layoutX="982.0" layoutY="606.0" prefHeight="21.0" prefWidth="250.0" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </MFXButton>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
