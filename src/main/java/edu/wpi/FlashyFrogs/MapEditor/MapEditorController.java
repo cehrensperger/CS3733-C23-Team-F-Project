@@ -1434,8 +1434,6 @@ public class MapEditorController implements IController {
 
           timer.scheduleAtFixedRate(task, 0, 5);
 
-          event.consume();
-
           // First, validate the bounds
           if (mapController.getNodeToLocationBox().get(finalRight).getBoundsInParent().getMaxX()
                   + xDiff
