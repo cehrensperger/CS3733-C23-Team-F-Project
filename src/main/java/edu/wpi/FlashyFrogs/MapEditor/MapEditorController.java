@@ -1379,23 +1379,41 @@ public class MapEditorController implements IController {
                 public void run() {
                   Platform.runLater(
                       () -> {
-                        // First, validate bounds
-                        if (mapController.getNodeToCircleMap().get(finalRight).getCenterX()
-                                + effortX[0]
-                            > mapController.getMapWidth()) return;
-                        if (mapController.getNodeToCircleMap().get(finalLeft).getCenterX()
-                                + effortX[0]
-                            < 0) return;
-                        if (mapController.getNodeToCircleMap().get(finalLowest).getCenterY()
-                                + effortY[0]
-                            > mapController.getMapHeight()) return;
-                        if (mapController.getNodeToCircleMap().get(finalHighest).getCenterY()
-                                + effortY[0]
-                            < 0) return;
-
                         mapController
                             .getGesturePane()
                             .translateBy(new Dimension2D(round(effortX[0]), round(effortY[0])));
+
+                        // First, validate bounds
+                        if (mapController
+                                        .getNodeToLocationBox()
+                                        .get(finalRight)
+                                        .getBoundsInParent()
+                                        .getMaxX()
+                                    + effortX[0]
+                                > mapController.getMapWidth()
+                            || mapController
+                                        .getNodeToCircleMap()
+                                        .get(finalLeft)
+                                        .getBoundsInParent()
+                                        .getMinX()
+                                    + effortX[0]
+                                < 0
+                            || mapController
+                                        .getNodeToLocationBox()
+                                        .get(finalLowest)
+                                        .getBoundsInParent()
+                                        .getMaxY()
+                                    + effortY[0]
+                                > mapController.getMapHeight()
+                            || mapController
+                                        .getNodeToLocationBox()
+                                        .get(finalHighest)
+                                        .getBoundsInParent()
+                                        .getMinY()
+                                    + effortY[0]
+                                < 0) {
+                          return;
+                        }
 
                         for (Node node : selectedNodes) {
                           moveCircleToPosition(
@@ -1419,10 +1437,18 @@ public class MapEditorController implements IController {
           event.consume();
 
           // First, validate the bounds
-          if (finalRight.getXCoord() + xDiff > mapController.getMapWidth()) return;
-          if (finalLeft.getXCoord() + xDiff < 0) return;
-          if (finalLowest.getYCoord() + yDiff > mapController.getMapHeight()) return;
-          if (finalHighest.getYCoord() + yDiff < 0) return;
+          if (mapController.getNodeToLocationBox().get(finalRight).getBoundsInParent().getMaxX()
+                  + xDiff
+              > mapController.getMapWidth()) return;
+          if (mapController.getNodeToCircleMap().get(finalLeft).getBoundsInParent().getMinX()
+                  + xDiff
+              < 0) return;
+          if (mapController.getNodeToLocationBox().get(finalLowest).getBoundsInParent().getMaxY()
+                  + yDiff
+              > mapController.getMapHeight()) return;
+          if (mapController.getNodeToLocationBox().get(finalHighest).getBoundsInParent().getMinY()
+                  + yDiff
+              < 0) return;
 
           // For each selected node
           for (Node selectedNode : selectedNodes) {
@@ -1779,35 +1805,6 @@ public class MapEditorController implements IController {
     }
 
     selectedNodes.clear(); // Clear the selected nodes. Do this all at once for efficiency
-
-    if (mapController.getNodeToCircleMap().get(left).getCenterX() < 20) {
-      xDiff = 50 - left.getXCoord();
-    }
-    if (mapController.getNodeToLocationBox().get(highest).getLayoutY() < 20) {
-      yDiff = 50 - highest.getYCoord();
-    }
-    if (mapController.getNodeToLocationBox().get(lowest).getLayoutY()
-            + mapController.getNodeToLocationBox().get(lowest).getHeight()
-        > mapController.getCurrentDrawingPane().getHeight() - 20) {
-      yDiff =
-          (int)
-              (round(
-                      (mapController.getCurrentDrawingPane().getHeight()
-                              - mapController.getNodeToLocationBox().get(lowest).getHeight())
-                          - 100)
-                  - lowest.getYCoord());
-    }
-    if (mapController.getNodeToLocationBox().get(right).getLayoutX()
-            + mapController.getNodeToLocationBox().get(right).getWidth()
-        > mapController.getCurrentDrawingPane().getWidth() - 20) {
-      xDiff =
-          (int)
-              (round(
-                      (mapController.getCurrentDrawingPane().getWidth()
-                              - -mapController.getNodeToLocationBox().get(right).getWidth())
-                          - 200)
-                  - right.getXCoord());
-    }
 
     // Now actually do the move
     for (Node node : nodes) {
