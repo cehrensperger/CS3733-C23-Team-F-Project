@@ -26,10 +26,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -129,6 +126,146 @@ public class InternalTransportEditorController extends ServiceRequestController
     equipment.setItems(FXCollections.observableArrayList(InternalTransport.Equipment.values()));
     mode.setItems(FXCollections.observableArrayList(InternalTransport.ModeOfTransport.values()));
     session.close();
+
+    assignedBox.setButtonCell(
+        new ListCell<HospitalUser>() {
+          @Override
+          protected void updateItem(HospitalUser item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Assigned User");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    statusBox.setButtonCell(
+        new ListCell<ServiceRequest.Status>() {
+          @Override
+          protected void updateItem(ServiceRequest.Status item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Status");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    to.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Transfer To");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    from.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Transfer From");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    vision.setButtonCell(
+        new ListCell<InternalTransport.VisionStatus>() {
+          @Override
+          protected void updateItem(InternalTransport.VisionStatus item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Vision");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    hearing.setButtonCell(
+        new ListCell<InternalTransport.HearingStatus>() {
+          @Override
+          protected void updateItem(InternalTransport.HearingStatus item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Hearing");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    consciousness.setButtonCell(
+        new ListCell<InternalTransport.ConsciousnessStatus>() {
+          @Override
+          protected void updateItem(InternalTransport.ConsciousnessStatus item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Consciousness");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    condition.setButtonCell(
+        new ListCell<InternalTransport.HealthStatus>() {
+          @Override
+          protected void updateItem(InternalTransport.HealthStatus item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Condition");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    equipment.setButtonCell(
+        new ListCell<InternalTransport.Equipment>() {
+          @Override
+          protected void updateItem(InternalTransport.Equipment item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Equipment");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    mode.setButtonCell(
+        new ListCell<InternalTransport.ModeOfTransport>() {
+          @Override
+          protected void updateItem(InternalTransport.ModeOfTransport item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Mode of Transfer");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
   }
 
   public void updateFields() {
@@ -209,6 +346,7 @@ public class InternalTransportEditorController extends ServiceRequestController
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         errortoastAnimation();
@@ -243,6 +381,8 @@ public class InternalTransportEditorController extends ServiceRequestController
     isolation.setSelected(false);
     personal.setText("");
     reason.setText("");
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
   }
 
   public void handleDelete(ActionEvent event) {

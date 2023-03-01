@@ -105,19 +105,6 @@
                   <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
-            <Button mnemonicParsing="false" onAction="#showMoveVisualizer" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Move Visualizer">
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin>
-            </Button>
-            <Text fx:id="h7" styleClass="warningText" text="Click to view the move visualizer" wrappingWidth="170.0">
-               <font>
-                  <Font size="10.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="18.0" />
-               </VBox.margin>
-            </Text>
          </children>
       </VBox>
       <AnchorPane fx:id="mapPane" layoutX="250.0" layoutY="20.0" prefHeight="10.0" prefWidth="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">

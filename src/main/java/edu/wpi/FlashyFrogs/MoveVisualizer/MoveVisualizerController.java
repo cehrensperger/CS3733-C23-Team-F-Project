@@ -89,6 +89,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   // visualizer
   private static PauseTransition backToVisualizerTimer = null;
 
+  private Clip clip; // Clip to prevent duplicate audio
+
   @FXML private SearchableComboBox<LocationName> defaultLocation;
 
   /** Sets up the move visualizer, including all tables, and the map */
@@ -213,7 +215,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
       generateLeftAndRight(edges, defaultNode, edgesConnectToFirstNode);
     } else {
-      System.out.println("No node associated with this location!");
+      //      System.out.println("No node associated with this location!");
     }
 
     // Set the boxes to contain them
@@ -253,7 +255,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
                     generateLeftAndRight(edges, newDefaultNode, newEdgesList);
                   } else {
-                    System.out.println("no node associated with this location!");
+                    //                    System.out.println("no node associated with this
+                    // location!");
                   }
                 }
               }
@@ -1066,6 +1069,9 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @FXML
   public void handleAudioDirections()
       throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+    if (clip != null) {
+      clip.stop();
+    }
 
     String speakText =
         leftLocation.getText().toLowerCase()
@@ -1092,7 +1098,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     InputStream inps = new BufferedInputStream(url.openStream());
 
     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inps);
-    Clip clip = AudioSystem.getClip();
+    clip = AudioSystem.getClip();
     clip.open(audioInputStream);
     clip.start();
   }

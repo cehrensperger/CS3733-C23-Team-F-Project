@@ -14,7 +14,6 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -76,6 +75,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
    */
   @SneakyThrows
   public void initialize() {
+    //    System.out.println("initialize");
     moveDatePicker.setValue(LocalDate.now());
     moveDatePicker
         .valueProperty()
@@ -210,6 +210,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
   @SneakyThrows
   public void handleGetPath() {
+    //    System.out.println("getting path");
     try {
       if (destinationBox.getValue().equals("") && (startingBox.getValue().equals(""))) {
         generatePathButton.setDisable(true);
@@ -219,6 +220,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         generatePathButton.setDisable(true);
         // start the animation
         mapController.startAnimation();
+        //        System.out.println("starting animation");
 
         // get algorithm to use in pathfinding from algorithmBox
         if (algorithmBox.getValue() != null) {
@@ -230,6 +232,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         }
 
         unColorFloor(); // hide the last drawn path
+        //        System.out.println("last path hidden");
         // acquire the lock
         lock.lock();
 
@@ -252,7 +255,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       // if nodes is null, that means the there was no possible path
       //      error.setTextFill(Paint.valueOf(Color.RED.toString()));
       //      error.setText("No path found");
-      System.out.println("no path found");
+      //      System.out.println("no path found");
     } else {
       mapController
           .getMapFloorProperty()
@@ -380,36 +383,36 @@ public class PathfindingController extends AbstractPathVisualizerController impl
                       moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
 
-      SerialPort[] ports = SerialPort.getCommPorts();
-
-      if (ports.length != 0) {
-
-        ports[0].setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
-        ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 0); // Blocking write
-
-        for (Node node : currentPath) {
-          if (ports[0].isOpen() || ports[0].openPort()) {
-            //            System.out.println("Port opened successfully");
-            byte[] bytes = node.getId().getBytes(StandardCharsets.US_ASCII);
-            ports[0].writeBytes(bytes, bytes.length);
-          } else {
-            System.out.println("Failed to open port");
-            System.out.println(ports[0].getLastErrorCode());
-          }
-        }
-
-        if (ports[0].isOpen() || ports[0].openPort()) {
-          String endMessage = "endMessage00";
-          byte[] bytes = endMessage.getBytes(StandardCharsets.US_ASCII);
-          ports[0].writeBytes(bytes, bytes.length);
-        }
-
-        ports[0].closePort();
-        //        System.out.println("Port closed");
-      }
-
-      // Call unlock() on the UI thread when finished
+      //        SerialPort[] ports = SerialPort.getCommPorts();
+      //
+      //        if (ports.length != 0) {
+      //
+      //          ports[0].setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
+      //          ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 0); // Blocking
+      // write
+      //
+      //          for (Node node : currentPath) {
+      //            if (ports[0].isOpen() || ports[0].openPort()) {
+      //              //            System.out.println("Port opened successfully");
+      //              byte[] bytes = node.getId().getBytes(StandardCharsets.US_ASCII);
+      //              ports[0].writeBytes(bytes, bytes.length);
+      //            } else {
+      //              System.out.println("Failed to open port");
+      //              System.out.println(ports[0].getLastErrorCode());
+      //            }
+      //          }
+      //
+      //          if (ports[0].isOpen() || ports[0].openPort()) {
+      //            String endMessage = "endMessage00";
+      //            byte[] bytes = endMessage.getBytes(StandardCharsets.US_ASCII);
+      //            ports[0].writeBytes(bytes, bytes.length);
+      //          }
+      //
+      //          ports[0].closePort();
+      //          //        System.out.println("Port closed");
       Platform.runLater(PathfindingController.this::unlock);
     }
+
+    // Call unlock() on the UI thread when finished
   }
 }

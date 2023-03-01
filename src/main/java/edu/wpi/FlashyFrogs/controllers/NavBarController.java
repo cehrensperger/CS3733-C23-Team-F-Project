@@ -12,10 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.layout.AnchorPane;
@@ -45,6 +42,10 @@ public class NavBarController {
   @FXML private SVGPath heatSVG;
   @FXML Button heat;
   @FXML Button heat2;
+  @FXML Button stats;
+  @FXML Button stats2;
+  @FXML SVGPath statsSVG;
+  @FXML Text statsText;
 
   @FXML private Button back;
   @FXML private SVGPath backSVG;
@@ -123,24 +124,11 @@ public class NavBarController {
     menu.setDisable(true);
     menu.hide();
 
-    menu.hoverProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (newValue) {
-
-              } else {
-
-              }
-            });
     // header.setDisable(true);
     // header.setOpacity(0);
     updateToggleSFX();
     updateMode();
-    navButtons.setVisible(false);
-    navButtons.setDisable(true);
-    navButtons.setOpacity(0);
-    toast.setVisible(false);
-    toast.setDisable(true);
+    signUserOutWithoutSceneChange(); // Make sure we're in logged-out mode
     //    srButton.setOpacity(0);
     //    srButton.setDisable(true);
     //    homeButton.setOpacity(0);
@@ -152,10 +140,6 @@ public class NavBarController {
 
     dateAndTime();
     // clockLabel.setTextFill(Paint.valueOf("white"));
-    back.setDisable(true);
-    backSVG.setOpacity(0);
-    back2.setDisable(true);
-    backText.setVisible(false);
 
     // Setup the nav button hover handlers
     for (int i = 0; i < navButtons.getChildren().size(); i++) {
@@ -376,6 +360,7 @@ public class NavBarController {
   }
 
   public void logIn() {
+
     loggedOutMenu.setDisable(true);
     loggedOutMenu.setVisible(false);
     menu.setVisible(true);
@@ -394,6 +379,16 @@ public class NavBarController {
     toast.setVisible(true);
     toast.setDisable(false);
 
+    // For each node on the map
+    for (Node node : navButtons.getChildren()) {
+      node.setVisible(true); // Show it
+    }
+
+    // For each node on the map
+    for (Node node : toast.getChildren()) {
+      node.setVisible(true); // Show it
+    }
+
     if (!isAdmin) {
       mapEditor.setDisable(true);
       mapEditor2.setDisable(true);
@@ -411,6 +406,10 @@ public class NavBarController {
       heat2.setDisable(true);
       heatText.setOpacity(0);
       heatSVG.setOpacity(0);
+      stats.setDisable(true);
+      stats2.setDisable(true);
+      statsText.setOpacity(0);
+      statsSVG.setOpacity(0);
 
       SVGLogin.setOpacity(0);
 
@@ -447,7 +446,12 @@ public class NavBarController {
       heat2.setDisable(false);
       heatText.setOpacity(1);
       heatSVG.setOpacity(1);
+      stats.setDisable(false);
+      stats2.setDisable(false);
+      statsText.setOpacity(1);
+      statsSVG.setOpacity(1);
     }
+    Fapp.setScene("views", "Home");
   }
 
   public AnchorPane getAnchorPane() {
@@ -456,7 +460,6 @@ public class NavBarController {
 
   @FXML
   private void showDescriptions(MouseEvent event) throws IOException {
-    //    System.out.println("in");
     toastAnimationForward();
   }
 
@@ -473,14 +476,6 @@ public class NavBarController {
   @FXML
   private void handleMoveVisualizer(ActionEvent event) throws IOException {
     Fapp.setScene("MoveVisualizer", "MoveVisualizer");
-  }
-
-  @FXML
-  private void handleSignOut(ActionEvent event) throws IOException {
-    Fapp.setScene("Account", "Login");
-    navButtons.setVisible(false);
-    navButtons.setDisable(true);
-    navButtons.setOpacity(0);
   }
 
   @FXML
@@ -516,6 +511,11 @@ public class NavBarController {
   @FXML
   private void handleHeat(ActionEvent event) throws IOException {
     Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
+  }
+
+  @FXML
+  private void handleStats(ActionEvent event) throws IOException {
+    Fapp.setScene("ServiceRequests", "ServiceRequestStatsPage");
   }
 
   @FXML
@@ -608,11 +608,11 @@ public class NavBarController {
 
   @FXML
   private void handleBack(ActionEvent event) throws IOException {
-    //
+    Fapp.handleBack();
   }
 
   @FXML
-  private void closeApp() {
+  public void closeApp() {
     Stage stage = (Stage) anchorPane.getScene().getWindow();
     stage.close();
   }
@@ -625,6 +625,7 @@ public class NavBarController {
 
   /** */
   public void signUserOutWithoutSceneChange() {
+    Fapp.resetStackLogin(); // Reset the stack
     CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
     menu.setText("");
     menu.setDisable(true);
@@ -635,11 +636,20 @@ public class NavBarController {
     loggedOutMenu.setText("Welcome, Guest");
     // header.setDisable(true);
     // header.setOpacity(0);
-    navButtons.setVisible(false);
-    navButtons.setDisable(true);
-    navButtons.setOpacity(0);
-    toast.setVisible(false);
-    toast.setDisable(true);
+
+    // For each node on the map
+    for (Node node : navButtons.getChildren()) {
+      if (node.getClass() != VBox.class) { // If it's not a VBox
+        node.setVisible(false); // Hide it
+      }
+    }
+
+    // For each node on the map
+    for (Node node : toast.getChildren()) {
+      if (node.getClass() != VBox.class) { // If it's not a VBox
+        node.setVisible(false); // Hide it
+      }
+    }
   }
 
   /**

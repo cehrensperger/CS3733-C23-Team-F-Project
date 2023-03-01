@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -102,6 +103,83 @@ public class ComputerEditorController extends ServiceRequestController implement
     urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     type.setItems(FXCollections.observableArrayList(ComputerService.DeviceType.values()));
     session.close();
+
+    assignedBox.setButtonCell(
+        new ListCell<HospitalUser>() {
+          @Override
+          protected void updateItem(HospitalUser item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Assigned User");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    statusBox.setButtonCell(
+        new ListCell<ServiceRequest.Status>() {
+          @Override
+          protected void updateItem(ServiceRequest.Status item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Status");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+    urgency.setButtonCell(
+        new ListCell<ServiceRequest.Urgency>() {
+          @Override
+          protected void updateItem(ServiceRequest.Urgency item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Urgency");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    locationBox.setButtonCell(
+        new ListCell<LocationName>() {
+          @Override
+          protected void updateItem(LocationName item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Location of Request");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    service.setButtonCell(
+        new ListCell<ComputerService.ServiceType>() {
+          @Override
+          protected void updateItem(ComputerService.ServiceType item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Service Type");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
+
+    type.setButtonCell(
+        new ListCell<ComputerService.DeviceType>() {
+          @Override
+          protected void updateItem(ComputerService.DeviceType item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+              setText("Device Type");
+            } else {
+              setText(item.toString());
+            }
+          }
+        });
   }
 
   public void updateFields() {
@@ -180,6 +258,8 @@ public class ComputerEditorController extends ServiceRequestController implement
     date.valueProperty().set(null);
     urgency.valueProperty().set(null);
     description.setText("");
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
   }
 
   public void handleDelete(ActionEvent event) {

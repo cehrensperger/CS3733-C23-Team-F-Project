@@ -277,18 +277,18 @@
     -fx-background-radius: 0 10 10 0;
 }
 
-.searchable-combo-box
+.combo-box
     /** controls all searchable combo boxes within the app **/
 {
     -fx-background-radius: 10 10 10 10;
 
 }
 
-.searchable-combo-box .list-cell {
+.combo-box .list-cell {
 
 }
 
-.searchable-combo-box .list-cell:hover {
+.combo-box .list-cell:hover {
 }
 
 .combo-box> .text-field
@@ -567,5 +567,11 @@
 }
 .scroll-pane > .viewport {
     /** Right now, only used on acknowledgementsPage as a placeholder **/
+}
+
+.srText
+{
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 12pt;
 }
 

@@ -31,12 +31,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.tableview2.TableView2;
 
 public class TrafficAnalyzerController implements IController {
+
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  boolean hDone = false;
   @FXML private Pane errtoast;
   @FXML private Rectangle errcheck2;
   @FXML private Rectangle errcheck1;
@@ -62,6 +68,10 @@ public class TrafficAnalyzerController implements IController {
   @FXML
   @SneakyThrows
   private void initialize() {
+
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
     // Set the table up
     typeColumn.setCellValueFactory((row) -> new SimpleStringProperty(row.getValue().type()));
     typeColumn.setReorderable(false);
@@ -441,7 +451,20 @@ public class TrafficAnalyzerController implements IController {
 
   /** Shows help for this page */
   @Override
-  public void help() {}
+  public void help() {
+
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      hDone = false;
+    }
+  }
 
   /**
    * Updates the map on the button press

@@ -202,7 +202,9 @@ class MapEntity {
         nodeToLocationNameMap.keySet().stream()
             .filter((node) -> nodeToLocationNameMap.get(node).contains(locationName))
             .findFirst()
-            .orElseThrow();
+            .orElse(null);
+
+    if (toDelete == null) return; // Don't do anything if we get nothing back
 
     // Delete it from the mapping, don't remove the location name map
     nodeToLocationNameMap.get(toDelete).remove(locationName);

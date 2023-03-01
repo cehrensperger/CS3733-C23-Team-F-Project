@@ -63,6 +63,13 @@ public class MapController {
   @FXML private Circle cir5;
   @FXML private Circle cir6;
   private ParallelTransition parallelTransition = new ParallelTransition();
+  private TranslateTransition tt1 = new TranslateTransition();
+  private TranslateTransition tt2 = new TranslateTransition();
+  private TranslateTransition tt3 = new TranslateTransition();
+  private TranslateTransition tt4 = new TranslateTransition();
+  private TranslateTransition tt5 = new TranslateTransition();
+  private TranslateTransition tt6 = new TranslateTransition();
+
   @FXML private MFXButton upFloorButton;
   @FXML private MFXButton downFloorButton;
   @FXML private Label floorSelector; // Floor selector label
@@ -682,8 +689,6 @@ public class MapController {
   }
 
   private void setDisplayText(Display display) {
-    if (displayEnum == display) return; // Don't do anything if there's no change
-
     displayEnum = display;
     Collection<VBox> boxes = getNodeToLocationBox().values();
 
@@ -883,9 +888,27 @@ public class MapController {
    */
   public void startAnimation() {
     root.setMouseTransparent(true); // Make this intercept all mouse clicks
-
+    parallelTransition.jumpTo(Duration.ZERO);
+    tt1.jumpTo(Duration.ZERO);
+    tt2.jumpTo(Duration.ZERO);
+    tt3.jumpTo(Duration.ZERO);
+    tt4.jumpTo(Duration.ZERO);
+    tt5.jumpTo(Duration.ZERO);
+    tt6.jumpTo(Duration.ZERO);
+    tt1.stop();
+    tt2.stop();
+    tt3.stop();
+    tt4.stop();
+    tt5.stop();
+    tt6.stop();
     parallelTransition.stop();
-
+    parallelTransition.getChildren().clear();
+    cir1.setTranslateY(0);
+    cir2.setTranslateY(0);
+    cir3.setTranslateY(0);
+    cir4.setTranslateY(0);
+    cir5.setTranslateY(0);
+    cir6.setTranslateY(0);
     cir1.setVisible(true);
     cir2.setVisible(true);
     cir3.setVisible(true);
@@ -901,6 +924,7 @@ public class MapController {
     tt1.setAutoReverse(true);
     tt1.setCycleCount(2);
     tt1.setDelay(Duration.seconds(0.0));
+
     TranslateTransition tt2 = new TranslateTransition(Duration.seconds(0.2), cir2);
     tt2.setInterpolator(Interpolator.EASE_BOTH);
     tt2.setToY(-50);
@@ -943,10 +967,28 @@ public class MapController {
   /** Handles stopping the map animation. Handles hiding and stopping it */
   public void stopAnimation() {
     root.setMouseTransparent(false); // Make this intercept all mouse clicks
-
+    cir1.setTranslateY(0);
+    cir2.setTranslateY(0);
+    cir3.setTranslateY(0);
+    cir4.setTranslateY(0);
+    cir5.setTranslateY(0);
+    cir6.setTranslateY(0);
     // stop the animation
     parallelTransition.jumpTo(Duration.ZERO);
+    tt1.jumpTo(Duration.ZERO);
+    tt2.jumpTo(Duration.ZERO);
+    tt3.jumpTo(Duration.ZERO);
+    tt4.jumpTo(Duration.ZERO);
+    tt5.jumpTo(Duration.ZERO);
+    tt6.jumpTo(Duration.ZERO);
+    tt1.stop();
+    tt2.stop();
+    tt3.stop();
+    tt4.stop();
+    tt5.stop();
+    tt6.stop();
     parallelTransition.stop();
+    parallelTransition.getChildren().clear();
 
     // hide the circles
     cir1.setVisible(false);

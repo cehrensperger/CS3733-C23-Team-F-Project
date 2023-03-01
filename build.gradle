@@ -68,6 +68,10 @@ dependencies {
             // https://mvnrepository.com/artifact/com.fazecast/jSerialComm
             'com.fazecast:jSerialComm:2.9.3',
 
+            'org.apache.commons:commons-math3:3.6.1',
+
+            //excel file stuff??
+            'org.apache.poi:poi:5.2.0',
 
                     'org.apache.commons:commons-math3:3.6.1'
     )
@@ -106,7 +110,6 @@ dependencies {
             "org.testfx:testfx-core:4.0.16-alpha",
             'org.junit.jupiter:junit-jupiter:5.6.0',
             'org.testfx:testfx-junit5:4.0.16-alpha',
-//            'com.oracle.ojdbc:ojdbc10:19.3.0.0',
     )
 }
 

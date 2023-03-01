@@ -105,6 +105,7 @@ public class NewUserController implements IController {
         toastAnimation();
         ses.persist(newUser);
         transaction.commit();
+        Sound.SUBMITTED.play();
         loginAdministratorController.initialize();
       } catch (Exception e) {
         errortoastAnimation1();

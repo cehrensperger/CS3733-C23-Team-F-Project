@@ -99,6 +99,7 @@
     /** honestly just if you need a text bigger than body but smaller than header and bold **/
 {
     -fx-text-fill:#012D5A;
+    -fx-fill: #012D5A;
 }
 
 .warningText
@@ -106,6 +107,7 @@
      button is clicked**/
 {
     -fx-fill: #b6000b;
+    -fx-background-color: #F6BD38;
 }
 
 .backButton
@@ -174,6 +176,7 @@
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
 
+
 }
 
 .fields
@@ -220,7 +223,7 @@
 {
 }
 
-.searchable-combo-box
+.combo-box
     /** controls all searchable combo boxes within the app **/
 {
     -fx-prompt-text-fill: #012D5A;
@@ -228,16 +231,16 @@
     -fx-context-menu-enabled: #012D5A;
 }
 
-.searchable-combo-box .list-cell {
+.combo-box .list-cell {
     -fx-text-background-color: #012D5a;
 }
 
-.searchable-combo-box .combo-box-popup .list-view .list-cell:selected {
+.combo-box .combo-box-popup .list-view .list-cell:selected {
     -fx-background-color: #012D5A;
     -fx-text-fill: white;
 }
 
-.searchable-combo-box .combo-box-popup .list-view .list-cell:hover {
+.combo-box .combo-box-popup .list-view .list-cell:hover {
     -fx-background-color: #F6BD38;
     -fx-text-fill: #012d5a;
     -fx-text-background-color: #012D5a;
@@ -496,6 +499,7 @@
 .check-box
 {
     -fx-text-fill: #012d5a;
+    -fx-fill: #012d5a;
 }
 
 .check-box .box
@@ -581,4 +585,9 @@
 {
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
+}
+
+.srText
+{
+    -fx-fill: #012D5A;
 }

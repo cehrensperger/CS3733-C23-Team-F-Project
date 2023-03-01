@@ -1,5 +1,6 @@
 package edu.wpi.FlashyFrogs;
 
+import edu.wpi.FlashyFrogs.Accounts.LoginController;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.TrafficAnalyzer.FloydWarshallRunner;
@@ -212,9 +213,19 @@ public class Fapp extends Application {
 
   @SneakyThrows
   public static void handleBack() {
-    prevPage.pop();
-    String[] page = prevPage.pop().split(",");
-    Fapp.setScene(page[0], page[1]);
+    if (prevPage.size() > 1) {
+      prevPage.pop();
+      String[] page = prevPage.pop().split(",");
+      Fapp.setScene(page[0], page[1]);
+    } else {
+      // If back is pressed on a page without full nav set and not the login page
+      if (getIController() == null || getIController().getClass() != LoginController.class) {
+        Fapp.logOutWithoutSceneChange(); // Ensure we're logged out
+        Fapp.setScene("Accounts", "Login"); // Go to login
+      } else {
+        controller.closeApp(); // Close the app if it's the login page
+      }
+    }
   }
 
   public static void resetStack() {
