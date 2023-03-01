@@ -312,11 +312,11 @@ public abstract class AbstractPathVisualizerController implements IController {
 
     instructions.add(
         new Instruction(
-            "You have arrived at "
-                + currentPath
-                    .get(currentPath.size() - 1)
-                    .getCurrentLocation(mapController.getMapSession(), date)
-                    .get(0),
+            "You have arrived at your destination!",
+            //                + currentPath
+            //                    .get(currentPath.size() - 1)
+            //                    .getCurrentLocation(mapController.getMapSession(), date)
+            //                    .get(0),
             currentPath.get(currentPath.size() - 1)));
   }
 
