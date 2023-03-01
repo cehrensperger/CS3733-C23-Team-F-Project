@@ -1137,4 +1137,10 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     sequence.jumpTo(Duration.ZERO);
     sequence.playFromStart();
   }
+
+  public void swapLocation() {
+    String holder = leftLocation.getText();
+    leftLocation.setText(rightLocation.getText());
+    rightLocation.setText(holder);
+  }
 }
