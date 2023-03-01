@@ -14,8 +14,13 @@ import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.HashMap;
+import javafx.animation.FadeTransition;
+import javafx.animation.FillTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,9 +30,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
 import org.hibernate.Session;
@@ -35,6 +47,13 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class LoginController implements IController {
 
+  public Pane errtoast;
+  public Rectangle errcheck2;
+  public Rectangle errcheck1;
+  public Pane errtoast1;
+  public Rectangle errcheck21;
+  public Rectangle errcheck11;
+  public BorderPane borderPane;
   @FXML private AnchorPane rootPane;
   @FXML private TextField username;
   @FXML private PasswordField password;
@@ -127,23 +146,29 @@ public class LoginController implements IController {
   public void loginButton(ActionEvent actionEvent) {
     if (username.getText().equals("") || password.getText().equals("")) {
       // One of the values is left null
-      errorMessage.setText("Please fill out all fields!");
+      errortoastAnimation();
+      fadeOutAnimation();
+      login.setDisable(true);
       Sound.ERROR.play();
-      errorMessage.setVisible(true);
+
     } else if (users.containsKey(username.getText())
         && users.get(username.getText()).checkPasswordEqual(password.getText())) {
       CurrentUserEntity.CURRENT_USER.setCurrentUser(users.get(username.getText()).getUser());
-      Fapp.setScene("views", "Home");
-      Fapp.logIn();
       CurrentUserEntity.CURRENT_USER.setCurrentUser(users.get(username.getText()).getUser());
+      Fapp.logIn();
       backgroundText = ""; // Clear the background text
     } else {
       // if we haven't exited by this point
-      errorMessage.setText("Invalid Username or Password.");
+      errortoastAnimation1();
+      login.setDisable(true);
       Sound.ERROR.play();
-      errorMessage.setVisible(true);
     }
   }
+
+  //  public void loginthread() {
+  //    System.out.println("inLoginThread");
+  //
+  //  }
 
   public void forgotPass(MouseEvent event) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/ForgotPass.fxml"));
@@ -174,6 +199,102 @@ public class LoginController implements IController {
     CurrentUserEntity.CURRENT_USER.setCurrentUser(
         new HospitalUser("a", "a", "a", HospitalUser.EmployeeType.STAFF, new Department()));
     Fapp.setScene("Pathfinding", "Pathfinding");
+  }
+
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-280);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(280.0);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    sequence.setOnFinished(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            login.setDisable(false);
+          }
+        });
+  }
+
+  public void fadeOutAnimation() {
+
+    login.setDisable(true);
+    FadeTransition fadout = new FadeTransition(Duration.seconds(1), rootPane);
+    fadout.setFromValue(1);
+    fadout.setToValue(0);
+    fadout.setCycleCount(1);
+    fadout.setAutoReverse(false);
+    fadout.play();
+    fadout.setOnFinished(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            login.setDisable(false);
+          }
+        });
+  }
+
+  public void errortoastAnimation1() {
+    errtoast1.getTransforms().clear();
+    errtoast1.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast1);
+    translate1.setByX(-370);
+    translate1.setAutoReverse(true);
+    errcheck11.setFill(Color.web("#012D5A"));
+    errcheck21.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck11, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck21, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast1);
+    translateBack1.setDelay(Duration.seconds(0.6));
+    translateBack1.setByX(370);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
+    sequence.setOnFinished(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            login.setDisable(false);
+          }
+        });
   }
 
   public void onClose() {}

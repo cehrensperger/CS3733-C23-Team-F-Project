@@ -12,10 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.layout.AnchorPane;
@@ -363,6 +360,7 @@ public class NavBarController {
   }
 
   public void logIn() {
+
     loggedOutMenu.setDisable(true);
     loggedOutMenu.setVisible(false);
     menu.setVisible(true);
@@ -453,6 +451,7 @@ public class NavBarController {
       statsText.setOpacity(1);
       statsSVG.setOpacity(1);
     }
+    Fapp.setScene("views", "Home");
   }
 
   public AnchorPane getAnchorPane() {
