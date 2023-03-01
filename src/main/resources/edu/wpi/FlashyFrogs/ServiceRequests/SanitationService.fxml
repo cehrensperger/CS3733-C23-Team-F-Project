@@ -51,6 +51,7 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Location of Request" />
                         <SearchableComboBox fx:id="locationBox" promptText="Location of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
@@ -72,32 +73,49 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Sanitation Type" />
                         <SearchableComboBox fx:id="sanitationType" promptText="Sanitation Type" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Date Preference" />
+                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields">
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin></DatePicker>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Urgency" />
                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                            <VBox.margin>
-                              <Insets bottom="18.0" top="18.0" />
+                              <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Biohazard" />
                         <SearchableComboBox fx:id="biohazard" promptText="Biohazard" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Description of Request" />
                         <TextField fx:id="description" prefWidth="200.0" promptText="Description of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <CheckBox fx:id="isolation" mnemonicParsing="false" prefHeight="32.0" prefWidth="286.0" styleClass="fields" text="Needs Isolation?">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Patient Isolation" />
+                        <HBox alignment="CENTER_LEFT" maxHeight="88.0" maxWidth="252.0" minHeight="26.0" minWidth="183.0" prefHeight="30.0" prefWidth="250.0" spacing="10.0" styleClass="fields">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Needs Isolation?">
+                                 <HBox.margin>
+                                    <Insets left="7.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <CheckBox fx:id="isolation" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" />
+                           </children>
                            <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              <Insets bottom="2.0" top="2.0" />
                            </padding>
-                        </CheckBox>
+                        </HBox>
                         <HBox alignment="TOP_CENTER" prefHeight="19.0" prefWidth="200.0">
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
