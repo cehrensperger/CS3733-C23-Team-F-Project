@@ -394,6 +394,16 @@ public class NavBarController {
     toast.setVisible(true);
     toast.setDisable(false);
 
+    // For each node on the map
+    for (Node node : navButtons.getChildren()) {
+      node.setVisible(true); // Show it
+    }
+
+    // For each node on the map
+    for (Node node : toast.getChildren()) {
+      node.setVisible(true); // Show it
+    }
+
     if (!isAdmin) {
       mapEditor.setDisable(true);
       mapEditor2.setDisable(true);
@@ -481,14 +491,6 @@ public class NavBarController {
   @FXML
   private void handleMoveVisualizer(ActionEvent event) throws IOException {
     Fapp.setScene("MoveVisualizer", "MoveVisualizer");
-  }
-
-  @FXML
-  private void handleSignOut(ActionEvent event) throws IOException {
-    Fapp.setScene("Account", "Login");
-    navButtons.setVisible(false);
-    navButtons.setDisable(true);
-    navButtons.setOpacity(0);
   }
 
   @FXML
@@ -638,6 +640,7 @@ public class NavBarController {
 
   /** */
   public void signUserOutWithoutSceneChange() {
+    Fapp.resetStackLogin(); // Reset the stack
     CurrentUserEntity.CURRENT_USER.setCurrentUser(null);
     menu.setText("");
     menu.setDisable(true);
@@ -648,11 +651,20 @@ public class NavBarController {
     loggedOutMenu.setText("Welcome, Guest");
     // header.setDisable(true);
     // header.setOpacity(0);
-    navButtons.setVisible(false);
-    navButtons.setDisable(true);
-    navButtons.setOpacity(0);
-    toast.setVisible(false);
-    toast.setDisable(true);
+
+    // For each node on the map
+    for (Node node : navButtons.getChildren()) {
+      if (node.getClass() != VBox.class) { // If it's not a VBox
+        node.setVisible(false); // Hide it
+      }
+    }
+
+    // For each node on the map
+    for (Node node : toast.getChildren()) {
+      if (node.getClass() != VBox.class) { // If it's not a VBox
+        node.setVisible(false); // Hide it
+      }
+    }
   }
 
   /**
