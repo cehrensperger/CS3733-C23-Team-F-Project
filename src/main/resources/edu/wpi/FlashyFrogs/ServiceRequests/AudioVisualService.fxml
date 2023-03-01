@@ -35,7 +35,7 @@
                      <children>
                         <Text fx:id="h1" styleClass="warningText" text="Where is the audio/visual device needed" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="46.0" />
+                              <Insets top="66.0" />
                            </VBox.margin>
                         </Text>
                      </children>
@@ -143,27 +143,27 @@
                      <children>
                         <Text fx:id="h2" styleClass="warningText" text="What type of device do you need" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets />
+                              <Insets top="22.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h3" styleClass="warningText" text="What is the reason for the device requested" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="18.0" />
+                              <Insets top="38.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h4" styleClass="warningText" text="What date is the device needed by" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="16.0" />
+                              <Insets top="36.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h5" styleClass="warningText" text="What is the urgency of this request" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="24.0" />
+                              <Insets top="46.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h6" styleClass="warningText" text="Describe the request" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="28.0" />
+                              <Insets top="48.0" />
                            </VBox.margin>
                         </Text>
                      </children>

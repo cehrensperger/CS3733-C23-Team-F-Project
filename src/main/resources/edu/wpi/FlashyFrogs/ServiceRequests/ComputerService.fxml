@@ -35,12 +35,12 @@
                      <children>
                         <Text fx:id="h1" styleClass="warningText" text="What is the best contact number for the owner of the device" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="32.0" />
+                              <Insets top="52.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h2" styleClass="warningText" text="Where is the device located" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="148.0" />
+                              <Insets top="168.0" />
                            </VBox.margin>
                         </Text>
                      </children>
@@ -157,29 +157,29 @@
                         <Insets left="10.0" top="8.0" />
                      </HBox.margin>
                      <children>
-                        <Text fx:id="h3" styleClass="warningText" text="Are you requesting a new device or do you need a current device repaired??" wrappingWidth="100.0">
+                        <Text fx:id="h3" styleClass="warningText" text="Are you requesting a new device or do you need a current device repaired?" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="31.0" />
+                              <Insets top="50.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h4" styleClass="warningText" text="What type of device do you need service for" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="6.0" />
+                              <Insets top="28.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h5" styleClass="warningText" text="What is the model of the device that you need service for" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets top="30.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h6" styleClass="warningText" text="What is the urgency of the IT request" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="16.0" />
+                              <Insets top="36.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h7" styleClass="warningText" text="Describe the IT request" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="24.0" />
+                              <Insets top="46.0" />
                            </VBox.margin>
                         </Text>
                      </children>

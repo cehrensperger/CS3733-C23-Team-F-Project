@@ -31,17 +31,17 @@
                      <children>
                         <Text fx:id="h1" styleClass="warningText" text="Enter the ID of the patient being transported" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="45.0" />
+                              <Insets top="66.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h2" styleClass="warningText" text="What is the location of the patient" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="13.0" />
+                              <Insets top="38.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h3" styleClass="warningText" text="Explain what the prescription is being prescribed for" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets top="38.0" />
                            </VBox.margin>
                         </Text>
                      </children>
@@ -151,21 +151,24 @@
                      <children>
                         <Text fx:id="h4" styleClass="warningText" text="What is the medicine Prescribed" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="44.0" />
+                              <Insets top="70.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h5" styleClass="warningText" text="What is the dosage of the medication" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="12.0" />
+                              <Insets top="44.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h6" styleClass="warningText" text="What is the urgency of the delivery" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="16.0" />
+                              <Insets top="44.0" />
                            </VBox.margin>
                         </Text>
                         <VBox prefHeight="12.0" prefWidth="100.0" />
-                        <Text fx:id="h7" styleClass="warningText" text="What is the preffered date of delivery" wrappingWidth="100.0" />
+                        <Text fx:id="h7" styleClass="warningText" text="What is the preferred date of delivery" wrappingWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="32.0" />
+                           </VBox.margin></Text>
                      </children>
                   </VBox>
                </children>

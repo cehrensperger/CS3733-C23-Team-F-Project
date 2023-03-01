@@ -34,6 +34,11 @@
                             </HBox.margin>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="100.0" />
+                        <Text fx:id="h1" styleClass="warningText" text="What equpment needs to be transferred" textAlignment="RIGHT" wrappingWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                        </Text>
                      </children>
                         </VBox>
                         <VBox prefHeight="400.0" prefWidth="200.0">
@@ -134,6 +139,31 @@
                             </HBox.margin>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="100.0" />
+                        <Text fx:id="h2" styleClass="warningText" text="Where is it being transferred to" wrappingWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="58.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fx:id="h3" styleClass="warningText" text="Where is it being transferred from" wrappingWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="44.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fx:id="h4" styleClass="warningText" text="What is ther preferred date the transfer happens by" wrappingWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="36.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fx:id="h5" styleClass="warningText" text="What is the urgency of this request" wrappingWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="38.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fx:id="h6" styleClass="warningText" text="Describe the request" wrappingWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="48.0" />
+                           </VBox.margin>
+                        </Text>
                      </children>
                         </VBox>
                     </children>
