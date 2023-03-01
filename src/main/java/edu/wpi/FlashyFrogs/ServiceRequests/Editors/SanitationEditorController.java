@@ -199,6 +199,20 @@ public class SanitationEditorController extends ServiceRequestController impleme
     description.setText("");
   }
 
+  public void handleDelete(ActionEvent event) {
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    session.beginTransaction();
+    session
+        .createMutationQuery("DELETE FROM Sanitation WHERE id=:ID")
+        .setParameter("ID", sanitationReq.getId())
+        .executeUpdate();
+    session.getTransaction().commit();
+    session.close();
+
+    popOver.hide();
+  }
+
   public void help() {
     if (!hDone) {
       h1.setVisible(true);

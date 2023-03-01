@@ -177,7 +177,7 @@
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear" textAlignment="CENTER">
+                                          <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleDelete" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Delete" textAlignment="CENTER">
                                           </MFXButton>
                                        </children>
                                     </HBox>
