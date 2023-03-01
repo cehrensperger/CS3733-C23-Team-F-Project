@@ -36,7 +36,7 @@
                      <children>
                         <Text fx:id="h1" styleClass="warningText" text="Where is the sanitation needed" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="52.0" />
+                              <Insets top="66.0" />
                            </VBox.margin>
                         </Text>
                      </children>
@@ -140,32 +140,32 @@
                      <children>
                         <Text fx:id="h2" styleClass="warningText" text="What type of sanitation is needed" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="52.0" />
+                              <Insets top="72.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h3" styleClass="warningText" text="Is there a specific date the sanitation will be needed" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="16.0" />
+                              <Insets top="34.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h4" styleClass="warningText" text="What is the urgency of the sanitation request" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="12.0" />
+                              <Insets top="30.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h6" styleClass="warningText" text="Is there a biohazard associated with this sanitation" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="11.0" />
+                              <Insets top="30.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h7" styleClass="warningText" text="Describe the sanitation being requested" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="11.0" />
+                              <Insets top="30.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h5" styleClass="warningText" text="Are there any isolation or precautionary measures that need to be taken during this sanitatino" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="11.0" />
+                              <Insets top="30.0" />
                            </VBox.margin>
                         </Text>
                      </children>

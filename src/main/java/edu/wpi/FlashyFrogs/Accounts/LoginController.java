@@ -58,6 +58,13 @@ public class LoginController implements IController {
   @FXML private MFXButton login;
   @FXML private MFXButton clear;
   @FXML Text forgot;
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+  @FXML Text h5;
+
+  boolean hDone = false;
   @FXML private Label errorMessage;
 
   /** Background text, used for RFID badge capture */
@@ -81,6 +88,12 @@ public class LoginController implements IController {
   }
 
   public void initialize() {
+
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
+    h5.setVisible(false);
 
     // NavBarController newNav = new NavBarController();
     // newNav.guestPathfinding();
@@ -288,6 +301,20 @@ public class LoginController implements IController {
 
   @Override
   public void help() {
-    // TODO: help for this page
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      h5.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      h5.setVisible(false);
+      hDone = false;
+    }
   }
 }

@@ -35,7 +35,7 @@
                      <children>
                         <Text fx:id="h1" styleClass="warningText" text="Where is the security needed" textAlignment="RIGHT" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="52.0" />
+                              <Insets top="72.0" />
                            </VBox.margin>
                         </Text>
                      </children>
@@ -139,22 +139,22 @@
                      <children>
                         <Text fx:id="h2" styleClass="warningText" text="Is there a specific threat security is needed for" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="46.0" />
+                              <Insets top="66.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h3" styleClass="warningText" text="What is the urgency of the security request" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets top="32.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h4" styleClass="warningText" text="Is there a specific date that security will be needed" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets top="30.0" />
                            </VBox.margin>
                         </Text>
                         <Text fx:id="h5" styleClass="warningText" text="Explain why security is needed" wrappingWidth="100.0">
                            <VBox.margin>
-                              <Insets top="18.0" />
+                              <Insets top="38.0" />
                            </VBox.margin>
                         </Text>
                      </children>
