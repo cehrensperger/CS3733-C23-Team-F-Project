@@ -905,7 +905,12 @@ public class MapController {
     tt6.stop();
     parallelTransition.stop();
     parallelTransition.getChildren().clear();
-
+    cir1.setTranslateY(0);
+    cir2.setTranslateY(0);
+    cir3.setTranslateY(0);
+    cir4.setTranslateY(0);
+    cir5.setTranslateY(0);
+    cir6.setTranslateY(0);
     cir1.setVisible(true);
     cir2.setVisible(true);
     cir3.setVisible(true);
