@@ -11,7 +11,6 @@ import edu.wpi.FlashyFrogs.ORM.UserLogin;
 import edu.wpi.FlashyFrogs.Sound;
 import edu.wpi.FlashyFrogs.controllers.ForgotPassController;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.util.HashMap;
@@ -56,7 +55,7 @@ public class LoginController implements IController {
   public Rectangle errcheck11;
   public BorderPane borderPane;
   @FXML private AnchorPane rootPane;
-  @FXML @Getter @Setter private TextField username;
+  @FXML private TextField username;
   @FXML private PasswordField password;
   @FXML private MFXButton login;
   @FXML private MFXButton clear;
@@ -66,7 +65,7 @@ public class LoginController implements IController {
   /** Background text, used for RFID badge capture */
   private String backgroundText = "";
 
-  @NonNull @Getter @Setter
+  @NonNull
   private final HashMap<String, UserLogin> users; // Users in the hospital, username to user
 
   /** Pre-loads all the users, username to user object */
@@ -147,16 +146,9 @@ public class LoginController implements IController {
 
     } else if (users.containsKey(username.getText())
         && users.get(username.getText()).checkPasswordEqual(password.getText())) {
-      NavBarController navBarController = new NavBarController();
-      fadeOutAnimation();
       CurrentUserEntity.CURRENT_USER.setCurrentUser(users.get(username.getText()).getUser());
       CurrentUserEntity.CURRENT_USER.setCurrentUser(users.get(username.getText()).getUser());
-
-      Thread thread = new Thread(() -> navBarController.logIn());
-      thread.start();
-      thread.join();
-      Fapp.setScene("views", "Home");
-
+      Fapp.logIn();
       backgroundText = ""; // Clear the background text
     } else {
       // if we haven't exited by this point

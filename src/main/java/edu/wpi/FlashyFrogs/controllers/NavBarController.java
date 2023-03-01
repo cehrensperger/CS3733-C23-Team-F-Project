@@ -373,6 +373,7 @@ public class NavBarController {
   }
 
   public void logIn() {
+
     loggedOutMenu.setDisable(true);
     loggedOutMenu.setVisible(false);
     menu.setVisible(true);
@@ -445,6 +446,7 @@ public class NavBarController {
       heatText.setOpacity(1);
       heatSVG.setOpacity(1);
     }
+    Fapp.setScene("views", "Home");
   }
 
   public AnchorPane getAnchorPane() {
