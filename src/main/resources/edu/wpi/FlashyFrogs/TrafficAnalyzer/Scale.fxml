@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx/19">
-   <StackPane layoutX="937.0" layoutY="629.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="70.0">
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <StackPane layoutX="937.0" layoutY="629.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="180.0">
       <children>
 
       <VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
@@ -24,7 +24,7 @@
       </HBox>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="30.0" stroke="BLACK" strokeType="INSIDE" width="150.0">
          <fill>
-            <LinearGradient startX="0.0" endX="1.0">
+            <LinearGradient endX="1.0" startX="0.0">
                <stops>
                   <Stop>
                      <color>

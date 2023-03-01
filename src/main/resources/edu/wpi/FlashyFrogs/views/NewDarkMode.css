@@ -423,6 +423,11 @@
     -fx-text-fill: #000000;
 }
 
+.table-view {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
 .table-view .column-header-background
     /** controls the blue line in the tables above the table entries **/
 {
