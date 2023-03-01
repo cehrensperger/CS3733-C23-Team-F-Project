@@ -57,27 +57,27 @@
                          <Hyperlink fx:id="HospitalPic" styleClass="body" text="Image of hospital building on home page" />
                          <Hyperlink styleClass="body" text="Map of hospital floors (L1.png, L2.png, one.png, two.png, three.png): provided by Brigham and Women’s Hospital" />
                               <Label styleClass="bodyBold" text="Plugins:&#13;" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Jacoco&#13;
-Spotless 6.14.0&#13;
-io.freefair.lombok 6.6.1&#13;
-org.openjfx.javafxplugin 0.0.13&#13;
-" wrappingWidth="546.38671875" />
+                         <Hyperlink fx:id="Jacoco" styleClass="body" text="Jacoco" />
+                         <Hyperlink fx:id="Spotless" styleClass="body" text="Spotless 6.14.0" />
+                         <Hyperlink fx:id="lombok" styleClass="body" text="io.freefair.lombok 6.6.1" />
+                         <Hyperlink fx:id="openjfx" styleClass="body" text="org.openjfx.javafxplugin 0.0.13" />
                               <Label styleClass="bodyBold" text="Repositories:&#13;" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="MavenCentral&#13;
-JCenter&#13;
-https://apisite.crmyers.dev/maven&#13;
-JitPack&#13;
-OSS Sonatype Snapshots Nexus Repository Manager&#13;
-" wrappingWidth="546.38671875" />
+                         <Hyperlink styleClass="body" text="MavenCentral" />
+                         <Hyperlink styleClass="body" text="JCenter" />
+                         <Hyperlink styleClass="body" text="https://apisite.crmyers.dev/maven" />
+                         <Hyperlink fx:id="JitPack" styleClass="body" text="JitPack" />
+                         <Hyperlink fx:id="OSS" styleClass="body" text="OSS Sonatype Snapshots Nexus Repository Manager" />
                               <Label styleClass="bodyBold" text="Miscellaneous:&#13;" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Coded in IntelliJ Ultimate and SceneBuilder 19.0.0&#13;
-UI mockups created with Figma&#13;
-Diagrams created with draw.io&#13;
-Team communication platforms: Slack and Discord&#13;
-Ran and tested program on Docker&#13;
-Version control software: GitHub&#13;
-Error and submit sounds (Error.wav, Submitted.wav) : Lindsey Mraz using Ableton Live 11 and Audacity&#13;
-" wrappingWidth="546.38671875" />
+                         <Hyperlink fx:id="IntelliJ" styleClass="body" text="Coded in IntelliJ Ultimate" />
+                         <Hyperlink fx:id="SceneBuilder" styleClass="body" text="Coded in SceneBuilder 19.0.0" />
+                         <Hyperlink fx:id="Figma" styleClass="body" text="UI mockups created with Figma" />
+                         <Hyperlink fx:id="drawio" styleClass="body" text="Diagrams created with draw.io" />
+                         <Hyperlink fx:id="Slack" styleClass="body" text="Team communicated on Slack" />
+                         <Hyperlink fx:id="Discord" styleClass="body" text="Team communicated on Discord" />
+                         <Hyperlink fx:id="Docker" styleClass="body" text="Ran and tested program on Docker" />
+                         <Hyperlink fx:id="GitHub" styleClass="body" text="Version control software used: GitHub" />
+                         <Hyperlink fx:id="Ableton" styleClass="body" text="Sounds created with Ableton Live 11" />
+                         <Hyperlink fx:id="Audacity" styleClass="body" text="Sounds created with Audacity" />
                      </children>
                   </VBox>
                </content>

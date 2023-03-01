@@ -7,9 +7,25 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 
 public class AcknowledgmentsController {
-    public Hyperlink MassIcon1;
-    public Hyperlink MassIcon2;
-    public Hyperlink HospitalPic;
+    @FXML private Hyperlink OSS;
+    @FXML private Hyperlink MassIcon1;
+    @FXML private Hyperlink MassIcon2;
+    @FXML private Hyperlink HospitalPic;
+    @FXML private Hyperlink openjfx;
+    @FXML private Hyperlink lombok;
+    @FXML private Hyperlink Spotless;
+    @FXML private Hyperlink Jacoco;
+    @FXML private Hyperlink JitPack;
+    @FXML private Hyperlink IntelliJ;
+    @FXML private Hyperlink SceneBuilder;
+    @FXML private Hyperlink Figma;
+    @FXML private Hyperlink drawio;
+    @FXML private Hyperlink Slack;
+    @FXML private Hyperlink Discord;
+    @FXML private Hyperlink Docker;
+    @FXML private Hyperlink GitHub;
+    @FXML private Hyperlink Ableton;
+    @FXML private Hyperlink Audacity;
     @FXML private Hyperlink Icons;
     @FXML private Hyperlink JAXBAPI;
     @FXML private Hyperlink OJDBC10;
@@ -20,7 +36,6 @@ public class AcknowledgmentsController {
     @FXML private Hyperlink Ehcache;
     @FXML private Hyperlink JAXBCore;
     @FXML private Hyperlink JAXBRuntime;
-    @FXML private Hyperlink PostgreSQL;
     @FXML private Hyperlink PostgreSQL;
     @FXML private Hyperlink Argon2;
     @FXML private Hyperlink FlexBox;
@@ -79,6 +94,22 @@ public class AcknowledgmentsController {
       setLinkAction(MassIcon1, "https://www.massgeneralbrigham.org/content/experience-fragments/mgb-global/global/en/site/footer/master/_jcr_content/root/container_1627538517/container/container/image.coreimg.svg/1672848798937/logo-with-white-text.svg");
       setLinkAction(MassIcon2, "https://give.brighamandwomens.org/wp-content/uploads/2021/06/Brigham_and_Womens_Hospital_horiz_rgb-1.png");
       setLinkAction(HospitalPic, "https://www.massgeneralbrigham.org/content/mgb-global/global/en/patient-care/international/about/brigham-and-womens-hospital/_jcr_content/root/container_924996778/hero_banner.coreimg.jpeg/1667229588893/international-bwh-1428x1110.jpeg");
+      setLinkAction(Jacoco, "https://www.jacoco.org/jacoco/trunk/index.html#:~:text=JaCoCo%20is%20a%20free%20Java,25%20based%20on%20commit%20a68effb42f89682c275cc1e26418793191512985.");
+      setLinkAction(Spotless, "https://github.com/diffplug/spotless");
+      setLinkAction(lombok, "https://plugins.gradle.org/plugin/io.freefair.lombok");
+      setLinkAction(openjfx, "https://plugins.gradle.org/plugin/org.openjfx.javafxplugin");
+      setLinkAction(JitPack, "https://jitpack.io/");
+      setLinkAction(OSS, "http://oss.sonatype.org/content/repositories/snapshots//");
+      setLinkAction(IntelliJ, "https://www.jetbrains.com/idea/");
+      setLinkAction(SceneBuilder, "https://gluonhq.com/products/scene-builder/");
+      setLinkAction(Figma, "https://www.figma.com/");
+      setLinkAction(drawio, "http://draw.io");
+      setLinkAction(Slack, "https://slack.com/");
+      setLinkAction(Discord, "https://discordapp.com/");
+      setLinkAction(Docker, "https://www.docker.com/");
+      setLinkAction(GitHub, "https://github.com/");
+      setLinkAction(Ableton, "https://www.ableton.com/en/live/");
+      setLinkAction(Audacity, "https://www.audacityteam.org/");
   }
 
   public void setLinkAction(Hyperlink link, String url) {
