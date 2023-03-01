@@ -99,6 +99,7 @@
     /** honestly just if you need a text bigger than body but smaller than header and bold **/
 {
     -fx-text-fill:#012D5A;
+    -fx-fill: #012D5A;
 }
 
 .warningText
@@ -173,6 +174,7 @@
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
+
 
 }
 
@@ -581,4 +583,9 @@
 {
     -fx-background-radius: 10px !important;
     -fx-border-radius: 10px !important;
+}
+
+.srText
+{
+    -fx-fill: #012D5A;
 }

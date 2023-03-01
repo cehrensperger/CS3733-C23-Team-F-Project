@@ -71,26 +71,51 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Patient ID">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <TextField fx:id="patient" prefHeight="13.0" prefWidth="250.0" promptText="Patient ID" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Vision">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="vision" promptText="Vision" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Hearing">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="hearing" promptText="Hearing" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Consciousness">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="consciousness" promptText="Consciousness" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Condition">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="condition" promptText="Condition" styleClass="fields">
                            <VBox.margin>
                               <Insets />
@@ -112,50 +137,103 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Transfer To">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="to" promptText="Transfer To" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Transfer From">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="from" promptText="Transfer From" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Urgency">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Equipment">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="equipment" promptText="Equipment" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
-                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Date Preference">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="309.0" promptText="Date Preference" styleClass="fields">
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin></DatePicker>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Mode of Transfer">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <SearchableComboBox fx:id="mode" promptText="Mode of Transfer" styleClass="fields">
                            <VBox.margin>
-                              <Insets bottom="18.0" top="18.0" />
+                              <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Personal Items to be Sent">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <TextField fx:id="personal" promptText="Personal Items to be Sent" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Reason for Transfer">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
                         <TextField fx:id="reason" promptText="Reason For Transfer" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <CheckBox fx:id="isolation" mnemonicParsing="false" prefHeight="32.0" prefWidth="286.0" styleClass="fields" text="Needs Isolation?">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Patient Isolation">
                            <VBox.margin>
-                              <Insets bottom="18.0" />
+                              <Insets bottom="1.0" />
                            </VBox.margin>
+                        </Text>
+                        <HBox alignment="CENTER_LEFT" maxHeight="88.0" maxWidth="252.0" minHeight="26.0" minWidth="183.0" prefHeight="30.0" prefWidth="250.0" spacing="10.0" styleClass="fields">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Needs Isolation?">
+                                 <HBox.margin>
+                                    <Insets left="7.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <CheckBox fx:id="isolation" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" />
+                           </children>
                            <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              <Insets bottom="2.0" top="2.0" />
                            </padding>
-                        </CheckBox>
+                        </HBox>
                         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
@@ -181,7 +259,7 @@
                               <Insets top="35.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="112.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="250.0" VBox.vgrow="ALWAYS">
                            <children>
                               <Label fx:id="errorMessage">
                                  <HBox.margin>
