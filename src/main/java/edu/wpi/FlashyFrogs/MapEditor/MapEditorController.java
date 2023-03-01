@@ -548,11 +548,10 @@ public class MapEditorController implements IController {
                     row.getItem(), // Set it to the rows item
                     mapController.getMapSession(),
                     (oldName) -> {
-                      {
-                        locationTable.getItems().remove(oldName);
-                        mapController.removeLocationName(oldName);
-                      } // Remove the old name
-                      tablePopOver.get().hide(); // Remove the pop-over
+                      locationTable.getItems().remove(oldName);
+                      mapController.removeLocationName(oldName);
+                      // Remove the old name
+                      tablePopOver.getAndSet(null).hide(); // Remove the pop-over
                     },
                     // Set the original saved row number to be the new location name
                     (oldLocation, newLocation) -> {
