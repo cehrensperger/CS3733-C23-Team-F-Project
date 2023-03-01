@@ -240,22 +240,22 @@ public class MedicineController implements IController {
 
   public void toastAnimation() {
     // Create a TranslateTransition to move the first rectangle to the left
-    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(1.0), toast);
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), toast);
     translate1.setByX(-280.0);
     translate1.setAutoReverse(true);
 
     // Create FillTransitions to fill the second and third rectangles in sequence
     FillTransition fill2 =
         new FillTransition(
-            Duration.seconds(0.3), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
+            Duration.seconds(0.1), check1, Color.web("#012D5A"), Color.web("#F6BD38"));
     FillTransition fill3 =
         new FillTransition(
-            Duration.seconds(0.3), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
+            Duration.seconds(0.1), check2, Color.web("#012D5A"), Color.web("#F6BD38"));
     SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
 
     // Create a TranslateTransition to move the first rectangle back to its original position
-    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(1.0), toast);
-    translateBack1.setDelay(Duration.seconds(2));
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), toast);
+    translateBack1.setDelay(Duration.seconds(0.5));
     translateBack1.setByX(280.0);
 
     // Play the animations in sequence
