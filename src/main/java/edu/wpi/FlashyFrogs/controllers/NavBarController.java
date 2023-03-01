@@ -613,7 +613,7 @@ public class NavBarController {
   }
 
   @FXML
-  private void closeApp() {
+  public void closeApp() {
     Stage stage = (Stage) anchorPane.getScene().getWindow();
     stage.close();
   }
