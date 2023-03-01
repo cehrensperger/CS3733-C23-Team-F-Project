@@ -140,6 +140,7 @@
       <Text fx:id="h1" layoutX="236.0" layoutY="51.0" styleClass="warningText" text="Here are all service requests" wrappingWidth="284.0" AnchorPane.leftAnchor="236.0" AnchorPane.topAnchor="38.0" />
       <Text fx:id="h3" layoutX="735.0" layoutY="496.0" styleClass="warningText" text="Choose what data you would like to view on the graph" wrappingWidth="310.0" AnchorPane.bottomAnchor="221.2578125" AnchorPane.leftAnchor="735.0" />
       <Text fx:id="h2" layoutX="260.0" layoutY="425.0" styleClass="warningText" text="Once you choose a type of graph, the data will appear below" wrappingWidth="406.0" AnchorPane.bottomAnchor="292.2578125" AnchorPane.leftAnchor="260.0" />
-      <Text fx:id="h4" layoutX="900.0" layoutY="658.0" styleClass="warningText" text="Click if you would like to download the graph you have generated" wrappingWidth="366.0" AnchorPane.bottomAnchor="58.0" AnchorPane.rightAnchor="14.0" />
+      <Text fx:id="h4" layoutX="839.0" layoutY="601.0" styleClass="warningText" text="Click if you would like to download the graph you have generated" wrappingWidth="366.0" AnchorPane.bottomAnchor="116.2578125" AnchorPane.rightAnchor="75.0" />
+      <MFXButton fx:id="downloadButton" layoutX="1123.0" layoutY="660.0" prefWidth="150.0" styleClass="blueNoSetSize" text="Download Graphs" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0" />
    </children>
 </AnchorPane>
