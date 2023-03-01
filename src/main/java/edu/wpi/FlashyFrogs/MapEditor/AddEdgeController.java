@@ -3,6 +3,7 @@ package edu.wpi.FlashyFrogs.MapEditor;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.Sound;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -65,7 +66,8 @@ public class AddEdgeController {
 
     // Check both fields are filled
     if (edgeOneField.getValue() == null || edgeTwoField.getValue() == null) {
-      errorText.setText("Fill all fields!"); // Prompt to fill all
+      errorText.setText("Please fill all fields!"); // Prompt to fill all
+      Sound.ERROR.play();
       return; // If not, exit
     }
 
@@ -75,6 +77,7 @@ public class AddEdgeController {
     // Say that it's a duplicate if it is
     if (this.session.find(Edge.class, edge) != null) {
       errorText.setText("This is a duplicate edge!");
+      Sound.ERROR.play();
       return; // Exit
     }
 

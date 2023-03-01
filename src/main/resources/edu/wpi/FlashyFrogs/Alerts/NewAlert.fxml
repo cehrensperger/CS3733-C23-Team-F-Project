@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.Alerts.NewAlertController">
+   <children>
+      <Label alignment="CENTER" layoutX="162.0" layoutY="14.0" prefHeight="17.0" prefWidth="282.0" styleClass="headerBold" text="Create a New Alert" textAlignment="CENTER" AnchorPane.bottomAnchor="369.0" AnchorPane.leftAnchor="159.0" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="14.0" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="220.0" layoutY="35.0" prefHeight="10.0" prefWidth="178.0" text="Hello this is an eroor" textFill="RED" visible="false">
+         <padding>
+            <Insets top="8.0" />
+         </padding>
+      </Label>
+      <TextField fx:id="summaryField" layoutX="22.0" layoutY="49.0" prefHeight="25.0" prefWidth="560.0" promptText="Summary:" styleClass="fields" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
+      <TextArea fx:id="descriptionField" layoutX="20.0" layoutY="87.0" prefHeight="200.0" prefWidth="562.0" promptText="Alert Message:" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-region-background: transparent; -fx-text-area-content: transparent; -fx-text-area: transparent;" styleClass="fields" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0" />
+      <ComboBox fx:id="severityBox" layoutX="20.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Severity:" styleClass="fields" AnchorPane.topAnchor="315.0" />
+      <SearchableComboBox fx:id="deptBox" layoutX="379.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Department:" styleClass="fields" AnchorPane.topAnchor="315.0" />
+      <DatePicker fx:id="startDate" layoutX="20.0" layoutY="19.0" prefHeight="26.0" prefWidth="150.0" promptText="Start Date" styleClass="fields" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <DatePicker fx:id="endDate" layoutX="477.0" layoutY="22.0" prefHeight="26.0" prefWidth="150.0" promptText="End Date" styleClass="fields" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <MFXButton fx:id="submit" layoutX="255.0" layoutY="359.0" onAction="#handleSubmit" prefHeight="27.0" prefWidth="90.0" styleClass="blueNoSetSize" text="Submit" AnchorPane.topAnchor="359.0" />
+      <Pane fx:id="errtoast" layoutX="1300.0" layoutY="195.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Fill All Fields" wrappingWidth="180.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane fx:id="errtoast1" layoutX="1310.0" layoutY="205.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="errcheck21" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck11" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dates Are Flipped" wrappingWidth="180.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

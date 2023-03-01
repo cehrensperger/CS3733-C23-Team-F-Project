@@ -7,37 +7,77 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.Hyperlink?>
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AcknowledgmentsController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Acknowledgments" />
-      <HBox prefHeight="420.0" prefWidth="600.0">
+      <HBox prefHeight="420.0" prefWidth="700.0">
          <children>
             <VBox prefHeight="385.0" prefWidth="22.0" />
-            <ScrollPane>
+            <ScrollPane fitToWidth="true">
                <content>
-                  <VBox prefHeight="385.0" prefWidth="554.0">
+                  <VBox prefHeight="385.0" prefWidth="700.0">
                      <children>
-                        <TextFlow prefHeight="21.0" prefWidth="554.0">
-                           <children>
-                              <Label styleClass="bodyBold" text="Software Used:" />
-                           </children>
-                        </TextFlow>
-                        <TextFlow prefHeight="50.0" prefWidth="554.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="IntelliJ, Figma, SceneBuilder, Google Workspace, Docker, PostrgresQL, Slack, Discord&#13;" />
-                           </children>
-                        </TextFlow>
-                        <TextFlow prefHeight="20.0" prefWidth="554.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold" />
-                              <Label styleClass="bodyBold" text="Dependencies:" />
-                           </children>
-                        </TextFlow>
-                        <TextFlow prefHeight="118.0" prefWidth="554.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="palexdev/MaterialFX GitHub Repository,&#13; tom91136/GestureFX GitHub Repository,&#13; MVN Repository ControlsFX 11.1.2,&#13; MVN Repository Apache Derby Client JDBC Driver 10.16.1.1,&#13; Apache Derby 10.16.1.1 Release,&#13; MVN Repository Apache Derby Shared Code 10.16.1.1,&#13; MVN repository SLF4J API Module 1.7.30,&#13; MVN Repository SLF4J Simple Binding 1.7.30,&#13; MVN Repository UCP 19.6.0.0,&#13; MVN Repositpry Ojdbc8 19.6.0.0, MVN Repository HIbernate Core RElocation 6.1.6.Final,&#13; Ehcache 3.10 Documentation,&#13; Ehcache 3.10 Documentation,&#13; MVN Repository Old JAXB Core 4.0.2,&#13; MVN Repository,&#13; MVN Repository,&#13; JAXB API 2.3.1,&#13; JAXB Runtime 4.0.2,&#13; MVN Repository PostgreSQL JDBC Driver 42.5.1,&#13; MVN Repository Argon2 JVM 2.1.1,&#13; MVN Repository Argon2 JVM 2.1.1,&#13; onexip/FlexBoxFX GitHub Repository,&#13; hervegirod/fxsgimage GitHub Repository" wrappingWidth="546.38671875" />
-                           </children>
-                        </TextFlow>
+                              <Label styleClass="bodyBold" text="APIs:" />
+                         <Hyperlink fx:id="JavaOpenJDK" styleClass="body" text="Java OpenJDK 17.0.5 LTS" />
+                         <Hyperlink fx:id="JavaFX19SDK" styleClass="body" text="JavaFX 19 SDK" />
+                         <Hyperlink fx:id="MaterialFX" styleClass="body" text="MaterialFX 11.13.8" />
+                         <Hyperlink fx:id="GestureFX" styleClass="body" text="GestureFX 0.7.1" />
+                         <Hyperlink fx:id="ControlsFX" styleClass="body" text="ControlsFX 11.1.2" />
+                         <Hyperlink fx:id="SQLiteJDBC" styleClass="body" text="SQLite JDBC 3.30.1" />
+                         <Hyperlink fx:id="ApacheDerby" styleClass="body" text="ApacheDerby 10.16.1.1" />
+                         <Hyperlink fx:id="SLF4API" styleClass="body" text="SLF4J API 1.7.30" />
+                         <Hyperlink fx:id="SLF4SimpleBinding" styleClass="body" text="SLF4J Simple Binding 1.7.30" />
+                         <Hyperlink fx:id="OracleDatabaseJDBCUCP" styleClass="body" text="Oracle Database JDBC UCP 19.6.0.0" />
+                         <Hyperlink fx:id="OJDBC8" styleClass="body" text="OJDBC8 19.6.0.0" />
+                         <Hyperlink fx:id="Hibernate" styleClass="body" text="Hibernate 6.1.6.Final" />
+                         <Hyperlink fx:id="Ehcache" styleClass="body" text="Ehcache 3.10.6" />
+                         <Hyperlink fx:id="JAXBCore" styleClass="body" text="JAXB Core 4.0.2" />
+                         <Hyperlink fx:id="JAXBAPI" styleClass="body" text="JAXB API 2.3.1" />
+                         <Hyperlink fx:id="JAXBRuntime" styleClass="body" text="JAXB Runtime 4.0.2" />
+                         <Hyperlink fx:id="PostgreSQL" styleClass="body" text="PostgreSQL JDBC Driver 42.5.1" />
+                         <Hyperlink fx:id="Argon2" styleClass="body" text="Argon2 JVM 2.11" />
+                         <Hyperlink fx:id="FlexBox" styleClass="body" text="FlexBoxFX 0.1.5.3-SNAPSHOT" />
+                         <Hyperlink fx:id="fxsvg" styleClass="body" text="fxsvgimage 1.1" />
+                         <Hyperlink fx:id="JavaNativeAccess" styleClass="body" text="Java Native Access 5.12.1" />
+                         <Hyperlink fx:id="HibernateORM" styleClass="body" text="Hibernate ORM C3P0 6.1.6.Final" />
+                         <Hyperlink fx:id="JFoeniX" styleClass="body" text="JFoeniX 9.0.10" />
+                         <Hyperlink fx:id="ApacheCommons" styleClass="body" text="Apache Commons Math 3.6.1" />
+                         <Hyperlink fx:id="TestFXCore" styleClass="body" text="TestFX Core 4.0.16-alpha" />
+                         <Hyperlink fx:id="JUnitJupiterAPI" styleClass="body" text="JUnit Jupiter API 5.8.1" />
+                         <Hyperlink fx:id="TestFXJUnit" styleClass="body" text="TestFX JUnit 5 4.0.16-alpha" />
+                         <Hyperlink fx:id="OJDBC10" styleClass="body" text="OJDBC10 19.3.0.0" />
+                         <Hyperlink fx:id="JUnitJupiterEngine" styleClass="body" text="JUnit Jupiter Engine 5.8.1" />
+                         <Hyperlink fx:id="JUnitJupiterAggregator" styleClass="body" text="JUnit Jupiter (Aggregator) 5.6.0" />
+                              <Label styleClass="bodyBold" text="Icons:" />
+                         <Hyperlink fx:id="Icons" styleClass="body" text="SVG Repo" />
+                         <Hyperlink fx:id="MassIcon1" styleClass="body" text="Mass General Brigham icon on navbar" />
+                         <Hyperlink fx:id="MassIcon2" styleClass="body" text="Mass General Brigham icon on login page" />
+                              <Label styleClass="bodyBold" text="Images:" />
+                         <Hyperlink fx:id="HospitalPic" styleClass="body" text="Image of hospital building on home page" />
+                         <Hyperlink styleClass="body" text="Map of hospital floors (L1.png, L2.png, one.png, two.png, three.png): provided by Brigham and Women’s Hospital" />
+                              <Label styleClass="bodyBold" text="Plugins:" />
+                         <Hyperlink fx:id="Jacoco" styleClass="body" text="Jacoco" />
+                         <Hyperlink fx:id="Spotless" styleClass="body" text="Spotless 6.14.0" />
+                         <Hyperlink fx:id="lombok" styleClass="body" text="io.freefair.lombok 6.6.1" />
+                         <Hyperlink fx:id="openjfx" styleClass="body" text="org.openjfx.javafxplugin 0.0.13" />
+                              <Label styleClass="bodyBold" text="Repositories:" />
+                         <Hyperlink styleClass="body" text="MavenCentral" />
+                         <Hyperlink styleClass="body" text="JCenter" />
+                         <Hyperlink styleClass="body" text="https://apisite.crmyers.dev/maven" />
+                         <Hyperlink fx:id="JitPack" styleClass="body" text="JitPack" />
+                         <Hyperlink fx:id="OSS" styleClass="body" text="OSS Sonatype Snapshots Nexus Repository Manager" />
+                              <Label styleClass="bodyBold" text="Miscellaneous:" />
+                         <Hyperlink fx:id="IntelliJ" styleClass="body" text="Coded in IntelliJ Ultimate" />
+                         <Hyperlink fx:id="SceneBuilder" styleClass="body" text="Coded in SceneBuilder 19.0.0" />
+                         <Hyperlink fx:id="Figma" styleClass="body" text="UI mockups created with Figma" />
+                         <Hyperlink fx:id="drawio" styleClass="body" text="Diagrams created with draw.io" />
+                         <Hyperlink fx:id="Slack" styleClass="body" text="Team communicated on Slack" />
+                         <Hyperlink fx:id="Discord" styleClass="body" text="Team communicated on Discord" />
+                         <Hyperlink fx:id="Docker" styleClass="body" text="Ran and tested program on Docker" />
+                         <Hyperlink fx:id="GitHub" styleClass="body" text="Version control software used: GitHub" />
+                         <Hyperlink fx:id="Ableton" styleClass="body" text="Sounds created with Ableton Live 11" />
+                         <Hyperlink fx:id="Audacity" styleClass="body" text="Sounds created with Audacity" />
                      </children>
                   </VBox>
                </content>

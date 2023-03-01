@@ -180,6 +180,6 @@ public class HelpController {
   }
 
   public void onClose() {
-    System.out.println("nothing to be done");
+    //    System.out.println("nothing to be done");
   }
 }

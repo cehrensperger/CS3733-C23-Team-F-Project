@@ -22,6 +22,9 @@ public class CSVMaker {
     makeInternalTransportCSV(session);
     makeSanitationCSV(session);
     makeSecurityCSV(session);
+    makeReligionCSV(session);
+    makeEquipmentTransportCSV(session);
+    makeMedicineDeliveryCSV(session);
 
     session.close();
   }
@@ -146,7 +149,6 @@ public class CSVMaker {
 
         fileWriter.write(serviceRequest.getDeviceType() + ",");
         fileWriter.write(serviceRequest.getReason() + ",");
-        fileWriter.write(serviceRequest.getDescription() + ",");
         fileWriter.write(serviceRequest.getDescription() + "\n");
       }
 
@@ -246,6 +248,79 @@ public class CSVMaker {
 
         fileWriter.write(serviceRequest.getIncidentReport() + ",");
         fileWriter.write(serviceRequest.getThreatType().ThreatType + "\n");
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  // make medicine delivery csv
+  private static void makeMedicineDeliveryCSV(Session session) {
+    List<MedicineDelivery> serviceRequests =
+        session
+            .createQuery("SELECT e FROM MedicineDelivery e", MedicineDelivery.class)
+            .getResultList();
+    File medicineFile = new File("medicineDeliveryRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(medicineFile);
+      // fileWriter.write("nodeType,longName,shortName\n");
+
+      for (MedicineDelivery serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getPatientID() + ",");
+        fileWriter.write(serviceRequest.getReason() + ",");
+        fileWriter.write(serviceRequest.getMedicine() + ",");
+        fileWriter.write(serviceRequest.getDosage() + "\n");
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  // make equipment transport csv
+  private static void makeEquipmentTransportCSV(Session session) {
+
+    List<EquipmentTransport> serviceRequests =
+        session
+            .createQuery("SELECT e FROM EquipmentTransport e", EquipmentTransport.class)
+            .getResultList();
+    File equipmentFile = new File("equipmentTransportRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(equipmentFile);
+      // fileWriter.write("nodeType,longName,shortName\n");
+
+      for (EquipmentTransport serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getEquipment() + ",");
+        fileWriter.write(serviceRequest.getDescription() + ",");
+        fileWriter.write(serviceRequest.getMoveFrom() + ",");
+      }
+
+      fileWriter.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  // make religion service csv
+  private static void makeReligionCSV(Session session) {
+
+    List<Religion> serviceRequests =
+        session.createQuery("SELECT e FROM Religion e", Religion.class).getResultList();
+    File religionFile = new File("religionServiceRequests.csv");
+    try {
+      FileWriter fileWriter = new FileWriter(religionFile);
+      // fileWriter.write("nodeType,longName,shortName\n");
+
+      for (Religion serviceRequest : serviceRequests) {
+
+        fileWriter.write(serviceRequest.getPatientID() + ",");
+        fileWriter.write(serviceRequest.getReligion() + ",");
+        fileWriter.write(serviceRequest.getDescription() + "\n");
       }
 
       fileWriter.close();

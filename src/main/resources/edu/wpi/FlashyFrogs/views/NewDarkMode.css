@@ -31,6 +31,14 @@
     -fx-text-fill:white;
 }
 
+.headerBoldWhite {
+    /**
+    Header bold but in white
+     */
+    -fx-text-fill: white;
+    -fx-fill: white; /*Neccessary sometimes for some reason on texts*/
+}
+
 .headerBoldTextObject
     /** Mimics .headerBold for elements that are JUST Text elements and thus won't change with -fx-text-fill **/
 {
@@ -54,6 +62,14 @@
      requests credits page **/
 {
     -fx-text-fill:white;
+}
+
+.bodyBoldWhite {
+    /**
+    Header bold but in white
+     */
+    -fx-text-fill: white;
+    -fx-fill: white; /*Neccessary sometimes for some reason on texts*/
 }
 
 .subtext
@@ -96,7 +112,6 @@
 .backButton
     /** This is used for all back buttons within the app **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#F1F1F1;
     -fx-border-color:#012D5A;
     -fx-text-fill: #012D5A;
@@ -105,7 +120,6 @@
 .blueOutlineNoSetSize
     /** if you need the blue outline with blue text styling with no set sizes**/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:transparent;
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
@@ -115,7 +129,6 @@
     /** This is a smaller version of the back button styling (light gray background with
      blue outline) - ex. the toggle all button on the home page.**/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:transparent;
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
@@ -125,7 +138,6 @@
     /** This is a smaller version of the credits button styling (blue background with
      white text) - ex. select files in Manage CSVs. **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #6B6D6F;
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
@@ -134,7 +146,14 @@
 .blueNoSetSize
     /** If you need the blue background with white text with no set size **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
+    -fx-background-color: #6B6D6F;
+    -fx-border-color:#D1D1D1;
+    -fx-text-fill: white;
+}
+
+.blueNoRadius
+    /** If you need the blue background with white text with no set size **/
+{
     -fx-background-color: #6B6D6F;
     -fx-border-color:#D1D1D1;
     -fx-text-fill: white;
@@ -143,7 +162,6 @@
 .blueBackgroundSideBar
     /** This is used for the sidebar buttons with blue backgrounds - ex. switch color, manage CSVs, etc. **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
@@ -152,7 +170,6 @@
 .serviceRequestButtons
     /** This is used for the sidebar buttons for service requests **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
@@ -166,6 +183,8 @@
     -fx-text-fill: white;
     -fx-background-color: transparent;
     -fx-prompt-text-fill: white;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .editUserFields
@@ -198,13 +217,29 @@
 {
 }
 
-.searchable-combo-box>
+.combo-box
     /** controls all searchable combo boxes within the app **/
 {
     -fx-prompt-text-fill: white;
     -fx-text-fill: white;
     -fx-context-menu-enabled: #012D5A;
-    -fx-control-inner-background: transparent;
+    -fx-control-inner-background: #6B6D6F;
+}
+
+.combo-box .combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #012D5A;
+    -fx-text-fill: white;
+}
+
+.combo-box .list-cell {
+    -fx-text-background-color: #012D5a;
+}
+
+.combo-box .combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #F6Bd38;
+    -fx-text-fill: white;
+    -fx-text-background-color: #ffffff;
+    -fx-background: #F6Bd38;
 }
 
 .combo-box> .text-field
@@ -248,7 +283,6 @@
 .submitButton
     /** This is used for the submit buttons on the service requests pages **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color:#012D5A;
     -fx-border-color:#012D5A;
     -fx-text-fill: #ffffff;
@@ -257,7 +291,6 @@
 .clearButton
     /** sets the clear button on the service requests page **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #b6000b;
     -fx-border-color:white;
     -fx-text-fill: white;
@@ -267,7 +300,6 @@
     /** if you need the styling of a clear or exit style button with
      no set size**/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #b6000b;
     -fx-border-color:white;
     -fx-text-fill: white;
@@ -277,7 +309,6 @@
     /** This is similar styling to the clear buttons in the service requests
      but it is a bigger button - ex. cancel button Manage CSVs **/
 {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
     -fx-background-color: #b6000b;
     -fx-border-color:white;
     -fx-text-fill: white;
@@ -293,7 +324,12 @@
 .sidebar
     /** This sets the sidebar on all of the pages **/
 {
-    -fx-background-color: #6B6D6F !important;
+    -fx-background-color: #3F3F3F !important;
+}
+
+.sidebar-color {
+    /** Sidebar background color for non-sized elements */
+    -fx-background-color: #3F4F4F !important;
 }
 
 .background
@@ -308,10 +344,31 @@
     -fx-background-color: #012D5A;
     -fx-text-fill: white;
 }
+
+.yellowNav {
+    -fx-fill: #F6BD38;
+    -fx-font-family: "Roboto";
+    -fx-border-color: transparent !important;
+    -fx-font-weight: bold !important;
+}
+
+.navSlide {
+    -fx-fill: #f1f1f1;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: normal !important;
+}
+
 .navBarLines
     /** sets the style of the line in between the buttons on the nav bar **/
 {
     -fx-stroke: #34587a;
+}
+
+.button:hover {
+    -fx-background-color: #d1d1d1;
+    -fx-text-fill: black;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
 }
 
 .menu-button .arrow-button
@@ -336,12 +393,21 @@
     -fx-text-fill: #ffffff;
 }
 
+
+.menu-button:hover .label {
+    -fx-text-fill: #F6BD38;
+}
+
+.menu-button:hover .arrow {
+    -fx-background-color: #F6BD38;
+}
+
 .menu-item .label
     /** This controls the color of the text within the menu-items when they are not hovered over **/
 {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-text-fill: #012D5A;
+    -fx-text-fill: #012D5A !important;
 }
 .menu-item:focused
     /** This controls the background color of the menu-item when it is hovered over **/
@@ -355,6 +421,11 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-text-fill: #000000;
+}
+
+.table-view {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .table-view .column-header-background
@@ -389,20 +460,12 @@
     -fx-text-fill: white;
 }
 
-.filtered-table-row-cell
-{
-    -fx-background-color: #6B6D6F;
-    -fx-background: #6B6D6F;
-    -fx-text-background-color: white;
-    -fx-text-fill: white;
-}
-
 .table-row-cell:hover
     /** controls table views within the app - hover **/
 {
-    -fx-background-color: #012d5a;
-    -fx-text-background-color: #ffffff;
-    -fx-background: #012d5a;
+    -fx-background-color: #F6BD38;
+    -fx-text-background-color: #012D5a;
+    -fx-background: #F6BD38;
 
 }
 
@@ -412,27 +475,6 @@
     -fx-background-color: #012d5a;
     -fx-text-background-color: #ffffff;
     -fx-background: #012d5a;
-}
-
-.filtered-table-view .table-cell
-    /** controls filtered table views within the app - not hover **/
-{
-    -fx-border-color: transparent;
-
-}
-.filtered-table-view .column-header
-    /** controls filtered table views within the app - not hover **/
-{
-    -fx-background-color: #f1f1f1;
-    -fx-text-fill: #012D5A;
-}
-
-.filtered-table-row-cell
-    /** controls filtered table views within the app - not hover **/
-{
-    -fx-background-color: #f1f1f1;
-    -fx-text-background-color: #012d5a;
-    -fx-text-fill: #012d5a;
 }
 
 
@@ -482,6 +524,22 @@
     -fx-text-fill: white;
 }
 
+.check-box
+{
+    -fx-text-fill: white;
+    -fx-fill: white;
+}
+
+.check-box .box
+{
+    -fx-border-color: white;
+}
+
+.check-box:selected .mark
+{
+    -fx-fill: white;
+}
+
 .pathfindingField {
     /** This controls the input field for controlling what labels to show in the upper right corner of Pathfinding **/
     -fx-border-color:#D1D1D1;
@@ -497,4 +555,34 @@
 
 .text-area .content {
     -fx-border-color: transparent;
+}
+
+.yellow {
+    /**
+    Yellow color, used for background coloring on the map visualizer page
+     */
+    -fx-fill: #F6BD38;
+    -fx-background-color: #F6BD38;
+}
+
+.scroll-pane {
+    /** Right now, only used on acknowledgementsPage as a placeholder **/
+    -fx-background-color: transparent;
+}
+.scroll-pane > .viewport {
+    /** Right now, only used on acknowledgementsPage as a placeholder **/
+    -fx-background-color: transparent;
+}
+.srText
+{
+    -fx-fill:white;
+}
+
+.axis {
+    -fx-tick-label-fill: white;
+}
+
+.icon
+{
+    -fx-fill: white;
 }

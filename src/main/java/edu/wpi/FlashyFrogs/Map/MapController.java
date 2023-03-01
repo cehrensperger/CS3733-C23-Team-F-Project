@@ -12,6 +12,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.function.BiConsumer;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
@@ -23,12 +26,15 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -45,6 +51,27 @@ import org.hibernate.Session;
  */
 @GeneratedExclusion
 public class MapController {
+  @FXML
+  private AnchorPane
+      root; // Root, used so we can make everyhting mouse transparent during animations
+
+  @FXML private HBox animationPane;
+  @FXML private Circle cir1;
+  @FXML private Circle cir2;
+  @FXML private Circle cir3;
+  @FXML private Circle cir4;
+  @FXML private Circle cir5;
+  @FXML private Circle cir6;
+  private ParallelTransition parallelTransition = new ParallelTransition();
+  private TranslateTransition tt1 = new TranslateTransition();
+  private TranslateTransition tt2 = new TranslateTransition();
+  private TranslateTransition tt3 = new TranslateTransition();
+  private TranslateTransition tt4 = new TranslateTransition();
+  private TranslateTransition tt5 = new TranslateTransition();
+  private TranslateTransition tt6 = new TranslateTransition();
+
+  @FXML private MFXButton upFloorButton;
+  @FXML private MFXButton downFloorButton;
   @FXML private Label floorSelector; // Floor selector label
   @FXML private MFXButton floorSelectorButton; // Floor selector button
   @FXML private SearchableComboBox<Display> filterBox; // Box enabling selection of what is showing
@@ -64,6 +91,9 @@ public class MapController {
   @Getter private HashSet<LocationName> placedLocations;
 
   @Getter private List<LocationName> locs;
+
+  // List of allowed floors
+  @Getter @Setter private Set<Node.Floor> allowedFloors;
 
   /** Initialize, zooms to the middle of the map */
   @FXML
@@ -423,7 +453,7 @@ public class MapController {
       tuples =
           getMapSession()
               .createQuery(
-                  "Select s.id, m.node "
+                  "Select s, m.node "
                       + "From ServiceRequest s, Move m "
                       + "WHERE m.location = s.location "
                       + "AND m.moveDate = (Select max(m2.moveDate)"
@@ -432,12 +462,13 @@ public class MapController {
                       + "                  GROUP BY m2.location "
                       + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
                   Tuple.class)
+              .setCacheable(true)
               .getResultList();
     } else {
       tuples =
           getMapSession()
               .createQuery(
-                  "Select s.id, m.node "
+                  "Select s, m.node "
                       + "From ServiceRequest s, Move m "
                       + "WHERE s.assignedEmp = :user "
                       + "AND m.location = s.location "
@@ -448,15 +479,15 @@ public class MapController {
                       + "                  HAVING max(m2.moveDate) <= s.dateOfSubmission)",
                   Tuple.class)
               .setParameter("user", currentUser)
+              .setCacheable(true)
               .getResultList();
     }
 
     for (Tuple t : tuples) {
       Node node = (Node) t.get(t.getElements().get(1));
-      ServiceRequest sr = getMapSession().find(ServiceRequest.class, t.get(t.getElements().get(0)));
 
       if (node.getFloor().equals(mapEntity.getMapFloor().getValue())) {
-        Text text = new Text(sr.toString());
+        Text text = new Text(t.get(t.getElements().get(0)).toString());
         getNodeToLocationBox().get(node).getChildren().add(text);
       }
     }
@@ -592,8 +623,7 @@ public class MapController {
       // Get the moves before now
       List<Move> moves =
           getMapSession()
-              .createQuery("FROM Move WHERE node.floor = :floor ORDER BY moveDate DESC", Move.class)
-              .setParameter("floor", mapEntity.getMapFloor().getValue())
+              .createQuery("FROM Move ORDER BY moveDate DESC", Move.class)
               .setCacheable(true)
               .stream()
               .filter((move) -> move.getMoveDate().before(date))
@@ -609,15 +639,24 @@ public class MapController {
             && nodeToLocationCount.get(move.getNode()) == 1) {
           nodeToLocationCount.replace(move.getNode(), nodeToLocationCount.get(move.getNode()) + 1);
 
+          // If we haven't placed this
           if (!placedLocations.contains(move.getLocation())) {
-            addLocationName(move.getLocation(), move.getNode());
-            placedLocations.add(move.getLocation());
+            // If this is on the floor
+            if (move.getNode().getFloor().equals(getMapFloorProperty().getValue())) {
+              addLocationName(move.getLocation(), move.getNode()); // Place it
+            }
+            placedLocations.add(move.getLocation()); // Either way, save it
           }
         } else if (!nodeToLocationCount.containsKey(move.getNode())) {
           nodeToLocationCount.put(move.getNode(), 1); // Save the node count initially
 
+          // If we haven't placed this location
           if (!placedLocations.contains(move.getLocation())) {
-            addLocationName(move.getLocation(), move.getNode());
+            // If the floor is correct
+            if (move.getNode().getFloor().equals(getMapFloorProperty().getValue())) {
+              // Save this
+              addLocationName(move.getLocation(), move.getNode());
+            }
             placedLocations.add(move.getLocation());
           }
         }
@@ -640,12 +679,11 @@ public class MapController {
       gesturePane.setMinScale(.001); // Set a scale that lets you go all the way out
       gesturePane.setMaxScale(10); // Set the max scale
 
-      Date date2 = MapEditorController.addMilliseconds(date, -1);
-
       locs =
           getMapSession()
               .createQuery("select location from Move m where moveDate = :date", LocationName.class)
               .setParameter("date", MapEditorController.addMilliseconds(date, -1))
+              .setCacheable(true)
               .getResultList();
     }
   }
@@ -718,6 +756,20 @@ public class MapController {
     int floorLevel = mapEntity.getMapFloor().getValue().ordinal() + 1;
     if (floorLevel > Node.Floor.values().length - 1) floorLevel = 0;
 
+    // If there are restrictions on what floors are allowed, and this floor doesn't match it
+    if (allowedFloors != null && allowedFloors.size() > 0) {
+      // While we aren't on the right floor
+      while (!allowedFloors.contains(Node.Floor.values()[floorLevel])) {
+        floorLevel += 1; // Try going up again
+
+        // Handle the wrap case
+        if (floorLevel >= Node.Floor.values().length) {
+          floorLevel = 0;
+        }
+      }
+    }
+
+    // Update the floor
     mapEntity.getMapFloor().setValue(Node.Floor.values()[floorLevel]);
   }
 
@@ -730,6 +782,20 @@ public class MapController {
     int floorLevel = mapEntity.getMapFloor().getValue().ordinal() - 1;
     if (floorLevel < 0) floorLevel = Node.Floor.values().length - 1;
 
+    // If there are restrictions on what floors are allowed, and this floor doesn't match it
+    if (allowedFloors != null && allowedFloors.size() > 0) {
+      // While we aren't on the right floor
+      while (!allowedFloors.contains(Node.Floor.values()[floorLevel])) {
+        floorLevel -= 1; // Try going up again
+
+        // Handle the wrap case
+        if (floorLevel < 0) {
+          floorLevel = Node.Floor.values().length - 1;
+        }
+      }
+    }
+
+    // Set this to be the floor
     mapEntity.getMapFloor().setValue(Node.Floor.values()[floorLevel]);
   }
 
@@ -747,6 +813,8 @@ public class MapController {
     popOver.setHeaderAlwaysVisible(false); // Hide the header
     FloorSelectorController floorPopup = newLoad.getController();
     floorPopup.setFloorProperty(this.mapEntity.getMapFloor());
+
+    floorPopup.setAllowedFloors(allowedFloors); // Set the allowed floors to what we have
 
     popOver.detach(); // Detach the pop-up, so it's not stuck to the button
     javafx.scene.Node node =
@@ -782,6 +850,16 @@ public class MapController {
     Display(@NonNull String displayOption) {
       DisplayOption = displayOption;
     }
+
+    /**
+     * Gets a string representation of the display option
+     *
+     * @return the string of the display
+     */
+    @Override
+    public String toString() {
+      return DisplayOption;
+    }
   }
 
   /**
@@ -800,5 +878,135 @@ public class MapController {
    */
   public double getMapHeight() {
     return currentDrawingPane.getHeight();
+  }
+
+  /** Toggles the controls of the map, so that they can be made invisible and disabled */
+  public void toggleMapControls() {
+    // Disable all the controls, visible also makes things invisible
+    upFloorButton.setVisible(!upFloorButton.isVisible());
+    upFloorButton.getParent().setVisible(!upFloorButton.getParent().isVisible());
+    downFloorButton.setVisible(!downFloorButton.isVisible());
+    downFloorButton.getParent().setVisible(!downFloorButton.getParent().isVisible());
+    floorSelector.setVisible(!floorSelector.isVisible());
+    floorSelectorButton.setVisible(!floorSelectorButton.isVisible());
+    filterBox.setVisible(!filterBox.isVisible());
+  }
+
+  /**
+   * Starts the map loading animation, handling showing and starting it. This MUST be run in the UI
+   * Thread
+   */
+  public void startAnimation() {
+    root.setMouseTransparent(true); // Make this intercept all mouse clicks
+    parallelTransition.jumpTo(Duration.ZERO);
+    tt1.jumpTo(Duration.ZERO);
+    tt2.jumpTo(Duration.ZERO);
+    tt3.jumpTo(Duration.ZERO);
+    tt4.jumpTo(Duration.ZERO);
+    tt5.jumpTo(Duration.ZERO);
+    tt6.jumpTo(Duration.ZERO);
+    tt1.stop();
+    tt2.stop();
+    tt3.stop();
+    tt4.stop();
+    tt5.stop();
+    tt6.stop();
+    parallelTransition.stop();
+    parallelTransition.getChildren().clear();
+    cir1.setTranslateY(0);
+    cir2.setTranslateY(0);
+    cir3.setTranslateY(0);
+    cir4.setTranslateY(0);
+    cir5.setTranslateY(0);
+    cir6.setTranslateY(0);
+    cir1.setVisible(true);
+    cir2.setVisible(true);
+    cir3.setVisible(true);
+    cir4.setVisible(true);
+    cir5.setVisible(true);
+    cir6.setVisible(true);
+    animationPane.setVisible(true);
+
+    // Create a TranslateTransition for each circle and add a delay
+    TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.2), cir1);
+    tt1.setInterpolator(Interpolator.EASE_BOTH);
+    tt1.setToY(-50);
+    tt1.setAutoReverse(true);
+    tt1.setCycleCount(2);
+    tt1.setDelay(Duration.seconds(0.0));
+
+    TranslateTransition tt2 = new TranslateTransition(Duration.seconds(0.2), cir2);
+    tt2.setInterpolator(Interpolator.EASE_BOTH);
+    tt2.setToY(-50);
+    tt2.setAutoReverse(true);
+    tt2.setCycleCount(2);
+    tt2.setDelay(Duration.seconds(0.2));
+    TranslateTransition tt3 = new TranslateTransition(Duration.seconds(0.2), cir3);
+    tt3.setInterpolator(Interpolator.EASE_BOTH);
+    tt3.setToY(-50);
+    tt3.setAutoReverse(true);
+    tt3.setCycleCount(2);
+    tt3.setDelay(Duration.seconds(0.4));
+    TranslateTransition tt4 = new TranslateTransition(Duration.seconds(0.2), cir4);
+    tt4.setInterpolator(Interpolator.EASE_BOTH);
+    tt4.setToY(-50);
+    tt4.setAutoReverse(true);
+    tt4.setCycleCount(2);
+    tt4.setDelay(Duration.seconds(0.6));
+    TranslateTransition tt5 = new TranslateTransition(Duration.seconds(0.2), cir5);
+    tt5.setInterpolator(Interpolator.EASE_BOTH);
+    tt5.setToY(-50);
+    tt5.setAutoReverse(true);
+    tt5.setCycleCount(2);
+    tt5.setDelay(Duration.seconds(0.8));
+    TranslateTransition tt6 = new TranslateTransition(Duration.seconds(0.2), cir6);
+    tt6.setInterpolator(Interpolator.EASE_BOTH);
+    tt6.setToY(-50);
+    tt6.setAutoReverse(true);
+    tt6.setCycleCount(2);
+    tt6.setDelay(Duration.seconds(1.0));
+
+    // Create a ParallelTransition to play the animations in parallel
+    parallelTransition = new ParallelTransition(tt1, tt2, tt3, tt4, tt5, tt6);
+    parallelTransition.setAutoReverse(true);
+    parallelTransition.setCycleCount(ParallelTransition.INDEFINITE);
+    // Start the animation
+    parallelTransition.playFromStart();
+  }
+
+  /** Handles stopping the map animation. Handles hiding and stopping it */
+  public void stopAnimation() {
+    root.setMouseTransparent(false); // Make this intercept all mouse clicks
+    cir1.setTranslateY(0);
+    cir2.setTranslateY(0);
+    cir3.setTranslateY(0);
+    cir4.setTranslateY(0);
+    cir5.setTranslateY(0);
+    cir6.setTranslateY(0);
+    // stop the animation
+    parallelTransition.jumpTo(Duration.ZERO);
+    tt1.jumpTo(Duration.ZERO);
+    tt2.jumpTo(Duration.ZERO);
+    tt3.jumpTo(Duration.ZERO);
+    tt4.jumpTo(Duration.ZERO);
+    tt5.jumpTo(Duration.ZERO);
+    tt6.jumpTo(Duration.ZERO);
+    tt1.stop();
+    tt2.stop();
+    tt3.stop();
+    tt4.stop();
+    tt5.stop();
+    tt6.stop();
+    parallelTransition.stop();
+    parallelTransition.getChildren().clear();
+
+    // hide the circles
+    cir1.setVisible(false);
+    cir2.setVisible(false);
+    cir3.setVisible(false);
+    cir4.setVisible(false);
+    cir5.setVisible(false);
+    cir6.setVisible(false);
+    animationPane.setVisible(false);
   }
 }

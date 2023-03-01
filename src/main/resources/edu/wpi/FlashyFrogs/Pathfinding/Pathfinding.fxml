@@ -2,21 +2,23 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
    <children>
       <VBox maxWidth="220.0" prefHeight="720.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -52,7 +54,7 @@
             </SearchableComboBox>
             <Text fx:id="h3" styleClass="warningText" text="Choose an algorithm to generate your path with" wrappingWidth="184.0">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <DatePicker fx:id="moveDatePicker" prefHeight="25.0" prefWidth="184.0" styleClass="fields">
@@ -62,16 +64,34 @@
             </DatePicker>
             <Text fx:id="h5" styleClass="warningText" text="Choose a date for the pathfinding to take place" wrappingWidth="184.0">
                <VBox.margin>
-                  <Insets left="18.0" right="18.0" />
+                  <Insets bottom="10.0" left="18.0" right="18.0" />
                </VBox.margin>
             </Text>
-            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" styleClass="body" text="No Stairs">
+            <SearchableComboBox fx:id="serviceRequestBox" maxWidth="184.0" promptText="Service Request:" styleClass="fields">
                <VBox.margin>
-                  <Insets bottom="8.0" left="18.0" />
-               </VBox.margin></CheckBox>
-            <Text fx:id="h6" styleClass="warningText" text="Check to exclude stairs from your path" wrappingWidth="184.0">
+                  <Insets left="18.0" right="18.0" />
+               </VBox.margin>
+            </SearchableComboBox>
+            <Text fx:id="h7" styleClass="warningText" text="Choose a service request set as &#10;an ending location" wrappingWidth="184.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="18.0" right="18.0" />
+               </VBox.margin>
+            </Text>
+            <HBox alignment="CENTER_LEFT" maxHeight="32.0" maxWidth="183.0" minHeight="32.0" minWidth="183.0" prefHeight="32.0" prefWidth="183.0" spacing="10.0" styleClass="fields">
                <VBox.margin>
                   <Insets left="18.0" />
+               </VBox.margin>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="check-box" text="No Stairs">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Text>
+                  <CheckBox fx:id="accessibleBox" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" />
+               </children>
+            </HBox>
+            <Text fx:id="h6" styleClass="warningText" text="Check to exclude stairs from your path" wrappingWidth="184.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <MFXButton fx:id="generatePathButton" alignment="BASELINE_LEFT" onAction="#handleGetPath" prefHeight="25.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Generate Path">
@@ -84,7 +104,7 @@
             </MFXButton>
             <Text fx:id="h4" styleClass="warningText" text="Click to generate the path!">
                <VBox.margin>
-                  <Insets left="18.0" />
+                  <Insets bottom="10.0" left="18.0" />
                </VBox.margin>
             </Text>
             <TableView fx:id="pathTable" maxWidth="220.0" prefHeight="200.0" prefWidth="200.0">
@@ -98,36 +118,52 @@
                   <Insets left="18.0" right="18.0" />
                </VBox.margin>
             </TableView>
+            <HBox prefHeight="108.0" prefWidth="192.0">
+               <children>
+                  <Button fx:id="back" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="-90.0" stroke="#012d5a" strokeType="INSIDE" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="18.0" right="89.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="next" mnemonicParsing="false" style="-fx-background-color: transparent;" textFill="WHITE">
+                     <graphic>
+                        <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="90.0" stroke="#012d5a" strokeType="INSIDE" strokeWidth="2.0" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets right="18.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
          </children>
       </VBox>
-      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
+      <AnchorPane fx:id="mapPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </AnchorPane>
+      <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="19.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Map Editor" visible="false" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+      <Pane fx:id="errtoast" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
          <children>
-            <AnchorPane fx:id="mapPane" prefHeight="10.0" prefWidth="10.0">
-               <children>
-                  <StackPane layoutX="825.0" layoutY="590.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="108.0" />
-                  <Pane fx:id="animationPane" mouseTransparent="true" prefHeight="680.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Circle fx:id="cir1" fill="DODGERBLUE" layoutX="375.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir6" fill="DODGERBLUE" layoutX="625.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir5" fill="DODGERBLUE" layoutX="575.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir4" fill="DODGERBLUE" layoutX="525.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir3" fill="DODGERBLUE" layoutX="475.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fx:id="cir2" fill="DODGERBLUE" layoutX="425.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
-                     </children>
-                  </Pane>
-               </children>
-            </AnchorPane>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="68.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Choose Location" wrappingWidth="201.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
          </children>
-      </StackPane>
-      <MFXButton onAction="#handleBack" prefHeight="32.0" prefWidth="184.0" styleClass="backButton" text="Back" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </MFXButton>
-      <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="19.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Map Editor" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </MFXButton>
+      </Pane>
    </children>
 </AnchorPane>

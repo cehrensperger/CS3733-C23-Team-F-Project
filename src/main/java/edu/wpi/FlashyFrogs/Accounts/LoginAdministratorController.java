@@ -38,9 +38,9 @@ public class LoginAdministratorController implements IController {
   @FXML private TableColumn<UserLogin, HospitalUser.EmployeeType> empTypeCol;
   @FXML private TableColumn<UserLogin, Department> deptCol;
   @FXML private Button addNewUser;
-  @FXML private Button back;
 
   @FXML Text h1;
+  @FXML Text h2;
   boolean hDone = false;
 
   public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -57,14 +57,12 @@ public class LoginAdministratorController implements IController {
     Node node = (Node) actionEvent.getSource();
     popOver.show(node.getScene().getWindow());
     addNewUser.setDisable(true);
-    back.setDisable(true);
     popOver
         .showingProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
               if (!newValue) {
                 addNewUser.setDisable(false);
-                back.setDisable(false);
               }
             });
   }
@@ -72,6 +70,7 @@ public class LoginAdministratorController implements IController {
   public void initialize() throws Exception {
     errorMessage.setVisible(false);
     h1.setVisible(false);
+    h2.setVisible(false);
 
     // Clear old table before init
     userLoginTable.getItems().clear();
@@ -142,14 +141,12 @@ public class LoginAdministratorController implements IController {
             Node node = (Node) event.getSource();
             popOver.show(node.getScene().getWindow());
             addNewUser.setDisable(true);
-            back.setDisable(true);
             popOver
                 .showingProperty()
                 .addListener(
                     (observable, oldValue, newValue) -> {
                       if (!newValue) {
                         addNewUser.setDisable(false);
-                        back.setDisable(false);
                       }
                     });
           }
@@ -163,9 +160,11 @@ public class LoginAdministratorController implements IController {
   public void help() {
     if (!hDone) {
       h1.setVisible(true);
+      h2.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
+      h2.setVisible(false);
       hDone = false;
     }
   }

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.Editors.ReligionEditorController">
+    <children>
+        <VBox alignment="CENTER" layoutX="240.0" layoutY="-3.0" prefWidth="840.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Religious Service Request">
+                    <font>
+                        <Font size="28.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="55.0" />
+                    </VBox.margin>
+                </Text>
+                <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox alignment="TOP_RIGHT" prefHeight="582.0" prefWidth="91.0">
+                            <children>
+                                <Text fx:id="h1" styleClass="warningText" textAlignment="RIGHT" wrappingWidth="100.0">
+                                    <VBox.margin>
+                                        <Insets top="45.0" />
+                                    </VBox.margin>
+                                </Text>
+                                <Text fx:id="h2" styleClass="warningText" textAlignment="RIGHT" wrappingWidth="100.0">
+                                    <VBox.margin>
+                                        <Insets top="13.0" />
+                                    </VBox.margin>
+                                </Text>
+                            </children>
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </VBox>
+                        <VBox prefHeight="400.0" prefWidth="200.0">
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Patient Information" wrappingWidth="250.0">
+                                    <font>
+                                        <Font size="20.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="18.0" />
+                                    </VBox.margin>
+                                </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Patient ID">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                                <TextField fx:id="patient" prefHeight="13.0" prefWidth="250.0" promptText="Patient ID" styleClass="fields">
+                                    <VBox.margin>
+                                        <Insets bottom="18.0" />
+                                    </VBox.margin>
+                                </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Location of Patient">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                                <SearchableComboBox fx:id="locationofPatient" promptText="Location of Patient" styleClass="fields">
+                                    <VBox.margin>
+                                        <Insets bottom="18.0" />
+                                    </VBox.margin>
+                                </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Admin Information" wrappingWidth="250.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Assigned Employee">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                        <SearchableComboBox fx:id="assignedBox" promptText="Assigned User" styleClass="fields">
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin>
+                        </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Request Status">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                        <SearchableComboBox fx:id="statusBox" promptText="Status" styleClass="fields" />
+                            </children>
+                            <HBox.margin>
+                                <Insets right="50.0" />
+                            </HBox.margin>
+                        </VBox>
+                        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#43e81a" height="500.0" stroke="BLACK" strokeType="INSIDE" styleClass="bar" width="10.0" />
+                        <VBox prefHeight="159.0" prefWidth="200.0">
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Transfer Information" wrappingWidth="250.0">
+                                    <font>
+                                        <Font size="20.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="18.0" />
+                                    </VBox.margin>
+                                </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Religion">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                                <TextField fx:id="religion" promptText="Religion" styleClass="fields">
+                                    <VBox.margin>
+                                        <Insets bottom="18.0" />
+                                    </VBox.margin>
+                                </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Urgency">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                                <TextField fx:id="requestDescription" promptText="Description of request" styleClass="fields">
+                                    <VBox.margin>
+                                        <Insets bottom="18.0" />
+                                    </VBox.margin>
+                                </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Date Preference">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                                <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin></SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Description of Request">
+                           <VBox.margin>
+                              <Insets bottom="1.0" />
+                           </VBox.margin>
+                        </Text>
+                                <DatePicker fx:id="serviceDate" prefHeight="30.0" prefWidth="250.0" promptText="Date Preference" styleClass="fields">
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </DatePicker>
+                                <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <HBox prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <MFXButton fx:id="clear" alignment="CENTER" onAction="#handleDelete" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Delete" textAlignment="CENTER">
+                                                    <font>
+                                                        <Font size="16.0" />
+                                                    </font>
+                                                </MFXButton>
+                                            </children>
+                                        </HBox>
+                                        <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <MFXButton fx:id="submit" alignment="CENTER" onAction="#handleSubmit" prefHeight="25.0" prefWidth="85.0" styleClass="submitButton" text="Submit" textAlignment="CENTER">
+                                                    <font>
+                                                        <Font size="16.0" />
+                                                    </font>
+                                                </MFXButton>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets top="301.0" />
+                                    </VBox.margin>
+                                </HBox>
+                            </children>
+                            <HBox.margin>
+                                <Insets left="50.0" />
+                            </HBox.margin>
+                        </VBox>
+                        <VBox prefHeight="582.0" prefWidth="89.0">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                            <children>
+                                <Text fx:id="h3" styleClass="warningText" text=" " wrappingWidth="100.0">
+                                    <VBox.margin>
+                                        <Insets top="44.0" />
+                                    </VBox.margin>
+                                </Text>
+                                <Text fx:id="h4" styleClass="warningText" text=" " wrappingWidth="100.0">
+                                    <VBox.margin>
+                                        <Insets top="12.0" />
+                                    </VBox.margin>
+                                </Text>
+                                <Text fx:id="h5" styleClass="warningText" text=" " wrappingWidth="100.0">
+                                    <VBox.margin>
+                                        <Insets top="16.0" />
+                                    </VBox.margin>
+                                </Text>
+                                <VBox prefHeight="12.0" prefWidth="100.0" />
+                                <Text fx:id="h6" styleClass="warningText" text=" " wrappingWidth="100.0" />
+                            </children>
+                        </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="50.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </VBox>
+        <Pane fx:id="toast" layoutX="10.0" layoutY="10.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#f6bd38" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+                <Rectangle fx:id="check2" arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="7.0" layoutX="22.0" layoutY="21.0" rotate="-45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="45.0" />
+                <Rectangle fx:id="check1" arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="7.0" layoutX="12.0" layoutY="29.0" rotate="-138.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+                <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Succesfully Submitted" wrappingWidth="180.009765625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+            </children>
+        </Pane>
+      <Pane fx:id="toast1" layoutX="40.0" layoutY="40.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#f6bd38" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="check21" arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="7.0" layoutX="22.0" layoutY="21.0" rotate="-45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="45.0" />
+            <Rectangle fx:id="check11" arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="7.0" layoutX="12.0" layoutY="29.0" rotate="-138.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Text fill="WHITE" layoutX="74.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Successfully Submitted" wrappingWidth="195.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane fx:id="errtoast" layoutX="1300.0" layoutY="195.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Fill All Fields" wrappingWidth="180.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+    </children>
+</AnchorPane>

@@ -4,6 +4,8 @@ import edu.wpi.FlashyFrogs.DBConnection;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.Sound;
+import edu.wpi.FlashyFrogs.TrafficAnalyzer.FloydWarshallRunner;
 import io.github.palexdev.materialfx.utils.others.TriConsumer;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -115,6 +117,7 @@ class MapEntity {
     // Check to make sure we're adding a second node (and not more)
     if (nodeToLocationNameMap.get(node).size() >= 2) {
       // If so, throw an exception
+      Sound.ERROR.play();
       throw new IllegalStateException("Node already has two locations associated with it!");
     }
 
@@ -152,8 +155,13 @@ class MapEntity {
 
     // If there is a location name, remove it
     if (nodeToLocationNameMap.containsKey(node)) {
+      LocationName[] locationsToDelete =
+          nodeToLocationNameMap.get(node).toArray(new LocationName[0]);
+
       // For each location name, remove it
-      nodeToLocationNameMap.get(node).forEach(this::removeLocationName);
+      for (LocationName locationName : locationsToDelete) {
+        removeLocationName(locationName);
+      }
 
       nodeToLocationBox.remove(node); // Remove the node to location name box
     }
@@ -194,7 +202,9 @@ class MapEntity {
         nodeToLocationNameMap.keySet().stream()
             .filter((node) -> nodeToLocationNameMap.get(node).contains(locationName))
             .findFirst()
-            .orElseThrow();
+            .orElse(null);
+
+    if (toDelete == null) return; // Don't do anything if we get nothing back, different floor
 
     // Delete it from the mapping, don't remove the location name map
     nodeToLocationNameMap.get(toDelete).remove(locationName);
@@ -208,6 +218,8 @@ class MapEntity {
   /** Commits any changes that have been made using the map session */
   void commitMapChanges() {
     mapTransaction.commit(); // Commit
+
+    FloydWarshallRunner.reCalculate(); // Trigger FW to recalculate
 
     mapTransaction = getMapSession().beginTransaction(); // Begin a new transaction
   }

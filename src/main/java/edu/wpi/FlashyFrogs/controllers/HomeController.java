@@ -3,12 +3,15 @@ package edu.wpi.FlashyFrogs.controllers;
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
+import edu.wpi.FlashyFrogs.Alerts.AlertController;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.ORM.*;
+import edu.wpi.FlashyFrogs.ORM.Alert;
 import edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -42,7 +45,6 @@ import org.hibernate.Transaction;
 
 @GeneratedExclusion
 public class HomeController implements IController {
-  @FXML protected MFXButton mapEditorButton;
   @FXML protected FilteredTableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected FilteredTableColumn<ServiceRequest, Long> requestIDCol;
   @FXML protected FilteredTableColumn<ServiceRequest, HospitalUser> initEmpCol;
@@ -52,20 +54,16 @@ public class HomeController implements IController {
   @FXML protected FilteredTableColumn<ServiceRequest, LocationName> locationCol;
   @FXML protected FilteredTableColumn<ServiceRequest, ServiceRequest.Status> statusCol;
 
+  @FXML protected MFXButton editMovesButton;
   @FXML protected FilteredTableView<ServiceRequest> requestTable;
 
   @FXML protected FilteredTableColumn<MoveWrapper, edu.wpi.FlashyFrogs.ORM.Node> nodeIDCol;
   @FXML protected FilteredTableColumn<MoveWrapper, LocationName> locationNameCol;
   @FXML protected FilteredTableColumn<MoveWrapper, Date> dateCol;
   @FXML protected FilteredTableView<MoveWrapper> moveTable;
-  @FXML protected MFXButton manageLoginsButton;
-  @FXML protected MFXButton manageCSVButton;
 
-  @FXML protected MFXButton manageAnnouncementsButton;
   @FXML protected Label tableText;
   @FXML protected Label tableText2;
-
-  @FXML protected MFXButton editMovesButton;
 
   @FXML protected ScrollPane scrollPane;
   @FXML protected VBox alertBox;
@@ -76,7 +74,6 @@ public class HomeController implements IController {
   @FXML Text h2;
   @FXML Text h3;
   @FXML Text h4;
-  @FXML Text h5;
   boolean hDone = false;
 
   public static class MoveWrapper {
@@ -143,7 +140,6 @@ public class HomeController implements IController {
     h2.setVisible(false);
     h3.setVisible(false);
     h4.setVisible(false);
-    h5.setVisible(false);
 
     Fapp.resetStack();
 
@@ -305,35 +301,33 @@ public class HomeController implements IController {
                 requestTable.getSelectionModel().selectedItemProperty().get();
             if (selectedItem != null) {
 
-              if (CurrentUserEntity.CURRENT_USER.getAdmin()) {
-                FXMLLoader newLoad =
-                    new FXMLLoader(
-                        Fapp.class.getResource(
-                            "ServiceRequests/Editors/"
-                                + selectedItem.getRequestType()
-                                + "Editor.fxml"));
+              FXMLLoader newLoad =
+                  new FXMLLoader(
+                      Fapp.class.getResource(
+                          "ServiceRequests/Editors/"
+                              + selectedItem.getRequestType()
+                              + "Editor.fxml"));
 
-                Parent root = null;
-                root = newLoad.load();
-                PopOver popOver = new PopOver(root);
-                popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-                Node node =
-                    (Node) event.getSource(); // Get the node representation of what called this
-                popOver.show(node);
-                ServiceRequestController controller = newLoad.getController();
-                controller.setRequest(selectedItem);
-                controller.updateFields();
-                controller.setPopOver(popOver);
+              Parent root = null;
+              root = newLoad.load();
+              PopOver popOver = new PopOver(root);
+              popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+              Node node =
+                  (Node) event.getSource(); // Get the node representation of what called this
+              popOver.show(node);
+              ServiceRequestController controller = newLoad.getController();
+              controller.setRequest(selectedItem);
+              controller.updateFields();
+              controller.setPopOver(popOver);
 
-                popOver
-                    .showingProperty()
-                    .addListener(
-                        (observable, oldValue, newValue) -> {
-                          if (!newValue) {
-                            refreshTable();
-                          }
-                        });
-              }
+              popOver
+                  .showingProperty()
+                  .addListener(
+                      (observable, oldValue, newValue) -> {
+                        if (!newValue) {
+                          refreshTable();
+                        }
+                      });
             }
             requestTable.getSelectionModel().clearSelection();
           }
@@ -343,32 +337,14 @@ public class HomeController implements IController {
 
     if (!isAdmin) {
       tableText.setText("Assigned Service Requests");
-      manageAnnouncementsButton.setDisable(true);
-      manageAnnouncementsButton.setOpacity(0);
-      manageLoginsButton.setDisable(true);
-      manageLoginsButton.setOpacity(0);
-      manageCSVButton.setDisable(true);
-      manageCSVButton.setOpacity(0);
-      editMovesButton.setDisable(true);
-      editMovesButton.setOpacity(0);
-      mapEditorButton.setDisable(true);
-      mapEditorButton.setOpacity(0);
-
       tableText2.setText("");
+      editMovesButton.setDisable(true);
+      editMovesButton.setVisible(false);
     } else {
       tableText.setText("All Service Requests");
-      manageAnnouncementsButton.setDisable(false);
-      manageAnnouncementsButton.setOpacity(1);
-      manageLoginsButton.setDisable(false);
-      manageLoginsButton.setOpacity(1);
-      manageCSVButton.setDisable(false);
-      manageCSVButton.setOpacity(1);
-      editMovesButton.setDisable(false);
-      editMovesButton.setOpacity(1);
-      mapEditorButton.setDisable(false);
-      mapEditorButton.setOpacity(1);
-
       tableText2.setText("Future Moves");
+      editMovesButton.setDisable(false);
+      editMovesButton.setVisible(true);
     }
     refreshTable();
 
@@ -377,7 +353,6 @@ public class HomeController implements IController {
 
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
-    System.out.println("opening pathfinding");
     Fapp.setScene("Pathfinding", "Pathfinding");
   }
 
@@ -400,25 +375,27 @@ public class HomeController implements IController {
   }
 
   public void manageAnnouncements(ActionEvent event) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/AlertManager.fxml"));
-    PopOver popOver = new PopOver(newLoad.load()); // create the popover
-
-    AlertManagerController controller = newLoad.getController();
-    controller.setPopOver(popOver);
-
-    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-    javafx.scene.Node node =
-        (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
-    popOver.show(node); // display the popover
-
-    popOver
-        .showingProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue) {
-                refreshAlerts();
-              }
-            });
+    Fapp.setScene("Alerts", "AlertManager");
+    //    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/NewAlert.fxml"));
+    //    PopOver popOver = new PopOver(newLoad.load()); // create the popover
+    //
+    //    NewAlertController controller = newLoad.getController();
+    //    controller.setPopOver(popOver);
+    //
+    //    popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+    //    javafx.scene.Node node =
+    //        (javafx.scene.Node) event.getSource(); // Get the node representation of what called
+    // this
+    //    popOver.show(node); // display the popover
+    //
+    //    popOver
+    //        .showingProperty()
+    //        .addListener(
+    //            (observable, oldValue, newValue) -> {
+    //              if (!newValue) {
+    //                refreshAlerts();
+    //              }
+    //            });
   }
 
   public void onClose() {}
@@ -430,14 +407,12 @@ public class HomeController implements IController {
       h2.setVisible(true);
       h3.setVisible(true);
       h4.setVisible(true);
-      h5.setVisible(true);
       hDone = true;
     } else if (hDone) {
       h1.setVisible(false);
       h2.setVisible(false);
       h3.setVisible(false);
       h4.setVisible(false);
-      h5.setVisible(false);
       hDone = false;
     }
   }
@@ -531,14 +506,14 @@ public class HomeController implements IController {
     moveTable.resetFilter();
   }
 
-  public void insertAlert(Announcement announcement) throws IOException {
-    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/Alert.fxml"));
+  public void insertAlert(Alert alert) throws IOException {
+    FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("Alerts/Alert.fxml"));
 
     Parent root = newLoad.load();
     alertBox.getChildren().add(root);
 
     AlertController controller = newLoad.getController();
-    controller.insertAnnouncement(announcement);
+    controller.insertAnnouncement(alert);
   }
 
   @SneakyThrows
@@ -546,17 +521,37 @@ public class HomeController implements IController {
     alertBox.getChildren().clear();
 
     Session session = CONNECTION.getSessionFactory().openSession();
-    List<Announcement> list =
-        session.createQuery("Select a from Announcement a", Announcement.class).getResultList();
+    List<Alert> list =
+        session
+            .createQuery(
+                "SELECT a FROM Alert a WHERE :day BETWEEN startDisplayDate AND endDisplayDate",
+                Alert.class)
+            .setParameter("day", Date.from(Instant.now()))
+            .getResultList();
 
-    for (Announcement a : list) {
+    Collections.sort(
+        list,
+        new Comparator<Alert>() {
+          @Override
+          public int compare(Alert a1, Alert a2) {
+            return a1.getStartDisplayDate().compareTo(a2.getStartDisplayDate());
+          }
+        });
+
+    for (Alert a : list) {
+      //      if (a.getStartDisplayDate().before(Date.from(Instant.now()))
+      //          && a.getEndDisplayDate().after(Date.from(Instant.now()))) {
       insertAlert(a);
+      //      }
     }
   }
+
+  // TODO:CHANGE BACK TO MAP EDITOR
+
   /** Callback to open the map editor from a button */
   @FXML
   public void openMapEditor() {
-    Fapp.setScene("MapEditor", "MapEditorView");
+    Fapp.setScene("ServiceRequests", "ServiceRequestStatsPage");
   }
 
   public void srEditorPopOver() {}

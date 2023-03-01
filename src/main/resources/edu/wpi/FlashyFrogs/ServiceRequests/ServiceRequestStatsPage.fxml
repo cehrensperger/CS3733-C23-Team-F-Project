@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.tableview2.FilteredTableColumn?>
+<?import org.controlsfx.control.tableview2.FilteredTableView?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.ServiceRequests.ServiceRequestStatsPageController">
+   <children>
+      <FilteredTableView fx:id="requestTable" layoutX="236.0" layoutY="66.0" prefHeight="344.0" prefWidth="997.0" AnchorPane.bottomAnchor="310.0" AnchorPane.leftAnchor="236.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="66.0">
+         <columns>
+            <FilteredTableColumn fx:id="requestTypeCol" prefWidth="100.0" text="Request Type" />
+            <FilteredTableColumn fx:id="requestIDCol" prefWidth="100.0" text="Request ID" />
+            <FilteredTableColumn fx:id="initEmpCol" prefWidth="120.0" text="Initiating Employee" />
+            <FilteredTableColumn fx:id="assignedEmpCol" prefWidth="148.0" text="Assigned Employee" />
+            <FilteredTableColumn fx:id="subDateCol" prefWidth="123.0" text="Date Submitted" />
+            <FilteredTableColumn fx:id="urgencyCol" prefWidth="131.0" text="Urgency" />
+            <FilteredTableColumn fx:id="locationCol" prefWidth="217.0" text="Location" />
+            <FilteredTableColumn fx:id="statusCol" prefWidth="220" text="Status" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </FilteredTableView>
+      <BarChart layoutX="220.0" layoutY="412.0" prefHeight="308.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <Label layoutX="735.0" layoutY="429.0" prefHeight="17.0" prefWidth="406.0" styleClass="headerBold" text="Graph Type" AnchorPane.bottomAnchor="274.0" AnchorPane.leftAnchor="735.0">
+         <padding>
+            <Insets bottom="1.0" />
+         </padding></Label>
+      <VBox fx:id="sideBar" layoutX="32.0" layoutY="26.0" maxWidth="220.0" prefHeight="711.0" prefWidth="206.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Service Requests" wrappingWidth="187.66615295410156">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <MFXButton fx:id="AV" alignment="BASELINE_LEFT" onAction="#handleAV" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Audio/Visual" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Roboto Light" size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="equipmentButton" alignment="BASELINE_LEFT" onAction="#handleEquipment" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Equipment Transport" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="IT" alignment="BASELINE_LEFT" onAction="#handleIT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Information Technology" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="IPT" onAction="#handleIPT" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Internal Patient Transportation" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="medicine" alignment="BASELINE_LEFT" onAction="#handleMedicine" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Medicine Delivery" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="religious" alignment="BASELINE_LEFT" onAction="#handleReligious" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Religous" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="sanitation" alignment="BASELINE_LEFT" onAction="#handleSanitation" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Sanitation" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="security" alignment="BASELINE_LEFT" onAction="#handleSecurity" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Security" wrapText="true">
+               <VBox.margin>
+                  <Insets left="18.0" top="18.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </MFXButton>
+            <AnchorPane prefHeight="147.0" prefWidth="181.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="BOTTOM_LEFT" layoutX="-2.0" layoutY="28.0" AnchorPane.bottomAnchor="0.0">
+                     <children>
+                        <MFXButton fx:id="credits" alignment="BASELINE_LEFT" onAction="#handleCredits" prefHeight="60.0" prefWidth="150.0" styleClass="serviceRequestButtons" text="Credits" wrapText="true">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="18.0" left="18.0" />
+                           </VBox.margin>
+                        </MFXButton>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <ComboBox fx:id="graphTypeComboBox" layoutX="740.0" layoutY="457.0" onAction="#handleGraphTypeComboBox" prefHeight="26.0" prefWidth="310.0" promptText="Graph Type" styleClass="fields" AnchorPane.bottomAnchor="237.0" AnchorPane.leftAnchor="735.0" />
+      <Text fx:id="h1" layoutX="236.0" layoutY="51.0" styleClass="warningText" text="Here are all service requests" wrappingWidth="284.0" AnchorPane.leftAnchor="236.0" AnchorPane.topAnchor="38.0" />
+      <Text fx:id="h3" layoutX="735.0" layoutY="496.0" styleClass="warningText" text="Choose what data you would like to view on the graph" wrappingWidth="310.0" AnchorPane.bottomAnchor="221.2578125" AnchorPane.leftAnchor="735.0" />
+      <Text fx:id="h2" layoutX="260.0" layoutY="425.0" styleClass="warningText" text="Once you choose a type of graph, the data will appear below" wrappingWidth="406.0" AnchorPane.bottomAnchor="292.2578125" AnchorPane.leftAnchor="260.0" />
+      <Text fx:id="h4" layoutX="839.0" layoutY="601.0" styleClass="warningText" text="Click if you would like to download the graph you have generated" wrappingWidth="366.0" AnchorPane.bottomAnchor="116.2578125" AnchorPane.rightAnchor="75.0" />
+      <MFXButton fx:id="downloadButton" layoutX="1123.0" layoutY="660.0" prefWidth="150.0" styleClass="blueNoSetSize" text="Download Graphs" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0" />
+      <Pane fx:id="toast" layoutX="20.0" layoutY="20.0" prefHeight="50.0" prefWidth="270.0" AnchorPane.rightAnchor="-280.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" stroke="#f6bd38" strokeType="OUTSIDE" strokeWidth="2.0" width="269.0" />
+            <Rectangle fx:id="check2" arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="7.0" layoutX="22.0" layoutY="21.0" rotate="-45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="45.0" />
+            <Rectangle fx:id="check1" arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="7.0" layoutX="12.0" layoutY="29.0" rotate="-138.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Text fill="WHITE" layoutX="82.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Download Complete" wrappingWidth="180.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

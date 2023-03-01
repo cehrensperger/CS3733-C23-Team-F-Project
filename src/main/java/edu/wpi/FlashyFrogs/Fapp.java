@@ -1,14 +1,14 @@
 package edu.wpi.FlashyFrogs;
 
+import edu.wpi.FlashyFrogs.Accounts.LoginController;
 import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Node;
+import edu.wpi.FlashyFrogs.TrafficAnalyzer.FloydWarshallRunner;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import edu.wpi.FlashyFrogs.controllers.NavBarController;
 import java.io.IOException;
-import java.util.EmptyStackException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Stack;
+import java.time.Instant;
+import java.util.*;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -30,18 +30,20 @@ import org.hibernate.Session;
 @GeneratedExclusion
 public class Fapp extends Application {
   @Setter @Getter
-  private static boolean isLightMode =
-      true; // keeps track of whether we are in Light Mode or Dark Mode
+  public static boolean sfxOn = true; // keeps track of whether sound effects are turned on or off
 
   @Setter @Getter private static Stage primaryStage;
   @Setter @Getter private static Pane rootPane;
   private static NavBarController controller;
+  @Getter private static Theme theme = Theme.LIGHT_THEME;
 
-  @Getter private static Theme theme;
-
-  public static IController iController;
+  @Getter public static IController iController;
 
   public static Stack<String> prevPage = new Stack<String>();
+
+  // Last keypress time, used for things that require a timeout
+  @Getter @Setter private static Instant lastKeyPressTime = Instant.now();
+  private static String hold;
 
   @Override
   public void init() {
@@ -53,6 +55,8 @@ public class Fapp extends Application {
    * making the app take forever to launch
    */
   private void preloadResources() {
+    FloydWarshallRunner.reCalculate(); // Have the floyd-warshall runner do its thing
+
     // Map loader
     new Thread(
             () -> {
@@ -134,10 +138,10 @@ public class Fapp extends Application {
     preloadResources();
     /* primaryStage is generally only used if one of your components require the stage to display */
     Fapp.primaryStage = primaryStage;
+    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("Accounts/Login.fxml"));
     final FXMLLoader loader = new FXMLLoader(Fapp.class.getResource("views/NavBar.fxml"));
 
     final BorderPane root = loader.load();
-    final FXMLLoader homePage = new FXMLLoader(Fapp.class.getResource("Accounts/Login.fxml"));
     controller = ((NavBarController) loader.getController());
     AnchorPane mainAnchorPane = controller.getAnchorPane();
     AnchorPane innerAnchorPane = homePage.load();
@@ -148,7 +152,6 @@ public class Fapp extends Application {
     AnchorPane.setLeftAnchor(innerAnchorPane, 0.0);
     AnchorPane.setRightAnchor(innerAnchorPane, 0.0);
     Fapp.rootPane = root;
-
     final Scene scene = new Scene(root);
 
     // Disable full-screen exit and combo
@@ -159,8 +162,29 @@ public class Fapp extends Application {
     setTheme(Theme.LIGHT_THEME);
     primaryStage.setFullScreen(true);
     primaryStage.show();
+  }
 
-    setTheme(Theme.LIGHT_THEME);
+  /**
+   * Sets the application root manually. Should only be used in special cases
+   *
+   * @param root the root of the app
+   */
+  public static void setRoot(@NonNull javafx.scene.Node root) {
+    lastKeyPressTime =
+        Instant.now(); // Update the last press time, so that it doesn't snap change after change to
+    // login
+
+    // Clear the root
+    controller.getAnchorPane().getChildren().clear();
+
+    // Set this to be the root
+    controller.getAnchorPane().getChildren().add(root);
+
+    // Make it take all available space
+    AnchorPane.setTopAnchor(root, 0.0);
+    AnchorPane.setBottomAnchor(root, 0.0);
+    AnchorPane.setLeftAnchor(root, 0.0);
+    AnchorPane.setRightAnchor(root, 0.0);
   }
 
   @SneakyThrows
@@ -184,21 +208,24 @@ public class Fapp extends Application {
     Parent root = loader.load();
     iController = loader.getController();
 
-    AnchorPane mainAnchorPane = controller.getAnchorPane();
-
-    mainAnchorPane.getChildren().clear();
-    mainAnchorPane.getChildren().add(root);
-    AnchorPane.setTopAnchor(root, 0.0);
-    AnchorPane.setBottomAnchor(root, 0.0);
-    AnchorPane.setLeftAnchor(root, 0.0);
-    AnchorPane.setRightAnchor(root, 0.0);
+    setRoot(root);
   }
 
   @SneakyThrows
   public static void handleBack() {
-    prevPage.pop();
-    String[] page = prevPage.pop().split(",");
-    Fapp.setScene(page[0], page[1]);
+    if (prevPage.size() > 1) {
+      prevPage.pop();
+      String[] page = prevPage.pop().split(",");
+      Fapp.setScene(page[0], page[1]);
+    } else {
+      // If back is pressed on a page without full nav set and not the login page
+      if (getIController() == null || getIController().getClass() != LoginController.class) {
+        Fapp.logOutWithoutSceneChange(); // Ensure we're logged out
+        Fapp.setScene("Accounts", "Login"); // Go to login
+      } else {
+        controller.closeApp(); // Close the app if it's the login page
+      }
+    }
   }
 
   public static void resetStack() {
@@ -218,5 +245,11 @@ public class Fapp extends Application {
   @Override
   public void stop() {
     log.info("Shutting Down");
+  }
+
+  /** Signs the user out without changing the scene */
+  public static void logOutWithoutSceneChange() {
+    // Just have the controller do it
+    controller.signUserOutWithoutSceneChange();
   }
 }
