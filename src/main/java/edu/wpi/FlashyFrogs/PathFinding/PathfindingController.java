@@ -1,7 +1,6 @@
 package edu.wpi.FlashyFrogs.PathFinding;
 
 import static edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity.CURRENT_USER;
-import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
 import com.fazecast.jSerialComm.*;
 import edu.wpi.FlashyFrogs.Fapp;
@@ -34,7 +33,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -50,16 +48,8 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   @FXML Rectangle errcheck1;
   private int selectedIndex = -1;
   @FXML private MFXButton generatePathButton;
-  @FXML private Pane animationPane;
-  @FXML private Circle cir1;
-  @FXML private Circle cir6;
-  @FXML private Circle cir5;
-  @FXML private Circle cir4;
-  @FXML private Circle cir3;
-  @FXML private Circle cir2;
   private final ReentrantLock lock = new ReentrantLock();
   private final MyRunnable myRunnable = new MyRunnable();
-  private ParallelTransition parallelTransition = new ParallelTransition();
   @FXML private SearchableComboBox<LocationName> startingBox;
   @FXML private SearchableComboBox<LocationName> destinationBox;
   @FXML private SearchableComboBox<String> algorithmBox;
@@ -86,14 +76,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
    */
   @SneakyThrows
   public void initialize() {
-    // hide the circles
-    cir1.setVisible(false);
-    cir2.setVisible(false);
-    cir3.setVisible(false);
-    cir4.setVisible(false);
-    cir5.setVisible(false);
-    cir6.setVisible(false);
-    animationPane.setVisible(false);
     moveDatePicker.setValue(LocalDate.now());
     moveDatePicker
         .valueProperty()
@@ -236,7 +218,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       try {
         generatePathButton.setDisable(true);
         // start the animation
-        Animation();
+        mapController.startAnimation();
 
         // get algorithm to use in pathfinding from algorithmBox
         if (algorithmBox.getValue() != null) {
@@ -283,93 +265,10 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       drawTable(
           Date.from(moveDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     }
-    // stop the animation
-    parallelTransition.jumpTo(Duration.ZERO);
-    parallelTransition.stop();
 
-    //    animationPane.setTranslateX(2000);
-    //    animationPane.setTranslateY(2000);
-
-    // hide the circles
-    cir1.setVisible(false);
-    cir2.setVisible(false);
-    cir3.setVisible(false);
-    cir4.setVisible(false);
-    cir5.setVisible(false);
-    cir6.setVisible(false);
-    animationPane.setVisible(false);
+    mapController.stopAnimation();
     generatePathButton.setDisable(false);
   }
-
-  public void Animation() {
-    parallelTransition.stop();
-    //    animationPane.setTranslateX(0);
-    //    animationPane.setTranslateY(0);
-    cir1.setVisible(true);
-    cir2.setVisible(true);
-    cir3.setVisible(true);
-    cir4.setVisible(true);
-    cir5.setVisible(true);
-    cir6.setVisible(true);
-    animationPane.setVisible(true);
-    //    cir1.setTranslateY(0);
-    //    cir2.setTranslateY(0);
-    //    cir3.setTranslateY(0);
-    //    cir4.setTranslateY(0);
-    //    cir5.setTranslateY(0);
-    //    cir6.setTranslateY(0);
-    cir1.setTranslateX(300);
-    cir2.setTranslateX(300);
-    cir3.setTranslateX(300);
-    cir4.setTranslateX(300);
-    cir5.setTranslateX(300);
-    cir6.setTranslateX(300);
-    // Create a TranslateTransition for each circle and add a delay
-    TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.2), cir1);
-    tt1.setInterpolator(Interpolator.EASE_BOTH);
-    tt1.setByY(-50);
-    tt1.setAutoReverse(true);
-    tt1.setCycleCount(2);
-    tt1.setDelay(Duration.seconds(0.0));
-    TranslateTransition tt2 = new TranslateTransition(Duration.seconds(0.2), cir2);
-    tt2.setInterpolator(Interpolator.EASE_BOTH);
-    tt2.setByY(-50);
-    tt2.setAutoReverse(true);
-    tt2.setCycleCount(2);
-    tt2.setDelay(Duration.seconds(0.2));
-    TranslateTransition tt3 = new TranslateTransition(Duration.seconds(0.2), cir3);
-    tt3.setInterpolator(Interpolator.EASE_BOTH);
-    tt3.setByY(-50);
-    tt3.setAutoReverse(true);
-    tt3.setCycleCount(2);
-    tt3.setDelay(Duration.seconds(0.4));
-    TranslateTransition tt4 = new TranslateTransition(Duration.seconds(0.2), cir4);
-    tt4.setInterpolator(Interpolator.EASE_BOTH);
-    tt4.setByY(-50);
-    tt4.setAutoReverse(true);
-    tt4.setCycleCount(2);
-    tt4.setDelay(Duration.seconds(0.6));
-    TranslateTransition tt5 = new TranslateTransition(Duration.seconds(0.2), cir5);
-    tt5.setInterpolator(Interpolator.EASE_BOTH);
-    tt5.setByY(-50);
-    tt5.setAutoReverse(true);
-    tt5.setCycleCount(2);
-    tt5.setDelay(Duration.seconds(0.8));
-    TranslateTransition tt6 = new TranslateTransition(Duration.seconds(0.2), cir6);
-    tt6.setInterpolator(Interpolator.EASE_BOTH);
-    tt6.setByY(-50);
-    tt6.setAutoReverse(true);
-    tt6.setCycleCount(2);
-    tt6.setDelay(Duration.seconds(1.0));
-
-    // Create a ParallelTransition to play the animations in parallel
-    ParallelTransition parallelTransition = new ParallelTransition(tt1, tt2, tt3, tt4, tt5, tt6);
-    parallelTransition.setAutoReverse(true);
-    parallelTransition.setCycleCount(ParallelTransition.INDEFINITE);
-    // Start the animation
-    parallelTransition.playFromStart();
-  }
-
   /** Callback to open the map editor from a button */
   @FXML
   public void openMapEditor() {
@@ -464,8 +363,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
   class MyRunnable implements Runnable {
 
     public void run() {
-      Session session = CONNECTION.getSessionFactory().openSession();
-
       // Get the new path from the PathFinder
       Node startNode =
           startingBox
@@ -490,17 +387,15 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         ports[0].setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
         ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 16); // Blocking write
 
-        //        for (Node node : currentPath) {
-        if (ports[0].isOpen() || ports[0].openPort()) {
-          //            System.out.println("Port opened successfully");
-          byte[] bytes = startNode.getId().getBytes(StandardCharsets.US_ASCII);
-          ports[0].writeBytes(bytes, bytes.length);
-          bytes = endNode.getId().getBytes(StandardCharsets.US_ASCII);
-          ports[0].writeBytes(bytes, bytes.length);
-        } else {
-          System.out.println("Failed to open port");
-          System.out.println(ports[0].getLastErrorCode());
-          //          }
+        for (Node node : currentPath) {
+          if (ports[0].isOpen() || ports[0].openPort()) {
+            //            System.out.println("Port opened successfully");
+            byte[] bytes = node.getId().getBytes(StandardCharsets.US_ASCII);
+            ports[0].writeBytes(bytes, bytes.length);
+          } else {
+            System.out.println("Failed to open port");
+            System.out.println(ports[0].getLastErrorCode());
+          }
         }
 
         if (ports[0].isOpen() || ports[0].openPort()) {
@@ -513,7 +408,6 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         //        System.out.println("Port closed");
       }
 
-      session.close();
       // Call unlock() on the UI thread when finished
       Platform.runLater(PathfindingController.this::unlock);
     }

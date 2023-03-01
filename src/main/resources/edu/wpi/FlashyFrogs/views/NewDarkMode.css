@@ -347,6 +347,19 @@
     -fx-background-color: #012D5A;
     -fx-text-fill: white;
 }
+
+.yellowNav {
+    -fx-fill: #F6BD38;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold !important;
+}
+
+.navSlide {
+    -fx-fill: #f1f1f1;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: normal !important;
+}
+
 .navBarLines
     /** sets the style of the line in between the buttons on the nav bar **/
 {
