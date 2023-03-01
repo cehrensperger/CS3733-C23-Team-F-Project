@@ -168,6 +168,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 .getResultList());
 
     defaultLocation = locationNames.get(0);
+
+    for (LocationName locationName : locationNames) {
+      if (locationName.getLongName().equals("Hallway 8 Floor L1")) {
+        defaultLocation = locationName;
+        break;
+      }
+    }
     // Query the edges
     List<Edge> edges =
         mapController.getMapSession().createQuery("FROM Edge", Edge.class).getResultList();
@@ -204,7 +211,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         }
         Node nextNode = edgesConnectToFirstNode.get(j).getNode1();
         if (edgesConnectToFirstNode.get(j).getNode1().equals(defaultNode)) {
-          thisNode = edgesConnectToFirstNode.get(j).getNode2();
+          nextNode = edgesConnectToFirstNode.get(j).getNode2();
         }
 
         double[] a = {
