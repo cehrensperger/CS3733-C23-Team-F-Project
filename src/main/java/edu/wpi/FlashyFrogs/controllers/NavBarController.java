@@ -127,24 +127,10 @@ public class NavBarController {
     menu.setDisable(true);
     menu.hide();
 
-    menu.hoverProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (newValue) {
-
-              } else {
-
-              }
-            });
     // header.setDisable(true);
     // header.setOpacity(0);
     updateToggleSFX();
-    updateMode();
-    navButtons.setVisible(false);
-    navButtons.setDisable(true);
-    navButtons.setOpacity(0);
-    toast.setVisible(false);
-    toast.setDisable(true);
+    signUserOutWithoutSceneChange(); // Make sure we're in logged-out mode
     //    srButton.setOpacity(0);
     //    srButton.setDisable(true);
     //    homeButton.setOpacity(0);
