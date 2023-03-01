@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -77,13 +79,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   // visualizer
   private static PauseTransition backToVisualizerTimer = null;
 
-  // make singleton?
-  private static LocationName defaultLocation;
+  @FXML private SearchableComboBox<LocationName> defaultLocation;
 
   /** Sets up the move visualizer, including all tables, and the map */
   @SneakyThrows
   @FXML
   protected void initialize() {
+
     // Cancel the timer if it exists
     if (backToVisualizerTimer != null) {
       // Stop the visualizer
@@ -167,21 +169,20 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 .createQuery("FROM LocationName", LocationName.class)
                 .getResultList());
 
-    defaultLocation = locationNames.get(0);
+    defaultLocation.setValue(locationNames.get(0));
 
-    for (LocationName locationName : locationNames) {
-      if (locationName.getLongName().equals("Hallway 8 Floor L1")) {
-        defaultLocation = locationName;
-        break;
-      }
-    }
     // Query the edges
     List<Edge> edges =
         mapController.getMapSession().createQuery("FROM Edge", Edge.class).getResultList();
 
     // find all edges
 
-    Node defaultNode = defaultLocation.getCurrentNode(new Date());
+    Node defaultNode =
+        defaultLocation
+            .selectionModelProperty()
+            .getValue()
+            .getSelectedItem()
+            .getCurrentNode(new Date());
     // find the edges connected to this node
     List<Edge> edgesConnectToFirstNode =
         edges.stream()
@@ -198,146 +199,55 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     // compare them to find the pair that is closest to 180 degrees
     // if there is only one edge, make left or right signage a dead end
 
-    double closestTo180 = 999;
-    Pair<Edge, Edge> pairClosestTo180 = null;
-    // check all pairs of edges
-    for (int i = 0; i < edgesConnectToFirstNode.size(); i++) {
-      for (int j = i + 1; j < edgesConnectToFirstNode.size(); j++) {
+    if (defaultNode != null) {
 
-        // get node that is not the origin node
-        Node thisNode = edgesConnectToFirstNode.get(i).getNode1();
-        if (edgesConnectToFirstNode.get(i).getNode1().equals(defaultNode)) {
-          thisNode = edgesConnectToFirstNode.get(i).getNode2();
-        }
-        Node nextNode = edgesConnectToFirstNode.get(j).getNode1();
-        if (edgesConnectToFirstNode.get(j).getNode1().equals(defaultNode)) {
-          nextNode = edgesConnectToFirstNode.get(j).getNode2();
-        }
-
-        double[] a = {
-          (thisNode.getXCoord() - defaultNode.getXCoord()),
-          (thisNode.getYCoord() - defaultNode.getYCoord())
-        };
-
-        double[] b = {
-          (nextNode.getXCoord() - defaultNode.getXCoord()),
-          (nextNode.getYCoord() - defaultNode.getYCoord())
-        };
-
-        double angle = angleBetweenVectors(a, b, 2);
-
-        if (Math.abs(180 - angle) < closestTo180) {
-          closestTo180 = Math.abs(180 - angle);
-          pairClosestTo180 =
-              new Pair<>(edgesConnectToFirstNode.get(i), edgesConnectToFirstNode.get(j));
-        }
-      }
-    }
-
-    System.out.println();
-    // once you have the pair of edges that are closest to 180 degrees
-
-    Queue<Node> nodeQueue = new LinkedList<Node>();
-    List<Node> visitedList = new ArrayList<Node>();
-    // add original node to visited list so a loop is not created
-    visitedList.add(defaultNode);
-
-    // add the node that is not the start node (defaultNode) to the queue
-    if (!pairClosestTo180.getValue().getNode1().equals(defaultNode)) {
-      nodeQueue.add(pairClosestTo180.getValue().getNode1());
+      generateLeftAndRight(edges, defaultNode, edgesConnectToFirstNode);
     } else {
-      nodeQueue.add(pairClosestTo180.getValue().getNode2());
+      System.out.println("No node associated with this location!");
     }
-
-    boolean locationNameFound = false;
-    // "travel" down both edges to find the connected node
-    Set<LocationName> leftLocationNames = null;
-    Set<LocationName> rightLocationNames = null;
-
-    while (nodeQueue.size() > 0 && !locationNameFound) {
-      // get and remove node at top of queue
-      Node nextNode = nodeQueue.poll();
-
-      // find all edges for this node and add all of its neighbors to queue
-      for (Node child : getChildrenFromEdges(edges, nextNode)) {
-        if (!visitedList.contains(child)) {
-          nodeQueue.add(child);
-        }
-      }
-      Set<LocationName> locs = mapController.getNodeToLocationNameMap().get(nextNode);
-      if (locs != null) {
-        boolean containsNonHall = false;
-        for (LocationName locationName : locs) {
-          if (!locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
-            containsNonHall = true;
-          }
-        }
-        // if a location name was found that is not a hall, quit and save the location name(s)
-        if (containsNonHall) {
-          locationNameFound = true;
-          leftLocationNames = locs;
-        }
-      }
-      //        doesn't have a location name
-    }
-
-    // reset data structures used for BFS
-    nodeQueue = new LinkedList<Node>();
-    visitedList = new ArrayList<Node>();
-    visitedList.add(defaultNode);
-    locationNameFound = false;
-
-    // add the node that is not the start node (defaultNode) to the queue
-    if (!pairClosestTo180.getKey().getNode1().equals(defaultNode)) {
-      nodeQueue.add(pairClosestTo180.getKey().getNode1());
-    } else {
-      nodeQueue.add(pairClosestTo180.getKey().getNode2());
-    }
-    while (nodeQueue.size() > 0 && !locationNameFound) {
-      // get and remove node at top of queue
-      Node nextNode = nodeQueue.poll();
-      // add this node's children to the queue if they have not already been visited!
-      // nodeQueue.addAll(getChildrenFromEdges(edges, nextNode));
-      for (Node child : getChildrenFromEdges(edges, nextNode)) {
-        if (!visitedList.contains(child)) {
-          nodeQueue.add(child);
-        }
-      }
-      Set<LocationName> locs = mapController.getNodeToLocationNameMap().get(nextNode);
-      if (locs != null) {
-
-        boolean containsNonHall = false;
-        for (LocationName locationName : locs) {
-          if (!locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
-            containsNonHall = true;
-          }
-        }
-
-        if (containsNonHall) {
-
-          locationNameFound = true;
-          rightLocationNames = locs;
-        }
-      }
-    }
-
-    // assert leftLocationNames != null;
-    if (leftLocationNames == null) {
-
-    } else {
-      leftLocationBox.setValue(leftLocationNames.stream().findFirst().get());
-    }
-
-    if (rightLocationNames == null) {
-
-    } else {
-      rightLocationBox.setValue(rightLocationNames.stream().findFirst().get());
-    }
-    // do the same for the right
 
     // Set the boxes to contain them
     leftLocationBox.setItems(locationNames);
     rightLocationBox.setItems(locationNames);
+    defaultLocation.setItems(
+        FXCollections.observableList(
+            locationNames.stream()
+                .filter(p -> p.getLocationType() != LocationName.LocationType.ELEV)
+                .collect(Collectors.toList())));
+    defaultLocation.setValue(defaultLocation.getItems().get(0));
+    defaultLocation
+        .valueProperty()
+        .addListener(
+            new ChangeListener<LocationName>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends LocationName> observable,
+                  LocationName oldValue,
+                  LocationName newValue) {
+
+                if (newValue != null) {
+                  Node newDefaultNode = newValue.getCurrentNode(new Date());
+                  List<Edge> newEdgesList =
+                      edges.stream()
+                          .filter(
+                              new Predicate<Edge>() {
+                                @Override
+                                public boolean test(Edge edge) {
+                                  return edge.getNode1().equals(newDefaultNode)
+                                      || edge.getNode2().equals(newDefaultNode);
+                                }
+                              })
+                          .collect(Collectors.toList());
+
+                  if (newDefaultNode != null) {
+
+                    generateLeftAndRight(edges, newDefaultNode, newEdgesList);
+                  } else {
+                    System.out.println("no node associated with this location!");
+                  }
+                }
+              }
+            });
 
     // Give the columns their filters
     PopupFilter<Move, Node> nodeFilter = new PopupStringFilter<>(nodeColumn); // Node filter
@@ -484,6 +394,148 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
               transition.play();
             });
+  }
+
+  private void generateLeftAndRight(
+      List<Edge> edges, Node defaultNode, List<Edge> edgesConnectToFirstNode) {
+    double closestTo180 = 999;
+    Pair<Edge, Edge> pairClosestTo180 = null;
+    // check all pairs of edges
+    for (int i = 0; i < edgesConnectToFirstNode.size(); i++) {
+      for (int j = i + 1; j < edgesConnectToFirstNode.size(); j++) {
+
+        // get node that is not the origin node
+        Node thisNode = edgesConnectToFirstNode.get(i).getNode1();
+        if (edgesConnectToFirstNode.get(i).getNode1().equals(defaultNode)) {
+          thisNode = edgesConnectToFirstNode.get(i).getNode2();
+        }
+        Node nextNode = edgesConnectToFirstNode.get(j).getNode1();
+        if (edgesConnectToFirstNode.get(j).getNode1().equals(defaultNode)) {
+          nextNode = edgesConnectToFirstNode.get(j).getNode2();
+        }
+
+        double[] a = {
+          (thisNode.getXCoord() - defaultNode.getXCoord()),
+          (thisNode.getYCoord() - defaultNode.getYCoord())
+        };
+
+        double[] b = {
+          (nextNode.getXCoord() - defaultNode.getXCoord()),
+          (nextNode.getYCoord() - defaultNode.getYCoord())
+        };
+
+        double angle = angleBetweenVectors(a, b, 2);
+
+        if (Math.abs(180 - angle) < closestTo180) {
+          closestTo180 = Math.abs(180 - angle);
+          pairClosestTo180 =
+              new Pair<>(edgesConnectToFirstNode.get(i), edgesConnectToFirstNode.get(j));
+        }
+      }
+    }
+
+    System.out.println();
+    // once you have the pair of edges that are closest to 180 degrees
+
+    Queue<Node> nodeQueue = new LinkedList<Node>();
+    List<Node> visitedList = new ArrayList<Node>();
+    // add original node to visited list so a loop is not created
+    visitedList.add(defaultNode);
+
+    // add the node that is not the start node (defaultNode) to the queue
+    if (!pairClosestTo180.getValue().getNode1().equals(defaultNode)) {
+      nodeQueue.add(pairClosestTo180.getValue().getNode1());
+    } else {
+      nodeQueue.add(pairClosestTo180.getValue().getNode2());
+    }
+
+    boolean locationNameFound = false;
+    // "travel" down both edges to find the connected node
+    Set<LocationName> leftLocationNames = null;
+    Set<LocationName> rightLocationNames = null;
+
+    while (nodeQueue.size() > 0 && !locationNameFound) {
+      // get and remove node at top of queue
+      Node nextNode = nodeQueue.poll();
+
+      // find all edges for this node and add all of its neighbors to queue
+      for (Node child : getChildrenFromEdges(edges, nextNode)) {
+        if (!visitedList.contains(child)) {
+          nodeQueue.add(child);
+        }
+      }
+      Set<LocationName> locs = mapController.getNodeToLocationNameMap().get(nextNode);
+      if (locs != null) {
+        boolean containsNonHall = false;
+        for (LocationName locationName : locs) {
+          if (!locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+            containsNonHall = true;
+          }
+        }
+        // if a location name was found that is not a hall, quit and save the location name(s)
+        if (containsNonHall) {
+          locationNameFound = true;
+          leftLocationNames = locs;
+        }
+      }
+      visitedList.add(nextNode);
+      //        doesn't have a location name
+    }
+
+    // reset data structures used for BFS
+    nodeQueue = new LinkedList<Node>();
+    visitedList = new ArrayList<Node>();
+    visitedList.add(defaultNode);
+    locationNameFound = false;
+
+    // add the node that is not the start node (defaultNode) to the queue
+    if (!pairClosestTo180.getKey().getNode1().equals(defaultNode)) {
+      nodeQueue.add(pairClosestTo180.getKey().getNode1());
+    } else {
+      nodeQueue.add(pairClosestTo180.getKey().getNode2());
+    }
+    while (nodeQueue.size() > 0 && !locationNameFound) {
+      // get and remove node at top of queue
+      Node nextNode = nodeQueue.poll();
+      // add this node's children to the queue if they have not already been visited!
+      // nodeQueue.addAll(getChildrenFromEdges(edges, nextNode));
+      for (Node child : getChildrenFromEdges(edges, nextNode)) {
+        if (!visitedList.contains(child)) {
+          nodeQueue.add(child);
+        }
+      }
+      Set<LocationName> locs = mapController.getNodeToLocationNameMap().get(nextNode);
+      if (locs != null) {
+
+        boolean containsNonHall = false;
+        for (LocationName locationName : locs) {
+          if (!locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+            containsNonHall = true;
+          }
+        }
+
+        if (containsNonHall) {
+
+          locationNameFound = true;
+          rightLocationNames = locs;
+        }
+      }
+
+      visitedList.add(nextNode);
+    }
+
+    // assert leftLocationNames != null;
+    if (leftLocationNames == null) {
+
+    } else {
+      leftLocationBox.setValue(leftLocationNames.stream().findFirst().get());
+    }
+
+    if (rightLocationNames == null) {
+
+    } else {
+      rightLocationBox.setValue(rightLocationNames.stream().findFirst().get());
+    }
   }
 
   /** Help, shows the help menu for the visualizer */

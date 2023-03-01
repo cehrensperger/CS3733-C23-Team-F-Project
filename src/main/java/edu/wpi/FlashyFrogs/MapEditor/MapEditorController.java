@@ -487,22 +487,22 @@ public class MapEditorController implements IController {
             });
 
     // Handle quick-draw stuff in terms of moving the mouse drags a node around
-//    Platform.runLater(
-//        () ->
-//            backButton
-//                .getScene()
-//                .addEventFilter(
-//                    MouseEvent.MOUSE_MOVED,
-//                    (mouseEvent) -> {
-//                      // System.out.println(root.getHeight());
-//                      // If quick draw is enabled
-//                      if (quickDrawActive) {
-//                        // Set the circles position
-//                        currentQuickDrawCircle.relocate(
-//                            mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
-//                      }
-//                      mouseEvent.consume();
-//                    }));
+    //    Platform.runLater(
+    //        () ->
+    //            backButton
+    //                .getScene()
+    //                .addEventFilter(
+    //                    MouseEvent.MOUSE_MOVED,
+    //                    (mouseEvent) -> {
+    //                      // System.out.println(root.getHeight());
+    //                      // If quick draw is enabled
+    //                      if (quickDrawActive) {
+    //                        // Set the circles position
+    //                        currentQuickDrawCircle.relocate(
+    //                            mouseEvent.getSceneX(), mouseEvent.getSceneY() - 27);
+    //                      }
+    //                      mouseEvent.consume();
+    //                    }));
 
     // Set the button handler
     Platform.runLater(
