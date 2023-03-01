@@ -199,6 +199,7 @@ public class MedicineDeliveryEditorController extends ServiceRequestController
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         session.close();
