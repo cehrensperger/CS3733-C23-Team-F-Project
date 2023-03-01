@@ -45,6 +45,10 @@ public class NavBarController {
   @FXML private SVGPath heatSVG;
   @FXML Button heat;
   @FXML Button heat2;
+  @FXML Button stats;
+  @FXML Button stats2;
+  @FXML SVGPath statsSVG;
+  @FXML Text statsText;
 
   @FXML private Button back;
   @FXML private SVGPath backSVG;
@@ -417,6 +421,10 @@ public class NavBarController {
       heat2.setDisable(true);
       heatText.setOpacity(0);
       heatSVG.setOpacity(0);
+      stats.setDisable(true);
+      stats2.setDisable(true);
+      statsText.setOpacity(0);
+      statsSVG.setOpacity(0);
 
       SVGLogin.setOpacity(0);
 
@@ -453,6 +461,10 @@ public class NavBarController {
       heat2.setDisable(false);
       heatText.setOpacity(1);
       heatSVG.setOpacity(1);
+      stats.setDisable(false);
+      stats2.setDisable(false);
+      statsText.setOpacity(1);
+      statsSVG.setOpacity(1);
     }
   }
 
@@ -514,6 +526,11 @@ public class NavBarController {
   @FXML
   private void handleHeat(ActionEvent event) throws IOException {
     Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
+  }
+
+  @FXML
+  private void handleStats(ActionEvent event) throws IOException {
+    // Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
   }
 
   @FXML
