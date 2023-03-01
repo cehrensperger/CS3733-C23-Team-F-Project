@@ -704,4 +704,8 @@ public class NavBarController {
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
+
+  public void guestPathfinding() {
+    navButtons.setVisible(true);
+  }
 }
