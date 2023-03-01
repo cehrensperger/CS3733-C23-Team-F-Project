@@ -1956,22 +1956,22 @@ public class MapEditorController implements IController {
         .getCurrentDrawingPane()
         .setOnMousePressed(
             event -> {
-              if (quickDrawActive) return; // Don't do anything if quick draw is one
+              if (!event.isSecondaryButtonDown()) {
+                if (quickDrawActive) return; // Don't do anything if quick draw is one
 
-              Timer timer = new Timer(true);
-              mapController.getGesturePane().setGestureEnabled(false);
-              double startX = event.getX();
-              double startY = event.getY();
-              Rectangle rect = new Rectangle(startX, startY, 0, 0);
-              mapController.getCurrentDrawingPane().getChildren().add(rect);
-              rect.setFill(Paint.valueOf("012D5A"));
-              rect.setOpacity(0.3);
+                Timer timer = new Timer(true);
+                mapController.getGesturePane().setGestureEnabled(false);
+                double startX = event.getX();
+                double startY = event.getY();
+                Rectangle rect = new Rectangle(startX, startY, 0, 0);
+                mapController.getCurrentDrawingPane().getChildren().add(rect);
+                rect.setFill(Paint.valueOf("012D5A"));
+                rect.setOpacity(0.3);
 
-              mapController
-                  .getCurrentDrawingPane()
-                  .setOnMouseDragged(
-                      e -> {
-                        if (!e.isSecondaryButtonDown()) {
+                mapController
+                    .getCurrentDrawingPane()
+                    .setOnMouseDragged(
+                        e -> {
                           if (!e.isConsumed()) {
                             double width = e.getX() - startX;
                             double height = e.getY() - startY;
@@ -2104,32 +2104,32 @@ public class MapEditorController implements IController {
 
                             timer.scheduleAtFixedRate(task, 0, 5);
                           }
-                        }
-                      });
+                        });
 
-              mapController
-                  .getCurrentDrawingPane()
-                  .setOnMouseReleased(
-                      e -> {
-                        if (quickDrawActive) return;
+                mapController
+                    .getCurrentDrawingPane()
+                    .setOnMouseReleased(
+                        e -> {
+                          if (quickDrawActive) return;
 
-                        if (!e.isConsumed()) {
-                          if (!e.isShiftDown() && !(e.getButton() == MouseButton.SECONDARY)) {
-                            selectedNodes.clear();
-                          }
-
-                          if (task != null) task.cancel();
-                          timer.cancel();
-
-                          for (Node node : mapController.getNodeToCircleMap().keySet()) {
-                            if (rect.contains(new Point2D(node.getXCoord(), node.getYCoord()))) {
-                              selectedNodes.add(node);
+                          if (!e.isConsumed()) {
+                            if (!e.isShiftDown() && !(e.getButton() == MouseButton.SECONDARY)) {
+                              selectedNodes.clear();
                             }
+
+                            if (task != null) task.cancel();
+                            timer.cancel();
+
+                            for (Node node : mapController.getNodeToCircleMap().keySet()) {
+                              if (rect.contains(new Point2D(node.getXCoord(), node.getYCoord()))) {
+                                selectedNodes.add(node);
+                              }
+                            }
+                            mapController.getCurrentDrawingPane().getChildren().remove(rect);
+                            mapController.getGesturePane().setGestureEnabled(true);
                           }
-                          mapController.getCurrentDrawingPane().getChildren().remove(rect);
-                          mapController.getGesturePane().setGestureEnabled(true);
-                        }
-                      });
+                        });
+              }
             });
   }
 }
