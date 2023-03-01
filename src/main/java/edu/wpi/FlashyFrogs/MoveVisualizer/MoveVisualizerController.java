@@ -2,6 +2,7 @@ package edu.wpi.FlashyFrogs.MoveVisualizer;
 
 import edu.wpi.FlashyFrogs.Accounts.LoginController;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.Map.MapController;
 import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
@@ -95,6 +96,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   // Static place to keep the timer, so that it can be canceled when the admin enters the move
   // visualizer
   private static PauseTransition backToVisualizerTimer = null;
+  private static MapController oldController = null;
 
   private Clip clip; // Clip to prevent duplicate audio
 
@@ -114,6 +116,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
     // Cancel the timer if it exists
     if (backToVisualizerTimer != null) {
+      oldController.exit();
       // Stop the visualizer
       backToVisualizerTimer.stop();
       backToVisualizerTimer = null; // Cancel the timer
@@ -982,6 +985,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
           // ago
           if (Fapp.getIController().getClass() == LoginController.class
               && Fapp.getLastKeyPressTime().plus(10, ChronoUnit.SECONDS).isBefore(Instant.now())) {
+            Fapp.setIController(this);
             Fapp.setRoot(borderPane); // Set the root to be this
           }
 
@@ -1142,5 +1146,14 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     String holder = leftLocation.getText();
     leftLocation.setText(rightLocation.getText());
     rightLocation.setText(holder);
+  }
+
+  @Override
+  public void onClose() {
+    if (backToVisualizerTimer != null) {
+      oldController = mapController;
+    } else {
+      mapController.exit();
+    }
   }
 }

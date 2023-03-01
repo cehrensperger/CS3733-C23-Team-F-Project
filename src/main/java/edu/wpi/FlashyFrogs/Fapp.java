@@ -37,7 +37,7 @@ public class Fapp extends Application {
   private static NavBarController controller;
   @Getter private static Theme theme = Theme.LIGHT_THEME;
 
-  @Getter public static IController iController;
+  @Setter @Getter public static IController iController;
 
   public static Stack<String> prevPage = new Stack<String>();
 
