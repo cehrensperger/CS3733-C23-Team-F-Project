@@ -689,8 +689,6 @@ public class MapController {
   }
 
   private void setDisplayText(Display display) {
-    if (displayEnum == display) return; // Don't do anything if there's no change
-
     displayEnum = display;
     Collection<VBox> boxes = getNodeToLocationBox().values();
 

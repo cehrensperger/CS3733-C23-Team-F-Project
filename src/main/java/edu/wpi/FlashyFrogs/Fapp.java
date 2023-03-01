@@ -219,7 +219,7 @@ public class Fapp extends Application {
       Fapp.setScene(page[0], page[1]);
     } else {
       // If back is pressed on a page without full nav set and not the login page
-      if (getIController().getClass() != LoginController.class) {
+      if (getIController() == null || getIController().getClass() != LoginController.class) {
         Fapp.logOutWithoutSceneChange(); // Ensure we're logged out
         Fapp.setScene("Accounts", "Login"); // Go to login
       } else {

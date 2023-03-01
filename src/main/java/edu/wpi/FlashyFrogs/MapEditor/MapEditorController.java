@@ -1957,6 +1957,8 @@ public class MapEditorController implements IController {
         .getCurrentDrawingPane()
         .setOnMousePressed(
             event -> {
+              if (quickDrawActive) return; // Don't do anything if quick draw is one
+
               Timer timer = new Timer(true);
               mapController.getGesturePane().setGestureEnabled(false);
               double startX = event.getX();
@@ -2100,6 +2102,8 @@ public class MapEditorController implements IController {
                   .getCurrentDrawingPane()
                   .setOnMouseReleased(
                       e -> {
+                        if (quickDrawActive) return;
+
                         if (!e.isConsumed()) {
                           if (!e.isShiftDown() && !(e.getButton() == MouseButton.SECONDARY)) {
                             selectedNodes.clear();
