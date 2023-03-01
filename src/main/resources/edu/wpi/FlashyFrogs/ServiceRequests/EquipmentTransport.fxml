@@ -46,6 +46,7 @@
                                         <Insets bottom="18.0" />
                                     </VBox.margin>
                                 </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Description of Equipment to Transfer" />
                                 <TextField fx:id="equipment" prefHeight="13.0" prefWidth="250.0" promptText="Equipment to be Transferred" styleClass="fields">
                                     <VBox.margin>
                                         <Insets bottom="18.0" />
@@ -67,25 +68,30 @@
                                         <Insets bottom="18.0" />
                                     </VBox.margin>
                                 </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Destination for Equipment" />
                                 <SearchableComboBox fx:id="to" promptText="Transfer To" styleClass="fields">
                                     <VBox.margin>
                                         <Insets bottom="18.0" />
                                     </VBox.margin>
                                 </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Source for Equipment" />
                                 <SearchableComboBox fx:id="from" promptText="Transfer From" styleClass="fields">
                                     <VBox.margin>
                                         <Insets bottom="18.0" />
                                     </VBox.margin>
                                 </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Complete-by Date" />
                                 <DatePicker fx:id="date" prefHeight="0.0" prefWidth="250.0" promptText="Date Preference" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin></DatePicker>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Urgency of Transport" />
                                 <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                                     <VBox.margin>
                                         <Insets bottom="18.0" />
                                     </VBox.margin>
                                 </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Additional Information" />
                         <TextField fx:id="description" prefHeight="13.0" prefWidth="250.0" promptText="Description of Request" styleClass="fields" />
                                 <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                                     <children>

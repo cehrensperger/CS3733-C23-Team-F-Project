@@ -50,6 +50,7 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Location for Requested Equipment" />
                         <SearchableComboBox fx:id="locationBox" promptText="Location of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
@@ -71,22 +72,30 @@
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Type of Device Requested" />
                         <TextField fx:id="device" promptText="Device Type" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Reason for Request" />
                         <TextField fx:id="reason" promptText="Reason for Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="18.0" />
                            </VBox.margin>
                         </TextField>
-                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="378.0" promptText="Date (needed by)" styleClass="fields" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Date Equipment is Needed" />
+                        <DatePicker fx:id="date" prefHeight="31.0" prefWidth="378.0" promptText="Date (needed by)" styleClass="fields">
+                           <VBox.margin>
+                              <Insets bottom="18.0" />
+                           </VBox.margin></DatePicker>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Urgency of Request" />
                         <SearchableComboBox fx:id="urgency" promptText="Urgency" styleClass="fields">
                            <VBox.margin>
-                              <Insets bottom="18.0" top="18.0" />
+                              <Insets bottom="18.0" />
                            </VBox.margin>
                         </SearchableComboBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="middleTextObject" text="Additional Information " />
                         <TextField fx:id="description" prefWidth="200.0" promptText="Description of Request" styleClass="fields">
                            <VBox.margin>
                               <Insets bottom="108.0" />

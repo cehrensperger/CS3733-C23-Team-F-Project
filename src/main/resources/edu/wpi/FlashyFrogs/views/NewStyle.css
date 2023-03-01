@@ -498,6 +498,7 @@
 .check-box
 {
     -fx-text-fill: #012d5a;
+    -fx-fill: #012d5a;
 }
 
 .check-box .box
