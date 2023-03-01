@@ -18,8 +18,11 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javafx.animation.FillTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -37,8 +40,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -57,6 +63,9 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
+  public Pane errtoast;
+  public Rectangle errcheck2;
+  public Rectangle errcheck1;
   @FXML private VBox directionsBox;
   @FXML private BorderPane borderPane;
   @FXML private Text adminMessage; // Admin message text
@@ -66,12 +75,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @FXML private Text leftLocation; // Left arrow location, actual
   @FXML private TextField headerText; // Text for the header, entry
   @FXML private TextField textText; // The text to show on the map
-  @FXML private Text noLocationText; // No location error text
   @FXML private FilteredTableView<Move> moveTable; // Table for the moves
   @FXML private FilteredTableColumn<Move, Node> nodeColumn; // Node column
   @FXML private FilteredTableColumn<Move, LocationName> locationColumn; // Location column
   @FXML private FilteredTableColumn<Move, Date> dateColumn; // Date column
   @FXML private AnchorPane mapPane; // Map pane for map display
+  private int selectedRow =
+      -1; // The old row for the table, used to prevent duplicate display requests
   private final Collection<javafx.scene.Node> nodes =
       new LinkedList<>(); // Collection of nodes that are on the map
 
@@ -336,9 +346,16 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         .selectedItemProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              noLocationText.setVisible(false); // Reset the no location text
+              // If something is new selected, and it's not this, and we have one it must be set
+              if (selectedRow != -1
+                  && moveTable.getSelectionModel().getSelectedIndex() != selectedRow) {
+                moveTable.getSelectionModel().select(selectedRow); // Go to that
+                return; // Don't do anythign else
+              } else if (moveTable.getSelectionModel().getSelectedIndex() == selectedRow) {
+                return; // Don't do naything else
+              }
 
-              unColorFloor();
+              unColorFloor(); // Clear the old styilng stuff
 
               // If something is selected
               if (newValue != null) {
@@ -355,15 +372,43 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
                 // If the location isn't null
                 if (oldLocation != null) {
-                  // Get and draw the path
-                  currentPath = pathFinder.findPath(oldLocation, newValue.getNode(), false);
+                  // Save the selected row
+                  selectedRow = moveTable.getSelectionModel().getSelectedIndex();
 
-                  // Set the floor
-                  mapController.getMapFloorProperty().setValue(oldLocation.getFloor());
+                  mapController.startAnimation();
+                  new Thread(
+                          () -> {
+                            currentPath =
+                                pathFinder.findPath(
+                                    oldLocation, newValue.getNode(), false); // Save the path
 
-                  drawTable(new Date()); // Draw the table
+                            // In the UI thread
+                            Platform.runLater(
+                                () -> {
+                                  // Set the floor
+                                  mapController
+                                      .getMapFloorProperty()
+                                      .setValue(oldLocation.getFloor());
+
+                                  // Go to the nodes floor
+                                  mapController
+                                      .getMapFloorProperty()
+                                      .setValue(currentPath.get(0).getFloor());
+                                  mapController.zoomToCoordinates(
+                                      2,
+                                      currentPath.get(0).getXCoord(),
+                                      currentPath.get(0).getYCoord());
+
+                                  drawTable(new Date()); // Draw the table
+
+                                  selectedRow = -1; // Clear the selected row
+
+                                  mapController.stopAnimation(); // Stop the animation
+                                });
+                          })
+                      .start();
                 } else {
-                  noLocationText.setVisible(true);
+                  errortoastAnimation();
                 }
               }
 
@@ -1050,5 +1095,37 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     Clip clip = AudioSystem.getClip();
     clip.open(audioInputStream);
     clip.start();
+  }
+
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-320);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(320);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
   }
 }

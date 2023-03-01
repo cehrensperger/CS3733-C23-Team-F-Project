@@ -10,8 +10,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -115,7 +117,7 @@
                         </MFXButton>
                      </children>
                      <padding>
-                        <Insets left="18.0" right="18.0" />
+                        <Insets left="18.0" right="18.0" top="20.0" />
                      </padding>
                   </VBox>
                </content>
@@ -222,6 +224,18 @@
             </HBox>
          </children>
       </VBox>
+      <Pane fx:id="errtoast" layoutX="60.0" layoutY="60.0" prefHeight="50.0" prefWidth="306.0" AnchorPane.rightAnchor="-320.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="54.0" layoutX="-2.0" layoutY="-2.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="306.0" />
+            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="15.0" layoutY="19.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="32.0" layoutY="2.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="64.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Move Has No Old Location" wrappingWidth="227.009765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
    <stylesheets>
       <URL value="@../views/NewStyle.css" />

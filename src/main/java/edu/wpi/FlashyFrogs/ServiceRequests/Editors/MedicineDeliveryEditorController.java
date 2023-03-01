@@ -29,7 +29,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.SearchableComboBox;
@@ -37,52 +36,40 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @GeneratedExclusion
-public class AudioVisualEditorController extends ServiceRequestController implements IController {
+public class MedicineDeliveryEditorController extends ServiceRequestController
+    implements IController {
 
-  @FXML MFXButton submit;
   @FXML Pane errtoast;
   @FXML Rectangle errcheck2;
   @FXML Rectangle errcheck1;
   @FXML Rectangle check2;
   @FXML Rectangle check1;
   @FXML Pane toast;
-  @FXML SearchableComboBox<LocationName> locationBox;
+
+  @FXML MFXButton clear;
+  @FXML MFXButton submit;
+
+  @FXML TextField reason;
+  @FXML TextField medicine;
+  @FXML TextField dosage;
+  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
+  @FXML DatePicker date;
+  @FXML TextField patient;
+  @FXML SearchableComboBox<LocationName> locationofPatient;
   @FXML SearchableComboBox<HospitalUser> assignedBox;
   @FXML SearchableComboBox<ServiceRequest.Status> statusBox;
-  @FXML TextField device;
-  @FXML TextField reason;
-  @FXML DatePicker date;
-  @FXML SearchableComboBox<ServiceRequest.Urgency> urgency;
-  @FXML TextField description;
 
-  @FXML Text h1;
-  @FXML Text h2;
-  @FXML Text h3;
-  @FXML Text h4;
-  @FXML Text h5;
-  @FXML Text h6;
+  private MedicineDelivery tpReq = new MedicineDelivery();
+  PopOver popOver;
+
   @FXML private Label errorMessage;
 
   boolean hDone = false;
   private Connection connection = null;
 
-  private AudioVisual avReq = new AudioVisual();
-  PopOver popOver;
-
-  public void setRequest(ServiceRequest serviceRequest) {
-    avReq = (AudioVisual) serviceRequest;
-  }
-
   public void initialize() {
-    h1.setVisible(false);
-    h2.setVisible(false);
-    h3.setVisible(false);
-    h4.setVisible(false);
-    h5.setVisible(false);
-    h6.setVisible(false);
 
     Session session = CONNECTION.getSessionFactory().openSession();
-
     List<LocationName> locations =
         session.createQuery("FROM LocationName", LocationName.class).getResultList();
 
@@ -93,11 +80,29 @@ public class AudioVisualEditorController extends ServiceRequestController implem
 
     users.sort(Comparator.comparing(HospitalUser::getFirstName));
 
-    locationBox.setItems(FXCollections.observableArrayList(locations));
+    locationofPatient.setItems(FXCollections.observableArrayList(locations));
+    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     assignedBox.setItems(FXCollections.observableArrayList(users));
     statusBox.setItems(FXCollections.observableArrayList(ServiceRequest.Status.values()));
-    urgency.setItems(FXCollections.observableArrayList(ServiceRequest.Urgency.values()));
     session.close();
+  }
+
+  public void updateFields() {
+    patient.setText(tpReq.getPatientID());
+    locationofPatient.setValue(tpReq.getLocation());
+    reason.setText(tpReq.getReason());
+    medicine.setText(tpReq.getMedicine());
+    dosage.setText(dosage.getText());
+    urgency.setValue(tpReq.getUrgency());
+    statusBox.setValue(tpReq.getStatus());
+    date.setValue(
+        Instant.ofEpochMilli(tpReq.getDate().getTime())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
+
+    if (tpReq.getAssignedEmp() != null) {
+      assignedBox.setValue(tpReq.getAssignedEmp());
+    }
   }
 
   @Override
@@ -105,84 +110,79 @@ public class AudioVisualEditorController extends ServiceRequestController implem
     this.popOver = popOver;
   }
 
-  public void updateFields() {
-    locationBox.setValue(avReq.getLocation());
-    urgency.setValue(avReq.getUrgency());
-    statusBox.setValue(avReq.getStatus());
-    date.setValue(
-        Instant.ofEpochMilli(avReq.getDate().getTime())
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate());
-    description.setText(avReq.getDescription());
-    device.setText(avReq.getDeviceType());
-    reason.setText(avReq.getReason());
-    if (avReq.getAssignedEmp() != null) {
-      assignedBox.setValue(avReq.getAssignedEmp());
-    }
-  }
-
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-
+    System.out.println("here");
     try {
       // check
-      if (locationBox.getValue().toString().isEmpty()
-          || device.getText().equals("")
+      if (patient.getText().equals("")
+          || locationofPatient.getValue().toString().equals("")
           || reason.getText().equals("")
+          || medicine.getText().equals("")
           || date.getValue().toString().equals("")
-          || description.getText().equals("")) {
+          || urgency.getValue().toString().equals("")
+          || dosage.getText().equals("")) {
+        System.out.println("here2");
         throw new NullPointerException();
       }
 
       Date dateNeeded = Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-      avReq.setDescription(description.getText());
-      avReq.setAssignedEmp(assignedBox.getValue());
-      avReq.setUrgency(urgency.getValue());
-      avReq.setDate(dateNeeded);
-      avReq.setStatus(statusBox.getValue());
-      avReq.setLocation(locationBox.getValue());
-      avReq.setDeviceType(device.getText());
-      avReq.setReason(reason.getText());
+      tpReq.setPatientID(patient.getText());
+      tpReq.setLocation(locationofPatient.getValue());
+      tpReq.setReason(reason.getText());
+      tpReq.setAssignedEmp(assignedBox.getValue());
+      tpReq.setUrgency(urgency.getValue());
+      tpReq.setStatus(statusBox.getValue());
+      tpReq.setMedicine(medicine.getText());
+      tpReq.setDosage(Double.parseDouble(dosage.getText()));
+      tpReq.setDate(dateNeeded);
 
       try {
-        session.merge(avReq);
+        session.merge(tpReq);
         transaction.commit();
         session.close();
         handleClear(actionEvent);
         toastAnimation();
-
       } catch (RollbackException exception) {
         session.clear();
-
-        errortoastAnimation();
         session.close();
+        errortoastAnimation();
         Sound.ERROR.play();
       }
     } catch (ArrayIndexOutOfBoundsException | NullPointerException exception) {
       session.clear();
-      errortoastAnimation();
       session.close();
+      errortoastAnimation();
       Sound.ERROR.play();
     }
   }
 
-  public void handleClear(ActionEvent actionEvent) throws IOException {
-    locationBox.valueProperty().set(null);
-    device.setText("");
-    date.valueProperty().set(null);
-    urgency.valueProperty().set(null);
-    description.setText("");
+  @Override
+  public void setRequest(ServiceRequest request) {
+    tpReq = (MedicineDelivery) request;
   }
 
-  public void handleDelete(ActionEvent actionEvent) {
+  public void handleClear(ActionEvent actionEvent) throws IOException {
+    patient.setText("");
+    locationofPatient.valueProperty().set(null);
+    reason.setText("");
+    assignedBox.valueProperty().set(null);
+    statusBox.valueProperty().set(null);
+    medicine.setText("");
+    dosage.setText("");
+    urgency.valueProperty().set(null);
+    date.valueProperty().set(null);
+  }
+
+  public void handleDelete(ActionEvent event) {
     Session session = CONNECTION.getSessionFactory().openSession();
 
     session.beginTransaction();
     session
-        .createMutationQuery("DELETE FROM AudioVisual WHERE id=:ID")
-        .setParameter("ID", avReq.getId())
+        .createMutationQuery("DELETE FROM MedicineDelivery WHERE id=:ID")
+        .setParameter("ID", tpReq.getId())
         .executeUpdate();
     session.getTransaction().commit();
     session.close();
@@ -195,20 +195,8 @@ public class AudioVisualEditorController extends ServiceRequestController implem
 
   public void help() {
     if (!hDone) {
-      h1.setVisible(true);
-      h2.setVisible(true);
-      h3.setVisible(true);
-      h4.setVisible(true);
-      h5.setVisible(true);
-      h6.setVisible(true);
       hDone = true;
     } else if (hDone) {
-      h1.setVisible(false);
-      h2.setVisible(false);
-      h3.setVisible(false);
-      h4.setVisible(false);
-      h5.setVisible(false);
-      h6.setVisible(false);
       hDone = false;
     }
   }
@@ -244,6 +232,7 @@ public class AudioVisualEditorController extends ServiceRequestController implem
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
+
             submit.setDisable(false);
           }
         });
@@ -286,6 +275,5 @@ public class AudioVisualEditorController extends ServiceRequestController implem
         });
   }
 
-  @Override
   public void onClose() {}
 }

@@ -4,17 +4,14 @@ import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Theme;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -31,52 +28,61 @@ import org.controlsfx.control.PopOver;
 @GeneratedExclusion
 public class NavBarController {
 
+  @FXML private AnchorPane sidePane;
   @FXML private MenuItem menuToggleSFX;
   @FXML private MenuItem loggedOutMenuToggleSFX;
+
+  @FXML private MenuItem menuToggleTheme;
+  @FXML private MenuItem loggedOutMenuToggleTheme;
+
   @FXML private AnchorPane anchorPane;
   // @FXML private HBox header;
-  @FXML private MFXButton helpButton;
+  @FXML private Button helpButton;
 
-  @FXML private Pane toast;
+  @FXML private VBox toast;
   @FXML private Text backText;
+  @FXML private Text heatText;
+  @FXML private SVGPath heatSVG;
+  @FXML Button heat;
+  @FXML Button heat2;
 
-  @FXML private MFXButton back;
+  @FXML private Button back;
   @FXML private SVGPath backSVG;
-  @FXML private MFXButton moveVisualizer;
-  @FXML private MFXButton loginManager;
-  @FXML private MFXButton csvManager;
-  @FXML private MFXButton mapEditor;
-  @FXML private MFXButton pathfinding;
-  @FXML private MFXButton security;
-  @FXML private MFXButton sanitation;
-  @FXML private MFXButton religious;
-  @FXML private MFXButton medicine;
-  @FXML private MFXButton transport;
-  @FXML private MFXButton itSupport;
-  @FXML private MFXButton avService;
-  @FXML private MFXButton equipmentTransport;
-  @FXML private MFXButton equipmentTransport2;
-  @FXML private MFXButton srButton;
-  @FXML private MFXButton homeButton;
-  @FXML private MFXButton alertsButton;
+  @FXML private Button moveVisualizer;
+  @FXML private Button loginManager;
+  @FXML private Button csvManager;
+  @FXML private Button mapEditor;
+  @FXML private Button pathfinding;
+  @FXML private Button security;
+  @FXML private Button sanitation;
+  @FXML private Button religious;
+  @FXML private Button medicine;
+  @FXML private Button transport;
+  @FXML private Button itSupport;
+  @FXML private Button avService;
+  @FXML private Button equipmentTransport;
+  @FXML private Button equipmentTransport2;
+  @FXML private Button srButton;
+  @FXML private Button homeButton;
+  @FXML private Button alertsButton;
 
-  @FXML private MFXButton helpButton2;
-  @FXML private MFXButton back2;
-  @FXML private MFXButton moveVisualizer2;
-  @FXML private MFXButton loginManager2;
-  @FXML private MFXButton csvManager2;
-  @FXML private MFXButton mapEditor2;
-  @FXML private MFXButton pathfinding2;
-  @FXML private MFXButton security2;
-  @FXML private MFXButton sanitation2;
-  @FXML private MFXButton religious2;
-  @FXML private MFXButton medicine2;
-  @FXML private MFXButton transport2;
-  @FXML private MFXButton itSupport2;
-  @FXML private MFXButton avService2;
+  @FXML private Button helpButton2;
+  @FXML private Button back2;
+  @FXML private Button moveVisualizer2;
+  @FXML private Button loginManager2;
+  @FXML private Button csvManager2;
+  @FXML private Button mapEditor2;
+  @FXML private Button pathfinding2;
+  @FXML private Button security2;
+  @FXML private Button sanitation2;
+  @FXML private Button religious2;
+  @FXML private Button medicine2;
+  @FXML private Button transport2;
+  @FXML private Button itSupport2;
+  @FXML private Button avService2;
   @FXML private Button srButton2;
   @FXML private Button homeButton2;
-  @FXML private MFXButton alertsButton2;
+  @FXML private Button alertsButton2;
 
   @FXML private StackPane mapStack;
   @FXML private StackPane mapStack2;
@@ -116,12 +122,25 @@ public class NavBarController {
     menu.setVisible(false);
     menu.setDisable(true);
     menu.hide();
+
+    menu.hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+
+              } else {
+
+              }
+            });
     // header.setDisable(true);
     // header.setOpacity(0);
     updateToggleSFX();
+    updateMode();
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
+    toast.setVisible(false);
+    toast.setDisable(true);
     //    srButton.setOpacity(0);
     //    srButton.setDisable(true);
     //    homeButton.setOpacity(0);
@@ -137,6 +156,136 @@ public class NavBarController {
     backSVG.setOpacity(0);
     back2.setDisable(true);
     backText.setVisible(false);
+
+    // Setup the nav button hover handlers
+    for (int i = 0; i < navButtons.getChildren().size(); i++) {
+      // If it's not a VBox (separate stuff)
+      if (navButtons.getChildren().get(i).getClass()
+          != VBox.class) { // If it's an actual nav button
+        int finalI = i; // thanks java :)
+
+        // Set the nav button hover
+        navButtons
+            .getChildren()
+            .get(i)
+            .hoverProperty()
+            .addListener(
+                (observable, oldValue, newValue) ->
+                    handleHoverChange(newValue, finalI, -1)); // hover change
+
+        // Set the toast hover
+        toast
+            .getChildren()
+            .get(i)
+            .hoverProperty()
+            .addListener(
+                (observable, oldValue, newValue) ->
+                    handleHoverChange(newValue, finalI, -1)); // Hover change
+      } else {
+        // It's more complicated if it's a VBox - we need to figure out the children of that
+        VBox child = (VBox) navButtons.getChildren().get(i); // Get the VBox
+
+        int finalI1 = i; // Thanks Java :)
+
+        // For each of the children in the VBox
+        for (int j = 0; j < child.getChildren().size(); j++) {
+          int finalJ = j; // Thanks Java :)
+
+          // Set the hover on the child
+          child
+              .getChildren()
+              .get(j)
+              .hoverProperty()
+              .addListener(
+                  // Since the VBox is at the end, we add the indexes so the hover handle change
+                  // listener
+                  // can find both the VBox and the property
+                  (observable, oldValue, newValue) -> handleHoverChange(newValue, finalJ, finalI1));
+
+          // Do the same with the toast
+          ((VBox) toast.getChildren().get(i))
+              .getChildren()
+              .get(j)
+              .hoverProperty()
+              .addListener(
+                  (observable, oldValue, newValue) -> handleHoverChange(newValue, finalJ, finalI1));
+        }
+      }
+    }
+
+    sidePane
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+                toastAnimationForward();
+              } else {
+                toastAnimationBackward();
+              }
+            });
+  }
+
+  /**
+   * Listener for hover changing
+   *
+   * @param hover the new hover state
+   * @param itemNumber the index of the item within the pane
+   * @param paneNumber the index of the pane in the super. If this is -1, the root panes will be
+   *     used
+   */
+  private void handleHoverChange(boolean hover, int itemNumber, int paneNumber) {
+    // By default, use the root icon and root text to get the icons
+    VBox iconRoot = navButtons;
+    VBox textRoot = toast;
+
+    // If we have a pane number set
+    if (paneNumber != -1) {
+      iconRoot = (VBox) navButtons.getChildren().get(paneNumber); // Get the icon pane at that index
+      textRoot = (VBox) toast.getChildren().get(paneNumber); // Get the text pane at that index
+    }
+
+    // Stack panes for the thing that's having hover changed
+    StackPane iconPane = (StackPane) iconRoot.getChildren().get(itemNumber); // Icon pane
+    StackPane textPane = (StackPane) textRoot.getChildren().get(itemNumber); // Text pane
+
+    // Concrete types of the relevant children
+    SVGPath svg = null; // SVG path
+    Text text = null; // Text
+
+    // Check each icon child
+    for (Node child : iconPane.getChildren()) {
+      if (child.getClass() == SVGPath.class) {
+        svg = (SVGPath) child;
+      }
+    }
+
+    // Check each node child
+    for (Node child : textPane.getChildren()) {
+      if (child.getClass() == Text.class) {
+        text = (Text) child;
+      }
+    }
+
+    // Assert we found the stuff
+    assert svg != null; // Assert SVG isn't null
+    assert text != null; // Assert text isn't null
+
+    // Clear SVG style
+    svg.getStyleClass().clear();
+    svg.getStyleClass()
+        .add(hover ? "yellowNav" : "navSlide"); // Add either yellow nav or nav based on hover
+
+    // Clear SVG style
+    text.getStyleClass().clear();
+    text.getStyleClass()
+        .add(hover ? "yellowNav" : "navSlide"); // Add either yellow nav or nav based on hover
+
+    // Scale transition
+    ScaleTransition iconTransition = new ScaleTransition(Duration.seconds(.05), iconPane);
+    iconTransition.setToX(hover ? 1.3 : 1.0);
+    iconTransition.setToY(hover ? 1.3 : 1.0);
+
+    iconTransition.play();
   }
 
   public void refresh() {
@@ -158,6 +307,24 @@ public class NavBarController {
   }
 
   /**
+   * If sound effects were off, turn them on and say that clicking the menu option again will turn
+   * them off. If sound effects were on, turn them off and say that clicking the menu option again
+   * will turn them on.
+   */
+  @FXML
+  private void toggleSFX() {
+    if (Fapp.isSfxOn()) {
+      Fapp.setSfxOn(false);
+      loggedOutMenuToggleSFX.setText("Turn Sound Effects On");
+      menuToggleSFX.setText("Turn Sound Effects On");
+    } else {
+      Fapp.setSfxOn(true);
+      loggedOutMenuToggleSFX.setText("Turn Sound Effects Off");
+      menuToggleSFX.setText("Turn Sound Effects Off");
+    }
+  }
+
+  /**
    * Updates the text on the menu item that toggles sound effects on and off to reflect whether
    * clicking the item will turn sound effects on or off: clicking the menu item will turn sound
    * effects on if sound effects are currently set to off, and vice versa
@@ -174,13 +341,46 @@ public class NavBarController {
     }
   }
 
+  /**
+   * Change the color theme between Dark and Light Mode when the menu option to do so is clicked on
+   * NavBar.fxml. Also changes message on the menu option based on whether clicking it will change
+   * to Light or Dark Mode.
+   *
+   * @throws IOException
+   */
+  @FXML
+  private void changeMode() throws IOException {
+    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
+      Fapp.setTheme(Theme.DARK_THEME);
+      menuToggleTheme.setText("Switch to Light Mode");
+      loggedOutMenuToggleTheme.setText("Switch to Light Mode");
+    } else {
+      Fapp.setTheme(Theme.LIGHT_THEME);
+      menuToggleTheme.setText("Switch to Dark Mode");
+      loggedOutMenuToggleTheme.setText("Switch to Dark Mode");
+    }
+  }
+
+  /**
+   * If Light Mode is on, say that clicking the menu option again will switch to Dark Mode. If Dark
+   * Mode is on, say that clicking the menu option again will switch to Light Mode.
+   */
+  private void updateMode() {
+    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
+      menuToggleTheme.setText("Switch to Dark Mode");
+      loggedOutMenuToggleTheme.setText("Switch to Dark Mode");
+    } else {
+      menuToggleTheme.setText("Switch to Light Mode");
+      loggedOutMenuToggleTheme.setText("Switch to Light Mode");
+    }
+  }
+
   public void logIn() {
     loggedOutMenu.setDisable(true);
     loggedOutMenu.setVisible(false);
     menu.setVisible(true);
     loggedOutMenu.hide();
     loggedOutMenu.setText("");
-    updateToggleSFX();
     menu.setDisable(false);
     // header.setDisable(false);
     menu.setText("Welcome, " + CurrentUserEntity.CURRENT_USER.getCurrentUser().getFirstName());
@@ -191,6 +391,8 @@ public class NavBarController {
     navButtons.setVisible(true);
     navButtons.setDisable(false);
     navButtons.setOpacity(1);
+    toast.setVisible(true);
+    toast.setDisable(false);
 
     if (!isAdmin) {
       mapEditor.setDisable(true);
@@ -205,6 +407,10 @@ public class NavBarController {
       moveVisualizer2.setDisable(true);
       SVGMap.setOpacity(0);
       SVGCSV.setOpacity(0);
+      heat.setDisable(true);
+      heat2.setDisable(true);
+      heatText.setOpacity(0);
+      heatSVG.setOpacity(0);
 
       SVGLogin.setOpacity(0);
 
@@ -237,6 +443,10 @@ public class NavBarController {
       loginText.setOpacity(1);
       alertsText.setOpacity(1);
       moveText.setOpacity(1);
+      heat.setDisable(false);
+      heat2.setDisable(false);
+      heatText.setOpacity(1);
+      heatSVG.setOpacity(1);
     }
   }
 
@@ -253,7 +463,6 @@ public class NavBarController {
   @FXML
   private void hideDescriptions(MouseEvent event) throws IOException {
     toastAnimationBackward();
-    //    System.out.println("out");
   }
 
   @FXML
@@ -302,6 +511,11 @@ public class NavBarController {
   @FXML
   private void handleSanitation(ActionEvent event) throws IOException {
     Fapp.setScene("ServiceRequests", "SanitationService");
+  }
+
+  @FXML
+  private void handleHeat(ActionEvent event) throws IOException {
+    Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
   }
 
   @FXML
@@ -424,6 +638,8 @@ public class NavBarController {
     navButtons.setVisible(false);
     navButtons.setDisable(true);
     navButtons.setOpacity(0);
+    toast.setVisible(false);
+    toast.setDisable(true);
   }
 
   /**
@@ -452,40 +668,12 @@ public class NavBarController {
     popOver.show(anchorPane.getScene().getWindow());
   }
 
-  /**
-   * Change the color theme between Dark and Light Mode when the Switch Color Scheme button is
-   * clicked on NavBar.fxml.
-   *
-   * @throws IOException
-   */
-  @FXML
-  private void changeMode() throws IOException {
-    if (Fapp.getTheme().equals(Theme.LIGHT_THEME)) {
-      Fapp.setTheme(Theme.DARK_THEME);
-    } else {
-      Fapp.setTheme(Theme.LIGHT_THEME);
-    }
-  }
-
   public void toastAnimationForward() {
     // Create a TranslateTransition to move the first rectangle to the left
     TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.2), toast);
-    translate1.setByX(260);
-    navButtons.setOnMouseEntered(e -> {});
-    translate1.setOnFinished(
-        e -> {
-          toast.setOnMouseExited(
-              event -> {
-                try {
-                  hideDescriptions(event);
-                } catch (IOException ex) {
-                  throw new RuntimeException(ex);
-                }
-              });
-        });
+    translate1.setToX(260);
 
-    // Play the animations in sequence
-
+    // Play the animation
     translate1.play();
   }
 
@@ -494,44 +682,11 @@ public class NavBarController {
     // Create a TranslateTransition to move the first rectangle back to its original position
     TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.2), toast);
 
-    toast.setOnMouseExited(e -> {});
-
-    translateBack1.setOnFinished(
-        e -> {
-          navButtons.setOnMouseEntered(
-              event -> {
-                try {
-                  showDescriptions(event);
-                } catch (IOException ex) {
-                  throw new RuntimeException(ex);
-                }
-              });
-        });
-
     //    translateBack1.setDelay(Duration.seconds(2));
-    translateBack1.setByX(-260);
+    translateBack1.setToX(-260);
 
     // Play the animations in sequence
     translateBack1.play();
-  }
-
-  /**
-   * If sound effects were off, turn them on and say that clicking the menu option again will turn
-   * them off. If sound effects were on, turn them off and say that clicking the menu option again
-   * will turn them on.
-   *
-   * @param actionEvent
-   */
-  @FXML
-  private void toggleSFX(ActionEvent actionEvent) {
-    MenuItem menu = (MenuItem) actionEvent.getSource();
-    if (Fapp.isSfxOn()) {
-      Fapp.setSfxOn(false);
-      menu.setText("Turn Sound Effects On");
-    } else {
-      Fapp.setSfxOn(true);
-      menu.setText("Turn Sound Effects Off");
-    }
   }
 
   public void dateAndTime() {

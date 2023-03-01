@@ -5,11 +5,14 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 
 /** Class representing a user in the database */
 @Entity
 @Table(name = "hospital_user")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class HospitalUser {
   /**
    * Type representing the unique, auto-generated, employee ID. This should not be mutated while the

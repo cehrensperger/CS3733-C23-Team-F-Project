@@ -11,16 +11,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.PathFinding.PathfindingController">
    <children>
       <VBox maxWidth="220.0" prefHeight="720.0" prefWidth="220.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -114,7 +112,7 @@
             </TableView>
             <HBox prefHeight="108.0" prefWidth="192.0">
                <children>
-                  <Button fx:id="back" mnemonicParsing="false" style="-fx-background-color: WHITE;">
+                  <Button fx:id="back" mnemonicParsing="false" style="-fx-background-color: transparent;">
                      <graphic>
                         <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="-90.0" stroke="#012d5a" strokeType="INSIDE" />
                      </graphic>
@@ -122,7 +120,7 @@
                         <Insets left="18.0" right="89.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="next" mnemonicParsing="false" style="-fx-background-color: WHITE;" textFill="WHITE">
+                  <Button fx:id="next" mnemonicParsing="false" style="-fx-background-color: transparent;" textFill="WHITE">
                      <graphic>
                         <Polygon fill="#012d5a" points="19.0, 39.0, 50.0, 40.0, 34.99981689453125, 11.000182151794434" rotate="90.0" stroke="#012d5a" strokeType="INSIDE" strokeWidth="2.0" />
                      </graphic>
@@ -137,25 +135,11 @@
             </HBox>
          </children>
       </VBox>
-      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
-         <children>
-            <AnchorPane fx:id="mapPane" prefHeight="10.0" prefWidth="10.0">
-               <children>
-                  <Pane fx:id="animationPane" mouseTransparent="true" prefHeight="680.0" prefWidth="765.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Circle fx:id="cir1" fill="DODGERBLUE" layoutX="375.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
-                        <Circle fx:id="cir6" fill="DODGERBLUE" layoutX="625.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
-                        <Circle fx:id="cir5" fill="DODGERBLUE" layoutX="575.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
-                        <Circle fx:id="cir4" fill="DODGERBLUE" layoutX="525.0" layoutY="340.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
-                        <Circle fx:id="cir3" fill="DODGERBLUE" layoutX="475.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
-                        <Circle fx:id="cir2" fill="DODGERBLUE" layoutX="425.0" layoutY="340.0" mouseTransparent="true" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" />
-                     </children>
-                  </Pane>
-                  <StackPane layoutX="825.0" layoutY="590.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="108.0" />
-               </children>
-            </AnchorPane>
-         </children>
-      </StackPane>
+      <AnchorPane fx:id="mapPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </AnchorPane>
       <MFXButton fx:id="mapEditorButton" onAction="#openMapEditor" prefHeight="19.0" prefWidth="184.0" styleClass="blueBackgroundSideBar" text="Map Editor" visible="false" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="18.0">
          <font>
             <Font size="16.0" />

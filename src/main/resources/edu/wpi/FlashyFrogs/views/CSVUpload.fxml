@@ -3,8 +3,11 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="350.0" prefWidth="457.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.CSVUploadController">
    <children>
@@ -53,5 +56,17 @@
          </children>
       </VBox>
       <Label fx:id="errorMessage" alignment="CENTER" layoutX="215.0" layoutY="20.0" prefHeight="17.0" prefWidth="28.0" textAlignment="CENTER" textFill="RED" AnchorPane.bottomAnchor="313.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="20.0" />
+      <Pane fx:id="errtoast" layoutX="80.0" layoutY="80.0" prefHeight="60.0" prefWidth="437.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="-100.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="86.0" layoutX="-14.0" layoutY="-14.0" stroke="#b6000b" strokeType="OUTSIDE" strokeWidth="2.0" width="424.0" />
+            <Rectangle fx:id="errcheck2" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="9.0" layoutX="11.0" layoutY="25.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="44.0" />
+            <Rectangle fx:id="errcheck1" arcHeight="5.0" arcWidth="5.0" fill="#b6000b" height="44.0" layoutX="28.0" layoutY="8.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="9.0" />
+            <Text fill="WHITE" layoutX="62.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Select 4 Files With The Proper           Column Headers" wrappingWidth="342.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
