@@ -2,9 +2,9 @@ package edu.wpi.FlashyFrogs.ServiceRequests;
 
 import static edu.wpi.FlashyFrogs.DBConnection.CONNECTION;
 
+import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.ORM.*;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -50,7 +51,7 @@ public class ServiceRequestStatsPageController implements IController {
   @FXML protected FilteredTableColumn<ServiceRequest, ServiceRequest.Status> statusCol;
 
   @FXML protected FilteredTableView<ServiceRequest> requestTable;
-  @FXML private MFXComboBox<String> graphTypeComboBox;
+  @FXML private ComboBox<String> graphTypeComboBox;
 
   public void initialize() {
 
@@ -152,19 +153,41 @@ public class ServiceRequestStatsPageController implements IController {
   // each item should change the chart to show the data for that item
   // it should do this by removing any charts still in the scene graph and adding a new one
 
-  public void handleBack(ActionEvent actionEvent) {}
+  public void handleAV(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "AudioVisualService");
+  }
 
-  public void handleCredits(ActionEvent actionEvent) {}
+  public void handleEquipment(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "EquipmentTransport");
+  }
 
-  public void handleSecurity(ActionEvent actionEvent) {}
+  public void handleReligious(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ReligiousService");
+  }
 
-  public void handleSanitation(ActionEvent actionEvent) {}
+  public void handleMedicine(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "MedicineDeliveryService");
+  }
 
-  public void handleIPT(ActionEvent actionEvent) {}
+  public void handleIT(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "ComputerService");
+  }
 
-  public void handleIT(ActionEvent actionEvent) {}
+  public void handleIPT(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "TransportService");
+  }
 
-  public void handleAV(ActionEvent actionEvent) {}
+  public void handleSanitation(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "SanitationService");
+  }
+
+  public void handleSecurity(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "SecurityService");
+  }
+
+  public void handleCredits(ActionEvent actionEvent) throws IOException {
+    Fapp.setScene("ServiceRequests", "Credits");
+  }
 
   @Override
   public void onClose() {}
