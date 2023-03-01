@@ -552,7 +552,10 @@ public class NavBarController {
   private void handleCSVManager(ActionEvent event) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/CSVUpload.fxml"));
     PopOver popOver = new PopOver(newLoad.load()); // create the popover
-    HomeController home = new HomeController();
+    HomeController home = null;
+    if (Fapp.iController instanceof HomeController) {
+      home = (HomeController) Fapp.iController;
+    }
 
     popOver.setTitle("CSV Manager");
     CSVUploadController controller = newLoad.getController();
@@ -563,14 +566,17 @@ public class NavBarController {
         (javafx.scene.Node) event.getSource(); // Get the node representation of what called this
     popOver.show(node); // display the popover
 
-    popOver
-        .showingProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (!newValue) {
-                home.refreshTable();
-              }
-            });
+    HomeController finalHome = home;
+    if (home != null) {
+      popOver
+          .showingProperty()
+          .addListener(
+              (observable, oldValue, newValue) -> {
+                if (!newValue) {
+                  finalHome.refreshTable();
+                }
+              });
+    }
   }
 
   @FXML
