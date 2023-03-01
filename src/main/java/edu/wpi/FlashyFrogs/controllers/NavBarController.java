@@ -122,6 +122,16 @@ public class NavBarController {
     menu.setVisible(false);
     menu.setDisable(true);
     menu.hide();
+
+    menu.hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+
+              } else {
+
+              }
+            });
     // header.setDisable(true);
     // header.setOpacity(0);
     updateToggleSFX();
