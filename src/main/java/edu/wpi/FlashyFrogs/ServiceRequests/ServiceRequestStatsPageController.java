@@ -41,7 +41,7 @@ public class ServiceRequestStatsPageController implements IController {
   @FXML private AnchorPane anchorPane;
   @FXML private AnchorPane statsAnchorPane;
   @FXML private VBox sideBar;
-  @FXML MFXButton download;
+  @FXML MFXButton downloadButton;
 
   @FXML protected FilteredTableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected FilteredTableColumn<ServiceRequest, Long> requestIDCol;
@@ -276,7 +276,14 @@ public class ServiceRequestStatsPageController implements IController {
 
       replaceChart(chart);
 
-      writeToExcelFile(series);
+      downloadButton.setOnAction(
+          e -> {
+            try {
+              writeToExcelFile(series, graphTypeComboBox.getValue());
+            } catch (IOException ioException) {
+              ioException.printStackTrace();
+            }
+          });
 
     } else if (graphTypeComboBox.getValue().equals("Total Completed Requests by Type")) {
 
@@ -367,7 +374,14 @@ public class ServiceRequestStatsPageController implements IController {
       chart.setLegendVisible(false);
       attachLabel(chart, series);
       replaceChart(chart);
-      writeToExcelFile(series);
+      downloadButton.setOnAction(
+          e -> {
+            try {
+              writeToExcelFile(series, graphTypeComboBox.getValue());
+            } catch (IOException ioException) {
+              ioException.printStackTrace();
+            }
+          });
 
     } else if (graphTypeComboBox.getValue().equals("Total Requests by Status")) {
 
@@ -414,7 +428,14 @@ public class ServiceRequestStatsPageController implements IController {
       attachLabel(chart, series);
       // remove old chart and add new chart with same layout
       replaceChart(chart);
-      writeToExcelFile(series);
+      downloadButton.setOnAction(
+          e -> {
+            try {
+              writeToExcelFile(series, graphTypeComboBox.getValue());
+            } catch (IOException ioException) {
+              ioException.printStackTrace();
+            }
+          });
     } else if (graphTypeComboBox
         .getValue()
         .equals("Completed vs Incomplete Service Requests Pie Chart")) {
@@ -509,7 +530,8 @@ public class ServiceRequestStatsPageController implements IController {
     }
   }
 
-  private static void writeToExcelFile(XYChart.Series<String, Number> series) throws IOException {
+  private static void writeToExcelFile(XYChart.Series<String, Number> series, String title)
+      throws IOException {
     // download chart to excel document
     // output stream for excel file
 
@@ -525,6 +547,8 @@ public class ServiceRequestStatsPageController implements IController {
     Workbook workbook = new HSSFWorkbook();
     Sheet sheet = workbook.createSheet("Service Requests");
     Row row = sheet.createRow(0);
+    // create title row
+    row.createCell(0).setCellValue(title);
 
     // fill rows with data in chart
     for (int i = 0; i < series.getData().size(); i++) {
@@ -532,8 +556,8 @@ public class ServiceRequestStatsPageController implements IController {
       row.createCell(0).setCellValue(series.getData().get(i).getXValue());
       row.createCell(1).setCellValue(series.getData().get(i).getYValue().intValue());
 
-      System.out.println(series.getData().get(i).getXValue());
-      System.out.println(series.getData().get(i).getYValue().intValue());
+      // System.out.println(series.getData().get(i).getXValue());
+      // System.out.println(series.getData().get(i).getYValue().intValue());
     }
 
     // write to excel file
@@ -549,7 +573,7 @@ public class ServiceRequestStatsPageController implements IController {
     label.setLayoutY(chart.getLayoutY());
     label.setVisible(false);
     anchorPane.getChildren().add(label);
-    System.out.println(anchorPane.getHeight());
+    // System.out.println(anchorPane.getHeight());
 
     // put totals above bar
 
@@ -563,14 +587,16 @@ public class ServiceRequestStatsPageController implements IController {
                         data.getNode()
                             .setOnMouseEntered(
                                 event -> {
-                                  System.out.println(anchorPane.getHeight());
+                                  //
+                                  // System.out.println(anchorPane.getHeight());
                                   if (event.getScreenY() + label.getHeight()
                                       <= anchorPane.getHeight() - 5) {
                                     // label.setLayoutY(event.getSceneY() - label.getHeight());
                                     label.setLayoutY(500);
                                   } else {
                                     label.setLayoutY(500);
-                                    System.out.println(anchorPane.getHeight());
+                                    //
+                                    // System.out.println(anchorPane.getHeight());
                                   }
                                   label.setMouseTransparent(true);
                                   // add label to scene
@@ -589,7 +615,8 @@ public class ServiceRequestStatsPageController implements IController {
 
                                   label.toFront();
                                   label.setVisible(true);
-                                  System.out.println(anchorPane.getHeight());
+                                  //
+                                  // System.out.println(anchorPane.getHeight());
                                 });
                         data.getNode()
                             .setOnMouseMoved(
@@ -725,9 +752,5 @@ public class ServiceRequestStatsPageController implements IController {
         break;
       }
     }
-  }
-
-  public void handleDownload(ActionEvent event) throws IOException {
-    //
   }
 }

@@ -137,6 +137,6 @@
          </children>
       </VBox>
       <ComboBox fx:id="graphTypeComboBox" layoutX="740.0" layoutY="457.0" onAction="#handleGraphTypeComboBox" prefHeight="26.0" prefWidth="310.0" promptText="Graph Type" styleClass="fields" AnchorPane.bottomAnchor="237.0" AnchorPane.leftAnchor="735.0" />
-      <MFXButton fx:id="download" layoutX="1130.0" layoutY="625.0" onAction="#handleDownload" prefHeight="26.0" prefWidth="150.0" styleClass="blueNoSetSize" text="Download Graphs" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0" />
+      <MFXButton fx:id="downloadButton" layoutX="1130.0" layoutY="625.0" prefHeight="26.0" prefWidth="150.0" styleClass="blueNoSetSize" text="Download Graph" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="75.0" />
    </children>
 </AnchorPane>
