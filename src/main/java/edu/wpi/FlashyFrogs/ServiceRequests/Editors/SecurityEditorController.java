@@ -173,6 +173,20 @@ public class SecurityEditorController extends ServiceRequestController implement
     description.setText("");
   }
 
+  public void handleDelete(ActionEvent event) {
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    session.beginTransaction();
+    session
+        .createMutationQuery("DELETE FROM Security WHERE id=:ID")
+        .setParameter("ID", secReq.getId())
+        .executeUpdate();
+    session.getTransaction().commit();
+    session.close();
+
+    popOver.hide();
+  }
+
   @Override
   protected void handleBack(ActionEvent event) throws IOException {}
 

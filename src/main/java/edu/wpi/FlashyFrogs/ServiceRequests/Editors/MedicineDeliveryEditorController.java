@@ -176,6 +176,20 @@ public class MedicineDeliveryEditorController extends ServiceRequestController
     date.valueProperty().set(null);
   }
 
+  public void handleDelete(ActionEvent event) {
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    session.beginTransaction();
+    session
+        .createMutationQuery("DELETE FROM MedicineDelivery WHERE id=:ID")
+        .setParameter("ID", tpReq.getId())
+        .executeUpdate();
+    session.getTransaction().commit();
+    session.close();
+
+    popOver.hide();
+  }
+
   @Override
   protected void handleBack(ActionEvent event) throws IOException {}
 

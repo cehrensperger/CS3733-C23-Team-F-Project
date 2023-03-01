@@ -164,6 +164,20 @@ public class ReligionEditorController extends ServiceRequestController implement
     requestDescription.setText("");
   }
 
+  public void handleDelete(ActionEvent event) {
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    session.beginTransaction();
+    session
+        .createMutationQuery("DELETE FROM Religion WHERE id=:ID")
+        .setParameter("ID", relReq.getId())
+        .executeUpdate();
+    session.getTransaction().commit();
+    session.close();
+
+    popOver.hide();
+  }
+
   @Override
   protected void handleBack(ActionEvent event) throws IOException {}
 

@@ -102,7 +102,7 @@
                                             <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                     <children>
-                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleClear" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Clear">
+                                                        <MFXButton fx:id="clear" contentDisplay="CENTER" onAction="#handleDelete" prefHeight="25.0" prefWidth="85.0" styleClass="clearButton" text="Delete">
                                                             <font>
                                                                 <Font size="16.0" />
                                                             </font>
