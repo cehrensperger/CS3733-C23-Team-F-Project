@@ -1221,23 +1221,6 @@ public class MapEditorController implements IController {
   private void moveCircleToPosition(
       @NonNull Circle circle, @NonNull Node node, int newX, int newY) {
 
-    if (circle.getCenterX() < 5) {
-      return;
-    }
-    if (mapController.getNodeToLocationBox().get(node).getLayoutY() < 5) {
-      return;
-    }
-    if (mapController.getNodeToLocationBox().get(node).getLayoutY()
-            + mapController.getNodeToLocationBox().get(node).getHeight()
-        > mapController.getCurrentDrawingPane().getHeight() - 5) {
-      return;
-    }
-    if (mapController.getNodeToLocationBox().get(node).getLayoutX()
-            + mapController.getNodeToLocationBox().get(node).getWidth()
-        > mapController.getCurrentDrawingPane().getWidth() - 5) {
-      return;
-    }
-
     // Update the positions
     circle.setCenterX(newX); // X
     circle.setCenterY(newY); // Y
@@ -1386,19 +1369,34 @@ public class MapEditorController implements IController {
             task.cancel();
           }
 
+          Node finalRight = right;
+          Node finalLeft = left;
+          Node finalHighest = highest;
+          Node finalLowest = lowest;
           task =
               new TimerTask() {
                 @Override
                 public void run() {
-
-                  Platform.runLater(
-                      () ->
-                          mapController
-                              .getGesturePane()
-                              .translateBy(new Dimension2D(round(effortX[0]), round(effortY[0]))));
-
                   Platform.runLater(
                       () -> {
+                        // First, validate bounds
+                        if (mapController.getNodeToCircleMap().get(finalRight).getCenterX()
+                                + effortX[0]
+                            > mapController.getMapWidth()) return;
+                        if (mapController.getNodeToCircleMap().get(finalLeft).getCenterX()
+                                + effortX[0]
+                            < 0) return;
+                        if (mapController.getNodeToCircleMap().get(finalLowest).getCenterY()
+                                + effortY[0]
+                            > mapController.getMapHeight()) return;
+                        if (mapController.getNodeToCircleMap().get(finalHighest).getCenterY()
+                                + effortY[0]
+                            < 0) return;
+
+                        mapController
+                            .getGesturePane()
+                            .translateBy(new Dimension2D(round(effortX[0]), round(effortY[0])));
+
                         for (Node node : selectedNodes) {
                           moveCircleToPosition(
                               mapController.getNodeToCircleMap().get(node),
@@ -1418,6 +1416,14 @@ public class MapEditorController implements IController {
 
           timer.scheduleAtFixedRate(task, 0, 5);
 
+          event.consume();
+
+          // First, validate the bounds
+          if (finalRight.getXCoord() + xDiff > mapController.getMapWidth()) return;
+          if (finalLeft.getXCoord() + xDiff < 0) return;
+          if (finalLowest.getYCoord() + yDiff > mapController.getMapHeight()) return;
+          if (finalHighest.getYCoord() + yDiff < 0) return;
+
           // For each selected node
           for (Node selectedNode : selectedNodes) {
             // Get the circle
@@ -1430,8 +1436,6 @@ public class MapEditorController implements IController {
                 selectedNode.getXCoord() + xDiff,
                 selectedNode.getYCoord() + yDiff);
           }
-
-          event.consume();
         });
 
     // On drag stop, this is the only thing that represents that for some reason
