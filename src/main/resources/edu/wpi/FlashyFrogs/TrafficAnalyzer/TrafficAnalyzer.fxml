@@ -22,14 +22,14 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Traffic Date">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Traffic Date">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </Text>
             <DatePicker fx:id="viewDate" promptText="Traffic Date" styleClass="fields" />
             <Text fx:id="h1" styleClass="warningText" text="These are the edges with the most weight based on the given day" wrappingWidth="177.9025115966797" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Service Request Weighting">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Service Request Weighting">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -41,7 +41,7 @@
             </TextField>
             <Text fx:id="h2" styleClass="warningText" text="These are the edges with the most weight based on the given day" wrappingWidth="176.5821533203125" />
             <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateMap" styleClass="blueBackgroundSideBar" text="Update Map" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blueText" text="Top Edges">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="srText" text="Top Edges">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

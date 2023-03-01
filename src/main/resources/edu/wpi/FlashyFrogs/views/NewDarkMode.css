@@ -519,6 +519,22 @@
     -fx-text-fill: white;
 }
 
+.check-box
+{
+    -fx-text-fill: white;
+    -fx-fill: white;
+}
+
+.check-box .box
+{
+    -fx-border-color: white;
+}
+
+.check-box:selected .mark
+{
+    -fx-fill: white;
+}
+
 .pathfindingField {
     /** This controls the input field for controlling what labels to show in the upper right corner of Pathfinding **/
     -fx-border-color:#D1D1D1;
@@ -554,5 +570,9 @@
 }
 .srText
 {
-    -fx-fill: #000000;
+    -fx-fill:white;
+}
+
+.axis {
+    -fx-tick-label-fill: white;
 }
