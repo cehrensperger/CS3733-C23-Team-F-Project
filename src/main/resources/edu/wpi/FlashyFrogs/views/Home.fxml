@@ -73,10 +73,13 @@
       </ImageView>
       <FilteredTableView fx:id="moveTable" layoutX="241.0" prefHeight="211.0" prefWidth="1020.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="241.0" AnchorPane.rightAnchor="19.0">
          <columns>
-            <FilteredTableColumn fx:id="nodeIDCol" maxWidth="1.7976931348623157E308" prefWidth="385.0" text="Node ID" />
-            <FilteredTableColumn fx:id="locationNameCol" maxWidth="1.7976931348623157E308" prefWidth="385.0" text="Location Name" />
+            <FilteredTableColumn fx:id="nodeIDCol" maxWidth="-1.0" minWidth="200.0" prefWidth="200.0" text="Node ID" />
+            <FilteredTableColumn fx:id="locationNameCol" maxWidth="-1.0" minWidth="400.0" prefWidth="200.0" text="Location Name" />
             <FilteredTableColumn fx:id="dateCol" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="385.0" text="Date Effective" />
          </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </FilteredTableView>
       <Label fx:id="tableText2" layoutX="240.0" layoutY="459.0" styleClass="headerBold" text="Future Moves" AnchorPane.bottomAnchor="226.0" AnchorPane.leftAnchor="240.0">
          <font>
