@@ -141,7 +141,6 @@ public class AlertManagerController implements IController {
             Node node = (Node) event.getSource();
             popOver.show(node.getScene().getWindow());
             addNewAlert.setDisable(true);
-            back.setDisable(true);
             popOver
                 .showingProperty()
                 .addListener(
