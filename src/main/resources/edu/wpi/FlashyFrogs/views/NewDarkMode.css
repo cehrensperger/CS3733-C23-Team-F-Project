@@ -388,6 +388,18 @@
     -fx-text-fill: #ffffff;
 }
 
+
+.menu-button:hover .label {
+    -fx-text-fill: #F6BD38;
+    -fx-fill: #F6BD38;
+    -fx-border-color: #012D5A;
+}
+
+.menu-button:hover .arrow {
+    -fx-background-color: #F6BD38;
+    -fx-control-inner-background: #012D5A;
+}
+
 .menu-item .label
     /** This controls the color of the text within the menu-items when they are not hovered over **/
 {
