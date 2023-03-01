@@ -365,6 +365,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                                 pathFinder.findPath(
                                     oldLocation, newValue.getNode(), false); // Save the path
 
+                            colorFloor(); // Redraw
+
                             // In the UI thread
                             Platform.runLater(
                                 () -> {
@@ -394,8 +396,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                   errortoastAnimation();
                 }
               }
-
-              colorFloor(); // Redraw
             });
 
     mapController

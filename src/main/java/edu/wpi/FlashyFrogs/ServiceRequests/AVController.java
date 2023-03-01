@@ -26,10 +26,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -182,6 +179,117 @@ public class AVController implements IController {
   }
 
   public void help() {
+
+    locationBox.setTooltip(new Tooltip("Select the location of the request"));
+
+    locationBox
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+                locationBox
+                    .getTooltip()
+                    .show(
+                        locationBox,
+                        // get screen coordinates of the node
+                        locationBox.localToScreen(locationBox.getBoundsInLocal()).getMinX(),
+                        locationBox.localToScreen(locationBox.getBoundsInLocal()).getMinY()
+                            - locationBox.getTooltip().getHeight());
+
+              } else {
+                locationBox.getTooltip().hide();
+              }
+            });
+    // make hover properties for all the other fields
+
+    device
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              Tooltip tooltip = new Tooltip("Enter the device name");
+              if (newValue) {
+                tooltip.show(
+                    device,
+                    // get screen coordinates of the node
+                    device.localToScreen(device.getBoundsInLocal()).getMinX(),
+                    device.localToScreen(device.getBoundsInLocal()).getMinY()
+                        - tooltip.getHeight());
+
+              } else {
+                device.setTooltip(null);
+                tooltip.hide();
+              }
+            });
+
+    reason
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+                new Tooltip("Enter the reason for the request")
+                    .show(
+                        reason,
+                        // get screen coordinates of the node
+                        reason.localToScreen(reason.getBoundsInLocal()).getMinX(),
+                        reason.localToScreen(reason.getBoundsInLocal()).getMinY()
+                            - reason.getTooltip().getHeight());
+
+              } else {
+                reason.getTooltip().hide();
+              }
+            });
+
+    date.hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+                new Tooltip("Enter the date needed")
+                    .show(
+                        date,
+                        // get screen coordinates of the node
+                        date.localToScreen(date.getBoundsInLocal()).getMinX(),
+                        date.localToScreen(date.getBoundsInLocal()).getMinY()
+                            - date.getTooltip().getHeight());
+
+              } else {
+                date.getTooltip().hide();
+              }
+            });
+    description
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+                new Tooltip("Enter the description of the request")
+                    .show(
+                        description,
+                        // get screen coordinates of the node
+                        description.localToScreen(description.getBoundsInLocal()).getMinX(),
+                        description.localToScreen(description.getBoundsInLocal()).getMinY()
+                            - description.getTooltip().getHeight());
+
+              } else {
+                description.getTooltip().hide();
+              }
+            });
+    urgency
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+                new Tooltip("Select the urgency of the request")
+                    .show(
+                        urgency,
+                        // get screen coordinates of the node
+                        urgency.localToScreen(urgency.getBoundsInLocal()).getMinX(),
+                        urgency.localToScreen(urgency.getBoundsInLocal()).getMinY()
+                            - urgency.getTooltip().getHeight());
+
+              } else {
+                urgency.getTooltip().hide();
+              }
+            });
+
     if (!hDone) {
       h1.setVisible(true);
       h2.setVisible(true);
