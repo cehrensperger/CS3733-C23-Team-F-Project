@@ -4,7 +4,6 @@ import edu.wpi.FlashyFrogs.Accounts.CurrentUserEntity;
 import edu.wpi.FlashyFrogs.Fapp;
 import edu.wpi.FlashyFrogs.GeneratedExclusion;
 import edu.wpi.FlashyFrogs.Theme;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,6 +28,7 @@ import org.controlsfx.control.PopOver;
 @GeneratedExclusion
 public class NavBarController {
 
+  @FXML private AnchorPane sidePane;
   @FXML private MenuItem menuToggleSFX;
   @FXML private MenuItem loggedOutMenuToggleSFX;
 
@@ -37,52 +37,52 @@ public class NavBarController {
 
   @FXML private AnchorPane anchorPane;
   // @FXML private HBox header;
-  @FXML private MFXButton helpButton;
+  @FXML private Button helpButton;
 
   @FXML private VBox toast;
   @FXML private Text backText;
   @FXML private Text heatText;
   @FXML private SVGPath heatSVG;
-  @FXML MFXButton heat;
-  @FXML MFXButton heat2;
+  @FXML Button heat;
+  @FXML Button heat2;
 
-  @FXML private MFXButton back;
+  @FXML private Button back;
   @FXML private SVGPath backSVG;
-  @FXML private MFXButton moveVisualizer;
-  @FXML private MFXButton loginManager;
-  @FXML private MFXButton csvManager;
-  @FXML private MFXButton mapEditor;
-  @FXML private MFXButton pathfinding;
-  @FXML private MFXButton security;
-  @FXML private MFXButton sanitation;
-  @FXML private MFXButton religious;
-  @FXML private MFXButton medicine;
-  @FXML private MFXButton transport;
-  @FXML private MFXButton itSupport;
-  @FXML private MFXButton avService;
-  @FXML private MFXButton equipmentTransport;
-  @FXML private MFXButton equipmentTransport2;
-  @FXML private MFXButton srButton;
-  @FXML private MFXButton homeButton;
-  @FXML private MFXButton alertsButton;
+  @FXML private Button moveVisualizer;
+  @FXML private Button loginManager;
+  @FXML private Button csvManager;
+  @FXML private Button mapEditor;
+  @FXML private Button pathfinding;
+  @FXML private Button security;
+  @FXML private Button sanitation;
+  @FXML private Button religious;
+  @FXML private Button medicine;
+  @FXML private Button transport;
+  @FXML private Button itSupport;
+  @FXML private Button avService;
+  @FXML private Button equipmentTransport;
+  @FXML private Button equipmentTransport2;
+  @FXML private Button srButton;
+  @FXML private Button homeButton;
+  @FXML private Button alertsButton;
 
-  @FXML private MFXButton helpButton2;
-  @FXML private MFXButton back2;
-  @FXML private MFXButton moveVisualizer2;
-  @FXML private MFXButton loginManager2;
-  @FXML private MFXButton csvManager2;
-  @FXML private MFXButton mapEditor2;
-  @FXML private MFXButton pathfinding2;
-  @FXML private MFXButton security2;
-  @FXML private MFXButton sanitation2;
-  @FXML private MFXButton religious2;
-  @FXML private MFXButton medicine2;
-  @FXML private MFXButton transport2;
-  @FXML private MFXButton itSupport2;
-  @FXML private MFXButton avService2;
+  @FXML private Button helpButton2;
+  @FXML private Button back2;
+  @FXML private Button moveVisualizer2;
+  @FXML private Button loginManager2;
+  @FXML private Button csvManager2;
+  @FXML private Button mapEditor2;
+  @FXML private Button pathfinding2;
+  @FXML private Button security2;
+  @FXML private Button sanitation2;
+  @FXML private Button religious2;
+  @FXML private Button medicine2;
+  @FXML private Button transport2;
+  @FXML private Button itSupport2;
+  @FXML private Button avService2;
   @FXML private Button srButton2;
   @FXML private Button homeButton2;
-  @FXML private MFXButton alertsButton2;
+  @FXML private Button alertsButton2;
 
   @FXML private StackPane mapStack;
   @FXML private StackPane mapStack2;
@@ -202,6 +202,17 @@ public class NavBarController {
         }
       }
     }
+
+    sidePane
+        .hoverProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue) {
+                toastAnimationForward();
+              } else {
+                toastAnimationBackward();
+              }
+            });
   }
 
   /**
@@ -442,7 +453,6 @@ public class NavBarController {
   @FXML
   private void hideDescriptions(MouseEvent event) throws IOException {
     toastAnimationBackward();
-    //    System.out.println("out");
   }
 
   @FXML
@@ -651,22 +661,9 @@ public class NavBarController {
   public void toastAnimationForward() {
     // Create a TranslateTransition to move the first rectangle to the left
     TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.2), toast);
-    translate1.setByX(260);
-    navButtons.setOnMouseEntered(e -> {});
-    translate1.setOnFinished(
-        e -> {
-          toast.setOnMouseExited(
-              event -> {
-                try {
-                  hideDescriptions(event);
-                } catch (IOException ex) {
-                  throw new RuntimeException(ex);
-                }
-              });
-        });
+    translate1.setToX(260);
 
-    // Play the animations in sequence
-
+    // Play the animation
     translate1.play();
   }
 
@@ -675,22 +672,8 @@ public class NavBarController {
     // Create a TranslateTransition to move the first rectangle back to its original position
     TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.2), toast);
 
-    toast.setOnMouseExited(e -> {});
-
-    translateBack1.setOnFinished(
-        e -> {
-          navButtons.setOnMouseEntered(
-              event -> {
-                try {
-                  showDescriptions(event);
-                } catch (IOException ex) {
-                  throw new RuntimeException(ex);
-                }
-              });
-        });
-
     //    translateBack1.setDelay(Duration.seconds(2));
-    translateBack1.setByX(-260);
+    translateBack1.setToX(-260);
 
     // Play the animations in sequence
     translateBack1.play();
