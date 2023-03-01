@@ -576,3 +576,8 @@
 .axis {
     -fx-tick-label-fill: white;
 }
+
+.icon
+{
+    -fx-fill: white;
+}
