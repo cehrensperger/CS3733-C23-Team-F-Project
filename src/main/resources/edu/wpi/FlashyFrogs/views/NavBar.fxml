@@ -200,10 +200,10 @@
                               <Button fx:id="back2" onAction="#handleBack" prefHeight="27.0" prefWidth="220.0" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                            </children>
                            <VBox.margin>
-                              <Insets bottom="10.0" />
+                              <Insets bottom="8.0" />
                            </VBox.margin>
                         </StackPane>
-                        <StackPane maxHeight="27.0" minHeight="27.0" prefHeight="27.0" prefWidth="170.0">
+                        <StackPane maxHeight="27.0" minHeight="23.0" prefHeight="27.0" prefWidth="220.0">
                            <children>
                               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Help" wrappingWidth="210.0">
                                  <font>

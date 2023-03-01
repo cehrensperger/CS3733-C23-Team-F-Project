@@ -526,10 +526,9 @@ public class NavBarController {
     Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
   }
 
-
   @FXML
   private void handleStats(ActionEvent event) throws IOException {
-    //Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
+    // Fapp.setScene("TrafficAnalyzer", "trafficAnalyzer");
   }
 
   @FXML
