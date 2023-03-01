@@ -315,8 +315,4 @@
          </children>
       </AnchorPane>
    </left>
-   <stylesheets>
-      <URL value="@NewStyle.css" />
-      <URL value="@NotColors.css" />
-   </stylesheets>
 </BorderPane>
