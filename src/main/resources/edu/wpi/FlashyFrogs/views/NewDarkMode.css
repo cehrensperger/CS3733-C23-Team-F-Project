@@ -183,6 +183,8 @@
     -fx-text-fill: white;
     -fx-background-color: transparent;
     -fx-prompt-text-fill: white;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .editUserFields
@@ -221,15 +223,21 @@
     -fx-prompt-text-fill: white;
     -fx-text-fill: white;
     -fx-context-menu-enabled: #012D5A;
-    -fx-control-inner-background: transparent;
+    -fx-control-inner-background: #6B6D6F;
+}
+
+.searchable-combo-box .combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #012D5A;
+    -fx-text-fill: white;
 }
 
 .searchable-combo-box .list-cell {
     -fx-text-background-color: #012D5a;
 }
 
-.searchable-combo-box .list-cell:hover {
+.searchable-combo-box .combo-box-popup .list-view .list-cell:hover {
     -fx-background-color: #F6Bd38;
+    -fx-text-fill: white;
     -fx-text-background-color: #ffffff;
     -fx-background: #F6Bd38;
 }

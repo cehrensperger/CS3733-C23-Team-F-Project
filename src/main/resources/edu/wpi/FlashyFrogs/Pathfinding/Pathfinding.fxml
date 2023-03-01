@@ -77,10 +77,18 @@
                   <Insets bottom="10.0" left="18.0" right="18.0" />
                </VBox.margin>
             </Text>
-            <CheckBox fx:id="accessibleBox" mnemonicParsing="false" styleClass="body" text="No Stairs">
+            <HBox alignment="CENTER_LEFT" maxHeight="32.0" maxWidth="183.0" minHeight="32.0" minWidth="183.0" prefHeight="32.0" prefWidth="183.0" spacing="10.0" styleClass="fields">
                <VBox.margin>
-                  <Insets bottom="8.0" left="18.0" />
-               </VBox.margin></CheckBox>
+                  <Insets left="18.0" />
+               </VBox.margin>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="check-box" text="No Stairs">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Text>
+                  <CheckBox fx:id="accessibleBox" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" />
+               </children>
+            </HBox>
             <Text fx:id="h6" styleClass="warningText" text="Check to exclude stairs from your path" wrappingWidth="184.0">
                <VBox.margin>
                   <Insets bottom="10.0" left="18.0" />
