@@ -355,7 +355,6 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 return; // Don't do naything else
               }
 
-
               unColorFloor(); // Clear the old styilng stuff
 
               // If something is selected
