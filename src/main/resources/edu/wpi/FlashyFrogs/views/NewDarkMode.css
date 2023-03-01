@@ -215,7 +215,7 @@
 {
 }
 
-.searchable-combo-box>
+.searchable-combo-box
     /** controls all searchable combo boxes within the app **/
 {
     -fx-prompt-text-fill: white;
@@ -229,9 +229,9 @@
 }
 
 .searchable-combo-box .list-cell:hover {
-    -fx-background-color: #012d5a;
+    -fx-background-color: #F6Bd38;
     -fx-text-background-color: #ffffff;
-    -fx-background: #012d5a;
+    -fx-background: #F6Bd38;
 }
 
 .combo-box> .text-field
