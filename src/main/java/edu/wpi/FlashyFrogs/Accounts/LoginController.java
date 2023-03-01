@@ -64,6 +64,9 @@ public class LoginController implements IController {
   }
 
   public void initialize() {
+
+    // NavBarController newNav = new NavBarController();
+    // newNav.guestPathfinding();
     Fapp.resetStackLogin();
 
     // Set up the key press handler

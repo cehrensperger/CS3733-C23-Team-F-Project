@@ -301,35 +301,33 @@ public class HomeController implements IController {
                 requestTable.getSelectionModel().selectedItemProperty().get();
             if (selectedItem != null) {
 
-              if (CurrentUserEntity.CURRENT_USER.getAdmin()) {
-                FXMLLoader newLoad =
-                    new FXMLLoader(
-                        Fapp.class.getResource(
-                            "ServiceRequests/Editors/"
-                                + selectedItem.getRequestType()
-                                + "Editor.fxml"));
+              FXMLLoader newLoad =
+                  new FXMLLoader(
+                      Fapp.class.getResource(
+                          "ServiceRequests/Editors/"
+                              + selectedItem.getRequestType()
+                              + "Editor.fxml"));
 
-                Parent root = null;
-                root = newLoad.load();
-                PopOver popOver = new PopOver(root);
-                popOver.detach(); // Detach the pop-up, so it's not stuck to the button
-                Node node =
-                    (Node) event.getSource(); // Get the node representation of what called this
-                popOver.show(node);
-                ServiceRequestController controller = newLoad.getController();
-                controller.setRequest(selectedItem);
-                controller.updateFields();
-                controller.setPopOver(popOver);
+              Parent root = null;
+              root = newLoad.load();
+              PopOver popOver = new PopOver(root);
+              popOver.detach(); // Detach the pop-up, so it's not stuck to the button
+              Node node =
+                  (Node) event.getSource(); // Get the node representation of what called this
+              popOver.show(node);
+              ServiceRequestController controller = newLoad.getController();
+              controller.setRequest(selectedItem);
+              controller.updateFields();
+              controller.setPopOver(popOver);
 
-                popOver
-                    .showingProperty()
-                    .addListener(
-                        (observable, oldValue, newValue) -> {
-                          if (!newValue) {
-                            refreshTable();
-                          }
-                        });
-              }
+              popOver
+                  .showingProperty()
+                  .addListener(
+                      (observable, oldValue, newValue) -> {
+                        if (!newValue) {
+                          refreshTable();
+                        }
+                      });
             }
             requestTable.getSelectionModel().clearSelection();
           }

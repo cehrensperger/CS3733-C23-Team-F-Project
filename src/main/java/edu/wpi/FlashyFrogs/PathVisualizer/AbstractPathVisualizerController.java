@@ -8,10 +8,7 @@ import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinding.PathFinder;
 import edu.wpi.FlashyFrogs.PathFinding.PathfindingController;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -127,6 +124,8 @@ public abstract class AbstractPathVisualizerController implements IController {
       boolean visible, Color startColor, Color endColor, Color lineColor) {
     // Check to make sure the path exists
     if (currentPath != null) {
+      Set<Node.Floor> allowedFloors = new HashSet<>(); // Set of allowed floors we will use
+
       Node startNode = currentPath.get(0); // Get the start node
 
       // If the nodes floor is correct
@@ -147,37 +146,23 @@ public abstract class AbstractPathVisualizerController implements IController {
         nodeCircle.setFill(endColor); // Set its color
       }
 
+      // Add the start floor to the allowed floors
+      allowedFloors.add(currentPath.get(0).getFloor());
+
       // For each node in the path
       for (int i = 1; i < currentPath.size(); i++) {
         // Get the two nodes
         Node thisNode = currentPath.get(i);
         Node lastNode = currentPath.get(i - 1);
 
+        allowedFloors.add(thisNode.getFloor()); // Add this floor to the list of allowed floors
+
         if (!thisNode.getFloor().equals(lastNode.getFloor())
             && lastNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
-          //          FXMLLoader loader =
-          //              new FXMLLoader(
-          //
-          // AbstractPathVisualizerController.class.getResource("NextFloorPopup.fxml"));
-          //          // PopOver goToNext = new PopOver(loader.load());
-          //          goToNext.setHeaderAlwaysVisible(false); // Disable the header
-          //          changeFloorPopOvers.add(goToNext); // Add this to the pop-overs
-
-          // Create the controller
-          // NextFloorPopupController controller = loader.getController();
-          //          controller.setPathfindingController(this); // Set its controller to be this
-          //          controller.setDestination(thisNode); // Go to that
 
           Circle circle = mapController.getNodeToCircleMap().get(lastNode);
           circle.setFill(Color.YELLOW);
           circle.setVisible(true);
-
-          //          goToNext.show(circle);
-          //          goToNext.setAutoHide(false);
-          //          goToNext.setAutoFix(false);
-          //          goToNext.detach();
-          //          goToNext.setX(250);
-          //          goToNext.setY(20);
         } else if (!thisNode.getFloor().equals(lastNode.getFloor())
             && thisNode.getFloor().equals(mapController.getMapFloorProperty().getValue())) {
           Circle circle = mapController.getNodeToCircleMap().get(thisNode);
@@ -207,6 +192,11 @@ public abstract class AbstractPathVisualizerController implements IController {
           lineToColor.setVisible(visible);
         }
       }
+
+      // Set the allowed floors
+      mapController.setAllowedFloors(allowedFloors);
+    } else {
+      mapController.setAllowedFloors(null); // Clear the allowed floors
     }
   }
 
@@ -280,39 +270,40 @@ public abstract class AbstractPathVisualizerController implements IController {
 
       if (nodeName.equals("")) {
         if (errorDeg < -70) {
-          instructions.add(new Instruction("\u2190 Turn Left ", thisNode));
+          instructions.add(new Instruction("\t\u2190 Turn left", thisNode));
           continueCounter = 0;
         } else if ((errorDeg > -70) && (errorDeg < -45)) {
-          instructions.add(new Instruction("\u2196 Take Slight Left ", thisNode));
+          instructions.add(new Instruction("\t\u2196 Take a slight left", thisNode));
           continueCounter = 0;
         } else if (errorDeg > 70) {
-          instructions.add(new Instruction(" \u2192 Turn Right ", thisNode));
+          instructions.add(new Instruction("\t\u2192 Turn right", thisNode));
           continueCounter = 0;
         } else if ((errorDeg > 45) && (errorDeg < 70)) {
-          instructions.add(new Instruction("\u2197 Take Slight Right ", thisNode));
+          instructions.add(new Instruction("\t\u2197 Take a slight right", thisNode));
           continueCounter = 0;
         } else {
           if (continueCounter == 0) {
-            instructions.add(new Instruction("\u2191 Continue", thisNode));
+            instructions.add(new Instruction("\t\u2191 Continue", thisNode));
             continueCounter = continueCounter + 1;
           }
         }
       } else {
         if (errorDeg < -70) {
-          instructions.add(new Instruction("\u2190 Turn Left at " + nodeName, thisNode));
+          instructions.add(new Instruction("\t\u2190 Turn left at " + nodeName, thisNode));
           continueCounter = 0;
         } else if ((errorDeg > -70) && (errorDeg < -45)) {
-          instructions.add(new Instruction("\u2196 Take Slight Left at " + nodeName, thisNode));
+          instructions.add(new Instruction("\t\u2196 Take a slight left at " + nodeName, thisNode));
           continueCounter = 0;
         } else if (errorDeg > 70) {
-          instructions.add(new Instruction("\u2192 Turn Right at " + nodeName, thisNode));
+          instructions.add(new Instruction("\t\u2192 Turn right at " + nodeName, thisNode));
           continueCounter = 0;
         } else if ((errorDeg > 45) && (errorDeg < 70)) {
-          instructions.add(new Instruction("\u2197 Take Slight Right at " + nodeName, thisNode));
+          instructions.add(
+              new Instruction("\t\u2197 Take a slight right at " + nodeName, thisNode));
           continueCounter = 0;
         } else {
           if (continueCounter == 0) {
-            instructions.add(new Instruction("\u2191 Continue at " + nodeName, thisNode));
+            instructions.add(new Instruction("\t\u2191 Continue at " + nodeName, thisNode));
             continueCounter = continueCounter + 1;
           }
         }
@@ -321,24 +312,12 @@ public abstract class AbstractPathVisualizerController implements IController {
 
     instructions.add(
         new Instruction(
-            "You have arrived at "
-                + currentPath
-                    .get(currentPath.size() - 1)
-                    .getCurrentLocation(mapController.getMapSession(), date),
+            "You have arrived at your destination!",
+            //                + currentPath
+            //                    .get(currentPath.size() - 1)
+            //                    .getCurrentLocation(mapController.getMapSession(), date)
+            //                    .get(0),
             currentPath.get(currentPath.size() - 1)));
-  }
-
-  /**
-   * Zooms the path-finder to the selected node on the floor of that node
-   *
-   * @param node the node to go to
-   */
-  void goToNode(@NonNull Node node) {
-    // Go to the floor
-    mapController.getMapFloorProperty().setValue(node.getFloor());
-
-    // Go to the nodes coordinates
-    mapController.zoomToCoordinates(2, node.getXCoord(), node.getYCoord());
   }
 
   public static class Instruction {

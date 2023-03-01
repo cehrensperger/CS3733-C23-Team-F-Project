@@ -60,19 +60,13 @@ public class AStar implements IFindPath {
         PathFinder.NodeWrapper child =
             new PathFinder.NodeWrapper(node, q); // create node wrapper out of current node
         if (q.node.getFloor() != child.node.getFloor()) {
-          if (child
-              .node
-              .getCurrentLocation(session, Date.from(Instant.now()))
-              .get(0)
-              .getLocationType()
-              .equals(LocationName.LocationType.ELEV)) {
+          List<LocationName> locs =
+              child.node.getCurrentLocation(session, Date.from(Instant.now()));
+          if (locs.size() > 0
+              && locs.get(0).getLocationType().equals(LocationName.LocationType.ELEV)) {
             child.g = q.g + 50; // cost for elevator
-          } else if (child
-              .node
-              .getCurrentLocation(session, Date.from(Instant.now()))
-              .get(0)
-              .getLocationType()
-              .equals(LocationName.LocationType.STAI)) {
+          } else if (locs.size() > 0
+              && locs.get(0).getLocationType().equals(LocationName.LocationType.STAI)) {
             if (accessible) continue;
             child.g = q.g + 100; // cost for stairs
           }
@@ -110,7 +104,7 @@ public class AStar implements IFindPath {
    * @param node2 second node
    * @return distance between the two nodes
    */
-  private double euclideanDistance(@NonNull Node node1, @NonNull Node node2) {
+  public static double euclideanDistance(@NonNull Node node1, @NonNull Node node2) {
     int x1 = node1.getXCoord();
     int x2 = node2.getXCoord();
     int y1 = node1.getYCoord();

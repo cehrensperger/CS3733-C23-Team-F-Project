@@ -28,6 +28,8 @@ public abstract class ServiceRequestController {
 
   protected abstract void handleClear(ActionEvent event) throws IOException;
 
+  protected abstract void handleDelete(ActionEvent event);
+
   protected abstract void handleBack(ActionEvent event) throws IOException;
 
   public abstract void handleSubmit(ActionEvent event) throws IOException;

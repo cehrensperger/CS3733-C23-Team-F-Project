@@ -19,11 +19,11 @@
          </padding>
       </Label>
       <TextField fx:id="summaryField" layoutX="22.0" layoutY="49.0" prefHeight="25.0" prefWidth="560.0" promptText="Summary:" styleClass="fields" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
-      <TextArea fx:id="descriptionField" layoutX="20.0" layoutY="87.0" prefHeight="200.0" prefWidth="562.0" promptText="Alert Message:" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-region-background: transparent; -fx-text-area-content: transparent;" styleClass="fields" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0" />
+      <TextArea fx:id="descriptionField" layoutX="20.0" layoutY="87.0" prefHeight="200.0" prefWidth="562.0" promptText="Alert Message:" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-region-background: transparent; -fx-text-area-content: transparent; -fx-text-area: transparent;" styleClass="fields" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0" />
       <ComboBox fx:id="severityBox" layoutX="20.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Severity:" styleClass="fields" AnchorPane.topAnchor="315.0" />
       <SearchableComboBox fx:id="deptBox" layoutX="379.0" layoutY="309.0" prefHeight="25.0" prefWidth="196.0" promptText="Department:" styleClass="fields" AnchorPane.topAnchor="315.0" />
-      <DatePicker fx:id="startDate" layoutX="20.0" layoutY="19.0" promptText="Start Date" />
-      <DatePicker fx:id="endDate" layoutX="395.0" layoutY="19.0" promptText="End Date" />
+      <DatePicker fx:id="startDate" layoutX="20.0" layoutY="19.0" prefHeight="26.0" prefWidth="150.0" promptText="Start Date" styleClass="fields" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <DatePicker fx:id="endDate" layoutX="477.0" layoutY="22.0" prefHeight="26.0" prefWidth="150.0" promptText="End Date" styleClass="fields" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
       <MFXButton layoutX="255.0" layoutY="359.0" onAction="#handleSubmit" prefHeight="27.0" prefWidth="90.0" styleClass="blueNoSetSize" text="Submit" AnchorPane.topAnchor="359.0" />
    </children>
 </AnchorPane>

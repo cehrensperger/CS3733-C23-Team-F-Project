@@ -153,8 +153,8 @@ public class EquipmentTransportController implements IController {
               dateNeeded,
               Date.from(Instant.now()),
               urgency.getValue(),
-              from.getValue(),
               to.getValue(),
+              from.getValue().getCurrentNode(new Date()),
               equipment.getText(),
               description.getText());
 

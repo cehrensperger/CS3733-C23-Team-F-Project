@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="111.0" prefWidth="128.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.MapEditor.EquipmentTransferConfirmationPopOverController">
+   <children>
+      <Label alignment="TOP_CENTER" layoutX="286.0" layoutY="86.0" text="Would you like to create an equipment transfer service request for this move?" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <MFXButton fx:id="noButton" layoutY="85.80000305175781" text="No" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+      <MFXButton fx:id="yesButton" layoutX="52.400001525878906" layoutY="85.80000305175781" text="Yes" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+   </children>
+</AnchorPane>

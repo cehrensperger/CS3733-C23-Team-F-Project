@@ -5,7 +5,10 @@
 {
     /** **/
 }
-
+.textFont
+{
+    -fx-font-family: "Roboto Light";
+}
 .titleText
     /** This styles any title texts within the app - including the title
     at the top of the sidebar **/
@@ -274,7 +277,7 @@
     -fx-background-radius: 0 10 10 0;
 }
 
-.searchable-combo-box>
+.searchable-combo-box
     /** controls all searchable combo boxes within the app **/
 {
     -fx-background-radius: 10 10 10 10;
@@ -282,8 +285,7 @@
 }
 
 .searchable-combo-box .list-cell {
-    -fx-font-size: 13;
-    -fx-font-family: "Roboto Light";
+
 }
 
 .searchable-combo-box .list-cell:hover {

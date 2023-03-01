@@ -45,10 +45,5 @@
                 <Font size="16.0" />
             </font>
         </MFXButton>
-        <MFXButton fx:id="back" layoutX="20.0" layoutY="662.0" minWidth="-Infinity" onAction="#handleBack" prefHeight="25.0" prefWidth="184.0" styleClass="backButton" text="Back" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0">
-            <font>
-                <Font size="16.0" />
-            </font>
-        </MFXButton>
     </children>
 </AnchorPane>

@@ -2,21 +2,30 @@ package edu.wpi.FlashyFrogs.MoveVisualizer;
 
 import edu.wpi.FlashyFrogs.Accounts.LoginController;
 import edu.wpi.FlashyFrogs.Fapp;
+import edu.wpi.FlashyFrogs.ORM.Edge;
 import edu.wpi.FlashyFrogs.ORM.LocationName;
 import edu.wpi.FlashyFrogs.ORM.Move;
 import edu.wpi.FlashyFrogs.ORM.Node;
 import edu.wpi.FlashyFrogs.PathFinding.AStar;
 import edu.wpi.FlashyFrogs.PathVisualizer.AbstractPathVisualizerController;
 import edu.wpi.FlashyFrogs.controllers.IController;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import javafx.animation.FillTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,12 +40,17 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
+import javax.sound.sampled.*;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.PopOver;
@@ -49,6 +63,9 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 /** Controller for the announcement visualizer */
 public class MoveVisualizerController extends AbstractPathVisualizerController
     implements IController {
+  public Pane errtoast;
+  public Rectangle errcheck2;
+  public Rectangle errcheck1;
   @FXML private VBox directionsBox;
   @FXML private BorderPane borderPane;
   @FXML private Text adminMessage; // Admin message text
@@ -58,12 +75,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   @FXML private Text leftLocation; // Left arrow location, actual
   @FXML private TextField headerText; // Text for the header, entry
   @FXML private TextField textText; // The text to show on the map
-  @FXML private Text noLocationText; // No location error text
   @FXML private FilteredTableView<Move> moveTable; // Table for the moves
   @FXML private FilteredTableColumn<Move, Node> nodeColumn; // Node column
   @FXML private FilteredTableColumn<Move, LocationName> locationColumn; // Location column
   @FXML private FilteredTableColumn<Move, Date> dateColumn; // Date column
   @FXML private AnchorPane mapPane; // Map pane for map display
+  private int selectedRow =
+      -1; // The old row for the table, used to prevent duplicate display requests
   private final Collection<javafx.scene.Node> nodes =
       new LinkedList<>(); // Collection of nodes that are on the map
 
@@ -71,10 +89,13 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
   // visualizer
   private static PauseTransition backToVisualizerTimer = null;
 
+  @FXML private SearchableComboBox<LocationName> defaultLocation;
+
   /** Sets up the move visualizer, including all tables, and the map */
   @SneakyThrows
   @FXML
   protected void initialize() {
+
     // Cancel the timer if it exists
     if (backToVisualizerTimer != null) {
       // Stop the visualizer
@@ -158,9 +179,85 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
                 .createQuery("FROM LocationName", LocationName.class)
                 .getResultList());
 
+    defaultLocation.setValue(locationNames.get(0));
+
+    // Query the edges
+    List<Edge> edges =
+        mapController.getMapSession().createQuery("FROM Edge", Edge.class).getResultList();
+
+    // find all edges
+
+    Node defaultNode =
+        defaultLocation
+            .selectionModelProperty()
+            .getValue()
+            .getSelectedItem()
+            .getCurrentNode(new Date());
+    // find the edges connected to this node
+    List<Edge> edgesConnectToFirstNode =
+        edges.stream()
+            .filter(
+                new Predicate<Edge>() {
+                  @Override
+                  public boolean test(Edge edge) {
+                    return edge.getNode1().equals(defaultNode)
+                        || edge.getNode2().equals(defaultNode);
+                  }
+                })
+            .collect(Collectors.toList());
+
+    // compare them to find the pair that is closest to 180 degrees
+    // if there is only one edge, make left or right signage a dead end
+
+    if (defaultNode != null) {
+
+      generateLeftAndRight(edges, defaultNode, edgesConnectToFirstNode);
+    } else {
+      System.out.println("No node associated with this location!");
+    }
+
     // Set the boxes to contain them
     leftLocationBox.setItems(locationNames);
     rightLocationBox.setItems(locationNames);
+    defaultLocation.setItems(
+        FXCollections.observableList(
+            locationNames.stream()
+                .filter(p -> p.getLocationType() != LocationName.LocationType.ELEV)
+                .collect(Collectors.toList())));
+    defaultLocation.setValue(defaultLocation.getItems().get(0));
+    defaultLocation
+        .valueProperty()
+        .addListener(
+            new ChangeListener<LocationName>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends LocationName> observable,
+                  LocationName oldValue,
+                  LocationName newValue) {
+
+                if (newValue != null) {
+                  Node newDefaultNode = newValue.getCurrentNode(new Date());
+                  List<Edge> newEdgesList =
+                      edges.stream()
+                          .filter(
+                              new Predicate<Edge>() {
+                                @Override
+                                public boolean test(Edge edge) {
+                                  return edge.getNode1().equals(newDefaultNode)
+                                      || edge.getNode2().equals(newDefaultNode);
+                                }
+                              })
+                          .collect(Collectors.toList());
+
+                  if (newDefaultNode != null) {
+
+                    generateLeftAndRight(edges, newDefaultNode, newEdgesList);
+                  } else {
+                    System.out.println("no node associated with this location!");
+                  }
+                }
+              }
+            });
 
     // Give the columns their filters
     PopupFilter<Move, Node> nodeFilter = new PopupStringFilter<>(nodeColumn); // Node filter
@@ -193,6 +290,52 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
     // Get the moves
     List<Move> moves =
         mapController.getMapSession().createQuery("FROM Move", Move.class).getResultList();
+
+    List<LocationName> moveLocations = moves.stream().map(Move::getLocation).toList();
+    // get rid of the earliest move for each location
+    // sort by location name
+    moves.sort(Comparator.comparing(o -> o.getLocation().toString()));
+
+    // only keep the ones that have multiple entries for a location
+    moves =
+        moves.stream()
+            .filter(move -> Collections.frequency(moveLocations, move.getLocation()) > 1)
+            .collect(Collectors.toList());
+
+    LocationName currentLocation = moves.get(0).getLocation();
+    Date minDate = moves.get(0).getMoveDate();
+    Move earliestMove = moves.get(0);
+
+    List<Move> movesToRemove = new ArrayList<>();
+
+    for (int i = 0; i < moves.size(); i++) {
+      Move newMove = moves.get(i);
+      LocationName newLocation = newMove.getLocation();
+      if (!newLocation.equals(currentLocation)) {
+        minDate = newMove.getMoveDate();
+        movesToRemove.add(earliestMove);
+        earliestMove = moves.get(i);
+        currentLocation = newLocation;
+
+      } else {
+
+        // if newDate is earlier than current earliest date
+        if (newMove.getMoveDate().compareTo(minDate) < 0) {
+          earliestMove = newMove;
+        }
+
+        currentLocation = newLocation;
+      }
+    }
+
+    // remove the earliest move for the last grouping
+    movesToRemove.add(earliestMove);
+
+    // remove moves that should be removed by filtering the list of
+    // moves and only keep the ones that are not set to be removed
+    moves =
+        moves.stream().filter(move -> !movesToRemove.contains(move)).collect(Collectors.toList());
+
     moveTable.setItems(FXCollections.observableList(moves)); // set the items in the table
 
     pathFinder.setAlgorithm(new AStar()); // Select A* as what we will use
@@ -203,9 +346,16 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         .selectedItemProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              noLocationText.setVisible(false); // Reset the no location text
+              // If something is new selected, and it's not this, and we have one it must be set
+              if (selectedRow != -1
+                  && moveTable.getSelectionModel().getSelectedIndex() != selectedRow) {
+                moveTable.getSelectionModel().select(selectedRow); // Go to that
+                return; // Don't do anythign else
+              } else if (moveTable.getSelectionModel().getSelectedIndex() == selectedRow) {
+                return; // Don't do naything else
+              }
 
-              unColorFloor();
+              unColorFloor(); // Clear the old styilng stuff
 
               // If something is selected
               if (newValue != null) {
@@ -222,15 +372,43 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
                 // If the location isn't null
                 if (oldLocation != null) {
-                  // Get and draw the path
-                  currentPath = pathFinder.findPath(oldLocation, newValue.getNode(), false);
+                  // Save the selected row
+                  selectedRow = moveTable.getSelectionModel().getSelectedIndex();
 
-                  // Set the floor
-                  mapController.getMapFloorProperty().setValue(oldLocation.getFloor());
+                  mapController.startAnimation();
+                  new Thread(
+                          () -> {
+                            currentPath =
+                                pathFinder.findPath(
+                                    oldLocation, newValue.getNode(), false); // Save the path
 
-                  drawTable(new Date()); // Draw the table
+                            // In the UI thread
+                            Platform.runLater(
+                                () -> {
+                                  // Set the floor
+                                  mapController
+                                      .getMapFloorProperty()
+                                      .setValue(oldLocation.getFloor());
+
+                                  // Go to the nodes floor
+                                  mapController
+                                      .getMapFloorProperty()
+                                      .setValue(currentPath.get(0).getFloor());
+                                  mapController.zoomToCoordinates(
+                                      2,
+                                      currentPath.get(0).getXCoord(),
+                                      currentPath.get(0).getYCoord());
+
+                                  drawTable(new Date()); // Draw the table
+
+                                  selectedRow = -1; // Clear the selected row
+
+                                  mapController.stopAnimation(); // Stop the animation
+                                });
+                          })
+                      .start();
                 } else {
-                  noLocationText.setVisible(true);
+                  errortoastAnimation();
                 }
               }
 
@@ -261,6 +439,148 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
               transition.play();
             });
+  }
+
+  private void generateLeftAndRight(
+      List<Edge> edges, Node defaultNode, List<Edge> edgesConnectToFirstNode) {
+    double closestTo180 = 999;
+    Pair<Edge, Edge> pairClosestTo180 = null;
+    // check all pairs of edges
+    for (int i = 0; i < edgesConnectToFirstNode.size(); i++) {
+      for (int j = i + 1; j < edgesConnectToFirstNode.size(); j++) {
+
+        // get node that is not the origin node
+        Node thisNode = edgesConnectToFirstNode.get(i).getNode1();
+        if (edgesConnectToFirstNode.get(i).getNode1().equals(defaultNode)) {
+          thisNode = edgesConnectToFirstNode.get(i).getNode2();
+        }
+        Node nextNode = edgesConnectToFirstNode.get(j).getNode1();
+        if (edgesConnectToFirstNode.get(j).getNode1().equals(defaultNode)) {
+          nextNode = edgesConnectToFirstNode.get(j).getNode2();
+        }
+
+        double[] a = {
+          (thisNode.getXCoord() - defaultNode.getXCoord()),
+          (thisNode.getYCoord() - defaultNode.getYCoord())
+        };
+
+        double[] b = {
+          (nextNode.getXCoord() - defaultNode.getXCoord()),
+          (nextNode.getYCoord() - defaultNode.getYCoord())
+        };
+
+        double angle = angleBetweenVectors(a, b, 2);
+
+        if (Math.abs(180 - angle) < closestTo180) {
+          closestTo180 = Math.abs(180 - angle);
+          pairClosestTo180 =
+              new Pair<>(edgesConnectToFirstNode.get(i), edgesConnectToFirstNode.get(j));
+        }
+      }
+    }
+
+    System.out.println();
+    // once you have the pair of edges that are closest to 180 degrees
+
+    Queue<Node> nodeQueue = new LinkedList<Node>();
+    List<Node> visitedList = new ArrayList<Node>();
+    // add original node to visited list so a loop is not created
+    visitedList.add(defaultNode);
+
+    // add the node that is not the start node (defaultNode) to the queue
+    if (!pairClosestTo180.getValue().getNode1().equals(defaultNode)) {
+      nodeQueue.add(pairClosestTo180.getValue().getNode1());
+    } else {
+      nodeQueue.add(pairClosestTo180.getValue().getNode2());
+    }
+
+    boolean locationNameFound = false;
+    // "travel" down both edges to find the connected node
+    Set<LocationName> leftLocationNames = null;
+    Set<LocationName> rightLocationNames = null;
+
+    while (nodeQueue.size() > 0 && !locationNameFound) {
+      // get and remove node at top of queue
+      Node nextNode = nodeQueue.poll();
+
+      // find all edges for this node and add all of its neighbors to queue
+      for (Node child : getChildrenFromEdges(edges, nextNode)) {
+        if (!visitedList.contains(child)) {
+          nodeQueue.add(child);
+        }
+      }
+      Set<LocationName> locs = mapController.getNodeToLocationNameMap().get(nextNode);
+      if (locs != null) {
+        boolean containsNonHall = false;
+        for (LocationName locationName : locs) {
+          if (!locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+            containsNonHall = true;
+          }
+        }
+        // if a location name was found that is not a hall, quit and save the location name(s)
+        if (containsNonHall) {
+          locationNameFound = true;
+          leftLocationNames = locs;
+        }
+      }
+      visitedList.add(nextNode);
+      //        doesn't have a location name
+    }
+
+    // reset data structures used for BFS
+    nodeQueue = new LinkedList<Node>();
+    visitedList = new ArrayList<Node>();
+    visitedList.add(defaultNode);
+    locationNameFound = false;
+
+    // add the node that is not the start node (defaultNode) to the queue
+    if (!pairClosestTo180.getKey().getNode1().equals(defaultNode)) {
+      nodeQueue.add(pairClosestTo180.getKey().getNode1());
+    } else {
+      nodeQueue.add(pairClosestTo180.getKey().getNode2());
+    }
+    while (nodeQueue.size() > 0 && !locationNameFound) {
+      // get and remove node at top of queue
+      Node nextNode = nodeQueue.poll();
+      // add this node's children to the queue if they have not already been visited!
+      // nodeQueue.addAll(getChildrenFromEdges(edges, nextNode));
+      for (Node child : getChildrenFromEdges(edges, nextNode)) {
+        if (!visitedList.contains(child)) {
+          nodeQueue.add(child);
+        }
+      }
+      Set<LocationName> locs = mapController.getNodeToLocationNameMap().get(nextNode);
+      if (locs != null) {
+
+        boolean containsNonHall = false;
+        for (LocationName locationName : locs) {
+          if (!locationName.getLocationType().equals(LocationName.LocationType.HALL)) {
+            containsNonHall = true;
+          }
+        }
+
+        if (containsNonHall) {
+
+          locationNameFound = true;
+          rightLocationNames = locs;
+        }
+      }
+
+      visitedList.add(nextNode);
+    }
+
+    // assert leftLocationNames != null;
+    if (leftLocationNames == null) {
+
+    } else {
+      leftLocationBox.setValue(leftLocationNames.stream().findFirst().get());
+    }
+
+    if (rightLocationNames == null) {
+
+    } else {
+      rightLocationBox.setValue(rightLocationNames.stream().findFirst().get());
+    }
   }
 
   /** Help, shows the help menu for the visualizer */
@@ -664,5 +984,148 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
         });
 
     backToVisualizerTimer.play(); // Start the timer
+  }
+
+  // https://www.geeksforgeeks.org/program-to-calculate-angle-between-two-n-dimensional-vectors/
+  // get angle
+  // Java program for the above approach
+
+  // Function to find the magnitude
+  // of the given vector
+  private static double magnitude(double arr[], int N) {
+
+    // Stores the final magnitude
+    double magnitude = 0;
+
+    // Traverse the array
+    for (int i = 0; i < N; i++) magnitude += arr[i] * arr[i];
+
+    // Return square root of magnitude
+    return Math.sqrt(magnitude);
+  }
+
+  // Function to find the dot
+  // product of two vectors
+  private static double dotProduct(double[] arr, double[] brr, int N) {
+
+    // Stores dot product
+    double product = 0;
+
+    // Traverse the array
+    for (int i = 0; i < N; i++) product = product + arr[i] * brr[i];
+
+    // Return the product
+    return product;
+  }
+
+  private static double angleBetweenVectors(double[] arr, double[] brr, int N) {
+
+    // Stores dot product of two vectors
+    double dotProductOfVectors = dotProduct(arr, brr, N);
+
+    // Stores magnitude of vector A
+    double magnitudeOfA = magnitude(arr, N);
+
+    // Stores magnitude of vector B
+    double magnitudeOfB = magnitude(brr, N);
+
+    // Stores angle between given vectors
+    double angle = dotProductOfVectors / (magnitudeOfA * magnitudeOfB);
+    angle = Math.toDegrees(Math.acos(angle));
+    // Print the angle
+    return angle;
+  }
+
+  private List<Node> getChildrenFromEdges(List<Edge> edges, Node node) {
+
+    List<Node> children = new ArrayList<>();
+
+    // find the edges connected to this node
+    edges =
+        edges.stream()
+            .filter(
+                new Predicate<Edge>() {
+                  @Override
+                  public boolean test(Edge edge) {
+                    return edge.getNode1().equals(node) || edge.getNode2().equals(node);
+                  }
+                })
+            .collect(Collectors.toList());
+
+    for (Edge edge : edges) {
+      if (!edge.getNode1().equals(node)) {
+        children.add(edge.getNode1());
+      } else {
+        children.add(edge.getNode2());
+      }
+    }
+
+    return children;
+  }
+
+  @FXML
+  public void handleAudioDirections()
+      throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+
+    String speakText =
+        leftLocation.getText().toLowerCase()
+            + " is on your left. "
+            + rightLocation.getText().toLowerCase()
+            + " is on your right.";
+
+    speakText = speakText.replace("location", "locayshun");
+
+    String APIKey = "54ae4e48f3f946a784bf132823b112b5";
+
+    // Form the URL with required information
+    URL url =
+        new URL(
+            "http://api.voicerss.org/?"
+                + "key="
+                + URLEncoder.encode(APIKey, "UTF-8")
+                + "&src="
+                + URLEncoder.encode(speakText, "UTF-8")
+                + "&hl="
+                + URLEncoder.encode("en-us", "UTF-8")
+                + "&voice=");
+
+    InputStream inps = new BufferedInputStream(url.openStream());
+
+    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inps);
+    Clip clip = AudioSystem.getClip();
+    clip.open(audioInputStream);
+    clip.start();
+  }
+
+  public void errortoastAnimation() {
+    errtoast.getTransforms().clear();
+    errtoast.setLayoutX(0);
+
+    TranslateTransition translate1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translate1.setByX(-320);
+    translate1.setAutoReverse(true);
+    errcheck1.setFill(Color.web("#012D5A"));
+    errcheck2.setFill(Color.web("#012D5A"));
+    // Create FillTransitions to fill the second and third rectangles in sequence
+    FillTransition fill2 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck1, Color.web("#012D5A"), Color.web("#B6000B"));
+    FillTransition fill3 =
+        new FillTransition(
+            Duration.seconds(0.1), errcheck2, Color.web("#012D5A"), Color.web("#B6000B"));
+    SequentialTransition fillSequence = new SequentialTransition(fill2, fill3);
+
+    // Create a TranslateTransition to move the first rectangle back to its original position
+    TranslateTransition translateBack1 = new TranslateTransition(Duration.seconds(0.5), errtoast);
+    translateBack1.setDelay(Duration.seconds(0.5));
+    translateBack1.setByX(320);
+
+    // Play the animations in sequence
+    SequentialTransition sequence =
+        new SequentialTransition(translate1, fillSequence, translateBack1);
+    sequence.setCycleCount(1);
+    sequence.setAutoReverse(false);
+    sequence.jumpTo(Duration.ZERO);
+    sequence.playFromStart();
   }
 }
