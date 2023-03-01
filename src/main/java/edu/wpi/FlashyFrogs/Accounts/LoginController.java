@@ -102,8 +102,6 @@ public class LoginController implements IController {
                             UserLogin user;
                             String id = backgroundText.substring(5, 10);
                             String pw = backgroundText.substring(0, 5);
-                            System.out.println(id);
-                            System.out.println(pw);
                             try (Session session = CONNECTION.getSessionFactory().openSession()) {
                               // Get the users, cache them
                               user =
@@ -120,8 +118,6 @@ public class LoginController implements IController {
                               return; // And exit
                             }
 
-                            System.out.println(user.getUserName());
-                            System.out.println(user.checkRFIDBadgeEqual(pw));
                             if (user.checkRFIDBadgeEqual(pw)) {
                               CurrentUserEntity.CURRENT_USER.setCurrentUser(user.getUser());
                               Fapp.setScene("views", "Home");
@@ -162,11 +158,6 @@ public class LoginController implements IController {
     }
   }
 
-  //  public void loginthread() {
-  //    System.out.println("inLoginThread");
-  //
-  //  }
-
   public void forgotPass(MouseEvent event) throws IOException {
     FXMLLoader newLoad = new FXMLLoader(Fapp.class.getResource("views/ForgotPass.fxml"));
     PopOver popOver = new PopOver(newLoad.load());
@@ -192,7 +183,6 @@ public class LoginController implements IController {
 
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
-    //    System.out.println("opening pathfinding");
     CurrentUserEntity.CURRENT_USER.setCurrentUser(
         new HospitalUser("a", "a", "a", HospitalUser.EmployeeType.STAFF, new Department()));
     Fapp.setScene("Pathfinding", "Pathfinding");

@@ -346,6 +346,7 @@ public class InternalTransportEditorController extends ServiceRequestController
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         errortoastAnimation();

@@ -217,7 +217,7 @@
 {
 }
 
-.searchable-combo-box
+.combo-box
     /** controls all searchable combo boxes within the app **/
 {
     -fx-prompt-text-fill: white;
@@ -226,16 +226,16 @@
     -fx-control-inner-background: #6B6D6F;
 }
 
-.searchable-combo-box .combo-box-popup .list-view .list-cell:selected {
+.combo-box .combo-box-popup .list-view .list-cell:selected {
     -fx-background-color: #012D5A;
     -fx-text-fill: white;
 }
 
-.searchable-combo-box .list-cell {
+.combo-box .list-cell {
     -fx-text-background-color: #012D5a;
 }
 
-.searchable-combo-box .combo-box-popup .list-view .list-cell:hover {
+.combo-box .combo-box-popup .list-view .list-cell:hover {
     -fx-background-color: #F6Bd38;
     -fx-text-fill: white;
     -fx-text-background-color: #ffffff;
@@ -551,4 +551,8 @@
 .scroll-pane > .viewport {
     /** Right now, only used on acknowledgementsPage as a placeholder **/
     -fx-background-color: transparent;
+}
+.srText
+{
+    -fx-fill: #000000;
 }

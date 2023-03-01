@@ -215,7 +215,7 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
       generateLeftAndRight(edges, defaultNode, edgesConnectToFirstNode);
     } else {
-      System.out.println("No node associated with this location!");
+      //      System.out.println("No node associated with this location!");
     }
 
     // Set the boxes to contain them
@@ -255,7 +255,8 @@ public class MoveVisualizerController extends AbstractPathVisualizerController
 
                     generateLeftAndRight(edges, newDefaultNode, newEdgesList);
                   } else {
-                    System.out.println("no node associated with this location!");
+                    //                    System.out.println("no node associated with this
+                    // location!");
                   }
                 }
               }

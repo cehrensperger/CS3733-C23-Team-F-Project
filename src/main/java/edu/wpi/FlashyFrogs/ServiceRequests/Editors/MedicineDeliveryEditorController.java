@@ -167,7 +167,6 @@ public class MedicineDeliveryEditorController extends ServiceRequestController
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    System.out.println("here");
     try {
       // check
       if (patient.getText().equals("")
@@ -177,7 +176,6 @@ public class MedicineDeliveryEditorController extends ServiceRequestController
           || date.getValue().toString().equals("")
           || urgency.getValue().toString().equals("")
           || dosage.getText().equals("")) {
-        System.out.println("here2");
         throw new NullPointerException();
       }
 
@@ -199,6 +197,7 @@ public class MedicineDeliveryEditorController extends ServiceRequestController
         session.close();
         handleClear(actionEvent);
         toastAnimation();
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         session.close();

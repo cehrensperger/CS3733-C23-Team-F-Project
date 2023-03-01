@@ -246,7 +246,7 @@ public class SanitationEditorController extends ServiceRequestController impleme
         session.close();
         handleClear(actionEvent);
         toastAnimation();
-
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
         errortoastAnimation();

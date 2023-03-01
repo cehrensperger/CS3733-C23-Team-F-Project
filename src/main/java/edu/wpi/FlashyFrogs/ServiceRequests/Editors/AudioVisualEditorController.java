@@ -205,7 +205,7 @@ public class AudioVisualEditorController extends ServiceRequestController implem
         session.close();
         handleClear(actionEvent);
         toastAnimation();
-
+        Sound.SUBMITTED.play();
       } catch (RollbackException exception) {
         session.clear();
 

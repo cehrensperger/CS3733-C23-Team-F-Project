@@ -26,6 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -43,6 +44,8 @@ public class ServiceRequestStatsPageController implements IController {
   @FXML private VBox sideBar;
   @FXML MFXButton downloadButton;
 
+  boolean hDone = false;
+
   @FXML protected FilteredTableColumn<ServiceRequest, String> requestTypeCol;
   @FXML protected FilteredTableColumn<ServiceRequest, Long> requestIDCol;
   @FXML protected FilteredTableColumn<ServiceRequest, HospitalUser> initEmpCol;
@@ -55,7 +58,16 @@ public class ServiceRequestStatsPageController implements IController {
   @FXML protected FilteredTableView<ServiceRequest> requestTable;
   @FXML private ComboBox<String> graphTypeComboBox;
 
+  @FXML Text h1;
+  @FXML Text h2;
+  @FXML Text h3;
+  @FXML Text h4;
+
   public void initialize() {
+    h1.setVisible(false);
+    h2.setVisible(false);
+    h3.setVisible(false);
+    h4.setVisible(false);
 
     // initialize filtered table
     // need to be the names of the fields
@@ -195,7 +207,22 @@ public class ServiceRequestStatsPageController implements IController {
   public void onClose() {}
 
   @Override
-  public void help() {}
+  public void help() {
+
+    if (!hDone) {
+      h1.setVisible(true);
+      h2.setVisible(true);
+      h3.setVisible(true);
+      h4.setVisible(true);
+      hDone = true;
+    } else if (hDone) {
+      h1.setVisible(false);
+      h2.setVisible(false);
+      h3.setVisible(false);
+      h4.setVisible(false);
+      hDone = false;
+    }
+  }
 
   /**
    * Sets the chart to show the data for the selected graph type
@@ -555,9 +582,6 @@ public class ServiceRequestStatsPageController implements IController {
       row = sheet.createRow(i + 2);
       row.createCell(0).setCellValue(series.getData().get(i).getXValue());
       row.createCell(1).setCellValue(series.getData().get(i).getYValue().intValue());
-
-      // System.out.println(series.getData().get(i).getXValue());
-      // System.out.println(series.getData().get(i).getYValue().intValue());
     }
 
     // write to excel file
@@ -573,7 +597,6 @@ public class ServiceRequestStatsPageController implements IController {
     label.setLayoutY(chart.getLayoutY());
     label.setVisible(false);
     anchorPane.getChildren().add(label);
-    // System.out.println(anchorPane.getHeight());
 
     // put totals above bar
 
