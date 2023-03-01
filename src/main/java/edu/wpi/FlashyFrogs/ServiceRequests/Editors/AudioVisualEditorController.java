@@ -176,6 +176,20 @@ public class AudioVisualEditorController extends ServiceRequestController implem
     description.setText("");
   }
 
+  public void handleDelete(ActionEvent actionEvent) {
+    Session session = CONNECTION.getSessionFactory().openSession();
+
+    session.beginTransaction();
+    session
+        .createMutationQuery("DELETE FROM AudioVisual WHERE id=:ID")
+        .setParameter("ID", avReq.getId())
+        .executeUpdate();
+    session.getTransaction().commit();
+    session.close();
+
+    popOver.hide();
+  }
+
   @Override
   protected void handleBack(ActionEvent event) throws IOException {}
 
