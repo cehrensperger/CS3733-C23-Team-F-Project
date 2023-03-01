@@ -7,7 +7,8 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.Hyperlink?>
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.FlashyFrogs.controllers.AcknowledgmentsController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleText" text="Acknowledgments" />
       <HBox prefHeight="420.0" prefWidth="600.0">
@@ -18,43 +19,43 @@
                   <VBox prefHeight="385.0" prefWidth="554.0">
                      <children>
                               <Label styleClass="bodyBold" text="APIs:&#13;" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Java OpenJDK 17.0.5 LTS&#13;
-JavaFX 19 SDK&#13;
-MaterialFX 11.13.8&#13;
-GestureFX 0.7.1&#13;
-ControlsFX 11.1.2&#13;
-SQLite JDBC 3.30.1&#13;
-ApacheDerby 10.16.1.1&#13;
-SLF4J API 1.7.30 and Simple Binding 1.7.30&#13;
-Oracle Database JDBC UCP 19.6.0.0 and OJDBC8 19.6.0.0&#13;
-Hibernate 6.1.6.Final&#13;
-Ehcache 3.10.6&#13;
-JAXB Core 4.0.2&#13;
-JAXB API 2.3.1&#13;
-JAXB Runtime 4.0.2&#13;
-PostgreSQL JDBC Driver 42.5.1&#13;
-Argon2 JVM 2.11&#13;
-FlexBoxFX 0.1.5.3-SNAPSHOT&#13;
-fxsvgimage 1.1&#13;
-Java Native Access 5.12.1&#13;
-Hibernate ORM C3P0 6.1.6.Final&#13;
-JFoeniX 9.0.10&#13;
-Apache Commons Math 3.6.1&#13;
-TestFX Core 4.0.16-alpha&#13;
-JUnit Jupiter API 5.8.1&#13;
-TestFX JUnit 5 4.0.16-alpha&#13;
-OJDBC10 19.3.0.0&#13;
-JUnit Jupiter Engine 5.8.1&#13;
-JUnit Jupiter (Aggregator) 5.6.0&#13;" />
+                         <Hyperlink fx:id="JavaOpenJDK" styleClass="body" text="Java OpenJDK 17.0.5 LTS" />
+                         <Hyperlink fx:id="JavaFX19SDK" styleClass="body" text="JavaFX 19 SDK" />
+                         <Hyperlink fx:id="MaterialFX" styleClass="body" text="MaterialFX 11.13.8" />
+                         <Hyperlink fx:id="GestureFX" styleClass="body" text="GestureFX 0.7.1" />
+                         <Hyperlink fx:id="ControlsFX" styleClass="body" text="ControlsFX 11.1.2" />
+                         <Hyperlink fx:id="SQLiteJDBC" styleClass="body" text="SQLite JDBC 3.30.1" />
+                         <Hyperlink fx:id="ApacheDerby" styleClass="body" text="ApacheDerby 10.16.1.1" />
+                         <Hyperlink fx:id="SLF4API" styleClass="body" text="SLF4J API 1.7.30" />
+                         <Hyperlink fx:id="SLF4SimpleBinding" styleClass="body" text="SLF4J Simple Binding 1.7.30" />
+                         <Hyperlink fx:id="OracleDatabaseJDBCUCP" styleClass="body" text="Oracle Database JDBC UCP 19.6.0.0" />
+                         <Hyperlink fx:id="OJDBC8" styleClass="body" text="OJDBC8 19.6.0.0" />
+                         <Hyperlink fx:id="Hibernate" styleClass="body" text="Hibernate 6.1.6.Final" />
+                         <Hyperlink fx:id="Ehcache" styleClass="body" text="Ehcache 3.10.6" />
+                         <Hyperlink fx:id="JAXBCore" styleClass="body" text="JAXB Core 4.0.2" />
+                         <Hyperlink fx:id="JAXBAPI" styleClass="body" text="JAXB API 2.3.1" />
+                         <Hyperlink fx:id="JAXBRuntime" styleClass="body" text="JAXB Runtime 4.0.2" />
+                         <Hyperlink fx:id="PostgreSQL" styleClass="body" text="PostgreSQL JDBC Driver 42.5.1" />
+                         <Hyperlink fx:id="Argon2" styleClass="body" text="Argon2 JVM 2.11" />
+                         <Hyperlink fx:id="FlexBox" styleClass="body" text="FlexBoxFX 0.1.5.3-SNAPSHOT" />
+                         <Hyperlink fx:id="fxsvg" styleClass="body" text="fxsvgimage 1.1" />
+                         <Hyperlink fx:id="JavaNativeAccess" styleClass="body" text="Java Native Access 5.12.1" />
+                         <Hyperlink fx:id="HibernateORM" styleClass="body" text="Hibernate ORM C3P0 6.1.6.Final" />
+                         <Hyperlink fx:id="JFoeniX" styleClass="body" text="JFoeniX 9.0.10" />
+                         <Hyperlink fx:id="ApacheCommons" styleClass="body" text="Apache Commons Math 3.6.1" />
+                         <Hyperlink fx:id="TestFXCore" styleClass="body" text="TestFX Core 4.0.16-alpha" />
+                         <Hyperlink fx:id="JUnitJupiterAPI" styleClass="body" text="JUnit Jupiter API 5.8.1" />
+                         <Hyperlink fx:id="TestFXJUnit" styleClass="body" text="TestFX JUnit 5 4.0.16-alpha" />
+                         <Hyperlink fx:id="OJDBC10" styleClass="body" text="OJDBC10 19.3.0.0" />
+                         <Hyperlink fx:id="JUnitJupiterEngine" styleClass="body" text="JUnit Jupiter Engine 5.8.1" />
+                         <Hyperlink fx:id="JUnitJupiterAggregator" styleClass="body" text="JUnit Jupiter (Aggregator) 5.6.0" />
                               <Label styleClass="bodyBold" text="Icons:&#13;" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Icons on left sidebar when logged in: SVG Repo https://www.svgrepo.com/&#13;
-Mass General Brigham icon and text on navbar at top: color and font altered from the one present on the Brigham and Women’s website https://www.massgeneralbrigham.org/content/experience-fragments/mgb-global/global/en/site/footer/master/_jcr_content/root/container_1627538517/container/container/image.coreimg.svg/1672848798937/logo-with-white-text.svg&#13;
-Mass General Brigham icon and text on login page: Brigham and Women’s website https://give.brighamandwomens.org/wp-content/uploads/2021/06/Brigham_and_Womens_Hospital_horiz_rgb-1.png&#13;
-" wrappingWidth="546.38671875" />
+                         <Hyperlink fx:id="Icons" styleClass="body" text="SVG Repo" />
+                         <Hyperlink fx:id="MassIcon1" styleClass="body" text="Mass General Brigham icon on navbar" />
+                         <Hyperlink fx:id="MassIcon2" styleClass="body" text="Mass General Brigham icon on login page" />
                               <Label styleClass="bodyBold" text="Images:&#13;" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Image of hospital building on Home.fxml (Brigham-Womens-TO-USE.jpg): Brigham and Women’s website https://www.massgeneralbrigham.org/content/mgb-global/global/en/patient-care/international/about/brigham-and-womens-hospital/_jcr_content/root/container_924996778/hero_banner.coreimg.jpeg/1667229588893/international-bwh-1428x1110.jpeg&#13;
-Map of hospital floors (L1.png, L2.png, one.png, two.png, three.png): provided by Brigham and Women’s Hospital&#13;
-" wrappingWidth="546.38671875" />
+                         <Hyperlink fx:id="HospitalPic" styleClass="body" text="Image of hospital building on home page" />
+                         <Hyperlink styleClass="body" text="Map of hospital floors (L1.png, L2.png, one.png, two.png, three.png): provided by Brigham and Women’s Hospital" />
                               <Label styleClass="bodyBold" text="Plugins:&#13;" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bodyTextObject" text="Jacoco&#13;
 Spotless 6.14.0&#13;
