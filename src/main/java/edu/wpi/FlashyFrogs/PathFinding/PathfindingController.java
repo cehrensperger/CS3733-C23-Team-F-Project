@@ -75,7 +75,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
    */
   @SneakyThrows
   public void initialize() {
-    System.out.println("initialize");
+    //    System.out.println("initialize");
     moveDatePicker.setValue(LocalDate.now());
     moveDatePicker
         .valueProperty()
@@ -210,7 +210,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
 
   @SneakyThrows
   public void handleGetPath() {
-    System.out.println("getting path");
+    //    System.out.println("getting path");
     try {
       if (destinationBox.getValue().equals("") && (startingBox.getValue().equals(""))) {
         generatePathButton.setDisable(true);
@@ -220,7 +220,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         generatePathButton.setDisable(true);
         // start the animation
         mapController.startAnimation();
-        System.out.println("starting animation");
+        //        System.out.println("starting animation");
 
         // get algorithm to use in pathfinding from algorithmBox
         if (algorithmBox.getValue() != null) {
@@ -232,7 +232,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
         }
 
         unColorFloor(); // hide the last drawn path
-        System.out.println("last path hidden");
+        //        System.out.println("last path hidden");
         // acquire the lock
         lock.lock();
 
@@ -255,7 +255,7 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       // if nodes is null, that means the there was no possible path
       //      error.setTextFill(Paint.valueOf(Color.RED.toString()));
       //      error.setText("No path found");
-      System.out.println("no path found");
+      //      System.out.println("no path found");
     } else {
       mapController
           .getMapFloorProperty()

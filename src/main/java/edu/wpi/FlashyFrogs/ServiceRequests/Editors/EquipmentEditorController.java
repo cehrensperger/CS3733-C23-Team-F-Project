@@ -178,7 +178,6 @@ public class EquipmentEditorController extends ServiceRequestController implemen
   public void handleSubmit(ActionEvent actionEvent) throws IOException {
     Session session = CONNECTION.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    System.out.println("here");
     try {
       // check
       if (equipment.getText().equals("")
@@ -187,7 +186,6 @@ public class EquipmentEditorController extends ServiceRequestController implemen
           || date.getValue().toString().equals("")
           || urgency.getValue().toString().equals("")
           || description.getText().equals("")) {
-        System.out.println("here2");
         throw new NullPointerException();
       }
 

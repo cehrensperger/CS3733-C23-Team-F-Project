@@ -353,7 +353,6 @@ public class HomeController implements IController {
 
   @FXML
   public void openPathfinding(ActionEvent event) throws IOException {
-    //    System.out.println("opening pathfinding");
     Fapp.setScene("Pathfinding", "Pathfinding");
   }
 

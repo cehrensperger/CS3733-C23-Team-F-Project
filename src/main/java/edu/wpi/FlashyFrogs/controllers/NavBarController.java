@@ -460,7 +460,6 @@ public class NavBarController {
 
   @FXML
   private void showDescriptions(MouseEvent event) throws IOException {
-    //    System.out.println("in");
     toastAnimationForward();
   }
 

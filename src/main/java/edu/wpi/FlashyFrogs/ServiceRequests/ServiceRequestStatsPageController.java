@@ -559,8 +559,8 @@ public class ServiceRequestStatsPageController implements IController {
       row.createCell(0).setCellValue(series.getData().get(i).getXValue());
       row.createCell(1).setCellValue(series.getData().get(i).getYValue().intValue());
 
-      System.out.println(series.getData().get(i).getXValue());
-      System.out.println(series.getData().get(i).getYValue().intValue());
+      //      System.out.println(series.getData().get(i).getXValue());
+      //      System.out.println(series.getData().get(i).getYValue().intValue());
     }
 
     // write to excel file
@@ -576,7 +576,7 @@ public class ServiceRequestStatsPageController implements IController {
     label.setLayoutY(chart.getLayoutY());
     label.setVisible(false);
     anchorPane.getChildren().add(label);
-    System.out.println(anchorPane.getHeight());
+    //    System.out.println(anchorPane.getHeight());
 
     // put totals above bar
 
@@ -590,14 +590,16 @@ public class ServiceRequestStatsPageController implements IController {
                         data.getNode()
                             .setOnMouseEntered(
                                 event -> {
-                                  System.out.println(anchorPane.getHeight());
+                                  //
+                                  // System.out.println(anchorPane.getHeight());
                                   if (event.getScreenY() + label.getHeight()
                                       <= anchorPane.getHeight() - 5) {
                                     // label.setLayoutY(event.getSceneY() - label.getHeight());
                                     label.setLayoutY(500);
                                   } else {
                                     label.setLayoutY(500);
-                                    System.out.println(anchorPane.getHeight());
+                                    //
+                                    // System.out.println(anchorPane.getHeight());
                                   }
                                   label.setMouseTransparent(true);
                                   // add label to scene
@@ -616,7 +618,8 @@ public class ServiceRequestStatsPageController implements IController {
 
                                   label.toFront();
                                   label.setVisible(true);
-                                  System.out.println(anchorPane.getHeight());
+                                  //
+                                  // System.out.println(anchorPane.getHeight());
                                 });
                         data.getNode()
                             .setOnMouseMoved(
