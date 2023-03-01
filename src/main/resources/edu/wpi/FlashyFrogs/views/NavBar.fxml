@@ -63,10 +63,7 @@
                <children>
                   <StackPane prefHeight="27.0" prefWidth="237.0" styleClass="navSlide">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="navSlide" text="Home" wrappingWidth="210.0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
+                        <Text fill="WHITE" styleClass="navSlide" text="Home" wrappingWidth="210.0">
                         </Text>
                         <MFXButton fx:id="homeButton2" onAction="#handleHomeButton" prefHeight="13.0" prefWidth="180.0" rippleAnimateBackground="false" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
@@ -97,7 +94,7 @@
                         <MFXButton fx:id="pathfinding2" onAction="#handlePathfinding" prefHeight="27.0" prefWidth="268.0" rippleAnimateBackground="false" style="-fx-background-color: transparent;" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="mapStack2" prefHeight="0.0" prefWidth="170.0">
@@ -149,7 +146,7 @@
                         <MFXButton fx:id="alertsButton2" onAction="#handleAlerts" prefHeight="27.0" prefWidth="223.0" rippleAnimateBackground="false" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="moveStack2" prefHeight="0.0" prefWidth="170.0">
@@ -162,7 +159,7 @@
                         <MFXButton fx:id="moveVisualizer2" onAction="#handleMoveVisualizer" prefHeight="27.0" prefWidth="189.0" rippleAnimateBackground="false" style="-fx-background-color: transparent;" styleClass="navSlide" text=" " />
                      </children>
                      <VBox.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="alertsStack21" prefHeight="0.0" prefWidth="170.0">
@@ -178,8 +175,7 @@
                         <Insets left="5.0" />
                      </VBox.margin>
                   </StackPane>
-                  <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="180.0" spacing="10.0" VBox.vgrow="ALWAYS" />
-                  <VBox alignment="BOTTOM_LEFT" prefHeight="285.0" prefWidth="309.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_LEFT" prefWidth="309.0" spacing="10.0" VBox.vgrow="ALWAYS">
                      <children>
                         <StackPane prefHeight="0.0" prefWidth="170.0">
                            <children>
@@ -270,7 +266,7 @@
                   <StackPane fx:id="alertsStack" prefHeight="8.0" prefWidth="40.0">
                      <children>
                         <MFXButton fx:id="alertsButton" onAction="#handleAlerts" prefHeight="19.0" prefWidth="40.0" rippleAnimateBackground="false" style="-fx-background-color: transparent;" text="  " />
-                        <SVGPath fx:id="SVGAlerts" content="M27 11.5C27 17.8513 20.9558 23 13.5 23C6.04415 23 0 17.8513 0 11.5C0 5.14872 6.04415 0 13.5 0C20.9558 0 27 5.14872 27 11.5ZM13.5 1.91667C7.28679 1.91667 2.25 6.20727 2.25 11.5C2.25 16.7927 7.28679 21.0833 13.5 21.0833C19.7131 21.0833 24.75 16.7927 24.75 11.5C24.75 6.20727 19.7131 1.91667 13.5 1.91667ZM13.5 14.375C14.1213 14.375 14.625 14.804 14.625 15.3333C14.625 15.8626 14.1213 16.2917 13.5 16.2917C12.8787 16.2917 12.375 15.8626 12.375 15.3333C12.375 14.804 12.8787 14.375 13.5 14.375ZM12.375 7.66667C12.375 7.1374 12.8787 6.70833 13.5 6.70833C14.1213 6.70833 14.625 7.1374 14.625 7.66667V12.4583C14.625 12.9876 14.1213 13.4167 13.5 13.4167C12.8787 13.4167 12.375 12.9876 12.375 12.4583V7.66667Z" fill="WHITE" />
+                        <SVGPath fx:id="SVGAlerts" content="M23 11.5C23 17.8513 17.8513 23 11.5 23C5.14872 23 0 17.8513 0 11.5C0 5.14872 5.14872 0 11.5 0C17.8513 0 23 5.14872 23 11.5ZM11.5 1.91667C6.20727 1.91667 1.91667 6.20727 1.91667 11.5C1.91667 16.7927 6.20727 21.0833 11.5 21.0833C16.7927 21.0833 21.0833 16.7927 21.0833 11.5C21.0833 6.20727 16.7927 1.91667 11.5 1.91667ZM11.5 14.375C12.0293 14.375 12.4583 14.804 12.4583 15.3333C12.4583 15.8626 12.0293 16.2917 11.5 16.2917C10.9707 16.2917 10.5417 15.8626 10.5417 15.3333C10.5417 14.804 10.9707 14.375 11.5 14.375ZM10.5417 7.66667C10.5417 7.1374 10.9707 6.70833 11.5 6.70833C12.0293 6.70833 12.4583 7.1374 12.4583 7.66667V12.4583C12.4583 12.9876 12.0293 13.4167 11.5 13.4167C10.9707 13.4167 10.5417 12.9876 10.5417 12.4583V7.66667Z" fill="WHITE" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -288,7 +284,7 @@
                         <SVGPath fx:id="heatSVG" content="M17.7047 0H8.28947C7.05623 0 6.05664 0.856459 6.05664 1.91347V25.0865C6.05664 26.1435 7.05623 27 8.28947 27H17.7046C18.9378 27 19.938 26.1435 19.938 25.0865V1.91347C19.938 0.856459 18.9378 0 17.7047 0ZM12.9971 24.4448C11.2253 24.4448 9.78929 23.214 9.78929 21.6965C9.78929 20.1789 11.2253 18.9481 12.9971 18.9481C14.7689 18.9481 16.2049 20.1789 16.2049 21.6965C16.2049 23.214 14.7688 24.4448 12.9971 24.4448ZM12.9971 16.2483C11.2253 16.2483 9.78929 15.0175 9.78929 13.5C9.78929 11.9825 11.2253 10.7517 12.9971 10.7517C14.7689 10.7517 16.2049 11.9825 16.2049 13.5C16.2049 15.0175 14.7688 16.2483 12.9971 16.2483ZM12.9971 8.05191C11.2253 8.05191 9.78929 6.82114 9.78929 5.3036C9.78929 3.78606 11.2253 2.5553 12.9971 2.5553C14.7689 2.5553 16.2049 3.78606 16.2049 5.3036C16.2049 6.82109 14.7688 8.05191 12.9971 8.05191Z M0 3.86499C0 5.46543 1.20351 6.88361 2.9808 7.3761L4.78339 7.87565V2.33105H0V3.86499Z M0 12.3015C0 13.902 1.20351 15.3201 2.9808 15.8126L4.78339 16.3122V10.7676H0V12.3015Z M0 20.74C0 22.3404 1.20351 23.7586 2.9808 24.2511L4.78339 24.7507V19.2061H0V20.74Z M21.2168 2.33105V7.87565L23.0193 7.3761C24.7966 6.88361 26.0002 5.46543 26.0002 3.86499V2.33105H21.2168Z M21.2168 16.3122L23.0193 15.8127C24.7966 15.3202 26.0002 13.902 26.0002 12.3016V10.7676H21.2168V16.3122Z M21.2168 24.7507L23.0193 24.2512C24.7966 23.7587 26.0002 22.3405 26.0002 20.74V19.2061H21.2168V24.7507ZM17.7047 0H8.28947C7.05623 0 6.05664 0.856459 6.05664 1.91347V25.0865C6.05664 26.1435 7.05623 27 8.28947 27H17.7046C18.9378 27 19.938 26.1435 19.938 25.0865V1.91347C19.938 0.856459 18.9378 0 17.7047 0ZM12.9971 24.4448C11.2253 24.4448 9.78929 23.214 9.78929 21.6965C9.78929 20.1789 11.2253 18.9481 12.9971 18.9481C14.7689 18.9481 16.2049 20.1789 16.2049 21.6965C16.2049 23.214 14.7688 24.4448 12.9971 24.4448ZM12.9971 16.2483C11.2253 16.2483 9.78929 15.0175 9.78929 13.5C9.78929 11.9825 11.2253 10.7517 12.9971 10.7517C14.7689 10.7517 16.2049 11.9825 16.2049 13.5C16.2049 15.0175 14.7688 16.2483 12.9971 16.2483ZM12.9971 8.05191C11.2253 8.05191 9.78929 6.82114 9.78929 5.3036C9.78929 3.78606 11.2253 2.5553 12.9971 2.5553C14.7689 2.5553 16.2049 3.78606 16.2049 5.3036C16.2049 6.82109 14.7688 8.05191 12.9971 8.05191Z M0 3.86499C0 5.46543 1.20351 6.88361 2.9808 7.3761L4.78339 7.87565V2.33105H0V3.86499Z M0 12.3015C0 13.902 1.20351 15.3201 2.9808 15.8126L4.78339 16.3122V10.7676H0V12.3015Z M0 20.74C0 22.3404 1.20351 23.7586 2.9808 24.2511L4.78339 24.7507V19.2061H0V20.74Z M21.2168 2.33105V7.87565L23.0193 7.3761C24.7966 6.88361 26.0002 5.46543 26.0002 3.86499V2.33105H21.2168Z M21.2168 16.3122L23.0193 15.8127C24.7966 15.3202 26.0002 13.902 26.0002 12.3016V10.7676H21.2168V16.3122Z M21.2168 24.7507L23.0193 24.2512C24.7966 23.7587 26.0002 22.3405 26.0002 20.74V19.2061H21.2168V24.7507Z" fill="WHITE" />
                      </children>
                   </StackPane>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" VBox.vgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                      <children>
                         <StackPane prefHeight="8.0" prefWidth="40.0">
                            <children>

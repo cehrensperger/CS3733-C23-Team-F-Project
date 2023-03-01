@@ -526,18 +526,16 @@
     -fx-background-color: #F6BD38;
 }
 
-.navSlide:focused
-    /** This controls the background color of the menu-item when it is hovered over **/
-{
-    -fx-background-color: #F6BD38;
-    -fx-text-fill: #012D5A;
+.yellowNav {
+    -fx-fill: #F6BD38;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold !important;
 }
 
-.navSlide:selected
-    /** This controls the background color of the menu-item when it is hovered over **/
-{
-    -fx-background-color: #F6BD38;
-    -fx-text-fill: #012D5A;
+.navSlide {
+    -fx-fill: #f1f1f1;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: normal !important;
 }
 
 .scroll-pane {

@@ -8,13 +8,11 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -41,7 +39,7 @@ public class NavBarController {
   // @FXML private HBox header;
   @FXML private MFXButton helpButton;
 
-  @FXML private Pane toast;
+  @FXML private VBox toast;
   @FXML private Text backText;
   @FXML private Text heatText;
   @FXML private SVGPath heatSVG;
@@ -148,6 +146,125 @@ public class NavBarController {
     backSVG.setOpacity(0);
     back2.setDisable(true);
     backText.setVisible(false);
+
+    // Setup the nav button hover handlers
+    for (int i = 0; i < navButtons.getChildren().size(); i++) {
+      // If it's not a VBox (separate stuff)
+      if (navButtons.getChildren().get(i).getClass()
+          != VBox.class) { // If it's an actual nav button
+        int finalI = i; // thanks java :)
+
+        // Set the nav button hover
+        navButtons
+            .getChildren()
+            .get(i)
+            .hoverProperty()
+            .addListener(
+                (observable, oldValue, newValue) ->
+                    handleHoverChange(newValue, finalI, -1)); // hover change
+
+        // Set the toast hover
+        toast
+            .getChildren()
+            .get(i)
+            .hoverProperty()
+            .addListener(
+                (observable, oldValue, newValue) ->
+                    handleHoverChange(newValue, finalI, -1)); // Hover change
+      } else {
+        // It's more complicated if it's a VBox - we need to figure out the children of that
+        VBox child = (VBox) navButtons.getChildren().get(i); // Get the VBox
+
+        int finalI1 = i; // Thanks Java :)
+
+        // For each of the children in the VBox
+        for (int j = 0; j < child.getChildren().size(); j++) {
+          int finalJ = j; // Thanks Java :)
+
+          // Set the hover on the child
+          child
+              .getChildren()
+              .get(j)
+              .hoverProperty()
+              .addListener(
+                  // Since the VBox is at the end, we add the indexes so the hover handle change
+                  // listener
+                  // can find both the VBox and the property
+                  (observable, oldValue, newValue) -> handleHoverChange(newValue, finalJ, finalI1));
+
+          // Do the same with the toast
+          ((VBox) toast.getChildren().get(i))
+              .getChildren()
+              .get(j)
+              .hoverProperty()
+              .addListener(
+                  (observable, oldValue, newValue) -> handleHoverChange(newValue, finalJ, finalI1));
+        }
+      }
+    }
+  }
+
+  /**
+   * Listener for hover changing
+   *
+   * @param hover the new hover state
+   * @param itemNumber the index of the item within the pane
+   * @param paneNumber the index of the pane in the super. If this is -1, the root panes will be
+   *     used
+   */
+  private void handleHoverChange(boolean hover, int itemNumber, int paneNumber) {
+    // By default, use the root icon and root text to get the icons
+    VBox iconRoot = navButtons;
+    VBox textRoot = toast;
+
+    // If we have a pane number set
+    if (paneNumber != -1) {
+      iconRoot = (VBox) navButtons.getChildren().get(paneNumber); // Get the icon pane at that index
+      textRoot = (VBox) toast.getChildren().get(paneNumber); // Get the text pane at that index
+    }
+
+    // Stack panes for the thing that's having hover changed
+    StackPane iconPane = (StackPane) iconRoot.getChildren().get(itemNumber); // Icon pane
+    StackPane textPane = (StackPane) textRoot.getChildren().get(itemNumber); // Text pane
+
+    // Concrete types of the relevant children
+    SVGPath svg = null; // SVG path
+    Text text = null; // Text
+
+    // Check each icon child
+    for (Node child : iconPane.getChildren()) {
+      if (child.getClass() == SVGPath.class) {
+        svg = (SVGPath) child;
+      }
+    }
+
+    // Check each node child
+    for (Node child : textPane.getChildren()) {
+      if (child.getClass() == Text.class) {
+        text = (Text) child;
+      }
+    }
+
+    // Assert we found the stuff
+    assert svg != null; // Assert SVG isn't null
+    assert text != null; // Assert text isn't null
+
+    // Clear SVG style
+    svg.getStyleClass().clear();
+    svg.getStyleClass()
+        .add(hover ? "yellowNav" : "navSlide"); // Add either yellow nav or nav based on hover
+
+    // Clear SVG style
+    text.getStyleClass().clear();
+    text.getStyleClass()
+        .add(hover ? "yellowNav" : "navSlide"); // Add either yellow nav or nav based on hover
+
+    // Scale transition
+    ScaleTransition iconTransition = new ScaleTransition(Duration.seconds(.05), iconPane);
+    iconTransition.setToX(hover ? 1.3 : 1.0);
+    iconTransition.setToY(hover ? 1.3 : 1.0);
+
+    iconTransition.play();
   }
 
   public void refresh() {
