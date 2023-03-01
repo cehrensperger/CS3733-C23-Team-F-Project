@@ -130,6 +130,7 @@ public class NavBarController {
     // header.setDisable(true);
     // header.setOpacity(0);
     updateToggleSFX();
+    updateMode();
     signUserOutWithoutSceneChange(); // Make sure we're in logged-out mode
     //    srButton.setOpacity(0);
     //    srButton.setDisable(true);
