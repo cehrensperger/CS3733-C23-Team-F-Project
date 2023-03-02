@@ -5,64 +5,112 @@
 package edu.wpi.FlashyFrogs;
 
 import com.fazecast.jSerialComm.SerialPort;
-import edu.wpi.FlashyFrogs.ORM.Node;
-import java.nio.charset.StandardCharsets;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 public class DefaultTest {
 
+  @SneakyThrows
   @Test
   public void test() {
-    SerialPort[] ports = SerialPort.getCommPorts();
 
+    SerialPort[] ports = SerialPort.getCommPorts();
     if (ports.length != 0) {
 
-      Node node = new Node("02X1000Y1000", "hello", Node.Floor.L1, 1000, 1000);
-
       ports[0].setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
-      ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 100); // Blocking write
+      ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 30); // Blocking write
 
-      //        for (Node node : currentPath) {
-      if (ports[0].isOpen() || ports[0].openPort()) {
-        //            System.out.println("Port opened successfully");
-        String send = node.getId() + "\0";
-        byte[] bytes = send.getBytes(StandardCharsets.US_ASCII);
-        for (int i = 0; i < bytes.length; i++) {
-          System.out.print(bytes[i] + " ");
-        }
-        System.out.println();
+      if (ports[0].openPort(16)) {
+        int numMessages = 3;
+        byte[] bytes = {
+          (byte) (numMessages / 1000 % 10),
+          (byte) (numMessages / 100 % 10),
+          (byte) (numMessages / 10 % 10),
+          (byte) (numMessages % 10),
+          10
+        };
+        System.out.println(bytes.toString());
         ports[0].writeBytes(bytes, bytes.length);
-        bytes = send.getBytes(StandardCharsets.US_ASCII);
-        ports[0].writeBytes(bytes, bytes.length);
-      } else {
-        System.out.println("Failed to open port");
-        System.out.println(ports[0].getLastErrorCode());
-        //          }
-      }
 
-      if (ports[0].isOpen() || ports[0].openPort()) {
-        String endMessage = "endMessage00\0";
-        byte[] bytes = endMessage.getBytes(StandardCharsets.US_ASCII);
-        ports[0].writeBytes(bytes, bytes.length);
-      }
+        numMessages = 1000;
+        byte[] bytes2 = {
+          (byte) (numMessages / 1000 % 10),
+          (byte) (numMessages / 100 % 10),
+          (byte) (numMessages / 10 % 10),
+          (byte) (numMessages % 10),
+          10
+        };
+        System.out.println(bytes2.toString());
+        ports[0].writeBytes(bytes2, bytes2.length);
 
-      boolean wait = true;
-      int count = 0;
-      while (wait) {
-        byte[] bytes = new byte[12];
-        int num = ports[0].readBytes(bytes, 12);
-        if (num != 0) {
-          count++;
-          for (int i = 0; i < bytes.length; i++) {
-            System.out.print(bytes[i] + " ");
-          }
-          System.out.println();
-          if (count > 1) wait = false;
-        }
-      }
+        numMessages = 1000;
+        byte[] bytes3 = {
+          (byte) (numMessages / 1000 % 10),
+          (byte) (numMessages / 100 % 10),
+          (byte) (numMessages / 10 % 10),
+          (byte) (numMessages % 10),
+          10
+        };
+        System.out.println(bytes3.toString());
+        ports[0].writeBytes(bytes3, bytes3.length);
 
-      ports[0].closePort();
-      //        System.out.println("Port closed");
+        numMessages = 1200;
+        byte[] bytes4 = {
+          (byte) (numMessages / 1000 % 10),
+          (byte) (numMessages / 100 % 10),
+          (byte) (numMessages / 10 % 10),
+          (byte) (numMessages % 10),
+          10
+        };
+        System.out.println(bytes4.toString());
+        ports[0].writeBytes(bytes4, bytes2.length);
+
+        numMessages = 1100;
+        byte[] bytes5 = {
+          (byte) (numMessages / 1000 % 10),
+          (byte) (numMessages / 100 % 10),
+          (byte) (numMessages / 10 % 10),
+          (byte) (numMessages % 10),
+          10
+        };
+        System.out.println(bytes5.toString());
+        ports[0].writeBytes(bytes5, bytes3.length);
+
+        numMessages = 1300;
+        byte[] bytes6 = {
+          (byte) (numMessages / 1000 % 10),
+          (byte) (numMessages / 100 % 10),
+          (byte) (numMessages / 10 % 10),
+          (byte) (numMessages % 10),
+          10
+        };
+        System.out.println(bytes6.toString());
+        ports[0].writeBytes(bytes6, bytes2.length);
+
+        numMessages = 1300;
+        byte[] bytes7 = {
+          (byte) (numMessages / 1000 % 10),
+          (byte) (numMessages / 100 % 10),
+          (byte) (numMessages / 10 % 10),
+          (byte) (numMessages % 10),
+          10
+        };
+        System.out.println(bytes7.toString());
+        ports[0].writeBytes(bytes7, bytes3.length);
+      }
     }
+
+    //    boolean wait = true;
+    //    while (wait) {
+    //      byte[] bytes = new byte[4];
+    //      if (ports[0].readBytes(bytes, 4, 0) > 0) {
+    //        wait = false;
+    //      }
+    //      for (int i = 0; i < bytes.length; i++) {
+    //        System.out.println(bytes[i]);
+    //      }
+    //    }
+
+    ports[0].closePort();
   }
 }

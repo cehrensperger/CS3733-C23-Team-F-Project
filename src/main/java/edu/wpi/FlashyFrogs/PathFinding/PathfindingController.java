@@ -14,7 +14,6 @@ import edu.wpi.FlashyFrogs.controllers.HelpController;
 import edu.wpi.FlashyFrogs.controllers.IController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import jakarta.persistence.RollbackException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -381,27 +380,50 @@ public class PathfindingController extends AbstractPathVisualizerController impl
       currentPath = pathFinder.findPath(startNode, endNode, accessibleBox.isSelected());
 
       SerialPort[] ports = SerialPort.getCommPorts();
-
       if (ports.length != 0) {
 
         ports[0].setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
         ports[0].setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 16); // Blocking write
 
+        if (ports[0].openPort(16)) {
+          int numMessages = currentPath.size();
+          byte[] bytes = {
+            (byte) (numMessages / 1000 % 10),
+            (byte) (numMessages / 100 % 10),
+            (byte) (numMessages / 10 % 10),
+            (byte) (numMessages % 10),
+            10
+          };
+          ports[0].writeBytes(bytes, bytes.length);
+        }
+
         for (Node node : currentPath) {
-          if (ports[0].isOpen() || ports[0].openPort()) {
+          if (ports[0].isOpen() || ports[0].openPort(16)) {
             //            System.out.println("Port opened successfully");
-            byte[] bytes = node.getId().getBytes(StandardCharsets.US_ASCII);
+            int x = node.getXCoord();
+            int y = node.getYCoord();
+            byte[] bytes = {
+              (byte) (x / 1000 % 10),
+              (byte) (x / 100 % 10),
+              (byte) (x / 10 % 10),
+              (byte) (x % 10),
+              10
+            };
             ports[0].writeBytes(bytes, bytes.length);
+            byte[] bytes2 = {
+              (byte) (y / 1000 % 10),
+              (byte) (y / 100 % 10),
+              (byte) (y / 10 % 10),
+              (byte) (y % 10),
+              10
+            };
+            ports[0].writeBytes(bytes2, bytes2.length);
+            System.out.println(bytes.toString() + "sent");
+            System.out.println(bytes2.toString() + "sent");
           } else {
             System.out.println("Failed to open port");
             System.out.println(ports[0].getLastErrorCode());
           }
-        }
-
-        if (ports[0].isOpen() || ports[0].openPort()) {
-          String endMessage = "endMessage00";
-          byte[] bytes = endMessage.getBytes(StandardCharsets.US_ASCII);
-          ports[0].writeBytes(bytes, bytes.length);
         }
 
         ports[0].closePort();
