@@ -1,11 +1,23 @@
+# Project Showcasing
+
+Video Going Through The Application: <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+https://github.com/cehrensperger/CS3733-C23-Team-F-Project/assets/19954402/34e35ebc-8faf-42ab-881c-12c7897fa0e7
+
+<br/><br/>
+Full Descripton of the Application: <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.google.com/document/d/13le-QSpRKcEZwW3FQFbdKEzOLT4pxtiFvO6fkc1bG3M/edit?usp=sharing<br /><br />
+Final Presentation Slides: <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.google.com/presentation/d/1rQS_I8EV_rx3e_Pv3R7s-77URTZQ4z9LaOYC_s2Dodo/edit?usp=sharing<br /><br />
+<br /><br /><br /><br /><br />
+# Requirements
 To assemble a jar file for your project, run the "jar" gradle task, either through IntelliJ or by doing
 `gradle jar` on a terminal. Gradle will automatically download all dependencies needed to compile your jar file,
 which will be stored in the build/libs folder.
 
 Make sure to edit the main class attribute the build.gradle file, you'll need to change it in order to obtain
 a working jar file.
-
-# Requirements
 ## Java Development Kit (JDK) version 17.x
 This starter code was developed using JDK17 which can be acquired at this [link](https://www.oracle.com/java/technologies/downloads/#java17 "JDK Download")
 <br>Your submitted programs are expected to be written using this JDK and should not use other JDKs unless otherwise specified
