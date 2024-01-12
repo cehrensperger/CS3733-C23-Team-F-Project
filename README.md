@@ -1,6 +1,7 @@
 # Project Showcasing
 
-Video Going Through The Application: <br />
+Video Going Through The Application: <br /><br />
+Note: The screen recording was taken while the person recording was off-campus which meant they had to use a VPN to access the school hosted database. This made load times much longer in the video than what they really were.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 https://github.com/cehrensperger/CS3733-C23-Team-F-Project/assets/19954402/34e35ebc-8faf-42ab-881c-12c7897fa0e7
